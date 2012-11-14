@@ -1,4 +1,4 @@
-TARGETS	= phplint.txt sqlite.db sqlite.db3
+TARGETS	= phplint.log sqlite.db sqlite.db3
 PREFIX	= /usr/local
 DESTDIR	=
 RM	?= rm -f
