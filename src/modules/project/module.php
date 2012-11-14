@@ -1403,7 +1403,7 @@ class ProjectModule extends ContentModule
 
 	//useful
 	//ProjectModule::attachScm
-	protected function attachScm(&$engine, $name = 'cvs')
+	protected function attachScm(&$engine, $name)
 	{
 		global $config;
 
