@@ -11,7 +11,12 @@ while building rich applications on the desktop. DaPortal also supports some of
 these additional possibilities.
 
 Likewise, DaPortal 2 does not depend on a specific database backend in
-particular. It will often require a SQL server though.
+particular. It will often require a SQL server though, of which the following
+ones are already supported:
+
+ * SQLite 2 & 3
+ * PostgreSQL
+ * PDO (therefore MySQL, and possibly more)
 
 The homepage of DaPortal 2 can be found here, together with downloadable release
 archives:
@@ -29,7 +34,7 @@ http://www.defora.org/doc/html/DaPortal/
 Bug reports
 -----------
 
-DaPortal is using its own "project" module to track bug reports, feature
+DaPortal is using its own `project` module to track bug reports, feature
 requests and other improvements. It can be found here:
 http://www.defora.org/os/project/bug_list/12/DaPortal
 
@@ -38,7 +43,7 @@ Contact
 -------
 
 DaPortal 2 can be discussed on DeforaOS' development mailing-list:
-mailto:minimalist@lists.defora.org?subject=subscribe+devel
+[devel@lists.defora.org](mailto:minimalist@lists.defora.org?subject=subscribe+devel)
 
 Archives for this mailing-list can be found there:
 http://lists.defora.org/
