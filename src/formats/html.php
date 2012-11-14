@@ -917,8 +917,7 @@ $('#$id1').closest('form').submit(function () {
 		$this->tagOpen('div', 'header');
 		$this->tag('span', 'detail', FALSE, FALSE, '');
 		foreach($columns as $c)
-			$this->tag('span', "detail $c", FALSE, FALSE,
-					ucfirst($c));
+			$this->tag('span', "detail $c", FALSE, FALSE, $c);
 		$this->tagClose('div');
 	}
 
