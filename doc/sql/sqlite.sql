@@ -185,6 +185,7 @@ INSERT INTO daportal_module (name, enabled) VALUES ('top', '0');
 CREATE TABLE daportal_project (
 	project_id INTEGER UNIQUE NOT NULL,
 	synopsis VARCHAR(255) NOT NULL,
+	scm VARCHAR(255) NOT NULL DEFAULT 'cvs',
 	cvsroot VARCHAR(255) NOT NULL,
 	FOREIGN KEY (project_id) REFERENCES daportal_content (content_id)
 );

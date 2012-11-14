@@ -136,6 +136,7 @@ INSERT INTO daportal_module (name, enabled) VALUES ('top', '0');
 CREATE TABLE daportal_project (
 	project_id INTEGER UNIQUE NOT NULL REFERENCES daportal_content (content_id) ON DELETE CASCADE,
 	synopsis VARCHAR(255) NOT NULL,
+	scm VARCHAR(255) NOT NULL DEFAULT 'cvs',
 	cvsroot VARCHAR(255) NOT NULL
 );
 

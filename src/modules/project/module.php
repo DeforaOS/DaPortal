@@ -145,7 +145,7 @@ class ProjectModule extends ContentModule
 		daportal_content.enabled AS enabled,
 		timestamp, name AS module,
 		daportal_user.user_id AS user_id, username, title, synopsis,
-		cvsroot
+		scm, cvsroot
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -171,7 +171,7 @@ class ProjectModule extends ContentModule
 		daportal_content.enabled AS enabled,
 		timestamp, name AS module,
 		daportal_user.user_id AS user_id, username, title, synopsis,
-		cvsroot
+		scm, cvsroot
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -194,8 +194,8 @@ class ProjectModule extends ContentModule
 	protected $project_query_project = "SELECT
 		daportal_module.name AS module, project_id AS id, title,
 		daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, cvsroot,
-		daportal_content.enabled AS enabled
+		daportal_user.username AS username, content, synopsis, scm,
+		cvsroot, daportal_content.enabled AS enabled
 		FROM daportal_content, daportal_module, daportal_project,
 		daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -208,8 +208,8 @@ class ProjectModule extends ContentModule
 	protected $project_query_project_title = "SELECT
 		daportal_module.name AS module, project_id AS id,
 		title, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, cvsroot,
-		daportal_content.enabled AS enabled
+		daportal_user.username AS username, content, synopsis, scm,
+		cvsroot, daportal_content.enabled AS enabled
 		FROM daportal_content, daportal_module, daportal_project,
 		daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -223,8 +223,8 @@ class ProjectModule extends ContentModule
 	protected $project_query_project_by_name = "SELECT
 		daportal_module.name AS module, project_id AS id,
 		title, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, cvsroot,
-		daportal_content.enabled AS enabled
+		daportal_user.username AS username, content, synopsis, scm,
+	       	cvsroot, daportal_content.enabled AS enabled
 		FROM daportal_content, daportal_module, daportal_project,
 		daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -246,7 +246,7 @@ class ProjectModule extends ContentModule
 		daportal_user.user_id AS user_id,
 		daportal_user.username AS username,
 		daportal_content.content_id AS id, title, content, synopsis,
-		cvsroot, timestamp, bug_id,
+		scm, cvsroot, timestamp, bug_id,
 		daportal_bug.project_id AS project_id, state, type, priority,
 		assigned
 		FROM daportal_module, daportal_user, daportal_content
@@ -526,7 +526,8 @@ class ProjectModule extends ContentModule
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachScm($engine)) === FALSE)
+		if(($scm = $this->attachScm($engine, $project['scm']))
+				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('An error occurred')));
@@ -709,7 +710,7 @@ class ProjectModule extends ContentModule
 		$toolbar = $this->getToolbar($engine, $project);
 		$page->append($toolbar);
 		//source code
-		if(($scm = $this->attachScm($engine)) !== FALSE
+		if(($scm = $this->attachScm($engine, $project['scm'])) !== FALSE
 				&& ($download = $scm->download($engine,
 				$project, $request)) !== FALSE)
 			$page->append($download);
@@ -970,7 +971,8 @@ class ProjectModule extends ContentModule
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachScm($engine)) === FALSE)
+		if(($scm = $this->attachScm($engine, $project['scm']))
+				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('An error occurred')));
@@ -1401,13 +1403,12 @@ class ProjectModule extends ContentModule
 
 	//useful
 	//ProjectModule::attachScm
-	protected function attachScm(&$engine)
+	protected function attachScm(&$engine, $name = 'cvs')
 	{
-		global $config; //XXX attach modules per-project instead?
+		global $config;
 
-		if(($name = $config->getVariable('module::'.$this->name,
-				'scm::backend')) === FALSE)
-			$name = 'cvs';
+		if(strchr($name, '/') !== FALSE)
+			return FALSE;
 		$filename = './modules/'.$this->name.'/scm/'.$name.'.php';
 		$res = include_once($filename);
 		if($res === FALSE)
