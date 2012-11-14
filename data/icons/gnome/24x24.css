@@ -191,6 +191,10 @@
 	background-image:	url('gnome-icon-theme/24x24/categories/applications-development.png');
 }
 
+.stock24.question {
+	background-image:	url('gnome-icon-theme/24x24/status/stock_dialog-question.png');
+}
+
 .stock24.read {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-open.png');
 }
@@ -241,6 +245,10 @@
 
 .stock24.unsubscribe {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-remove.png');
+}
+
+.stock24.update {
+	background-image:	url('gnome-icon-theme/24x24/actions/stock_refresh.png');
 }
 
 .stock24.updir {

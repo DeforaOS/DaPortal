@@ -344,23 +344,28 @@ class HTMLFormat extends FormatElements
 
 	protected function renderCombobox($e)
 	{
-		$this->tag('span', $e->getType(), $e->getProperty('id'), FALSE,
-				$e->getProperty('text'));
+		$this->tagOpen('span', $e->getType(), $e->getProperty('id'),
+			FALSE, $e->getProperty('text'));
 		$this->renderTabs();
-		$this->tagOpen('select');
+		$name = $e->getProperty('name');
+		$value = $e->getProperty('value');
+		$this->tagOpen('select', $e->getProperty('class'), FALSE,
+			array('name' => $name));
 		$children = $e->getChildren();
 		foreach($children as $c)
 		{
 			$this->renderTabs();
+			$v = $c->getProperty('value');
+			$args = array('value' => $v);
 			$text = $c->getProperty('text');
-			$value = $c->getProperty('value');
+			if($value !== FALSE && $value == $v)
+				$args['selected'] = 'selected';
 			$this->tag('option', $c->getProperty('class'),
-					$c->getProperty('id'),
-					array('value' => $value),
-					$text);
+					$c->getProperty('id'), $args, $text);
 		}
 		$this->renderTabs();
 		$this->tagClose('select');
+		$this->tagClose('span');
 	}
 
 

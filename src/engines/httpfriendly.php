@@ -158,7 +158,7 @@ class HttpFriendlyEngine extends HttpEngine
 		{
 			if($action === FALSE && $id === FALSE)
 				$url .= '/default';
-			$title = str_replace(' ', '-', $title);
+			$title = str_replace(array(' ', '?'), '-', $title);
 			$url .= '/'.$title;
 		}
 		//handle arguments

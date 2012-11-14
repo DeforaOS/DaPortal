@@ -54,4 +54,4 @@ if [ ! -d "$DAPORTALDIR/src" ]; then
 fi
 
 #run DaPortal
-(cd "$DAPORTALDIR/src" && $PHP $DAPORTALPHP $@)
+(cd "$DAPORTALDIR/src" && $PHP $DAPORTALPHP "$@")

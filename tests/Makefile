@@ -9,8 +9,8 @@ INSTALL	?= install
 
 all: $(TARGETS)
 
-phplint.txt: phplint.sh
-	./phplint.sh -P "$(PREFIX)" -- "phplint.txt"
+phplint.log: phplint.sh
+	./phplint.sh -P "$(PREFIX)" -- "phplint.log"
 
 sqlite.db: ../doc/sql/sqlite.sql database.sh
 	./database.sh -P "$(PREFIX)" -- "sqlite.db"
@@ -19,7 +19,7 @@ sqlite.db3: ../doc/sql/sqlite.sql database.sh
 	./database.sh -P "$(PREFIX)" -- "sqlite.db3"
 
 clean:
-	$(RM) -- $(phplint.txt_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS)
+	$(RM) -- $(phplint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS)
 
 distclean: clean
 	$(RM) -- $(TARGETS)

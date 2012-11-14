@@ -32,7 +32,7 @@ class BlogModule extends ContentModule
 		$title = ($title === FALSE) ? _('Blog') : $title;
 		parent::__construct($id, $name, $title);
 		//translations
-		$this->text_content_administration = _('Blogs administration');
+		$this->text_content_admin = _('Blogs administration');
 		$this->text_content_by = _('Post by');
 		$this->text_content_item = _('Blog post');
 		$this->text_content_items = _('Blog posts');

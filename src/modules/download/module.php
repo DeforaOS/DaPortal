@@ -97,7 +97,7 @@ class DownloadModule extends ContentModule
 		$content = FALSE;
 		//FIXME should return $id as $content['download_id']
 		$error = $this->_submitProcessFile($engine, NULL, $filename,
-				$content, $id);
+				$content, $id, TRUE);
 		if($error === FALSE)
 			return $content;
 		return FALSE;
@@ -643,13 +643,13 @@ class DownloadModule extends ContentModule
 	}
 
 	protected function _submitProcessFile($engine, $parent, $filename,
-			&$content, &$id, $move = FALSE)
+			&$content, &$id, $copy = FALSE)
 	{
 		$root = $this->getRoot($engine);
 		$db = $engine->getDatabase();
 		$query = $this->download_query_file_insert;
 
-		//FIXME check for filename unicity
+		//FIXME check for filename unicity in the current folder
 		$name = basename($filename);
 		$content = Content::insert($engine, $this->id, $name, FALSE,
 				TRUE, TRUE);
@@ -664,10 +664,10 @@ class DownloadModule extends ContentModule
 		if(($id = $db->getLastId($engine, 'daportal_download',
 				'download_id')) === FALSE)
 			return _('Internal server error');
-		if($move)
+		if($copy)
 		{
 			$dst = $root.'/'.$id;
-			rename($filename, $dst);
+			copy($filename, $dst);
 		}
 		return FALSE;
 	}

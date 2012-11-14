@@ -139,6 +139,10 @@
 	background-image:		url('xfce4-icon-theme/48x48/mimetypes/text-x-readme.png');
 }
 
+.stock48.question {
+	background-image:		url('xfce4-icon-theme/48x48/stock/stock_dialog_question.png');
+}
+
 .stock48.refresh {
 	background-image:		url('xfce4-icon-theme/48x48/stock/stock_refresh.png');
 }

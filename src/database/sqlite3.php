@@ -143,9 +143,47 @@ class SQLite3Database extends Database
 	}
 
 
+	//SQLite3Database::transactionBegin
+	public function transactionBegin($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		if($this->transaction++ == 0)
+			return parent::transactionBegin($engine);
+		return TRUE;
+	}
+
+
+	//SQLite3Database::transactionCommit
+	public function transactionCommit($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		if($this->transaction == 0)
+			return FALSE;
+		if($this->transaction-- == 1)
+			return parent::transactionCommit($engine);
+		return TRUE;
+	}
+
+
+	//SQLite3Database::transactionRollback
+	public function transactionRollback($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		if($this->transaction == 0)
+			return FALSE;
+		if($this->transaction-- == 1)
+			return parent::transactionRollback($engine);
+		return TRUE;
+	}
+
+
 	//private
 	//properties
 	private $handle = FALSE;
+	private $transaction = 0;
 }
 
 ?>

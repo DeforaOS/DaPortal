@@ -191,6 +191,10 @@
 	background-image:	url('gnome-icon-theme/48x48/categories/applications-development.png');
 }
 
+.stock48.question {
+	background-image:	url('gnome-icon-theme/48x48/status/stock_dialog-question.png');
+}
+
 .stock48.read {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-open.png');
 }
@@ -241,6 +245,10 @@
 
 .stock48.unsubscribe {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-remove.png');
+}
+
+.stock48.update {
+	background-image:	url('gnome-icon-theme/48x48/actions/stock_refresh.png');
 }
 
 .stock48.updir {

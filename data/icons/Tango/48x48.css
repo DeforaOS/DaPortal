@@ -143,6 +143,10 @@
 	background-image:	url('Tango/scalable/apps/utilities-system-monitor.svg');
 }
 
+.stock48.question {
+	background-image:	url('Tango/scalable/status/dialog-warning.svg');
+}
+
 .stock48.read {
 	background-image:	url('Tango/scalable/actions/gtk-open.svg');
 }
@@ -161,6 +165,10 @@
 
 .stock48.search {
 	background-image:	url('Tango/scalable/actions/stock_search.svg');
+}
+
+.stock48.update {
+	background-image:	url('Tango/scalable/apps/update-manager.svg');
 }
 
 .stock48.updir {

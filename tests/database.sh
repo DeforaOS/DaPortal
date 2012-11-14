@@ -17,6 +17,9 @@
 
 #variables
 DEBUG="_debug"
+DEVNULL="/dev/null"
+#executables
+RM="rm -f"
 SQLITE2="sqlite"
 SQLITE3="sqlite3"
 
@@ -27,8 +30,10 @@ _debug()
 {
 	echo "$@" 1>&2
 	"$@"
+	ret=$?
 	#ignore errors when the command is not available
-	[ $? -eq 127 ]						&& return 0
+	[ $ret -eq 127 ]					&& return 0
+	return $ret
 }
 
 
@@ -61,17 +66,25 @@ target="$1"
 
 case "$target" in
 	sqlite.db)
+		$RM -- "$target"				|| return 2
+		#XXX run twice to ensure there are no false positives
+		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target"
-		#XXX avoid this work-around
-		if [ $? -eq 1 ]; then
-			echo "database.sh: $target: Error 1 (ignored)" 1>&2
+		res=$?
+		if [ $res -ne 0 ]; then
+			echo "database.sh: $target: Error $res" 1>&2
+			return 2
 		fi
 		;;
 	sqlite.db3)
+		$RM -- "$target"				|| return 2
+		#XXX run twice to ensure there are no false positives
+		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target"
-		#XXX avoid this work-around
-		if [ $? -eq 1 ]; then
-			echo "database.sh: $target: Error 1 (ignored)" 1>&2
+		res=$?
+		if [ $res -ne 0 ]; then
+			echo "database.sh: $target: Error $res" 1>&2
+			return 2
 		fi
 		;;
 esac

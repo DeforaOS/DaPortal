@@ -155,7 +155,7 @@ CREATE TABLE daportal_download (
 	`mode` smallint(6) NOT NULL default '420',
 	PRIMARY KEY (download_id),
 	KEY content_id (content_id, parent)
-	) TYPE=InnoDB;
+) TYPE=InnoDB;
 INSERT INTO daportal_module (name, enabled) VALUES ('download', 1);
 INSERT INTO daportal_config (module_id, title, type, name, value_string) VALUES ('15', 'Path to the download repository', 'string', 'root', '/tmp');
 

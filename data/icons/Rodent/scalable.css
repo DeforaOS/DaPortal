@@ -135,6 +135,10 @@
 	background-image:		url('xfce4-icon-theme/scalable/stock/stock_print-preview.svg');
 }
 
+.stock16.question, .stock24.question, .stock32.question {
+	background-image:		url('xfce4-icon-theme/scalable/stock/stock_dialog_question.svg');
+}
+
 .stock16.read, .stock24.read, .stock32.read {
 	background-image:		url('xfce4-icon-theme/scalable/mimetypes/text-x-readme.svg');
 }

@@ -143,6 +143,10 @@
 	background-image:	url('Tango/32x32/apps/utilities-system-monitor.png');
 }
 
+.stock32.question {
+	background-image:	url('Tango/32x32/status/dialog-warning.png');
+}
+
 .stock32.read {
 	background-image:	url('Tango/32x32/actions/gtk-open.png');
 }
@@ -161,6 +165,10 @@
 
 .stock32.search {
 	background-image:	url('Tango/32x32/actions/stock_search.png');
+}
+
+.stock32.update {
+	background-image:	url('Tango/32x32/apps/update-manager.png');
 }
 
 .stock32.updir {

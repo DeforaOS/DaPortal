@@ -197,7 +197,8 @@ class HttpEngine extends Engine
 				$url .= '&_id='.urlencode($id);
 			if(($title = $request->getTitle()) !== FALSE)
 			{
-				$title = str_replace(' ', '-', $title);
+				$title = str_replace(array(' ', '?'), '-',
+					$title);
 				$url .= '&_title='.urlencode($title);
 			}
 			if($request->isIdempotent()
