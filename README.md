@@ -1,5 +1,5 @@
-Quick guide to DaPortal 2
-=========================
+DeforaOS DaPortal 2
+===================
 
 About DaPortal 2
 ----------------
@@ -20,13 +20,15 @@ http://www.defora.org/os/project/12/DaPortal
 
 Documentation
 -------------
-Installation instructions and manual pages can be found in the "doc"
+
+Installation instructions and manual pages can be found in the `doc`
 sub-directory. They can also be found online, at:
 http://www.defora.org/doc/html/DaPortal/
 
 
 Bug reports
 -----------
+
 DaPortal is using its own "project" module to track bug reports, feature
 requests and other improvements. It can be found here:
 http://www.defora.org/os/project/bug_list/12/DaPortal
@@ -34,11 +36,12 @@ http://www.defora.org/os/project/bug_list/12/DaPortal
 
 Contact
 -------
+
 DaPortal 2 can be discussed on DeforaOS' development mailing-list:
 mailto:minimalist@lists.defora.org?subject=subscribe+devel
 
 Archives for this mailing-list can be found there:
 http://lists.defora.org/
 
-Individual authors can also be contacted directly, according to the "AUTHORS"
+Individual authors can also be contacted directly, according to the `AUTHORS`
 file.
