@@ -189,8 +189,7 @@ abstract class ContentModule extends Module
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.group_id=daportal_group.group_id
 		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'
-		ORDER BY timestamp DESC";
+		AND daportal_user.enabled='1'";
 	protected $query_list_count = "SELECT COUNT(*)
 		FROM daportal_content, daportal_module, daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
