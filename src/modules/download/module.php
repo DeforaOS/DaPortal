@@ -50,9 +50,12 @@ class DownloadModule extends ContentModule
 		$this->query_get = $this->download_query_get;
 		//list only files by default
 		$this->query_list = $this->download_query_list_files;
-		$this->query_list_admin = $this->download_query_list_admin;
 		$this->query_list_count
 			= $this->download_query_list_files_count;
+		//administration
+		$this->query_list_admin = $this->download_query_list_admin;
+		$this->query_list_admin_count
+			= $this->download_query_list_admin_count;
 	}
 
 
@@ -180,8 +183,18 @@ class DownloadModule extends ContentModule
 		AND daportal_content.content_id=daportal_download.content_id
 		AND daportal_content.enabled='1'
 		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'
-		ORDER BY timestamp DESC";
+		AND daportal_user.enabled='1'";
+	protected $download_query_list_admin_count = "SELECT COUNT(*)
+		FROM daportal_content, daportal_module, daportal_user,
+		daportal_group, daportal_download
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_content.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.group_id=daportal_group.group_id
+		AND daportal_content.content_id=daportal_download.content_id
+		AND daportal_content.enabled='1'
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'";
 	protected $download_query_list_files = "SELECT
 		daportal_content.content_id AS id,
 		daportal_content.enabled AS enabled,

@@ -89,6 +89,8 @@ abstract class ContentModule extends Module
 	protected $content_headline_count = 6;
 	protected $content_list_count = 10;
 	protected $content_list_order = 'timestamp DESC';
+	protected $content_list_admin_count = 20;
+	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_open_stock = 'read';
 	protected $content_preview_length = 150;
 	protected $text_content_admin = 'Content administration';
@@ -171,6 +173,15 @@ abstract class ContentModule extends Module
 		daportal_group.group_id AS group_id, groupname,
 		title, daportal_content.enabled AS enabled,
 		daportal_content.public AS public
+		FROM daportal_content, daportal_module, daportal_user,
+		daportal_group
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_content.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.group_id=daportal_group.group_id
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'";
+	protected $query_list_admin_count = "SELECT COUNT(*)
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_group
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -422,11 +433,15 @@ abstract class ContentModule extends Module
 	//ContentModule::callAdmin
 	protected function callAdmin($engine, $request = FALSE)
 	{
-		$database = $engine->getDatabase();
+		$db = $engine->getDatabase();
 		$query = $this->query_list_admin;
+		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$pcnt = FALSE;
 		$actions = array('delete', 'disable', 'enable', 'post');
 		$error = FALSE;
 
+		if($request === FALSE)
+			$request = new Request($this->name, 'admin');
 		//check credentials
 		if(!$this->canAdmin($engine, FALSE, $error))
 		{
@@ -453,9 +468,32 @@ abstract class ContentModule extends Module
 		$page->setProperty('title', $title);
 		$element = $page->append('title', array('stock' => 'admin',
 				'text' => $title));
+		if(is_string(($order = $this->content_list_admin_order)))
+			$query .= ' ORDER BY '.$order;
+		//paging
+		if(($limit = $this->content_list_admin_count) > 0)
+		{
+			//obtain the total number of records available
+			$q = $this->query_list_admin_count;
+			if(($res = $db->query($engine, $q, array(
+					'module_id' => $this->id))) !== FALSE
+					&& count($res) == 1)
+				$pcnt = $res[0][0];
+			if($pcnt !== FALSE)
+			{
+				$offset = FALSE;
+				if(is_numeric($p) && $p > 1)
+				{
+					$offset = $limit * ($p - 1);
+					if($offset >= $pcnt)
+						$offset = 0;
+				}
+				$query .= $db->offset($limit, $offset);
+			}
+		}
 		$args = array('module_id' => $this->id);
 		$error = _('Unable to list contents');
-		if(($res = $database->query($engine, $query, $args)) === FALSE)
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		$r = new Request($this->name, 'admin');
@@ -477,6 +515,8 @@ abstract class ContentModule extends Module
 			$row = $treeview->append('row');
 			$this->helperAdminRow($engine, $row, $res[$i]);
 		}
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		//buttons
 		$vbox = $page->append('vbox');
 		$this->helperAdminButtons($engine, $vbox, $request);
@@ -488,7 +528,7 @@ abstract class ContentModule extends Module
 	protected function callDefault($engine, $request = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = '';
+		$query = $this->query_list;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
 
@@ -497,26 +537,28 @@ abstract class ContentModule extends Module
 		$page = new Page(array('title' => $this->text_content_title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $this->text_content_title));
-		//obtain the total number of records available
-		if(($res = $db->query($engine, $this->query_list_count,
-				array('module_id' => $this->id))) !== FALSE
-				&& count($res) == 1)
-			$pcnt = $res[0][0];
 		if(is_string(($order = $this->content_list_order)))
 			$query .= ' ORDER BY '.$order;
 		//paging
-		$limit = FALSE;
-		if($this->content_list_count > 0)
+		if(($limit = $this->content_list_count) > 0)
 		{
-			$limit = $this->content_list_count;
-			$offset = FALSE;
-			if(is_numeric($p) && $p > 1)
-				$offset = $limit * ($p - 1);
-			$query .= $db->offset($limit, $offset);
+			//obtain the total number of records available
+			$q = $this->query_list_count;
+			if(($res = $db->query($engine, $q, array(
+					'module_id' => $this->id))) !== FALSE
+					&& count($res) == 1)
+				$pcnt = $res[0][0];
+			if($pcnt !== FALSE)
+			{
+				$offset = FALSE;
+				if(is_numeric($p) && $p > 1)
+					$offset = $limit * ($p - 1);
+				$query .= $db->offset($limit, $offset);
+			}
 		}
 		//query
-		if(($res = $db->query($engine, $this->query_list.$query,
-				array('module_id' => $this->id))) === FALSE)
+		if(($res = $db->query($engine, $query, array(
+				'module_id' => $this->id))) === FALSE)
 		{
 			$error = _('Unable to list contents');
 			$page->append('dialog', array('type' => 'error',
@@ -530,7 +572,7 @@ abstract class ContentModule extends Module
 			$this->helperPreview($engine, $vbox, $content);
 		}
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $pcnt);
+		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		return $page;
 	}
 
@@ -1335,15 +1377,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperPaging
-	protected function helperPaging($engine, $request, $page, $pcnt)
+	protected function helperPaging($engine, $request, $page, $limit, $pcnt)
 	{
-		if($pcnt === FALSE || $this->content_list_count <= 0
-				|| ($pcnt <= $this->content_list_count))
+		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
 		$sep = '';
 		if(($pcur = $request->getParameter('page')) === FALSE)
 			$pcur = 1;
-		$pcnt = ceil($pcnt / $this->content_list_count);
+		$pcnt = ceil($pcnt / $limit);
 		for($i = 1; $i <= $pcnt; $i++, $sep = ' | ')
 		{
 			if(strlen($sep))
@@ -1353,8 +1394,10 @@ abstract class ContentModule extends Module
 				$page->append('label', array('text' => $i));
 				continue;
 			}
-			$r = new Request($this->name, FALSE, FALSE, FALSE,
-					array('page' => $i));
+			$args = $request->getParameters();
+			$args['page'] = $i;
+			$r = new Request($this->name, $request->getAction(),
+				$request->getId(), $request->getTitle(), $args);
 			$page->append('link', array('request' => $r,
 					'text' => $i));
 		}
