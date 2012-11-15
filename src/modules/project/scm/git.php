@@ -46,14 +46,13 @@ class GitScmProject
 	public function download($engine, $project, $request)
 	{
 		$title = _('Repository');
-		$repository = 'git@github.com:DeforaOS';
 
 		//repository
 		$vbox = new PageElement('vbox');
 		$vbox->append('title', array('text' => $title));
 		$text = _('The source code can be obtained as follows: ');
 		$vbox->append('label', array('text' => $text));
-		$text = '$ git clone '.$repository;
+		$text = '$ git clone '.$project['cvsroot'];
 		$vbox->append('label', array('text' => $text,
 				'class' => 'preformatted'));
 		return $vbox;
