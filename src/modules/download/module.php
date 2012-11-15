@@ -770,9 +770,8 @@ class DownloadModule extends ContentModule
 			$row = $view->append('row');
 			$row->setProperty('id', $res[$i]['id']);
 			if($this->isDirectory($res[$i]))
-				//FIXME hardcoded
-				$icon = 'icons/gnome/gnome-icon-theme/16x16'
-					.'/places/folder.png';
+				$icon = Mime::getIconByType($engine,
+					'inode/directory', 16);
 			else
 				$icon = Mime::getIcon($engine,
 						$res[$i]['title'], 16);

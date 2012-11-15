@@ -261,7 +261,7 @@ class BrowserModule extends Module
 			$row = $view->append('row');
 			if($st['mode'] & Common::$S_IFDIR)
 				$icon = Mime::getIconByType($engine,
-							'inode/directory', 16);
+					'inode/directory', 16);
 			else
 				$icon = Mime::getIcon($engine, $de, 16);
 			$icon = new PageElement('image', array(
