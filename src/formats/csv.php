@@ -107,6 +107,7 @@ class CSVFormat extends PlainFormat
 						$this->renderElement($e);
 				}
 				$sep = ',';
+				$this->separator = '';
 			}
 			$this->_print("\n");
 		}
