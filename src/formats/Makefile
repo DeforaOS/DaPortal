@@ -15,6 +15,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 -- atom.php $(DESTDIR)$(PREFIX)/daportal/src/formats/atom.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
+	$(INSTALL) -m 0644 -- csv.php $(DESTDIR)$(PREFIX)/daportal/src/formats/csv.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 -- html.php $(DESTDIR)$(PREFIX)/daportal/src/formats/html.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 -- html5.php $(DESTDIR)$(PREFIX)/daportal/src/formats/html5.php
@@ -29,6 +31,7 @@ install:
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/atom.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/csv.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/html.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/html5.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/pdf.php
