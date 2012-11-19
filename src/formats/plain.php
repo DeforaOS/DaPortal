@@ -160,12 +160,11 @@ class PlainFormat extends Format
 		{
 			$this->_print($this->separator.$text);
 			$this->separator = ' ';
+			if($url !== FALSE)
+				$this->_print($this->separator."($url)");
 		}
-		if($url !== FALSE)
-		{
-			$this->_print($this->separator."($url)");
-			$this->separator = ' ';
-		}
+		else if($url !== FALSE)
+			$this->_print($this->separator.$url);
 		$this->renderChildren($e);
 	}
 }
