@@ -163,6 +163,10 @@
 	background-image:	url('Tango/24x24/actions/gtk-remove.png');
 }
 
+.stock24.save {
+	background-image:	url('Tango/24x24/actions/stock_save.png');
+}
+
 .stock24.search {
 	background-image:	url('Tango/24x24/actions/stock_search.png');
 }
