@@ -117,9 +117,16 @@ class SQLite3Database extends Database
 						'filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');
-		if(($this->handle = new SQLite3($filename)) == NULL)
+		try
+		{
+			$this->handle = new SQLite3($filename);
+		}
+		catch(Exception $e)
+		{
+			$this->handle = FALSE;
 			return $engine->log('LOG_ERR',
-					'Could not open database');
+				'Could not open database');
+		}
 		return TRUE;
 	}
 
