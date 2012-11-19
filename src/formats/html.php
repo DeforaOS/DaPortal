@@ -18,6 +18,7 @@
 
 require_once('./system/format.php');
 require_once('./system/html.php');
+require_once('./system/request.php');
 
 
 //HTMLFormat
