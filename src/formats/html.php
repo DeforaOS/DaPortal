@@ -638,20 +638,27 @@ $('#$id1').closest('form').submit(function () {
 
 	protected function renderLink($e)
 	{
+		$url = FALSE;
+
 		$attributes = array();
 		if(($a = $e->getProperty('name')) !== FALSE)
 			$attributes['name'] = $a;
 		if(($r = $e->getProperty('request')) !== FALSE)
-			$attributes['href'] = $this->engine->getUrl($r, FALSE);
-		else if(($u = $e->getProperty('url')) !== FALSE)
-			$attributes['href'] = $u;
+		{
+			$url = $this->engine->getUrl($r, FALSE);
+			$attributes['href'] = $url;
+		}
+		else if(($url = $e->getProperty('url')) !== FALSE)
+			$attributes['href'] = $url;
 		if(($title = $e->getProperty('title')) !== FALSE)
 			$attributes['title'] = $title;
 		$this->tagOpen('a', FALSE, $e->getProperty('id'), $attributes);
 		if(($stock = $e->getProperty('stock')) !== FALSE)
 			$this->tag('img', 'stock16 '.$stock, FALSE,
 					array('alt' => ''));
-		print($this->escapeText($e->getProperty('text')));
+		if(($text = $e->getProperty('text')) === FALSE)
+			$text = $url;
+		print($this->escapeText($text));
 		$this->renderChildren($e);
 		$this->tagClose('a');
 	}
