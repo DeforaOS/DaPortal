@@ -112,6 +112,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/engines/Makefile \
 		$(PACKAGE)-$(VERSION)/src/engines/cli.php \
 		$(PACKAGE)-$(VERSION)/src/engines/daportal.php \
+		$(PACKAGE)-$(VERSION)/src/engines/dummy.php \
 		$(PACKAGE)-$(VERSION)/src/engines/email.php \
 		$(PACKAGE)-$(VERSION)/src/engines/gtk.php \
 		$(PACKAGE)-$(VERSION)/src/engines/http.php \

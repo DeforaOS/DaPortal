@@ -17,6 +17,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 -- daportal.php $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
+	$(INSTALL) -m 0644 -- dummy.php $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 -- email.php $(DESTDIR)$(PREFIX)/daportal/src/engines/email.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 -- gtk.php $(DESTDIR)$(PREFIX)/daportal/src/engines/gtk.php
@@ -28,6 +30,7 @@ install:
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/email.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/gtk.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/http.php
