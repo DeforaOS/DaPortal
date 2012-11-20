@@ -54,7 +54,8 @@ class DeforaOSTemplate extends BasicTemplate
 	protected function getTitle($engine)
 	{
 		$title = new PageElement('title', array('id' => 'title'));
-		$link = $title->append('link', array('url' => $this->homepage));
+		$link = $title->append('link', array('url' => $this->homepage,
+				'text' => ''));
 		$link->append('image', array(
 			'source' => 'themes/DeforaOS.png'));
 		return $title;
