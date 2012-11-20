@@ -13,6 +13,8 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
+	$(INSTALL) -m 0644 -- dummy.php $(DESTDIR)$(PREFIX)/daportal/src/database/dummy.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 -- pdo.php $(DESTDIR)$(PREFIX)/daportal/src/database/pdo.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 -- pgsql.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
@@ -22,6 +24,7 @@ install:
 	$(INSTALL) -m 0644 -- sqlite3.php $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite3.php
 
 uninstall:
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/dummy.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2.php

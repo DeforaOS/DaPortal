@@ -104,6 +104,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/auth/unix.php \
 		$(PACKAGE)-$(VERSION)/src/auth/project.conf \
 		$(PACKAGE)-$(VERSION)/src/database/Makefile \
+		$(PACKAGE)-$(VERSION)/src/database/dummy.php \
 		$(PACKAGE)-$(VERSION)/src/database/pdo.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite2.php \
