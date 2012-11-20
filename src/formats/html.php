@@ -889,7 +889,7 @@ $('#$id1').closest('form').submit(function () {
 		$this->_renderTreeviewToolbar($e);
 		$columns = $e->getProperty('columns');
 		if(!is_array($columns) || count($columns) == 0)
-			$columns = array('title');
+			$columns = array('title' => 'Title');
 		$this->renderTabs();
 		$this->tagOpen('div', 'table');
 		$this->_renderTreeviewHeaders($columns);
