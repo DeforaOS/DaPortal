@@ -41,8 +41,10 @@ class Mime
 	{
 		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
 			.'/mimetypes/gtk-file.png';
-		$from = array('application/', 'text/', 'video/');
-		$to = array('application-', 'text-', 'video-');
+		$from = array('application/', 'audio/', 'image/', 'text/',
+			'video/');
+		$to = array('application-', 'audio-', 'image-', 'text-',
+			'video-');
 		$icons = array('inode/directory' => 'places/folder');
 
 		if(Mime::init($engine) === FALSE)
