@@ -1181,11 +1181,12 @@ abstract class ContentModule extends Module
 			if(count($x) != 2 || $x[0] != 'content_id'
 					|| !is_numeric($x[1]))
 				continue;
-			$res = $db->query($engine, $query, array(
-						'module_id' => $this->id,
-						'content_id' => $x[1],
-						'user_id' => $uid));
-			if($res !== FALSE)
+			$args = array('module_id' => $this->id,
+				'content_id' => $x[1]);
+			if(!$cred->isAdmin())
+				$args['user_id'] = $uid;
+			if(($res = $db->query($engine, $query, $args))
+					!== FALSE)
 				continue;
 			$type = 'error';
 			$message = $failure;
