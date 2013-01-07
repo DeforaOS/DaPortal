@@ -1,9 +1,9 @@
 SUBDIRS	= locale
 PREFIX	= /usr/local
 DESTDIR	=
-MKDIR	?= mkdir -p
-INSTALL	?= install
-RM	?= rm -f
+MKDIR	= mkdir -p
+INSTALL	= install
+RM	= rm -f
 
 
 all: subdirs

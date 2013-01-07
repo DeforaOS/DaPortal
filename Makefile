@@ -1,9 +1,9 @@
 PACKAGE	= DaPortal
 VERSION	= 1.9.0
 SUBDIRS	= data doc po src tests tools
-RM	?= rm -f
-LN	?= ln -f
-TAR	?= tar -czvf
+RM	= rm -f
+LN	= ln -f
+TAR	= tar -czvf
 
 
 all: subdirs

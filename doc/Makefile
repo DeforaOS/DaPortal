@@ -2,10 +2,10 @@ SUBDIRS	= sql
 TARGETS	= daportal.1 daportal.html daportal.conf.5 daportal.conf.html install.html internals.html
 PREFIX	= /usr/local
 DESTDIR	=
-RM	?= rm -f
-LN	?= ln -f
-MKDIR	?= mkdir -p
-INSTALL	?= install
+RM	= rm -f
+LN	= ln -f
+MKDIR	= mkdir -p
+INSTALL	= install
 
 
 all: subdirs $(TARGETS)
