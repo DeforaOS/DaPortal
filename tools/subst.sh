@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, version 3 of the License.
@@ -39,16 +39,20 @@ _debug()
 #usage
 _usage()
 {
-	echo "Usage: subst.sh [-i|-u][-P prefix] target" 1>&2
+	echo "Usage: subst.sh [-c|-i|-u][-P prefix] target..." 1>&2
 	return 1
 }
 
 
 #main
+clean=0
 install=0
 uninstall=0
-while getopts iuP: name; do
+while getopts "ciuP:" name; do
 	case $name in
+		c)
+			clean=1
+			;;
 		i)
 			uninstall=0
 			install=1
@@ -75,6 +79,9 @@ fi
 while [ $# -gt 0 ]; do
 	target="$1"
 	shift
+
+	#clean
+	[ "$clean" -ne 0 ] && continue
 
 	#uninstall
 	if [ "$uninstall" -eq 1 ]; then
