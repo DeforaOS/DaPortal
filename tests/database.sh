@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, version 3 of the License.
@@ -46,8 +46,12 @@ _usage()
 
 
 #main
-while getopts "P:" "name"; do
+clean=0
+while getopts "cP:" name; do
 	case "$name" in
+		c)
+			clean=1
+			;;
 		P)
 			#XXX ignored for compatibility
 			;;
@@ -63,6 +67,8 @@ if [ $# -ne 1 ]; then
 	exit $?
 fi
 target="$1"
+
+[ "$clean" -ne 0 ] && exit 0
 
 case "$target" in
 	sqlite.db)
