@@ -34,10 +34,12 @@ internals.html: internals.xml internals.xsl
 clean:
 	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) clean) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
+	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) distclean) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
+	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)

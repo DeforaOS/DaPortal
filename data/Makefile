@@ -19,10 +19,12 @@ index.php: index.php.in ../config.sh ../tools/subst.sh
 clean:
 	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) clean) || exit; done
 	$(RM) -- $(index.php_OBJS)
+	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) distclean) || exit; done
 	$(RM) -- $(index.php_OBJS)
+	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)

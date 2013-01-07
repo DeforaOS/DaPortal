@@ -20,6 +20,7 @@ sqlite.db3: ../doc/sql/sqlite.sql database.sh
 
 clean:
 	$(RM) -- $(phplint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS)
+	./database.sh -c -P "$(PREFIX)" -- "sqlite.db3"
 
 distclean: clean
 	$(RM) -- $(TARGETS)
