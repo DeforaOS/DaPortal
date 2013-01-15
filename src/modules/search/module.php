@@ -257,13 +257,15 @@ class SearchModule extends Module
 		if($intitle && count($q))
 			foreach($q as $r)
 			{
-				$query .= " OR title LIKE :arg$i";
+				$query .= ' OR title '.$db->like(FALSE)
+					." :arg$i";
 				$args['arg'.$i++] = "%$r%";
 			}
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
-				$query .= " OR content LIKE :arg$i";
+				$query .= ' OR content '.$db->like(FALSE)
+					." :arg$i";
 				$args['arg'.$i++] = "%$r%";
 			}
 		$query .= ')';

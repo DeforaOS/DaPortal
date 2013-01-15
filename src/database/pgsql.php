@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -92,6 +92,17 @@ class PgsqlDatabase extends Database
 		if($outformat === FALSE)
 			$outformat = '%d/%m/%Y %H:%M:%S';
 		return strftime($outformat, $timestamp);
+	}
+
+
+	//PgsqlDatabase::like
+	public function like($case = TRUE, $pattern = FALSE)
+	{
+		$ret = $case ? 'LIKE' : 'ILIKE';
+
+		if($pattern !== FALSE)
+			$ret .= " '$pattern'";
+		return $ret;
 	}
 
 
