@@ -860,6 +860,8 @@ $('#$id1').closest('form').submit(function () {
 				break;
 		}
 		$class = "treeview $view";
+		if($e->getProperty('alternate'))
+			$class .= ' alternate';
 		$method = $e->getProperty('idempotent') ? 'get' : 'post';
 		$this->renderTabs();
 		$this->tagOpen('form', $class, FALSE, array(
