@@ -560,6 +560,8 @@ class GtkFormat extends FormatElements
 				Gobject::TYPE_STRING, Gobject::TYPE_STRING,
 				Gobject::TYPE_STRING);
 		$view = new GtkTreeView($store);
+		if($e->getProperty('alternate'))
+			$view->set_rules_hint(TRUE);
 		for($i = 0, $cnt = count($keys); $i < $cnt; $i++)
 		{
 			$renderer = new GtkCellRendererText();
