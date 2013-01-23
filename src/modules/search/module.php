@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DaPortal
 //
 //DaPortal is free software; you can redistribute it and/or modify
@@ -47,6 +47,7 @@ class SearchModule extends Module
 
 	//protected
 	//properties
+	protected $limit = 20;
 	protected $query = "FROM daportal_content, daportal_module,
 		daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -108,12 +109,15 @@ class SearchModule extends Module
 	//SearchModule::callDefault
 	protected function callDefault(&$engine, $request)
 	{
+		$limit = $this->limit;
+		$p = $request->getParameter('page');
+
 		$page = $this->pageSearch($engine, $request);
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
 			return $page;
 		$count = 0;
-		$res = $this->query($engine, $q, $count, TRUE, TRUE);
+		$res = $this->query($engine, $q, $count, $p, TRUE, TRUE);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
@@ -123,7 +127,8 @@ class SearchModule extends Module
 					'columns' => $columns));
 		for($i = 0; $i < $count; $i++)
 			$this->appendResult($engine, $view, $res[$i]);
-		//FIXME implement paging
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $count);
 		return $page;
 	}
 
@@ -131,6 +136,9 @@ class SearchModule extends Module
 	//SearchModule::callAdvanced
 	protected function callAdvanced(&$engine, $request)
 	{
+		$limit = $this->limit;
+		$p = $request->getParameter('page');
+
 		$page = $this->pageSearch($engine, $request, TRUE);
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
@@ -140,7 +148,8 @@ class SearchModule extends Module
 		$incontent = $request->getParameter('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
-		$res = $this->query($engine, $q, $count, $intitle, $incontent);
+		$res = $this->query($engine, $q, $count, $p, $intitle,
+				$incontent);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
@@ -150,6 +159,8 @@ class SearchModule extends Module
 					'columns' => $columns));
 		for($i = 0; $i < $count; $i++)
 			$this->appendResult($engine, $view, $res[$i]);
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $count);
 		return $page;
 	}
 
@@ -184,10 +195,41 @@ class SearchModule extends Module
 	}
 
 
+	//SearchModule::helperPaging
+	protected function helperPaging($engine, $request, $page, $limit, $pcnt)
+	{
+		//XXX copied from ContentModule
+		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
+			return;
+		$sep = '';
+		if(($pcur = $request->getParameter('page')) === FALSE)
+			$pcur = 1;
+		$pcnt = ceil($pcnt / $limit);
+		for($i = 1; $i <= $pcnt; $i++, $sep = ' | ')
+		{
+			if(strlen($sep))
+				$page->append('label', array('text' => $sep));
+			if($i == $pcur)
+			{
+				$page->append('label', array('text' => $i));
+				continue;
+			}
+			$args = $request->getParameters();
+			$args['page'] = $i;
+			$r = new Request($this->name, $request->getAction(),
+				$request->getId(), $request->getTitle(), $args);
+			$page->append('link', array('request' => $r,
+					'text' => $i));
+		}
+	}
+
+
 	//SearchModule::pageSearch
 	protected function pageSearch(&$engine, $request, $advanced = FALSE)
 	{
 		$q = $request->getParameter('q');
+		$args = $q ? array('q' => $q) : FALSE;
+
 		$page = new Page;
 		$page->setProperty('title', _('Search'));
 		$title = $page->append('title', array('stock' => 'search'));
@@ -228,29 +270,26 @@ class SearchModule extends Module
 			$link->setProperty('stock', 'remove');
 			$link->setProperty('text', _('Simpler search...'));
 			$link->setProperty('request', new Request('search',
-				FALSE, FALSE, FALSE,
-				$q ? array('q' => $q) : FALSE));
+				FALSE, FALSE, FALSE, $args));
 		}
 		else
 		{
 			$link->setProperty('stock', 'add');
 			$link->setProperty('text', _('Advanced search...'));
 			$link->setProperty('request', new Request('search',
-				'advanced', FALSE, FALSE,
-				$q ? array('q' => $q) : FALSE));
+				'advanced', FALSE, FALSE, $args));
 		}
 		return $page;
 	}
 
 
 	//SearchModule::query
-	protected function query($engine, $string, &$count, $intitle,
+	protected function query($engine, $string, &$count, $page, $intitle,
 			$incontent, $user = FALSE, $module = FALSE)
 	{
-		global $db;
-
 		$db = $engine->getDatabase();
 		$query = $this->query.' AND (0=1';
+
 		$q = explode(' ', $string);
 		$args = array();
 		$i = 0;
@@ -271,12 +310,23 @@ class SearchModule extends Module
 		$query .= ')';
 		$fields = 'SELECT COUNT (*)';
 		if(($res = $db->query($engine, $fields.' '.$query, $args))
-				=== FALSE)
+				=== FALSE || count($res) != 1)
 			return $engine->log('LOG_ERR', _('Unable to search'));
 		$count = $res[0][0];
 		$fields = $this->query_fields;
 		$order = 'ORDER BY timestamp DESC';
-		//FIXME also set a limit
+		//paging
+		if(($limit = $this->limit) > 0)
+		{
+			$offset = FALSE;
+			if(is_numeric($page) && $page > 1)
+			{
+				$offset = $limit * ($page - 1);
+				if($offset >= $count)
+					$offset = 0;
+			}
+			$order .= ' '.$db->offset($limit, $offset);
+		}
 		if(($res = $db->query($engine, $fields.' '.$query.' '.$order,
 					$args)) === FALSE)
 			return $engine->log('LOG_ERR', _('Unable to search'));
