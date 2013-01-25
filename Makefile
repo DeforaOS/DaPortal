@@ -178,6 +178,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
+		$(PACKAGE)-$(VERSION)/src/system/format.php \
 		$(PACKAGE)-$(VERSION)/src/system/html.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale.php \
 		$(PACKAGE)-$(VERSION)/src/system/mail.php \
