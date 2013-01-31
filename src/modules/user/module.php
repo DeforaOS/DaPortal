@@ -1295,18 +1295,30 @@ Thank you for registering!")));
 
 	private function _updateSuccess($engine, $request)
 	{
-		//FIXME also implement administrative updates
+		$id = $request->getId();
+
 		$title = _('Profile update');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$info = _('Your profile was updated successfully');
+		$info = $id ? _('The profile was updated successfully')
+			: _('Your profile was updated successfully');
 		$dialog = $page->append('dialog', array('type' => 'info',
 				'text' => $info));
-		$r = new Request($this->name, 'profile', $request->getId(),
-			$request->getId() ? $request->getTitle() : FALSE);
+		if($id)
+		{
+			$r = new Request($this->name, 'admin');
+			$dialog->append('button', array('stock' => 'admin',
+					'request' => $r,
+					'text' => _('User administration')));
+			$text = _('User profile');
+		}
+		else
+			$text = _('My profile');
+		$r = new Request($this->name, 'profile', $id,
+			$request->getTitle());
 		$dialog->append('button', array('stock' => 'user',
-				'request' => $r, 'text' => _('My profile')));
+				'request' => $r, 'text' => $text));
 		return $page;
 	}
 
