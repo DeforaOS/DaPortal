@@ -48,12 +48,18 @@ class XMLFormat extends PlainFormat
 	//XMLFormat::render
 	public function render($engine, $page, $filename = FALSE)
 	{
+		global $config;
+		$charset = $config->getVariable('defaults', 'charset');
+
 		//FIXME ignore filename for the moment
 		if($page === FALSE)
 			$page = new Page;
 		$this->engine = $engine;
-		//XXX set the proper encoding
-		print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		print('<?xml version="1.0"');
+		if($charset !== FALSE)
+			//XXX escape
+			print(' encoding="'.$charset.'"');
+		print("?>\n");
 		print("<root>\n");
 		$this->renderElement($page);
 		print("</root>\n");
