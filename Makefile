@@ -128,6 +128,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/plain.php \
 		$(PACKAGE)-$(VERSION)/src/formats/xhtml1.php \
 		$(PACKAGE)-$(VERSION)/src/formats/xhtml11.php \
+		$(PACKAGE)-$(VERSION)/src/formats/xml.php \
 		$(PACKAGE)-$(VERSION)/src/formats/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project.conf \

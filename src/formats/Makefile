@@ -28,6 +28,8 @@ install:
 	$(INSTALL) -m 0644 -- xhtml1.php $(DESTDIR)$(PREFIX)/daportal/src/formats/xhtml1.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 -- xhtml11.php $(DESTDIR)$(PREFIX)/daportal/src/formats/xhtml11.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
+	$(INSTALL) -m 0644 -- xml.php $(DESTDIR)$(PREFIX)/daportal/src/formats/xml.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/atom.php
@@ -38,5 +40,6 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/plain.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/xhtml1.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/xhtml11.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/xml.php
 
 .PHONY: all clean distclean install uninstall
