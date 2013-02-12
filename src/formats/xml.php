@@ -52,6 +52,7 @@ class XMLFormat extends PlainFormat
 		if($page === FALSE)
 			$page = new Page;
 		$this->engine = $engine;
+		//XXX set the proper encoding
 		print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		print("<root>\n");
 		$this->renderElement($page);
@@ -92,6 +93,43 @@ class XMLFormat extends PlainFormat
 			default:
 				return parent::renderElement($e);
 		}
+	}
+
+
+	//PlainFormat::renderInline
+	protected function renderInline($e)
+	{
+		if(($text = $e->getProperty('text')) !== FALSE)
+		{
+			$this->_print($this->escape($this->separator.$text));
+			$this->separator = ' ';
+		}
+		$this->renderChildren($e);
+	}
+
+
+	//PlainFormat::renderLink
+	protected function renderLink($e)
+	{
+		$this->_print('<link>');
+		if(($text = $e->getProperty('text')) !== FALSE
+				&& strlen($text) > 0)
+		{
+			$this->_print('<text>');
+			$this->_print($this->escape($this->separator.$text));
+			$this->_print('</text>');
+		}
+		if(($url = $e->getProperty('url')) === FALSE
+				&& ($r = $e->getProperty('request')) !== FALSE)
+			$url = $this->engine->getUrl($r);
+		if($url !== FALSE)
+		{
+			$this->_print('<url>');
+			$this->_print($this->escape($url));
+			$this->_print('</url>');
+		}
+		$this->renderChildren($e);
+		$this->_print('</link>');
 	}
 
 
