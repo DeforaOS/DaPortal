@@ -34,6 +34,7 @@ class XMLFormat extends PlainFormat
 	{
 		switch($type)
 		{
+			case 'application/xml':
 			case 'text/xml':
 				return 100;
 			default:
