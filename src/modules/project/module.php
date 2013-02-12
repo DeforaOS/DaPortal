@@ -428,7 +428,7 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::getToolbar
-	protected function getToolbar($engine, $content = FALSE)
+	protected function getToolbar($engine, $request, $content = FALSE)
 	{
 		$id = (isset($content['id'])) ? $content['id'] : FALSE;
 
@@ -524,7 +524,7 @@ class ProjectModule extends ContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		if(($scm = $this->attachScm($engine, $project['scm']))
 				=== FALSE)
@@ -569,7 +569,8 @@ class ProjectModule extends ContentModule
 		if($project !== FALSE)
 		{
 			$title = _('Bug reports for ').$project['title'];
-			$toolbar = $this->getToolbar($engine, $project);
+			$toolbar = $this->getToolbar($engine, $request,
+					$project);
 			$query .= ' AND daportal_project.project_id=:project_id';
 			$args['project_id'] = $id;
 		}
@@ -659,7 +660,7 @@ class ProjectModule extends ContentModule
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//FIXME process the request
 		//bug
@@ -707,7 +708,7 @@ class ProjectModule extends ContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//source code
 		if(($scm = $this->attachScm($engine, $project['scm'])) !== FALSE
@@ -792,7 +793,7 @@ class ProjectModule extends ContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//screenshots
 		$error = _('Could not list screenshots');
@@ -892,7 +893,7 @@ class ProjectModule extends ContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//process the request
 		if(($error = $this->_submitProcessRelease($engine, $request,
@@ -969,7 +970,7 @@ class ProjectModule extends ContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $project);
+		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		if(($scm = $this->attachScm($engine, $project['scm']))
 				=== FALSE)

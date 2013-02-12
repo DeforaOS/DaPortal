@@ -310,7 +310,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::getToolbar
-	protected function getToolbar($engine, $content = FALSE)
+	protected function getToolbar($engine, $request, $content = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -494,7 +494,7 @@ abstract class ContentModule extends Module
 		$error = _('Unable to list contents');
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+					'type' => 'error', 'text' => $error));
 		$r = new Request($this->name, 'admin');
 		if($request !== FALSE && ($type = $request->getParameter(
 					'type')) !== FALSE)
@@ -808,7 +808,7 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 			'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine);
+		$toolbar = $this->getToolbar($engine, $request);
 		$page->append($toolbar);
 		//process the request
 		if(($error = $this->_publishProcess($engine, $request,
@@ -885,7 +885,7 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine);
+		$toolbar = $this->getToolbar($engine, $request);
 		$page->append($toolbar);
 		//process the request
 		$content = FALSE;
@@ -953,7 +953,7 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $content);
+		$toolbar = $this->getToolbar($engine, $request, $content);
 		$page->append($toolbar);
 		//process the request
 		if(($error = $this->_updateProcess($engine, $request, $content))
@@ -1149,7 +1149,7 @@ abstract class ContentModule extends Module
 
 	//ContentModule::helperApply
 	protected function helperApply($engine, $request, $query, $fallback,
-			$success, $failure)
+			$success, $failure, $key = 'content_id')
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -1178,11 +1178,10 @@ abstract class ContentModule extends Module
 		foreach($parameters as $k => $v)
 		{
 			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != 'content_id'
+			if(count($x) != 2 || $x[0] != $key
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('module_id' => $this->id,
-				'content_id' => $x[1]);
+			$args = array('module_id' => $this->id, $key => $x[1]);
 			if(!$cred->isAdmin())
 				$args['user_id'] = $uid;
 			if(($res = $db->query($engine, $query, $args))
@@ -1281,7 +1280,7 @@ abstract class ContentModule extends Module
 	protected function helperDisplayToolbar($engine, $page, $request,
 			$content)
 	{
-		$toolbar = $this->getToolbar($engine, $content);
+		$toolbar = $this->getToolbar($engine, $request, $content);
 		$page->append($toolbar);
 	}
 
@@ -1367,7 +1366,7 @@ abstract class ContentModule extends Module
 				$uid ? $user->getUsername() : FALSE);
 		$view = $page->append('treeview', array('request' => $r));
 		$columns = array('title' => _('Title'));
-		if($uid === $cred->getUserId())
+		if($this->canUpdate($engine) || $this->canPost($engine))
 			$columns['enabled'] = _('Enabled');
 		$columns['username'] = _('Username');
 		$columns['date'] = _('Date');

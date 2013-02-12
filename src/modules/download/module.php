@@ -286,12 +286,14 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::getToolbar
-	protected function getToolbar($engine, $content = FALSE)
+	protected function getToolbar($engine, $request, $content = FALSE)
 	{
 		if($this->isDirectory($content))
-			return $this->getToolbarDirectory($engine, $content);
+			return $this->getToolbarDirectory($engine, $request,
+					$content);
 		else if($content !== FALSE)
-			return $this->getToolbarFile($engine, $content);
+			return $this->getToolbarFile($engine, $request,
+					$content);
 		//upload or directory creation in the root folder
 		//XXX remove this toolbar and make it a dialog?
 		$toolbar = new PageElement('toolbar');
@@ -303,7 +305,7 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::getToolbarDirectory
-	protected function getToolbarDirectory($engine, $content)
+	protected function getToolbarDirectory($engine, $request, $content)
 	{
 		$toolbar = new PageElement('toolbar');
 		//link to the parent folder
@@ -352,7 +354,7 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::getToolbarFile
-	protected function getToolbarFile($engine, $content)
+	protected function getToolbarFile($engine, $request, $content)
 	{
 		$toolbar = new PageElement('toolbar');
 		//back to the parent folder
@@ -497,7 +499,7 @@ class DownloadModule extends ContentModule
 		$page->append('title', array('stock' => 'folder-new',
 				'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $parent);
+		$toolbar = $this->getToolbar($engine, $request, $parent);
 		$page->append($toolbar);
 		//process the content
 		$content = $this->_get($engine, $request->getId(),
@@ -596,7 +598,7 @@ class DownloadModule extends ContentModule
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $parent);
+		$toolbar = $this->getToolbar($engine, $request, $parent);
 		$page->append($toolbar);
 		//process the content
 		$content = $this->_get($engine, $request->getId(),
@@ -771,7 +773,7 @@ class DownloadModule extends ContentModule
 					'type' => 'error',
 					'text' => _('Unable to list files')));
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $content);
+		$toolbar = $this->getToolbar($engine, $request, $content);
 		$page->append($toolbar);
 		//view
 		$columns = array('icon' => '', 'filename' => _('Filename'),
@@ -833,7 +835,7 @@ class DownloadModule extends ContentModule
 		$request = new Request($this->name, FALSE, $content['id'],
 			$content['title']);
 		//toolbar
-		$toolbar = $this->getToolbar($engine, $content);
+		$toolbar = $this->getToolbar($engine, $request, $content);
 		$page->append($toolbar);
 		//obtain the root repository
 		$root = $this->getRoot($engine);
