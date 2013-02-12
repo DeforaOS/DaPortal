@@ -122,7 +122,7 @@ class XMLFormat extends PlainFormat
 				&& strlen($text) > 0)
 		{
 			$this->_print('<text>');
-			$this->_print($this->escape($this->separator.$text));
+			$this->_print($this->escape($text));
 			$this->_print('</text>');
 		}
 		if(($url = $e->getProperty('url')) === FALSE
