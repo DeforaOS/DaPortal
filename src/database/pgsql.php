@@ -131,18 +131,29 @@ class PgsqlDatabase extends Database
 			return FALSE;
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
-		//FIXME always use prepared statements
-		if($parameters === FALSE || count($parameters) == 0)
+		//convert the query to the PostgreSQL way
+		$q = explode(':', $query);
+		$query = $q[0];
+		$args = array();
+		for($i = 1, $cnt = count($q); $i < $cnt; $i++)
 		{
-			if(($q = $this->prepare($query, $parameters)) === FALSE)
-				return FALSE;
-			$res = pg_execute($this->handle, $q, array());
+			for($j = 0, $len = strlen($q[$i]); $j < $len
+				&& (ctype_alnum($q[$i][$j])
+					|| $q[$i][$j] == '_'); $j++);
+			$k = substr($q[$i], 0, $j);
+			if(!isset($parameters[$k]))
+				return $engine->log('LOG_ERR',
+						'Incomplete SQL statement');
+			$query .= "\$$i ".substr($q[$i], $j);
+			$args[$i] = $parameters[$k];
 		}
-		else if(($q = parent::prepare($query, $parameters)) !== FALSE)
-			$res = pg_query($this->handle, $q);
-		else
+		if($config->getVariable('database', 'debug'))
+			$engine->log('LOG_WARN', $query);
+		//prepare the query
+		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
-		if($res === FALSE)
+		//execute the query
+		if(($res = pg_execute($this->handle, $q, $args)) === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
