@@ -134,10 +134,9 @@ class PgsqlDatabase extends Database
 		//FIXME always use prepared statements
 		if($parameters === FALSE || count($parameters) == 0)
 		{
-			if($this->prepare($query, $parameters) === FALSE)
+			if(($q = $this->prepare($query, $parameters)) === FALSE)
 				return FALSE;
-			//XXX get rid of the hash value
-			$res = pg_execute($this->handle, md5($query), array());
+			$res = pg_execute($this->handle, $q, array());
 		}
 		else if(($q = parent::prepare($query, $parameters)) !== FALSE)
 			$res = pg_query($this->handle, $q);
@@ -212,12 +211,13 @@ class PgsqlDatabase extends Database
 	protected function prepare($query, $parameters = FALSE)
 	{
 		static $statements = array();
-		$h = md5($query);
 
-		if(isset($statements[$h]))
-			return $statements[$h];
-		$statements[$h] = pg_prepare($this->handle, $h, $query);
-		return $statements[$h];
+		if(isset($statements[$query]))
+			return $statements[$query];
+		$id = uniqid();
+		$statements[$query] = (pg_prepare($this->handle, $id, $query)
+			!== FALSE) ? $id : FALSE;
+		return $statements[$query];
 	}
 
 
