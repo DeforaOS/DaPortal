@@ -148,7 +148,10 @@ class PgsqlDatabase extends Database
 						'Incomplete SQL statement '
 						."($k key not set)");
 			$query .= "\$$i ".substr($q[$i], $j);
-			$args[$i] = $parameters[$k];
+			if(is_bool($parameters[$k]))
+				$args[$i] = $parameters[$k] ? '1' : '0';
+			else
+				$args[$i] = $parameters[$k];
 		}
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_WARN', $query);
