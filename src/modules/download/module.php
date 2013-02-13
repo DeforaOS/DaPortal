@@ -773,6 +773,8 @@ class DownloadModule extends ContentModule
 					'type' => 'error',
 					'text' => _('Unable to list files')));
 		//toolbar
+		$request = new Request($this->name, FALSE, $content['id'],
+			$content['title']);
 		$toolbar = $this->getToolbar($engine, $request, $content);
 		$page->append($toolbar);
 		//view
