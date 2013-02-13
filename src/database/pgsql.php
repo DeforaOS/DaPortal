@@ -136,8 +136,7 @@ class PgsqlDatabase extends Database
 		$error = FALSE;
 		if(($res = pg_query($this->handle, $query)) === FALSE)
 		{
-			$error = pg_last_error($this->handle);
-			if($error !== FALSE)
+			if(($error = pg_last_error($this->handle)) !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
@@ -197,6 +196,33 @@ class PgsqlDatabase extends Database
 		if(function_exists('pg_escape_literal'))
 			return pg_escape_literal($this->handle, $string);
 		return "'".pg_escape_string($this->handle, $string)."'";
+	}
+
+
+	//PgsqlDatabase::prepare
+	protected function prepare($query, $parameters = FALSE)
+	{
+		if($parameters === FALSE || count($parameters) == 0)
+		{
+			//XXX re-use the prepared statements
+			if(pg_prepare($this->handle, '', $query) === FALSE)
+				return FALSE;
+			if(($res = pg_execute($this->handle, '', array()))
+					=== FALSE)
+			{
+				if(($error = pg_last_error($this->handle))
+						!== FALSE)
+					$engine->log('LOG_DEBUG', $error);
+				return FALSE;
+			}
+			//FIXME use pg_fetchall() instead (breaks _sql_single()
+			//for now)
+			for($array = array(); ($a = pg_fetch_array($res))
+				!= FALSE; $array[] = $a);
+			return $array;
+		}
+		//FIXME really use prepared statements
+		return parent::prepare($query, $parameters);
 	}
 
 
