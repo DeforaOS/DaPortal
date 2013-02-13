@@ -132,6 +132,8 @@ class PgsqlDatabase extends Database
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		//convert the query to the PostgreSQL way
+		//FIXME cache the results of the conversion
+		//XXX this may break the query string in illegitimate places
 		$q = explode(':', $query);
 		$query = $q[0];
 		$args = array();
@@ -143,7 +145,8 @@ class PgsqlDatabase extends Database
 			$k = substr($q[$i], 0, $j);
 			if(!isset($parameters[$k]))
 				return $engine->log('LOG_ERR',
-						'Incomplete SQL statement');
+						'Incomplete SQL statement '
+						."($k key not set)");
 			$query .= "\$$i ".substr($q[$i], $j);
 			$args[$i] = $parameters[$k];
 		}
