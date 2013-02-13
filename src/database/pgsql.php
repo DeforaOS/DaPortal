@@ -129,12 +129,21 @@ class PgsqlDatabase extends Database
 
 		if($this->handle === FALSE)
 			return FALSE;
-		if(($query = $this->prepare($query, $parameters)) === FALSE)
-			return FALSE;
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
-		$error = FALSE;
-		if(($res = pg_query($this->handle, $query)) === FALSE)
+		//FIXME always use prepared statements
+		if($parameters === FALSE || count($parameters) == 0)
+		{
+			if($this->prepare($query, $parameters) === FALSE)
+				return FALSE;
+			//XXX get rid of the hash value
+			$res = pg_execute($this->handle, md5($query), array());
+		}
+		else if(($q = parent::prepare($query, $parameters)) !== FALSE)
+			$res = pg_query($this->handle, $q);
+		else
+			return FALSE;
+		if($res === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
@@ -202,27 +211,13 @@ class PgsqlDatabase extends Database
 	//PgsqlDatabase::prepare
 	protected function prepare($query, $parameters = FALSE)
 	{
-		if($parameters === FALSE || count($parameters) == 0)
-		{
-			//XXX re-use the prepared statements
-			if(pg_prepare($this->handle, '', $query) === FALSE)
-				return FALSE;
-			if(($res = pg_execute($this->handle, '', array()))
-					=== FALSE)
-			{
-				if(($error = pg_last_error($this->handle))
-						!== FALSE)
-					$engine->log('LOG_DEBUG', $error);
-				return FALSE;
-			}
-			//FIXME use pg_fetchall() instead (breaks _sql_single()
-			//for now)
-			for($array = array(); ($a = pg_fetch_array($res))
-				!= FALSE; $array[] = $a);
-			return $array;
-		}
-		//FIXME really use prepared statements
-		return parent::prepare($query, $parameters);
+		static $statements = array();
+		$h = md5($query);
+
+		if(isset($statements[$h]))
+			return $statements[$h];
+		$statements[$h] = pg_prepare($this->handle, $h, $query);
+		return $statements[$h];
 	}
 
 
