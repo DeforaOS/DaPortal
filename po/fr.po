@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-16 19:39+0100\n"
+"POT-Creation-Date: 2013-01-02 04:44+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -132,19 +132,19 @@ msgstr "Impossible de valider l'utilisateur"
 msgid "Could not enable the user"
 msgstr "Impossible d'activer l'utilisateur"
 
-#: ../src/formats/html.php:380
+#: ../src/formats/html.php:381
 msgid "Error"
 msgstr "Erreur"
 
-#: ../src/formats/html.php:383
+#: ../src/formats/html.php:384
 msgid "Question"
 msgstr "Question"
 
-#: ../src/formats/html.php:386
+#: ../src/formats/html.php:387
 msgid "Warning"
 msgstr "Avertissement"
 
-#: ../src/formats/html.php:391 ../src/modules/wiki/module.php:172
+#: ../src/formats/html.php:392 ../src/modules/wiki/module.php:172
 msgid "Message"
 msgstr "Message"
 
@@ -183,7 +183,7 @@ msgstr "Module"
 #: ../src/modules/admin/module.php:128 ../src/modules/admin/module.php:147
 #: ../src/modules/content/module.php:505 ../src/modules/content/module.php:727
 #: ../src/modules/content/module.php:1087
-#: ../src/modules/content/module.php:1370
+#: ../src/modules/content/module.php:1371
 #: ../src/modules/project/module.php:1231 ../src/modules/user/module.php:224
 #: ../src/modules/user/module.php:438 ../src/modules/user/module.php:468
 msgid "Enabled"
@@ -191,19 +191,19 @@ msgstr "Activé"
 
 #: ../src/modules/admin/module.php:135 ../src/modules/browser/module.php:125
 #: ../src/modules/content/module.php:1120
-#: ../src/modules/content/module.php:1330
+#: ../src/modules/content/module.php:1331
 #: ../src/modules/download/module.php:327
 #: ../src/modules/download/module.php:371 ../src/modules/user/module.php:451
 msgid "Refresh"
 msgstr "Rafraîchir"
 
 #: ../src/modules/admin/module.php:137 ../src/modules/content/module.php:1124
-#: ../src/modules/content/module.php:1340 ../src/modules/user/module.php:454
+#: ../src/modules/content/module.php:1341 ../src/modules/user/module.php:454
 msgid "Disable"
 msgstr "Désactiver"
 
 #: ../src/modules/admin/module.php:141 ../src/modules/content/module.php:1129
-#: ../src/modules/content/module.php:1345 ../src/modules/user/module.php:458
+#: ../src/modules/content/module.php:1346 ../src/modules/user/module.php:458
 msgid "Enable"
 msgstr "Activer"
 
@@ -335,7 +335,7 @@ msgstr "Impossible d'ouvrir le dossier demandé"
 
 #: ../src/modules/browser/module.php:243 ../src/modules/content/module.php:504
 #: ../src/modules/content/module.php:647
-#: ../src/modules/content/module.php:1368
+#: ../src/modules/content/module.php:1369
 #: ../src/modules/project/module.php:610
 msgid "Title"
 msgstr "Titre"
@@ -356,7 +356,7 @@ msgstr "Taille"
 
 #: ../src/modules/browser/module.php:245 ../src/modules/content/module.php:508
 #: ../src/modules/content/module.php:647
-#: ../src/modules/content/module.php:1372
+#: ../src/modules/content/module.php:1373
 #: ../src/modules/download/module.php:779
 #: ../src/modules/project/module.php:612 ../src/modules/project/module.php:731
 #: ../src/modules/wiki/module.php:170
@@ -465,7 +465,7 @@ msgstr "Soumettre un contenu"
 msgid "Submission in progress, please wait..."
 msgstr "Soumission en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:55 ../src/modules/content/module.php:1629
+#: ../src/modules/content/module.php:55 ../src/modules/content/module.php:1630
 #: ../src/modules/download/module.php:349
 #: ../src/modules/project/module.php:481 ../src/modules/user/module.php:293
 #: ../src/modules/user/module.php:898 ../src/modules/user/module.php:902
@@ -491,7 +491,7 @@ msgid "Public"
 msgstr "Public"
 
 #: ../src/modules/content/module.php:507
-#: ../src/modules/content/module.php:1371 ../src/modules/user/module.php:436
+#: ../src/modules/content/module.php:1372 ../src/modules/user/module.php:436
 msgid "Username"
 msgstr "Utilisateur"
 
@@ -540,8 +540,8 @@ msgid "Could not preview content"
 msgstr "Impossible d'apercevoir le contenu"
 
 #: ../src/modules/content/module.php:824
-#: ../src/modules/content/module.php:1556
-#: ../src/modules/content/module.php:1596
+#: ../src/modules/content/module.php:1557
+#: ../src/modules/content/module.php:1597
 #: ../src/modules/project/module.php:673
 #: ../src/modules/project/module.php:1349
 #: ../src/modules/project/module.php:1386
@@ -549,8 +549,8 @@ msgid "Preview: "
 msgstr "Prévisualisation : "
 
 #: ../src/modules/content/module.php:834
-#: ../src/modules/content/module.php:1523
-#: ../src/modules/content/module.php:1621
+#: ../src/modules/content/module.php:1524
+#: ../src/modules/content/module.php:1622
 #: ../src/modules/download/module.php:400
 #: ../src/modules/download/module.php:421
 #: ../src/modules/project/module.php:1028
@@ -616,56 +616,56 @@ msgstr "Effacer"
 msgid "Must be logged in"
 msgstr "Vous devez être connecté(e)"
 
-#: ../src/modules/content/module.php:1302
+#: ../src/modules/content/module.php:1303
 #: ../src/modules/download/module.php:300
 msgid "Back"
 msgstr "Retour"
 
-#: ../src/modules/content/module.php:1503 ../src/modules/user/module.php:1438
+#: ../src/modules/content/module.php:1504 ../src/modules/user/module.php:1438
 msgid "Redirection in progress, please wait..."
 msgstr "Redirection en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:1509
+#: ../src/modules/content/module.php:1510
 #: ../src/modules/download/module.php:567
 #: ../src/modules/download/module.php:714 ../src/modules/user/module.php:791
 #: ../src/modules/user/module.php:1444
 msgid "If you are not redirected within 30 seconds, please "
 msgstr "Si vous n'êtes pas redirigé(e) d'ici 30 secondes, veuillez "
 
-#: ../src/modules/content/module.php:1511
+#: ../src/modules/content/module.php:1512
 #: ../src/modules/download/module.php:569
 #: ../src/modules/download/module.php:716 ../src/modules/user/module.php:793
 #: ../src/modules/user/module.php:1446
 msgid "click here"
 msgstr "cliquer ici"
 
-#: ../src/modules/content/module.php:1529
-#: ../src/modules/content/module.php:1626
+#: ../src/modules/content/module.php:1530
+#: ../src/modules/content/module.php:1627
 #: ../src/modules/project/module.php:1031
 #: ../src/modules/project/module.php:1064
 msgid "Preview"
 msgstr "Prévisualiser"
 
-#: ../src/modules/content/module.php:1532
+#: ../src/modules/content/module.php:1533
 #: ../src/modules/project/module.php:1088
 msgid "Submit"
 msgstr "Envoyer"
 
-#: ../src/modules/content/module.php:1540
-#: ../src/modules/content/module.php:1579
+#: ../src/modules/content/module.php:1541
+#: ../src/modules/content/module.php:1580
 #: ../src/modules/project/module.php:1021
 #: ../src/modules/project/module.php:1369 ../src/modules/wiki/module.php:256
 msgid "Content: "
 msgstr "Contenu : "
 
-#: ../src/modules/content/module.php:1570
-#: ../src/modules/content/module.php:1609
+#: ../src/modules/content/module.php:1571
+#: ../src/modules/content/module.php:1610
 #: ../src/modules/project/module.php:1019
 #: ../src/modules/project/module.php:1368
 msgid "Title: "
 msgstr "Titre : "
 
-#: ../src/modules/content/module.php:1623
+#: ../src/modules/content/module.php:1624
 #: ../src/modules/project/module.php:372 ../src/modules/search/module.php:220
 #: ../src/modules/user/module.php:197 ../src/modules/user/module.php:1105
 msgid "Reset"
