@@ -591,11 +591,10 @@ class ProjectModule extends ContentModule
 		}
 		$query .= ' ORDER BY '.$order;
 		//obtain the corresponding bug reports
-		$error = _('Unable to list bugs');
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			//FIXME return a dialog instead
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+		if($error === FALSE
+				&& ($res = $db->query($engine, $query, $args))
+				=== FALSE)
+			$error = _('Unable to list bugs');
 		//build the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
