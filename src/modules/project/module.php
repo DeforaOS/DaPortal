@@ -36,6 +36,7 @@ class ProjectModule extends ContentModule
 		//settings
 		$this->content_list_count = 0;
 		$this->content_list_order = 'title ASC';
+		$this->content_list_admin_order = 'title ASC';
 		$this->content_open_stock = 'open';
 		//translations
 		$this->text_content_admin = _('Projects administration');
