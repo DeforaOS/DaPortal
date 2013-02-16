@@ -52,6 +52,8 @@ class ProjectModule extends ContentModule
 		$this->query_list = $this->project_query_list_projects;
 		$this->query_list_admin
 			= $this->project_query_list_admin_projects;
+		$this->query_list_admin_count
+			= $this->project_query_list_admin_projects_count;
 		$this->query_list_user
 			= $this->project_query_list_projects_user;
 	}
@@ -97,6 +99,15 @@ class ProjectModule extends ContentModule
 		daportal_content.public AS public,
 		timestamp, name AS module,
 		daportal_user.user_id AS user_id, username, title, synopsis
+		FROM daportal_content, daportal_module, daportal_user,
+		daportal_project
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_module.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.content_id=daportal_project.project_id
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'";
+	protected $project_query_list_admin_projects_count = "SELECT COUNT(*)
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
