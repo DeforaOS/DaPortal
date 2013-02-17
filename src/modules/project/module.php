@@ -95,6 +95,29 @@ class ProjectModule extends ContentModule
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
 		AND daportal_content.content_id=:content_id";
+	protected $project_query_list_admin_bugs = "SELECT
+		daportal_content.content_id AS id, bug_id,
+		daportal_content.enabled AS enabled,
+		daportal_content.public AS public,
+		timestamp, name AS module,
+		daportal_user.user_id AS user_id, username, title
+		FROM daportal_content, daportal_module, daportal_user,
+		daportal_bug
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_module.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.content_id=daportal_bug.content_id
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'";
+	protected $project_query_list_admin_bugs_count = "SELECT COUNT(*)
+		FROM daportal_content, daportal_module, daportal_user,
+		daportal_bug
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_module.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.content_id=daportal_bug.content_id
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'";
 	protected $project_query_list_admin_projects = "SELECT content_id AS id,
 		daportal_content.enabled AS enabled,
 		daportal_content.public AS public,
@@ -526,6 +549,32 @@ class ProjectModule extends ContentModule
 
 
 	//calls
+	//ProjectModule::callAdmin
+	protected function callAdmin($engine, $request = FALSE)
+	{
+		if($request === FALSE)
+			return parent::callAdmin($engine, $request);
+		switch($request->getParameter('type'))
+		{
+			case 'bug':
+				return $this->_adminBugs($engine, $request);
+			case 'project':
+			default:
+				return parent::callAdmin($engine, $request);
+		}
+	}
+
+	private function _adminBugs($engine, $request)
+	{
+		//FIXME also set the title and columns
+		$this->query_list_admin
+			= $this->project_query_list_admin_bugs;
+		$this->query_list_admin_count
+			= $this->project_query_list_admin_bugs_count;
+		return parent::callAdmin($engine, $request);
+	}
+
+
 	//ProjectModule::callBrowse
 	protected function callBrowse($engine, $request)
 	{
@@ -1104,6 +1153,18 @@ class ProjectModule extends ContentModule
 
 
 	//helpers
+	//ProjectModule::helperActionsAdmin
+	protected function helperActionsAdmin($engine, $request)
+	{
+		$ret = parent::helperActionsAdmin($engine, $request);
+		$r = new Request($this->name, 'admin', FALSE, FALSE,
+			array('type' => 'bug'));
+		$ret[] = $this->helperAction($engine, 'admin', $r,
+				_('Bugs administration'));
+		return $ret;
+	}
+
+
 	//ProjectModule::helperDisplay
 	protected function helperDisplay($engine, $page, $content = FALSE)
 	{
