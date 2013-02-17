@@ -1112,9 +1112,10 @@ abstract class ContentModule extends Module
 	//ContentModule::helperAdminToolbar
 	protected function helperAdminToolbar($engine, $page, $request)
 	{
-		$r = new Request($this->name, 'admin');
-		if(($type = $request->getParameter('type')) !== FALSE)
-			$r->setParameter('type', $type);
+		$r = new Request($this->name, 'admin', FALSE, FALSE,
+			array('type' => $request->getParameter('type'),
+				'page' => $request->getParameter('page')));
+
 		$toolbar = $page->append('toolbar');
 		$toolbar->append('button', array('stock' => 'refresh',
 					'text' => _('Refresh'),
