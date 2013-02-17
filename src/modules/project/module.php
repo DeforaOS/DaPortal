@@ -566,7 +566,8 @@ class ProjectModule extends ContentModule
 
 	private function _adminBugs($engine, $request)
 	{
-		//FIXME also set the title and columns
+		//FIXME also set the columns
+		$this->text_content_admin = _('Bugs administration');
 		$this->query_list_admin
 			= $this->project_query_list_admin_bugs;
 		$this->query_list_admin_count
