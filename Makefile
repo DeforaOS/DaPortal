@@ -74,6 +74,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS.css \
 		$(PACKAGE)-$(VERSION)/data/themes/Makefile \
 		$(PACKAGE)-$(VERSION)/data/themes/index.php \
+		$(PACKAGE)-$(VERSION)/data/themes/khorben.css \
 		$(PACKAGE)-$(VERSION)/data/themes/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/Makefile \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf \
