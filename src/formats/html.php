@@ -974,13 +974,10 @@ $('#$id1').closest('form').submit(function () {
 							'name' => $name));
 			}
 			$this->tagClose('span');
-			$properties = $c->getProperties();
-			//FIXME list in columns' order instead
-			foreach($properties as $k => $v)
+			foreach($columns as $k => $v)
 			{
-				if(!in_array($k, $columns)
-						&& !isset($columns[$k]))
-					continue;
+				if(($v = $c->getProperty($k)) === FALSE)
+					$v = '';
 				$this->tagOpen('span', "detail $k");
 				if(is_object($v))
 					$this->renderElement($v);
