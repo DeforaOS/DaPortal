@@ -238,6 +238,33 @@ class UserModule extends Module
 	}
 
 
+	//UserModule::formSubmitGroup
+	protected function formSubmitGroup($engine, $request)
+	{
+		$r = new Request($this->name, 'submit', FALSE, FALSE,
+			array('type' => 'group'));
+		$form = new PageElement('form', array('request' => $r));
+		$vbox = $form->append('vbox');
+		$vbox->append('entry', array('name' => 'groupname',
+				'text' => _('Name: '),
+				'value' => $request->getParameter('groupname')));
+		//enabled
+		$vbox->append('checkbox', array('name' => 'enabled',
+				'value' => $request->getParameter('enabled')
+					? TRUE : FALSE,
+				'text' => _('Enabled')));
+		//buttons
+		$r = new Request($this->name, 'admin', FALSE, FALSE,
+			array('type' => 'group'));
+		$form->append('button', array('request' => $r,
+				'stock' => 'cancel', 'text' => _('Cancel')));
+		$form->append('button', array('type' => 'submit',
+				'stock' => 'new', 'name' => 'action',
+				'value' => 'submit', 'text' => _('Create')));
+		return $form;
+	}
+
+
 	//UserModule::formUpdate
 	protected function formUpdate($engine, $request, $user, $id, $error)
 	{
@@ -387,6 +414,14 @@ class UserModule extends Module
 		$icon = new PageElement('image', array('stock' => 'new'));
 		$link = new PageElement('link', array('request' => $r,
 				'text' => _('New user')));
+		$ret[] = new PageElement('row', array('icon' => $icon,
+				'label' => $link));
+		//group creation
+		$r = new Request($module, 'submit', FALSE, FALSE,
+			array('type' => 'group'));
+		$icon = new PageElement('image', array('stock' => 'new'));
+		$link = new PageElement('link', array('request' => $r,
+				'text' => _('New group')));
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
 		//administration
@@ -1233,13 +1268,43 @@ class UserModule extends Module
 	protected function callSubmit($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
-		$title = _('New user');
 		$error = _('Permission denied');
 
 		//check permissions
 		if($this->canSubmit($engine, $error) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
+		if($request === FALSE)
+			return $this->_submitUser($engine, $request);
+		switch($request->getParameter('type'))
+		{
+			case 'group':
+				return $this->_submitGroup($engine, $request);
+			case 'user':
+			default:
+				return $this->_submitUser($engine, $request);
+		}
+	}
+
+	private function _submitGroup($engine, $request)
+	{
+		$title = _('New group');
+
+		//create the page
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		//FIXME really implement
+		//form
+		$form = $this->formSubmitGroup($engine, $request);
+		$page->append($form);
+		return $page;
+	}
+
+	private function _submitUser($engine, $request)
+	{
+		$title = _('New user');
+
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
