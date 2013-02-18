@@ -49,7 +49,7 @@ ARCHIVE="$PACKAGE-$VERSION.tar.gz"
 while getopts P: name; do
 	case "$name" in
 		P)
-			PREFIX="$2"
+			PREFIX="$OPTARG"
 			;;
 		?)
 			_usage
