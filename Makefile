@@ -197,6 +197,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/templates/DeforaOS.php \
 		$(PACKAGE)-$(VERSION)/src/templates/basic.php \
 		$(PACKAGE)-$(VERSION)/src/templates/desktop.php \
+		$(PACKAGE)-$(VERSION)/src/templates/khorben.php \
 		$(PACKAGE)-$(VERSION)/src/templates/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
