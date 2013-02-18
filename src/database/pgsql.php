@@ -101,7 +101,7 @@ class PgsqlDatabase extends Database
 		$ret = $case ? 'LIKE' : 'ILIKE';
 
 		if($pattern !== FALSE)
-			$ret .= " '$pattern'";
+			$ret .= ' '.$this->escape($pattern);
 		return $ret;
 	}
 
