@@ -1060,12 +1060,13 @@ class UserModule extends Module
 	private function _register_success($engine, $request)
 	{
 		$title = _('User registration');
+		$text = _("You should receive an e-mail shortly with your password, along with a confirmation key.\n
+ Thank you for registering!");
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		$page->append('dialog', array('type' => 'info',
-				'text' => _("You should receive an e-mail shortly with your password, along with a confirmation key.\n
-Thank you for registering!")));
+				'text' => $text));
 		$page->append('link', array('stock' => 'back',
 				'text' => _('Back to the site'),
 				'request' => new Request()));
