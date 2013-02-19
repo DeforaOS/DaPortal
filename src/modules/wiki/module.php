@@ -81,8 +81,7 @@ class WikiModule extends ContentModule
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
-		$rcs = implode("\n", $rcs);
-		$content['content'] = $rcs;
+		$content['content'] = implode("\n", $rcs);
 		return $content;
 	}
 
