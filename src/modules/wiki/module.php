@@ -147,6 +147,7 @@ class WikiModule extends ContentModule
 
 		//validate the content and keep the current title
 		$parameters = $request->getParameters();
+		$parameters['title'] = $content['title'];
 		if(isset($parameters['content']))
 		{
 			$parameters['content'] = HTML::filter($engine,
@@ -331,6 +332,12 @@ class WikiModule extends ContentModule
 		$page->append('entry', array('name' => 'message',
 				'text' => _('Log message: '),
 				'value' => $message));
+	}
+
+
+	//WikiModule::helperUpdateTitle
+	protected function helperUpdateTitle($engine, $request, $page, $content)
+	{
 	}
 
 
