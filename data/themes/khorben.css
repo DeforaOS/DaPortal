@@ -130,6 +130,12 @@ table th a {
 }
 
 
+/* wiki */
+h2.wiki.revisions, form.treeview.revisions {
+	display:                        none;
+}
+
+
 /* explorer */
 form.explorer a {
 	text-decoration:		none;
