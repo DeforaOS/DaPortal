@@ -258,7 +258,7 @@ class HTML
 		'h6' => array('class'),
 		'hr' => array('class'),
 		'i' => array('class'),
-		'img' => array('alt', 'src', 'title'),
+		'img' => array('alt', 'class', 'src', 'title'),
 		'ins' => array('class'),
 		'li' => array('class'),
 		'ol' => array('class'),
