@@ -241,8 +241,8 @@ class WikiModule extends ContentModule
 				'username' => _('Author'),
 				'message' => _('Message'));
 		$vbox = $page->append('vbox');
-		$vbox->append('title', array('text' => 'Revisions',
-				'stock' => $this->name));
+		$vbox->append('title', array('class' => 'revisions',
+				'text' => 'Revisions', 'stock' => $this->name));
 		$view = $vbox->append('treeview', array('columns' => $columns));
 		$lsp = '======================================================';
 		$ssp = '----------------------------';
