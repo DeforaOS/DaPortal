@@ -20,13 +20,10 @@
 
 
 html {
+	background-color:		#221133;
 	font-family:			sans-serif;
 	font-size:			90%;
 	text-align:			justify;
-}
-
-html body {
-	background-color:		#221133;
 }
 
 a {
@@ -66,7 +63,7 @@ table th a {
 
 
 /* main */
-#main {
+html > body {
 	background-color:		#ffffff;
 	background-image:		url("khorben-coldfire.jpg");
 	background-position:		bottom right;
@@ -132,7 +129,7 @@ table th a {
 
 /* wiki */
 h2.wiki.revisions, form.treeview.revisions {
-	display:                        none;
+	display:			none;
 }
 
 
