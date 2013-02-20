@@ -243,7 +243,8 @@ class WikiModule extends ContentModule
 		$vbox = $page->append('vbox');
 		$vbox->append('title', array('class' => 'revisions',
 				'text' => 'Revisions', 'stock' => $this->name));
-		$view = $vbox->append('treeview', array('columns' => $columns));
+		$view = $vbox->append('treeview', array('class' => 'revisions',
+				'columns' => $columns));
 		$lsp = '======================================================';
 		$ssp = '----------------------------';
 		for(; $i < $cnt - 2; $i += 3)
