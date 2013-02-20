@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -16,6 +16,7 @@
 
 
 
+require_once('./system/html.php');
 require_once('./system/user.php');
 require_once('./modules/content/module.php');
 
@@ -127,6 +128,74 @@ class WikiModule extends ContentModule
 				'stock' => $this->name,
 				'text' => _('List all pages')));
 		return $page;
+	}
+
+
+	//WikiModule::callUpdate
+	protected function callUpdate($engine, $request)
+	{
+		return parent::callUpdate($engine, $request);
+	}
+
+	protected function _updateProcess($engine, $request, &$content)
+	{
+		$db = $engine->getDatabase();
+		$cred = $engine->getCredentials();
+		$username = $cred->getUsername();
+		$root = $this->root;
+		$res = FALSE;
+
+		//validate the content and keep the current title
+		$parameters = $request->getParameters();
+		if(isset($parameters['content']))
+		{
+			$parameters['content'] = HTML::filter($engine,
+					$parameters['content']);
+			$content['content'] = $parameters['content'];
+		}
+		$r = new Request($this->name, 'update', $request->getId(),
+			$content['title'], $parameters);
+		$r->setIdempotent($request->isIdempotent());
+		//additional checks
+		if($this->root === FALSE
+				|| strpos($content['title'], '/') !== FALSE)
+			return _('Invalid title for this page');
+		if(!HTML::validate($engine, '<div>'.$content['content'].'</div>'))
+			return _('Document not valid');
+		$rcsfile = $root.'/RCS/'.$content['title'].',v';
+		if(!file_exists($rcsfile))
+			return _('Missing RCS file');
+		//update the content
+		if($db->transactionBegin($engine) === FALSE)
+			return _('Internal server error');
+		$res = parent::_updateProcess($engine, $r, $content);
+		$file = $root.'/'.$content['title'];
+		if($res === FALSE && ($fp = fopen($file, 'x')) !== FALSE)
+		{
+			$message = $request->getParameter('message');
+			$emessage = ($message !== FALSE && strlen($message))
+				? ' -m'.escapeshellarg($message) : '';
+			$eusername = escapeshellarg($username);
+			$efile = escapeshellarg($file);
+			$cmd = 'rcs -l '.$efile;
+			exec($cmd, $rcs, $res);
+			if($res == 0 && fwrite($fp, $content['content'])
+					!== FALSE)
+			{
+				$cmd = 'ci '.$emessage.' -w'.$eusername
+					.' '.$efile;
+				exec($cmd, $rcs, $res);
+			}
+			$res = ($res == 0) ? FALSE
+				: _('Internal server error1');
+			fclose($fp);
+			unlink($file);
+		}
+		if($res !== FALSE)
+			$db->transactionRollback($engine);
+		else if($db->transactionCommit($engine) === FALSE)
+			$res = _('Internal server error');
+		return $res;
 	}
 
 
