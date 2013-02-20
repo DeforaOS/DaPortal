@@ -180,16 +180,17 @@ class WikiModule extends ContentModule
 			$cmd = 'rcs -l '.$efile;
 			exec($cmd, $rcs, $res);
 			if($res == 0 && fwrite($fp, $content['content'])
-					!== FALSE)
+					&& fclose($fp))
 			{
 				$cmd = 'ci '.$emessage.' -w'.$eusername
 					.' '.$efile;
 				exec($cmd, $rcs, $res);
 			}
-			$res = ($res == 0) ? FALSE
-				: _('Internal server error1');
-			fclose($fp);
-			unlink($file);
+			else
+				fclose($fp);
+			if(file_exists($file))
+				unlink($file);
+			$res = ($res == 0) ? FALSE : _('Internal server error');
 		}
 		if($res !== FALSE)
 			$db->transactionRollback($engine);
