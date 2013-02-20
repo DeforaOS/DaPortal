@@ -807,17 +807,18 @@ $('#$id1').closest('form').submit(function () {
 		}
 		$level = $cur;
 		$tag = "h$level";
-		if(($class = $e->getProperty('class')) === FALSE
-				&& ($class = $e->getProperty('stock'))
-				!== FALSE)
+		if(($class = $e->getProperty('class')) === FALSE)
+			$class = '';
+		if(($stock = $e->getProperty('stock')) !== FALSE)
 			switch($level)
 			{
-				case 1: $class = "stock48 $class"; break;
-				case 2: $class = "stock32 $class"; break;
-				case 3: $class = "stock24 $class"; break;
+				case 1: $class = "stock48 $stock $class"; break;
+				case 2: $class = "stock32 $stock $class"; break;
+				case 3: $class = "stock24 $stock $class"; break;
 				case 4:
-				default:$class = "stock16 $class"; break;
+				default:$class = "stock16 $stock $class"; break;
 			}
+		$class = rtrim($class);
 		$this->renderTabs();
 		$this->tagOpen($tag, $class, $e->getProperty('id'), FALSE,
 				$e->getProperty('text'));
