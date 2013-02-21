@@ -152,12 +152,12 @@ class WikiModule extends ContentModule
 		if(($title = $request->getParameter('title')) === FALSE
 				|| strlen($title) == 0)
 			return _('The title must be set and not empty');
-		if(($text = $request->getParameter('content')) === FALSE)
-			return _('The content must be set');
-		$text = HTML::filter($engine, $text);
 		if(strpos($title, '/') !== FALSE
 				|| strpos($title, '\\') !== FALSE)
 			return _('The title may not contain slashes');
+		if(($text = $request->getParameter('content')) === FALSE)
+			return _('The content must be set');
+		$text = HTML::filter($engine, $text);
 		//additional checks
 		if($root === FALSE)
 			return _('Internal server error');
@@ -181,7 +181,7 @@ class WikiModule extends ContentModule
 			$efile = escapeshellarg($file);
 			$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
 			$res = -1;
-			if(fwrite($fp, $content) !== FALSE)
+			if(fwrite($fp, $text) !== FALSE)
 			{
 				if(fclose($fp) !== FALSE)
 					exec($cmd, $rcs, $res);
@@ -196,7 +196,7 @@ class WikiModule extends ContentModule
 			$db->transactionRollback($engine);
 		else if($db->transactionCommit($engine) === FALSE)
 			return _('Internal server error');
-		return FALSE;
+		return $res;
 	}
 
 
