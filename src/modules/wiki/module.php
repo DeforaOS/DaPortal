@@ -131,6 +131,71 @@ class WikiModule extends ContentModule
 	}
 
 
+	//WikiModule::callSubmit
+	protected function callSubmit($engine, $request)
+	{
+		return parent::callSubmit($engine, $request);
+	}
+
+	protected function _submitProcess($engine, $request, &$content)
+	{
+		$db = $engine->getDatabase();
+		$cred = $engine->getCredentials();
+		$username = $cred->getUsername();
+		$root = $this->root;
+
+		//validate the content
+		if(($title = $request->getParameter('title')) === FALSE
+				|| strlen($title) == 0)
+			return _('The title must be set and not empty');
+		if(($text = $request->getParameter('content')) === FALSE)
+			return _('The content must be set');
+		$text = HTML::filter($engine, $text);
+		if(strpos($title, '/') !== FALSE
+				|| strpos($title, '\\') !== FALSE)
+			return _('The title may not contain slashes');
+		//additional checks
+		if($root === FALSE)
+			return _('Internal server error');
+		//XXX check first if this title already exists for this module
+		$rcsfile = $root.'/RCS/'.$title.',v';
+		if(file_exists($rcsfile))
+			return _('Internal server error');
+		if(!HTML::validate($engine, '<div>'.$text.'</div>'))
+			return _('Document not valid');
+		//submit the content
+		if($db->transactionBegin($engine) === FALSE)
+			return _('Internal server error');
+		$res = parent::_submitProcess($engine, $request, $content);
+		$file = $root.'/'.$title;
+		if($res === FALSE && ($fp = fopen($file, 'x')) !== FALSE)
+		{
+			$message = $request->getParameter('message');
+			$emessage = ($message !== FALSE && strlen($message))
+				? ' -m'.escapeshellarg($message) : '';
+			$eusername = escapeshellarg($username);
+			$efile = escapeshellarg($file);
+			$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
+			$res = -1;
+			if(fwrite($fp, $content) !== FALSE)
+			{
+				if(fclose($fp) !== FALSE)
+					exec($cmd, $rcs, $res);
+			}
+			else
+				fclose($fp);
+			if(file_exists($file))
+				unlink($file);
+			$res = ($res == 0) ? FALSE : _('Internal server error');
+		}
+		if($res !== FALSE)
+			$db->transactionRollback($engine);
+		else if($db->transactionCommit($engine) === FALSE)
+			return _('Internal server error');
+		return FALSE;
+	}
+
+
 	//WikiModule::callUpdate
 	protected function callUpdate($engine, $request)
 	{
@@ -158,8 +223,7 @@ class WikiModule extends ContentModule
 			$content['title'], $parameters);
 		$r->setIdempotent($request->isIdempotent());
 		//additional checks
-		if($this->root === FALSE
-				|| strpos($content['title'], '/') !== FALSE)
+		if($root === FALSE || strpos($content['title'], '/') !== FALSE)
 			return _('Invalid title for this page');
 		if(!HTML::validate($engine, '<div>'.$content['content'].'</div>'))
 			return _('Document not valid');
@@ -178,14 +242,14 @@ class WikiModule extends ContentModule
 				? ' -m'.escapeshellarg($message) : '';
 			$eusername = escapeshellarg($username);
 			$efile = escapeshellarg($file);
-			$cmd = 'rcs -l '.$efile;
+			$cmd = 'rcs -q -l '.$efile;
 			exec($cmd, $rcs, $res);
+			$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
 			if($res == 0 && fwrite($fp, $content['content'])
-					&& fclose($fp))
+					!== FALSE)
 			{
-				$cmd = 'ci '.$emessage.' -w'.$eusername
-					.' '.$efile;
-				exec($cmd, $rcs, $res);
+				if(fclose($fp) !== FALSE)
+					exec($cmd, $rcs, $res);
 			}
 			else
 				fclose($fp);
