@@ -40,10 +40,13 @@ class CliHTTPEngine extends CliEngine
 		if(($_SERVER['SERVER_NAME'] = $config->getVariable(
 				'engine::clihttp', 'hostname')) === FALSE)
 			$_SERVER['SERVER_NAME'] = gethostname();
+		$_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 		if(($_SERVER['SERVER_PORT'] = $config->getVariable(
 				'engine::clihttp', 'port')) === FALSE
 				|| !is_numeric($_SERVER['SERVER_PORT']))
 			$_SERVER['SERVER_PORT'] = 80;
+		if($config->getVariable('engine::clihttp', 'ssl'))
+			$_SERVER['HTTPS'] = 'on';
 	}
 
 
