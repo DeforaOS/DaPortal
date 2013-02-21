@@ -170,6 +170,7 @@ class WikiModule extends ContentModule
 		//submit the content
 		if($db->transactionBegin($engine) === FALSE)
 			return _('Internal server error');
+		$request->setParameter('public', TRUE);
 		$res = parent::_submitProcess($engine, $request, $content);
 		$file = $root.'/'.$title;
 		if($res === FALSE && ($fp = fopen($file, 'x')) !== FALSE)
