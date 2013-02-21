@@ -144,6 +144,10 @@ class WikiModule extends ContentModule
 		$username = $cred->getUsername();
 		$root = $this->root;
 
+		//verify the request
+		if($request === FALSE
+				|| $request->getParameter('submit') === FALSE)
+			return TRUE;
 		//validate the content
 		if(($title = $request->getParameter('title')) === FALSE
 				|| strlen($title) == 0)
