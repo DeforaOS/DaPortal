@@ -51,9 +51,18 @@ class CliHTTPEngine extends CliEngine
 	//Engine::getUrl
 	public function getUrl($request, $absolute = TRUE)
 	{
-		require_once('./engines/http.php');
+		global $config;
 
-		return HTTPEngine::getUrl($request, $absolute);
+		if($config->getVariable('engine::clihttp', 'friendly'))
+		{
+			require_once('./engines/httpfriendly.php');
+			return HTTPFriendlyEngine::getUrl($request, $absolute);
+		}
+		else
+		{
+			require_once('./engines/http.php');
+			return HTTPEngine::getUrl($request, $absolute);
+		}
 	}
 }
 
