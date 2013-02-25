@@ -736,6 +736,34 @@ $('#$id1').closest('form').submit(function () {
 	}
 
 
+	protected function renderRadioButton($e)
+	{
+		$args = array('type' => 'radio');
+		$value = $e->getProperty('value');
+
+		if(($children = $e->getChildren()) === FALSE)
+			return;
+		if(($name = $e->getProperty('name')) !== FALSE)
+			$args['name'] = $name;
+		foreach($children as $c)
+		{
+			$a = $args;
+			$class = $c->getProperty('class');
+			$id = $c->getProperty('id');
+			if(($v = $c->getProperty('value')) !== FALSE)
+			{
+				$a['value'] = $args;
+				if($v == $value)
+					$a['checked'] = 'checked';
+			}
+			$this->renderTabs();
+			$this->tag('input', $class, $id, $a);
+			$this->renderElement($c);
+		}
+
+	}
+
+
 	protected function renderStatusbar($e)
 	{
 		$this->renderTabs();

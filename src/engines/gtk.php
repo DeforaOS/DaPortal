@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -511,6 +511,12 @@ class GtkFormat extends FormatElements
 		$window->show_all();
 		$this->windows[] = $window;
 		return $window;
+	}
+
+	protected function renderRadioButton($e)
+	{
+		//FIXME really implement
+		$this->renderLabel($e);
 	}
 
 	protected function renderStatusbar($e)

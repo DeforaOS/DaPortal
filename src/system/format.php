@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -174,6 +174,8 @@ abstract class FormatElements extends Format
 				return $this->renderLink($e);
 			case 'menubar':
 				return $this->renderMenubar($e);
+			case 'radiobutton':
+				return $this->renderRadioButton($e);
 			case 'page':
 				return $this->renderPage($e);
 			case 'statusbar':
@@ -213,6 +215,7 @@ abstract class FormatElements extends Format
 	abstract protected function renderLink($e);
 	abstract protected function renderMenubar($e);
 	abstract protected function renderPage($e);
+	abstract protected function renderRadioButton($e);
 	abstract protected function renderStatusbar($e);
 	abstract protected function renderTextview($e);
 	abstract protected function renderTitle($e);
