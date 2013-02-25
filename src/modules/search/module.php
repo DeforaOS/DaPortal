@@ -122,7 +122,9 @@ class SearchModule extends Module
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
 		$label->setProperty('text', $count.' result(s)');
-		$columns = array('title', 'username', 'date', 'preview');
+		$columns = array('title' => _('Title'),
+			'username' => _('Username'), 'date' => _('Date'),
+			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
 		for($i = 0; $i < count($res); $i++)
@@ -154,7 +156,9 @@ class SearchModule extends Module
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
 		$label->setProperty('text', $count.' result(s)');
-		$columns = array('title', 'username', 'date', 'preview');
+		$columns = array('title' => _('Title'),
+			'username' => _('Username'), 'date' => _('Date'),
+			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
 		for($i = 0; $i < count($res); $i++)
