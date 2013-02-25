@@ -150,6 +150,28 @@ class SQLite3Database extends Database
 	}
 
 
+	//SQLite3Database::regexp
+	public function regexp($case = TRUE, $pattern = FALSE)
+	{
+		static $set = 0;
+		$func = array('SQLite3Database', '_regexp_callback');
+
+		if(!$set)
+		{
+			$set = 1;
+			$this->handle->createFunction('regexp', $func);
+		}
+		return parent::regexp($case, $pattern);
+	}
+
+	static public function _regexp_callback($pattern, $subject)
+	{
+		//XXX the delimiter character may be used within the pattern
+		return (preg_match(",$pattern,", $subject) === 1)
+			? TRUE : FALSE;
+	}
+
+
 	//SQLite3Database::transactionBegin
 	public function transactionBegin($engine)
 	{
