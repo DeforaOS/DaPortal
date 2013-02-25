@@ -117,7 +117,7 @@ class SearchModule extends Module
 				|| strlen($q) == 0)
 			return $page;
 		$count = 0;
-		$res = $this->query($engine, $q, $count, $p, TRUE, TRUE);
+		$res = $this->query($engine, $q, FALSE, $count, $p, TRUE, TRUE);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
@@ -139,6 +139,7 @@ class SearchModule extends Module
 	protected function callAdvanced(&$engine, $request)
 	{
 		$limit = $this->limit;
+		$case = $request->getParameter('case') ? '1' : '0';
 		$p = $request->getParameter('page');
 
 		$page = $this->pageSearch($engine, $request, TRUE);
@@ -150,7 +151,7 @@ class SearchModule extends Module
 		$incontent = $request->getParameter('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
-		$res = $this->query($engine, $q, $count, $p, $intitle,
+		$res = $this->query($engine, $q, $case, $count, $p, $intitle,
 				$incontent);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
@@ -233,6 +234,7 @@ class SearchModule extends Module
 	{
 		$q = $request->getParameter('q');
 		$args = $q ? array('q' => $q) : FALSE;
+		$case = $request->getParameter('case') ? '1' : '0';
 
 		$page = new Page;
 		$page->setProperty('title', _('Search'));
@@ -261,6 +263,15 @@ class SearchModule extends Module
 			$checkbox->setProperty('text', _('content'));
 			$checkbox->setProperty('value',
 					$request->getParameter('incontent'));
+			$hbox = $form->append('hbox');
+			$radio = $hbox->append('radiobutton', array(
+					'name' => 'case', 'value' => $case));
+			$radio->append('label', array(
+					'text' => 'Case-insensitive',
+					'value' => '0'));
+			$radio->append('label', array(
+					'text' => 'Case-sensitive',
+					'value' => '1'));
 			$button = $form->append('button', array(
 						'type' => 'reset',
 						'text' => _('Reset')));
@@ -288,8 +299,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::query
-	protected function query($engine, $string, &$count, $page, $intitle,
-			$incontent, $user = FALSE, $module = FALSE)
+	protected function query($engine, $string, $sensitive, &$count, $page,
+			$intitle, $incontent, $user = FALSE, $module = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query.' AND (0=1';
@@ -300,14 +311,14 @@ class SearchModule extends Module
 		if($intitle && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR title '.$db->like(FALSE)
+				$query .= ' OR title '.$db->like($sensitive)
 					." :arg$i";
 				$args['arg'.$i++] = "%$r%";
 			}
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR content '.$db->like(FALSE)
+				$query .= ' OR content '.$db->like($sensitive)
 					." :arg$i";
 				$args['arg'.$i++] = "%$r%";
 			}
