@@ -17,7 +17,6 @@
 
 
 require_once('./system/format.php');
-require_once('./system/html.php');
 require_once('./system/request.php');
 
 
@@ -526,6 +525,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmledit($e)
 	{
+		require_once('./system/html.php');
 		$id1 = $e->getProperty('id');
 		$id2 = uniqid();
 
@@ -570,6 +570,8 @@ $('#$id1').closest('form').submit(function () {
 
 	protected function renderHtmlview($e)
 	{
+		require_once('./system/html.php');
+
 		if(($text = $e->getProperty('text')) === FALSE
 				|| !is_string($text))
 			return;
