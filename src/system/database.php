@@ -78,6 +78,17 @@ abstract class Database
 	}
 
 
+	//Database::regexp
+	public function regexp($case = TRUE, $pattern = FALSE)
+	{
+		$ret = 'REGEXP';
+
+		if($pattern !== FALSE)
+			$ret .= " '$pattern'";
+		return $ret;
+	}
+
+
 	//Database::transactionBegin
 	public function transactionBegin($engine)
 	{

@@ -125,6 +125,32 @@ class PdoDatabase extends Database
 	}
 
 
+	//PdoDatabase::regexp
+	public function regexp($case = TRUE, $pattern = FALSE)
+	{
+		global $config;
+		static $set = 0;
+		$func = array('PdoDatabase', '_regexp_callback');
+
+		if(!$set)
+		{
+			$set = 1;
+			$dsn = $config->getVariable('database::pdo', 'dsn');
+			if($dsn !== FALSE && strncmp($dsn, 'sqlite:', 7) == 0)
+				$this->handle->sqliteCreateFunction('regexp',
+						$func);
+		}
+		return parent::regexp($case, $pattern);
+	}
+
+	static public function _regexp_callback($pattern, $subject)
+	{
+		//XXX the delimiter character may be used within the pattern
+		return (preg_match(",$pattern,", $subject) === 1)
+			? TRUE : FALSE;
+	}
+
+
 	//PdoDatabase::transactionBegin
 	public function transactionBegin($engine)
 	{

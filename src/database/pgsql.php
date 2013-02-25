@@ -172,6 +172,17 @@ class PgsqlDatabase extends Database
 	}
 
 
+	//PgsqlDatabase::regexp
+	public function regexp($case = TRUE, $pattern = FALSE)
+	{
+		$ret = $case ? '~' : '~*';
+
+		if($pattern !== FALSE)
+			$ret .= ' '.$this->escape($pattern);
+		return $ret;
+	}
+
+
 	//protected
 	//methods
 	//PgsqlDatabase::match
