@@ -752,7 +752,7 @@ $('#$id1').closest('form').submit(function () {
 			$id = $c->getProperty('id');
 			if(($v = $c->getProperty('value')) !== FALSE)
 			{
-				$a['value'] = $args;
+				$a['value'] = $v;
 				if($v == $value)
 					$a['checked'] = 'checked';
 			}
@@ -760,7 +760,6 @@ $('#$id1').closest('form').submit(function () {
 			$this->tag('input', $class, $id, $a);
 			$this->renderElement($c);
 		}
-
 	}
 
 
