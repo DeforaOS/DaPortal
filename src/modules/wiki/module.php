@@ -16,7 +16,6 @@
 
 
 
-require_once('./system/html.php');
 require_once('./system/user.php');
 require_once('./modules/content/module.php');
 
@@ -139,6 +138,7 @@ class WikiModule extends ContentModule
 
 	protected function _submitProcess($engine, $request, &$content)
 	{
+		require_once('./system/html.php');
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
@@ -209,6 +209,7 @@ class WikiModule extends ContentModule
 
 	protected function _updateProcess($engine, $request, &$content)
 	{
+		require_once('./system/html.php');
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
