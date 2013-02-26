@@ -582,6 +582,11 @@ $('#$id1').closest('form').submit(function () {
 	protected function renderIconview($e)
 	{
 		$e->setProperty('view', 'icons');
+		if(($columns = $e->getProperty('columns')) === FALSE)
+		{
+			$columns = array('icon' => 'Icon', 'label' => 'Label');
+			$e->setProperty('columns', $columns);
+		}
 		$this->renderTreeview($e);
 	}
 
