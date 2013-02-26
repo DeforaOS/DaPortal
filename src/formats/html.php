@@ -877,13 +877,13 @@ $('#$id1').closest('form').submit(function () {
 		switch(($view = $e->getProperty('view')))
 		{
 			case 'details':
-			case 'list':
 			case 'preview':
 				break;
 			case 'icons':
+			case 'list':
 				if(($c = $e->getProperty('columns')) !== FALSE)
 					break;
-				$c = array('icon', 'label');
+				$c = array('icon' => '', 'label' => '');
 				$e->setProperty('columns', $c);
 				break;
 			case 'thumbnails':
