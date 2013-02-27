@@ -60,7 +60,10 @@ abstract class Engine
 			require_once('./system/database.php');
 			if(($this->database = Database::attachDefault($this))
 					=== FALSE)
+			{
 				$this->database = new DatabaseDummy;
+				$this->ret = 2;
+			}
 		}
 		return $this->database;
 	}
@@ -82,6 +85,13 @@ abstract class Engine
 		return new Request($config->getVariable('defaults', 'module'),
 			$config->getVariable('defaults', 'action'),
 			$config->getVariable('defaults', 'id'));
+	}
+
+
+	//Engine::getReturn
+	public function getReturn()
+	{
+		return $this->ret;
 	}
 
 
@@ -245,6 +255,7 @@ abstract class Engine
 	private $type = FALSE;
 	private $auth = FALSE;
 	private $database = FALSE;
+	private $ret = 0;
 
 
 	//methods

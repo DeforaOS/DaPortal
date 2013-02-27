@@ -30,6 +30,8 @@ if(($engine = Engine::attachDefault()) !== FALSE
 	$page = $engine->process($request);
 	$engine->render($page);
 }
+$ret = $engine->getReturn();
 unset($engine);
+exit($ret);
 
 ?>
