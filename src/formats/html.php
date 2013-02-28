@@ -889,7 +889,7 @@ $('#$id1').closest('form').submit(function () {
 			case 'thumbnails':
 				if(($c = $e->getProperty('columns')) !== FALSE)
 					break;
-				$c = array('thumbnail', 'label');
+				$c = array('thumbnail' => '', 'label' => '');
 				$e->setProperty('columns', $c);
 				break;
 			default:
