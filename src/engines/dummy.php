@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -57,10 +57,10 @@ class DummyEngine extends Engine
 		$template = Template::attachDefault($this);
 		if($template !== FALSE)
 			$page = $template->render($this, $page);
+		$error = 'Could not determine the proper output format';
 		if(($output = Format::attachDefault($this, $this->getType()))
 					=== FALSE)
-			$this->log('Could not determine the proper output'
-				       .' format');
+			$this->log('LOG_ERR', $error);
 		else
 			$output->render($this, $page);
 	}
