@@ -741,6 +741,13 @@ $('#$id1').closest('form').submit(function () {
 	}
 
 
+	protected function renderProgress($e)
+	{
+		//XXX render something nicer
+		$this->renderInline($e);
+	}
+
+
 	protected function renderRadioButton($e)
 	{
 		$args = array('type' => 'radio');

@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -58,6 +58,22 @@ class HTML5Format extends HTMLFormat
 
 
 	//rendering
+	//HTML5Format::renderProgress
+	protected function renderProgress($e)
+	{
+		$args = array();
+
+		if(($v = $e->getProperty('max')) !== FALSE
+				&& is_numeric($v))
+			$args['max'] = $v;
+		if(($v = $e->getProperty('value')) !== FALSE
+				&& is_numeric($v))
+			$args['value'] = $v;
+		$this->tagOpen('progress', $e->getProperty('class'),
+			$e->getProperty('id'), $args, $e->getProperty('text'));
+	}
+
+
 	//HTML5Format::renderStatusbar
 	protected function renderStatusbar($e)
 	{

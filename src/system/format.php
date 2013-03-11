@@ -178,6 +178,8 @@ abstract class FormatElements extends Format
 				return $this->renderRadioButton($e);
 			case 'page':
 				return $this->renderPage($e);
+			case 'progress':
+				return $this->renderProgress($e);
 			case 'statusbar':
 				return $this->renderStatusbar($e);
 			case 'textview':
@@ -215,6 +217,7 @@ abstract class FormatElements extends Format
 	abstract protected function renderLink($e);
 	abstract protected function renderMenubar($e);
 	abstract protected function renderPage($e);
+	abstract protected function renderProgress($e);
 	abstract protected function renderRadioButton($e);
 	abstract protected function renderStatusbar($e);
 	abstract protected function renderTextview($e);

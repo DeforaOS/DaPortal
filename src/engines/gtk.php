@@ -513,6 +513,12 @@ class GtkFormat extends FormatElements
 		return $window;
 	}
 
+	protected function renderProgress($e)
+	{
+		//FIXME really implement
+		$this->renderLabel($e);
+	}
+
 	protected function renderRadioButton($e)
 	{
 		//FIXME really implement
