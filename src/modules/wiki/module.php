@@ -46,6 +46,24 @@ class WikiModule extends ContentModule
 	}
 
 
+	//useful
+	//WikiModule::call
+	public function call(&$engine, $request, $internal = 0)
+	{
+		if(($action = $request->getAction()) === FALSE)
+			$action = 'default';
+		switch($action)
+		{
+			case 'monitor':
+				$action = 'call'.ucfirst($action);
+				return $this->$action($engine, $request);
+			default:
+				return parent::call($engine, $request,
+						$internal);
+		}
+	}
+
+
 	//protected
 	//methods
 	//accessors
@@ -126,6 +144,36 @@ class WikiModule extends ContentModule
 		$vbox->append('link', array('request' => $r,
 				'stock' => $this->name,
 				'text' => _('List all pages')));
+		return $page;
+	}
+
+
+	//WikiModule::callMonitor
+	protected function callMonitor($engine, $request)
+	{
+		$title = _('Wiki monitoring');
+		$root = $this->root;
+
+		$error = _('Permission denied');
+		if(!$this->canAdmin($engine, FALSE, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('text' => $title));
+		$vbox = $page->append('vbox');
+		//disk usage
+		$vbox->append('title', array('text' => _('Disk usage')));
+		$text = 'Disk usage for '.$root.': ';
+		$label = $vbox->append('label', array('text' => $text));
+		$free = disk_free_space($root);
+		$total = disk_total_space($root);
+		$value = ($total - $free) * 100 / $total;
+		$value = sprintf('%.1lf%%', $value);
+		$label->append('progress', array('min' => 0, 'max' => $total,
+				'value' => $total - $free, 'text' => $value));
+		$text = ' '.(($total - $free) / 1024).' / '.($total / 1024)
+			.' kB ('.$value.')';
+		$label->append('label', array('text' => $text));
 		return $page;
 	}
 
@@ -272,6 +320,21 @@ class WikiModule extends ContentModule
 
 
 	//helpers
+	//WikiModule::helperActionsAdmin
+	protected function helperActionsAdmin($engine, $request)
+	{
+		$admin = $request->getParameter('admin');
+
+		$ret = parent::helperActionsAdmin($engine, $request);
+		if($admin === 0)
+			return $ret;
+		$r = new Request($this->name, 'monitor');
+		$ret[] = $this->helperAction($engine, 'monitor', $r,
+				'Wiki monitoring');
+		return $ret;
+	}
+
+
 	//WikiModule::helperDisplay
 	protected function helperDisplay($engine, $page, $content = FALSE)
 	{
