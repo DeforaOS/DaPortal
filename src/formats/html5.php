@@ -71,6 +71,8 @@ class HTML5Format extends HTMLFormat
 			$args['value'] = $v;
 		$this->tagOpen('progress', $e->getProperty('class'),
 			$e->getProperty('id'), $args, $e->getProperty('text'));
+		$this->renderChildren($e, 1);
+		$this->tagClose('progress');
 	}
 
 
