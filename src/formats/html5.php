@@ -62,17 +62,26 @@ class HTML5Format extends HTMLFormat
 	protected function renderProgress($e)
 	{
 		$args = array();
+		$tag = 'progress';
 
+		if(($v = $e->getProperty('min')) !== FALSE
+				&& is_numeric($v))
+		{
+			$tag = 'meter';
+			$args['min'] = $v;
+		}
 		if(($v = $e->getProperty('max')) !== FALSE
 				&& is_numeric($v))
 			$args['max'] = $v;
 		if(($v = $e->getProperty('value')) !== FALSE
 				&& is_numeric($v))
 			$args['value'] = $v;
-		$this->tagOpen('progress', $e->getProperty('class'),
-			$e->getProperty('id'), $args, $e->getProperty('text'));
+		if(($v = $e->getProperty('text')) !== FALSE)
+			$args['title'] = $v;
+		$this->tagOpen($tag, $e->getProperty('class'),
+			$e->getProperty('id'), $args, $v);
 		$this->renderChildren($e, 1);
-		$this->tagClose('progress');
+		$this->tagClose($tag);
 	}
 
 
