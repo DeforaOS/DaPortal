@@ -159,7 +159,8 @@ class WikiModule extends ContentModule
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$page = new Page(array('title' => $title));
-		$page->append('title', array('text' => $title));
+		$page->append('title', array('class' => $this->name,
+				'stock' => 'monitor', 'text' => $title));
 		$vbox = $page->append('vbox');
 		//disk usage
 		$vbox->append('title', array('text' => _('Disk usage')));
