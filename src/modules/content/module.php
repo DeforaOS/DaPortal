@@ -797,7 +797,6 @@ abstract class ContentModule extends Module
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		//FIXME make this a dialog instead
 		//check permissions
 		if($this->canPost($engine, $content, $error) === FALSE)
 			return new PageElement('dialog', array(
