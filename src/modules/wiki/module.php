@@ -168,14 +168,17 @@ class WikiModule extends ContentModule
 		$label = $vbox->append('label', array('text' => $text));
 		$free = disk_free_space($root);
 		$total = disk_total_space($root);
-		$value = ($total - $free) * 100 / $total;
+		$avail = $total - $free;
+		$value = ($avail * 100) / $total;
 		$value = sprintf('%.1lf%%', $value);
 		$label->append('progress', array('min' => 0, 'max' => $total,
 				'low' => round($total * 0.10),
 				'high' => round($total * 0.75),
 				'value' => $total - $free, 'text' => $value));
-		$text = ' '.(($total - $free) / 1024).' / '.($total / 1024)
-			.' kB ('.$value.')';
+		$total = round($total / (1024 * 1024));
+		$free = round($free / (1024 * 1024));
+		$avail = round($avail / (1024 * 1024));
+		$text = " $avail / $total MB ($value)";
 		$label->append('label', array('text' => $text));
 		return $page;
 	}
