@@ -84,20 +84,20 @@ INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('de', 'Deutsch', '1')
 
 CREATE TABLE daportal_group (
 	group_id INTEGER PRIMARY KEY,
-	groupname VARCHAR(255) UNIQUE,
-	enabled BOOLEAN DEFAULT FALSE
+	groupname VARCHAR(255) NOT NULL UNIQUE,
+	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
 INSERT INTO daportal_group (group_id, groupname, enabled) VALUES ('0', 'nogroup', '1');
 
 
 CREATE TABLE daportal_user (
 	user_id INTEGER PRIMARY KEY,
-	username VARCHAR(255) UNIQUE,
+	username VARCHAR(255) NOT NULL UNIQUE,
 	group_id INTEGER NOT NULL DEFAULT 0,
 	password VARCHAR(255),
-	enabled BOOLEAN DEFAULT FALSE,
-	admin BOOLEAN DEFAULT FALSE,
-	fullname VARCHAR(255) DEFAULT '',
+	enabled BOOLEAN NOT NULL DEFAULT FALSE,
+	admin BOOLEAN NOT NULL DEFAULT FALSE,
+	fullname VARCHAR(255) NOT NULL DEFAULT '',
 	email VARCHAR(255) NOT NULL,
 	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
 );
@@ -107,7 +107,7 @@ INSERT INTO daportal_user (username, password, enabled, admin, fullname, email) 
 
 CREATE TABLE daportal_user_register (
 	user_register_id INTEGER PRIMARY KEY,
-	user_id INTEGER,
+	user_id INTEGER NOT NULL,
 	token VARCHAR(255) UNIQUE NOT NULL,
 	timestamp TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id)
@@ -119,7 +119,7 @@ END;
 
 CREATE TABLE daportal_user_reset (
 	user_reset_id INTEGER PRIMARY KEY,
-	user_id INTEGER,
+	user_id INTEGER NOT NULL,
 	token VARCHAR(255) UNIQUE NOT NULL,
 	timestamp TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id)

@@ -42,20 +42,20 @@ INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('de', 'Deutsch', '1')
 
 CREATE TABLE daportal_group (
 	group_id SERIAL PRIMARY KEY,
-	groupname VARCHAR(255) UNIQUE,
-	enabled BOOLEAN DEFAULT FALSE
+	groupname VARCHAR(255) NOT NULL UNIQUE,
+	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
 INSERT INTO daportal_group (group_id, groupname, enabled) VALUES ('0', 'nogroup', '1');
 
 
 CREATE TABLE daportal_user (
 	user_id SERIAL PRIMARY KEY,
-	username VARCHAR(255) UNIQUE,
+	username VARCHAR(255) NOT NULL UNIQUE,
 	group_id INTEGER NOT NULL DEFAULT 0,
 	"password" VARCHAR(255),
 	enabled BOOLEAN NOT NULL DEFAULT FALSE,
-	admin BOOLEAN DEFAULT FALSE,
-	fullname VARCHAR(255) DEFAULT '',
+	admin BOOLEAN NOT NULL DEFAULT FALSE,
+	fullname VARCHAR(255) NOT NULL DEFAULT '',
 	email VARCHAR(255) NOT NULL
 );
 
