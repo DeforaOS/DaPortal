@@ -171,6 +171,8 @@ class WikiModule extends ContentModule
 		$value = ($total - $free) * 100 / $total;
 		$value = sprintf('%.1lf%%', $value);
 		$label->append('progress', array('min' => 0, 'max' => $total,
+				'low' => round($total * 0.10),
+				'high' => round($total * 0.75),
 				'value' => $total - $free, 'text' => $value));
 		$text = ' '.(($total - $free) / 1024).' / '.($total / 1024)
 			.' kB ('.$value.')';
