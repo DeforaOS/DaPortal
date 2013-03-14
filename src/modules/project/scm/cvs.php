@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ class CVSScmProject
 {
 	//public
 	//CVSScmProject::attach
-	public function attach(&$engine)
+	public function attach($engine)
 	{
 		global $config;
 

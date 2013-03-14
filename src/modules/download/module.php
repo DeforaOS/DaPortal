@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::call
-	public function call(&$engine, $request, $internal = 0)
+	public function call($engine, $request, $internal = 0)
 	{
 		$action = $request->getAction();
 		if($internal)

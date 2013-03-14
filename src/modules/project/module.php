@@ -61,7 +61,7 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::call
-	public function call(&$engine, $request, $internal = 0)
+	public function call($engine, $request, $internal = 0)
 	{
 		switch(($action = $request->getAction()))
 		{
@@ -1480,7 +1480,7 @@ class ProjectModule extends ContentModule
 
 	//useful
 	//ProjectModule::attachScm
-	protected function attachScm(&$engine, $name)
+	protected function attachScm($engine, $name)
 	{
 		global $config;
 

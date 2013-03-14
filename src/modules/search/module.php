@@ -26,7 +26,7 @@ class SearchModule extends Module
 	//public
 	//methods
 	//SearchModule::call
-	public function call(&$engine, $request, $internal = 0)
+	public function call($engine, $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
@@ -80,7 +80,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::appendResult
-	protected function appendResult(&$engine, &$view, &$res)
+	protected function appendResult($engine, &$view, &$res)
 	{
 		$row = $view->append('row');
 		$row->setProperty('title', $res['title']);
@@ -94,7 +94,7 @@ class SearchModule extends Module
 
 	//calls
 	//SearchModule::callAdmin
-	protected function callAdmin(&$engine)
+	protected function callAdmin($engine)
 	{
 		$cred = $engine->getCredentials();
 
@@ -107,7 +107,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callDefault
-	protected function callDefault(&$engine, $request)
+	protected function callDefault($engine, $request)
 	{
 		$limit = $this->limit;
 		$p = $request->getParameter('page');
@@ -136,7 +136,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callAdvanced
-	protected function callAdvanced(&$engine, $request)
+	protected function callAdvanced($engine, $request)
 	{
 		$limit = $this->limit;
 		$case = $request->getParameter('case') ? '1' : '0';
@@ -171,7 +171,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callWidget
-	protected function callWidget(&$engine, $request)
+	protected function callWidget($engine, $request)
 	{
 		$form = new PageElement('form', array('idempotent' => TRUE));
 		$r = new Request('search');
@@ -230,7 +230,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::pageSearch
-	protected function pageSearch(&$engine, $request, $advanced = FALSE)
+	protected function pageSearch($engine, $request, $advanced = FALSE)
 	{
 		$q = $request->getParameter('q');
 		$args = $q ? array('q' => $q) : FALSE;

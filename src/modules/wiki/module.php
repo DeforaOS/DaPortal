@@ -48,7 +48,7 @@ class WikiModule extends ContentModule
 
 	//useful
 	//WikiModule::call
-	public function call(&$engine, $request, $internal = 0)
+	public function call($engine, $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
