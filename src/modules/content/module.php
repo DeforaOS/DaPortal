@@ -239,7 +239,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::canPost
-	protected function canPost($engine, $content, &$error = FALSE)
+	protected function canPost($engine, $content = FALSE, &$error = FALSE)
 	{
 		global $config;
 		$cred = $engine->getCredentials();
