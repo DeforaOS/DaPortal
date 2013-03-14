@@ -69,6 +69,13 @@ class HTML5Format extends HTMLFormat
 		{
 			$tag = 'meter';
 			$args['min'] = $v;
+			//the meter tag supports additional properties
+			if(($v = $e->getProperty('low')) !== FALSE
+					&& is_numeric($v))
+				$args['low'] = $v;
+			if(($v = $e->getProperty('high')) !== FALSE
+					&& is_numeric($v))
+				$args['high'] = $v;
 		}
 		if(($v = $e->getProperty('max')) !== FALSE
 				&& is_numeric($v))
