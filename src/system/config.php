@@ -97,15 +97,15 @@ class Config
 		}
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
 		{
-			if(preg_match("/^([a-zA-Z0-9-_: \t]+)=(.*)$/", $line,
-						$matches) == 1)
+			if(preg_match("/^([a-zA-Z0-9-_: \t]+)=([^\r\n]*)\r?$/",
+					$line, $matches) == 1)
 				$this->setVariable($section, $matches[1],
 						$matches[2]);
 			else if(preg_match("/^[ \t]*\[([a-zA-Z0-9-_:\/ \t]+)\]"
-						."[ \t]*$/", $line, $matches)
+						."[ \t]*\r?$/", $line, $matches)
 					== 1)
 				$section = $matches[1];
-			else if(preg_match("/^[ \t]*(#.*$)?$/", $line) == 1)
+			else if(preg_match("/^[ \t]*(#.*$)?\r?$/", $line) == 1)
 				continue;
 			else
 				syslog(LOG_WARNING, $filename.': Line '.$i
