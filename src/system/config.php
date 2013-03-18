@@ -91,8 +91,8 @@ class Config
 
 		if(($fp = @fopen($filename, 'r')) === FALSE)
 		{
-			syslog(LOG_WARNING, $filename
-					.': Could not load configuration file');
+			$error = "$filename: Could not load configuration file";
+			error_log($error);
 			return FALSE;
 		}
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
@@ -108,7 +108,7 @@ class Config
 			else if(preg_match("/^[ \t]*(#.*$)?\r?$/", $line) == 1)
 				continue;
 			else
-				syslog(LOG_WARNING, $filename.': Line '.$i
+				error_log($filename.': Line '.$i
 						.' could not be parsed');
 		}
 		fclose($fp);
