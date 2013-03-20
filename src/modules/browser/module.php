@@ -63,7 +63,8 @@ class BrowserModule extends Module
 
 		if(isset($cache[$gid]))
 			return $cache[$gid];
-		$cache[$gid] = (($gr = posix_getgrgid($gid)) !== FALSE)
+		$cache[$gid] = (function_exists('posix_getgrgid')
+			&& ($gr = posix_getgrgid($gid)) !== FALSE)
 			? $gr['name'] : $gid;
 		return $cache[$gid];
 	}
@@ -142,7 +143,8 @@ class BrowserModule extends Module
 
 		if(isset($cache[$uid]))
 			return $cache[$uid];
-		$cache[$uid] = (($pw = posix_getpwuid($uid)) !== FALSE)
+		$cache[$uid] = (function_exists('posix_getpwuid')
+			&& ($pw = posix_getpwuid($uid)) !== FALSE)
 			? $pw['name'] : $uid;
 		return $cache[$uid];
 	}
