@@ -135,6 +135,14 @@
 	background-image:	url('gnome-icon-theme/24x24/actions/forward.png');
 }
 
+.stock24.gotofirst {
+	background-image:	url('gnome-icon-theme/24x24/actions/stock_first.png');
+}
+
+.stock24.gotolast {
+	background-image:	url('gnome-icon-theme/24x24/actions/stock_last.png');
+}
+
 .stock24.help {
 	background-image:	url('gnome-icon-theme/24x24/apps/help-browser.png');
 }
@@ -171,6 +179,10 @@
 	background-image:	url('gnome-icon-theme/24x24/apps/web-browser.png');
 }
 
+.stock24.next {
+	background-image:	url('gnome-icon-theme/24x24/actions/next.png');
+}
+
 .stock24.open {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-open.png');
 }
@@ -185,6 +197,10 @@
 
 .stock24.preview {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-print-preview.png');
+}
+
+.stock24.previous {
+	background-image:	url('gnome-icon-theme/24x24/actions/previous.png');
 }
 
 .stock24.probe {

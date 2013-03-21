@@ -135,6 +135,14 @@
 	background-image:	url('gnome-icon-theme/48x48/actions/forward.png');
 }
 
+.stock48.gotofirst {
+	background-image:	url('gnome-icon-theme/48x48/actions/stock_first.png');
+}
+
+.stock48.gotolast {
+	background-image:	url('gnome-icon-theme/48x48/actions/stock_last.png');
+}
+
 .stock48.help {
 	background-image:	url('gnome-icon-theme/48x48/apps/help-browser.png');
 }
@@ -171,6 +179,10 @@
 	background-image:	url('gnome-icon-theme/48x48/apps/web-browser.png');
 }
 
+.stock48.next {
+	background-image:	url('gnome-icon-theme/48x48/actions/next.png');
+}
+
 .stock48.open {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-open.png');
 }
@@ -185,6 +197,10 @@
 
 .stock48.preview {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-print-preview.png');
+}
+
+.stock48.previous {
+	background-image:	url('gnome-icon-theme/48x48/actions/previous.png');
 }
 
 .stock48.probe {

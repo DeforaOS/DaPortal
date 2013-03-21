@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,6 +95,14 @@
 	background-image:	url('Tango/32x32/actions/forward.png');
 }
 
+.stock32.gotofirst {
+	background-image:	url('Tango/32x32/actions/stock_first.png');
+}
+
+.stock32.gotolast {
+	background-image:	url('Tango/32x32/actions/stock_last.png');
+}
+
 .stock32.home {
 	background-image:	url('Tango/32x32/actions/gtk-home.png');
 }
@@ -123,6 +131,10 @@
 	background-image:	url('Tango/32x32/apps/internet-news-reader.png');
 }
 
+.stock32.next {
+	background-image:	url('Tango/32x32/actions/next.png');
+}
+
 .stock32.open {
 	background-image:	url('Tango/32x32/actions/gtk-open.png');
 }
@@ -137,6 +149,10 @@
 
 .stock32.preview {
 	background-image:	url('Tango/32x32/actions/stock_search.png');
+}
+
+.stock32.previous {
+	background-image:	url('Tango/32x32/actions/previous.png');
 }
 
 .stock32.probe {
