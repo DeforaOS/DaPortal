@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -35,19 +35,10 @@ class PdoDatabase extends Database
 	//PdoDatabase::getLastId
 	public function getLastId($engine, $table, $field)
 	{
-		global $config;
-
 		if($this->handle === FALSE)
 			return FALSE;
 		//determine the underlying backend
-		if(($backend = $config->getVariable('database::pdo', 'dsn'))
-				!== FALSE)
-		{
-			$backend = explode(':', $backend);
-			if(is_array($backend))
-				$backend = $backend[0];
-		}
-		switch($backend)
+		switch($this->getBackend())
 		{
 			case 'pgsql':
 				//PostgreSQL requires a sequence object
@@ -219,6 +210,21 @@ class PdoDatabase extends Database
 			return $engine->log('LOG_ERR', $message);
 		}
 		return TRUE;
+	}
+
+
+	//PdoDatabase::getBackend
+	protected function getBackend()
+	{
+		global $config;
+
+		if(($backend = $config->getVariable('database::pdo', 'dsn'))
+				=== FALSE)
+			return FALSE;
+		$backend = explode(':', $backend);
+		if(is_array($backend))
+			return $backend[0];
+		return $backend;
 	}
 
 
