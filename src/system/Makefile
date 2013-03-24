@@ -9,16 +9,16 @@ RM	= rm -f
 all: subdirs
 
 subdirs:
-	@for i in $(SUBDIRS); do (cd $$i && $(MAKE)) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
 clean:
-	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
 
 distclean:
-	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
 
 install:
-	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 -- auth.php $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
@@ -53,7 +53,7 @@ install:
 	$(INSTALL) -m 0644 -- user.php $(DESTDIR)$(PREFIX)/daportal/src/system/user.php
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd $$i && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/common.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/config.php
