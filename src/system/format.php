@@ -72,6 +72,9 @@ abstract class Format
 					.' with priority '.$priority);
 			$ret->attach($engine, $type);
 		}
+		else
+			$engine->log('LOG_ERR', 'Could not attach a formatting'
+					.' backend for '.$type);
 		return $ret;
 	}
 
