@@ -156,7 +156,7 @@ class XMLFormat extends PlainFormat
 			foreach($keys as $k)
 				if(($e = $c->getProperty($k)) === FALSE)
 					continue;
-				else if(is_string($e))
+				else if(is_string($e) || is_integer($e))
 					$this->_print("\t\t<$k>"
 							.$this->escape($e)
 							."</$k>\n");

@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -101,7 +101,7 @@ class CSVFormat extends PlainFormat
 				$this->_print($sep);
 				if(($e = $c->getProperty($k)) !== FALSE)
 				{
-					if(is_string($e))
+					if(is_string($e) || is_integer($e))
 						$this->_print($e);
 					else
 						$this->renderElement($e);
