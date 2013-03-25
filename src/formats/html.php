@@ -357,9 +357,10 @@ class HTMLFormat extends FormatElements
 		foreach($children as $c)
 		{
 			$this->renderTabs();
-			$v = $c->getProperty('value');
-			$args = array('value' => $v);
 			$text = $c->getProperty('text');
+			if(($v = $c->getProperty('value')) === FALSE)
+				$v = $text;
+			$args = array('value' => $v);
 			if($value !== FALSE && $value == $v)
 				$args['selected'] = 'selected';
 			$this->tag('option', $c->getProperty('class'),
