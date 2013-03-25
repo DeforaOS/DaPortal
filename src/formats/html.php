@@ -913,7 +913,7 @@ $('#$id1').closest('form').submit(function () {
 			$class .= " $c";
 		$method = $e->getProperty('idempotent') ? 'get' : 'post';
 		$this->renderTabs();
-		$this->tagOpen('form', $class, FALSE, array(
+		$this->tagOpen('form', $class, $e->getProperty('id'), array(
 					'action' => 'index.php',
 					'method' => $method));
 		if($method === 'post')
