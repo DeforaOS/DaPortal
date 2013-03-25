@@ -267,8 +267,8 @@ class HttpEngine extends Engine
 					return FALSE;
 				break;
 		}
-		$output = Format::attachDefault($this, $type);
-		$output->render($this, $page);
+		if(($output = Format::attachDefault($this, $type)) !== FALSE)
+			$output->render($this, $page);
 	}
 
 	private function renderStream($fp, $type)
