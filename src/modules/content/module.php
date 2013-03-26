@@ -499,13 +499,11 @@ abstract class ContentModule extends Module
 		if($request !== FALSE && ($type = $request->getParameter(
 					'type')) !== FALSE)
 			$r->setParameter('type', $type);
-		$treeview = $page->append('treeview', array('request' => $r));
-		$treeview->setProperty('columns', array('icon' => '',
-				'title' => _('Title'),
-				'enabled' => _('Enabled'),
-				'public' => _('Public'),
-				'username' => _('Username'),
-				'date' => _('Date')));
+		$columns = array('icon' => '', 'title' => _('Title'),
+			'enabled' => _('Enabled'), 'public' => _('Public'),
+			'username' => _('Username'), 'date' => _('Date'));
+		$treeview = $page->append('treeview', array('request' => $r,
+				'columns' => $columns, 'alternate' => TRUE));
 		//toolbar
 		$this->helperAdminToolbar($engine, $treeview, $request);
 		//rows
