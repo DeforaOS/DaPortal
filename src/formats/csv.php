@@ -25,6 +25,7 @@ class CSVFormat extends PlainFormat
 	//protected
 	//properties
 	protected $print = FALSE;
+	protected $titles = FALSE;
 
 
 	//methods
@@ -39,6 +40,17 @@ class CSVFormat extends PlainFormat
 			default:
 				return 0;
 		}
+	}
+
+
+	//CSVFormat::attach
+	protected function attach($engine, $type = FALSE)
+	{
+		global $config;
+
+		//configuration
+		$this->titles = $config->getVariable('format::csv',
+			'titles') ? TRUE : FALSE;
 	}
 
 
@@ -86,15 +98,30 @@ class CSVFormat extends PlainFormat
 	//CSVFormat::renderTreeview
 	protected function renderTreeview($e)
 	{
+		$sep = '';
+
 		$this->print = TRUE;
 		if(($columns = $e->getProperty('columns')) === FALSE)
 			$columns = array('title' => 'Title');
 		$keys = array_keys($columns);
+		if(count($keys) == 0)
+			return;
+		if($this->titles)
+		{
+			//the first line names each column
+			foreach($keys as $k)
+			{
+				$this->_print($sep.$columns[$k]);
+				$sep = ',';
+			}
+			$this->_print("\n");
+		}
 		$children = $e->getChildren($e);
 		foreach($children as $c)
 		{
 			if($c->getType() != 'row')
 				continue;
+			//print each column of the current row
 			$sep = '';
 			foreach($keys as $k)
 			{
