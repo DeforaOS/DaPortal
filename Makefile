@@ -125,6 +125,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/Makefile \
 		$(PACKAGE)-$(VERSION)/src/formats/atom.php \
 		$(PACKAGE)-$(VERSION)/src/formats/csv.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html5.php \
 		$(PACKAGE)-$(VERSION)/src/formats/pdf.php \
@@ -133,6 +134,23 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/xhtml11.php \
 		$(PACKAGE)-$(VERSION)/src/formats/xml.php \
 		$(PACKAGE)-$(VERSION)/src/formats/project.conf \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/Makefile \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/fpdf.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courier.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courierb.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courierbi.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courieri.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/helvetica.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/helveticab.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/helveticabi.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/helveticai.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/symbol.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/times.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/timesb.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/timesbi.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/timesi.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/zapfdingbats.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/admin/Makefile \
