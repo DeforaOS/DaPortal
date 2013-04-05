@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,15 @@
 
 
 
-require_once('./system/config.php');
-global $config;
-$config = new Config();
-if(!isset($daportalconf) && ($daportalconf = getenv('DAPORTALCONF')) === FALSE)
-	$daportalconf = '@PREFIX@/etc/daportal.conf';
-$config->load($daportalconf);
-
-//compatibility fixes
-require_once('./system/compat.php');
-
-require_once('./system/engine.php');
-if(($engine = Engine::attachDefault()) !== FALSE
-		&& ($request = $engine->getRequest()) !== FALSE)
+//Compatibility fixes
+//strptime()
+if(!function_exists('strptime'))
 {
-	$page = $engine->process($request);
-	$engine->render($page);
+	function strptime($date, $format)
+	{
+		//FIXME really implement
+		return FALSE;
+	}
 }
-$ret = $engine->getReturn();
-unset($engine);
-exit($ret);
 
 ?>

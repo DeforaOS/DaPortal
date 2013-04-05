@@ -196,6 +196,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/Makefile \
 		$(PACKAGE)-$(VERSION)/src/system/auth.php \
 		$(PACKAGE)-$(VERSION)/src/system/common.php \
+		$(PACKAGE)-$(VERSION)/src/system/compat.php \
 		$(PACKAGE)-$(VERSION)/src/system/config.php \
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
