@@ -59,6 +59,7 @@ if(!function_exists('sys_get_temp_dir'))
 		switch(php_uname('s'))
 		{
 			case 'Windows':
+			case 'Windows NT':
 				if(($tmp = getenv('TEMP')) === FALSE);
 					$tmp = getenv('TMP');
 				break;
