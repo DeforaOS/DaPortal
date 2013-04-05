@@ -51,7 +51,8 @@ class HttpFriendlyEngine extends HttpEngine
 		//the first element is empty
 		array_shift($path);
 		//the second element is the module name
-		$module = array_shift($path);
+		if(($module = array_shift($path)) == '')
+			return parent::_getRequestDo();
 		$action = FALSE;
 		$id = FALSE;
 		$title = FALSE;
