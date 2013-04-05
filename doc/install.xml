@@ -215,8 +215,8 @@ kicker=somename</programlisting>
 				<title>Handler for friendly links</title>
 				<programlisting>&lt;?php
 $_SERVER['SCRIPT_NAME'] = '/index.php';
-if(chdir('/var/www/daportal/src')) require('./daportal.php');
-?></programlisting>
+require('./index.php');
+?&gt;</programlisting>
 			</example>
 			<para>In the case of Apache, the following modification to the configuration
 				for the document root may be necessary:</para>
