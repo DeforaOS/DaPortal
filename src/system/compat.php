@@ -50,4 +50,26 @@ if(!function_exists('sys_get_temp_dir'))
 	}
 }
 
+
+//sys_get_temp_dir()
+if(!function_exists('sys_get_temp_dir'))
+{
+	function sys_get_temp_dir()
+	{
+		switch(php_uname('s'))
+		{
+			case 'Windows':
+				if(($tmp = getenv('TEMP')) === FALSE);
+					$tmp = getenv('TMP');
+				break;
+			default:
+				$tmp = getenv('TMPDIR');
+				break;
+		}
+		if($tmp !== FALSE)
+			return $tmp;
+		return '/tmp';
+	}
+}
+
 ?>
