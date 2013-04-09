@@ -123,6 +123,10 @@
 	background-image:	url('Tango/16x16/actions/gnome-logout.png');
 }
 
+.stock16.monitor {
+	background-image:	url('Tango/16x16/apps/utilities-system-monitor.png');
+}
+
 .stock16.new {
 	background-image:	url('Tango/16x16/actions/gtk-new.png');
 }
