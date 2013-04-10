@@ -185,7 +185,7 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::callSubmit
-	protected function callSubmit($engine, $request)
+	protected function callSubmit($engine, $request = FALSE)
 	{
 		return parent::callSubmit($engine, $request);
 	}
