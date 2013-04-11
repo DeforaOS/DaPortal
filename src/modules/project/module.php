@@ -1214,6 +1214,14 @@ class ProjectModule extends ContentModule
 	protected function helperDisplayBugMetadata($engine, $page, $request,
 			$bug, $project)
 	{
+		global $config;
+		$encoding = $config->getVariable('defaults', 'charset');
+		$sep = ' ';
+
+		if($encoding !== FALSE && function_exists('iconv')
+				&& ($s = iconv('utf-8', $encoding, $sep))
+				!== FALSE)
+			$sep = $s;
 		$r = new Request($this->name, FALSE, $project['id'],
 			$project['title']);
 		$u = new Request($this->name, 'list', $bug['user_id'],
@@ -1244,8 +1252,8 @@ class ProjectModule extends ContentModule
 				'text' => _('Date: ')));
 		//XXX should span across columns instead
 		$col2->append('label', array('text' => $bug['date']));
-		$col3->append('label', array('text' => ' '));
-		$col4->append('label', array('text' => ' '));
+		$col3->append('label', array('text' => $sep));
+		$col4->append('label', array('text' => $sep));
 		//state
 		$col1->append('label', array('class' => 'bold',
 				'text' => _('State: ')));
@@ -1265,7 +1273,7 @@ class ProjectModule extends ContentModule
 			$col4->append('link', array('request' => $a,
 				'text' => $user->getUsername()));
 		else
-			$col4->append('label', array('text' => ' '));
+			$col4->append('label', array('text' => $sep));
 	}
 
 
