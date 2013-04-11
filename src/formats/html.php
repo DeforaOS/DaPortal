@@ -1006,13 +1006,16 @@ $('#$id1').closest('form').submit(function () {
 		if(($children = $e->getChildren()) === FALSE)
 			return;
 		if($level > 0)
-			$class.=' level level'.$level;
+			$class .= ' level level'.$level;
 		foreach($children as $c)
 		{
 			$this->renderTabs();
 			if($c->getType() != 'row')
 				continue;
-			$this->tagOpen('div', $class);
+			$cl = $class;
+			if(($p = $c->getProperty('class')) !== FALSE)
+				$cl .= ' '.$p;
+			$this->tagOpen('div', $cl);
 			$this->tagOpen('span', 'detail');
 			if($request !== FALSE)
 			{
