@@ -111,6 +111,13 @@ class PDFFormat extends FormatElements
 	}
 
 
+	//PDFFormat::renderExpander
+	protected function renderExpander($e)
+	{
+		$this->renderInline($e);
+	}
+
+
 	//PDFFormat::renderFileChooser
 	protected function renderFileChooser($e)
 	{

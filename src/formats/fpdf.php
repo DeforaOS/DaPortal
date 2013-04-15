@@ -121,6 +121,13 @@ class FPDFFormat extends FormatElements
 	}
 
 
+	//FPDFFormat::renderExpander
+	protected function renderExpander($e)
+	{
+		$this->renderInline($e);
+	}
+
+
 	//FPDFFormat::renderFileChooser
 	protected function renderFileChooser($e)
 	{
