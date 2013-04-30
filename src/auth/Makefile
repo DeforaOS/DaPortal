@@ -13,11 +13,11 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/auth
-	$(INSTALL) -m 0644 -- http.php $(DESTDIR)$(PREFIX)/daportal/src/auth/http.php
+	$(INSTALL) -m 0644 http.php $(DESTDIR)$(PREFIX)/daportal/src/auth/http.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/auth
-	$(INSTALL) -m 0644 -- session.php $(DESTDIR)$(PREFIX)/daportal/src/auth/session.php
+	$(INSTALL) -m 0644 session.php $(DESTDIR)$(PREFIX)/daportal/src/auth/session.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/auth
-	$(INSTALL) -m 0644 -- unix.php $(DESTDIR)$(PREFIX)/daportal/src/auth/unix.php
+	$(INSTALL) -m 0644 unix.php $(DESTDIR)$(PREFIX)/daportal/src/auth/unix.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/auth/http.php

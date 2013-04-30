@@ -20,9 +20,9 @@ distclean:
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic
-	$(INSTALL) -m 0644 -- 16x16.css $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16.css
+	$(INSTALL) -m 0644 16x16.css $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic
-	$(INSTALL) -m 0644 -- index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/index.php
+	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/index.php
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done

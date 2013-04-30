@@ -13,7 +13,7 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/user
-	$(INSTALL) -m 0644 -- module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/user/module.php
+	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/user/module.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/user/module.php

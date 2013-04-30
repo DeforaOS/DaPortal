@@ -20,15 +20,15 @@ distclean:
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 -- Rodent.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
+	$(INSTALL) -m 0644 Rodent.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 -- Tango.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
+	$(INSTALL) -m 0644 Tango.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 -- generic.css $(DESTDIR)$(PREFIX)/daportal/data/icons/generic.css
+	$(INSTALL) -m 0644 generic.css $(DESTDIR)$(PREFIX)/daportal/data/icons/generic.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 -- gnome.css $(DESTDIR)$(PREFIX)/daportal/data/icons/gnome.css
+	$(INSTALL) -m 0644 gnome.css $(DESTDIR)$(PREFIX)/daportal/data/icons/gnome.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 -- index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/index.php
+	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/index.php
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done

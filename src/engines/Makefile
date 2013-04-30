@@ -13,21 +13,21 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- cli.php $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
+	$(INSTALL) -m 0644 cli.php $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- clihttp.php $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
+	$(INSTALL) -m 0644 clihttp.php $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- daportal.php $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
+	$(INSTALL) -m 0644 daportal.php $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- dummy.php $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
+	$(INSTALL) -m 0644 dummy.php $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- email.php $(DESTDIR)$(PREFIX)/daportal/src/engines/email.php
+	$(INSTALL) -m 0644 email.php $(DESTDIR)$(PREFIX)/daportal/src/engines/email.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- gtk.php $(DESTDIR)$(PREFIX)/daportal/src/engines/gtk.php
+	$(INSTALL) -m 0644 gtk.php $(DESTDIR)$(PREFIX)/daportal/src/engines/gtk.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- http.php $(DESTDIR)$(PREFIX)/daportal/src/engines/http.php
+	$(INSTALL) -m 0644 http.php $(DESTDIR)$(PREFIX)/daportal/src/engines/http.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
-	$(INSTALL) -m 0644 -- httpfriendly.php $(DESTDIR)$(PREFIX)/daportal/src/engines/httpfriendly.php
+	$(INSTALL) -m 0644 httpfriendly.php $(DESTDIR)$(PREFIX)/daportal/src/engines/httpfriendly.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php

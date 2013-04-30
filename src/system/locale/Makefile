@@ -13,7 +13,7 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/locale
-	$(INSTALL) -m 0644 -- gettext.php $(DESTDIR)$(PREFIX)/daportal/src/system/locale/gettext.php
+	$(INSTALL) -m 0644 gettext.php $(DESTDIR)$(PREFIX)/daportal/src/system/locale/gettext.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/locale/gettext.php

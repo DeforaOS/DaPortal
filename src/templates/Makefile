@@ -13,13 +13,13 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/templates
-	$(INSTALL) -m 0644 -- DeforaOS.php $(DESTDIR)$(PREFIX)/daportal/src/templates/DeforaOS.php
+	$(INSTALL) -m 0644 DeforaOS.php $(DESTDIR)$(PREFIX)/daportal/src/templates/DeforaOS.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/templates
-	$(INSTALL) -m 0644 -- basic.php $(DESTDIR)$(PREFIX)/daportal/src/templates/basic.php
+	$(INSTALL) -m 0644 basic.php $(DESTDIR)$(PREFIX)/daportal/src/templates/basic.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/templates
-	$(INSTALL) -m 0644 -- desktop.php $(DESTDIR)$(PREFIX)/daportal/src/templates/desktop.php
+	$(INSTALL) -m 0644 desktop.php $(DESTDIR)$(PREFIX)/daportal/src/templates/desktop.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/templates
-	$(INSTALL) -m 0644 -- khorben.php $(DESTDIR)$(PREFIX)/daportal/src/templates/khorben.php
+	$(INSTALL) -m 0644 khorben.php $(DESTDIR)$(PREFIX)/daportal/src/templates/khorben.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/templates/DeforaOS.php
