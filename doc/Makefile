@@ -1,5 +1,5 @@
 SUBDIRS	= sql
-TARGETS	= daportal.1 daportal.html daportal.conf.5 daportal.conf.html install.html internals.html
+TARGETS	= daportal.1 daportal.html daportal.conf daportal.conf.5 daportal.conf.html install.html internals.html
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -19,6 +19,9 @@ daportal.1: daportal.xml
 daportal.html: daportal.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.html"
 
+daportal.conf: daportal.conf.in
+	../tools/subst.sh -P "$(PREFIX)" -- "daportal.conf"
+
 daportal.conf.5: daportal.conf.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.conf.5"
 
@@ -33,12 +36,12 @@ internals.html: internals.xml internals.xsl
 
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
 	$(RM) -- $(TARGETS)
 

@@ -78,7 +78,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/khorben.css \
 		$(PACKAGE)-$(VERSION)/data/themes/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/Makefile \
-		$(PACKAGE)-$(VERSION)/doc/daportal.conf \
+		$(PACKAGE)-$(VERSION)/doc/daportal.conf.in \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf.xml \
 		$(PACKAGE)-$(VERSION)/doc/daportal.xml \
 		$(PACKAGE)-$(VERSION)/doc/docbook.sh \
