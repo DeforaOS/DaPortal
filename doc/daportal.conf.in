@@ -116,7 +116,7 @@ backend=plain
 backend=xml
 
 [mime]
-globs=/usr/share/mime/globs
+globs=@PREFIX@/share/mime/globs
 
 [module::browser]
 #root=/tmp
