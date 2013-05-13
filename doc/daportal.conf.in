@@ -93,6 +93,7 @@ regenerate=1
 #alternate_themes=1
 #favicon=
 #javascript=1
+#viewport::width=device-width
 
 [format::application/pdf]
 backend=fpdf

@@ -125,6 +125,14 @@ class HTMLFormat extends FormatElements
 		if(($refresh = $page->getProperty('refresh')) !== FALSE
 				&& is_numeric($refresh))
 			$this->renderMeta('Refresh', $refresh);
+		if(($vw = $config->getVariable('format::html',
+				'viewport::width')) !== FALSE)
+		{
+			$this->renderTabs();
+			$this->tag('meta', FALSE, FALSE, array(
+					'name' => 'viewport',
+					'content' => "width=$vw"));
+		}
 		$this->renderTabs(-1);
 		$this->tagClose('head');
 		$this->renderTabs();
