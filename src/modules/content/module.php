@@ -297,7 +297,8 @@ abstract class ContentModule extends Module
 				'user_id' => $cred->getUserId());
 		if($title !== FALSE)
 		{
-			$query .= ' AND daportal_content.title LIKE :title';
+			$query .= ' AND daportal_content.title '
+				.$db->like(FALSE).' :title';
 			$args['title'] = str_replace('-', '_', $title);
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
