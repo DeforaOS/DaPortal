@@ -60,7 +60,7 @@ abstract class Database
 		$ret = 'LIKE';
 
 		if($pattern !== FALSE)
-			$ret .= " '$pattern'";
+			$ret .= ' '.$this->escape($pattern);
 		return $ret;
 	}
 
