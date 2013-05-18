@@ -75,6 +75,7 @@ regenerate=1
 
 [engine::httpfriendly]
 #kicker=
+#lowercase=0
 
 [format]
 #backend=atom
