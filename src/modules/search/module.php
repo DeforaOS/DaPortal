@@ -206,26 +206,42 @@ class SearchModule extends Module
 		//XXX copied from ContentModule
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
-		$sep = '';
 		if(($pcur = $request->getParameter('page')) === FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
-		for($i = 1; $i <= $pcnt; $i++, $sep = ' | ')
-		{
-			if(strlen($sep))
-				$page->append('label', array('text' => $sep));
-			if($i == $pcur)
-			{
-				$page->append('label', array('text' => $i));
-				continue;
-			}
-			$args = $request->getParameters();
-			$args['page'] = $i;
-			$r = new Request($this->name, $request->getAction(),
-				$request->getId(), $request->getTitle(), $args);
-			$page->append('link', array('request' => $r,
-					'text' => $i));
-		}
+		$args = $request->getParameters();
+		unset($args['page']);
+		$r = new Request($this->name, $request->getAction(),
+			$request->getId(), $request->getTitle(), $args);
+		$form = $page->append('form', array('idempotent' => TRUE,
+				'request' => $r));
+		$hbox = $form->append('hbox');
+		//first page
+		$hbox->append('link', array('stock' => 'gotofirst',
+				'request' => $r, 'text' => ''));
+		//previous page
+		$a = $args;
+		$a['page'] = max(1, $pcur - 1);
+		$r = new Request($this->name, $request->getAction(),
+			$request->getId(), $request->getTitle(), $a);
+		$hbox->append('link', array('stock' => 'previous',
+				'request' => $r, 'text' => ''));
+		//entry
+		$hbox->append('entry', array('name' => 'page', 'width' => '4',
+				'value' => $pcur));
+		$hbox->append('label', array('text' => " / $pcnt"));
+		//next page
+		$args['page'] = min($pcur + 1, $pcnt);
+		$r = new Request($this->name, $request->getAction(),
+			$request->getId(), $request->getTitle(), $args);
+		$hbox->append('link', array('stock' => 'next',
+				'request' => $r, 'text' => ''));
+		//last page
+		$args['page'] = $pcnt;
+		$r = new Request($this->name, $request->getAction(),
+			$request->getId(), $request->getTitle(), $args);
+		$hbox->append('link', array('stock' => 'gotolast',
+				'request' => $r, 'text' => ''));
 	}
 
 
