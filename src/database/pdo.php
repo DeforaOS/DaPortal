@@ -126,8 +126,7 @@ class PdoDatabase extends Database
 		if(!$set)
 		{
 			$set = 1;
-			$dsn = $config->getVariable('database::pdo', 'dsn');
-			if($dsn !== FALSE && strncmp($dsn, 'sqlite:', 7) == 0)
+			if($this->getBackend() == 'sqlite')
 				$this->handle->sqliteCreateFunction('regexp',
 						$func);
 		}
