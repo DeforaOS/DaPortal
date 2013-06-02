@@ -84,7 +84,7 @@ abstract class Database
 		$ret = 'REGEXP';
 
 		if($pattern !== FALSE)
-			$ret .= " '$pattern'";
+			$ret .= ' '.$this->escape($pattern);
 		return $ret;
 	}
 
