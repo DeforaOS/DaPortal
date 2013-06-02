@@ -134,6 +134,10 @@ globs=@PREFIX@/share/mime/globs
 #scm::backend::cvs::cvsroot=/tmp/cvs
 #scm::backend::cvs::repository=localhost:/tmp/cvs
 
+[module::search]
+#match using regular expressions instead of SQL wildcards
+#regexp=1
+
 [module::user]
 #allow users (not administrators) to close their own account (default: disabled)
 #close=1

@@ -318,8 +318,12 @@ class SearchModule extends Module
 	protected function query($engine, $string, $sensitive, &$count, $page,
 			$intitle, $incontent, $user = FALSE, $module = FALSE)
 	{
+		global $config;
 		$db = $engine->getDatabase();
 		$query = $this->query.' AND (0=1';
+		$regexp = $config->getVariable('module::search', 'regexp');
+		$func = $regexp ? 'regexp' : 'like';
+		$wildcard = $regexp ? '' : '%';
 
 		$q = explode(' ', $string);
 		$args = array();
@@ -327,16 +331,16 @@ class SearchModule extends Module
 		if($intitle && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR title '.$db->like($sensitive)
+				$query .= ' OR title '.$db->$func($sensitive)
 					." :arg$i";
-				$args['arg'.$i++] = "%$r%";
+				$args['arg'.$i++] = $wildcard.$r.$wildcard;
 			}
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR content '.$db->like($sensitive)
+				$query .= ' OR content '.$db->$func($sensitive)
 					." :arg$i";
-				$args['arg'.$i++] = "%$r%";
+				$args['arg'.$i++] = $wildcard.$r.$wildcard;
 			}
 		$query .= ')';
 		$fields = 'SELECT COUNT (*)';
