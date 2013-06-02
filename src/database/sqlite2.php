@@ -124,28 +124,31 @@ class SQLite2Database extends Database
 	//SQLite2Database::regexp
 	public function regexp($case = TRUE, $pattern = FALSE)
 	{
-		static $set = 0;
-		$func = array('SQLite2Database', '_regexp_callback');
+		$func = array($this, '_regexp_callback');
 
-		if(!$set)
+		if(!$this->regexp)
 		{
-			$set = 1;
+			$this->regexp = TRUE;
 			sqlite_create_function($this->handle, 'regexp', $func);
 		}
+		//XXX applies globally
+		$this->case = $case;
 		return parent::regexp($case, $pattern);
 	}
 
-	static public function _regexp_callback($pattern, $subject)
+	public function _regexp_callback($pattern, $subject)
 	{
 		//XXX the delimiter character may be used within the pattern
-		return (preg_match(",$pattern,", $subject) === 1)
-			? TRUE : FALSE;
+		$pattern = $this->case ? ",$pattern," : ",$pattern,i";
+		return (preg_match($pattern, $subject) === 1) ? TRUE : FALSE;
 	}
 
 
 	//private
 	//properties
 	private $handle = FALSE;
+	private $regexp = FALSE;
+	private $case;
 }
 
 ?>
