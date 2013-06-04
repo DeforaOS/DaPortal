@@ -211,6 +211,16 @@ abstract class ContentModule extends Module
 		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'
 		AND daportal_user.user_id=:user_id";
+	protected $query_list_user_count = "SELECT COUNT(*)
+		FROM daportal_content, daportal_module, daportal_user
+		WHERE daportal_content.module_id=daportal_module.module_id
+		AND daportal_content.module_id=:module_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.enabled='1'
+		AND daportal_content.public='1'
+		AND daportal_module.enabled='1'
+		AND daportal_user.enabled='1'
+		AND daportal_user.user_id=:user_id";
 	protected $query_post = "UPDATE daportal_content
 		SET public='1'
 		WHERE module_id=:module_id
@@ -693,6 +703,7 @@ abstract class ContentModule extends Module
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getId(),
 				$request->getTitle()) : FALSE;
+		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$error = _('Unable to list contents');
 
 		if($user === FALSE || ($uid = $user->getUserId()) == 0)
@@ -707,12 +718,29 @@ abstract class ContentModule extends Module
 		//query
 		$args = array('module_id' => $this->id);
 		$query = $this->query_list;
+		$cquery = $this->query_list_count;
 		if($uid !== FALSE)
 		{
 			$query = $this->query_list_user;
+			$cquery = $this->query_list_user_count;
 			$args['user_id'] = $uid;
 		}
 		$query .= ' ORDER BY title ASC';
+		//paging
+		if(($limit = $this->content_list_count) > 0)
+		{
+			//obtain the total number of records available
+			if(($res = $db->query($engine, $cquery, $args))
+					!== FALSE && count($res) == 1)
+				$pcnt = $res[0][0];
+			if($pcnt !== FALSE)
+			{
+				$offset = FALSE;
+				if(is_numeric($p) && $p > 1)
+					$offset = $limit * ($p - 1);
+				$query .= $db->offset($limit, $offset);
+			}
+		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -751,6 +779,8 @@ abstract class ContentModule extends Module
 				$row->setProperty('synopsis',
 						$res[$i]['synopsis']);
 		}
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
 		return $page;
