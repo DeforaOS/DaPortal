@@ -1198,8 +1198,8 @@ class ProjectModule extends ContentModule
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
 		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
-		$this->helperDisplayBugMetadata($engine, $vbox, $r, $content,
-				$project);
+		$this->helperDisplayBugMetadata($engine, $request, $vbox,
+				$content, $project);
 		//content
 		$this->helperDisplayText($engine, $request, $vbox, $content);
 		//buttons
@@ -1212,7 +1212,7 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayBugMetadata
-	protected function helperDisplayBugMetadata($engine, $page, $request,
+	protected function helperDisplayBugMetadata($engine, $request, $page,
 			$bug, $project)
 	{
 		global $config;
@@ -1279,7 +1279,7 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayDescription
-	protected function helperDisplayDescription($engine, $page, $request,
+	protected function helperDisplayDescription($engine, $request, $page,
 			$content)
 	{
 		if(!is_array($content))
@@ -1299,7 +1299,7 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayMembers
-	protected function helperDisplayMembers($engine, $page, $request,
+	protected function helperDisplayMembers($engine, $request, $page,
 			$content)
 	{
 		$user = new User($engine, $content['user_id']);
@@ -1349,9 +1349,10 @@ class ProjectModule extends ContentModule
 		$vbox = $page->append('vbox');
 		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
 		//content
-		$this->helperDisplayDescription($engine, $vbox, $r, $content);
+		$this->helperDisplayDescription($engine, $request, $vbox,
+				$content);
 		//members
-		$this->helperDisplayMembers($engine, $vbox, $r, $content);
+		$this->helperDisplayMembers($engine, $request, $vbox, $content);
 		//buttons
 		$this->helperDisplayButtons($engine, $request, $vbox, $content);
 	}
