@@ -1250,7 +1250,7 @@ abstract class ContentModule extends Module
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
+		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
 		//meta-data
 		$this->helperDisplayMetadata($engine, $request, $vbox,
 				$content);
@@ -1315,10 +1315,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplayToolbar
-	protected function helperDisplayToolbar($engine, $page, $request,
+	protected function helperDisplayToolbar($engine, $request, $page,
 			$content)
 	{
-		$toolbar = $this->getToolbar($engine, $request, $content);
+		$r = $this->getContentRequest($engine, $content);
+
+		$toolbar = $this->getToolbar($engine, $r, $content);
 		$page->append($toolbar);
 	}
 

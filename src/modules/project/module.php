@@ -1197,7 +1197,7 @@ class ProjectModule extends ContentModule
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
+		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
 		$this->helperDisplayBugMetadata($engine, $vbox, $r, $content,
 				$project);
 		//content
@@ -1346,7 +1346,7 @@ class ProjectModule extends ContentModule
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
+		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
 		//content
 		$this->helperDisplayDescription($engine, $vbox, $r, $content);
 		//members
