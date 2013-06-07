@@ -1243,34 +1243,33 @@ abstract class ContentModule extends Module
 		if($content === FALSE)
 			return FALSE;
 		//link
-		$request = $this->getContentRequest($engine, $content);
+		$r = $this->getContentRequest($engine, $content);
 		//title
-		$this->helperDisplayTitle($engine, $page, $request, $content);
+		$this->helperDisplayTitle($engine, $page, $r, $content);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $request, $content);
+		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
 		//meta-data
-		$this->helperDisplayMetadata($engine, $vbox, $request,
-				$content);
+		$this->helperDisplayMetadata($engine, $vbox, $r, $content);
 		//text
-		$this->helperDisplayText($engine, $vbox, $request, $content);
+		$this->helperDisplayText($engine, $vbox, $r, $content);
 		//buttons
-		$this->helperDisplayButtons($engine, $vbox, $request, $content);
+		$this->helperDisplayButtons($engine, $request, $vbox, $content);
 		return $page;
 	}
 
 
 	//ContentModule::helperDisplayButtons
-	protected function helperDisplayButtons($engine, $page, $request,
+	protected function helperDisplayButtons($engine, $request, $page,
 			$content)
 	{
 		$hbox = $page->append('hbox');
 		$r = new Request($this->name);
 		$hbox->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => $this->text_content_more_content));
-		$hbox->append('link', array('stock' => 'link',
-				'request' => $request,
+		$r = $this->getContentRequest($engine, $content);
+		$hbox->append('link', array('stock' => 'link', 'request' => $r,
 				'text' => $this->text_content_link));
 	}
 

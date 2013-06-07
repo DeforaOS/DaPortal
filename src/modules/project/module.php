@@ -1178,7 +1178,8 @@ class ProjectModule extends ContentModule
 		if(isset($content['bug_id']))
 			return $this->helperDisplayBug($engine, $page,
 					$content);
-		return $this->helperDisplayProject($engine, $page, $content);
+		return $this->helperDisplayProject($engine, $request, $page,
+				$content);
 	}
 
 
@@ -1187,26 +1188,26 @@ class ProjectModule extends ContentModule
 	{
 		$project = $this->_get($engine, $content['project_id']);
 
-		$request = $this->getContentRequest($engine, $content);
+		$r = $this->getContentRequest($engine, $content);
 		$c = $content;
 		$c['title'] = $title = sprintf(_('#%u/%s: %s'),
 				$c['bug_id'], $project['title'], $c['title']);
 		//title
-		$this->helperDisplayTitle($engine, $page, $request, $c);
+		$this->helperDisplayTitle($engine, $page, $r, $c);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $request, $content);
-		$this->helperDisplayBugMetadata($engine, $vbox, $request,
-				$content, $project);
+		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
+		$this->helperDisplayBugMetadata($engine, $vbox, $r, $content,
+				$project);
 		//content
-		$this->helperDisplayText($engine, $vbox, $request, $content);
+		$this->helperDisplayText($engine, $vbox, $r, $content);
 		//buttons
 		$r = new Request($this->name, 'bugReply', $content['id'],
 			$content['title']);
 		$vbox->append('button', array('request' => $r,
 				'stock' => 'reply', 'text' => _('Reply')));
-		$this->helperDisplayButtons($engine, $vbox, $request, $content);
+		$this->helperDisplayButtons($engine, $request, $vbox, $content);
 	}
 
 
@@ -1336,22 +1337,22 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayProject
-	protected function helperDisplayProject($engine, $page, $content)
+	protected function helperDisplayProject($engine, $request, $page,
+			$content)
 	{
-		$request = $this->getContentRequest($engine, $content);
+		$r = $this->getContentRequest($engine, $content);
 		//title
-		$this->helperDisplayTitle($engine, $page, $request, $content);
+		$this->helperDisplayTitle($engine, $page, $r, $content);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $vbox, $request, $content);
+		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
 		//content
-		$this->helperDisplayDescription($engine, $vbox, $request,
-				$content);
+		$this->helperDisplayDescription($engine, $vbox, $r, $content);
 		//members
-		$this->helperDisplayMembers($engine, $vbox, $request, $content);
+		$this->helperDisplayMembers($engine, $vbox, $r, $content);
 		//buttons
-		$this->helperDisplayButtons($engine, $vbox, $request, $content);
+		$this->helperDisplayButtons($engine, $request, $vbox, $content);
 	}
 
 
