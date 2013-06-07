@@ -350,14 +350,14 @@ class WikiModule extends ContentModule
 			return FALSE;
 		//link
 		$request = $this->getContentRequest($engine, $content);
-		$this->helperDisplayRevisions($engine, $page, $request,
+		$this->helperDisplayRevisions($engine, $request, $page,
 				$content);
 		return $page;
 	}
 
 
 	//WikiModule::helperDisplayRevisions
-	protected function helperDisplayRevisions($engine, $page, $request,
+	protected function helperDisplayRevisions($engine, $request, $page,
 			$content)
 	{
 		$error = _('Could not list revisions');
