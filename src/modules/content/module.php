@@ -1246,7 +1246,7 @@ abstract class ContentModule extends Module
 		//link
 		$r = $this->getContentRequest($engine, $content);
 		//title
-		$this->helperDisplayTitle($engine, $page, $r, $content);
+		$this->helperDisplayTitle($engine, $request, $page, $content);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
@@ -1303,7 +1303,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplayTitle
-	protected function helperDisplayTitle($engine, $page, $request,
+	protected function helperDisplayTitle($engine, $request, $page,
 			$content)
 	{
 		$title = $content['title'];

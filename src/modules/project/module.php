@@ -1187,13 +1187,13 @@ class ProjectModule extends ContentModule
 	protected function helperDisplayBug($engine, $page, $content)
 	{
 		$project = $this->_get($engine, $content['project_id']);
-
 		$r = $this->getContentRequest($engine, $content);
 		$c = $content;
-		$c['title'] = $title = sprintf(_('#%u/%s: %s'),
-				$c['bug_id'], $project['title'], $c['title']);
+
 		//title
-		$this->helperDisplayTitle($engine, $page, $r, $c);
+		$c['title'] = sprintf(_('#%u/%s: %s'),
+				$c['bug_id'], $project['title'], $c['title']);
+		$this->helperDisplayTitle($engine, $request, $page, $c);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
@@ -1341,8 +1341,9 @@ class ProjectModule extends ContentModule
 			$content)
 	{
 		$r = $this->getContentRequest($engine, $content);
+
 		//title
-		$this->helperDisplayTitle($engine, $page, $r, $content);
+		$this->helperDisplayTitle($engine, $request, $page, $content);
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
@@ -1357,14 +1358,14 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayTitle
-	protected function helperDisplayTitle($engine, $page, $request,
+	protected function helperDisplayTitle($engine, $request, $page,
 			$content)
 	{
 		$title = _('Project: '.$content['title']);
 
 		$page->setProperty('title', $title);
 		$title = $page->append('title', array('stock' => $this->name,
-			'text' => $title));
+				'text' => $title));
 	}
 
 
