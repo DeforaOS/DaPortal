@@ -1252,7 +1252,8 @@ abstract class ContentModule extends Module
 		$vbox = $page->append('vbox');
 		$this->helperDisplayToolbar($engine, $vbox, $r, $content);
 		//meta-data
-		$this->helperDisplayMetadata($engine, $vbox, $r, $content);
+		$this->helperDisplayMetadata($engine, $request, $vbox,
+				$content);
 		//text
 		$this->helperDisplayText($engine, $request, $vbox, $content);
 		//buttons
@@ -1276,7 +1277,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplayMetadata
-	protected function helperDisplayMetadata($engine, $page, $request,
+	protected function helperDisplayMetadata($engine, $request, $page,
 			$content)
 	{
 		$r = new Request('user', FALSE, $content['user_id'],
