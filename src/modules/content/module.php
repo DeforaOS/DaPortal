@@ -1282,14 +1282,13 @@ abstract class ContentModule extends Module
 	{
 		$r = new Request('user', FALSE, $content['user_id'],
 			$content['username']);
-		$link = new PageElement('link', array('request' => $r,
+
+		$text = $this->text_content_by.' ';
+		$meta = $page->append('label', array('text' => $text));
+		$meta->append('link', array('request' => $r,
 				'text' => $content['username']));
-		$meta = $page->append('label', array(
-				'text' => $this->text_content_by.' '));
-		$meta->append($link);
-		$meta = $meta->append('label', array(
-				'text' => ' '.$this->text_content_on.' '
-				.$content['date']));
+		$text = ' '.$this->text_content_on.' '.$content['date'];
+		$meta = $meta->append('label', array('text' => $text));
 	}
 
 
