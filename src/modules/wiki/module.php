@@ -349,8 +349,7 @@ class WikiModule extends ContentModule
 				$content)) === FALSE)
 			return FALSE;
 		//link
-		$request = new Request($content['module'], FALSE,
-				$content['id'], $content['title']);
+		$request = $this->getContentRequest($engine, $content);
 		$this->helperDisplayRevisions($engine, $page, $request,
 				$content);
 		return $page;

@@ -320,6 +320,14 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::getContentRequest
+	protected function getContentRequest($engine, $content)
+	{
+		return new Request($content['module'], FALSE,
+				$content['id'], $content['title']);
+	}
+
+
 	//ContentModule::getToolbar
 	protected function getToolbar($engine, $request, $content = FALSE)
 	{
@@ -1235,8 +1243,7 @@ abstract class ContentModule extends Module
 		if($content === FALSE)
 			return FALSE;
 		//link
-		$request = new Request($content['module'], FALSE,
-				$content['id'], $content['title']);
+		$request = $this->getContentRequest($engine, $content);
 		//title
 		$this->helperDisplayTitle($engine, $page, $request, $content);
 		//toolbar

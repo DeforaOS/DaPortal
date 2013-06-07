@@ -1187,8 +1187,7 @@ class ProjectModule extends ContentModule
 	{
 		$project = $this->_get($engine, $content['project_id']);
 
-		$request = new Request($content['module'], FALSE,
-				$content['id'], $content['title']);
+		$request = $this->getContentRequest($engine, $content);
 		$c = $content;
 		$c['title'] = $title = sprintf(_('#%u/%s: %s'),
 				$c['bug_id'], $project['title'], $c['title']);
@@ -1339,8 +1338,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::helperDisplayProject
 	protected function helperDisplayProject($engine, $page, $content)
 	{
-		$request = new Request($content['module'], FALSE,
-				$content['id'], $content['title']);
+		$request = $this->getContentRequest($engine, $content);
 		//title
 		$this->helperDisplayTitle($engine, $page, $request, $content);
 		//toolbar
