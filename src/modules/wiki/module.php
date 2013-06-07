@@ -436,7 +436,7 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::helperDisplayText
-	protected function helperDisplayText($engine, $page, $request, $content)
+	protected function helperDisplayText($engine, $request, $page, $content)
 	{
 		$page->append('htmlview', array('text' => $content['content']));
 	}

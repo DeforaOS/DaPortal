@@ -1253,7 +1253,7 @@ abstract class ContentModule extends Module
 		//meta-data
 		$this->helperDisplayMetadata($engine, $vbox, $r, $content);
 		//text
-		$this->helperDisplayText($engine, $vbox, $r, $content);
+		$this->helperDisplayText($engine, $request, $vbox, $content);
 		//buttons
 		$this->helperDisplayButtons($engine, $request, $vbox, $content);
 		return $page;
@@ -1292,8 +1292,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplayText
-	protected function helperDisplayText($engine, $page, $request,
-			$content)
+	protected function helperDisplayText($engine, $request, $page, $content)
 	{
 		$text = $content['content'];
 

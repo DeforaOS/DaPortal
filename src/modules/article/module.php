@@ -51,7 +51,7 @@ class ArticleModule extends ContentModule
 	//methods
 	//helpers
 	//NewsModule::helperDisplayText
-	protected function helperDisplayText($engine, $page, $request, $content)
+	protected function helperDisplayText($engine, $request, $page, $content)
 	{
 		$text = $content['content'];
 

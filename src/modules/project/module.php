@@ -1201,7 +1201,7 @@ class ProjectModule extends ContentModule
 		$this->helperDisplayBugMetadata($engine, $vbox, $r, $content,
 				$project);
 		//content
-		$this->helperDisplayText($engine, $vbox, $r, $content);
+		$this->helperDisplayText($engine, $request, $vbox, $content);
 		//buttons
 		$r = new Request($this->name, 'bugReply', $content['id'],
 			$content['title']);

@@ -46,7 +46,7 @@ class BlogModule extends ContentModule
 	//protected
 	//methods
 	//BlogModule::helperDisplayText
-	protected function helperDisplayText($engine, $page, $request, $content)
+	protected function helperDisplayText($engine, $request, $page, $content)
 	{
 		$text = $content['content'];
 
