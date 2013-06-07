@@ -342,10 +342,11 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::helperDisplay
-	protected function helperDisplay($engine, $page, $content = FALSE)
+	protected function helperDisplay($engine, $request, $page,
+			$content = FALSE)
 	{
-		if(($page = parent::helperDisplay($engine, $page, $content))
-				=== FALSE)
+		if(($page = parent::helperDisplay($engine, $request, $page,
+				$content)) === FALSE)
 			return FALSE;
 		//link
 		$request = new Request($content['module'], FALSE,

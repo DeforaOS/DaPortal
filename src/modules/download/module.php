@@ -441,7 +441,8 @@ class DownloadModule extends ContentModule
 				'user_id' => -1, 'group_id' => -1,
 				'content' => '');
 			$page = new Page(array('title' => $content['title']));
-			return $this->helperDisplay($engine, $page, $content);
+			return $this->helperDisplay($engine, $request, $page,
+					$content);
 		}
 		return $this->callDisplay($engine, $request);
 	}
@@ -736,7 +737,8 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::helperDisplay
-	protected function helperDisplay($engine, $page, $content = FALSE)
+	protected function helperDisplay($engine, $request, $page,
+			$content = FALSE)
 	{
 		if($content === FALSE)
 			return;

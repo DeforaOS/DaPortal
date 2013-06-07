@@ -1170,7 +1170,8 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplay
-	protected function helperDisplay($engine, $page, $content = FALSE)
+	protected function helperDisplay($engine, $request, $page,
+			$content = FALSE)
 	{
 		if($content === FALSE)
 			return;

@@ -627,7 +627,7 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$page = new Page(array('title' => $content['title']));
-		$this->helperDisplay($engine, $page, $content);
+		$this->helperDisplay($engine, $request, $page, $content);
 		return $page;
 	}
 
@@ -1229,7 +1229,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplay
-	protected function helperDisplay($engine, $page, $content = FALSE)
+	protected function helperDisplay($engine, $request, $page,
+			$content = FALSE)
 	{
 		if($content === FALSE)
 			return FALSE;
