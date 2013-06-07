@@ -712,6 +712,7 @@ abstract class ContentModule extends Module
 			? new User($engine, $request->getId(),
 				$request->getTitle()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$pcnt = FALSE;
 		$error = _('Unable to list contents');
 
 		if($user === FALSE || ($uid = $user->getUserId()) == 0)
