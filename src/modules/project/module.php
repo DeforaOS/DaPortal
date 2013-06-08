@@ -360,7 +360,11 @@ class ProjectModule extends ContentModule
 		$query = $this->project_query_bug;
 
 		if($title !== FALSE)
-			$query .= ' AND title '.$db->like(FALSE, $title);
+		{
+			$title = str_replace('-', '_', $title);
+			$query .= ' AND daportal_content.title '
+				.$db->like(FALSE, $title);
+		}
 		if(($res = $db->query($engine, $query, array(
 					'content_id' => $id))) === FALSE
 				|| count($res) != 1)
@@ -423,7 +427,10 @@ class ProjectModule extends ContentModule
 		$args = array('module_id' => $this->id, 'content_id' => $id);
 
 		if($title !== FALSE)
+		{
+			$title = str_replace('-', '_', $title);
 			$query .= ' AND title '.$db->like(FALSE, $title);
+		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
@@ -1182,7 +1189,7 @@ class ProjectModule extends ContentModule
 		//toolbar
 		//FIXME pages should render as vbox by default
 		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
+		$this->helperDisplayToolbar($engine, $request, $vbox, $project);
 		$this->helperDisplayBugMetadata($engine, $request, $vbox,
 				$content, $project);
 		//content
