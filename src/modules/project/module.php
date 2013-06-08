@@ -354,11 +354,13 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::getBug
-	protected function getBug($engine, $id)
+	protected function getBug($engine, $id, $title = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_bug;
 
+		if($title !== FALSE)
+			$query .= ' AND title '.$db->like(FALSE, $title);
 		if(($res = $db->query($engine, $query, array(
 					'content_id' => $id))) === FALSE
 				|| count($res) != 1)
@@ -452,7 +454,7 @@ class ProjectModule extends ContentModule
 
 		if($id === FALSE)
 			return FALSE;
-		if(($bug = $this->getBug($engine, $id, $title)) !== FALSE)
+		if(($bug = $this->getBug($engine, $id)) !== FALSE)
 			$id = $bug['project_id'];
 		if(($project = $this->getProject($engine, $id, $title))
 				=== FALSE)
