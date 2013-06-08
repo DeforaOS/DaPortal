@@ -1176,7 +1176,7 @@ class ProjectModule extends ContentModule
 		if($content === FALSE)
 			return;
 		if(isset($content['bug_id']))
-			return $this->helperDisplayBug($engine, $page,
+			return $this->helperDisplayBug($engine, $request, $page,
 					$content);
 		return $this->helperDisplayProject($engine, $request, $page,
 				$content);
@@ -1184,10 +1184,9 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplayBug
-	protected function helperDisplayBug($engine, $page, $content)
+	protected function helperDisplayBug($engine, $request, $page, $content)
 	{
 		$project = $this->_get($engine, $content['project_id']);
-		$r = $this->getContentRequest($engine, $content);
 		$c = $content;
 
 		//title
