@@ -240,21 +240,6 @@ class ProjectModule extends ContentModule
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
 		AND project_id=:content_id";
-	protected $project_query_project_title = "SELECT
-		daportal_module.name AS module, project_id AS id,
-		title, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, scm,
-		cvsroot, daportal_content.enabled AS enabled
-		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_project.project_id=:content_id
-		AND daportal_content.title=:title";
 	protected $project_query_project_by_name = "SELECT
 		daportal_module.name AS module, project_id AS id,
 		title, daportal_user.user_id AS user_id,
@@ -436,10 +421,7 @@ class ProjectModule extends ContentModule
 		$args = array('module_id' => $this->id, 'content_id' => $id);
 
 		if($title !== FALSE)
-		{
-			$query = $this->project_query_project_title;
-			$args['title'] = $title;
-		}
+			$query .= ' AND title '.$db->like(FALSE, $title);
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
@@ -466,12 +448,14 @@ class ProjectModule extends ContentModule
 	protected function getToolbar($engine, $request, $content = FALSE)
 	{
 		$id = (isset($content['id'])) ? $content['id'] : FALSE;
+		$title = (isset($content['title'])) ? $content['title'] : FALSE;
 
 		if($id === FALSE)
 			return FALSE;
-		if(($bug = $this->getBug($engine, $id)) !== FALSE)
+		if(($bug = $this->getBug($engine, $id, $title)) !== FALSE)
 			$id = $bug['project_id'];
-		if(($project = $this->getProject($engine, $id)) === FALSE)
+		if(($project = $this->getProject($engine, $id, $title))
+				=== FALSE)
 			return FALSE;
 		$toolbar = new PageElement('toolbar');
 		$r = new Request($this->name, FALSE, $id, $project['title']);
@@ -615,8 +599,8 @@ class ProjectModule extends ContentModule
 		//XXX unlike ProjectModule::list() here getId() is the project
 		//determine the current project
 		if(($id = $request->getId()) !== FALSE
-				&& ($project = $this->getProject($engine, $id))
-				=== FALSE)
+				&& ($project = $this->getProject($engine, $id,
+					$request->getTitle())) === FALSE)
 			$error = _('Unknown project');
 		else if(($name = $request->getParameter('project')) !== FALSE
 				&& strlen($name))
