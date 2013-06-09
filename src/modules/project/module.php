@@ -95,6 +95,17 @@ class ProjectModule extends ContentModule
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
 		AND daportal_content.content_id=:content_id";
+	protected $project_query_bug_by_id = "SELECT
+		daportal_bug.content_id AS id,
+		title, content, timestamp, daportal_user.user_id AS user_id,
+		daportal_user.username AS username, bug_id,
+		project_id, state, type, priority, assigned
+		FROM daportal_content, daportal_bug, daportal_user
+		WHERE daportal_content.content_id=daportal_bug.content_id
+		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.enabled='1'
+		AND daportal_content.public='1'
+		AND daportal_bug.bug_id=:bug_id";
 	protected $project_query_list_admin_bugs = "SELECT
 		daportal_content.content_id AS id, bug_id,
 		daportal_content.enabled AS enabled,
@@ -266,14 +277,24 @@ class ProjectModule extends ContentModule
 		daportal_user.user_id AS user_id,
 		daportal_user.username AS username,
 		daportal_content.content_id AS id, title, content, synopsis,
-		scm, cvsroot, timestamp, bug_id,
-		daportal_bug.project_id AS project_id, state, type, priority,
-		assigned
+		scm, cvsroot, timestamp,
+		daportal_bug.bug_id AS bug_id,
+		daportal_bug.project_id AS project_id,
+		daportal_bug.state AS state, daportal_bug.type AS type,
+		daportal_bug.priority AS priority,
+		daportal_bug.assigned AS assigned,
+		bug_reply_id, daportal_bug_reply.bug_id AS bug_reply_bug_id,
+		daportal_bug_reply.state AS bug_reply_state,
+		daportal_bug_reply.type AS bug_reply_type,
+		daportal_bug_reply.priority AS bug_reply_priority,
+		daportal_bug_reply.assigned AS bug_reply_assigned
 		FROM daportal_module, daportal_user, daportal_content
 		LEFT JOIN daportal_project
 		ON daportal_content.content_id=daportal_project.project_id
 		LEFT JOIN daportal_bug
 		ON daportal_content.content_id=daportal_bug.content_id
+		LEFT JOIN daportal_bug_reply
+		ON daportal_content.content_id=daportal_bug_reply.content_id
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
@@ -347,8 +368,21 @@ class ProjectModule extends ContentModule
 			return FALSE;
 		$res = $res[0];
 		$res['date'] = $db->formatDate($engine, $res['timestamp']);
-		if(!is_numeric($res['bug_id']))
-			$res['project_id'] = $res['id'];
+		if(is_numeric($res['bug_reply_id']))
+		{
+			//bug reply
+			$res['bug_id'] = $res['bug_reply_bug_id'];
+			$res['state'] = $res['bug_reply_state'];
+			$res['type'] = $res['bug_reply_type'];
+			$res['priority'] = $res['bug_reply_priority'];
+			$res['assigned'] = $res['bug_reply_assigned'];
+			return $res;
+		}
+		if(is_numeric($res['bug_id']))
+			//bug
+			return $res;
+		//project
+		$res['project_id'] = $res['id'];
 		return $res;
 	}
 
@@ -367,6 +401,22 @@ class ProjectModule extends ContentModule
 				.$db->like(FALSE).' :title';
 			$args['title'] = $title;
 		}
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
+			return FALSE;
+		$res = $res[0];
+		$res['date'] = $db->formatDate($engine, $res['timestamp']);
+		return $res;
+	}
+
+
+	//ProjectModule::getBugById
+	protected function getBugById($engine, $id)
+	{
+		$db = $engine->getDatabase();
+		$query = $this->project_query_bug_by_id;
+		$args = array('bug_id' => $id);
+
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
@@ -1170,6 +1220,9 @@ class ProjectModule extends ContentModule
 	{
 		if($content === FALSE)
 			return;
+		if(isset($content['bug_reply_id']))
+			return $this->helperDisplayBugReply($engine, $request,
+					$page, $content);
 		if(isset($content['bug_id']))
 			return $this->helperDisplayBug($engine, $request, $page,
 					$content);
@@ -1269,6 +1322,29 @@ class ProjectModule extends ContentModule
 				'text' => $user->getUsername()));
 		else
 			$col4->append('label', array('text' => $sep));
+	}
+
+
+	//ProjectModule::helperDisplayBugReply
+	protected function helperDisplayBugReply($engine, $request, $page,
+			$content)
+	{
+		$bug = $this->getBugById($engine, $content['bug_id']);
+		$project = ($bug !== FALSE)
+			? $this->_get($engine, $bug['project_id']) : FALSE;
+
+		if($bug === FALSE || $project === FALSE)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => _('An error occurred')));
+			return;
+		}
+		//bug
+		$this->helperDisplayBug($engine, $request, $page, $bug);
+		$this->helperDisplayBugMetadata($engine, $request, $page,
+				$content, $project);
+		//content
+		$this->helperDisplayText($engine, $request, $page, $content);
 	}
 
 
