@@ -358,15 +358,16 @@ class ProjectModule extends ContentModule
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_bug;
+		$args = array('content_id' => $id);
 
 		if($title !== FALSE)
 		{
 			$title = str_replace('-', '_', $title);
 			$query .= ' AND daportal_content.title '
-				.$db->like(FALSE, $title);
+				.$db->like(FALSE).' :title';
+			$args['title'] = $title;
 		}
-		if(($res = $db->query($engine, $query, array(
-					'content_id' => $id))) === FALSE
+		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res[0];
@@ -429,7 +430,8 @@ class ProjectModule extends ContentModule
 		if($title !== FALSE)
 		{
 			$title = str_replace('-', '_', $title);
-			$query .= ' AND title '.$db->like(FALSE, $title);
+			$query .= ' AND title '.$db->like(FALSE).' :title';
+			$args['title'] = $title;
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
