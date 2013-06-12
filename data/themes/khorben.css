@@ -30,7 +30,8 @@ a {
 	color:				#662244;
 }
 
-button, input[type="button"], input[type="submit"], input[type="text"] {
+button, input[type="button"], input[type="password"], input[type="submit"],
+input[type="text"] {
 	border-width:			1px;
 }
 
