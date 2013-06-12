@@ -33,6 +33,8 @@ abstract class ContentModule extends Module
 	public function __construct($id, $name, $title = FALSE)
 	{
 		parent::__construct($id, $name, $title);
+		//variables
+		$this->helper_apply_args = array('module_id' => $id);
 		//translations
 		$this->text_content_admin = _('Content administration');
 		$this->text_content_by = _('Content by');
@@ -93,6 +95,7 @@ abstract class ContentModule extends Module
 	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_open_stock = 'read';
 	protected $content_preview_length = 150;
+	protected $helper_apply_args;
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_by = 'Content by';
 	protected $text_content_headline_title = 'Content headlines';
@@ -1220,7 +1223,8 @@ abstract class ContentModule extends Module
 			if(count($x) != 2 || $x[0] != $key
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('module_id' => $this->id, $key => $x[1]);
+			$args = $this->helper_apply_args;
+			$args[$key] = $x[1];
 			if(!$cred->isAdmin())
 				$args['user_id'] = $uid;
 			if(($res = $db->query($engine, $query, $args))
