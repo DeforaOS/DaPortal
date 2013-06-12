@@ -30,8 +30,18 @@ a {
 	color:				#662244;
 }
 
-button, input[type="button"], input[type="password"], input[type="submit"],
-input[type="text"] {
+a.button, button, input[type="button"], input[type="submit"] {
+	background-color:		#f7f7f7;
+	border:				1px solid #878787;
+	border-left:			1px solid #fcfcfc;
+	border-top:			1px solid #fcfcfc;
+	color:				#000000;
+	text-decoration:		none;
+	white-space:			nowrap;
+}
+
+a.button, button, input[type="button"], input[type="password"],
+input[type="submit"], input[type="text"] {
 	border-width:			1px;
 }
 
