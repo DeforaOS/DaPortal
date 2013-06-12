@@ -34,6 +34,7 @@ DROP TABLE daportal_user_register;
 DROP TABLE daportal_user;
 DROP TABLE daportal_group;
 DROP TABLE daportal_lang;
+DROP TABLE daportal_profile;
 DROP TABLE daportal_config;
 DROP TABLE daportal_config_enum_type;
 DROP TABLE daportal_module;
@@ -70,6 +71,24 @@ CREATE TABLE daportal_config_enum_type (
 INSERT INTO daportal_config_enum_type (name) VALUES ('bool');
 INSERT INTO daportal_config_enum_type (name) VALUES ('int');
 INSERT INTO daportal_config_enum_type (name) VALUES ('string');
+
+
+CREATE TABLE daportal_profile (
+	profile_id INTEGER PRIMARY KEY,
+	timestamp TIMESTAMP DEFAULT NULL,
+	load1 INTEGER NOT NULL,
+	load5 INTEGER NOT NULL,
+	load15 INTEGER NOT NULL,
+	time INTEGER NOT NULL,
+	mem_usage INTEGER NOT NULL,
+	mem_usage_real INTEGER NOT NULL,
+	mem_peak INTEGER NOT NULL,
+	mem_peak_real INTEGER NOT NULL
+);
+CREATE TRIGGER daportal_profile_insert_timestamp AFTER INSERT ON daportal_profile
+BEGIN
+	UPDATE daportal_profile SET timestamp = datetime('now') WHERE profile_id = NEW.profile_id;
+END;
 
 
 CREATE TABLE daportal_lang (

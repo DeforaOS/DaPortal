@@ -26,6 +26,13 @@ $config->load($daportalconf);
 //compatibility fixes
 require_once('./system/compat.php');
 
+//profiling
+if(($profile = $config->getVariable(FALSE, 'profile')))
+{
+	require_once('./system/profile.php');
+	Profile::start();
+}
+
 require_once('./system/engine.php');
 if(($engine = Engine::attachDefault()) !== FALSE
 		&& ($request = $engine->getRequest()) !== FALSE)
@@ -34,6 +41,8 @@ if(($engine = Engine::attachDefault()) !== FALSE
 	$engine->render($page);
 }
 $ret = $engine->getReturn();
+if($profile)
+	Profile::stop($engine);
 unset($engine);
 exit($ret);
 

@@ -1,5 +1,8 @@
 #$Id$
+#uncomment to collect debugging information
 #debug=1
+#uncomment to collect profiling information
+#profile=1
 #prefix=@PREFIX@
 theme=DaPortal
 icontheme=gnome

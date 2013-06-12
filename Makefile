@@ -208,6 +208,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/mime.php \
 		$(PACKAGE)-$(VERSION)/src/system/module.php \
 		$(PACKAGE)-$(VERSION)/src/system/page.php \
+		$(PACKAGE)-$(VERSION)/src/system/profile.php \
 		$(PACKAGE)-$(VERSION)/src/system/request.php \
 		$(PACKAGE)-$(VERSION)/src/system/template.php \
 		$(PACKAGE)-$(VERSION)/src/system/user.php \
