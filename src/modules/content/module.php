@@ -767,29 +767,27 @@ abstract class ContentModule extends Module
 			'size' => 16, 'title' => _('Enabled')));
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
-			$row = $treeview->append('row');
-			$row->setProperty('id', 'content_id:'.$res[$i]['id']);
 			//title
 			$r = new Request($this->name, FALSE, $res[$i]['id'],
 				$res[$i]['title']);
 			$link = new PageElement('link', array('request' => $r,
 				'text' => $res[$i]['title']));
-			$row->setProperty('title', $link);
-			$row->setProperty('enabled', $db->isTrue(
-					$res[$i]['enabled']) ? $yes : $no);
+			$res[$i]['title'] = $link;
+			$res[$i]['enabled'] = $db->isTrue($res[$i]['enabled'])
+				? $yes : $no;
 			//username
 			$r = new Request('user', FALSE, $res[$i]['user_id'],
 				$res[$i]['username']);
 			$link = new PageElement('link', array('request' => $r,
 					'stock' => 'user',
 					'text' => $res[$i]['username']));
-			$row->setProperty('username', $link);
-			$date = $db->formatDate($engine, $res[$i]['timestamp']);
-			$row->setProperty('date', $date);
-			//XXX hack for ProjectModule
-			if(isset($res[$i]['synopsis']))
-				$row->setProperty('synopsis',
-						$res[$i]['synopsis']);
+			$res[$i]['username'] = $link;
+			//date
+			$res[$i]['date'] = $db->formatDate($engine,
+				$res[$i]['timestamp']);
+			//id
+			$res[$i]['id'] = 'content_id:'.$res[$i]['id'];
+			$treeview->append('row', $res[$i]);
 		}
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
