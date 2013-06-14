@@ -54,8 +54,9 @@ class Content
 		if(!is_numeric($module_id) || !is_numeric($content_id))
 			return $engine->log('LOG_ERR',
 					'Invalid content to delete');
-		if($db->query($engine, $query, array('module_id' => $module_id,
-				'content_id' => $content_id)) === FALSE)
+		$args = array('module_id' => $module_id,
+			'content_id' => $content_id);
+		if($db->query($engine, $query, $args) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not delete content');
 		return TRUE;
@@ -105,11 +106,11 @@ class Content
 				|| !is_bool($enabled) || !is_bool($public))
 			return $engine->log('LOG_ERR',
 					'Invalid content to insert');
-		if($db->query($engine, $query, array('module_id' => $module_id,
-				'user_id' => $cred->getUserId(),
-				'title' => $title, 'content' => $content,
-				'enabled' => $enabled, 'public' => $public))
-				=== FALSE)
+		$args = array('module_id' => $module_id,
+			'user_id' => $cred->getUserId(),
+			'title' => $title, 'content' => $content,
+			'enabled' => $enabled, 'public' => $public);
+		if($db->query($engine, $query, $args) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not insert content');
 		$id = $db->getLastId($engine, 'daportal_content', 'content_id');

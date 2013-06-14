@@ -1411,10 +1411,9 @@ class UserModule extends Module
 			return $ret;
 		//update the profile
 		$error = '';
-		if($db->query($engine, $this->query_update, array(
-				'user_id' => $user->getUserId(),
-				'fullname' => $fullname,
-				'email' => $email)) === FALSE)
+		$args = array('user_id' => $user->getUserId(),
+			'fullname' => $fullname, 'email' => $email);
+		if($db->query($engine, $this->query_update, $args) === FALSE)
 			return _('Could not update the profile');
 		//update the password if requested
 		if(($password1 = $request->getParameter('password1')) === FALSE
@@ -1576,8 +1575,8 @@ class UserModule extends Module
 			if(count($x) != 2 || $x[0] != 'user_id'
 					|| !is_numeric($x[1]))
 				continue;
-			$res = $db->query($engine, $query, array(
-					'user_id' => $x[1]));
+			$args = array('user_id' => $x[1]);
+			$res = $db->query($engine, $query, $args);
 			if($res !== FALSE)
 				continue;
 			$type = 'error';

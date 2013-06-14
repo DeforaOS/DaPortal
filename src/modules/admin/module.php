@@ -260,8 +260,8 @@ class AdminModule extends Module
 			if(count($x) != 2 || $x[0] != 'module_id'
 					|| !is_numeric($x[1]))
 				continue;
-			$res = $db->query($engine, $query, array(
-					'module_id' => $x[1]));
+			$args = array('module_id' => $x[1]);
+			$res = $db->query($engine, $query, $args);
 			if($res !== FALSE)
 				continue;
 			$type = 'error';

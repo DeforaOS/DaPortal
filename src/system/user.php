@@ -114,11 +114,11 @@ class User
 	public function setEnabled($engine, $enabled)
 	{
 		$db = $engine->getDatabase();
+		$query = $this->query_set_enabled;
+		$args = array('user_id' => $this->user_id,
+			'enabled' => $enabled ? 1 : 0);
 
-		$res = $db->query($engine, $this->query_set_enabled, array(
-					'user_id' => $this->user_id,
-					'enabled' => $enabled ? 1 : 0));
-		return ($res !== FALSE);
+		return ($db->query($engine, $query, $args) !== FALSE);
 	}
 
 
@@ -126,13 +126,13 @@ class User
 	public function setPassword($engine, $password)
 	{
 		$db = $engine->getDatabase();
+		$query = $this->query_set_password;
 
 	       	//XXX seems to default to sh-md5 (should be configurable)
 		$hash = crypt($password);
-		$res = $db->query($engine, $this->query_set_password, array(
-					'user_id' => $this->user_id,
-					'password' => $hash));
-		return ($res !== FALSE);
+		$args = array('user_id' => $this->user_id,
+			'password' => $hash);
+		return ($db->query($engine, $query, $args) !== FALSE);
 	}
 
 
@@ -141,11 +141,11 @@ class User
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_authenticate;
+		$args = array('username' => $this->username);
 
 		//obtain the password hash
-		$res = $db->query($engine, $query, array(
-					'username' => $this->username));
-		if($res === FALSE || count($res) != 1)
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
 			return FALSE;
 		$res = $res[0];
 		if(strlen($res['password']) > 0 && $res['password'][0] == '$')
@@ -190,9 +190,10 @@ class User
 	static public function disable($engine, $uid)
 	{
 		$db = $engine->getDatabase();
+		$query = User::$query_disable;
+		$args = array('user_id' => $uid);
 
-		return ($db->query($engine, User::$query_disable,
-				array('user_id' => $uid)) !== FALSE)
+		return ($db->query($engine, $query, $args) !== FALSE)
 			? TRUE : FALSE;
 	}
 
@@ -201,9 +202,10 @@ class User
 	static public function enable($engine, $uid)
 	{
 		$db = $engine->getDatabase();
+		$query = User::$query_enable;
+		$args = array('user_id' => $uid);
 
-		return ($db->query($engine, User::$query_enable,
-				array('user_id' => $uid)) !== FALSE)
+		return ($db->query($engine, $query, $args) !== FALSE)
 			? TRUE : FALSE;
 	}
 
@@ -214,6 +216,7 @@ class User
 	{
 		//FIXME code duplication with User::register()
 		$db = $engine->getDatabase();
+		$query = User::$query_insert;
 		$error = '';
 
 		//FIXME really validate username
@@ -231,13 +234,11 @@ class User
 			$password = '';
 		else
 			$password = crypt($password);
-		$res = $db->query($engine, User::$query_insert,
-				array('username' => $username,
-					'fullname' => $fullname,
-					'password' => $password,
-					'email' => $email,
-					'enabled' => $enabled ? 1 : 0,
-					'admin' => $admin ? 1 : 0));
+		$args = array('username' => $username, 'fullname' => $fullname,
+			'password' => $password, 'email' => $email,
+			'enabled' => $enabled ? 1 : 0,
+		       	'admin' => $admin ? 1 : 0);
+		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || ($uid = $db->getLastId($engine,
 						'daportal_user', 'user_id'))
 				=== FALSE)
@@ -261,12 +262,12 @@ class User
 	{
 		$db = $engine->getDatabase();
 		$query = User::$query_get_by_username;
+		$args = array('username' => $username);
 		static $cache = array();
 
 		if(isset($cache[$username]))
 			return $cache[$username];
-		if(($res = $db->query($engine, $query, array(
-				'username' => $username))) === FALSE
+		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res[0];
@@ -309,10 +310,10 @@ class User
 			$error = _('Could not register the user');
 			return FALSE;
 		}
-		$res = $db->query($engine, User::$query_register,
-				array('username' => $username,
-					'email' => $email,
-					'enabled' => $enabled ? 1 : 0));
+		$query = User::$query_register;
+		$args = array('username' => $username, 'email' => $email,
+			'enabled' => $enabled ? 1 : 0);
+		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || ($uid = $db->getLastId($engine,
 						'daportal_user', 'user_id'))
 				=== FALSE)
@@ -330,17 +331,16 @@ class User
 		}
 		if($enabled === FALSE)
 		{
+			$query = User::$query_register_token;
 			//let the user confirm registration
 			if($password === FALSE)
 				//generate a random password
 				$password = User::password_new();
 			//generate a token
 			$token = sha1(uniqid($password, TRUE));
+			$args = array('user_id' => $uid, 'token' => $token);
 			if($user->setPassword($engine, $password) === FALSE
-				|| $db->query($engine,
-						User::$query_register_token,
-						array('user_id' => $uid,
-						'token' => $token)) === FALSE)
+				|| $db->query($engine, $query, $args) === FALSE)
 			{
 				$db->transactionRollback($engine);
 				$error = _('Could not register the user');
@@ -374,9 +374,9 @@ class User
 		$error = '';
 
 		//verify the username and e-mail address
-		$res = $db->query($engine, User::$query_reset_validate,
-				array('username' => $username,
-					'email' => $email));
+		$query = User::$query_reset_validate;
+		$args = array('username' => $username, 'email' => $email);
+		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
 		{
 			//XXX consider silently failing (to avoid bruteforcing)
@@ -384,12 +384,12 @@ class User
 			return FALSE;
 		}
 		$res = $res[0];
+		$query = User::$query_reset_token;
 		$uid = $res['user_id'];
 		//generate a token
 		$token = sha1(uniqid($uid.$username.$email, TRUE));
-		$res = $db->query($engine, User::$query_reset_token,
-			array('user_id' => $uid, 'token' => $token));
-		if($res === FALSE)
+		$args = array('user_id' => $uid, 'token' => $token);
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 		{
 			$error = _('Could not reset the password');
 			return FALSE;
@@ -418,16 +418,18 @@ class User
 		if($db->transactionBegin($engine) === FALSE)
 			return FALSE;
 	       	//delete password reset requests older than one day
+		$query = User::$query_reset_cleanup;
 		$timestamp = strftime(User::$timestamp_format, time() - 86400);
-		if($db->query($engine, User::$query_reset_cleanup, array(
-					'timestamp' => $timestamp)) === FALSE)
+		$args = array('timestamp' => $timestamp);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			return FALSE;
 		}
 		//lookup the token
-		$res = $db->query($engine, User::$query_reset_validate_token,
-				array('user_id' => $uid, 'token' => $token));
+		$query = User::$query_reset_validate_token;
+		$args = array('user_id' => $uid, 'token' => $token);
+		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
 		{
 			$db->transactionRollback($engine);
@@ -439,9 +441,9 @@ class User
 			$db->transactionRollback($engine);
 			return FALSE;
 		}
-		if($db->query($engine, User::$query_reset_delete, array(
-					'user_id' => $uid, 'token' => $token))
-				=== FALSE)
+		$query = User::$query_reset_delete;
+		$args = array('user_id' => $uid, 'token' => $token);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			return FALSE;
@@ -466,15 +468,17 @@ class User
 		if(strlen($error) > 0)
 			return FALSE;
 		//delete registrations older than one week
+		$query = User::$query_register_cleanup;
 		$timestamp = strftime(User::$timestamp_format, time() - 604800);
-		if($db->query($engine, User::$query_register_cleanup, array(
-					'timestamp' => $timestamp)) === FALSE)
+		$args = array('timestamp' => $timestamp);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = _("Could not validate the user\n");
 			return FALSE;
 		}
-		$res = $db->query($engine, User::$query_register_validate,
-				array('user_id' => $uid, 'token' => $token));
+		$query = User::$query_register_validate;
+		$args = array('user_id' => $uid, 'token' => $token);
+		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
 		{
 			$error = _('Could not validate the user');
@@ -487,17 +491,16 @@ class User
 			return FALSE;
 		}
 		$query = User::$query_register_delete;
-		if($db->query($engine, $query, array('user_register_id'
-					=> $res['user_register_id']))
-				=== FALSE)
+		$args = array('user_register_id' => $res['user_register_id']);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			$error = _('Could not validate the user');
 			return FALSE;
 		}
-		if($db->query($engine, User::$query_register_delete, array(
-				'user_register_id' => $res['user_register_id']))
-				=== FALSE)
+		$query = User::$query_register_delete;
+		$args = array('user_register_id' => $res['user_register_id']);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			$error = _('Could not validate the user');

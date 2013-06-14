@@ -456,6 +456,7 @@ abstract class ContentModule extends Module
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_list_admin;
+		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
 		$actions = array('delete', 'disable', 'enable', 'post');
@@ -496,8 +497,7 @@ abstract class ContentModule extends Module
 		{
 			//obtain the total number of records available
 			$q = $this->query_list_admin_count;
-			if(($res = $db->query($engine, $q, array(
-					'module_id' => $this->id))) !== FALSE
+			if(($res = $db->query($engine, $q, $args)) !== FALSE
 					&& count($res) == 1)
 				$pcnt = $res[0][0];
 			if($pcnt !== FALSE)
@@ -512,7 +512,6 @@ abstract class ContentModule extends Module
 				$query .= $db->offset($limit, $offset);
 			}
 		}
-		$args = array('module_id' => $this->id);
 		$error = _('Unable to list contents');
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
@@ -548,6 +547,7 @@ abstract class ContentModule extends Module
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_list;
+		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
 
@@ -563,8 +563,7 @@ abstract class ContentModule extends Module
 		{
 			//obtain the total number of records available
 			$q = $this->query_list_count;
-			if(($res = $db->query($engine, $q, array(
-					'module_id' => $this->id))) !== FALSE
+			if(($res = $db->query($engine, $q, $args)) !== FALSE
 					&& count($res) == 1)
 				$pcnt = $res[0][0];
 			if($pcnt !== FALSE)
@@ -576,8 +575,7 @@ abstract class ContentModule extends Module
 			}
 		}
 		//query
-		if(($res = $db->query($engine, $query, array(
-				'module_id' => $this->id))) === FALSE)
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 		{
 			$error = _('Unable to list contents');
 			$page->append('dialog', array('type' => 'error',
@@ -662,6 +660,7 @@ abstract class ContentModule extends Module
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_list;
+		$args = array('module_id' => $this->id);
 		$title = $this->text_content_headline_title;
 
 		//view
@@ -674,8 +673,7 @@ abstract class ContentModule extends Module
 			? $this->content_headline_count : 6;
 		$query .= ' ORDER BY timestamp DESC LIMIT '.$count;
 		$error = _('Unable to list contents');
-		if(($res = $db->query($engine, $query, array(
-					'module_id' => $this->id))) === FALSE)
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//rows
@@ -879,9 +877,12 @@ abstract class ContentModule extends Module
 
 	protected function _publishProcess($engine, $request, $content)
 	{
+		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$query = $this->query_post;
-		$cred = $engine->getCredentials();
+		$args = array('module_id' => $this->id,
+			'content_id' => $content['id'],
+			'user_id' => $cred->getUserId());
 
 		//verify the request
 		if($request->getParameter('publish') === FALSE)
@@ -889,10 +890,7 @@ abstract class ContentModule extends Module
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//publish the content
-		if($db->query($engine, $query, array('module_id' => $this->id,
-					'content_id' => $content['id'],
-					'user_id' => $cred->getUserId()))
-				=== FALSE)
+		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
 		return FALSE;
 	}

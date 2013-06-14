@@ -67,10 +67,10 @@ class PgsqlDatabase extends Database
 	public function enum($engine, $table, $field)
 	{
 		$query = $this->query_enum;
-		if(($res = $this->query($engine, $query, array(
-					'table' => $table,
-					'field' => $table.'_'.$field)))
-				=== FALSE)
+		$args = array('table' => $table,
+			'field' => $table.'_'.$field);
+
+		if(($res = $this->query($engine, $query, $args)) === FALSE)
 			return array();
 		$res = explode("'", $res[0]['constraint']);
 		$str = array();
@@ -123,7 +123,7 @@ class PgsqlDatabase extends Database
 
 
 	//PgsqlDatabase::query
-	public function query($engine, $query, $parameters = FALSE)
+	public function query($engine, $query, &$parameters = FALSE)
 	{
 		global $config;
 
@@ -236,8 +236,9 @@ class PgsqlDatabase extends Database
 
 
 	//PgsqlDatabase::prepare
-	protected function prepare($query, $parameters = FALSE)
+	protected function prepare($query, &$parameters = FALSE)
 	{
+		//FIXME use a class property instead
 		static $statements = array();
 
 		if(isset($statements[$query]))

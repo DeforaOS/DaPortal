@@ -545,9 +545,9 @@ class DownloadModule extends ContentModule
 			$db->transactionRollback($engine);
 			return _('Internal server error');
 		}
-		if($db->query($engine, $query, array(
-				'content_id' => $content->getId(),
-				'parent' => $parent)) === FALSE)
+		$args = array('content_id' => $content->getId(),
+			'parent' => $parent);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			return _('Internal server error');
@@ -671,10 +671,9 @@ class DownloadModule extends ContentModule
 				TRUE, TRUE);
 		if($content === FALSE)
 			return _('Internal server error');
-		if($db->query($engine, $query, array(
-				'content_id' => $content->getId(),
-				'parent' => $parent,
-				'mode' => 420)) === FALSE)
+		$args = array('content_id' => $content->getId(),
+			'parent' => $parent, 'mode' => 420);
+		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
 		//store the file
 		if(($id = $db->getLastId($engine, 'daportal_download',

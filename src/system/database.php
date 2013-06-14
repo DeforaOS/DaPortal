@@ -163,7 +163,7 @@ abstract class Database
 	abstract public function getLastId($engine, $table, $field);
 
 	abstract public function enum($engine, $table, $field);
-	abstract public function query($engine, $query, $parameters = FALSE);
+	abstract public function query($engine, $query, &$parameters = FALSE);
 
 
 	//protected
@@ -192,65 +192,6 @@ abstract class Database
 		}
 		//FIXME should really use preg_replace() with proper matching
 		return str_replace($from, $to, $query);
-	}
-}
-
-
-//DatabaseDummy
-class DatabaseDummy extends Database
-{
-	//public
-	//methods
-	//accessors
-	//DatabaseDummy::getLastId
-	public function getLastId($engine, $table, $field)
-	{
-		//always fail
-		return FALSE;
-	}
-
-
-	//useful
-	//DatabaseDummy::enum
-	public function enum($engine, $table, $field)
-	{
-		//always fail
-		return FALSE;
-	}
-
-
-	//DatabaseDummy::query
-	public function query($engine, $query, $parameters = FALSE)
-	{
-		//always fail
-		return FALSE;
-	}
-
-
-	//protected
-	//methods
-	//essential
-	//DatabaseDummy::match
-	protected function match($engine)
-	{
-		//never match
-		return 0;
-	}
-
-
-	//DatabaseDummy::attach
-	protected function attach($engine)
-	{
-		//always succeed
-		return TRUE;
-	}
-
-
-	//useful
-	//DatabaseDummy::escape
-	protected function escape($string)
-	{
-		return str_replace("'", "''", $string);
 	}
 }
 

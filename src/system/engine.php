@@ -55,16 +55,15 @@ abstract class Engine
 	//Engine::getDatabase
 	public function getDatabase()
 	{
-		if($this->database === FALSE)
-		{
-			require_once('./system/database.php');
-			if(($this->database = Database::attachDefault($this))
-					=== FALSE)
-			{
-				$this->database = new DatabaseDummy;
-				$this->ret = 2;
-			}
-		}
+		if($this->database !== FALSE)
+			return $this->database;
+		require_once('./system/database.php');
+		if(($this->database = Database::attachDefault($this))
+				!== FALSE)
+			return $this->database;
+		require_once('./database/dummy.php');
+		$this->database = new DummyDatabase;
+		$this->ret = 2;
 		return $this->database;
 	}
 

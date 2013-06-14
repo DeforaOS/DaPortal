@@ -459,9 +459,9 @@ class ProjectModule extends ContentModule
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_members;
+		$args = array('project_id' => $project['id']);
 
-		if(($res = $db->query($engine, $query, array(
-				'project_id' => $project['id']))) === FALSE)
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return FALSE;
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 			$res[$i]['admin'] = ($db->isTrue($res[$i]['admin']))
@@ -495,10 +495,9 @@ class ProjectModule extends ContentModule
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_project_by_name;
+		$args = array('module_id' => $this->id, 'title' => $name);
 
-		if(($res = $db->query($engine, $query, array(
-					'module_id' => $this->id,
-					'title' => $name))) === FALSE
+		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		return $res[0];
@@ -826,8 +825,8 @@ class ProjectModule extends ContentModule
 			$page->append($download);
 		//downloads
 		$error = 'Could not list downloads';
-		if(($res = $db->query($engine, $query, array(
-				'project_id' => $project['id']))) === FALSE)
+		$args = array('project_id' => $project['id']);
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
 		else
@@ -906,8 +905,8 @@ class ProjectModule extends ContentModule
 		$page->append($toolbar);
 		//screenshots
 		$error = _('Could not list screenshots');
-		if(($res = $db->query($engine, $query, array(
-				'project_id' => $project['id']))) === FALSE)
+		$args = array('project_id' => $project['id']);
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
 		else
@@ -971,10 +970,9 @@ class ProjectModule extends ContentModule
 			$synopsis = '';
 		if(($cvsroot = $request->getParameter('cvsroot')) === FALSE)
 			$cvsroot = '';
-		if($db->query($engine, $query, array(
-				'project_id' => $content->getId(),
-				'synopsis' => $synopsis,
-				'cvsroot' => $cvsroot)) === FALSE)
+		$args = array('project_id' => $content->getId(),
+			'synopsis' => $synopsis, 'cvsroot' => $cvsroot);
+		if($db->query($engine, $query, $args) === FALSE)
 		{
 			//XXX use a transaction instead
 			Content::delete($engine, $this->id, $content->getId());
@@ -1036,23 +1034,23 @@ class ProjectModule extends ContentModule
 			array('submit' => 'submit'));
 		$r->setIdempotent(FALSE);
 		if($engine->process($r, TRUE) === FALSE)
-			return 'Internal server error';
+			return _('Internal server error');
 		//XXX ugly (and race condition)
 		//XXX using download_id to workaround a bug in getLastId()
 		if(($did = $db->getLastId($engine, 'daportal_download',
 				'download_id')) === FALSE)
-			return 'Internal server error';
+			return _('Internal server error');
 		$q = 'SELECT content_id AS id FROM daportal_download'
 			.' WHERE download_id=:download_id';
-		if(($res = $db->query($engine, $q, array(
-				'download_id' => $did))) === FALSE
+		$args = array('download_id' => $did);
+		if(($res = $db->query($engine, $q, $args)) === FALSE
 				|| count($res) != 1)
-			return 'Internal server error';
+			return _('Internal server error');
 		$did = $res[0]['id'];
-		if($db->query($engine, $query, array(
-				'project_id' => $project['id'],
-				'download_id' => $did)) === FALSE)
-			return 'Internal server error';
+		$args = array('project_id' => $project['id'],
+			'download_id' => $did);
+		if($db->query($engine, $query, $args) === FALSE)
+			return _('Internal server error');
 		$content = Content::get($engine, $this->id, $project['id'],
 				$project['title']);
 		return FALSE;
@@ -1109,9 +1107,9 @@ class ProjectModule extends ContentModule
 			return $res;
 		//update the project
 		$synopsis = $request->getParameter('synopsis');
-		if($db->query($engine, $query, array(
-				'project_id' => $content['id'],
-				'synopsis' => $synopsis)) === FALSE)
+		$args = array('project_id' => $content['id'],
+			'synopsis' => $synopsis);
+		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
 		return FALSE;
 	}
