@@ -216,8 +216,8 @@ class WikiModule extends ContentModule
 		if($root === FALSE)
 			return _('Internal server error');
 		//XXX check first if this title already exists for this module
-		$rcsfile = $root.'/RCS/'.$title.',v';
-		if(file_exists($rcsfile))
+		$file = $root.'/'.$title;
+		if(file_exists($file.',v'))
 			return _('Internal server error');
 		if(!HTML::validate($engine, '<div>'.$text.'</div>'))
 			return _('Document not valid');
@@ -226,7 +226,6 @@ class WikiModule extends ContentModule
 			return _('Internal server error');
 		$request->setParameter('public', TRUE);
 		$res = parent::_submitProcess($engine, $request, $content);
-		$file = $root.'/'.$title;
 		if($res === FALSE && ($fp = fopen($file, 'x')) !== FALSE)
 		{
 			$message = $request->getParameter('message');
@@ -287,14 +286,13 @@ class WikiModule extends ContentModule
 			return _('Invalid title for this page');
 		if(!HTML::validate($engine, '<div>'.$content['content'].'</div>'))
 			return _('Document not valid');
-		$rcsfile = $root.'/RCS/'.$content['title'].',v';
-		if(!file_exists($rcsfile))
+		$file = $root.'/'.$content['title'];
+		if(realpath($file.',v') === FALSE)
 			return _('Missing RCS file');
 		//update the content
 		if($db->transactionBegin($engine) === FALSE)
 			return _('Internal server error');
 		$res = parent::_updateProcess($engine, $r, $content);
-		$file = $root.'/'.$content['title'];
 		if($res === FALSE && ($fp = fopen($file, 'x')) !== FALSE)
 		{
 			$message = $request->getParameter('message');
