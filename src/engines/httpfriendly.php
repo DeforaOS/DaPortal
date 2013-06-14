@@ -122,8 +122,8 @@ class HttpFriendlyEngine extends HttpEngine
 			return FALSE;
 		$name = $_SERVER['SCRIPT_NAME'];
 		//use the kicker instead if defined
-		if(($kicker = $config->getVariable('engine::httpfriendly',
-				'kicker')) !== FALSE)
+		if(($kicker = $config->getVariable($this->section, 'kicker'))
+				!== FALSE)
 			$name = dirname($name).'/'.$kicker;
 		$name = ltrim($name, '/');
 		if($absolute)
@@ -160,8 +160,7 @@ class HttpFriendlyEngine extends HttpEngine
 			if($action === FALSE && $id === FALSE)
 				$url .= '/default';
 			$title = str_replace(array(' ', '?'), '-', $title);
-			if($config->getVariable('engine::httpfriendly',
-					'lowercase'))
+			if($config->getVariable($this->section, 'lowercase'))
 				$title = strtolower($title);
 			$url .= '/'.$title;
 		}
@@ -182,6 +181,11 @@ class HttpFriendlyEngine extends HttpEngine
 		}
 		return $url;
 	}
+
+
+	//private
+	//properties
+	private $section = 'engine::httpfriendly';
 }
 
 ?>
