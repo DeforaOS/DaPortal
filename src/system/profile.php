@@ -34,13 +34,19 @@ class Profile
 	{
 		$database = $engine->getDatabase();
 		$query = Profile::$query_insert;
-		$load = sys_getloadavg();
+		if(function_exists('sys_getloadavg'))
+		{
+			$load = sys_getloadavg();
+			$load[0] = round($load[0] * 1000);
+			$load[1] = round($load[1] * 1000);
+			$load[2] = round($load[2] * 1000);
+		}
+		else
+			$load = array(NULL, NULL, NULL);
 		$time = (Profile::$time !== FALSE)
 			? microtime(TRUE) - Profile::$time : NULL;
-		$args = array('load1' => round($load[0] * 1000),
-			'load5' => round($load[1] * 1000),
-			'load15' => round($load[2] * 1000),
-			'time' => round($time * 1000),
+		$args = array('load1' => $load[0], 'load5' => $load[1],
+			'load15' => $load[2], 'time' => round($time * 1000),
 			'mem_usage' => memory_get_usage(),
 			'mem_usage_real' => memory_get_usage(TRUE),
 			'mem_peak' => memory_get_peak_usage(),
