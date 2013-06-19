@@ -144,9 +144,7 @@ class PgsqlDatabase extends Database
 					|| $q[$i][$j] == '_'); $j++);
 			$k = substr($q[$i], 0, $j);
 			if(!isset($parameters[$k]))
-				return $engine->log('LOG_ERR',
-						'Incomplete SQL statement '
-						."($k key not set)");
+				$parameters[$k] = NULL;
 			$query .= "\$$i ".substr($q[$i], $j);
 			if(is_bool($parameters[$k]))
 				$args[$i] = $parameters[$k] ? '1' : '0';
