@@ -324,6 +324,10 @@ form.treeview div.header span.detail {
 	text-align:			left;
 }
 
+form.treeview.alternate > div.table > div.row:nth-child(odd) {
+	background-color:		#f0f0f0;
+}
+
 
 /* small screens */
 @media screen and (max-width: 80ex) {
