@@ -65,7 +65,7 @@ class PdoDatabase extends Database
 
 
 	//PdoDatabase::prepare
-	public function prepare($query, $parameters = FALSE)
+	public function prepare($query, &$parameters = FALSE)
 	{
 		static $statements = array();
 
@@ -85,7 +85,7 @@ class PdoDatabase extends Database
 			return FALSE;
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
-		if(($stmt = $this->prepare($query)) === FALSE)
+		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 		{
 			$error = $this->handle->errorInfo();
 			$error[] = '';

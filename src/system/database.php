@@ -177,11 +177,11 @@ abstract class Database
 
 	//useful
 	//Database::prepare
-	protected function prepare($query, $parameters = FALSE)
+	protected function prepare($query, &$parameters = FALSE)
 	{
 		if($parameters === FALSE)
 			$parameters = array();
-		if(!is_array($parameters))
+		else if(!is_array($parameters))
 			return FALSE;
 		$from = array();
 		$to = array();

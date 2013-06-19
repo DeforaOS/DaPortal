@@ -67,7 +67,7 @@ class SQLite3Database extends Database
 			return FALSE;
 		if($config->getVariable('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
-		if(($stmt = $this->prepare($query)) === FALSE)
+		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not prepare statement: '
 					.$this->handle->lastErrorMsg());
@@ -141,6 +141,7 @@ class SQLite3Database extends Database
 	//SQLite3Database::prepare
 	public function prepare($query, &$parameters = FALSE)
 	{
+		//FIXME use a class property instead
 		static $statements = array();
 
 		if(isset($statements[$query]))
