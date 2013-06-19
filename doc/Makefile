@@ -1,4 +1,4 @@
-SUBDIRS	= sql
+SUBDIRS	= apache sql
 TARGETS	= daportal.1 daportal.html daportal.conf daportal.conf.5 daportal.conf.html install.html internals.html
 PREFIX	= /usr/local
 DESTDIR	=
