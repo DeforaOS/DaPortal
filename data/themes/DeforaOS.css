@@ -346,8 +346,8 @@ form.treeview div.header span.detail {
 	html {
 		background-attachment:	fixed;
 		background-image:	url('DeforaOS-background.png');
-		background-repeat:	no-repeat;
 		background-position:	75% 90%;
+		background-repeat:	no-repeat;
 	}
 
 	body {
