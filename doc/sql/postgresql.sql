@@ -114,6 +114,35 @@ CREATE TABLE daportal_content (
 
 CREATE INDEX daportal_content_title_index ON daportal_content (title) WHERE enabled='1' AND public='1';
 
+CREATE VIEW daportal_content_enabled AS
+SELECT daportal_content.content_id AS content_id,
+daportal_content.timestamp AS timestamp,
+daportal_content.module_id AS module_id,
+daportal_content.user_id AS user_id, daportal_content.group_id AS group_id,
+daportal_content.title AS title, daportal_content.content AS content,
+daportal_content.enabled AS enabled, daportal_content.public AS public
+FROM daportal_content, daportal_module, daportal_user
+WHERE daportal_content.module_id=daportal_module.module_id
+AND daportal_content.user_id=daportal_user.user_id
+AND daportal_module.enabled='1'
+AND daportal_user.enabled='1'
+AND daportal_content.enabled='1';
+
+CREATE VIEW daportal_content_public AS
+SELECT daportal_content.content_id AS content_id,
+daportal_content.timestamp AS timestamp,
+daportal_content.module_id AS module_id,
+daportal_content.user_id AS user_id, daportal_content.group_id AS group_id,
+daportal_content.title AS title, daportal_content.content AS content,
+daportal_content.enabled AS enabled, daportal_content.public AS public
+FROM daportal_content, daportal_module, daportal_user
+WHERE daportal_content.module_id=daportal_module.module_id
+AND daportal_content.user_id=daportal_user.user_id
+AND daportal_module.enabled='1'
+AND daportal_user.enabled='1'
+AND daportal_content.enabled='1'
+AND daportal_content.public='1';
+
 CREATE TABLE daportal_content_lang (
 	content_lang_id SERIAL PRIMARY KEY,
 	content_id INTEGER REFERENCES daportal_content (content_id),

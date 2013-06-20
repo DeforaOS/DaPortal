@@ -160,17 +160,13 @@ abstract class ContentModule extends Module
 		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=:content_id";
-	protected $query_list = "SELECT content_id AS id, timestamp,
+	protected $query_list = 'SELECT content_id AS id, timestamp,
 		name AS module, daportal_user.user_id AS user_id, username,
-		title, daportal_content.enabled AS enabled, content
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'";
+		title, daportal_content_public.enabled AS enabled, content
+		FROM daportal_content_public, daportal_module, daportal_user
+		WHERE daportal_content_public.module_id=daportal_module.module_id
+		AND daportal_content_public.module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user.user_id';
 	protected $query_list_admin = "SELECT content_id AS id, timestamp,
 		name AS module, daportal_user.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname,
@@ -193,15 +189,11 @@ abstract class ContentModule extends Module
 		AND daportal_content.group_id=daportal_group.group_id
 		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'";
-	protected $query_list_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'";
+	protected $query_list_count = 'SELECT COUNT(*)
+		FROM daportal_content_public, daportal_module, daportal_user
+		WHERE daportal_content_public.module_id=daportal_module.module_id
+		AND daportal_content_public.module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user.user_id';
 	protected $query_list_user = "SELECT content_id AS id, timestamp,
 		name AS module, daportal_user.user_id AS user_id, username,
 		title, daportal_content.enabled AS enabled

@@ -1,6 +1,6 @@
 /* $Id$ */
 /* This file is part of DeforaOS Web DaPortal */
-/* Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org> */
 
 
 
@@ -28,6 +28,8 @@ DROP TABLE daportal_project;
 DROP TABLE daportal_top;
 DROP TABLE daportal_comment;
 DROP TABLE daportal_content_lang;
+DROP VIEW daportal_content_public;
+DROP VIEW daportal_content_enabled;
 DROP TABLE daportal_content;
 DROP TABLE daportal_user_reset;
 DROP TABLE daportal_user_register;
@@ -166,6 +168,34 @@ CREATE TRIGGER daportal_content_insert_timestamp AFTER INSERT ON daportal_conten
 BEGIN
 	UPDATE daportal_content SET timestamp = datetime('now') WHERE content_id = NEW.content_id;
 END;
+CREATE VIEW daportal_content_enabled AS
+SELECT daportal_content.content_id AS content_id,
+daportal_content.timestamp AS timestamp,
+daportal_content.module_id AS module_id,
+daportal_content.user_id AS user_id, daportal_content.group_id AS group_id,
+daportal_content.title AS title, daportal_content.content AS content,
+daportal_content.enabled AS enabled, daportal_content.public AS public
+FROM daportal_content, daportal_module, daportal_user
+WHERE daportal_content.module_id=daportal_module.module_id
+AND daportal_content.user_id=daportal_user.user_id
+AND daportal_module.enabled='1'
+AND daportal_user.enabled='1'
+AND daportal_content.enabled='1';
+CREATE VIEW daportal_content_public AS
+SELECT daportal_content.content_id AS content_id,
+daportal_content.timestamp AS timestamp,
+daportal_content.module_id AS module_id,
+daportal_content.user_id AS user_id, daportal_content.group_id AS group_id,
+daportal_content.title AS title, daportal_content.content AS content,
+daportal_content.enabled AS enabled, daportal_content.public AS public
+FROM daportal_content, daportal_module, daportal_user
+WHERE daportal_content.module_id=daportal_module.module_id
+AND daportal_content.user_id=daportal_user.user_id
+AND daportal_module.enabled='1'
+AND daportal_user.enabled='1'
+AND daportal_content.enabled='1'
+AND daportal_content.public='1';
+
 CREATE TABLE daportal_content_lang (
 	content_lang_id INTEGER PRIMARY KEY,
 	content_id INTEGER NOT NULL,
