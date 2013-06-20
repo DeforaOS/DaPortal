@@ -16,6 +16,7 @@ charset=utf-8
 #id=
 
 [engine]
+#backend=cgi
 #backend=cli
 #backend=clihttp
 #backend=dummy
