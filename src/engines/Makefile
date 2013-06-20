@@ -13,6 +13,8 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
+	$(INSTALL) -m 0644 cgi.php $(DESTDIR)$(PREFIX)/daportal/src/engines/cgi.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 cli.php $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 clihttp.php $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
@@ -30,6 +32,7 @@ install:
 	$(INSTALL) -m 0644 httpfriendly.php $(DESTDIR)$(PREFIX)/daportal/src/engines/httpfriendly.php
 
 uninstall:
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cgi.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php

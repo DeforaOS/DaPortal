@@ -117,6 +117,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/database/sqlite3.php \
 		$(PACKAGE)-$(VERSION)/src/database/project.conf \
 		$(PACKAGE)-$(VERSION)/src/engines/Makefile \
+		$(PACKAGE)-$(VERSION)/src/engines/cgi.php \
 		$(PACKAGE)-$(VERSION)/src/engines/cli.php \
 		$(PACKAGE)-$(VERSION)/src/engines/clihttp.php \
 		$(PACKAGE)-$(VERSION)/src/engines/daportal.php \
