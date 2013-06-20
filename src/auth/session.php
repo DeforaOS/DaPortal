@@ -28,11 +28,16 @@ class SessionAuth extends Auth
 	//SessionAuth::match
 	protected function match($engine)
 	{
-		if(!isset($_SERVER['SCRIPT_NAME']))
-			return 0;
 		//return the result cached if called twice
 		if($this->match_score !== FALSE)
 			return $this->match_score;
+		if(!function_exists('session_get_cookie_params')
+				|| !isset($_SERVER['SCRIPT_NAME'])
+				|| !isset($_SERVER['SERVER_PROTOCOL']))
+		{
+			$this->match_score = 0;
+			return 0;
+		}
 		@ini_set('session.use_only_cookies', 1);
 		@ini_set('session.use_trans_sid', 0);
 		$params = session_get_cookie_params();
