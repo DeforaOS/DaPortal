@@ -169,19 +169,20 @@ class HttpEngine extends Engine
 		//FIXME do not include parameters for a POST request
 		if($request === FALSE)
 			return FALSE;
-		$name = ltrim($_SERVER['SCRIPT_NAME'], '/');
+		$name = isset($_SERVER['SCRIPT_NAME'])
+			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
+		$port = $_SERVER['SERVER_PORT'];
 		if($absolute)
 		{
 			$url = $_SERVER['SERVER_NAME'];
 			if(isset($_SERVER['HTTPS']))
 			{
-				if($_SERVER['SERVER_PORT'] != 443)
-					$url .= ':'.$_SERVER['SERVER_PORT'];
+				if($port != 443)
+					$url .= ':'.$port;
 				$url = 'https://'.$url;
 			}
-			else if($_SERVER['SERVER_PORT'] != 80)
-				$url = 'http://'.$url.':'
-					.$_SERVER['SERVER_PORT'];
+			else if($port != 80)
+				$url = 'http://'.$url.':'.$port;
 			else
 				$url = 'http://'.$url;
 			$url .= '/'.$name;
