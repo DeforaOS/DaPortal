@@ -561,7 +561,11 @@ abstract class ContentModule extends Module
 		}
 		$vbox = $this->helperPreviewHeader($engine, $request, $page);
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-			$this->helperPreview($engine, $vbox, $res[$i]);
+		{
+			$content = $this->_get($engine, $res[$i]['id'], FALSE,
+					$request);
+			$this->helperPreview($engine, $vbox, $content);
+		}
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		return $page;
