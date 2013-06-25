@@ -146,74 +146,59 @@ abstract class ContentModule extends Module
 		SET enabled='1'
 		WHERE module_id=:module_id
 		AND content_id=:content_id AND user_id=:user_id";
-	protected $query_get = "SELECT daportal_module.name AS module,
-		daportal_user.user_id AS user_id,
+	protected $query_get = "SELECT daportal_user.user_id AS user_id,
 		daportal_user.username AS username,
 		daportal_content.content_id AS id, title, content, timestamp,
 		daportal_content.enabled AS enabled, public
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
+		FROM daportal_content, daportal_user
+		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.enabled='1'
 		AND (daportal_content.public='1' OR daportal_content.user_id=:user_id)
-		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=:content_id";
 	protected $query_list = 'SELECT content_id AS id, timestamp,
-		name AS module, daportal_user.user_id AS user_id, username,
+		daportal_user.user_id AS user_id, username,
 		title, daportal_content_public.enabled AS enabled, content
-		FROM daportal_content_public, daportal_module, daportal_user
-		WHERE daportal_content_public.module_id=daportal_module.module_id
-		AND daportal_content_public.module_id=:module_id
+		FROM daportal_content_public, daportal_user
+		WHERE daportal_content_public.module_id=:module_id
 		AND daportal_content_public.user_id=daportal_user.user_id';
 	protected $query_list_admin = "SELECT content_id AS id, timestamp,
-		name AS module, daportal_user.user_id AS user_id, username,
+		daportal_user.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname,
 		title, daportal_content.enabled AS enabled,
 		daportal_content.public AS public
-		FROM daportal_content, daportal_module, daportal_user,
-		daportal_group
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
+		FROM daportal_content, daportal_user, daportal_group
+		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.group_id=daportal_group.group_id
-		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'";
 	protected $query_list_admin_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user,
-		daportal_group
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
+		FROM daportal_content, daportal_user, daportal_group
+		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.group_id=daportal_group.group_id
-		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'";
 	protected $query_list_count = 'SELECT COUNT(*)
-		FROM daportal_content_public, daportal_module, daportal_user
-		WHERE daportal_content_public.module_id=daportal_module.module_id
-		AND daportal_content_public.module_id=:module_id
+		FROM daportal_content_public, daportal_user
+		WHERE daportal_content_public.module_id=:module_id
 		AND daportal_content_public.user_id=daportal_user.user_id';
 	protected $query_list_user = "SELECT content_id AS id, timestamp,
-		name AS module, daportal_user.user_id AS user_id, username,
+		daportal_user.user_id AS user_id, username,
 		title, daportal_content.enabled AS enabled
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
+		FROM daportal_content, daportal_user
+		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'
 		AND daportal_user.user_id=:user_id";
 	protected $query_list_user_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
+		FROM daportal_content, daportal_user
+		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
 		AND daportal_user.enabled='1'
 		AND daportal_user.user_id=:user_id";
 	protected $query_post = "UPDATE daportal_content
