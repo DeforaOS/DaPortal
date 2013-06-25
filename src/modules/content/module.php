@@ -356,11 +356,12 @@ abstract class ContentModule extends Module
 
 	//convertors
 	//ContentModule::timestampToDate
-	protected function timestampToDate($timestamp = FALSE,
-			$format = '%d/%m/%Y %H:%M:%S')
+	protected function timestampToDate($timestamp = FALSE, $format = FALSE)
 	{
 		if($timestamp === FALSE)
 			$timestamp = time();
+		if($format === FALSE)
+			$format = '%d/%m/%Y %H:%M:%S';
 		$date = strftime($format, $timestamp);
 		return $date;
 	}
@@ -561,12 +562,7 @@ abstract class ContentModule extends Module
 		}
 		$vbox = $this->helperPreviewHeader($engine, $request, $page);
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-		{
-			if(($content = $this->_get($engine, $res[$i]['id'],
-					FALSE, $request)) === FALSE)
-				continue;
-			$this->helperPreview($engine, $vbox, $content);
-		}
+			$this->helperPreview($engine, $vbox, $res[$i]);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		return $page;
@@ -1485,6 +1481,8 @@ abstract class ContentModule extends Module
 	protected function helperPreviewMetadata($engine, $preview, $request,
 			$content)
 	{
+		$db = $engine->getDatabase();
+
 		$r = new Request('user', FALSE, $content['user_id'],
 			$content['username']);
 		$link = new PageElement('link', array('request' => $r,
@@ -1492,9 +1490,10 @@ abstract class ContentModule extends Module
 		$meta = $preview->append('label', array(
 				'text' => $this->text_content_by.' '));
 		$meta->append($link);
+		$date = $db->formatDate($engine, $content['timestamp']);
 		$meta = $meta->append('label', array(
 				'text' => ' '.$this->text_content_on.' '
-				.$content['date']));
+				.$date));
 	}
 
 
