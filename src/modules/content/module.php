@@ -303,8 +303,8 @@ abstract class ContentModule extends Module
 	//ContentModule::getContentRequest
 	protected function getContentRequest($engine, $content)
 	{
-		return new Request($content['module'], FALSE,
-				$content['id'], $content['title']);
+		return new Request($this->name, FALSE, $content['id'],
+				$content['title']);
 	}
 
 
