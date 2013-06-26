@@ -33,27 +33,25 @@ abstract class Module
 
 	//accessors
 	//Module::getId
-	public static function getId($engine, $module)
+	public static function getId($engine, $name)
 	{
-		static $ids = array();
-
-		if(isset($ids[$module]))
-			return $ids[$module];
-		if($engine === FALSE)
-			return FALSE;
+		static $modules = FALSE;
 		$db = $engine->getDatabase();
-		$query = Module::$query_get_id;
-		$args = array('name' => $module);
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-		{
-			$engine->log('LOG_DEBUG', 'Module '.$module
+
+		//load the list of modules if necessary
+		if($modules === FALSE && ($modules = $db->query($engine,
+				Module::$query_modules)) === FALSE)
+			return FALSE;
+		foreach($modules as $m)
+			if($m['name'] == $name)
+				break;
+		if($m['name'] != $name)
+			return $engine->log('LOG_DEBUG', 'Module '.$name
+					.' is not available');
+		if(!$db->isTrue($m['enabled']))
+			return $engine->log('LOG_DEBUG', 'Module '.$name
 					.' is not enabled');
-			$ids[$module] = FALSE;
-		}
-		else
-			$ids[$module] = $res[0]['id'];
-		return $ids[$module];
+		return $m['id'];
 	}
 
 
@@ -74,33 +72,33 @@ abstract class Module
 	//static
 	//useful
 	//Module::load
-	public static function load($engine, $module)
+	public static function load($engine, $name)
 	{
-		if($module === FALSE || ($id = Module::getId($engine, $module))
+		if($name === FALSE || ($id = Module::getId($engine, $name))
 				=== FALSE)
 			return FALSE;
-		$name = $module.'Module';
-		if(!class_exists($name))
+		$module = $name.'Module';
+		if(!class_exists($module))
 		{
-			$engine->log('LOG_DEBUG', 'Loading module '.$module);
-			if(strchr($module, '_') !== FALSE
-					|| strchr($module, '.') !== FALSE
-					|| strchr($module, '/') !== FALSE)
+			$engine->log('LOG_DEBUG', 'Loading module '.$name);
+			if(strchr($name, '_') !== FALSE
+					|| strchr($name, '.') !== FALSE
+					|| strchr($name, '/') !== FALSE)
 				return $engine->log('LOG_DEBUG',
-						'Invalid module '.$module);
-			$path = './modules/'.$module.'/module.php';
+						'Invalid module '.$name);
+			$path = './modules/'.$name.'/module.php';
 			if(!is_readable($path))
 				return $engine->log('LOG_ERR',
-						'Unreadable module '.$module);
+						'Unreadable module '.$name);
 			$res = include_once($path);
 			if($res === FALSE)
 				return $engine->log('LOG_DEBUG',
-						'Unknown module '.$module);
-			if(!class_exists($name))
+						'Unknown module '.$name);
+			if(!class_exists($module))
 				return $engine->log('LOG_ERR',
-						'Undefined module '.$module);
+						'Undefined module '.$name);
 		}
-		if(($ret = new $name($id, $module)) == NULL)
+		if(($ret = new $module($id, $name)) == NULL)
 			return FALSE;
 		return $ret;
 	}
@@ -120,10 +118,9 @@ abstract class Module
 	//private
 	//properties
 	//queries
-	static private $query_get_id = "SELECT module_id AS id
-FROM daportal_module
-WHERE daportal_module.enabled='1'
-AND name=:name";
+	static private $query_modules = 'SELECT module_id AS id, name, enabled
+		FROM daportal_module
+		ORDER BY enabled, module_id';
 }
 
 ?>
