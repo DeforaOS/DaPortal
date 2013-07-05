@@ -112,6 +112,7 @@ CREATE TABLE daportal_content (
 	public BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+CREATE INDEX daportal_content_timestamp_desc_index ON daportal_content (timestamp DESC);
 CREATE INDEX daportal_content_title_index ON daportal_content (title) WHERE enabled='1' AND public='1';
 
 CREATE VIEW daportal_content_enabled AS
