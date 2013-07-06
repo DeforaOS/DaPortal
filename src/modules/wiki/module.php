@@ -334,7 +334,7 @@ class WikiModule extends ContentModule
 			return $ret;
 		$r = new Request($this->name, 'monitor');
 		$ret[] = $this->helperAction($engine, 'monitor', $r,
-				'Wiki monitoring');
+				_('Wiki monitoring'));
 		return $ret;
 	}
 
