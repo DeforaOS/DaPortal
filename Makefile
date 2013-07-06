@@ -230,6 +230,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
+		$(PACKAGE)-$(VERSION)/tests/tests.php \
+		$(PACKAGE)-$(VERSION)/tests/tests.sh \
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
 		$(PACKAGE)-$(VERSION)/tools/Makefile \
 		$(PACKAGE)-$(VERSION)/tools/daportal.in \
