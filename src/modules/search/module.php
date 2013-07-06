@@ -48,15 +48,15 @@ class SearchModule extends Module
 	//protected
 	//properties
 	protected $limit = 20;
-	protected $query = "FROM daportal_content, daportal_module,
+	protected $query = 'FROM daportal_content_public, daportal_module,
 		daportal_user_enabled
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'";
+		WHERE daportal_content_public.module_id
+		=daportal_module.module_id
+		AND daportal_content_public.user_id
+		=daportal_user_enabled.user_id';
 	protected $query_fields = 'SELECT content_id AS id, timestamp AS date,
-		name AS module, daportal_content.user_id AS user_id, title,
-		content, username';
+		name AS module, daportal_content_public.user_id AS user_id,
+		title, content, username';
 
 
 	//methods
