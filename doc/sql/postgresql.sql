@@ -79,6 +79,11 @@ INSERT INTO daportal_module (name, enabled) VALUES ('user', '1');
 INSERT INTO daportal_user (user_id, username, password, email) VALUES ('0', 'Anonymous', '', '');
 INSERT INTO daportal_user (username, password, enabled, admin, email) VALUES ('admin', '$1$?0p*PI[G$kbHyE5VE/S32UrV88Unz/1', '1', '1', 'username@domain.tld');
 
+CREATE VIEW daportal_user_enabled AS
+SELECT user_id, username, group_id, password, enabled, admin, fullname, email
+FROM daportal_user
+WHERE enabled='1';
+
 
 CREATE TABLE daportal_user_register (
 	user_register_id SERIAL PRIMARY KEY,
