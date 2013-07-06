@@ -33,6 +33,7 @@ DROP VIEW daportal_content_enabled;
 DROP TABLE daportal_content;
 DROP TABLE daportal_user_reset;
 DROP TABLE daportal_user_register;
+DROP VIEW daportal_user_enabled;
 DROP TABLE daportal_user;
 DROP TABLE daportal_group;
 DROP TABLE daportal_lang;
