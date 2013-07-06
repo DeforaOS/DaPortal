@@ -97,7 +97,12 @@ regenerate=1
 [format::html]
 #alternate_themes=1
 #favicon=
-#javascript=1
+#javascript support:
+#  0: no javascript will be generated; more rendering may happen server-side
+#  1: javascript is enabled but optional; no functionality is missing without it
+#  2: javascript is mandatory for some functionality to work correctly
+#  3: javascript support is absolutely mandatory
+#javascript=0
 #viewport::width=device-width
 
 [format::application/pdf]
