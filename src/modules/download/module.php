@@ -114,11 +114,10 @@ class DownloadModule extends ContentModule
 	//queries
 	protected $download_query_directory_insert =
 		'INSERT INTO daportal_download
-		(content_id, parent, mode) VALUES (:content_id, :parent,
-			512)';
+		(content_id, parent, mode) VALUES (:content_id, :parent, 512)';
 	protected $download_query_get = "SELECT daportal_module.name AS module,
-		daportal_user.user_id AS user_id,
-		daportal_user.username AS username,
+		daportal_user_enabled.user_id AS user_id,
+		daportal_user_enabled.username AS username,
 		daportal_group.group_id AS group_id,
 		daportal_group.groupname AS groupname,
 		daportal_content.content_id AS id,
@@ -131,7 +130,7 @@ class DownloadModule extends ContentModule
 		parent_download.content_id AS parent_id,
 		parent_content.title AS parent_title,
 		download.mode AS mode
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_group, daportal_download download
 		LEFT JOIN daportal_download parent_download
 		ON download.parent=parent_download.download_id
@@ -139,89 +138,75 @@ class DownloadModule extends ContentModule
 		ON parent_download.content_id=parent_content.content_id
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id
 		AND daportal_content.content_id=download.content_id
 		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1' OR daportal_content.user_id=:user_id)
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'
+		AND (daportal_content.public='1'
+			OR daportal_content.user_id=:user_id)
 		AND daportal_content.content_id=:content_id";
 	protected $download_query_file_insert = 'INSERT INTO daportal_download
 		(content_id, parent, mode) VALUES (:content_id, :parent,
 			:mode)';
-	protected $download_query_list = "SELECT
-		daportal_content.content_id AS id,
-		daportal_content.enabled AS enabled,
-		daportal_content.timestamp AS timestamp,
-		daportal_user.user_id AS user_id, username,
+	protected $download_query_list = 'SELECT
+		daportal_content_public.content_id AS id,
+		daportal_content_public.enabled AS enabled,
+		daportal_content_public.timestamp AS timestamp,
+		daportal_user_enabled.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname, title, mode
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content_public, daportal_user_enabled,
 		daportal_group, daportal_download
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_content.group_id=daportal_group.group_id
-		AND daportal_content.content_id=daportal_download.content_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'";
+		WHERE daportal_content_public.module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user_enabled.user_id
+		AND daportal_content_public.group_id=daportal_group.group_id
+		AND daportal_content_public.content_id=daportal_download.content_id';
 	protected $download_query_list_admin = "SELECT
 		daportal_content.content_id AS id,
 		daportal_content.enabled AS enabled,
 		daportal_content.public AS public,
 		daportal_content.timestamp AS timestamp,
-		daportal_user.user_id AS user_id, username,
+		daportal_user_enabled.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname, title, mode
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_group, daportal_download
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id
 		AND daportal_content.content_id=daportal_download.content_id
-		AND daportal_content.enabled='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'";
+		AND daportal_content.enabled='1'";
 	protected $download_query_list_admin_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_group, daportal_download
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id
 		AND daportal_content.content_id=daportal_download.content_id
-		AND daportal_content.enabled='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'";
+		AND daportal_content.enabled='1'";
 	protected $download_query_list_files = "SELECT
 		daportal_content.content_id AS id,
 		daportal_content.enabled AS enabled,
 		timestamp, name AS module,
-		daportal_user.user_id AS user_id, username, title
-		FROM daportal_content, daportal_module, daportal_user,
+		daportal_user_enabled.user_id AS user_id, username, title
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_download
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_download.content_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'
 		AND mode & 512 = 0";
 	protected $download_query_list_files_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_download
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_download.content_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
-		AND daportal_module.enabled='1'
-		AND daportal_user.enabled='1'
 		AND mode & 512 = 0";
 
 
