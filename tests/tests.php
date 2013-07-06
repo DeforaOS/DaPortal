@@ -36,15 +36,54 @@ function test($engine, $request)
 		$engine->render($page);
 }
 
-//content modules
-$modules = array('article', 'blog', 'download', 'news', 'project', 'wiki');
-$actions = array(FALSE, 'actions', 'admin', 'default', 'headline', 'list',
-	'preview', 'publish', 'submit', 'update');
-foreach($modules as $module)
+function tests($engine)
 {
-	test($engine, new Request($module));
-	foreach($actions as $a)
-		test($engine, new Request($module, $a));
+	//content modules
+	$modules = array('article', 'blog', 'download', 'news', 'project',
+		'wiki');
+	$actions = array(FALSE, 'actions', 'admin', 'default', 'headline',
+		'list', 'preview', 'publish', 'submit', 'update');
+	foreach($modules as $module)
+	{
+		test($engine, new Request($module));
+		foreach($actions as $a)
+			test($engine, new Request($module, $a));
+	}
 }
+
+//default formatting backend
+tests($engine);
+
+//AtomFormat
+$config->setVariable('format', 'backend', 'atom');
+tests($engine);
+
+//CSVFormat
+$config->setVariable('format', 'backend', 'csv');
+tests($engine);
+
+//HTMLFormat
+$config->setVariable('format', 'backend', 'html');
+tests($engine);
+
+//HTML5Format
+$config->setVariable('format', 'backend', 'html5');
+tests($engine);
+
+//FPDFFormat
+$config->setVariable('format', 'backend', 'fpdf');
+tests($engine);
+
+//XHTML1Format
+$config->setVariable('format', 'backend', 'xhtml1');
+tests($engine);
+
+//XHTML11Format
+$config->setVariable('format', 'backend', 'xhtml11');
+tests($engine);
+
+//XMLFormat
+$config->setVariable('format', 'backend', 'xml');
+tests($engine);
 
 ?>
