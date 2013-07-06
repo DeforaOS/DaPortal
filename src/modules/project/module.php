@@ -89,24 +89,18 @@ class ProjectModule extends ContentModule
 		title, content, timestamp, daportal_user.user_id AS user_id,
 		daportal_user.username AS username, bug_id,
 		project_id, state, type, priority, assigned
-		FROM daportal_content, daportal_bug, daportal_user
-		WHERE daportal_content.content_id=daportal_bug.content_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_content.content_id=:content_id";
+		FROM daportal_content_public, daportal_bug, daportal_user
+		WHERE daportal_content_public.content_id=daportal_bug.content_id
+		AND daportal_content_public.user_id=daportal_user.user_id
+		AND daportal_content_public.content_id=:content_id";
 	protected $project_query_bug_by_id = "SELECT
 		daportal_bug.content_id AS id,
 		title, content, timestamp, daportal_user.user_id AS user_id,
 		daportal_user.username AS username, bug_id,
 		project_id, state, type, priority, assigned
-		FROM daportal_content, daportal_bug, daportal_user
-		WHERE daportal_content.content_id=daportal_bug.content_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
+		FROM daportal_content_public, daportal_bug, daportal_user
+		WHERE daportal_content_public.content_id=daportal_bug.content_id
+		AND daportal_content_public.user_id=daportal_user.user_id
 		AND daportal_bug.bug_id=:bug_id";
 	protected $project_query_list_admin_bugs = "SELECT
 		daportal_content.content_id AS id, bug_id,
@@ -133,69 +127,62 @@ class ProjectModule extends ContentModule
 		daportal_content.enabled AS enabled,
 		daportal_content.public AS public,
 		timestamp, name AS module,
-		daportal_user.user_id AS user_id, username, title, synopsis
-		FROM daportal_content, daportal_module, daportal_user,
+		daportal_user_enabled.user_id AS user_id, username, title,
+		synopsis
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id";
 	protected $project_query_list_admin_projects_count = "SELECT COUNT(*)
-		FROM daportal_content, daportal_module, daportal_user,
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id";
 	protected $project_query_list_bugs = "SELECT bug_id,
 		bug.content_id AS id, bug.timestamp AS timestamp,
-	       	daportal_user.user_id AS user_id, username, bug.title AS title,
-		bug.enabled AS enabled, state, type, priority,
-		daportal_project.project_id AS project_id,
+		daportal_user_enabled.user_id AS user_id, username,
+		bug.title AS title, bug.enabled AS enabled, state, type,
+		priority, daportal_project.project_id AS project_id,
 		project.title AS project
-		FROM daportal_content bug, daportal_module, daportal_user,
-		daportal_bug, daportal_content project, daportal_project
+		FROM daportal_content_public bug, daportal_module,
+		daportal_user_enabled, daportal_bug,
+		daportal_content_public project, daportal_project
 		WHERE bug.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
-		AND bug.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND bug.user_id=daportal_user_enabled.user_id
 		AND bug.content_id=daportal_bug.content_id
-		AND bug.enabled='1'
-		AND bug.public='1'
 		AND daportal_bug.project_id=daportal_project.project_id
-		AND project.content_id=daportal_project.project_id
-		AND project.enabled='1'
-		AND project.public='1'";
+		AND project.content_id=daportal_project.project_id";
 	protected $project_query_list_downloads = "SELECT
 		daportal_download.content_id AS id, download.title AS title,
 		download.timestamp AS timestamp,
-		daportal_user.user_id AS user_id, username, groupname, mode
+		daportal_user_enabled.user_id AS user_id, username, groupname,
+		mode
 		FROM daportal_project_download, daportal_content project,
-		daportal_download, daportal_content download, daportal_user,
-		daportal_group
+		daportal_download, daportal_content download,
+		daportal_user_enabled, daportal_group
 		WHERE daportal_project_download.project_id=project.content_id
 		AND daportal_project_download.download_id=daportal_download.content_id
 		AND daportal_download.content_id=download.content_id
-		AND download.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND download.user_id=daportal_user_enabled.user_id
 		AND download.group_id=daportal_group.group_id
 		AND project.public='1' AND project.enabled='1'
 		AND download.public='1' AND download.enabled='1'
 		AND project_id=:project_id
 		ORDER BY download.timestamp DESC";
 	protected $project_query_list_projects = "SELECT content_id AS id,
-		daportal_content.enabled AS enabled,
-		timestamp, name AS module,
-		daportal_user.user_id AS user_id, username, title, synopsis,
-		scm, cvsroot
-		FROM daportal_content, daportal_module, daportal_user,
+		daportal_content.enabled AS enabled, timestamp, name AS module,
+		daportal_user_enabled.user_id AS user_id, username, title,
+		synopsis, scm, cvsroot
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'";
@@ -204,7 +191,8 @@ class ProjectModule extends ContentModule
 		FROM daportal_project_screenshot, daportal_content project,
 		daportal_download, daportal_content download
 		WHERE daportal_project_screenshot.project_id=project.content_id
-		AND daportal_project_screenshot.download_id=daportal_download.content_id
+		AND daportal_project_screenshot.download_id
+		=daportal_download.content_id
 		AND daportal_download.content_id=download.content_id
 		AND project.public='1' AND project.enabled='1'
 		AND download.public='1' AND download.enabled='1'
@@ -213,18 +201,17 @@ class ProjectModule extends ContentModule
 	protected $project_query_list_projects_user = "SELECT content_id AS id,
 		daportal_content.enabled AS enabled,
 		timestamp, name AS module,
-		daportal_user.user_id AS user_id, username, title, synopsis,
-		scm, cvsroot
-		FROM daportal_content, daportal_module, daportal_user,
+		daportal_user_enabled.user_id AS user_id, username, title,
+		synopsis, scm, cvsroot
+		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
-		AND daportal_user.user_id=:user_id";
+		AND daportal_user_enabled.user_id=:user_id";
 	protected $project_query_members = 'SELECT
 		daportal_user_enabled.user_id AS user_id, username,
 		daportal_project_user.admin AS admin
@@ -235,31 +222,29 @@ class ProjectModule extends ContentModule
 		ORDER BY username ASC';
 	protected $project_query_project = "SELECT
 		daportal_module.name AS module, project_id AS id, title,
-		daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, scm,
-		cvsroot, daportal_content.enabled AS enabled
+		daportal_user_enabled.user_id AS user_id,
+		daportal_user_enabled.username AS username, content, synopsis,
+		scm, cvsroot, daportal_content.enabled AS enabled
 		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user
+		daportal_user_enabled
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
 		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
 		AND project_id=:content_id";
 	protected $project_query_project_by_name = "SELECT
 		daportal_module.name AS module, project_id AS id,
-		title, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, content, synopsis, scm,
-	       	cvsroot, daportal_content.enabled AS enabled
+		title, daportal_user_enabled.user_id AS user_id,
+		daportal_user_enabled.username AS username, content, synopsis,
+		scm, cvsroot, daportal_content.enabled AS enabled
 		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user
+		daportal_user_enabled
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_module.module_id=:module_id
 		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.enabled='1'
 		AND daportal_content.public='1'
 		AND daportal_content.title=:title";
@@ -272,8 +257,8 @@ class ProjectModule extends ContentModule
 	protected $project_query_project_update = 'UPDATE daportal_project
 		SET synopsis=:synopsis WHERE project_id=:project_id';
 	protected $project_query_get = "SELECT daportal_module.name AS module,
-		daportal_user.user_id AS user_id,
-		daportal_user.username AS username,
+		daportal_user_enabled.user_id AS user_id,
+		daportal_user_enabled.username AS username,
 		daportal_content.content_id AS id, title, content, synopsis,
 		scm, cvsroot, timestamp,
 		daportal_bug.bug_id AS bug_id,
@@ -286,7 +271,7 @@ class ProjectModule extends ContentModule
 		daportal_bug_reply.type AS bug_reply_type,
 		daportal_bug_reply.priority AS bug_reply_priority,
 		daportal_bug_reply.assigned AS bug_reply_assigned
-		FROM daportal_module, daportal_user, daportal_content
+		FROM daportal_module, daportal_user_enabled, daportal_content
 		LEFT JOIN daportal_project
 		ON daportal_content.content_id=daportal_project.project_id
 		LEFT JOIN daportal_bug
@@ -295,8 +280,7 @@ class ProjectModule extends ContentModule
 		ON daportal_content.content_id=daportal_bug_reply.content_id
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_user.enabled='1'
+		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.enabled='1'
 		AND (daportal_content.public='1' OR daportal_content.user_id=:user_id)
 		AND daportal_content.content_id=:content_id";
