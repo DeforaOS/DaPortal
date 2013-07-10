@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012, 2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -74,7 +74,7 @@ class Content
 				'user_id' => $cred->getUserId());
 		if(is_string($title))
 		{
-			$query .= ' AND title LIKE :title';
+			$query .= ' AND title '.$db->like(FALSE).' :title';
 			$args['title'] = str_replace('-', '_', $title);
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
@@ -82,9 +82,8 @@ class Content
 			return $engine->log('LOG_ERR',
 					'Could not fetch content');
 		$res = $res[0];
-		return new Content($res['id'], $res['module_id'],
-			$res['title'], $res['content'], $res['enabled'],
-			$res['public']);
+		return new Content($res['id'], $module_id, $res['title'],
+			$res['content'], $res['enabled'], $res['public']);
 	}
 
 
@@ -160,7 +159,8 @@ class Content
 	static private $query_get = "SELECT daportal_module.name AS module,
 		daportal_user.user_id AS user_id,
 		daportal_user.username AS username,
-		daportal_content.content_id AS id, title, content, timestamp
+		daportal_content.content_id AS id, title, content, timestamp,
+		daportal_content.enabled AS enabled, public
 		FROM daportal_content, daportal_module, daportal_user
 		WHERE daportal_content.module_id=daportal_module.module_id
 		AND daportal_content.module_id=:module_id
