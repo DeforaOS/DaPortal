@@ -17,6 +17,48 @@
 
 
 //Compatibility fixes
+//http_build_url()
+if(!function_exists('http_build_url'))
+{
+	function http_build_url($url, $parts = FALSE)
+	{
+		if(!is_array($url))
+			if(($url = parse_url($url)) === FALSE)
+				return FALSE;
+		if(is_array($parts))
+			foreach($parts as $k => $v)
+				$url[$k] = $v;
+		//protocol
+		if(!isset($url['scheme']))
+			return FALSE;
+		$ret = $url['scheme'].'://';
+		//credentials
+		if(isset($url['user']))
+		{
+			$ret .= $url['user'];
+			if(isset($url['pass']))
+				$ret .= ':'.$url['pass'];
+		}
+		if(!isset($url['host']))
+		{
+			if($url['scheme'] != 'file')
+				return FALSE;
+		}
+		else
+			$ret .= $url['host'].'/';
+		//path
+		if(isset($url['path']))
+			$ret .= ltrim($url['path'], '/');
+		//query
+		if(isset($url['query']))
+			$ret .= '?'.$url['query'];
+		if(isset($url['fragment']))
+			$ret .= '#'.$url['fragment'];
+		return $ret;
+	}
+}
+
+
 //strptime()
 if(!function_exists('strptime'))
 {
