@@ -587,7 +587,10 @@ $('#$id1').closest('form').submit(function () {
 		if(($text = $e->getProperty('text')) === FALSE
 				|| !is_string($text))
 			return;
-		print(HTML::filter($this->engine, $text));
+		if($e->getProperty('trusted') === TRUE)
+			print($text);
+		else
+			print(HTML::filter($this->engine, $text));
 	}
 
 
