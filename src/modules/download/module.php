@@ -721,11 +721,8 @@ class DownloadModule extends ContentModule
 
 
 	//DownloadModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page,
-			$content = FALSE)
+	protected function helperDisplay($engine, $request, $page, $content)
 	{
-		if($content === FALSE)
-			return;
 		if($this->isDirectory($content))
 			return $this->helperDisplayDirectory($engine, $page,
 					$content);

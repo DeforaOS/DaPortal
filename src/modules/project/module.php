@@ -1194,11 +1194,8 @@ class ProjectModule extends ContentModule
 
 
 	//ProjectModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page,
-			$content = FALSE)
+	protected function helperDisplay($engine, $request, $page, $content)
 	{
-		if($content === FALSE)
-			return;
 		if(isset($content['bug_reply_id']))
 			return $this->helperDisplayBugReply($engine, $request,
 					$page, $content);

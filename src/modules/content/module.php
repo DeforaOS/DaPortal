@@ -1201,11 +1201,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page,
-			$content = FALSE)
+	protected function helperDisplay($engine, $request, $page, $content)
 	{
-		if($content === FALSE)
-			return FALSE;
 		//title
 		$this->helperDisplayTitle($engine, $request, $page, $content);
 		//toolbar

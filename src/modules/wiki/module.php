@@ -340,8 +340,7 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page,
-			$content = FALSE)
+	protected function helperDisplay($engine, $request, $page, $content)
 	{
 		if(($page = parent::helperDisplay($engine, $request, $page,
 				$content)) === FALSE)
