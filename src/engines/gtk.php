@@ -285,6 +285,12 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
+	protected function renderExpander($e)
+	{
+		//FIXME really implement
+		$this->renderLabel($e);
+	}
+
 	protected function renderFileChooser($e)
 	{
 		$ret = new GtkFileChooser();

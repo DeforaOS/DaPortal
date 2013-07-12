@@ -53,6 +53,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/generic/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/collapsed.png \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/expanded.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-cancel.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-no.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-ok.png \

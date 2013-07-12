@@ -443,6 +443,21 @@ class HTMLFormat extends FormatElements
 	}
 
 
+	protected function renderExpander($e)
+	{
+		$this->renderTabs();
+		$this->tagOpen('div', 'expander');
+		if(($title = $e->getProperty('title')) !== FALSE)
+		{
+			$this->renderTabs();
+			$this->tag('div', 'title', FALSE, FALSE, $title);
+		}
+		$this->renderChildren($e);
+		$this->renderTabs();
+		$this->tagClose('div');
+	}
+
+
 	protected function renderFileChooser($e)
 	{
 		$this->renderTabs();

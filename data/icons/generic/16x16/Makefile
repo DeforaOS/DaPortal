@@ -13,6 +13,10 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16
+	$(INSTALL) -m 0644 collapsed.png $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/collapsed.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16
+	$(INSTALL) -m 0644 expanded.png $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/expanded.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16
 	$(INSTALL) -m 0644 gtk-cancel.png $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/gtk-cancel.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16
 	$(INSTALL) -m 0644 gtk-no.png $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/gtk-no.png
@@ -24,6 +28,8 @@ install:
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/index.php
 
 uninstall:
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/collapsed.png
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/expanded.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/gtk-cancel.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/gtk-no.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic/16x16/gtk-ok.png
