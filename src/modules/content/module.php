@@ -1206,8 +1206,6 @@ abstract class ContentModule extends Module
 	{
 		if($content === FALSE)
 			return FALSE;
-		//link
-		$r = $this->getContentRequest($engine, $content);
 		//title
 		$this->helperDisplayTitle($engine, $request, $page, $content);
 		//toolbar
