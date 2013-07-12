@@ -1477,10 +1477,13 @@ abstract class ContentModule extends Module
 		$meta = $preview->append('label', array(
 				'text' => $this->text_content_by.' '));
 		$meta->append($link);
-		$date = $db->formatDate($engine, $content['timestamp']);
-		$meta = $meta->append('label', array(
-				'text' => ' '.$this->text_content_on.' '
-				.$date));
+		if(isset($content['timestamp']))
+		{
+			$date = $db->formatDate($engine, $content['timestamp']);
+			$meta = $meta->append('label', array(
+					'text' => ' '.$this->text_content_on.' '
+					.$date));
+		}
 	}
 
 
