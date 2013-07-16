@@ -378,7 +378,7 @@ class ProjectModule extends ContentModule
 		if($title !== FALSE)
 		{
 			$title = str_replace('-', '_', $title);
-			$query .= ' AND daportal_content.title '
+			$query .= ' AND daportal_content_public.title '
 				.$db->like(FALSE).' :title';
 			$args['title'] = $title;
 		}
