@@ -61,8 +61,7 @@ class AtomFormat extends Format
 		$link = $engine->getURL($request);
 
 		$this->engine = $engine;
-		if(($charset = $config->getVariable('defaults', 'charset'))
-				!== FALSE)
+		if(($charset = $config->get('defaults', 'charset')) !== FALSE)
 			$encoding = $charset;
 			$title = '';
 		print('<?xml version="1.0" encoding="'

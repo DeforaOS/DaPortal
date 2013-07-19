@@ -83,7 +83,7 @@ class PdoDatabase extends Database
 
 		if($this->handle === FALSE)
 			return FALSE;
-		if($config->getVariable('database', 'debug'))
+		if($config->get('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 		{
@@ -187,7 +187,7 @@ class PdoDatabase extends Database
 
 		if(!class_exists('PDO'))
 			return 0;
-		if($config->getVariable('database::pdo', 'dsn') !== FALSE)
+		if($config->get('database::pdo', 'dsn') !== FALSE)
 			return 100;
 		return 0;
 	}
@@ -198,7 +198,7 @@ class PdoDatabase extends Database
 	{
 		global $config;
 
-		if(($dsn = $config->getVariable('database::pdo', 'dsn'))
+		if(($dsn = $config->get('database::pdo', 'dsn'))
 				=== FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
@@ -217,7 +217,7 @@ class PdoDatabase extends Database
 	{
 		global $config;
 
-		if(($backend = $config->getVariable('database::pdo', 'dsn'))
+		if(($backend = $config->get('database::pdo', 'dsn'))
 				=== FALSE)
 			return FALSE;
 		$backend = explode(':', $backend);

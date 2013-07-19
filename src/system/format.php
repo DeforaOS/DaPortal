@@ -34,10 +34,9 @@ abstract class Format
 
 		$name = FALSE;
 		if($type !== FALSE)
-			$name = $config->getVariable("format::$type",
-					'backend');
+			$name = $config->get("format::$type", 'backend');
 		if($name === FALSE)
-			$name = $config->getVariable('format', 'backend');
+			$name = $config->get('format', 'backend');
 		if($name !== FALSE)
 		{
 			$res = require_once('./formats/'.$name.'.php');

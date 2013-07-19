@@ -80,7 +80,7 @@ class UserModule extends Module
 
 		if($cred->isAdmin())
 			return FALSE;
-		return $config->getVariable('module::user', 'close') == 1;
+		return $config->get('module::user', 'close') == 1;
 	}
 
 
@@ -89,7 +89,7 @@ class UserModule extends Module
 	{
 		global $config;
 
-		return $config->getVariable('module::user', 'register') == 1;
+		return $config->get('module::user', 'register') == 1;
 	}
 
 
@@ -98,7 +98,7 @@ class UserModule extends Module
 	{
 		global $config;
 
-		return $config->getVariable('module::user', 'reset') == 1;
+		return $config->get('module::user', 'reset') == 1;
 	}
 
 

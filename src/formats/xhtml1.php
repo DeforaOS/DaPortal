@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -50,8 +50,7 @@ class XHTML1Format extends HTMLFormat
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
 
 		parent::attach($engine, $type);
-		if(($charset = $config->getVariable('defaults', 'charset'))
-				!== FALSE)
+		if(($charset = $config->get('defaults', 'charset')) !== FALSE)
 			$encoding = $charset;
 		$this->doctype = "<?xml version=\"$version\""
 			." encoding=\"$encoding\"?>\n";

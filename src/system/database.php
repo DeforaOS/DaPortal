@@ -118,8 +118,7 @@ abstract class Database
 		$ret = FALSE;
 		$priority = 0;
 
-		if(($name = $config->getVariable('database', 'backend'))
-				!== FALSE)
+		if(($name = $config->get('database', 'backend')) !== FALSE)
 		{
 			$res = require_once('./database/'.$name.'.php');
 			if($res === FALSE)

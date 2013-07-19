@@ -50,7 +50,7 @@ class XMLFormat extends PlainFormat
 	public function render($engine, $page, $filename = FALSE)
 	{
 		global $config;
-		$charset = $config->getVariable('defaults', 'charset');
+		$charset = $config->get('defaults', 'charset');
 
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

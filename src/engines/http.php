@@ -76,7 +76,7 @@ class HTTPEngine extends Engine
 	{
 		global $config;
 
-		if(($private = $config->getVariable('engine::http', 'private'))
+		if(($private = $config->get('engine::http', 'private'))
 				== 1)
 			return $this->_getRequestPrivate();
 		return $this->_getRequestDo();
@@ -147,10 +147,10 @@ class HTTPEngine extends Engine
 		$module = 'user';
 		$actions = array('login');
 
-		if(($m = $config->getVariable('engine::http',
+		if(($m = $config->get('engine::http',
 				'private::module')) !== FALSE)
 			$module = $m;
-		if(($a = $config->getVariable('engine::http',
+		if(($a = $config->get('engine::http',
 		       		'private::actions')) !== FALSE)
 			$actions = explode(',', $a);
 		$request = $this->_getRequestDo();
@@ -225,7 +225,7 @@ class HTTPEngine extends Engine
 		//XXX escape the headers
 		$type = $this->getType();
 		$header = 'Content-Type: '.$type;
-		$charset = $config->getVariable('defaults', 'charset');
+		$charset = $config->get('defaults', 'charset');
 
 		if($charset !== FALSE)
 			$header .= '; charset='.$charset;

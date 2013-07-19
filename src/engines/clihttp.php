@@ -37,15 +37,15 @@ class CliHTTPEngine extends CliEngine
 		global $config;
 
 		parent::attach();
-		if(($_SERVER['SERVER_NAME'] = $config->getVariable(
+		if(($_SERVER['SERVER_NAME'] = $config->get(
 				'engine::clihttp', 'hostname')) === FALSE)
 			$_SERVER['SERVER_NAME'] = gethostname();
 		$_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
-		if(($_SERVER['SERVER_PORT'] = $config->getVariable(
-				'engine::clihttp', 'port')) === FALSE
+		if(($_SERVER['SERVER_PORT'] = $config->get('engine::clihttp',
+				'port')) === FALSE
 				|| !is_numeric($_SERVER['SERVER_PORT']))
 			$_SERVER['SERVER_PORT'] = 80;
-		if($config->getVariable('engine::clihttp', 'ssl'))
+		if($config->get('engine::clihttp', 'ssl'))
 			$_SERVER['HTTPS'] = 'on';
 	}
 
@@ -56,7 +56,7 @@ class CliHTTPEngine extends CliEngine
 	{
 		global $config;
 
-		if($config->getVariable('engine::clihttp', 'friendly'))
+		if($config->get('engine::clihttp', 'friendly'))
 		{
 			require_once('./engines/httpfriendly.php');
 			$hfe = new HttpFriendlyEngine();

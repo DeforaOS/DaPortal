@@ -67,7 +67,7 @@ class SQLite2Database extends Database
 			return FALSE;
 		if(($query = $this->prepare($query, $parameters)) === FALSE)
 			return FALSE;
-		if($config->getVariable('database', 'debug'))
+		if($config->get('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		$error = FALSE;
 		if(($ret = sqlite_query($this->handle, $query, SQLITE_BOTH,
@@ -88,7 +88,7 @@ class SQLite2Database extends Database
 	{
 		global $config;
 
-		if($config->getVariable('database::sqlite2', 'filename')
+		if($config->get('database::sqlite2', 'filename')
 				!== FALSE)
 			return 100;
 		return 0;
@@ -100,7 +100,7 @@ class SQLite2Database extends Database
 	{
 		global $config;
 
-		if(($filename = $config->getVariable('database::sqlite2',
+		if(($filename = $config->get('database::sqlite2',
 						'filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');

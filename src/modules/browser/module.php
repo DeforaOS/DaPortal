@@ -97,8 +97,8 @@ class BrowserModule extends Module
 		global $config;
 		$error = 'The browser repository is not configured';
 
-		if(($root = $config->getVariable('module::'.$this->name,
-				'root')) === FALSE)
+		if(($root = $config->get('module::'.$this->name, 'root'))
+				=== FALSE)
 		{
 			$engine->log('LOG_WARNING', $error);
 			$root = '/tmp';

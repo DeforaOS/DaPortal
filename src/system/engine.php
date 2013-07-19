@@ -81,9 +81,9 @@ abstract class Engine
 		global $config;
 
 		//return the default request
-		return new Request($config->getVariable('defaults', 'module'),
-			$config->getVariable('defaults', 'action'),
-			$config->getVariable('defaults', 'id'));
+		return new Request($config->get('defaults', 'module'),
+			$config->get('defaults', 'action'),
+			$config->get('defaults', 'id'));
 	}
 
 
@@ -201,10 +201,9 @@ abstract class Engine
 		$ret = FALSE;
 		$priority = 0;
 
-		if($config->getVariable(FALSE, 'debug') == '1')
+		if($config->get(FALSE, 'debug') == '1')
 			Engine::$debug = TRUE;
-		if(($name = $config->getVariable('engine', 'backend'))
-				!== FALSE)
+		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
 			$res = require_once('./engines/'.$name.'.php');
 			if($res === FALSE)

@@ -24,8 +24,8 @@ require_once('./system/module.php');
 
 global $config;
 $config = new Config;
-$config->setVariable('database', 'backend', 'sqlite3');
-$config->setVariable('database::sqlite3', 'filename', '../tests/sqlite.db3');
+$config->set('database', 'backend', 'sqlite3');
+$config->set('database::sqlite3', 'filename', '../tests/sqlite.db3');
 $engine = new CliEngine;
 
 //functions
@@ -55,35 +55,35 @@ function tests($engine)
 tests($engine);
 
 //AtomFormat
-$config->setVariable('format', 'backend', 'atom');
+$config->set('format', 'backend', 'atom');
 tests($engine);
 
 //CSVFormat
-$config->setVariable('format', 'backend', 'csv');
+$config->set('format', 'backend', 'csv');
 tests($engine);
 
 //HTMLFormat
-$config->setVariable('format', 'backend', 'html');
+$config->set('format', 'backend', 'html');
 tests($engine);
 
 //HTML5Format
-$config->setVariable('format', 'backend', 'html5');
+$config->set('format', 'backend', 'html5');
 tests($engine);
 
 //FPDFFormat
-$config->setVariable('format', 'backend', 'fpdf');
+$config->set('format', 'backend', 'fpdf');
 tests($engine);
 
 //XHTML1Format
-$config->setVariable('format', 'backend', 'xhtml1');
+$config->set('format', 'backend', 'xhtml1');
 tests($engine);
 
 //XHTML11Format
-$config->setVariable('format', 'backend', 'xhtml11');
+$config->set('format', 'backend', 'xhtml11');
 tests($engine);
 
 //XMLFormat
-$config->setVariable('format', 'backend', 'xml');
+$config->set('format', 'backend', 'xml');
 tests($engine);
 
 ?>

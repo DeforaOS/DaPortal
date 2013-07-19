@@ -260,8 +260,8 @@ class DownloadModule extends ContentModule
 		global $config;
 		$error = 'The download repository is not configured';
 
-		if(($root = $config->getVariable('module::'.$this->name,
-				'root')) === FALSE)
+		if(($root = $config->get('module::'.$this->name, 'root'))
+				=== FALSE)
 		{
 			$engine->log('LOG_WARNING', $error);
 			$root = '/tmp';

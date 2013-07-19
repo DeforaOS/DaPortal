@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -29,11 +29,11 @@ class Locale
 		global $config;
 		$package = ($package !== FALSE) ? $package : 'DaPortal';
 
-		if(($prefix = $config->getVariable(FALSE, 'prefix')) === FALSE)
+		if(($prefix = $config->get(FALSE, 'prefix')) === FALSE)
 			$prefix = '/usr/local';
 		$path = $prefix.'/share/locale';
-		$charset = $config->getVariable('defaults', 'charset');
-		if(($locale = $config->getVariable('defaults', 'locale'))
+		$charset = $config->get('defaults', 'charset');
+		if(($locale = $config->get('defaults', 'locale'))
 				=== FALSE)
 			//FIXME the charset may be part of $locale here
 			$locale = getenv('LC_ALL');

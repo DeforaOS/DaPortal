@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,7 @@ class SessionAuth extends Auth
 
 		//avoid session-fixation attacks
 		$message = 'Could not regenerate the session';
-		if($config->getVariable('auth::session', 'regenerate') == 1
+		if($config->get('auth::session', 'regenerate') == 1
 				&& session_regenerate_id(TRUE) !== TRUE)
 			$engine->log('LOG_WARNING', $message);
 		$this->setVariable($engine, 'SessionAuth::uid',

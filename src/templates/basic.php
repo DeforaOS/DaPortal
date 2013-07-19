@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ class BasicTemplate extends Template
 	{
 		global $config;
 
-		$title = $config->getVariable(FALSE, 'title');
+		$title = $config->get(FALSE, 'title');
 		$res = new PageElement('title', array('text' => $title));
 		return $res;
 	}
@@ -189,23 +189,23 @@ class BasicTemplate extends Template
 
 		$section = 'template::'.$this->name;
 		if($this->action === FALSE)
-			$this->action = $config->getVariable($section,
+			$this->action = $config->get($section,
 					'action');
 		if($this->footer === FALSE)
-			$this->footer = $config->getVariable($section,
+			$this->footer = $config->get($section,
 					'footer');
 		if($this->homepage === FALSE)
-			$this->homepage = $config->getVariable($section,
+			$this->homepage = $config->get($section,
 					'homepage');
 		if($this->id === FALSE)
-			$this->id = $config->getVariable($section, 'id');
+			$this->id = $config->get($section, 'id');
 		if($this->module === FALSE)
-			$this->module = $config->getVariable($section,
+			$this->module = $config->get($section,
 					'module');
 		if($this->title === FALSE)
-			$this->title = $config->getVariable($section, 'title');
+			$this->title = $config->get($section, 'title');
 		if($this->title === FALSE)
-			$this->title = $config->getVariable(FALSE, 'title');
+			$this->title = $config->get(FALSE, 'title');
 	}
 
 

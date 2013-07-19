@@ -31,7 +31,7 @@ class WikiModule extends ContentModule
 	{
 		global $config;
 
-		$this->root = $config->getVariable('module::wiki', 'root');
+		$this->root = $config->get('module::wiki', 'root');
 		$title = ($title === FALSE) ? _('Wiki') : $title;
 		parent::__construct($id, $name);
 		$this->text_content_admin = _('Wiki administration');
@@ -76,7 +76,7 @@ class WikiModule extends ContentModule
 		if($cred->getUserId() > 0)
 			return TRUE;
 		//anonymous users may be allowed to edit the wiki
-		if($config->getVariable('module::'.$this->name, 'anonymous'))
+		if($config->get('module::'.$this->name, 'anonymous'))
 			return TRUE;
 		$error = _('Permission denied');
 		return FALSE;

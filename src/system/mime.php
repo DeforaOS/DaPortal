@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -103,7 +103,7 @@ class Mime
 	{
 		global $config;
 
-		$theme = $config->getVariable(FALSE, 'icontheme');
+		$theme = $config->get(FALSE, 'icontheme');
 		switch($theme)
 		{
 			case 'Tango':
@@ -121,7 +121,7 @@ class Mime
 		global $config;
 
 		Mime::$types = array();
-		if(($globs = $config->getVariable('mime', 'globs')) === FALSE)
+		if(($globs = $config->get('mime', 'globs')) === FALSE)
 		{
 			$engine->log('LOG_WARNING',
 					'The globs file is not defined');

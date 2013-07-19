@@ -1239,7 +1239,7 @@ class ProjectModule extends ContentModule
 			$bug, $project)
 	{
 		global $config;
-		$encoding = $config->getVariable('defaults', 'charset');
+		$encoding = $config->get('defaults', 'charset');
 		$sep = ' ';
 
 		if($encoding !== FALSE && function_exists('iconv')

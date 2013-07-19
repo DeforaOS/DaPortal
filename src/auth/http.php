@@ -52,7 +52,7 @@ class HTTPAuth extends Auth
 			? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
 		$error = $protocol.' 401 Unauthorized';
 
-		if(($realm = $config->getVariable('auth::basic', 'realm'))
+		if(($realm = $config->get('auth::basic', 'realm'))
 				=== FALSE)
 			$realm = 'DaPortal';
 		if(!isset($_SERVER['PHP_AUTH_USER'])
@@ -72,7 +72,7 @@ class HTTPAuth extends Auth
 				|| ($cred = $user->authenticate($engine,
 					$password)) === FALSE)
 		{
-			if($config->getVariable('engine::http', 'private'))
+			if($config->get('engine::http', 'private'))
 			{
 				header('WWW-Authenticate: Basic realm="'
 						.htmlspecialchars($realm).'"');

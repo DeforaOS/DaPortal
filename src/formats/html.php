@@ -49,7 +49,7 @@ class HTMLFormat extends FormatElements
 		global $config;
 
 		//configuration
-		$this->javascript = $config->getVariable('format::html',
+		$this->javascript = $config->get('format::html',
 			'javascript') ? TRUE : FALSE;
 
 		//for escaping
@@ -116,7 +116,7 @@ class HTMLFormat extends FormatElements
 		$this->_render_icontheme($page);
 		$this->_render_favicon($page);
 		$this->_render_javascript($page);
-		if(($charset = $config->getVariable('defaults', 'charset'))
+		if(($charset = $config->get('defaults', 'charset'))
 				!== FALSE)
 			$this->renderMeta('Content-Type', 'text/html'
 					.'; charset='.$charset);
@@ -125,7 +125,7 @@ class HTMLFormat extends FormatElements
 		if(($refresh = $page->getProperty('refresh')) !== FALSE
 				&& is_numeric($refresh))
 			$this->renderMeta('Refresh', $refresh);
-		if(($vw = $config->getVariable('format::html',
+		if(($vw = $config->get('format::html',
 				'viewport::width')) !== FALSE)
 		{
 			$this->renderTabs();
@@ -157,7 +157,7 @@ class HTMLFormat extends FormatElements
 	{
 		global $config;
 
-		if(($favicon = $config->getVariable('format::html', 'favicon'))
+		if(($favicon = $config->get('format::html', 'favicon'))
 				=== FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the icon is not readable?
@@ -170,7 +170,7 @@ class HTMLFormat extends FormatElements
 	{
 		global $config;
 
-		if(($icontheme = $config->getVariable(FALSE, 'icontheme'))
+		if(($icontheme = $config->get(FALSE, 'icontheme'))
 				=== FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the theme is not readable?
@@ -195,14 +195,14 @@ class HTMLFormat extends FormatElements
 	{
 		global $config;
 
-		if(($theme = $config->getVariable(FALSE, 'theme')) === FALSE)
+		if(($theme = $config->get(FALSE, 'theme')) === FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the theme is not readable?
 		$this->renderTabs();
 		$this->tag('link', FALSE, FALSE, array('rel' => 'stylesheet',
 					'href' => "themes/$theme.css",
 					'title' => $theme));
-		if(($theme = $config->getVariable('format::html',
+		if(($theme = $config->get('format::html',
 					'alternate_themes')) != 1)
 			return;
 		$this->_render_theme_alternate($page, $theme);
@@ -232,7 +232,7 @@ class HTMLFormat extends FormatElements
 		global $config;
 
 		if(($title = $e->getProperty('title')) === FALSE)
-			$title = $config->getVariable(FALSE, 'title');
+			$title = $config->get(FALSE, 'title');
 		if($title !== FALSE)
 		{
 			$this->renderTabs();

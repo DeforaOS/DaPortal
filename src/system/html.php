@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -290,8 +290,7 @@ class HTML
 			define('ENT_HTML401', 0);
 		//for encoding
 		if(HTML::$charset === FALSE)
-			HTML::$charset = $config->getVariable('defaults',
-					'charset');
+			HTML::$charset = $config->get('defaults', 'charset');
 		if($charset === FALSE)
 			$charset = HTML::$charset;
 		switch(strtolower($charset))

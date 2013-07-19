@@ -129,7 +129,7 @@ class PgsqlDatabase extends Database
 
 		if($this->handle === FALSE)
 			return FALSE;
-		if($config->getVariable('database', 'debug'))
+		if($config->get('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		//convert the query to the PostgreSQL way
 		//FIXME cache the results of the conversion
@@ -151,7 +151,7 @@ class PgsqlDatabase extends Database
 			else
 				$args[$i] = $parameters[$k];
 		}
-		if($config->getVariable('database', 'debug'))
+		if($config->get('database', 'debug'))
 			$engine->log('LOG_WARN', $query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
@@ -192,7 +192,7 @@ class PgsqlDatabase extends Database
 		if(!function_exists('pg_connect'))
 			return 0;
 		foreach($variables as $k => $v)
-			if($config->getVariable('database::pgsql', $k)
+			if($config->get('database::pgsql', $k)
 					!== FALSE)
 				return 100;
 		return 1;
@@ -207,13 +207,13 @@ class PgsqlDatabase extends Database
 		$sep = '';
 
 		foreach($this->variables as $k => $v)
-			if(($p = $config->getVariable('database::pgsql', $k))
+			if(($p = $config->get('database::pgsql', $k))
 					!== FALSE)
 			{
 				$str .= $sep.$v."='$p'"; //XXX escape?
 				$sep = ' ';
 			}
-		$this->handle = $config->getVariable('database::pgsql',
+		$this->handle = $config->get('database::pgsql',
 			'persistent') ? pg_pconnect($str) : pg_connect($str);
 		if($this->handle === FALSE)
 			return $engine->log('LOG_ERR',

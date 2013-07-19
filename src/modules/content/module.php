@@ -228,7 +228,7 @@ abstract class ContentModule extends Module
 			return FALSE;
 		if($cred->isAdmin())
 			return TRUE;
-		$moderate = $config->getVariable('module::'.$this->name,
+		$moderate = $config->get('module::'.$this->name,
 				'moderate');
 		return ($moderate === FALSE || $moderate == 0) ? TRUE : FALSE;
 	}
@@ -242,7 +242,7 @@ abstract class ContentModule extends Module
 
 		if($cred->getUserId() > 0)
 			return TRUE;
-		if($config->getVariable('module::'.$this->name, 'anonymous'))
+		if($config->get('module::'.$this->name, 'anonymous'))
 			return TRUE;
 		$error = _('Permission denied');
 		return FALSE;

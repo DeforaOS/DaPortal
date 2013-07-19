@@ -29,10 +29,10 @@ class CVSScmProject
 	{
 		global $config;
 
-		$this->cvsroot = $config->getVariable('module::project',
-			'scm::backend::cvs::cvsroot'); //XXX
-		$this->repository = $config->getVariable('module::project',
-			'scm::backend::cvs::repository'); //XXX
+		$this->cvsroot = $config->get('module::project',
+				'scm::backend::cvs::cvsroot'); //XXX
+		$this->repository = $config->get('module::project',
+				'scm::backend::cvs::repository'); //XXX
 	}
 
 

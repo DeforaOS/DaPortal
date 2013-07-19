@@ -49,8 +49,8 @@ class CSVFormat extends PlainFormat
 		global $config;
 
 		//configuration
-		$this->titles = $config->getVariable('format::csv',
-			'titles') ? TRUE : FALSE;
+		$this->titles = $config->get('format::csv', 'titles')
+			? TRUE : FALSE;
 	}
 
 
