@@ -23,13 +23,13 @@ require_once('./system/page.php');
 require_once('./system/template.php');
 
 
-//HttpEngine
-class HttpEngine extends Engine
+//HTTPEngine
+class HTTPEngine extends Engine
 {
 	//public
 	//methods
 	//essential
-	//HttpEngine::match
+	//HTTPEngine::match
 	public function match()
 	{
 		if(!isset($_SERVER['SERVER_PROTOCOL']))
@@ -49,7 +49,7 @@ class HttpEngine extends Engine
 	}
 
 
-	//HttpEngine::attach
+	//HTTPEngine::attach
 	public function attach()
 	{
 		$request = $this->getRequest();
@@ -71,7 +71,7 @@ class HttpEngine extends Engine
 
 
 	//accessors
-	//HttpEngine::getRequest
+	//HTTPEngine::getRequest
 	public function getRequest()
 	{
 		global $config;
@@ -163,7 +163,7 @@ class HttpEngine extends Engine
 	}
 
 
-	//HttpEngine::getUrl
+	//HTTPEngine::getUrl
 	public function getUrl($request, $absolute = TRUE)
 	{
 		//FIXME do not include parameters for a POST request
@@ -218,7 +218,7 @@ class HttpEngine extends Engine
 
 
 	//useful
-	//HttpEngine::render
+	//HTTPEngine::render
 	public function render($page)
 	{
 		global $config;

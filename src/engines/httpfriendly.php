@@ -19,13 +19,13 @@
 require_once('./engines/http.php');
 
 
-//HttpFriendlyEngine
-class HttpFriendlyEngine extends HttpEngine
+//HTTPFriendlyEngine
+class HTTPFriendlyEngine extends HTTPEngine
 {
 	//public
 	//methods
 	//essential
-	//HttpFriendlyEngine::match
+	//HTTPFriendlyEngine::match
 	public function match()
 	{
 		if(($score = parent::match()) != 100)
@@ -35,7 +35,7 @@ class HttpFriendlyEngine extends HttpEngine
 
 
 	//accessors
-	//HttpFriendlyEngine::getRequest
+	//HTTPFriendlyEngine::getRequest
 	public function getRequest()
 	{
 		return parent::getRequest();
@@ -112,7 +112,7 @@ class HttpFriendlyEngine extends HttpEngine
 	}
 
 
-	//HttpFriendlyEngine::getUrl
+	//HTTPFriendlyEngine::getUrl
 	public function getUrl($request, $absolute = TRUE)
 	{
 		global $config;
