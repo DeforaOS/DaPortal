@@ -18,10 +18,11 @@
 
 require_once('./system/mime.php');
 require_once('./system/page.php');
+require_once('./modules/project/scm.php');
 
 
 //GitSCMProject
-class GitSCMProject
+class GitSCMProject extends SCMProject
 {
 	//public
 	//GitSCMProject::attach

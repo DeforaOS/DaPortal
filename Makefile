@@ -186,6 +186,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/news/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/scm.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/cvs.php \
