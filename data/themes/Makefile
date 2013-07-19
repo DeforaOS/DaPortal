@@ -17,6 +17,10 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 DeforaOS.css $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 DeforaOS.png $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 DeforaOS-background.png $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-background.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 khorben.css $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
@@ -24,6 +28,8 @@ install:
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DaPortal.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.png
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-background.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
 
