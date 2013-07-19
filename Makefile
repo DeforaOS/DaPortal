@@ -77,6 +77,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS.css \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS.png \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-background.png \
+		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-favicon.png \
 		$(PACKAGE)-$(VERSION)/data/themes/Makefile \
 		$(PACKAGE)-$(VERSION)/data/themes/index.php \
 		$(PACKAGE)-$(VERSION)/data/themes/khorben.css \
