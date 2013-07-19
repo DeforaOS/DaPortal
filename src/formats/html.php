@@ -148,7 +148,7 @@ class HTMLFormat extends FormatElements
 	private function _render_base($page)
 	{
 		$request = new Request();
-		$url = dirname($this->engine->getUrl($request, TRUE)).'/'; //XXX
+		$url = dirname($this->engine->getURL($request, TRUE)).'/'; //XXX
 		$this->renderTabs();
 		$this->tag('base', FALSE, FALSE, array('href' => $url));
 	}
@@ -279,7 +279,7 @@ class HTMLFormat extends FormatElements
 		$id = $e->getProperty('id');
 
 		if(($r = $e->getProperty('request')) !== FALSE)
-			$url = $this->engine->getUrl($r, FALSE);
+			$url = $this->engine->getURL($r, FALSE);
 		else
 			$url = $e->getProperty('url');
 		if(($class = $e->getProperty('class')) === FALSE
@@ -637,7 +637,7 @@ $('#$id1').closest('form').submit(function () {
 			$class = "stock$size $stock";
 		}
 		else if(($r = $e->getProperty('request')) !== FALSE)
-			$attributes['src'] = $this->engine->getUrl($r, FALSE);
+			$attributes['src'] = $this->engine->getURL($r, FALSE);
 		else
 			$attributes['src'] = $e->getProperty('source');
 		$this->tag('img', $class, $e->getProperty('id'), $attributes);
@@ -685,7 +685,7 @@ $('#$id1').closest('form').submit(function () {
 			$attributes['name'] = $a;
 		if(($r = $e->getProperty('request')) !== FALSE)
 		{
-			$url = $this->engine->getUrl($r, FALSE);
+			$url = $this->engine->getURL($r, FALSE);
 			$attributes['href'] = $url;
 		}
 		else if(($url = $e->getProperty('url')) !== FALSE)
@@ -740,7 +740,7 @@ $('#$id1').closest('form').submit(function () {
 				$class = is_string($class) ? $class.' important'
 					: 'important';
 			if(($r = $e->getProperty('request')) !== FALSE)
-				$attributes['href'] = $this->engine->getUrl($r,
+				$attributes['href'] = $this->engine->getURL($r,
 						FALSE);
 			else if(($u = $e->getProperty('url')) !== FALSE)
 				$attributes['href'] = $u;

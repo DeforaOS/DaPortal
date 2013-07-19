@@ -1520,7 +1520,7 @@ abstract class ContentModule extends Module
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');
-		$page->setProperty('location', $engine->getUrl($request));
+		$page->setProperty('location', $engine->getURL($request));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));

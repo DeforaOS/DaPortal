@@ -546,7 +546,7 @@ class DownloadModule extends ContentModule
 	{
 		$r = new Request($this->name, FALSE, $content->getId(),
 			$content->getTitle());
-		$page->setProperty('location', $engine->getUrl($r));
+		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$text = $this->text_content_submit_progress;
@@ -692,7 +692,7 @@ class DownloadModule extends ContentModule
 	{
 		$r = new Request($this->name, FALSE, $content->getId(),
 			$content->getTitle());
-		$page->setProperty('location', $engine->getUrl($r));
+		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$text = $this->text_content_submit_progress;

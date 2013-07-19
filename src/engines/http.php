@@ -53,7 +53,7 @@ class HTTPEngine extends Engine
 	public function attach()
 	{
 		$request = $this->getRequest();
-		$url = $this->getUrl($request);
+		$url = $this->getURL($request);
 
 		Locale::init($this);
 		$this->setType('text/html');
@@ -163,8 +163,8 @@ class HTTPEngine extends Engine
 	}
 
 
-	//HTTPEngine::getUrl
-	public function getUrl($request, $absolute = TRUE)
+	//HTTPEngine::getURL
+	public function getURL($request, $absolute = TRUE)
 	{
 		//FIXME do not include parameters for a POST request
 		if($request === FALSE)

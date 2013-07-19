@@ -51,8 +51,8 @@ class CliHTTPEngine extends CliEngine
 
 
 	//accessors
-	//Engine::getUrl
-	public function getUrl($request, $absolute = TRUE)
+	//Engine::getURL
+	public function getURL($request, $absolute = TRUE)
 	{
 		global $config;
 
@@ -60,13 +60,13 @@ class CliHTTPEngine extends CliEngine
 		{
 			require_once('./engines/httpfriendly.php');
 			$hfe = new HttpFriendlyEngine();
-			return $hfe->getUrl($request, $absolute);
+			return $hfe->getURL($request, $absolute);
 		}
 		else
 		{
 			require_once('./engines/http.php');
 			$he = new HttpEngine();
-			return $he->getUrl($request, $absolute);
+			return $he->getURL($request, $absolute);
 		}
 	}
 }

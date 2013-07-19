@@ -112,8 +112,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 	}
 
 
-	//HTTPFriendlyEngine::getUrl
-	public function getUrl($request, $absolute = TRUE)
+	//HTTPFriendlyEngine::getURL
+	public function getURL($request, $absolute = TRUE)
 	{
 		global $config;
 

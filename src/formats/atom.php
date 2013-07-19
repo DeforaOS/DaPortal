@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ class AtomFormat extends Format
 		$title = $page->getProperty('title');
 		$text = $page->getProperty('text');
 		$request = $engine->getRequest();
-		$link = $engine->getUrl($request);
+		$link = $engine->getURL($request);
 
 		$this->engine = $engine;
 		if(($charset = $config->getVariable('defaults', 'charset'))
@@ -127,7 +127,7 @@ class AtomFormat extends Format
 		$request = $title->getProperty('request');
 		if($request === FALSE)
 			return;
-		print("\t\t\t<$tag>".$this->engine->getUrl($request, TRUE)
+		print("\t\t\t<$tag>".$this->engine->getURL($request, TRUE)
 				."</$tag>\n");
 	}
 

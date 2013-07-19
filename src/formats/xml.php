@@ -128,7 +128,7 @@ class XMLFormat extends PlainFormat
 		}
 		if(($url = $e->getProperty('url')) === FALSE
 				&& ($r = $e->getProperty('request')) !== FALSE)
-			$url = $this->engine->getUrl($r);
+			$url = $this->engine->getURL($r);
 		if($url !== FALSE)
 		{
 			$this->_print('<url>');

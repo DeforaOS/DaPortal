@@ -900,7 +900,7 @@ class UserModule extends Module
 	protected function _loginSuccess($engine, $request, $page)
 	{
 		$r = new Request();
-		$page->setProperty('location', $engine->getUrl($r));
+		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$text = _('Logging in progress, please wait...');
@@ -953,7 +953,7 @@ class UserModule extends Module
 			return $page;
 		}
 		//process logout
-		$page->setProperty('location', $engine->getUrl($r));
+		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$text = _('Logging out, please wait...');
@@ -1596,7 +1596,7 @@ class UserModule extends Module
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');
-		$page->setProperty('location', $engine->getUrl($request));
+		$page->setProperty('location', $engine->getURL($request));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));
