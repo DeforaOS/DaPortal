@@ -59,8 +59,11 @@ class GitSCMProject
 		if(($st = @lstat($path)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		//FIXME implement files
-		return $this->_browseDir($engine, $request, $vbox, $path,
+		if(($st['mode'] & GitSCMProject::$S_IFDIR)
+				=== GitSCMProject::$S_IFDIR)
+			return $this->_browseDir($engine, $request, $vbox,
+					$path, $file);
+		return $this->_browseFile($engine, $request, $vbox, $path,
 				$file);
 	}
 
@@ -132,6 +135,15 @@ class GitSCMProject
 			$row->setProperty('date', $date);
 		}
 		closedir($dir);
+		return $vbox;
+	}
+
+	private function _browseFile($engine, $request, $vbox, $path, $file)
+	{
+		//view
+		$vbox->append('title', array('text' => _('Commit log')));
+		$view = $vbox->append('treeview');
+		//FIXME really implement
 		return $vbox;
 	}
 
