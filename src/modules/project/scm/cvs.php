@@ -20,11 +20,11 @@ require_once('./system/mime.php');
 require_once('./system/user.php');
 
 
-//CVSScmProject
-class CVSScmProject
+//CVSSCMProject
+class CVSSCMProject
 {
 	//public
-	//CVSScmProject::attach
+	//CVSSCMProject::attach
 	public function attach($engine)
 	{
 		global $config;
@@ -37,7 +37,7 @@ class CVSScmProject
 
 
 	//actions
-	//CVSScmProject::browse
+	//CVSSCMProject::browse
 	public function browse($engine, $project, $request)
 	{
 		$error = _('No CVS repository defined');
@@ -59,8 +59,8 @@ class CVSScmProject
 		if(($st = @lstat($path)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		if(($st['mode'] & CVSScmProject::$S_IFDIR)
-				=== CVSScmProject::$S_IFDIR)
+		if(($st['mode'] & CVSSCMProject::$S_IFDIR)
+				=== CVSSCMProject::$S_IFDIR)
 			return $this->_browseDir($engine, $request, $vbox,
 					$path, $file);
 		if(($revision = $request->getParameter('revision')) !== FALSE)
@@ -93,8 +93,8 @@ class CVSScmProject
 				continue;
 			if(($st = lstat($path.'/'.$de)) === FALSE)
 				continue;
-			if(($st['mode'] & CVSScmProject::$S_IFDIR)
-					== CVSScmProject::$S_IFDIR)
+			if(($st['mode'] & CVSSCMProject::$S_IFDIR)
+					== CVSSCMProject::$S_IFDIR)
 				$folders[$de] = $st;
 			else if(substr($de, -2) != ',v')
 				continue;
@@ -296,7 +296,7 @@ class CVSScmProject
 	}
 
 
-	//CVSScmProject::download
+	//CVSSCMProject::download
 	public function download($engine, $project, $request)
 	{
 		$title = _('Repository');
@@ -315,7 +315,7 @@ class CVSScmProject
 	}
 
 
-	//CVSScmProject::timeline
+	//CVSSCMProject::timeline
 	public function timeline($engine, $project, $request)
 	{
 		$error = _('No CVS repository defined');
@@ -414,7 +414,7 @@ class CVSScmProject
 	//protected
 	//methods
 	//helpers
-	//CVSScmProject::helperSanitizePath
+	//CVSSCMProject::helperSanitizePath
 	protected function helperSanitizePath($path)
 	{
 		$path = '/'.ltrim($path, '/');
