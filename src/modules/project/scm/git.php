@@ -16,33 +16,121 @@
 
 
 
+require_once('./system/mime.php');
 require_once('./system/page.php');
 
 
-//GitScmProject
-class GitScmProject
+//GitSCMProject
+class GitSCMProject
 {
 	//public
-	//GitScmProject::attach
+	//GitSCMProject::attach
 	public function attach($engine)
 	{
+		global $config;
+
+		$this->gitroot = $config->get('module::project',
+				'scm::backend::git::gitroot');
 	}
 
 
 	//actions
-	//GitScmProject::browse
+	//GitSCMProject::browse
 	public function browse($engine, $project, $request)
 	{
 		$error = _('No Git repository defined');
 
-		//FIXME really implement
-		//check the cvsroot
-		return new PageElement('dialog', array('type' => 'error',
-				'text' => $error));
+		//check the gitroot
+		if($this->gitroot === FALSE || strlen($project['cvsroot']) == 0)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		$vbox = new PageElement('vbox');
+		//browse
+		$url = parse_url($project['cvsroot']);
+		$path = $this->gitroot.'/'.basename($url['path']);
+		//FIXME implement files
+		$file = '/';
+		$error = _('No such file or directory');
+		if(($st = @lstat($path)) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		return $this->_browseDir($engine, $request, $vbox, $path,
+				$file);
+	}
+
+	private function _browseDir($engine, $request, $vbox, $path, $file)
+	{
+		$error = _('Could not open directory');
+
+		$vbox->append('title', array('text' => _('Browse source')));
+		if(($dir = opendir($path)) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		//view
+		$columns = array('icon' => '', 'title' => _('Filename'),
+				'date' => _('Date'));
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		$folders = array();
+		$files = array();
+		while(($de = readdir($dir)) !== FALSE)
+		{
+			if(strncmp('.', $de, 1) == 0)
+				continue;
+			if(($st = lstat($path.'/'.$de)) === FALSE)
+				continue;
+			if(($st['mode'] & GitSCMProject::$S_IFDIR)
+					== GitSCMProject::$S_IFDIR)
+				$folders[$de] = $st;
+			else
+				$files[$de] = $st;
+		}
+		ksort($folders);
+		ksort($files);
+		foreach($folders as $de => $st)
+		{
+			$row = $view->append('row');
+			$icon = new PageElement('image', array('size' => 16,
+					'stock' => 'folder'));
+			$row->setProperty('icon', $icon);
+			//title
+			$f = ltrim($file.'/'.$de, '/');
+			$r = new Request($request->getModule(),
+				$request->getAction(),
+				$request->getId(), $request->getTitle(),
+				array('file' => $f));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => $de));
+			$row->setProperty('title', $link);
+			//date
+			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$row->setProperty('date', $date);
+		}
+		foreach($files as $de => $st)
+		{
+			$row = $view->append('row');
+			$icon = Mime::getIcon($engine, $de, 16);
+			$icon = new PageElement('image', array(
+					'source' => $icon));
+			$row->setProperty('icon', $icon);
+			//title
+			$f = ltrim($file.'/'.$de, '/');
+			$r = new Request($request->getModule(),
+				$request->getAction(),
+				$request->getId(), $request->getTitle(),
+				array('file' => $f));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => $de));
+			$row->setProperty('title', $link);
+			//date
+			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$row->setProperty('date', $date);
+		}
+		closedir($dir);
+		return $vbox;
 	}
 
 
-	//GitScmProject::download
+	//GitSCMProject::download
 	public function download($engine, $project, $request)
 	{
 		$title = _('Repository');
@@ -59,16 +147,22 @@ class GitScmProject
 	}
 
 
-	//GitScmProject::timeline
+	//GitSCMProject::timeline
 	public function timeline($engine, $project, $request)
 	{
 		$error = _('No Git repository defined');
 
 		//FIXME really implement
-		//check the cvsroot
+		//check the gitroot
 		return new PageElement('dialog', array('type' => 'error',
 				'text' => $error));
 	}
+
+
+	//private
+	//properties
+	static private $S_IFDIR = 040000;
+	private $gitroot = FALSE;
 }
 
 ?>
