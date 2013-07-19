@@ -186,7 +186,8 @@ class GitSCMProject
 		$path = '/'.ltrim($path, '/');
 		$path = str_replace('/./', '/', $path);
 		//FIXME really implement '..'
-		if(strcmp($path, '/..') == 0 || strpos($path, '/../') !== FALSE)
+		if(strncmp($path, '/.', 2) == 0
+				|| strpos($path, '/../') !== FALSE)
 			return '/';
 		return $path;
 	}
