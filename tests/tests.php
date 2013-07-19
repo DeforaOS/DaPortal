@@ -36,8 +36,12 @@ function test($engine, $request)
 		$engine->render($page);
 }
 
-function tests($engine)
+function tests($engine, $format = FALSE)
 {
+	global $config;
+
+	if($format !== FALSE)
+		$config->set('format', 'backend', $format);
 	//content modules
 	$modules = array('article', 'blog', 'download', 'news', 'project',
 		'wiki');
@@ -55,35 +59,27 @@ function tests($engine)
 tests($engine);
 
 //AtomFormat
-$config->set('format', 'backend', 'atom');
-tests($engine);
+tests($engine, 'atom');
 
 //CSVFormat
-$config->set('format', 'backend', 'csv');
-tests($engine);
+tests($engine, 'csv');
 
 //HTMLFormat
-$config->set('format', 'backend', 'html');
-tests($engine);
+tests($engine, 'html');
 
 //HTML5Format
-$config->set('format', 'backend', 'html5');
-tests($engine);
+tests($engine, 'html5');
 
 //FPDFFormat
-$config->set('format', 'backend', 'fpdf');
-tests($engine);
+tests($engine, 'fpdf');
 
 //XHTML1Format
-$config->set('format', 'backend', 'xhtml1');
-tests($engine);
+tests($engine, 'xhtml1');
 
 //XHTML11Format
-$config->set('format', 'backend', 'xhtml11');
-tests($engine);
+tests($engine, 'xhtml11');
 
 //XMLFormat
-$config->set('format', 'backend', 'xml');
-tests($engine);
+tests($engine, 'xml');
 
 ?>
