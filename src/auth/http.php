@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,12 @@ require_once('./system/auth.php');
 require_once('./system/user.php');
 
 
-//HttpAuth
-class HttpAuth extends Auth
+//HTTPAuth
+class HTTPAuth extends Auth
 {
 	//protected
 	//methods
-	//HttpAuth::match
+	//HTTPAuth::match
 	protected function match($engine)
 	{
 		if(!isset($_SERVER['SERVER_PROTOCOL']))
@@ -44,7 +44,7 @@ class HttpAuth extends Auth
 	}
 
 
-	//HttpAuth::attach
+	//HTTPAuth::attach
 	protected function attach($engine)
 	{
 		global $config;
