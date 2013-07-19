@@ -48,12 +48,18 @@ class GitSCMProject
 		//browse
 		$url = parse_url($project['cvsroot']);
 		$path = $this->gitroot.'/'.basename($url['path']);
-		//FIXME implement files
-		$file = '/';
+		if(($file = $request->getParameter('file')) !== FALSE)
+		{
+			$file = $this->helperSanitizePath($file);
+			$path .= "/$file";
+		}
+		else
+			$file = '/';
 		$error = _('No such file or directory');
 		if(($st = @lstat($path)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
+		//FIXME implement files
 		return $this->_browseDir($engine, $request, $vbox, $path,
 				$file);
 	}
@@ -156,6 +162,21 @@ class GitSCMProject
 		//check the gitroot
 		return new PageElement('dialog', array('type' => 'error',
 				'text' => $error));
+	}
+
+
+	//protected
+	//methods
+	//helpers
+	//GitSCMProject::helperSanitizePath
+	protected function helperSanitizePath($path)
+	{
+		$path = '/'.ltrim($path, '/');
+		$path = str_replace('/./', '/', $path);
+		//FIXME really implement '..'
+		if(strcmp($path, '/..') == 0 || strpos($path, '/../') !== FALSE)
+			return '/';
+		return $path;
 	}
 
 
