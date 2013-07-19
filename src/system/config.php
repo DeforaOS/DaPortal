@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,8 @@ class ConfigSection
 	//methods
 	//public
 	//accessors
-	//ConfigSection::getVariable
-	public function getVariable($name)
+	//ConfigSection::get
+	public function get($name)
 	{
 		if(!isset($this->variables[$name]))
 			return FALSE;
@@ -36,8 +36,8 @@ class ConfigSection
 	}
 
 
-	//ConfigSection::setVariable
-	public function setVariable($name, $value)
+	//ConfigSection::set
+	public function set($name, $value)
 	{
 		$this->variables[$name] = $value;
 	}
@@ -61,25 +61,41 @@ class Config
 
 
 	//accessors
-	//Config::getVariable
-	public function getVariable($section, $name)
+	//Config::get
+	public function get($section, $name)
 	{
 		if($section === FALSE)
 			$section = '';
 		if(!isset($this->sections[$section]))
 			return FALSE;
-		return $this->sections[$section]->getVariable($name);
+		return $this->sections[$section]->get($name);
 	}
 
 
-	//Config::setVariable
-	public function setVariable($section, $name, $value)
+	//Config::getVariable
+	//XXX obsoleted
+	public function getVariable($section, $name)
+	{
+		return $this->get($section, $name);
+	}
+
+
+	//Config::set
+	public function set($section, $name, $value)
 	{
 		if($section === FALSE)
 			$section = '';
 		if(!isset($this->sections[$section]))
 			$this->sections[$section] = new ConfigSection;
-		$this->sections[$section]->setVariable($name, $value);
+		$this->sections[$section]->set($name, $value);
+	}
+
+
+	//Config::setVariable
+	//XXX obsoleted
+	public function setVariable($section, $name, $value)
+	{
+		$this->set($section, $name, $value);
 	}
 
 
@@ -99,8 +115,7 @@ class Config
 		{
 			if(preg_match("/^([a-zA-Z0-9-_: \t]+)=([^\r\n]*)\r?$/",
 					$line, $matches) == 1)
-				$this->setVariable($section, $matches[1],
-						$matches[2]);
+				$this->set($section, $matches[1], $matches[2]);
 			else if(preg_match("/^[ \t]*\[([a-zA-Z0-9-_:\/ \t]+)\]"
 						."[ \t]*\r?$/", $line, $matches)
 					== 1)
