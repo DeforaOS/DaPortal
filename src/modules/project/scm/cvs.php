@@ -199,7 +199,8 @@ class CVSSCMProject extends SCMProject
 		$columns = array('title' => _('Revision'), 'date' => _('Date'),
 				'username' => _('Author'),
 				'message' => _('Message'));
-		$view = $vbox->append('treeview', array('columns' => $columns));
+		$view = $vbox->append('treeview', array('columns' => $columns,
+				'alternate' => TRUE));
 		for($i = 0, $cnt = count($rcs); $i < $cnt;)
 			if($rcs[$i++] == '----------------------------')
 				break;
