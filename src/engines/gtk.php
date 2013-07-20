@@ -288,7 +288,7 @@ class GtkFormat extends FormatElements
 	protected function renderExpander($e)
 	{
 		//FIXME really implement
-		$this->renderLabel($e);
+		return $this->renderLabel($e);
 	}
 
 	protected function renderFileChooser($e)
@@ -347,13 +347,13 @@ class GtkFormat extends FormatElements
 	protected function renderHtmledit($e)
 	{
 		//FIXME really implement
-		$this->renderTextview($e);
+		return $this->renderTextview($e);
 	}
 
 	protected function renderHtmlview($e)
 	{
 		//FIXME really implement
-		$this->renderLabel($e);
+		return $this->renderLabel($e);
 	}
 
 	protected function renderIconview($e)
@@ -522,13 +522,13 @@ class GtkFormat extends FormatElements
 	protected function renderProgress($e)
 	{
 		//FIXME really implement
-		$this->renderLabel($e);
+		return $this->renderLabel($e);
 	}
 
 	protected function renderRadioButton($e)
 	{
 		//FIXME really implement
-		$this->renderLabel($e);
+		return $this->renderLabel($e);
 	}
 
 	protected function renderStatusbar($e)
