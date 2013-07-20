@@ -93,24 +93,24 @@ form div.entry span.label, form div.entry input {
 
 /* expander */
 div.expander > * {
-	display:                        none;
+	display:			none;
 }
 
 div.expander > div.title {
-	background-image:               url('../icons/generic/16x16/collapsed.png');
-	background-position:            0 0;
-	background-repeat:              no-repeat;
-	display:                        block;
-	min-height:                     16px;
-	padding-left:                   20px;
+	background-image:		url('../icons/generic/16x16/collapsed.png');
+	background-position:		0 0;
+	background-repeat:		no-repeat;
+	display:			block;
+	min-height:			16px;
+	padding-left:			20px;
 }
 
 div.expander:hover > div.title {
-	background-image:               url('../icons/generic/16x16/expanded.png');
+	background-image:		url('../icons/generic/16x16/expanded.png');
 }
 
 div.expander:hover > * {
-	display:                        block;
+	display:			block;
 }
 
 /* frame */
