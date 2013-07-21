@@ -21,9 +21,12 @@
 
 html {
 	background-color:		#221133;
-	font-family:			sans-serif;
 	font-size:			90%;
 	text-align:			justify;
+}
+
+html, input {
+	font-family:			sans-serif;
 }
 
 a {
