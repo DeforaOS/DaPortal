@@ -42,6 +42,9 @@ function tests($engine, $format = FALSE)
 
 	if($format !== FALSE)
 		$config->set('format', 'backend', $format);
+	//admin module
+	$module = 'admin';
+	test($engine, new Request($module));
 	//content modules
 	$modules = array('article', 'blog', 'download', 'news', 'project',
 		'wiki');
