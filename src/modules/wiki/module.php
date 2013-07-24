@@ -287,7 +287,7 @@ class WikiModule extends ContentModule
 		if(!HTML::validate($engine, '<div>'.$content['content'].'</div>'))
 			return _('Document not valid');
 		$file = $root.'/'.$content['title'];
-		if(realpath($file.',v') === FALSE)
+		if(realpath($root.'/RCS/'.$content['title'].',v') === FALSE)
 			return _('Missing RCS file');
 		//update the content
 		if($db->transactionBegin($engine) === FALSE)
