@@ -1129,7 +1129,7 @@ $('#$id1').closest('form').submit(function () {
 		array_push($this->tags, $name);
 		//FIXME automatically output tabs
 		$tag = '<'.$this->escapeAttribute($name);
-		if($class !== FALSE)
+		if($class !== FALSE && strlen($class) > 0)
 			$tag.=' class="'.$this->escapeAttribute($class).'"';
 		if($id !== FALSE)
 		{
