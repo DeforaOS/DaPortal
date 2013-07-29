@@ -194,7 +194,7 @@ class HTTPEngine extends Engine
 			$url .= '?_module='.urlencode($module);
 			if(($action = $request->getAction()) !== FALSE)
 				$url .= '&_action='.urlencode($action);
-			if(($id = $request->getId()) !== FALSE)
+			if(($id = $request->getID()) !== FALSE)
 				$url .= '&_id='.urlencode($id);
 			if(($title = $request->getTitle()) !== FALSE)
 			{

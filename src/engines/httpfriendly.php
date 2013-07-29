@@ -153,7 +153,7 @@ class HTTPFriendlyEngine extends HTTPEngine
 		$url .= '/'.$module;
 		if(($action = $request->getAction()) !== FALSE)
 			$url .= '/'.$action;
-		if(($id = $request->getId()) !== FALSE)
+		if(($id = $request->getID()) !== FALSE)
 			$url .= '/'.$id;
 		if(($title = $request->getTitle()) !== FALSE)
 		{

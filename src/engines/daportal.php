@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DaPortal
 //
 //DaPortal is free software; you can redistribute it and/or modify
@@ -50,7 +50,7 @@ class DaPortalEngine extends HttpEngine
 		//sanitize
 		return new Request($this->sanitize($r->getModule()),
 				$this->sanitize($r->getAction()),
-				$this->sanitize($r->getId()),
+				$this->sanitize($r->getID()),
 				$this->sanitize($r->getTitle()),
 				$this->sanitize($r->getParameters()));
 	}

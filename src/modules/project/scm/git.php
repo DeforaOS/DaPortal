@@ -106,7 +106,7 @@ class GitSCMProject extends SCMProject
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
 				$request->getAction(),
-				$request->getId(), $request->getTitle(),
+				$request->getID(), $request->getTitle(),
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));
@@ -126,7 +126,7 @@ class GitSCMProject extends SCMProject
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
 				$request->getAction(),
-				$request->getId(), $request->getTitle(),
+				$request->getID(), $request->getTitle(),
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));

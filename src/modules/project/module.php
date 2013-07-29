@@ -605,7 +605,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::callBrowse
 	protected function callBrowse($engine, $request)
 	{
-		if(($project = $this->getProject($engine, $request->getId(),
+		if(($project = $this->getProject($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
 		$title = _('Project: ').$project['title'];
@@ -638,9 +638,9 @@ class ProjectModule extends ContentModule
 		$query = $this->project_query_list_bugs;
 		$project = FALSE;
 
-		//XXX unlike ProjectModule::list() here getId() is the project
+		//XXX unlike ProjectModule::list() here getID() is the project
 		//determine the current project
-		if(($id = $request->getId()) !== FALSE
+		if(($id = $request->getID()) !== FALSE
 				&& ($project = $this->getProject($engine, $id,
 					$request->getTitle())) === FALSE)
 			$error = _('Unknown project');
@@ -739,7 +739,7 @@ class ProjectModule extends ContentModule
 		$cred = $engine->getCredentials();
 		$user = new User($engine, $cred->getUserId());
 
-		if(($bug = $this->getBug($engine, $request->getId(),
+		if(($bug = $this->getBug($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
 		$project = $this->getProject($engine, $bug['project_id']);
@@ -779,7 +779,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
-		if($request !== FALSE && $request->getId() !== FALSE)
+		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		return $this->callList($engine, $request);
 	}
@@ -791,7 +791,7 @@ class ProjectModule extends ContentModule
 		$db = $engine->getDatabase();
 		$query = $this->project_query_list_downloads;
 
-		if(($project = $this->getProject($engine, $request->getId(),
+		if(($project = $this->getProject($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
 		$title = _('Project: ').$project['title'];
@@ -876,7 +876,7 @@ class ProjectModule extends ContentModule
 		$db = $engine->getDatabase();
 		$query = $this->project_query_list_screenshots;
 
-		if(($project = $this->getProject($engine, $request->getId(),
+		if(($project = $this->getProject($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
 		$title = _('Project: ').$project['title'];
@@ -967,7 +967,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::callSubmitRelease
 	protected function callSubmitRelease($engine, $request)
 	{
-		$project = $this->getProject($engine, $request->getId(),
+		$project = $this->getProject($engine, $request->getID(),
 				$request->getTitle());
 
 		$error = _('Invalid project');
@@ -1052,7 +1052,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::callTimeline
 	protected function callTimeline($engine, $request)
 	{
-		if(($project = $this->getProject($engine, $request->getId(),
+		if(($project = $this->getProject($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
 		$title = _('Project: ').$project['title'];
@@ -1101,7 +1101,7 @@ class ProjectModule extends ContentModule
 	//ProjectModule::formBugReply
 	protected function formBugReply($engine, $request, $bug, $project)
 	{
-		$r = new Request($this->name, 'bugReply', $request->getId(),
+		$r = new Request($this->name, 'bugReply', $request->getID(),
 			$request->getTitle());
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');

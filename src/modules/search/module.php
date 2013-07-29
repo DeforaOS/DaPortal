@@ -210,7 +210,7 @@ class SearchModule extends Module
 		$args = $request->getParameters();
 		unset($args['page']);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$form = $page->append('form', array('idempotent' => TRUE,
 				'request' => $r));
 		$hbox = $form->append('hbox');
@@ -221,7 +221,7 @@ class SearchModule extends Module
 		$a = $args;
 		$a['page'] = max(1, $pcur - 1);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $a);
+			$request->getID(), $request->getTitle(), $a);
 		$hbox->append('link', array('stock' => 'previous',
 				'request' => $r, 'text' => ''));
 		//entry
@@ -231,13 +231,13 @@ class SearchModule extends Module
 		//next page
 		$args['page'] = min($pcur + 1, $pcnt);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$hbox->append('link', array('stock' => 'next',
 				'request' => $r, 'text' => ''));
 		//last page
 		$args['page'] = $pcnt;
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$hbox->append('link', array('stock' => 'gotolast',
 				'request' => $r, 'text' => ''));
 	}

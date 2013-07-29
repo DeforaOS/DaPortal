@@ -508,7 +508,7 @@ class HTMLFormat extends FormatElements
 		{
 			$this->_renderFormHidden('_module', $r->getModule());
 			$this->_renderFormHidden('_action', $r->getAction());
-			$this->_renderFormHidden('_id', $r->getId());
+			$this->_renderFormHidden('_id', $r->getID());
 			//FIXME add the title?
 			if(($args = $r->getParameters()) !== FALSE)
 				foreach($args as $k => $v)
@@ -958,7 +958,7 @@ $('#$id1').closest('form').submit(function () {
 			//FIXME copied from renderForm()
 			$this->_renderTreeviewHidden('_module', $r->getModule());
 			$this->_renderTreeviewHidden('_action', $r->getAction());
-			$this->_renderTreeviewHidden('_id', $r->getId());
+			$this->_renderTreeviewHidden('_id', $r->getID());
 			$this->_renderTreeviewHidden('_title', $r->getTitle());
 			if(($parameters = $r->getParameters()) !== FALSE)
 				foreach($r->getParameters() as $k => $v)

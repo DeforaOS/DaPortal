@@ -114,7 +114,7 @@ class CVSSCMProject extends SCMProject
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
 				$request->getAction(),
-				$request->getId(), $request->getTitle(),
+				$request->getID(), $request->getTitle(),
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));
@@ -134,7 +134,7 @@ class CVSSCMProject extends SCMProject
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
 				$request->getAction(),
-				$request->getId(), $request->getTitle(),
+				$request->getID(), $request->getTitle(),
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => substr($de, 0, -2)));
@@ -154,7 +154,7 @@ class CVSSCMProject extends SCMProject
 					break;
 			//revision
 			$revision = substr($rcs[$revs + 1], 9);
-			$r = new Request('project', 'browse', $request->getId(),
+			$r = new Request('project', 'browse', $request->getID(),
 				$request->getTitle(), array(
 					'file' => $file.'/'.$de,
 					'revision' => $revision));
@@ -208,7 +208,7 @@ class CVSSCMProject extends SCMProject
 		{
 			$row = $view->append('row');
 			$revision = substr($rcs[$i], 9);
-			$r = new Request('project', 'browse', $request->getId(),
+			$r = new Request('project', 'browse', $request->getID(),
 				$request->getTitle(), array('file' => $file,
 					'revision' => $revision));
 			$link = new PageElement('link', array('request' => $r,
@@ -266,13 +266,13 @@ class CVSSCMProject extends SCMProject
 			return $fp;
 		$label = $vbox->append('label');
 		//link back
-		$r = new Request('project', 'browse', $request->getId(),
+		$r = new Request('project', 'browse', $request->getID(),
 			$request->getTitle(), array('file' => $file));
 		$label->append('link', array('request' => $r, 'stock' => 'back',
 					'text' => 'Back to the revision list'));
 		//link to the download
 		$label->append('label', array('text' => ' '));
-		$r = new Request('project', 'browse', $request->getId(),
+		$r = new Request('project', 'browse', $request->getID(),
 			$request->getTitle(), array('file' => $file,
 				'revision' => $revision, 'download' => 1));
 		$label->append('link', array('request' => $r,
@@ -280,7 +280,7 @@ class CVSSCMProject extends SCMProject
 					'text' => 'Download file'));
 		//link to this page
 		$label->append('label', array('text' => ' '));
-		$r = new Request('project', 'browse', $request->getId(),
+		$r = new Request('project', 'browse', $request->getID(),
 			$request->getTitle(), array('file' => $file,
 				'revision' => $revision));
 		$label->append('link', array('request' => $r,

@@ -279,8 +279,8 @@ class UserModule extends Module
 		if(is_string($error))
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-		$r = new Request($this->name, 'update', $request->getId(),
-		       	$request->getId() ? $request->getTitle() : FALSE);
+		$r = new Request($this->name, 'update', $request->getID(),
+		       	$request->getID() ? $request->getTitle() : FALSE);
 		$form = $page->append('form', array('request' => $r));
 		//fields
 		//username (cannot be changed)
@@ -308,11 +308,11 @@ class UserModule extends Module
 				'text' => _('Repeat new password: '),
 				'name' => 'password2', 'hidden' => TRUE));
 		//buttons
-		if($cred->isAdmin() && $request->getId() !== FALSE)
+		if($cred->isAdmin() && $request->getID() !== FALSE)
 			$r = new Request($this->name, 'admin');
 		else
 			$r = new Request($this->name, 'profile',
-					$request->getId(), $request->getId()
+					$request->getID(), $request->getID()
 					? $user->getUsername() : FALSE);
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r, 'text' => _('Cancel')));
@@ -699,7 +699,7 @@ class UserModule extends Module
 		$query = $this->query_content;
 		$cred = $engine->getCredentials();
 
-		if($request !== FALSE && ($id = $request->getId()) !== FALSE)
+		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//FIXME add content?
 		$title = ($cred->getUserId() != 0) ? _('My account')
@@ -776,7 +776,7 @@ class UserModule extends Module
 					'type' => 'error',
 					'text' => 'Could not list modules'));
 		$page = new Page;
-		if(($uid = $request->getId()) !== FALSE)
+		if(($uid = $request->getID()) !== FALSE)
 		{
 			$user = new User($engine, $uid, $request->getTitle());
 			$uid = $user->getUserId();
@@ -974,7 +974,7 @@ class UserModule extends Module
 	protected function callProfile($engine, $request)
 	{
 		$cred = $engine->getCredentials();
-		$id = $request->getId();
+		$id = $request->getID();
 
 		//determine whose profile to view
 		if($id === FALSE)
@@ -1007,10 +1007,10 @@ class UserModule extends Module
 				'text' => _('e-mail: ')));
 		$col2->append('label', array('text' => $user->getEmail()));
 		//link to profile update
-		$r = new Request($this->name, 'update', $request->getId(),
-			$request->getId() ? $user->getUsername() : FALSE);
+		$r = new Request($this->name, 'update', $request->getID(),
+			$request->getID() ? $user->getUsername() : FALSE);
 		$button = FALSE;
-		if($request->getId() !== FALSE && $cred->isAdmin())
+		if($request->getID() !== FALSE && $cred->isAdmin())
 			$button = new PageElement('button', array(
 				'stock' => 'admin', 'request' => $r,
 				'text' => _('Update')));
@@ -1118,7 +1118,7 @@ class UserModule extends Module
 		if($cred->getUserId() != 0)
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
-		if(($uid = $request->getId()) !== FALSE
+		if(($uid = $request->getID()) !== FALSE
 				&& ($token = $request->getParameter('token'))
 				!== FALSE)
 			return $this->_reset_token($engine, $request, $uid,
@@ -1362,7 +1362,7 @@ class UserModule extends Module
 	protected function callUpdate($engine, $request)
 	{
 		$cred = $engine->getCredentials();
-		$id = $request->getId();
+		$id = $request->getID();
 		$error = TRUE;
 
 		//determine whose profile to update
@@ -1443,7 +1443,7 @@ class UserModule extends Module
 
 	private function _updateSuccess($engine, $request)
 	{
-		$id = $request->getId();
+		$id = $request->getID();
 
 		$title = _('Profile update');
 		$page = new Page(array('title' => $title));
@@ -1476,7 +1476,7 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$error = TRUE;
-		$uid = $request->getId();
+		$uid = $request->getID();
 		$token = $request->getParameter('token');
 
 		if($cred->getUserId() != 0)

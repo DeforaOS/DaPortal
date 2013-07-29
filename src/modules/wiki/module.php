@@ -110,7 +110,7 @@ class WikiModule extends ContentModule
 	{
 		$title = $this->text_content_title;
 
-		if($request !== FALSE && $request->getId() !== FALSE)
+		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title,
@@ -278,7 +278,7 @@ class WikiModule extends ContentModule
 					$parameters['content']);
 			$content['content'] = $parameters['content'];
 		}
-		$r = new Request($this->name, 'update', $request->getId(),
+		$r = new Request($this->name, 'update', $request->getID(),
 			$content['title'], $parameters);
 		$r->setIdempotent($request->isIdempotent());
 		//additional checks

@@ -68,7 +68,7 @@ class DownloadModule extends ContentModule
 			{
 				case 'get':
 					return $this->_get($engine,
-							$request->getId(),
+							$request->getID(),
 							$request->getTitle());
 				case 'getRoot':
 					return $this->getRoot($engine);
@@ -377,12 +377,12 @@ class DownloadModule extends ContentModule
 	//DownloadModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$r = new Request($this->name, 'submit', $request->getId(),
+		$r = new Request($this->name, 'submit', $request->getID(),
 			$request->getTitle());
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('filechooser', array('text' => _('File: '),
 				'name' => 'files[]'));
-		$r = new Request($this->name, FALSE, $request->getId(),
+		$r = new Request($this->name, FALSE, $request->getID(),
 			$request->getTitle());
 		$form->append('button', array('text' => _('Cancel'),
 				'stock' => 'cancel', 'request' => $r));
@@ -396,13 +396,13 @@ class DownloadModule extends ContentModule
 	//DownloadModule::formSubmitDirectory
 	protected function formSubmitDirectory($engine, $request)
 	{
-		$r = new Request($this->name, 'folder_new', $request->getId(),
+		$r = new Request($this->name, 'folder_new', $request->getID(),
 			$request->getTitle());
 		$form = new PageElement('form', array('request' => $r));
 		$name = $form->append('entry', array('text' => _('Name: '),
 				'name' => 'name',
 				'value' => $request->getParameter('name')));
-		$r = new Request($this->name, FALSE, $request->getId(),
+		$r = new Request($this->name, FALSE, $request->getID(),
 			$request->getTitle());
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r, 'text' => _('Cancel')));
@@ -417,7 +417,7 @@ class DownloadModule extends ContentModule
 	//DownloadModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
-		if($request === FALSE || ($id = $request->getId()) === FALSE)
+		if($request === FALSE || ($id = $request->getID()) === FALSE)
 		{
 			//display the (virtual) root folder
 			$content = array('id' => FALSE, 'download_id' => NULL,
@@ -439,7 +439,7 @@ class DownloadModule extends ContentModule
 		global $config;
 		$error = _('Could not fetch content');
 
-		if(($id = $request->getId()) === FALSE)
+		if(($id = $request->getID()) === FALSE)
 			return $this->callDefault($engine);
 		if(($content = $this->_get($engine, $id, $request->getTitle()))
 				=== FALSE)
@@ -471,7 +471,7 @@ class DownloadModule extends ContentModule
 
 		//FIXME find a way to re-use code from callSubmit()
 		//create the page
-		if(($parent = $this->_get($engine, $request->getId(),
+		if(($parent = $this->_get($engine, $request->getID(),
 				$request->getTitle())) !== FALSE)
 			$title = sprintf(_('New folder in "%s"'),
 					$parent['title']);
@@ -488,7 +488,7 @@ class DownloadModule extends ContentModule
 		$toolbar = $this->getToolbar($engine, $request, $parent);
 		$page->append($toolbar);
 		//process the content
-		$content = $this->_get($engine, $request->getId(),
+		$content = $this->_get($engine, $request->getID(),
 				$request->getTitle());
 		if(($error = $this->_FolderNewProcess($engine, $request,
 				$content)) === FALSE)
@@ -569,7 +569,7 @@ class DownloadModule extends ContentModule
 
 		//FIXME find a way to re-use code from callSubmit()
 		//create the page
-		if(($parent = $this->_get($engine, $request->getId(),
+		if(($parent = $this->_get($engine, $request->getID(),
 				$request->getTitle())) !== FALSE)
 			$title = sprintf(_('%s in "%s"'),
 					$this->text_content_submit,
@@ -587,7 +587,7 @@ class DownloadModule extends ContentModule
 		$toolbar = $this->getToolbar($engine, $request, $parent);
 		$page->append($toolbar);
 		//process the content
-		$content = $this->_get($engine, $request->getId(),
+		$content = $this->_get($engine, $request->getID(),
 				$request->getTitle());
 		if(($error = $this->_submitProcess($engine, $request,
 				$content)) === FALSE)

@@ -518,7 +518,7 @@ abstract class ContentModule extends Module
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
 
-		if($request !== FALSE && $request->getId() !== FALSE)
+		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $this->text_content_title));
 		$page->append('title', array('stock' => $this->name,
@@ -592,7 +592,7 @@ abstract class ContentModule extends Module
 		$error = _('Could not display content');
 
 		//obtain the content
-		if(($id = $request->getId()) === FALSE)
+		if(($id = $request->getID()) === FALSE)
 			return $this->callDefault($engine, $request);
 		if(($content = $this->_get($engine, $id, $request->getTitle(),
 				$request)) === FALSE)
@@ -673,7 +673,7 @@ abstract class ContentModule extends Module
 	{
 		$db = $engine->getDatabase();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getId(),
+			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
@@ -778,7 +778,7 @@ abstract class ContentModule extends Module
 		$error = _('Could not preview content');
 
 		//obtain the content
-		if(($content = $this->_get($engine, $request->getId(),
+		if(($content = $this->_get($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -794,7 +794,7 @@ abstract class ContentModule extends Module
 		$error = _('Could not preview content');
 
 		//obtain the content
-		if(($content = $this->_get($engine, $request->getId(),
+		if(($content = $this->_get($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -824,11 +824,11 @@ abstract class ContentModule extends Module
 		$content['title'] = _('Preview: ').$content['title'];
 		$this->helperPreview($engine, $vbox, $content);
 		//form
-		$r = new Request($this->name, 'publish', $request->getId(),
+		$r = new Request($this->name, 'publish', $request->getID(),
 			$request->getTitle());
 		$form = $page->append('form', array('request' => $r));
 		//buttons
-		$r = new Request($this->name, FALSE, $request->getId(),
+		$r = new Request($this->name, FALSE, $request->getID(),
 				$request->getTitle());
 		$form->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
@@ -938,7 +938,7 @@ abstract class ContentModule extends Module
 	{
 		//obtain the content
 		$error = _('Unable to fetch content');
-		if(($content = $this->_get($engine, $request->getId()))
+		if(($content = $this->_get($engine, $request->getID()))
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -1167,7 +1167,7 @@ abstract class ContentModule extends Module
 		//prepare the fallback request
 		$fallback = 'call'.ucfirst($fallback);
 		$r = new Request($request->getModule(), $request->getAction(),
-		       	$request->getId(), $request->getTitle());
+		       	$request->getID(), $request->getTitle());
 		if(($type = $request->getParameter('type')) !== FALSE)
 			$r->setParameter('type', $type);
 		//verify the request
@@ -1286,7 +1286,7 @@ abstract class ContentModule extends Module
 	protected function helperListButtons($engine, $page, $request = FALSE)
 	{
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getId(),
+			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserId()) == 0)
@@ -1315,7 +1315,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getId(),
+			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserId()) == 0)
@@ -1352,7 +1352,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getId(),
+			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 		$r = FALSE;
 
@@ -1383,7 +1383,7 @@ abstract class ContentModule extends Module
 		$args = $request->getParameters();
 		unset($args['page']);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$form = $page->append('form', array('idempotent' => TRUE,
 				'request' => $r));
 		$hbox = $form->append('hbox');
@@ -1394,7 +1394,7 @@ abstract class ContentModule extends Module
 		$a = $args;
 		$a['page'] = max(1, $pcur - 1);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $a);
+			$request->getID(), $request->getTitle(), $a);
 		$hbox->append('link', array('stock' => 'previous',
 				'request' => $r, 'text' => ''));
 		//entry
@@ -1404,13 +1404,13 @@ abstract class ContentModule extends Module
 		//next page
 		$args['page'] = min($pcur + 1, $pcnt);
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$hbox->append('link', array('stock' => 'next',
 				'request' => $r, 'text' => ''));
 		//last page
 		$args['page'] = $pcnt;
 		$r = new Request($this->name, $request->getAction(),
-			$request->getId(), $request->getTitle(), $args);
+			$request->getID(), $request->getTitle(), $args);
 		$hbox->append('link', array('stock' => 'gotolast',
 				'request' => $r, 'text' => ''));
 	}
@@ -1634,7 +1634,7 @@ abstract class ContentModule extends Module
 			$content)
 	{
 		$hbox = $page->append('hbox');
-		$r = new Request($this->name, FALSE, $request->getId(),
+		$r = new Request($this->name, FALSE, $request->getID(),
 				$content['title']);
 		$hbox->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
