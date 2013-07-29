@@ -530,7 +530,7 @@ class DownloadModule extends ContentModule
 			$db->transactionRollback($engine);
 			return _('Internal server error');
 		}
-		$args = array('content_id' => $content->getId(),
+		$args = array('content_id' => $content->getID(),
 			'parent' => $parent);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
@@ -544,7 +544,7 @@ class DownloadModule extends ContentModule
 
 	protected function _FolderNewSuccess($engine, $request, $page, $content)
 	{
-		$r = new Request($this->name, FALSE, $content->getId(),
+		$r = new Request($this->name, FALSE, $content->getID(),
 			$content->getTitle());
 		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
@@ -656,7 +656,7 @@ class DownloadModule extends ContentModule
 				TRUE, TRUE);
 		if($content === FALSE)
 			return _('Internal server error');
-		$args = array('content_id' => $content->getId(),
+		$args = array('content_id' => $content->getID(),
 			'parent' => $parent, 'mode' => 420);
 		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
@@ -690,7 +690,7 @@ class DownloadModule extends ContentModule
 
 	protected function _submitSuccess($engine, $request, $page, $content)
 	{
-		$r = new Request($this->name, FALSE, $content->getId(),
+		$r = new Request($this->name, FALSE, $content->getID(),
 			$content->getTitle());
 		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);

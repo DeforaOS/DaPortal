@@ -85,6 +85,7 @@ class ProjectModule extends ContentModule
 	//protected
 	//properties
 	//queries
+	//FIXME use daportal_user_enabled and daportal_content_public
 	protected $project_query_bug = "SELECT daportal_bug.content_id AS id,
 		title, content, timestamp, daportal_user.user_id AS user_id,
 		daportal_user.username AS username, bug_id,
@@ -951,12 +952,12 @@ class ProjectModule extends ContentModule
 			$synopsis = '';
 		if(($cvsroot = $request->getParameter('cvsroot')) === FALSE)
 			$cvsroot = '';
-		$args = array('project_id' => $content->getId(),
+		$args = array('project_id' => $content->getID(),
 			'synopsis' => $synopsis, 'cvsroot' => $cvsroot);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			//XXX use a transaction instead
-			Content::delete($engine, $this->id, $content->getId());
+			Content::delete($engine, $this->id, $content->getID());
 			return _('Could not insert project');
 		}
 		return $ret;
@@ -1040,7 +1041,7 @@ class ProjectModule extends ContentModule
 	protected function _submitSuccessRelease($engine, $request, $page,
 			$content)
 	{
-		$r = new Request($this->name, 'download', $content->getId(),
+		$r = new Request($this->name, 'download', $content->getID(),
 			$content->getTitle());
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_submit_progress); //XXX

@@ -925,7 +925,7 @@ abstract class ContentModule extends Module
 
 	protected function _submitSuccess($engine, $request, $page, $content)
 	{
-		$r = new Request($this->name, FALSE, $content->getId(),
+		$r = new Request($this->name, FALSE, $content->getID(),
 			$content->getTitle());
 		$this->helperRedirect($engine, $r, $page,
 			$this->text_content_submit_progress);
