@@ -32,8 +32,8 @@ abstract class Module
 
 
 	//accessors
-	//Module::getId
-	public static function getId($engine, $name)
+	//Module::getID
+	public static function getID($engine, $name)
 	{
 		static $modules = FALSE;
 		$db = $engine->getDatabase();
@@ -74,7 +74,7 @@ abstract class Module
 	//Module::load
 	public static function load($engine, $name)
 	{
-		if($name === FALSE || ($id = Module::getId($engine, $name))
+		if($name === FALSE || ($id = Module::getID($engine, $name))
 				=== FALSE)
 			return FALSE;
 		$module = $name.'Module';
