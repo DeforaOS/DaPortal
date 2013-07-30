@@ -80,8 +80,8 @@ class HTTPAuth extends Auth
 			}
 			return TRUE;
 		}
-		$cred = new AuthCredentials($user->getUserId(),
-				$user->getUsername(), $user->getGroupId(),
+		$cred = new AuthCredentials($user->getUserID(),
+				$user->getUsername(), $user->getGroupID(),
 				$user->isAdmin());
 		$this->setCredentials($engine, $cred);
 		return TRUE;

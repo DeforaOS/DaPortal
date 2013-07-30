@@ -29,24 +29,24 @@ class AuthCredentials
 	{
 		if($uid === FALSE || !is_string($username) || !is_bool($admin))
 			return;
-		$this->setUserId($uid, $admin);
+		$this->setUserID($uid, $admin);
 		if($gid === FALSE)
 			return;
-		$this->setGroupId($gid);
+		$this->setGroupID($gid);
 		$this->username = $username;
 	}
 
 
 	//accessors
-	//AuthCredentials::getGroupId
-	public function getGroupId()
+	//AuthCredentials::getGroupID
+	public function getGroupID()
 	{
 		return $this->gid;
 	}
 
 
-	//AuthCredentials::getUserId
-	public function getUserId()
+	//AuthCredentials::getUserID
+	public function getUserID()
 	{
 		return $this->uid;
 	}
@@ -66,8 +66,8 @@ class AuthCredentials
 	}
 
 
-	//AuthCredentials::setGroupId
-	public function setGroupId($gid)
+	//AuthCredentials::setGroupID
+	public function setGroupID($gid)
 	{
 		if(!is_numeric($gid))
 			return FALSE;
@@ -76,8 +76,8 @@ class AuthCredentials
 	}
 
 
-	//AuthCredentials::setUserId
-	public function setUserId($uid, $admin = FALSE)
+	//AuthCredentials::setUserID
+	public function setUserID($uid, $admin = FALSE)
 	{
 		if(!is_numeric($uid) || !is_bool($admin))
 		{

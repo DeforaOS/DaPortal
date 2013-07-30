@@ -82,9 +82,9 @@ class SessionAuth extends Auth
 		$user = new User($engine, $uid);
 		if(!$user->isEnabled())
 			return parent::getCredentials($engine);
-		$cred = new AuthCredentials($user->getUserId(),
+		$cred = new AuthCredentials($user->getUserID(),
 				$user->getUsername(),
-				$user->getGroupId(),
+				$user->getGroupID(),
 				$user->isAdmin());
 		parent::setCredentials($engine, $cred);
 		return parent::getCredentials($engine);
@@ -111,7 +111,7 @@ class SessionAuth extends Auth
 				&& session_regenerate_id(TRUE) !== TRUE)
 			$engine->log('LOG_WARNING', $message);
 		$this->setVariable($engine, 'SessionAuth::uid',
-				$credentials->getUserId());
+				$credentials->getUserID());
 		return parent::setCredentials($engine, $credentials);
 	}
 

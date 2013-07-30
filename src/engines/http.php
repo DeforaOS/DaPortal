@@ -154,7 +154,7 @@ class HTTPEngine extends Engine
 		       		'private::actions')) !== FALSE)
 			$actions = explode(',', $a);
 		$request = $this->_getRequestDo();
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 			if($request->getModule() != $module
 					|| !in_array($request->getAction(),
 						$actions))

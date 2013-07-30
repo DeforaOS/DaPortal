@@ -38,10 +38,10 @@ class EmailEngine extends CliEngine
 	public function render($page)
 	{
 		$cred = $this->getCredentials();
-		$user = new User($this, $cred->getUserId(),
+		$user = new User($this, $cred->getUserID(),
 				$cred->getUsername());
 
-		if($user->getUserId() == 0)
+		if($user->getUserID() == 0)
 		{
 			fprintf(STDERR, "%s\n", "daportal: Could not determine"
 					." the e-mail address");

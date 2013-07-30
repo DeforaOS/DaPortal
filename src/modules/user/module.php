@@ -334,7 +334,7 @@ class UserModule extends Module
 		if($request->getParameter('admin'))
 			return $this->_actions_admin($engine, $cred,
 					$this->name, $ret);
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 		{
 			//not logged in yet
 			$r = new Request($this->name, 'login');
@@ -623,7 +623,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$error = TRUE;
 
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 			//must be logged in
 			return $this->callDefault($engine, $request);
 		if(!$this->canClose($engine))
@@ -657,7 +657,7 @@ class UserModule extends Module
 	private function _closeProcess($engine, $request)
 	{
 		$cred = $engine->getCredentials();
-		$uid = $cred->getUserId();
+		$uid = $cred->getUserID();
 		$username = $cred->getUsername();
 
 		//verify the request
@@ -702,7 +702,7 @@ class UserModule extends Module
 		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//FIXME add content?
-		$title = ($cred->getUserId() != 0) ? _('My account')
+		$title = ($cred->getUserID() != 0) ? _('My account')
 			: _('Site menu');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -779,13 +779,13 @@ class UserModule extends Module
 		if(($uid = $request->getID()) !== FALSE)
 		{
 			$user = new User($engine, $uid, $request->getTitle());
-			$uid = $user->getUserId();
+			$uid = $user->getUserID();
 			$title = _('Content from ').$user->getUsername();
 		}
-		else if(($uid = $cred->getUserId()) != 0)
+		else if(($uid = $cred->getUserID()) != 0)
 		{
 			$user = new User($engine, $uid);
-			$uid = $user->getUserId('id');
+			$uid = $user->getUserID('id');
 			$title = _('My content');
 			$r = new Request($this->name);
 			$link = new PageElement('link', array('stock' => 'back',
@@ -854,7 +854,7 @@ class UserModule extends Module
 		else if(is_string($error))
 			$page->append('dialog', array('type' => 'error',
 						'text' => $error));
-		else if($cred->getUserId() != 0)
+		else if($cred->getUserID() != 0)
 			$page->append('dialog', array('type' => 'info',
 						'text' => $already));
 		$form = $this->formLogin($engine,
@@ -923,7 +923,7 @@ class UserModule extends Module
 		$page = new Page;
 		$page->append('title', array('stock' => 'logout',
 				'text' => _('User logout')));
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 		{
 			$text = _('You were logged out successfully');
 			$page->append('dialog', array('type' => 'info',
@@ -978,16 +978,16 @@ class UserModule extends Module
 
 		//determine whose profile to view
 		if($id === FALSE)
-			$id = $cred->getUserId();
+			$id = $cred->getUserID();
 		$user = new User($engine, $id, $request->getTitle());
-		if(($id = $user->getUserId()) == 0)
+		if(($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
 			$error = _('There is no profile for this user');
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		}
-		if($id === $cred->getUserId())
+		if($id === $cred->getUserID())
 			//viewing own profile
 			$id = FALSE;
 		//output the page
@@ -1044,7 +1044,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$error = TRUE;
 
-		if($cred->getUserId() != 0)
+		if($cred->getUserID() != 0)
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
 		//process registration
@@ -1115,7 +1115,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$error = TRUE;
 
-		if($cred->getUserId() != 0)
+		if($cred->getUserID() != 0)
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
 		if(($uid = $request->getID()) !== FALSE
@@ -1351,7 +1351,7 @@ class UserModule extends Module
 
 	protected function _submitSuccess($engine, $request, $page, $user)
 	{
-		$r = new Request($this->name, FALSE, $user->getUserId(),
+		$r = new Request($this->name, FALSE, $user->getUserID(),
 			$user->getUsername());
 		$this->helperRedirect($engine, $r, $page);
 		return $page;
@@ -1367,17 +1367,17 @@ class UserModule extends Module
 
 		//determine whose profile to update
 		if($id === FALSE)
-			$user = new User($engine, $cred->getUserId());
+			$user = new User($engine, $cred->getUserID());
 		else
 			$user = new User($engine, $id, $request->getTitle());
-		if(($id = $user->getUserId()) == 0)
+		if(($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
 			$error = _('There is no profile for this user');
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		}
-		if($id === $cred->getUserId())
+		if($id === $cred->getUserID())
 			//viewing own profile
 			$id = FALSE;
 		if($id !== FALSE && !$cred->isAdmin())
@@ -1411,7 +1411,7 @@ class UserModule extends Module
 			return $ret;
 		//update the profile
 		$error = '';
-		$args = array('user_id' => $user->getUserId(),
+		$args = array('user_id' => $user->getUserID(),
 			'fullname' => $fullname, 'email' => $email);
 		if($db->query($engine, $this->query_update, $args) === FALSE)
 			return _('Could not update the profile');
@@ -1479,7 +1479,7 @@ class UserModule extends Module
 		$uid = $request->getID();
 		$token = $request->getParameter('token');
 
-		if($cred->getUserId() != 0)
+		if($cred->getUserID() != 0)
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
 		$page = new Page(array('title' => _('Account confirmation')));
@@ -1519,7 +1519,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 
 		$request = $engine->getRequest();
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 			return $this->formLogin($engine,
 					$request->getParameter('username'),
 					FALSE);

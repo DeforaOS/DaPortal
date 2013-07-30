@@ -233,7 +233,7 @@ class DownloadModule extends ContentModule
 			return TRUE;
 		//FIXME also check the permissions on the content
 		if($content !== FALSE
-				&& $content['user_id'] == $cred->getUserId())
+				&& $content['user_id'] == $cred->getUserID())
 			return TRUE;
 		$error = _('Permission denied');
 		return FALSE;

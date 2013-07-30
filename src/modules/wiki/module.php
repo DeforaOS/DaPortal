@@ -73,7 +73,7 @@ class WikiModule extends ContentModule
 		global $config;
 		$cred = $engine->getCredentials();
 
-		if($cred->getUserId() > 0)
+		if($cred->getUserID() > 0)
 			return TRUE;
 		//anonymous users may be allowed to edit the wiki
 		if($config->get('module::'.$this->name, 'anonymous'))
@@ -405,7 +405,7 @@ class WikiModule extends ContentModule
 			if(($user = User::lookup($engine, $username)) !== FALSE)
 			{
 				$r = new Request('user', FALSE,
-					$user->getUserId(),
+					$user->getUserID(),
 					$user->getUsername());
 				$username = new PageElement('link', array(
 						'request' => $r,

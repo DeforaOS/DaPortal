@@ -170,7 +170,7 @@ class CVSSCMProject extends SCMProject
 			if(($user = User::lookup($engine, $username)) !== FALSE)
 			{
 				$r = new Request('project', 'list',
-					$user->getUserId(), $username);
+					$user->getUserID(), $username);
 				$username = new PageElement('link', array(
 						'request' => $r,
 						'stock' => 'user',
@@ -224,7 +224,7 @@ class CVSSCMProject extends SCMProject
 			if(($user = User::lookup($engine, $username)) !== FALSE)
 			{
 				$r = new Request('project', 'list',
-					$user->getUserId(), $username);
+					$user->getUserID(), $username);
 				$username = new PageElement('link', array(
 						'request' => $r,
 						'stock' => 'user',
@@ -398,7 +398,7 @@ class CVSSCMProject extends SCMProject
 			if(($user = User::lookup($engine, $username)) !== FALSE)
 			{
 				$r = new Request('user', FALSE,
-					$user->getUserId(),
+					$user->getUserID(),
 					$user->getUsername());
 				$username = new PageElement('link', array(
 						'request' => $r,

@@ -75,15 +75,15 @@ class User
 	}
 
 
-	//User::getGroupId
-	public function getGroupId()
+	//User::getGroupID
+	public function getGroupID()
 	{
 		return $this->group_id;
 	}
 
 
-	//User::getUserId
-	public function getUserId()
+	//User::getUserID
+	public function getUserID()
 	{
 		return $this->user_id;
 	}
@@ -247,7 +247,7 @@ class User
 			return FALSE;
 		}
 		$user = new User($engine, $uid);
-		if($user->getUserId() === FALSE)
+		if($user->getUserID() === FALSE)
 		{
 			$error = _('Could not insert the user');
 			return FALSE;
@@ -323,7 +323,7 @@ class User
 			return FALSE;
 		}
 		$user = new User($engine, $uid);
-		if($user->getUserId() === FALSE)
+		if($user->getUserID() === FALSE)
 		{
 			$db->transactionRollback($engine);
 			$error = _('Could not register the user');

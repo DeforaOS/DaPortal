@@ -303,7 +303,7 @@ class ProjectModule extends ContentModule
 		if(isset($content['project_id']))
 		{
 			//this is a project
-			if($cred->getUserId() == $content['user_id'])
+			if($cred->getUserID() == $content['user_id'])
 				return TRUE;
 			if($this->isMember($engine, $content))
 				//FIXME only allow administrators?
@@ -321,7 +321,7 @@ class ProjectModule extends ContentModule
 
 		if(($members = $this->getMembers($engine, $project)) === FALSE)
 			return FALSE;
-		$uid = $cred->getUserId();
+		$uid = $cred->getUserID();
 		if($project['user_id'] == $uid)
 			return TRUE;
 		foreach($members as $m)
@@ -339,7 +339,7 @@ class ProjectModule extends ContentModule
 		$query = $this->project_query_get;
 
 		$args = array('module_id' => $this->id,
-			'user_id' => $cred->getUserId(), 'content_id' => $id);
+			'user_id' => $cred->getUserID(), 'content_id' => $id);
 		if($title !== FALSE)
 		{
 			$query .= ' AND daportal_content.title LIKE :title';
@@ -392,8 +392,8 @@ class ProjectModule extends ContentModule
 	}
 
 
-	//ProjectModule::getBugById
-	protected function getBugById($engine, $id)
+	//ProjectModule::getBugByID
+	protected function getBugByID($engine, $id)
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_bug_by_id;
@@ -551,7 +551,7 @@ class ProjectModule extends ContentModule
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin()
-				|| $project['user_id'] == $cred->getUserId())
+				|| $project['user_id'] == $cred->getUserID())
 			return TRUE;
 		return FALSE;
 	}
@@ -564,7 +564,7 @@ class ProjectModule extends ContentModule
 
 		if(($members = $this->getMembers($engine, $project)) === FALSE)
 			return FALSE;
-		$uid = $cred->getUserId();
+		$uid = $cred->getUserID();
 		if($project['user_id'] == $uid)
 			return TRUE;
 		foreach($members as $m)
@@ -737,7 +737,7 @@ class ProjectModule extends ContentModule
 	protected function callBugReply($engine, $request)
 	{
 		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserId());
+		$user = new User($engine, $cred->getUserID());
 
 		if(($bug = $this->getBug($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
@@ -762,7 +762,7 @@ class ProjectModule extends ContentModule
 			$title = $request->getParameter('title');
 			$content = $request->getParameter('content');
 			$reply = array('title' => _('Preview: ').$title,
-					'user_id' => $user->getUserId(),
+					'user_id' => $user->getUserID(),
 					'username' => $user->getUsername(),
 					'date' => $this->timestampToDate(),
 					'content' => $content);
@@ -1254,7 +1254,7 @@ class ProjectModule extends ContentModule
 		$user = is_numeric($bug['assigned'])
 			? new User($engine, $bug['assigned']) : FALSE;
 		$a = ($user !== FALSE)
-			? new Request($this->name, 'list', $user->getUserId(),
+			? new Request($this->name, 'list', $user->getUserID(),
 				$user->getUsername()) : FALSE;
 
 		$page = $page->append('hbox');
@@ -1306,7 +1306,7 @@ class ProjectModule extends ContentModule
 	protected function helperDisplayBugReply($engine, $request, $page,
 			$content)
 	{
-		$bug = $this->getBugById($engine, $content['bug_id']);
+		$bug = $this->getBugByID($engine, $content['bug_id']);
 		$project = ($bug !== FALSE)
 			? $this->_get($engine, $bug['project_id']) : FALSE;
 
@@ -1363,7 +1363,7 @@ class ProjectModule extends ContentModule
 		$yes = new PageElement('image', array('stock' => 'yes',
 			'size' => 16, 'title' => _('Enabled')));
 		//project owner
-		$r = new Request('user', FALSE, $user->getUserId(),
+		$r = new Request('user', FALSE, $user->getUserID(),
 				$user->getUsername());
 		$link = new PageElement('link', array('request' => $r,
 				'stock' => 'user',
@@ -1472,7 +1472,7 @@ class ProjectModule extends ContentModule
 			$content)
 	{
 		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserId());
+		$user = new User($engine, $cred->getUserID());
 
 		if($request === FALSE
 				|| $request->getParameter('preview') === FALSE)
@@ -1482,7 +1482,7 @@ class ProjectModule extends ContentModule
 		$cvsroot = $request->getParameter('cvsroot');
 		$content = array('title' => _('Preview: ')
 					.$request->getParameter('title'),
-				'user_id' => $user->getUserId(),
+				'user_id' => $user->getUserID(),
 				'username' => $user->getUsername(),
 				'date' => $this->timestampToDate(),
 				'synopsis' => $synopsis,

@@ -224,7 +224,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if($cred->getUserId() == 0)
+		if($cred->getUserID() == 0)
 			return FALSE;
 		if($cred->isAdmin())
 			return TRUE;
@@ -240,7 +240,7 @@ abstract class ContentModule extends Module
 		global $config;
 		$cred = $engine->getCredentials();
 
-		if($cred->getUserId() > 0)
+		if($cred->getUserID() > 0)
 			return TRUE;
 		if($config->get('module::'.$this->name, 'anonymous'))
 			return TRUE;
@@ -273,7 +273,7 @@ abstract class ContentModule extends Module
 		if($id === FALSE)
 			return FALSE;
 		$args = array('module_id' => $this->id, 'content_id' => $id,
-				'user_id' => $cred->getUserId());
+				'user_id' => $cred->getUserID());
 		if($title !== FALSE)
 		{
 			$query .= ' AND daportal_content.title '
@@ -679,7 +679,7 @@ abstract class ContentModule extends Module
 		$pcnt = FALSE;
 		$error = _('Unable to list contents');
 
-		if($user === FALSE || ($uid = $user->getUserId()) == 0)
+		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
 		$title = $this->text_content_list_title;
 		if($uid !== FALSE)
@@ -845,7 +845,7 @@ abstract class ContentModule extends Module
 		$query = $this->query_post;
 		$args = array('module_id' => $this->id,
 			'content_id' => $content['id'],
-			'user_id' => $cred->getUserId());
+			'user_id' => $cred->getUserID());
 
 		//verify the request
 		if($request->getParameter('publish') === FALSE)
@@ -872,7 +872,7 @@ abstract class ContentModule extends Module
 	protected function callSubmit($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserId());
+		$user = new User($engine, $cred->getUserID());
 		$title = $this->text_content_submit;
 		$error = _('Permission denied');
 
@@ -1052,11 +1052,11 @@ abstract class ContentModule extends Module
 		$ret = array();
 		$cred = $engine->getCredentials();
 
-		if($user->getUserId() == $cred->getUserId()
+		if($user->getUserID() == $cred->getUserID()
 				&& $this->canSubmit($engine))
 			$ret = $this->helperActionsSubmit($engine, $request);
 		//user's content
-		$request = new Request($this->name, 'list', $user->getUserId(),
+		$request = new Request($this->name, 'list', $user->getUserID(),
 		       	$user->getUsername());
 		$ret[] = $this->helperAction($engine, $this->name, $request,
 				$this->text_content_list_title_by
@@ -1155,7 +1155,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 
-		if(($uid = $cred->getUserId()) == 0)
+		if(($uid = $cred->getUserID()) == 0)
 		{
 			//must be logged in
 			$page = $this->callDefault($engine);
@@ -1289,10 +1289,10 @@ abstract class ContentModule extends Module
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 
-		if($user === FALSE || ($uid = $user->getUserId()) == 0)
+		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
 		$r = ($uid !== FALSE)
-			? new Request('user', 'display', $user->getUserId(),
+			? new Request('user', 'display', $user->getUserID(),
 				$user->getUsername())
 			: new Request($this->name);
 		$page->append('link', array('request' => $r, 'stock' => 'back',
@@ -1318,7 +1318,7 @@ abstract class ContentModule extends Module
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 
-		if($user === FALSE || ($uid = $user->getUserId()) == 0)
+		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
 		$r = new Request($this->name, 'list', $uid,
 			$uid ? $user->getUsername() : FALSE);
@@ -1331,7 +1331,7 @@ abstract class ContentModule extends Module
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit));
-		if($uid === $cred->getUserId())
+		if($uid === $cred->getUserID())
 		{
 			$toolbar->append('button', array('stock' => 'disable',
 						'text' => _('Disable'),
@@ -1356,9 +1356,9 @@ abstract class ContentModule extends Module
 				$request->getTitle()) : FALSE;
 		$r = FALSE;
 
-		if($user === FALSE || ($uid = $user->getUserId()) == 0)
+		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
-		if($uid === $cred->getUserId())
+		if($uid === $cred->getUserID())
 			$r = new Request($this->name, 'list', $uid,
 				$uid ? $user->getUsername() : FALSE);
 		$view = $page->append('treeview', array('request' => $r));
@@ -1566,7 +1566,7 @@ abstract class ContentModule extends Module
 			$content)
 	{
 		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserId());
+		$user = new User($engine, $cred->getUserID());
 
 		if($request === FALSE
 				|| $request->getParameter('preview') === FALSE)
@@ -1574,7 +1574,7 @@ abstract class ContentModule extends Module
 		$content = $request->getParameter('content');
 		$content = array('title' => _('Preview: ')
 					.$request->getParameter('title'),
-				'user_id' => $user->getUserId(),
+				'user_id' => $user->getUserID(),
 				'username' => $user->getUsername(),
 				'date' => $this->timestampToDate(),
 				'content' => $content);

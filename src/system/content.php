@@ -71,7 +71,7 @@ class Content
 
 		$query = Content::$query_get;
 		$args = array('module_id' => $module_id, 'content_id' => $id,
-				'user_id' => $cred->getUserId());
+				'user_id' => $cred->getUserID());
 		if(is_string($title))
 		{
 			$query .= ' AND title '.$db->like(FALSE).' :title';
@@ -106,7 +106,7 @@ class Content
 			return $engine->log('LOG_ERR',
 					'Invalid content to insert');
 		$args = array('module_id' => $module_id,
-			'user_id' => $cred->getUserId(),
+			'user_id' => $cred->getUserID(),
 			'title' => $title, 'content' => $content,
 			'enabled' => $enabled, 'public' => $public);
 		if($db->query($engine, $query, $args) === FALSE)
