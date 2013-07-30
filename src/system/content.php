@@ -112,7 +112,7 @@ class Content
 		if($db->query($engine, $query, $args) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not insert content');
-		$id = $db->getLastId($engine, 'daportal_content', 'content_id');
+		$id = $db->getLastID($engine, 'daportal_content', 'content_id');
 		$content = new Content($id, $module_id, $title, $content,
 			$enabled, $public);
 		return $content;

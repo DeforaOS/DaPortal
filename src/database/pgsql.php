@@ -34,8 +34,8 @@ class PgsqlDatabase extends Database
 	//public
 	//methods
 	//accessors
-	//PgsqlDatabase::getLastId
-	public function getLastId($engine, $table, $field)
+	//PgsqlDatabase::getLastID
+	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;

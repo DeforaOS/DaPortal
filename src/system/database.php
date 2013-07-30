@@ -159,7 +159,7 @@ abstract class Database
 
 
 	//virtual
-	abstract public function getLastId($engine, $table, $field);
+	abstract public function getLastID($engine, $table, $field);
 
 	abstract public function enum($engine, $table, $field);
 	abstract public function query($engine, $query, &$parameters = FALSE);

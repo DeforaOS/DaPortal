@@ -34,8 +34,8 @@ class SQLite3Database extends Database
 	//public
 	//methods
 	//accessors
-	//SQLite3Database::getLastId
-	public function getLastId($engine, $table, $field)
+	//SQLite3Database::getLastID
+	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;

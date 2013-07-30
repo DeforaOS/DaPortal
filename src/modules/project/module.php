@@ -1018,8 +1018,8 @@ class ProjectModule extends ContentModule
 		if($engine->process($r, TRUE) === FALSE)
 			return _('Internal server error');
 		//XXX ugly (and race condition)
-		//XXX using download_id to workaround a bug in getLastId()
-		if(($did = $db->getLastId($engine, 'daportal_download',
+		//XXX using download_id to workaround a bug in getLastID()
+		if(($did = $db->getLastID($engine, 'daportal_download',
 				'download_id')) === FALSE)
 			return _('Internal server error');
 		$q = 'SELECT content_id AS id FROM daportal_download'

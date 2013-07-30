@@ -25,8 +25,8 @@ class DummyDatabase extends Database
 	//public
 	//methods
 	//accessors
-	//DummyDatabase::getLastId
-	public function getLastId($engine, $table, $field)
+	//DummyDatabase::getLastID
+	public function getLastID($engine, $table, $field)
 	{
 		//always fail
 		return FALSE;

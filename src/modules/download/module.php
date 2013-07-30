@@ -661,7 +661,7 @@ class DownloadModule extends ContentModule
 		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
 		//store the file
-		if(($id = $db->getLastId($engine, 'daportal_download',
+		if(($id = $db->getLastID($engine, 'daportal_download',
 				'download_id')) === FALSE)
 			return _('Internal server error');
 		if($copy)

@@ -34,8 +34,8 @@ class SQLite2Database extends Database
 	//public
 	//methods
 	//accessors
-	//SQLite2Database::getLastId
-	public function getLastId($engine, $table, $field)
+	//SQLite2Database::getLastID
+	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;

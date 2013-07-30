@@ -239,7 +239,7 @@ class User
 			'enabled' => $enabled ? 1 : 0,
 		       	'admin' => $admin ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
-		if($res === FALSE || ($uid = $db->getLastId($engine,
+		if($res === FALSE || ($uid = $db->getLastID($engine,
 						'daportal_user', 'user_id'))
 				=== FALSE)
 		{
@@ -314,7 +314,7 @@ class User
 		$args = array('username' => $username, 'email' => $email,
 			'enabled' => $enabled ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
-		if($res === FALSE || ($uid = $db->getLastId($engine,
+		if($res === FALSE || ($uid = $db->getLastID($engine,
 						'daportal_user', 'user_id'))
 				=== FALSE)
 		{

@@ -32,8 +32,8 @@ class PdoDatabase extends Database
 	//public
 	//methods
 	//accessors
-	//PdoDatabase::getLastId
-	public function getLastId($engine, $table, $field)
+	//PdoDatabase::getLastID
+	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
