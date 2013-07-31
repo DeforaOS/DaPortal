@@ -78,6 +78,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS.png \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-background.png \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-favicon.png \
+		$(PACKAGE)-$(VERSION)/data/themes/EdgeBSD.png \
 		$(PACKAGE)-$(VERSION)/data/themes/Makefile \
 		$(PACKAGE)-$(VERSION)/data/themes/index.php \
 		$(PACKAGE)-$(VERSION)/data/themes/khorben.css \
@@ -229,6 +230,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/locale/project.conf \
 		$(PACKAGE)-$(VERSION)/src/templates/Makefile \
 		$(PACKAGE)-$(VERSION)/src/templates/DeforaOS.php \
+		$(PACKAGE)-$(VERSION)/src/templates/EdgeBSD.php \
 		$(PACKAGE)-$(VERSION)/src/templates/basic.php \
 		$(PACKAGE)-$(VERSION)/src/templates/desktop.php \
 		$(PACKAGE)-$(VERSION)/src/templates/khorben.php \

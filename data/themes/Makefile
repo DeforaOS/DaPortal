@@ -23,6 +23,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 DeforaOS-favicon.png $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-favicon.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 EdgeBSD.png $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 khorben.css $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
@@ -33,6 +35,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-background.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-favicon.png
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
 
