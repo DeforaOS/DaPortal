@@ -23,6 +23,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 DeforaOS-favicon.png $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-favicon.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 EdgeBSD.css $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 EdgeBSD.png $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 EdgeBSD-favicon.png $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-favicon.png
@@ -37,6 +39,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-background.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DeforaOS-favicon.png
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-favicon.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php

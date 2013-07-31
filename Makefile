@@ -78,6 +78,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS.png \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-background.png \
 		$(PACKAGE)-$(VERSION)/data/themes/DeforaOS-favicon.png \
+		$(PACKAGE)-$(VERSION)/data/themes/EdgeBSD.css \
 		$(PACKAGE)-$(VERSION)/data/themes/EdgeBSD.png \
 		$(PACKAGE)-$(VERSION)/data/themes/EdgeBSD-favicon.png \
 		$(PACKAGE)-$(VERSION)/data/themes/Makefile \
@@ -197,6 +198,10 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/search/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/search/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/search/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/test/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/test/content.php \
+		$(PACKAGE)-$(VERSION)/src/modules/test/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/test/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/top/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/top/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/top/project.conf \

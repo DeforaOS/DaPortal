@@ -1,0 +1,73 @@
+/* $Id$ */
+/* Copyright (c) 2013 Pierre Pronchery <khorben@defora.org> */
+/* This file is part of DeforaOS Web DaPortal */
+/* This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+
+
+/* default includes */
+@import url("../css/DaPortal.css");
+
+
+/* global defaults */
+* {
+	margin:				0;
+	padding:			0;
+	text-align:			justify;
+}
+
+
+/* fonts */
+a, button, input {
+	font-size:			100%;
+}
+
+a, body, button, input {
+	font-family:			sans-serif;
+}
+
+body {
+	font-size:			0.85em;
+}
+
+html {
+	font-size:			100%;
+}
+
+
+/* generic elements */
+a {
+	color:				#006680;
+	text-decoration:		none;
+}
+
+a:hover {
+	text-decoration:		underline;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+	color:				#006680;
+	padding:			0.5ex;
+	text-align:			left;
+}
+
+ol, ul {
+	margin-left:			1ex;
+	padding-left:			1ex;
+}
+
+ol li, ul li {
+	margin-left:			0.2ex;
+	padding-left:			0.2ex;
+}
