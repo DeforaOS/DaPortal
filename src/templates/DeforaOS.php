@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -56,8 +56,7 @@ class DeforaOSTemplate extends BasicTemplate
 		$title = new PageElement('title', array('id' => 'title'));
 		$link = $title->append('link', array('url' => $this->homepage,
 				'text' => ''));
-		$link->append('image', array(
-			'source' => 'themes/DeforaOS.png'));
+		$link->append('image', array('source' => $this->logo));
 		return $title;
 	}
 
@@ -76,6 +75,10 @@ class DeforaOSTemplate extends BasicTemplate
 		$this->name = 'DeforaOS';
 		parent::attach($engine);
 	}
+
+
+	//properties
+	protected $logo = 'themes/DeforaOS.png';
 }
 
 ?>
