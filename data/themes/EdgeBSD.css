@@ -55,7 +55,6 @@ a:hover {
 	text-decoration:		underline;
 }
 
-
 h1, h2, h3, h4, h5, h6 {
 	color:				#006680;
 	padding:			0.5ex;
@@ -70,4 +69,54 @@ ol, ul {
 ol li, ul li {
 	margin-left:			0.2ex;
 	padding-left:			0.2ex;
+}
+
+
+/* main */
+#menu > div.pack {
+	background-color:		#d0d0d0;
+	clear:				none;
+	display:			block;
+	float:				left;
+	margin-left:			1ex;
+	padding:			0.4ex;
+}
+
+#menu > div.pack > ul.menubar {
+	margin:				0;
+	padding:			0;
+	width:				10ex;
+}
+
+#menu > div.pack > ul.menubar > li.menuitem > ul {
+	display:			none;
+}
+
+#menu > div.pack > ul.menubar > li.menuitem:hover > ul {
+	display:			block;
+	margin-left:			9ex;
+	margin-top:			-2ex;
+	position:			absolute;
+}
+
+#menu > div.pack > ul.menubar li.menuitem {
+	list-style-type:		none;
+	margin:				0;
+	margin-left:			0;
+	padding:			0;
+}
+
+#menu > div.pack > ul.menubar li.menuitem > a {
+	background-color:		#d0d0d0;
+	display:			block;
+	padding:			0.4ex;
+}
+
+#menu > div.pack > ul.menubar li.menuitem > a:hover {
+	background-color:		#f0f0f0;
+	text-decoration:		none;
+}
+
+#content {
+	clear:				left;
 }
