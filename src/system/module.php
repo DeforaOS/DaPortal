@@ -33,30 +33,14 @@ abstract class Module
 
 	//accessors
 	//Module::getID
-	public static function getID($engine, $name)
+	public function getID()
 	{
-		static $modules = FALSE;
-		$db = $engine->getDatabase();
-
-		//load the list of modules if necessary
-		if($modules === FALSE && ($modules = $db->query($engine,
-				Module::$query_modules)) === FALSE)
-			return FALSE;
-		foreach($modules as $m)
-			if($m['name'] == $name)
-				break;
-		if($m['name'] != $name)
-			return $engine->log('LOG_DEBUG', 'Module '.$name
-					.' is not available');
-		if(!$db->isTrue($m['enabled']))
-			return $engine->log('LOG_DEBUG', 'Module '.$name
-					.' is not enabled');
-		return $m['id'];
+		return $this->id;
 	}
 
 
 	//Module::getName
-	public function getName($engine)
+	public function getName()
 	{
 		return $this->name;
 	}
@@ -74,8 +58,9 @@ abstract class Module
 	//Module::load
 	public static function load($engine, $name)
 	{
-		if($name === FALSE || ($id = Module::getID($engine, $name))
-				=== FALSE)
+		if($name === FALSE)
+			return FALSE;
+		if(($id = Module::_loadID($engine, $name)) === FALSE)
 			return FALSE;
 		$module = $name.'Module';
 		if(!class_exists($module))
@@ -101,6 +86,27 @@ abstract class Module
 		if(($ret = new $module($id, $name)) == NULL)
 			return FALSE;
 		return $ret;
+	}
+
+	protected static function _loadID($engine, $name)
+	{
+		static $modules = FALSE;
+		$db = $engine->getDatabase();
+
+		//load the list of modules if necessary
+		if($modules === FALSE && ($modules = $db->query($engine,
+				Module::$query_modules)) === FALSE)
+			return FALSE;
+		foreach($modules as $m)
+			if($m['name'] == $name)
+				break;
+		if($m['name'] != $name)
+			return $engine->log('LOG_DEBUG', 'Module '.$name
+					.' is not available');
+		if(!$db->isTrue($m['enabled']))
+			return $engine->log('LOG_DEBUG', 'Module '.$name
+					.' is not enabled');
+		return $m['id'];
 	}
 
 

@@ -48,7 +48,7 @@ class BlogModule extends ContentModule
 	//BlogModule::helperDisplayText
 	protected function helperDisplayText($engine, $request, $page, $content)
 	{
-		$text = $content['content'];
+		$text = $content->getContent();
 
 		$text = HTML::format($engine, $text);
 		$page->append('htmlview', array('text' => $text));

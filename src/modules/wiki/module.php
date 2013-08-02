@@ -433,16 +433,11 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $page, $content)
+	protected function helperDisplayText($engine, $request, $content, $page)
 	{
-		$page->append('htmlview', array('text' => $content['content']));
-	}
+		$text = $content->getContent();
 
-
-	//WikiModule::helperPreviewText
-	protected function helperPreviewText($engine, $page, $request, $content)
-	{
-		$page->append('htmlview', array('text' => $content['content']));
+		$page->append('htmlview', array('text' => $text));
 	}
 
 

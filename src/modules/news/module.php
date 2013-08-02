@@ -52,15 +52,15 @@ class NewsModule extends ContentModule
 		{
 			case 'rss':
 				//for backward compatibility
-				return $this->callRss($engine, $request);
+				return $this->callRSS($engine, $request);
 		}
 		return parent::call($engine, $request);
 	}
 
 
 	//calls
-	//NewsModule::callRss
-	protected function callRss($engine, $request)
+	//NewsModule::callRSS
+	protected function callRSS($engine, $request)
 	{
 		$engine->setType('application/rss+xml');
 		return $this->callHeadline($engine, $request);
@@ -69,23 +69,12 @@ class NewsModule extends ContentModule
 
 	//helpers
 	//NewsModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $page, $content)
+	protected function helperDisplayText($engine, $request, $content, $page)
 	{
-		$text = $content['content'];
+		$text = $content->getContent();
 
 		$text = HTML::format($engine, $text);
 		$page->append('htmlview', array('text' => $text));
-	}
-
-
-	//NewsModule::helperPreviewText
-	protected function helperPreviewText($engine, $preview, $request,
-			$content)
-	{
-		$text = $content['content'];
-
-		$text = HTML::format($engine, $text);
-		$preview->append('htmlview', array('text' => $text));
 	}
 }
 

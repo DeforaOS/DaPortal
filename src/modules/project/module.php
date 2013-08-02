@@ -614,7 +614,7 @@ class ProjectModule extends ContentModule
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachScm($engine, $project['scm']))
+		if(($scm = $this->attachSCM($engine, $project['scm']))
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
@@ -801,7 +801,7 @@ class ProjectModule extends ContentModule
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//source code
-		if(($scm = $this->attachScm($engine, $project['scm'])) !== FALSE
+		if(($scm = $this->attachSCM($engine, $project['scm'])) !== FALSE
 				&& ($download = $scm->download($engine,
 				$project, $request)) !== FALSE)
 			$page->append($download);
@@ -1061,7 +1061,7 @@ class ProjectModule extends ContentModule
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachScm($engine, $project['scm']))
+		if(($scm = $this->attachSCM($engine, $project['scm']))
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
@@ -1450,23 +1450,6 @@ class ProjectModule extends ContentModule
 	}
 
 
-	//ProjectModule::helperPreviewText
-	protected function helperPreviewText($engine, $preview, $request,
-			$content)
-	{
-		$text = HTML::format($engine, $content['content']);
-		$preview->append('htmlview', array('text' => $text));
-		if(isset($content['cvsroot']))
-		{
-			$hbox = $preview->append('hbox');
-			$hbox->append('label', array('class' => 'bold',
-					'text' => _('CVS root: ')));
-			$hbox->append('label', array(
-					'text' => $content['cvsroot']));
-		}
-	}
-
-
 	//ProjectModule::helperSubmitPreview
 	protected function helperSubmitPreview($engine, $page, $request,
 			$content)
@@ -1536,8 +1519,8 @@ class ProjectModule extends ContentModule
 
 
 	//useful
-	//ProjectModule::attachScm
-	protected function attachScm($engine, $name)
+	//ProjectModule::attachSCM
+	protected function attachSCM($engine, $name)
 	{
 		global $config;
 
@@ -1547,7 +1530,7 @@ class ProjectModule extends ContentModule
 		$res = include_once($filename);
 		if($res === FALSE)
 			return FALSE;
-		$name = ucfirst($name).'ScmProject';
+		$name = $name.'SCMProject';
 		$ret = new $name();
 		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret));
 		$ret->attach($engine);
@@ -1556,8 +1539,8 @@ class ProjectModule extends ContentModule
 }
 
 
-//ProjectScm
-abstract class ProjectScm
+//ProjectSCM
+abstract class ProjectSCM
 {
 	//methods
 	//virtual
