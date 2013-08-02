@@ -255,6 +255,7 @@ class HTTPEngine extends Engine
 		{
 			case 'application/rss+xml':
 			case 'application/xml':
+			case 'text/csv':
 			case 'text/xml':
 				break;
 			case 'text/html':
