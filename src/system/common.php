@@ -51,6 +51,8 @@ class Common
 	//Common::getSize
 	static public function getSize($size)
 	{
+		if(!is_numeric($size))
+			return 'unknown';
 		if($size < 1024)
 			return $size.' '._('bytes');
 		if(($size = round($size / 1024)) < 1024)
