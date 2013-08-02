@@ -124,6 +124,9 @@ class HTTPEngine extends Engine
 				case '_title':
 					$title = $request[$key];
 					break;
+				case '_type':
+					$this->setType($request[$key]);
+					break;
 				default:
 					if($parameters === FALSE)
 						$parameters = array();
