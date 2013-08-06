@@ -369,7 +369,10 @@ class DownloadModule extends ContentModule
 	//DownloadModule::isDirectory
 	protected function isDirectory($content)
 	{
-		return ($content['mode'] & 01000) ? TRUE : FALSE;
+		if(($mode = $content->get('mode')) === FALSE
+				|| !is_numeric($mode))
+			return FALSE;
+		return ($mode & 01000) ? TRUE : FALSE;
 	}
 
 
