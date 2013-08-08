@@ -42,12 +42,13 @@ class GitSCMProject extends SCMProject
 		$error = _('No Git repository defined');
 
 		//check the gitroot
-		if($this->gitroot === FALSE || strlen($project['cvsroot']) == 0)
+		if($this->gitroot === FALSE
+				|| strlen($project->get('cvsroot')) == 0)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$vbox = new PageElement('vbox');
 		//browse
-		$url = parse_url($project['cvsroot']);
+		$url = parse_url($project->get('cvsroot'));
 		$path = $this->gitroot.'/'.basename($url['path']);
 		if(($file = $request->getParameter('file')) !== FALSE)
 		{
@@ -159,7 +160,7 @@ class GitSCMProject extends SCMProject
 		$vbox->append('title', array('text' => $title));
 		$text = _('The source code can be obtained as follows: ');
 		$vbox->append('label', array('text' => $text));
-		$text = '$ git clone '.$project['cvsroot'];
+		$text = '$ git clone '.$project->get('cvsroot');
 		$vbox->append('label', array('text' => $text,
 				'class' => 'preformatted'));
 		return $vbox;
