@@ -275,6 +275,7 @@ class Content
 		$hbox->append('link', array('stock' => 'back',
 				'request' => $r,
 				'text' => $this->text_more_content));
+		$r = $this->getRequest();
 		$hbox->append('link', array('request' => $r,
 				'stock' => $this->stock_link,
 				'text' => $this->text_link));
