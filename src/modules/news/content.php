@@ -45,9 +45,40 @@ class NewsContent extends Content
 	}
 
 
+	//NewsContent::previewContent
+	public function previewContent($engine, $request)
+	{
+		$length = $this->preview_length;
+
+		$text = ($length <= 0 || strlen($this->content) < $length)
+			? $this->getContent()
+			: substr($this->getContent(), 0, $length).'...';
+		$text = HTML::format($engine, $text);
+		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
 	//static
 	//methods
-	//Content::load
+	//NewsContent::listAll
+	static public function listAll($engine, $module, $limit = FALSE,
+			$offset = FALSE, $order = FALSE)
+	{
+		$class = get_class();
+
+		switch($order)
+		{
+			case FALSE:
+			default:
+				$order = 'timestamp DESC';
+				break;
+		}
+		return NewsContent::_listAll($engine, $module, $limit, $offset,
+				$order, $class);
+	}
+
+
+	//NewsContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
 		return Content::_load($engine, $module, $id, $title,
