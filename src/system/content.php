@@ -123,11 +123,11 @@ class Content
 		global $config;
 		$credentials = $engine->getCredentials();
 
+		if($credentials->isAdmin())
+			return TRUE;
 		$error = _('Permission denied');
 		if($credentials->getUserID() == 0)
 			return FALSE;
-		if($credentials->isAdmin())
-			return TRUE;
 		return FALSE;
 	}
 
