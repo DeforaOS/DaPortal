@@ -110,11 +110,6 @@ abstract class MultiContentModule extends ContentModule
 	//XXX obsolete?
 	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
 	{
-		if($request !== FALSE)
-		{
-			$this->setContext($engine, $request);
-			return parent::_get($engine, $id, $title, $request);
-		}
 		foreach($this->content_classes as $class)
 		{
 			$this->content_class = $class;
@@ -122,7 +117,8 @@ abstract class MultiContentModule extends ContentModule
 					!== FALSE)
 				return $res;
 		}
-		return FALSE;
+		$this->setContext($engine, $request);
+		return parent::_get($engine, $id, $title, $request);
 	}
 
 
