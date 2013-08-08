@@ -24,9 +24,27 @@ require_once('./system/mime.php');
 //DownloadContent
 abstract class DownloadContent extends Content
 {
+	//public
+	//methods
+	//accessors
+	//Content::getRequest
+	public function getRequest($action = FALSE)
+	{
+		return new Request($this->getModule()->getName(), $action,
+			$this->getID(), $this->getFilename());
+	}
+
+
 	//protected
 	//methods
 	//accessors
+	//DownloadContent::getFilename
+	protected function getFilename()
+	{
+		return $this->get('title');
+	}
+
+
 	//DownloadContent::getIcon
 	protected function getIcon($engine, $size = 16)
 	{
@@ -50,6 +68,31 @@ abstract class DownloadContent extends Content
 	protected function isDirectory()
 	{
 		return ($this->get('mode') & $this->S_IFDIR) ? TRUE : FALSE;
+	}
+
+
+	//static
+	//DownloadContent::_load
+	static protected function _load($engine, $module, $id, $title, $class)
+	{
+		$credentials = $engine->getCredentials();
+		$database = $engine->getDatabase();
+		$query = Content::$query_load;
+		$args = array('module_id' => $module->getID(),
+			'user_id' => $credentials->getUserID(),
+			'content_id' => $id);
+
+		if(is_string($title))
+		{
+			$query .= ' AND daportal_content.title '
+				.$database->like(FALSE).' :title';
+			$args['title'] = str_replace('-', '_', $title);
+		}
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
+			return FALSE;
+		$res = $res[0];
+		return new $class($engine, $module, $res);
 	}
 
 

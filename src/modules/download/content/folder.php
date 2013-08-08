@@ -75,11 +75,18 @@ class FolderDownloadContent extends DownloadContent
 			$icon = $f->getIcon($engine);
 			$properties['icon'] = new PageElement('image', array(
 				'source' => $icon));
-			$r = new Request('user', FALSE, $properties['user_id'],
-				$properties['username']);
-			$properties['username'] = new PageElement('link',
-				array('request' => $r, 'stock' => 'user',
+			$properties['title'] = new PageElement('link', array(
+				'request' => $f->getRequest(),
+				'text' => $properties['title']));
+			if(($user_id = $properties['user_id']) != 0)
+			{
+				$r = new Request('user', FALSE, $user_id,
+					$properties['username']);
+				$link = new PageElement('link', array(
+					'request' => $r, 'stock' => 'user',
 					'text' => $properties['username']));
+				$properties['username'] = $link;
+			}
 			$properties['date'] = $f->getDate($engine);
 			$properties['mode'] = $this->getPermissions(
 					$properties['mode']);
@@ -148,7 +155,9 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		return Content::_load($engine, $module, $id, $title,
+		$class = get_class();
+		$class::$query_load = $class::$folder_query_load;
+		return parent::_load($engine, $module, $id, $title,
 				get_class());
 	}
 
@@ -161,8 +170,8 @@ class FolderDownloadContent extends DownloadContent
 		daportal_content_public.enabled AS enabled,
 		daportal_content_public.timestamp AS timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
-		daportal_group.group_id AS group_id, groupname AS "group", title,
-		mode
+		daportal_group.group_id AS group_id, groupname AS "group",
+		daportal_content_public.title AS title, mode
 		FROM daportal_content_public, daportal_user_enabled,
 		daportal_group, daportal_download
 		WHERE daportal_content_public.module_id=:module_id
