@@ -117,7 +117,7 @@ class FolderDownloadContent extends DownloadContent
 		daportal_content_public.enabled AS enabled,
 		daportal_content_public.timestamp AS timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
-		daportal_group.group_id AS group_id, groupname AS `group`, title,
+		daportal_group.group_id AS group_id, groupname AS "group", title,
 		mode
 		FROM daportal_content_public, daportal_user_enabled,
 		daportal_group, daportal_download
@@ -132,7 +132,7 @@ class FolderDownloadContent extends DownloadContent
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username,
 		daportal_group.group_id AS group_id,
-		daportal_group.groupname AS `group`,
+		daportal_group.groupname AS \"group\",
 		daportal_content.content_id AS id,
 		daportal_content.title AS title,
 		daportal_content.content AS content,

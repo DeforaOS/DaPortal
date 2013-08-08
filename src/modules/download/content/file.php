@@ -54,7 +54,7 @@ class FileDownloadContent extends DownloadContent
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username,
 		daportal_group.group_id AS group_id,
-		daportal_group.groupname AS `group`,
+		daportal_group.groupname AS \"group\",
 		daportal_content.content_id AS id,
 		daportal_content.title AS title,
 		daportal_content.content AS content,
