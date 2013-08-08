@@ -29,6 +29,7 @@ class ArticleContent extends Content
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
+		$this->class = get_class();
 		$this->text_content_by = _('Article by');
 		$this->text_more_content = _('More articles...');
 		$this->text_open = _('Read');

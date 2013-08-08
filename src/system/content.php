@@ -27,8 +27,8 @@ class Content
 	{
 		$database = $engine->getDatabase();
 
-		$this->module_id = $module->getID();
-		$this->module = $module->getName();
+		$this->class = get_class();
+		$this->module = $module;
 		if($properties === FALSE)
 			$properties = array();
 		foreach($properties as $k => $v)
@@ -87,7 +87,7 @@ class Content
 			return FALSE;
 		if($credentials->isAdmin())
 			return TRUE;
-		$moderate = $config->get('module::'.$this->module,
+		$moderate = $config->get('module::'.$this->module->getName(),
 				'moderate');
 		return ($moderate === FALSE || $moderate == 0) ? TRUE : FALSE;
 	}
@@ -109,7 +109,8 @@ class Content
 		//FIXME also verify that the fields are set (if not idempotent)
 		if($credentials->getUserID() > 0)
 			return TRUE;
-		if($config->get('module::'.$this->module, 'anonymous'))
+		if($config->get('module::'.$this->module->getName(),
+				'anonymous'))
 			return TRUE;
 		$error = _('Permission denied');
 		return FALSE;
@@ -189,8 +190,8 @@ class Content
 	//Content::getRequest
 	public function getRequest($action = FALSE)
 	{
-		return new Request($this->module, $action, $this->getID(),
-				$this->getTitle());
+		return new Request($this->module->getName(), $action,
+			$this->getID(), $this->getTitle());
 	}
 
 
@@ -270,7 +271,7 @@ class Content
 	public function displayButtons($engine, $request)
 	{
 		$hbox = new PageElement('hbox');
-		$r = new Request($this->module);
+		$r = new Request($this->module->getName());
 		$hbox->append('link', array('stock' => 'back',
 				'request' => $r,
 				'text' => $this->text_more_content));
@@ -311,18 +312,19 @@ class Content
 	public function displayToolbar($engine, $request)
 	{
 		$credentials = $engine->getCredentials();
+		$module = $this->module->getName();
 
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin($engine))
 		{
-			$r = new Request($this->module, 'admin');
+			$r = new Request($module, 'admin');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
 		if($this->canSubmit($engine, $request))
 		{
-			$r = new Request($this->module, 'submit');
+			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'new',
 					'text' => $this->text_submit));
@@ -332,9 +334,8 @@ class Content
 			if(!$this->isPublic() && $this->canPost($engine,
 					$request))
 			{
-				$r = new Request($this->module, 'publish',
-						$this->getID(),
-						$this->getTitle());
+				$r = new Request($module, 'publish',
+					$this->getID(), $this->getTitle());
 				$toolbar->append('button', array(
 						'request' => $r,
 						'stock' => 'post',
@@ -342,9 +343,8 @@ class Content
 			}
 			if($this->canUpdate($engine, $request))
 			{
-				$r = new Request($this->module, 'update',
-						$this->getID(),
-						$this->getTitle());
+				$r = new Request($module, 'update',
+					$this->getID(), $this->getTitle());
 				$toolbar->append('button', array(
 						'request' => $r,
 						'stock' => 'update',
@@ -359,8 +359,9 @@ class Content
 	//Content::displayTitle
 	public function displayTitle($engine, $request)
 	{
-		return new PageElement('title', array('stock' => $this->module,
-				'text' => $this->getTitle()));
+		return new PageElement('title', array(
+			'stock' => $this->module->getName(),
+			'text' => $this->getTitle()));
 	}
 
 
@@ -400,7 +401,7 @@ class Content
 	//Content::formPreview
 	public function formPreview($engine, $request)
 	{
-		$class = get_class();
+		$class = $this->class;
 		$properties = $this->properties;
 
 		foreach($this->fields as $f)
@@ -411,9 +412,8 @@ class Content
 				$properties[$f] = _('Preview: ')
 					.$properties[$f];
 		}
-		$content = new $class($engine,
-			Module::load($engine, $this->module), $properties);
-		return $content->preview($engine, $request);
+		$content = new $class($engine, $this->module, $properties);
+		return $content->display($engine, $request);
 	}
 
 
@@ -489,7 +489,7 @@ class Content
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 		$query = $this->query_insert;
-		$args = array('module_id' => $this->module_id,
+		$args = array('module_id' => $this->module->getID(),
 			'user_id' => $credentials->getUserID(),
 			'title' => $this->title,
 			'content' => $this->content,
@@ -508,7 +508,7 @@ class Content
 	{
 		$database = $engine->getDatabase();
 		$query = $this->query_update;
-		$args = array('module_id' => $this->module_id,
+		$args = array('module_id' => $this->module->getID(),
 			'content_id' => $this->id,
 			'title' => $this->title,
 			'content' => $this->content,
@@ -612,6 +612,7 @@ class Content
 
 	//protected
 	//properties
+	protected $class = FALSE;
 	protected $fields = array('title', 'content');
 	static protected $list_order = 'timestamp DESC';
 	protected $preview_length = 150;
@@ -686,7 +687,6 @@ class Content
 	//properties
 	private $id = FALSE;
 	private $timestamp = FALSE;
-	private $module_id = FALSE;
 	private $module = FALSE;
 	private $user_id = FALSE;
 	private $username = FALSE;
@@ -696,6 +696,7 @@ class Content
 	private $content = FALSE;
 	private $enabled = FALSE;
 	private $public = FALSE;
+	private $properties = FALSE;
 }
 
 ?>
