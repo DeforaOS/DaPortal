@@ -287,11 +287,7 @@ abstract class ContentModule extends Module
 	protected function getToolbar($engine, $request = FALSE,
 			$content = FALSE)
 	{
-		$class = $this->content_class;
-
-		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->getToolbar($engine, $request);
+		return new PageElement('toolbar');
 	}
 
 
