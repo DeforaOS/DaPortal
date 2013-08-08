@@ -59,7 +59,7 @@ class FolderDownloadContent extends DownloadContent
 			'text' => $this->getTitle()));
 		$class::$query_list = $class::$folder_query_list;
 		if(($files = $class::_listFiles($engine, $this->getModule(),
-				FALSE, FALSE, FALSE, $class, $this)) === FALSE)
+				FALSE, FALSE, 'title ASC', $class, $this)) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list the files'));
@@ -121,10 +121,6 @@ class FolderDownloadContent extends DownloadContent
 		$query = $class::$query_list;
 		$args = array('module_id' => $module->getID());
 
-		if($order !== FALSE)
-			$query .= ' ORDER BY '.$order;
-		if($limit !== FALSE || $offset !== FALSE)
-			$query .= $database->offset($limit, $offset);
 		if($parent !== FALSE && ($id = $parent->getID()) !== FALSE)
 		{
 			$query .= ' AND daportal_download.parent=:parent_id';
@@ -132,6 +128,10 @@ class FolderDownloadContent extends DownloadContent
 		}
 		else
 			$query .= ' AND daportal_download.parent IS NULL';
+		if($order !== FALSE)
+			$query .= ' ORDER BY '.$order;
+		if($limit !== FALSE || $offset !== FALSE)
+			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
