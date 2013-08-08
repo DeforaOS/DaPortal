@@ -67,6 +67,6 @@ class Profile
 			:mem_usage, :mem_usage_real,
 			:mem_peak, :mem_peak_real)';
 	static private $time = FALSE;
-};
+}
 
 ?>
