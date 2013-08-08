@@ -55,6 +55,10 @@ class ProjectModule extends MultiContentModule
 
 	//protected
 	//properties
+	//translations
+	protected $project_text_content_list_title = 'Project list';
+	protected $project_text_content_submit = 'New project';
+
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
 	protected $project_query_bug = "SELECT daportal_bug.content_id AS id,
@@ -414,6 +418,22 @@ class ProjectModule extends MultiContentModule
 			if($m['user_id'] == $uid)
 				return TRUE;
 		return FALSE;
+	}
+
+
+	//ProjectModule::setContext
+	protected function setContext($engine = FALSE, $request = FALSE,
+			$content = FALSE)
+	{
+		parent::setContext($engine, $request, $content);
+		switch($this->content_class)
+		{
+			default:
+			case 'ProjectContent':
+				$this->text_content_list_title = $this->project_text_content_list_title;
+				$this->text_content_submit = $this->project_text_content_submit;
+				break;
+		}
 	}
 
 

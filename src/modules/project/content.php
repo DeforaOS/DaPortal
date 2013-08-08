@@ -24,6 +24,19 @@ class ProjectContent extends Content
 {
 	//public
 	//methods
+	//essential
+	//ProjectContent::ProjectContent
+	public function __construct($engine, $module, $properties = FALSE)
+	{
+		parent::__construct($engine, $module, $properties);
+		$this->class = get_class();
+		$this->text_content_by = _('Project from');
+		$this->text_content_list_title = _('Project list');
+		$this->text_more_content = _('More projects...');
+		$this->text_submit = _('New project...');
+	}
+
+
 	//accessors
 	//ProjectContent::canUpload
 	public function canUpload($engine, $request = FALSE, &$error = FALSE)
