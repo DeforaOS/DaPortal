@@ -75,6 +75,11 @@ class FolderDownloadContent extends DownloadContent
 			$icon = $f->getIcon($engine);
 			$properties['icon'] = new PageElement('image', array(
 				'source' => $icon));
+			$r = new Request('user', FALSE, $properties['user_id'],
+				$properties['username']);
+			$properties['username'] = new PageElement('link',
+				array('request' => $r, 'stock' => 'user',
+					'text' => $properties['username']));
 			$properties['date'] = $f->getDate($engine);
 			$properties['mode'] = $this->getPermissions(
 					$properties['mode']);
