@@ -42,9 +42,10 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
+	//accessors
 	//FIXME:
 	//- can*() should not need setContext()
-	//- make it more generic => can($call)
+	//- make it more generic => can($action)
 	//MultiContentModule::canAdmin
 	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
@@ -149,6 +150,15 @@ abstract class MultiContentModule extends ContentModule
 			$this->content_class = $c;
 			return;
 		}
+	}
+
+
+	//calls
+	//MultiContentModule::callDefault
+	protected function callDefault($engine, $request = FALSE)
+	{
+		$this->setContext($engine, $request);
+		return parent::callDefault($engine, $request);
 	}
 }
 
