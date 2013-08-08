@@ -28,8 +28,8 @@ class Content
 		$database = $engine->getDatabase();
 
 		$this->class = get_class();
+		$this->stock = $module->getName();
 		$this->module = $module;
-		$this->class = $module->getName();
 		if($properties === FALSE)
 			$properties = array();
 		foreach($properties as $k => $v)
@@ -360,7 +360,7 @@ class Content
 	public function displayTitle($engine, $request)
 	{
 		return new PageElement('title', array(
-			'stock' => $this->module->getName(),
+			'stock' => $this->stock,
 			'text' => $this->getTitle()));
 	}
 
