@@ -518,9 +518,7 @@ abstract class ContentModule extends Module
 				$request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		$page = new Page(array('title' => $content->getTitle()));
-		$page->append($content->display($engine, $request));
-		return $page;
+		return $content->display($engine, $request);
 	}
 
 

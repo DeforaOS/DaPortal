@@ -254,14 +254,15 @@ class Content
 	//Content::display
 	public function display($engine, $request)
 	{
-		$vbox = new PageElement('vbox');
-
-		$vbox->append($this->displayTitle($engine, $request));
+		$page = new PageElement('page', array(
+			'title' => $this->getTitle()));
+		$page->append($this->displayTitle($engine, $request));
+		$vbox = $page->append('vbox');
 		$vbox->append($this->displayToolbar($engine, $request));
 		$vbox->append($this->displayMetadata($engine, $request));
 		$vbox->append($this->displayContent($engine, $request));
 		$vbox->append($this->displayButtons($engine, $request));
-		return $vbox;
+		return $page;
 	}
 
 
