@@ -124,7 +124,8 @@ class FolderDownloadContent extends DownloadContent
 		WHERE daportal_content_public.module_id=:module_id
 		AND daportal_content_public.user_id=daportal_user_enabled.user_id
 		AND daportal_content_public.group_id=daportal_group.group_id
-		AND daportal_content_public.content_id=daportal_download.content_id';
+		AND daportal_content_public.content_id=daportal_download.content_id
+		AND daportal_download.parent IS NULL';
 	//IN:	module_id
 	//	user_id
 	//	content_id
