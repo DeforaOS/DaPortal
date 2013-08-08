@@ -206,8 +206,10 @@ abstract class ContentModule extends Module
 	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
 	{
+		$class = $this->content_class;
+
 		if($content === FALSE)
-			$content = new $this->content_class($engine, $this);
+			$content = new $class($engine, $this);
 		return $content->canAdmin($engine, $request, $error);
 	}
 
@@ -228,8 +230,10 @@ abstract class ContentModule extends Module
 	protected function canPreview($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
+		$class = $this->content_class;
+
 		if($content === FALSE)
-			$content = new $this->content_class($engine, $this);
+			$content = new $class($engine, $this);
 		return $content->canPreview($engine, $request, $error);
 	}
 
@@ -238,8 +242,10 @@ abstract class ContentModule extends Module
 	protected function canSubmit($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
+		$class = $this->content_class;
+
 		if($content === FALSE)
-			$content = new $this->content_class($engine, $this);
+			$content = new $class($engine, $this);
 		return $content->canSubmit($engine, $request, $error);
 	}
 
@@ -260,8 +266,10 @@ abstract class ContentModule extends Module
 	protected function canUpdate($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
+		$class = $this->content_class;
+
 		if($content === FALSE)
-			$content = new $this->content_class($engine, $this);
+			$content = new $class($engine, $this);
 		return $content->canUpdate($engine, $request, $error);
 	}
 
@@ -279,8 +287,10 @@ abstract class ContentModule extends Module
 	protected function getToolbar($engine, $request = FALSE,
 			$content = FALSE)
 	{
+		$class = $this->content_class;
+
 		if($content === FALSE)
-			$content = new $this->content_class($engine, $this);
+			$content = new $class($engine, $this);
 		return $content->getToolbar($engine, $request);
 	}
 
