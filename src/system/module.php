@@ -21,16 +21,6 @@ abstract class Module
 {
 	//public
 	//methods
-	//essential
-	//Module::Module
-	protected function __construct($id, $name, $title = FALSE)
-	{
-		$this->id = $id;
-		$this->name = $name;
-		$this->title = ($title !== FALSE) ? $title : ucfirst($name);
-	}
-
-
 	//accessors
 	//Module::getID
 	public function getID()
@@ -119,6 +109,17 @@ abstract class Module
 	protected $id = FALSE;
 	protected $name = FALSE;
 	protected $title = FALSE;
+
+
+	//methods
+	//essential
+	//Module::Module
+	protected function __construct($id, $name, $title = FALSE)
+	{
+		$this->id = $id;
+		$this->name = $name;
+		$this->title = ($title !== FALSE) ? $title : ucfirst($name);
+	}
 
 
 	//private
