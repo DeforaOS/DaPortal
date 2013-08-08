@@ -354,7 +354,7 @@ class ProjectModule extends MultiContentModule
 	{
 		$db = $engine->getDatabase();
 		$query = $this->project_query_members;
-		$args = array('project_id' => $project['id']);
+		$args = array('project_id' => $project->getID());
 
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return FALSE;
@@ -362,26 +362,6 @@ class ProjectModule extends MultiContentModule
 			$res[$i]['admin'] = ($db->isTrue($res[$i]['admin']))
 				? TRUE : FALSE;
 		return $res;
-	}
-
-
-	//ProjectModule::getProject
-	protected function getProject($engine, $id, $title = FALSE)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_project;
-		$args = array('module_id' => $this->id, 'content_id' => $id);
-
-		if($title !== FALSE)
-		{
-			$title = str_replace('-', '_', $title);
-			$query .= ' AND title '.$db->like(FALSE).' :title';
-			$args['title'] = $title;
-		}
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		return $res[0];
 	}
 
 
@@ -399,13 +379,22 @@ class ProjectModule extends MultiContentModule
 	}
 
 
+	//ProjectModule::getToolbar
+	protected function getToolbar($engine, $request = FALSE,
+			$content = FALSE)
+	{
+		//FIXME really implement
+		return parent::getToolbar($engine, $request, $content);
+	}
+
+
 	//ProjectModule::isManager
 	protected function isManager($engine, $project)
 	{
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin()
-				|| $project['user_id'] == $cred->getUserID())
+				|| $project->getUserID() == $cred->getUserID())
 			return TRUE;
 		return FALSE;
 	}
@@ -419,7 +408,7 @@ class ProjectModule extends MultiContentModule
 		if(($members = $this->getMembers($engine, $project)) === FALSE)
 			return FALSE;
 		$uid = $cred->getUserID();
-		if($project['user_id'] == $uid)
+		if($project->getUserID() == $uid)
 			return TRUE;
 		foreach($members as $m)
 			if($m['user_id'] == $uid)
@@ -459,16 +448,16 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::callBrowse
 	protected function callBrowse($engine, $request)
 	{
-		if(($project = $this->getProject($engine, $request->getID(),
+		if(($project = $this->_get($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
-		$title = _('Project: ').$project['title'];
+		$title = _('Project: ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachSCM($engine, $project['scm']))
+		if(($scm = $this->attachSCM($engine, $project->get('scm')))
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
@@ -495,7 +484,7 @@ class ProjectModule extends MultiContentModule
 		//XXX unlike ProjectModule::list() here getID() is the project
 		//determine the current project
 		if(($id = $request->getID()) !== FALSE
-				&& ($project = $this->getProject($engine, $id,
+				&& ($project = $this->_get($engine, $id,
 					$request->getTitle())) === FALSE)
 			$error = _('Unknown project');
 		else if(($name = $request->getParameter('project')) !== FALSE
@@ -510,7 +499,7 @@ class ProjectModule extends MultiContentModule
 		$args = array('module_id' => $this->id);
 		if($project !== FALSE)
 		{
-			$title = _('Bug reports for ').$project['title'];
+			$title = _('Bug reports for ').$project->getTitle();
 			$toolbar = $this->getToolbar($engine, $request,
 					$project);
 			$query .= ' AND daportal_project.project_id=:project_id';
@@ -596,9 +585,9 @@ class ProjectModule extends MultiContentModule
 		if(($bug = $this->getBug($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
-		$project = $this->getProject($engine, $bug['project_id']);
+		$project = $this->_get($engine, $bug['project_id']);
 		$title = sprintf(_('Reply to #%u/%s: %s'), $bug['bug_id'],
-				$project['title'], $bug['title']);
+				$project->getTitle(), $bug['title']);
 		$page = new Page(array('title' => $title));
 		//title
 		$page->append('title', array('stock' => $this->name,
@@ -645,23 +634,24 @@ class ProjectModule extends MultiContentModule
 		$db = $engine->getDatabase();
 		$query = $this->project_query_list_downloads;
 
-		if(($project = $this->getProject($engine, $request->getID(),
+		if(($project = $this->_get($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
-		$title = _('Project: ').$project['title'];
+		$title = _('Project: ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
 		//source code
-		if(($scm = $this->attachSCM($engine, $project['scm'])) !== FALSE
+		if(($scm = $this->attachSCM($engine, $project->get('scm')))
+				!== FALSE
 				&& ($download = $scm->download($engine,
 				$project, $request)) !== FALSE)
 			$page->append($download);
 		//downloads
 		$error = 'Could not list downloads';
-		$args = array('project_id' => $project['id']);
+		$args = array('project_id' => $project->getID());
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
@@ -681,7 +671,8 @@ class ProjectModule extends MultiContentModule
 			{
 				$toolbar = $view->append('toolbar');
 				$req = new Request($this->name, 'submit',
-					$project['id'], $project['title'],
+					$project->getID(),
+					$project->getTitle(),
 				       	array('type' => 'release'));
 				$link = $toolbar->append('button', array(
 						'stock' => 'new',
@@ -730,10 +721,10 @@ class ProjectModule extends MultiContentModule
 		$db = $engine->getDatabase();
 		$query = $this->project_query_list_screenshots;
 
-		if(($project = $this->getProject($engine, $request->getID(),
+		if(($project = $this->_get($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
-		$title = _('Project: ').$project['title'];
+		$title = _('Project: ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
@@ -741,7 +732,7 @@ class ProjectModule extends MultiContentModule
 		$page->append($toolbar);
 		//screenshots
 		$error = _('Could not list screenshots');
-		$args = array('project_id' => $project['id']);
+		$args = array('project_id' => $project->getID());
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
@@ -772,7 +763,7 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::callSubmitRelease
 	protected function callSubmitRelease($engine, $request)
 	{
-		$project = $this->getProject($engine, $request->getID(),
+		$project = $this->_get($engine, $request->getID(),
 				$request->getTitle());
 
 		$error = _('Invalid project');
@@ -783,7 +774,7 @@ class ProjectModule extends MultiContentModule
 		if(!$this->canUpload($engine, $request, $project))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		$title = _('New release for project ').$project['title'];
+		$title = _('New release for project ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
@@ -857,16 +848,16 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::callTimeline
 	protected function callTimeline($engine, $request)
 	{
-		if(($project = $this->getProject($engine, $request->getID(),
+		if(($project = $this->_get($engine, $request->getID(),
 				$request->getTitle())) === FALSE)
 			return $this->callDefault($engine);
-		$title = _('Project: ').$project['title'];
+		$title = _('Project: ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'project',
 				'text' => $title));
 		$toolbar = $this->getToolbar($engine, $request, $project);
 		$page->append($toolbar);
-		if(($scm = $this->attachSCM($engine, $project['scm']))
+		if(($scm = $this->attachSCM($engine, $project->get('scm')))
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
@@ -932,16 +923,16 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::formSubmitRelease
 	protected function formSubmitRelease($engine, $request, $project)
 	{
-		$r = new Request($this->name, 'submit', $project['id'],
-			$project['title'], array('type' => 'release'));
+		$r = new Request($this->name, 'submit', $project->getID(),
+			$project->getTitle(), array('type' => 'release'));
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('filechooser', array('text' => _('File: '),
 				'name' => 'files[]'));
 		$value = $request->getParameter('directory');
 		$form->append('entry', array('text' => _('Directory: '),
 				'name' => 'directory', 'value' => $value));
-		$r = new Request($this->name, 'download', $project['id'],
-			$project['title']);
+		$r = new Request($this->name, 'download', $project->getID(),
+			$project->getTitle());
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r, 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
@@ -1003,8 +994,8 @@ class ProjectModule extends MultiContentModule
 				&& ($s = iconv('utf-8', $encoding, $sep))
 				!== FALSE)
 			$sep = $s;
-		$r = new Request($this->name, FALSE, $project['id'],
-			$project['title']);
+		$r = new Request($this->name, FALSE, $project->getID(),
+			$project->getTitle());
 		$u = new Request($this->name, 'list', $bug['user_id'],
 			$bug['username']);
 		$user = is_numeric($bug['assigned'])
@@ -1022,7 +1013,7 @@ class ProjectModule extends MultiContentModule
 		$col1->append('label', array('class' => 'bold',
 				'text' => _('Project: ')));
 		$col2->append('link', array('class' => 'bold', 'request' => $r,
-				'text' => $project['title']));
+				'text' => $project->getTitle()));
 		//submitter
 		$col3->append('label', array('class' => 'bold',
 				'text' => _('Submitter: ')));
