@@ -191,6 +191,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/download/content/folder.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/news/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/news/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/Makefile \

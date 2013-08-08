@@ -1,4 +1,5 @@
 ../src/system/common.php
+../src/system/content.php
 ../src/system/user.php
 ../src/formats/html.php
 ../src/modules/admin/module.php
@@ -7,6 +8,7 @@
 ../src/modules/browser/module.php
 ../src/modules/content/module.php
 ../src/modules/download/module.php
+../src/modules/news/content.php
 ../src/modules/news/module.php
 ../src/modules/project/module.php
 ../src/modules/search/module.php

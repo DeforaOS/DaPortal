@@ -23,12 +23,14 @@ class Content
 	//methods
 	//essential
 	//Content::Content
-	public function __construct($engine, $module, $properties = array())
+	public function __construct($engine, $module, $properties = FALSE)
 	{
 		$database = $engine->getDatabase();
 
 		$this->module_id = $module->getID();
 		$this->module = $module->getName();
+		if($properties === FALSE)
+			$properties = array();
 		foreach($properties as $k => $v)
 			switch($k)
 			{
@@ -48,6 +50,14 @@ class Content
 					break;
 			}
 		$this->properties = $properties;
+		$this->text_content_by = _('Content by');
+		$this->text_link = _('Permalink');
+		$this->text_more_content = _('More content...');
+		$this->text_on = _('on');
+		$this->text_open = _('Open');
+		$this->text_post = _('Publish');
+		$this->text_submit = _('Submit content');
+		$this->text_update = _('Update');
 	}
 
 
@@ -401,8 +411,7 @@ class Content
 					.$properties[$f];
 		}
 		$content = new $class($engine,
-			Module::load($engine, $this->module),
-			$properties);
+			Module::load($engine, $this->module), $properties);
 		return $content->preview($engine, $request);
 	}
 

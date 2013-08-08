@@ -18,6 +18,7 @@
 
 require_once('./system/html.php');
 require_once('./modules/content/module.php');
+require_once('./modules/news/content.php');
 
 
 //NewsModule
@@ -31,14 +32,11 @@ class NewsModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('News') : FALSE;
 		parent::__construct($id, $name, $title);
+		$this->content_class = 'NewsContent';
 		//translations
 		$this->text_content_admin = _('News administration');
-		$this->text_content_by = _('News by');
-		$this->text_content_item = _('News item');
-		$this->text_content_items = _('News items');
 		$this->text_content_list_title = _('News list');
 		$this->text_content_list_title_by = _('News by');
-		$this->text_content_more_content = _('More news...');
 		$this->text_content_submit = _('Submit news...');
 		$this->text_content_title = _('News');
 	}
@@ -64,17 +62,6 @@ class NewsModule extends ContentModule
 	{
 		$engine->setType('application/rss+xml');
 		return $this->callHeadline($engine, $request);
-	}
-
-
-	//helpers
-	//NewsModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $content, $page)
-	{
-		$text = $content->getContent();
-
-		$text = HTML::format($engine, $text);
-		$page->append('htmlview', array('text' => $text));
 	}
 }
 
