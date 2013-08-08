@@ -49,7 +49,8 @@ abstract class MultiContentModule extends ContentModule
 	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
 	{
-		$this->setContext($engine, $request, $content);
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
 		return parent::canAdmin($engine, $request, $content, $error);
 	}
 
@@ -58,7 +59,8 @@ abstract class MultiContentModule extends ContentModule
 	protected function canPost($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
 	{
-		$this->setContext($engine, $request, $content);
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
 		return parent::canPost($engine, $request, $content, $error);
 	}
 
@@ -67,7 +69,8 @@ abstract class MultiContentModule extends ContentModule
 	protected function canPreview($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$this->setContext($engine, $request, $content);
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
 		return parent::canPreview($engine, $request, $content, $error);
 	}
 
@@ -76,8 +79,19 @@ abstract class MultiContentModule extends ContentModule
 	protected function canSubmit($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$this->setContext($engine, $request, $content);
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
 		return parent::canSubmit($engine, $request, $content, $error);
+	}
+
+
+	//MultiContentModule::canUnpost
+	protected function canUnpost($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
+		return parent::canUnpost($engine, $request, $content, $error);
 	}
 
 
@@ -85,7 +99,8 @@ abstract class MultiContentModule extends ContentModule
 	protected function canUpdate($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$this->setContext($engine, $request, $content);
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
 		return parent::canUpdate($engine, $request, $content, $error);
 	}
 
