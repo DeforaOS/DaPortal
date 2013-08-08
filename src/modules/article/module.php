@@ -18,6 +18,7 @@
 
 require_once('./system/html.php');
 require_once('./modules/content/module.php');
+require_once('./modules/article/content.php');
 
 
 //ArticleModule
@@ -31,32 +32,13 @@ class ArticleModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('Articles') : $title;
 		parent::__construct($id, $name, $title);
-		//settings
-		$this->content_list_count = 10;
-		$this->content_list_order = 'title ASC';
+		$this->content_class = 'ArticleContent';
 		//translations
 		$this->text_content_admin = _('Articles administration');
-		$this->text_content_by = _('Article by');
-		$this->text_content_item = _('Article');
-		$this->text_content_items = _('Articles');
 		$this->text_content_list_title = _('Article list');
 		$this->text_content_list_title_by = _('Articles by');
-		$this->text_content_more_content = _('More articles...');
 		$this->text_content_submit = _('New article...');
 		$this->text_content_title = _('Articles');
-	}
-
-
-	//protected
-	//methods
-	//helpers
-	//ArticleModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $page, $content)
-	{
-		$text = $content->getContent();
-
-		$text = HTML::format($engine, $text);
-		$page->append('htmlview', array('text' => $text));
 	}
 }
 

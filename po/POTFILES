@@ -4,6 +4,7 @@
 ../src/formats/html.php
 ../src/modules/admin/module.php
 ../src/modules/article/module.php
+../src/modules/article/content.php
 ../src/modules/blog/module.php
 ../src/modules/browser/module.php
 ../src/modules/content/module.php

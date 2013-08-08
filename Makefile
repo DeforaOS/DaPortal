@@ -170,6 +170,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/admin/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/admin/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/article/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/article/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/article/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/article/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/blog/Makefile \
