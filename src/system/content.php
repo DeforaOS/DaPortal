@@ -29,6 +29,7 @@ class Content
 
 		$this->class = get_class();
 		$this->module = $module;
+		$this->class = $module->getName();
 		if($properties === FALSE)
 			$properties = array();
 		foreach($properties as $k => $v)
@@ -616,6 +617,7 @@ class Content
 	static protected $list_order = 'timestamp DESC';
 	protected $preview_length = 150;
 	//stock icons
+	protected $stock = FALSE;
 	protected $stock_link = 'link';
 	protected $stock_open = 'open';
 	//translations
@@ -680,6 +682,14 @@ class Content
 		public=:public
 		WHERE module_id=:module_id
 		AND content_id=:content_id';
+
+
+	//methods
+	//accessors
+	protected function getModule()
+	{
+		return $this->module;
+	}
 
 
 	//private
