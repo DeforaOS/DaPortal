@@ -133,7 +133,8 @@ class FolderDownloadContent extends DownloadContent
 		$query = $class::$query_list;
 		$args = array('module_id' => $module->getID());
 
-		if($parent !== FALSE && ($id = $parent->getID()) !== FALSE)
+		if($parent !== FALSE && ($id = $parent->get('download_id'))
+				!== FALSE)
 		{
 			$query .= ' AND daportal_download.parent=:parent_id';
 			$args['parent_id'] = $id;
