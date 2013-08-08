@@ -89,17 +89,19 @@ class WikiModule extends ContentModule
 		if(($content = parent::_get($engine, $id, $title)) === FALSE)
 			return FALSE;
 		if($this->root === FALSE
-				|| strpos($content['title'], '/') !== FALSE)
+				|| strpos($content->getTitle(), '/') !== FALSE)
 			return $content; //XXX fail instead?
 		$cmd = 'co -p -q';
 		if($request !== FALSE && ($revision = $request->getParameter(
 				'revision')) !== FALSE)
 			$cmd .= ' -r'.escapeshellarg($revision);
-		$cmd .= ' '.escapeshellarg($this->root.'/'.$content['title']);
+		$cmd .= ' '.escapeshellarg($this->root
+				.'/'.$content->getTitle());
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
-		$content['content'] = implode("\n", $rcs);
+		//FIXME broken
+		//$content['content'] = implode("\n", $rcs);
 		return $content;
 	}
 
@@ -155,7 +157,7 @@ class WikiModule extends ContentModule
 		$root = $this->root;
 
 		$error = _('Permission denied');
-		if(!$this->canAdmin($engine, FALSE, $error))
+		if(!$this->canAdmin($engine, FALSE, FALSE, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$page = new Page(array('title' => $title));
@@ -266,28 +268,31 @@ class WikiModule extends ContentModule
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
+		$title = $content->getTitle();
 		$root = $this->root;
 		$res = FALSE;
 
 		//validate the content and keep the current title
 		$parameters = $request->getParameters();
-		$parameters['title'] = $content['title'];
+		$parameters['title'] = $title;
 		if(isset($parameters['content']))
 		{
 			$parameters['content'] = HTML::filter($engine,
 					$parameters['content']);
-			$content['content'] = $parameters['content'];
+			//FIXME broken
+			//$content['content'] = $parameters['content'];
 		}
 		$r = new Request($this->name, 'update', $request->getID(),
-			$content['title'], $parameters);
+			$title, $parameters);
 		$r->setIdempotent($request->isIdempotent());
 		//additional checks
-		if($root === FALSE || strpos($content['title'], '/') !== FALSE)
+		if($root === FALSE || strpos($title, '/') !== FALSE)
 			return _('Invalid title for this page');
-		if(!HTML::validate($engine, '<div>'.$content['content'].'</div>'))
+		if(!HTML::validate($engine, '<div>'.$content->getContent()
+				.'</div>'))
 			return _('Document not valid');
-		$file = $root.'/'.$content['title'];
-		if(realpath($root.'/RCS/'.$content['title'].',v') === FALSE)
+		$file = $root.'/'.$title;
+		if(realpath($root.'/'.$title.',v') === FALSE)
 			return _('Missing RCS file');
 		//update the content
 		if($db->transactionBegin($engine) === FALSE)
@@ -303,7 +308,7 @@ class WikiModule extends ContentModule
 			$cmd = 'rcs -q -l '.$efile;
 			exec($cmd, $rcs, $res);
 			$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
-			if($res == 0 && fwrite($fp, $content['content'])
+			if($res == 0 && fwrite($fp, $content->getContent())
 					!== FALSE)
 			{
 				if(fclose($fp) !== FALSE)
@@ -452,12 +457,12 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::helperUpdateContent
-	protected function helperUpdateContent($engine, $request, $page,
-			$content)
+	protected function helperUpdateContent($engine, $request, $content,
+			$page)
 	{
 		$page->append('label', array('text' => _('Content: ')));
 		if(($value = $request->getParameter('content')) === FALSE)
-			$value = $content['content'];
+			$value = $content->getContent();
 		$page->append('htmledit', array('name' => 'content',
 				'value' => $value));
 		$message = $request->getParameter('message');

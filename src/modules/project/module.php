@@ -19,47 +19,18 @@
 require_once('./system/common.php');
 require_once('./system/html.php');
 require_once('./system/user.php');
-require_once('./modules/content/module.php');
+require_once('./modules/content/multi.php');
+require_once('./modules/project/content.php');
+require_once('./modules/project/content/bug.php');
+require_once('./modules/project/content/bugreply.php');
 
 
 //ProjectModule
-class ProjectModule extends ContentModule
+class ProjectModule extends MultiContentModule
 {
 	//public
 	//methods
 	//essential
-	//ProjectModule::ProjectModule
-	public function __construct($id, $name, $title = FALSE)
-	{
-		$title = ($title === FALSE) ? _('Projects') : $title;
-		parent::__construct($id, $name, $title);
-		//settings
-		$this->content_list_count = 0;
-		$this->content_list_order = 'title ASC';
-		$this->content_list_admin_order = 'title ASC';
-		$this->content_open_stock = 'open';
-		//translations
-		$this->text_content_admin = _('Projects administration');
-		$this->text_content_by = _('Project by');
-		$this->text_content_item = _('Project');
-		$this->text_content_items = _('Projects');
-		$this->text_content_list_title = _('Project list');
-		$this->text_content_list_title_by = _('Projects by');
-		$this->text_content_more_content = _('More projects...');
-		$this->text_content_open = _('Open');
-		$this->text_content_submit = _('New project');
-		$this->text_content_title = _('Projects');
-		//list only projects by default
-		$this->query_list = $this->project_query_list_projects;
-		$this->query_list_admin
-			= $this->project_query_list_admin_projects;
-		$this->query_list_admin_count
-			= $this->project_query_list_admin_projects_count;
-		$this->query_list_user
-			= $this->project_query_list_projects_user;
-	}
-
-
 	//ProjectModule::call
 	public function call($engine, $request, $internal = 0)
 	{
@@ -288,84 +259,26 @@ class ProjectModule extends ContentModule
 
 
 	//methods
+	//essential
+	//ProjectModule::ProjectModule
+	protected function __construct($id, $name, $title = FALSE)
+	{
+		$title = ($title === FALSE) ? _('Projects') : $title;
+		$this->content_classes = array('project' => 'ProjectContent',
+			'bug' => 'BugProjectContent',
+			'bugreply' => 'BugReplyProjectContent');
+		parent::__construct($id, $name, $title);
+	}
+
+
 	//accessors
-	//ProjectModule::canUpdate
-	protected function canUpdate($engine, $content = FALSE, &$error = FALSE)
-	{
-		$cred = $engine->getCredentials();
-
-		//administrators can always update anything
-		if($cred->isAdmin())
-			return TRUE;
-		//this should not happen so let the parent handle it
-		if($content === FALSE)
-			return parent::canUpdate($engine, $content, $error);
-		if(isset($content['project_id']))
-		{
-			//this is a project
-			if($cred->getUserID() == $content['user_id'])
-				return TRUE;
-			if($this->isMember($engine, $content))
-				//FIXME only allow administrators?
-				return TRUE;
-		}
-		//bug reports and replies cannot be updated once sent
-		return FALSE;
-	}
-
-
 	//ProjectModule::canUpload
-	protected function canUpload($engine, $project)
+	protected function canUpload($engine, $request = FALSE,
+			$project = FALSE)
 	{
-		$cred = $engine->getCredentials();
-
-		if(($members = $this->getMembers($engine, $project)) === FALSE)
-			return FALSE;
-		$uid = $cred->getUserID();
-		if($project['user_id'] == $uid)
-			return TRUE;
-		foreach($members as $m)
-			if($m['user_id'] == $uid && $m['admin'] === TRUE)
-				return TRUE;
-		return FALSE;
-	}
-
-
-	//ProjectModule::_get
-	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
-	{
-		$cred = $engine->getCredentials();
-		$db = $engine->getDatabase();
-		$query = $this->project_query_get;
-
-		$args = array('module_id' => $this->id,
-			'user_id' => $cred->getUserID(), 'content_id' => $id);
-		if($title !== FALSE)
-		{
-			$query .= ' AND daportal_content.title LIKE :title';
-			$args['title'] = str_replace('-', '_', $title);
-		}
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		$res = $res[0];
-		$res['date'] = $db->formatDate($engine, $res['timestamp']);
-		if(is_numeric($res['bug_reply_id']))
-		{
-			//bug reply
-			$res['bug_id'] = $res['bug_reply_bug_id'];
-			$res['state'] = $res['bug_reply_state'];
-			$res['type'] = $res['bug_reply_type'];
-			$res['priority'] = $res['bug_reply_priority'];
-			$res['assigned'] = $res['bug_reply_assigned'];
-			return $res;
-		}
-		if(is_numeric($res['bug_id']))
-			//bug
-			return $res;
-		//project
-		$res['project_id'] = $res['id'];
-		return $res;
+		if($project == FALSE)
+			$project = new ProjectContent($engine, $this);
+		return $project->canUpload($engine, $request);
 	}
 
 
@@ -483,65 +396,6 @@ class ProjectModule extends ContentModule
 				|| count($res) != 1)
 			return FALSE;
 		return $res[0];
-	}
-
-
-	//ProjectModule::getToolbar
-	protected function getToolbar($engine, $request, $content = FALSE)
-	{
-		$id = (isset($content['id'])) ? $content['id'] : FALSE;
-		$title = (isset($content['title'])) ? $content['title'] : FALSE;
-
-		if($id === FALSE)
-			return FALSE;
-		if(($bug = $this->getBug($engine, $id)) !== FALSE)
-			$id = $bug['project_id'];
-		if(($project = $this->getProject($engine, $id, $title))
-				=== FALSE)
-			return FALSE;
-		$toolbar = new PageElement('toolbar');
-		$r = new Request($this->name, FALSE, $id, $project['title']);
-		$toolbar->append('button', array('request' => $r,
-				'stock' => 'home', 'text' => _('Homepage')));
-		if(strlen($project['cvsroot']) > 0)
-		{
-			$r = new Request($this->name, 'browse', $id,
-					$project['title']);
-			$toolbar->append('button', array('request' => $r,
-					'stock' => 'open',
-					'text' => _('Browse')));
-			$r = new Request($this->name, 'timeline', $id,
-					$project['title']);
-			$toolbar->append('button', array('request' => $r,
-					'stock' => 'development',
-					'text' => _('Timeline')));
-		}
-		//gallery
-		$r = new Request($this->name, 'gallery', $id,
-				$project['title']);
-		$toolbar->append('button', array('request' => $r,
-				'stock' => 'preview',
-				'text' => _('Gallery')));
-		//downloads
-		$r = new Request($this->name, 'download', $id,
-				$project['title']);
-		$toolbar->append('button', array('request' => $r,
-				'stock' => 'download',
-				'text' => _('Downloads')));
-		//bug reports
-		$r = new Request($this->name, 'bug_list', $id,
-				$project['title']);
-		$toolbar->append('button', array('request' => $r,
-				'stock' => 'bug', 'text' => _('Bug reports')));
-		if($this->isManager($engine, $project))
-		{
-			$r = new Request($this->name, 'update', $id,
-					$project['title']);
-			$toolbar->append('button', array('request' => $r,
-					'stock' => 'admin',
-					'text' => _('Update')));
-		}
-		return $toolbar;
 	}
 
 
@@ -823,7 +677,7 @@ class ProjectModule extends ContentModule
 					'permissions' => _('Permissions'));
 			$view = $vbox->append('treeview', array(
 					'columns' => $columns));
-			if($this->canUpload($engine, $project))
+			if($this->canUpload($engine, $request, $project))
 			{
 				$toolbar = $view->append('toolbar');
 				$req = new Request($this->name, 'submit',
@@ -915,55 +769,6 @@ class ProjectModule extends ContentModule
 	}
 
 
-	//ProjectModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
-	{
-		$type = ($request !== FALSE) ? $request->getParameter('type')
-			: FALSE;
-
-		switch($type)
-		{
-			case 'release':
-				return $this->callSubmitRelease($engine,
-						$request);
-			case 'project':
-			default:
-				return $this->callSubmitProject($engine,
-						$request);
-		}
-	}
-
-
-	//ProjectModule::callSubmitProject
-	protected function callSubmitProject($engine, $request)
-	{
-		return parent::callSubmit($engine, $request);
-	}
-
-	protected function _submitProcess($engine, $request, &$content)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_project_insert;
-
-		if(($ret = parent::_submitProcess($engine, $request, $content))
-				=== TRUE || is_string($ret))
-			return $ret;
-		if(($synopsis = $request->getParameter('synopsis')) === FALSE)
-			$synopsis = '';
-		if(($cvsroot = $request->getParameter('cvsroot')) === FALSE)
-			$cvsroot = '';
-		$args = array('project_id' => $content->getID(),
-			'synopsis' => $synopsis, 'cvsroot' => $cvsroot);
-		if($db->query($engine, $query, $args) === FALSE)
-		{
-			//XXX use a transaction instead
-			Content::delete($engine, $this->id, $content->getID());
-			return _('Could not insert project');
-		}
-		return $ret;
-	}
-
-
 	//ProjectModule::callSubmitRelease
 	protected function callSubmitRelease($engine, $request)
 	{
@@ -975,7 +780,7 @@ class ProjectModule extends ContentModule
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$error = _('Permission denied');
-		if(!$this->canUpload($engine, $project))
+		if(!$this->canUpload($engine, $request, $project))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$title = _('New release for project ').$project['title'];
@@ -1089,7 +894,7 @@ class ProjectModule extends ContentModule
 			return $res;
 		//update the project
 		$synopsis = $request->getParameter('synopsis');
-		$args = array('project_id' => $content['id'],
+		$args = array('project_id' => $content->getID(),
 			'synopsis' => $synopsis);
 		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
@@ -1120,41 +925,6 @@ class ProjectModule extends ContentModule
 				'stock' => 'preview', 'name' => 'action',
 				'value' => 'preview', 'text' => _('Preview')));
 		//FIXME add missing buttons
-		return $form;
-	}
-
-
-	//ProjectModule::formSubmit
-	protected function formSubmit($engine, $request)
-	{
-		$r = new Request($this->name, 'submit', FALSE, FALSE,
-				array('public' => 1));
-		$form = new PageElement('form', array('request' => $r));
-		$vbox = $form->append('vbox');
-		$vbox->append('entry', array('name' => 'title',
-				'text' => _('Name: '),
-				'value' => $request->getParameter('title')));
-		$vbox->append('entry', array('name' => 'synopsis',
-				'text' => _('Synopsis: '),
-				'value' => $request->getParameter('synopsis')));
-		$vbox->append('textview', array('name' => 'content',
-				'text' => _('Description: '),
-				'value' => $request->getParameter('content')));
-		$vbox->append('entry', array('name' => 'cvsroot',
-				'text' => _('CVS root: '),
-				'value' => $request->getParameter('cvsroot')));
-		$r = new Request($this->name);
-		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
-		if($this->canPreview($engine, $request))
-			$form->append('button', array('type' => 'submit',
-					'stock' => 'preview',
-					'name' => 'action',
-					'value' => 'preview',
-					'text' => _('Preview')));
-		$form->append('button', array('type' => 'submit',
-				'stock' => 'new', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Create')));
 		return $form;
 	}
 
@@ -1191,20 +961,6 @@ class ProjectModule extends ContentModule
 		$ret[] = $this->helperAction($engine, 'admin', $r,
 				_('Bugs administration'));
 		return $ret;
-	}
-
-
-	//ProjectModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page, $content)
-	{
-		if(isset($content['bug_reply_id']))
-			return $this->helperDisplayBugReply($engine, $request,
-					$page, $content);
-		if(isset($content['bug_id']))
-			return $this->helperDisplayBug($engine, $request, $page,
-					$content);
-		return $this->helperDisplayProject($engine, $request, $page,
-				$content);
 	}
 
 
@@ -1325,26 +1081,6 @@ class ProjectModule extends ContentModule
 	}
 
 
-	//ProjectModule::helperDisplayDescription
-	protected function helperDisplayDescription($engine, $request, $page,
-			$content)
-	{
-		if(!is_array($content))
-			return;
-		$vbox = $page->append('vbox');
-		if(isset($content['synopsis'])
-				&& strlen($content['synopsis']) > 0)
-			$vbox->append('label', array('class' => 'bold',
-					'text' => $content['synopsis']));
-		if(!isset($content['content'])
-				|| strlen($content['content']) == 0)
-			return;
-		$vbox->append('title', array('text' => _('Description')));
-		$html = HTML::format($engine, $content['content']);
-		$vbox->append('htmlview', array('text' => $html));
-	}
-
-
 	//ProjectModule::helperDisplayMembers
 	protected function helperDisplayMembers($engine, $request, $page,
 			$content)
@@ -1383,40 +1119,6 @@ class ProjectModule extends ContentModule
 	}
 
 
-	//ProjectModule::helperDisplayProject
-	protected function helperDisplayProject($engine, $request, $page,
-			$content)
-	{
-		$r = $this->getContentRequest($engine, $content);
-
-		//title
-		$this->helperDisplayTitle($engine, $request, $page, $content);
-		//toolbar
-		//FIXME pages should render as vbox by default
-		$vbox = $page->append('vbox');
-		$this->helperDisplayToolbar($engine, $request, $vbox, $content);
-		//content
-		$this->helperDisplayDescription($engine, $request, $vbox,
-				$content);
-		//members
-		$this->helperDisplayMembers($engine, $request, $vbox, $content);
-		//buttons
-		$this->helperDisplayButtons($engine, $request, $vbox, $content);
-	}
-
-
-	//ProjectModule::helperDisplayTitle
-	protected function helperDisplayTitle($engine, $request, $page,
-			$content)
-	{
-		$title = _('Project: '.$content['title']);
-
-		$page->setProperty('title', $title);
-		$title = $page->append('title', array('stock' => $this->name,
-				'text' => $title));
-	}
-
-
 	//ProjectModule::helperListButtons
 	protected function helperListButtons($engine, $page, $request = FALSE)
 	{
@@ -1446,75 +1148,7 @@ class ProjectModule extends ContentModule
 				$content);
 		if(isset($content['synopsis']))
 			$preview->append('label', array('class' => 'bold',
-					'text' => $content['synopsis']));
-	}
-
-
-	//ProjectModule::helperSubmitPreview
-	protected function helperSubmitPreview($engine, $page, $request,
-			$content)
-	{
-		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserID());
-
-		if($request === FALSE
-				|| $request->getParameter('preview') === FALSE)
-			return;
-		$synopsis = $request->getParameter('synopsis');
-		$content = $request->getParameter('content');
-		$cvsroot = $request->getParameter('cvsroot');
-		$content = array('title' => _('Preview: ')
-					.$request->getParameter('title'),
-				'user_id' => $user->getUserID(),
-				'username' => $user->getUsername(),
-				'date' => $this->timestampToDate(),
-				'synopsis' => $synopsis,
-				'content' => $content,
-				'cvsroot' => $cvsroot);
-		$this->helperPreview($engine, $page, $content);
-	}
-
-
-	//ProjectModule::helperUpdateContent
-	protected function helperUpdateContent($engine, $request, $page,
-			$content)
-	{
-		if(($value = $request->getParameter('synopsis')) === FALSE)
-			$value = $content['synopsis'];
-		$page->append('entry', array('name' => 'synopsis',
-				'text' => _('Title: '), 'value' => $value));
-		$page->append('label', array('text' => _('Content: ')));
-		if(($value = $request->getParameter('content')) === FALSE)
-				$value = $content['content'];
-		$page->append('textview', array('name' => 'content',
-				'value' => $value));
-	}
-
-
-	//ProjectModule::helperUpdatePreview
-	protected function helperUpdatePreview($engine, $request, $page,
-			$content)
-	{
-		$vbox = $page->append('vbox');
-		$preview = array('module' => $this->name,
-			'user_id' => $content['user_id'],
-			'username' => $content['username'],
-			'date' => $content['date'],
-			'title' => _('Preview: ')
-				.$request->getParameter('title'),
-			'synopsis' => $request->getParameter('synopsis'),
-			'content' => $request->getParameter('content'));
-		$this->helperPreview($engine, $vbox, $preview);
-	}
-
-
-	//ProjectModule::helperUpdateTitle
-	protected function helperUpdateTitle($engine, $request, $page, $content)
-	{
-		if(($value = $request->getParameter('title')) === FALSE)
-			$value = $content['title'];
-		$page->append('entry', array('name' => 'title',
-				'text' => _('Name: '), 'value' => $value));
+					'text' => $content->get('synopsis')));
 	}
 
 
@@ -1536,20 +1170,6 @@ class ProjectModule extends ContentModule
 		$ret->attach($engine);
 		return $ret;
 	}
-}
-
-
-//ProjectSCM
-abstract class ProjectSCM
-{
-	//methods
-	//virtual
-	abstract public function attach($engine);
-
-	//actions
-	abstract public function browse($engine, $project, $request);
-	abstract public function download($engine, $project, $request);
-	abstract public function timeline($engine, $project, $request);
 }
 
 ?>

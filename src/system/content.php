@@ -17,15 +17,13 @@
 
 
 //Content
-//FIXME:
-//- also define the forms here
 class Content
 {
 	//public
 	//methods
 	//essential
 	//Content::Content
-	public function __construct($engine, $module, $properties)
+	public function __construct($engine, $module, $properties = array())
 	{
 		$database = $engine->getDatabase();
 
@@ -36,6 +34,7 @@ class Content
 			{
 				case 'enabled':
 				case 'public':
+					//boolean values
 					$v = $database->isTrue($v);
 				case 'content':
 				case 'group_id':
@@ -53,6 +52,88 @@ class Content
 
 
 	//accessors
+	//Content::canAdmin
+	public function canAdmin($engine, $request = FALSE, &$error = FALSE)
+	{
+		global $config;
+		$credentials = $engine->getCredentials();
+
+		//FIXME also verify that the fields are set (if not idempotent)
+		if($credentials->isAdmin())
+			return TRUE;
+		$error = _('Permission denied');
+		return FALSE;
+	}
+
+
+	//Content::canPost
+	public function canPost($engine, $request = FALSE, &$error = FALSE)
+	{
+		global $config;
+		$credentials = $engine->getCredentials();
+
+		$error = _('Permission denied');
+		if($credentials->getUserID() == 0)
+			return FALSE;
+		if($credentials->isAdmin())
+			return TRUE;
+		$moderate = $config->get('module::'.$this->module,
+				'moderate');
+		return ($moderate === FALSE || $moderate == 0) ? TRUE : FALSE;
+	}
+
+
+	//Content::canPreview
+	public function canPreview($engine, $request = FALSE, &$error = FALSE)
+	{
+		return TRUE;
+	}
+
+
+	//Content::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		global $config;
+		$credentials = $engine->getCredentials();
+
+		//FIXME also verify that the fields are set (if not idempotent)
+		if($credentials->getUserID() > 0)
+			return TRUE;
+		if($config->get('module::'.$this->module, 'anonymous'))
+			return TRUE;
+		$error = _('Permission denied');
+		return FALSE;
+	}
+
+
+	//Content::canUnpost
+	public function canUnpost($engine, $request = FALSE, &$error = FALSE)
+	{
+		global $config;
+		$credentials = $engine->getCredentials();
+
+		$error = _('Permission denied');
+		if($credentials->getUserID() == 0)
+			return FALSE;
+		if($credentials->isAdmin())
+			return TRUE;
+		return FALSE;
+	}
+
+
+	//Content::canUpdate
+	public function canUpdate($engine, $request = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		if($credentials->isAdmin())
+			return TRUE;
+		//FIXME really implement
+		$error = _('Permission denied');
+		return FALSE;
+	}
+
+
 	//Content::get
 	public function get($property)
 	{
@@ -96,9 +177,9 @@ class Content
 
 
 	//Content::getRequest
-	public function getRequest()
+	public function getRequest($action = FALSE)
 	{
-		return new Request($this->module, FALSE, $this->getID(),
+		return new Request($this->module, $action, $this->getID(),
 				$this->getTitle());
 	}
 
@@ -163,9 +244,166 @@ class Content
 	//Content::display
 	public function display($engine, $request)
 	{
+		$vbox = new PageElement('vbox');
+
+		$vbox->append($this->displayTitle($engine, $request));
+		$vbox->append($this->displayToolbar($engine, $request));
+		$vbox->append($this->displayMetadata($engine, $request));
+		$vbox->append($this->displayContent($engine, $request));
+		$vbox->append($this->displayButtons($engine, $request));
+		return $vbox;
+	}
+
+
+	//Content::displayButtons
+	public function displayButtons($engine, $request)
+	{
+		$hbox = new PageElement('hbox');
+		$r = new Request($this->module);
+		$hbox->append('link', array('stock' => 'back',
+				'request' => $r,
+				'text' => $this->text_more_content));
+		$hbox->append('link', array('request' => $r,
+				'stock' => $this->stock_link,
+				'text' => $this->text_link));
+		return $hbox;
+	}
+
+
+	//Content::displayContent
+	public function displayContent($engine, $request)
+	{
 		$text = $this->getContent();
 
 		return new PageElement('label', array('text' => $text));
+	}
+
+
+	//Content::displayMetadata
+	public function displayMetadata($engine, $request)
+	{
+		$r = new Request('user', FALSE, $this->getUserID(),
+			$this->getUsername());
+
+		$meta = new PageElement('label', array(
+				'text' => $this->text_content_by.' '));
+		$link = $meta->append('link', array('request' => $r,
+				'text' => $this->getUsername()));
+		$date = $this->getDate($engine);
+		$meta->append('label', array(
+				'text' => ' '.$this->text_on.' '.$date));
+		return $meta;
+	}
+
+
+	//Content::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		$credentials = $engine->getCredentials();
+
+		$toolbar = new PageElement('toolbar');
+		if($credentials->isAdmin($engine))
+		{
+			$r = new Request($this->module, 'admin');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'admin',
+					'text' => _('Administration')));
+		}
+		if($this->canSubmit($engine, $request))
+		{
+			$r = new Request($this->module, 'submit');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'new',
+					'text' => $this->text_submit));
+		}
+		if($this->getID() !== FALSE)
+		{
+			if(!$this->isPublic() && $this->canPost($engine,
+					$request))
+			{
+				$r = new Request($this->module, 'publish',
+						$this->getID(),
+						$this->getTitle());
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'post',
+						'text' => $this->text_post));
+			}
+			if($this->canUpdate($engine, $request))
+			{
+				$r = new Request($this->module, 'update',
+						$this->getID(),
+						$this->getTitle());
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'update',
+						'text' => $this->text_update));
+			}
+		}
+		//FIXME implement
+		return $toolbar;
+	}
+
+
+	//Content::displayTitle
+	public function displayTitle($engine, $request)
+	{
+		return new PageElement('title', array('stock' => $this->module,
+				'text' => $this->getTitle()));
+	}
+
+
+	//Content::form
+	public function form($engine, $request = FALSE)
+	{
+		return ($this->id !== FALSE)
+			? $this->_formUpdate($engine, $request)
+			: $this->_formSubmit($engine, $request);
+	}
+
+	protected function _formSubmit($engine, $request)
+	{
+		return new PageElement('textview', array('name' => 'content',
+				'text' => _('Content: '),
+				'value' => $request->getParameter('content')));
+	}
+
+	protected function _formUpdate($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		if(($value = $request->getParameter('title')) === FALSE)
+			$value = $this->getTitle();
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $value));
+		$label = $vbox->append('label', array(
+				'text' => _('Content: ')));
+		if(($value = $request->getParameter('content')) === FALSE)
+			$value = $this->getContent();
+		$label->append('textview', array('name' => 'content',
+				'value' => $value));
+		return $vbox;
+	}
+
+
+	//Content::formPreview
+	public function formPreview($engine, $request)
+	{
+		$class = get_class();
+		$properties = $this->properties;
+
+		foreach($this->fields as $f)
+		{
+			if(($p = $request->getParameter($f)) !== FALSE)
+				$properties[$f] = $p;
+			if($f == 'title')
+				$properties[$f] = _('Preview: ')
+					.$properties[$f];
+		}
+		$content = new $class($engine,
+			Module::load($engine, $this->module),
+			$properties);
+		return $content->preview($engine, $request);
 	}
 
 
@@ -173,11 +411,59 @@ class Content
 	public function preview($engine, $request = FALSE)
 	{
 		$vbox = new PageElement('vbox');
-		$text = strlen($this->content) < 100 ? $this->content
-			: substr($this->content, 0, 100).'...';
 
-		$vbox->append('label', array('text' => $text));
+		$vbox->append($this->previewTitle($engine, $request));
+		$vbox->append($this->previewMetadata($engine, $request));
+		$vbox->append($this->previewContent($engine, $request));
+		$vbox->append($this->previewButtons($engine, $request));
 		return $vbox;
+	}
+
+
+	//Content::previewButtons
+	public function previewButtons($engine, $request = FALSE)
+	{
+		$hbox = new PageElement('hbox');
+
+		$r = $this->getRequest();
+		$hbox->append('button', array('request' => $r,
+				'stock' => $this->stock_open,
+				'text' => $this->text_open));
+		return $hbox;
+	}
+
+
+	//Content::previewContent
+	public function previewContent($engine, $request = FALSE)
+	{
+		$length = $this->preview_length;
+
+		$text = ($length <= 0 || strlen($this->content) < $length)
+			? $this->content
+			: substr($this->content, 0, $length).'...';
+
+		return new PageElement('label', array('text' => $text));
+	}
+
+
+	//Content::previewMetadata
+	public function previewMetadata($engine, $request = FALSE)
+	{
+		return $this->displayMetadata($engine, $request);
+	}
+
+
+	//Content::previewTitle
+	public function previewTitle($engine, $request = FALSE)
+	{
+		if($this->id === FALSE)
+			return new PageElement('title', array(
+					'text' => $this->getTitle()));
+		$title = new PageElement('title');
+		$title->append('link', array(
+				'request' => $this->getRequest(),
+				'text' => $this->getTitle()));
+		return $title;
 	}
 
 
@@ -247,15 +533,24 @@ class Content
 
 	//Content::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE)
+			$offset = FALSE, $order = FALSE)
 	{
+		//XXX ugly hack
 		$class = get_class();
+
+		switch($order)
+		{
+			case FALSE:
+			default:
+				$order = $class::$list_order;
+				break;
+		}
 		return $class::_listAll($engine, $module, $limit, $offset,
-			$class);
+			$order, $class);
 	}
 
-	static protected function _listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $class)
+	static protected function _listAll($engine, $module, $limit, $offset,
+			$order, $class)
 	{
 		$ret = array();
 		$vbox = new PageElement('vbox');
@@ -263,10 +558,12 @@ class Content
 		$query = $class::$query_list;
 		$args = array('module_id' => $module->getID());
 
+		if($order !== FALSE)
+			$query .= ' ORDER BY '.$order;
 		if($limit !== FALSE || $offset !== FALSE)
 			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
-			return;
+			return FALSE;
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 			$ret[] = new $class($engine, $module, $res[$i]);
 		return $ret;
@@ -277,7 +574,7 @@ class Content
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
 		return Content::_load($engine, $module, $id, $title,
-			'Content');
+				'Content');
 	}
 
 	static protected function _load($engine, $module, $id, $title, $class)
@@ -305,8 +602,21 @@ class Content
 
 	//protected
 	//properties
+	protected $fields = array('title', 'content');
+	static protected $list_order = 'timestamp DESC';
+	protected $preview_length = 150;
+	//stock icons
+	protected $stock_link = 'link';
+	protected $stock_open = 'open';
 	//translations
-	static protected $text_content_by = 'Content by';
+	protected $text_content_by = 'Content by';
+	protected $text_link = 'Permalink';
+	protected $text_more_content = 'More content...';
+	protected $text_on = 'on';
+	protected $text_open = 'Open';
+	protected $text_post = 'Publish';
+	protected $text_submit = 'Submit content';
+	protected $text_update = 'Update';
 	//queries
 	//IN:	content_id
 	protected $query_delete = 'DELETE FROM daportal_content

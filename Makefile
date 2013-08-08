@@ -180,17 +180,28 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/browser/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/content/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/content/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/modules/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/download/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/download/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/download/content/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/download/content/file.php \
+		$(PACKAGE)-$(VERSION)/src/modules/download/content/folder.php \
+		$(PACKAGE)-$(VERSION)/src/modules/download/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/news/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/bug.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/bugreply.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/cvs.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/git.php \
@@ -198,10 +209,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/search/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/search/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/search/project.conf \
-		$(PACKAGE)-$(VERSION)/src/modules/test/Makefile \
-		$(PACKAGE)-$(VERSION)/src/modules/test/content.php \
-		$(PACKAGE)-$(VERSION)/src/modules/test/module.php \
-		$(PACKAGE)-$(VERSION)/src/modules/test/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/top/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/top/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/top/project.conf \

@@ -46,8 +46,7 @@ function tests($engine, $format = FALSE)
 	$module = 'admin';
 	test($engine, new Request($module));
 	//content modules
-	$modules = array('article', 'blog', 'download', 'news', 'project',
-		'wiki');
+	$modules = array('article', 'blog', 'download', 'news', 'wiki');
 	$actions = array(FALSE, 'actions', 'admin', 'default', 'headline',
 		'list', 'preview', 'publish', 'submit', 'update');
 	foreach($modules as $module)
@@ -56,6 +55,18 @@ function tests($engine, $format = FALSE)
 		foreach($actions as $a)
 			test($engine, new Request($module, $a));
 	}
+	//multi-content modules
+	$modules = array(
+		'project' => array(FALSE, 'project', 'bug', 'bugreply'));
+	foreach($modules as $module => $types)
+		foreach($types as $t)
+		{
+			test($engine, new Request($module, FALSE, FALSE, FALSE,
+					array('type' => $t)));
+			foreach($actions as $a)
+				test($engine, new Request($module, $a, FALSE,
+					FALSE, array('type' => $t)));
+		}
 }
 
 //default formatting backend
