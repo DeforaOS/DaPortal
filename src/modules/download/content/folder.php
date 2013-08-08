@@ -57,8 +57,9 @@ class FolderDownloadContent extends DownloadContent
 
 		$page->append('title', array('stock' => $this->stock,
 			'text' => $this->getTitle()));
-		if(($files = $class::listAll($engine, $this->getModule()))
-				=== FALSE)
+		$class::$query_list = $class::$folder_query_list;
+		if(($files = $class::_listFiles($engine, $this->getModule(),
+				FALSE, FALSE, FALSE, $class, $this)) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list the files'));
@@ -71,6 +72,9 @@ class FolderDownloadContent extends DownloadContent
 		while(($f = array_shift($files)) !== NULL)
 		{
 			$properties = $f->getProperties();
+			$icon = $f->getIcon($engine);
+			$properties['icon'] = new PageElement('image', array(
+				'source' => $icon));
 			$properties['date'] = $f->getDate($engine);
 			$properties['mode'] = $this->getPermissions(
 					$properties['mode']);
@@ -96,8 +100,43 @@ class FolderDownloadContent extends DownloadContent
 				break;
 		}
 		$class::$query_list = $class::$folder_query_list;
-		return FolderDownloadContent::_listAll($engine, $module, $limit, $offset,
+		$class::$query_list .= ' AND daportal_download.parent IS NULL';
+		return $class::_listAll($engine, $module, $limit, $offset,
 				$order, $class);
+	}
+
+	static protected function _listAll($engine, $module, $limit, $offset,
+			$order, $class)
+	{
+		return $class::_listFiles($engine, $module, $limit, $offset,
+				$order, $class);
+	}
+
+	static protected function _listFiles($engine, $module, $limit, $offset,
+			$order, $class, $parent = FALSE)
+	{
+		$ret = array();
+		$vbox = new PageElement('vbox');
+		$database = $engine->getDatabase();
+		$query = $class::$query_list;
+		$args = array('module_id' => $module->getID());
+
+		if($order !== FALSE)
+			$query .= ' ORDER BY '.$order;
+		if($limit !== FALSE || $offset !== FALSE)
+			$query .= $database->offset($limit, $offset);
+		if($parent !== FALSE && ($id = $parent->getID()) !== FALSE)
+		{
+			$query .= ' AND daportal_download.parent=:parent_id';
+			$args['parent_id'] = $id;
+		}
+		else
+			$query .= ' AND daportal_download.parent IS NULL';
+		if(($res = $database->query($engine, $query, $args)) === FALSE)
+			return FALSE;
+		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+			$ret[] = new $class($engine, $module, $res[$i]);
+		return $ret;
 	}
 
 
@@ -124,8 +163,7 @@ class FolderDownloadContent extends DownloadContent
 		WHERE daportal_content_public.module_id=:module_id
 		AND daportal_content_public.user_id=daportal_user_enabled.user_id
 		AND daportal_content_public.group_id=daportal_group.group_id
-		AND daportal_content_public.content_id=daportal_download.content_id
-		AND daportal_download.parent IS NULL';
+		AND daportal_content_public.content_id=daportal_download.content_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
