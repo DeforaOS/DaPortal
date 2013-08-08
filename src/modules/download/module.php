@@ -83,6 +83,10 @@ class DownloadModule extends MultiContentModule
 	//properties
 	protected $S_IFDIR = 512;
 
+	//translations
+	protected $file_text_content_list_title = 'File list';
+	protected $folder_text_content_list_title = 'Folder list';
+
 	//queries
 	protected $download_query_directory_insert =
 		'INSERT INTO daportal_download
@@ -188,39 +192,11 @@ class DownloadModule extends MultiContentModule
 	protected function __construct($id, $name, $title = FALSE)
 	{
 		$title = ($title === FALSE) ? _('Downloads') : $title;
-		$this->content_classes = array('file' => 'FileDownloadContent',
-			'folder' => 'FolderDownloadContent');
+		$this->content_classes = array(
+			'folder' => 'FolderDownloadContent',
+			'file' => 'FileDownloadContent');
 		parent::__construct($id, $name, $title);
-	}
-
-
-	//accessors
-	//DownloadModule::canSubmit
-	protected function canSubmit($engine, &$error = FALSE)
-	{
-		$cred = $engine->getCredentials();
-
-		if($cred->isAdmin())
-			return TRUE;
-		$error = _('Permission denied');
-		return FALSE;
-	}
-
-
-	//DownloadModule::canUpdate
-	protected function canUpdate($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		$cred = $engine->getCredentials();
-
-		if($cred->isAdmin())
-			return TRUE;
-		//FIXME also check the permissions on the content
-		if($content !== FALSE
-				&& $content->getUserID() == $cred->getUserID())
-			return TRUE;
-		$error = _('Permission denied');
-		return FALSE;
+		$this->text_content_title = _('Downloads');
 	}
 
 
@@ -229,13 +205,6 @@ class DownloadModule extends MultiContentModule
 			$content = FALSE, &$error = FALSE)
 	{
 		return $this->canUpdate($engine, $request, $content, $error);
-	}
-
-
-	//DownloadModule::getPermissions
-	protected function getPermissions($mode)
-	{
-		return Common::getPermissions($mode, $this->S_IFDIR);
 	}
 
 
@@ -259,7 +228,30 @@ class DownloadModule extends MultiContentModule
 	protected function setContext($engine = FALSE, $request = FALSE,
 			$content = FALSE)
 	{
-		//FIXME implement
+		parent::setContext($engine, $request, $content);
+		switch($this->content_class)
+		{
+			case 'FileDownloadContent':
+				$this->text_content_list_title = $this->file_text_content_list_title;
+				break;
+			case 'FolderDownloadContent':
+				$this->text_content_list_title = $this->folder_text_content_list_title;
+				break;
+		}
+	}
+
+
+	//DownloadModule::callDefault
+	protected function callDefault($engine, $request = FALSE)
+	{
+		$class = 'FolderDownloadContent';
+		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$pcnt = FALSE;
+
+		if($request !== FALSE && $request->getID() !== FALSE)
+			return $this->callDisplay($engine, $request);
+		$root = new $class($engine, $this);
+		return $root->display($engine, $request);
 	}
 }
 

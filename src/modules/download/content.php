@@ -16,13 +16,26 @@
 
 
 
+require_once('./system/common.php');
 require_once('./system/content.php');
 
 
 //DownloadContent
 abstract class DownloadContent extends Content
 {
-	//FIXME implement common code
+	//protected
+	//methods
+	//accessors
+	protected function getPermissions($mode = FALSE)
+	{
+		if($mode === FALSE)
+			$mode = $this->get('mode');
+		return Common::getPermissions($mode, $this->S_IFDIR);
+	}
+
+
+	//properties
+	protected $S_IFDIR = 512;
 }
 
 ?>
