@@ -255,8 +255,7 @@ class Content
 	//Content::display
 	public function display($engine, $request)
 	{
-		$page = new PageElement('page', array(
-			'title' => $this->getTitle()));
+		$page = new Page(array('title' => $this->getTitle()));
 		$page->append($this->displayTitle($engine, $request));
 		$vbox = $page->append('vbox');
 		$vbox->append($this->displayToolbar($engine, $request));
