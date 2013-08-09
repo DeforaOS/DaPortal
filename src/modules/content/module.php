@@ -469,8 +469,11 @@ abstract class ContentModule extends Module
 					$offset = $limit * ($p - 1);
 			}
 		}
-		$list = $class::listAll($engine, $this, $limit, $offset);
-		foreach($list as $content)
+		if(($list = $class::listAll($engine, $this, $limit, $offset))
+				=== FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		while(($content = array_shift($list)) != NULL)
 			$page->append($content->preview($engine, $request));
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
