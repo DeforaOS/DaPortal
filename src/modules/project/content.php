@@ -65,6 +65,25 @@ class ProjectContent extends Content
 
 	//static
 	//methods
+	//ProjectContent::listAll
+	static public function listAll($engine, $module, $limit = FALSE,
+			$offset = FALSE, $order = FALSE)
+	{
+		$class = get_class();
+
+		switch($order)
+		{
+			case FALSE:
+			default:
+				$order = 'title ASC';
+				break;
+		}
+		$class::$query_list = $class::$project_query_list;
+		return $class::_listAll($engine, $module, $limit, $offset,
+				$order, $class);
+	}
+
+
 	//ProjectContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
@@ -78,6 +97,20 @@ class ProjectContent extends Content
 	//protected
 	//properties
 	//queries
+	//IN:	module_id
+	static protected $project_query_list = 'SELECT content_id AS id,
+		daportal_content_public.enabled AS enabled, timestamp,
+		name AS module, daportal_user_enabled.user_id AS user_id,
+		username, title, synopsis, scm, cvsroot
+		FROM daportal_content_public, daportal_module,
+		daportal_user_enabled, daportal_project
+		WHERE daportal_content_public.module_id
+		=daportal_module.module_id
+		AND daportal_module.module_id=:module_id
+		AND daportal_content_public.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_content_public.content_id
+		=daportal_project.project_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
