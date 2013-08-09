@@ -592,6 +592,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callList
 	protected function callList($engine, $request = FALSE)
 	{
+		//FIXME rewrite to use the content class instead
 		$db = $engine->getDatabase();
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
@@ -655,7 +656,7 @@ abstract class ContentModule extends Module
 			$link = new PageElement('link', array('request' => $r,
 				'text' => $content->getTitle()));
 			$res[$i]['title'] = $link;
-			$res[$i]['enabled'] = $db->isTrue($res[$i]['enabled'])
+			$res[$i]['enabled'] = $content->isEnabled()
 				? $yes : $no;
 			//username
 			$r = new Request('user', FALSE, $res[$i]['user_id'],
