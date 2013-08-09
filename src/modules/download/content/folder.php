@@ -166,6 +166,7 @@ class FolderDownloadContent extends DownloadContent
 	//protected
 	//properties
 	//queries
+	//IN:	module_id
 	static protected $folder_query_list = 'SELECT
 		daportal_content_public.content_id AS id,
 		daportal_content_public.enabled AS enabled,
