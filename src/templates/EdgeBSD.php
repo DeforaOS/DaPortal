@@ -36,6 +36,7 @@ class EdgeBSDTemplate extends DeforaOSTemplate
 	{
 		parent::attach($engine);
 		$this->logo = 'themes/EdgeBSD.png';
+		$this->name = 'EdgeBSD';
 	}
 }
 
