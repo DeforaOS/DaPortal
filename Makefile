@@ -218,6 +218,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/user/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/user/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/wiki/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/wiki/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/wiki/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/wiki/project.conf \
 		$(PACKAGE)-$(VERSION)/src/system/Makefile \

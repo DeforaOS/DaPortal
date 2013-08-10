@@ -18,6 +18,7 @@
 
 require_once('./system/user.php');
 require_once('./modules/content/module.php');
+require_once('./modules/wiki/content.php');
 
 
 //WikiModule
@@ -34,6 +35,7 @@ class WikiModule extends ContentModule
 		$this->root = $config->get('module::wiki', 'root');
 		$title = ($title === FALSE) ? _('Wiki') : $title;
 		parent::__construct($id, $name);
+		$this->content_class = 'WikiContent';
 		$this->text_content_admin = _('Wiki administration');
 		$this->text_content_by = _('Page by');
 		$this->text_content_item = _('Wiki page');
