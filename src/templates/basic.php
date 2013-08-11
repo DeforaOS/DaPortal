@@ -30,6 +30,8 @@ class BasicTemplate extends Template
 	protected $id = FALSE;
 	protected $module = FALSE;
 	protected $title = FALSE;
+	protected $message = FALSE;
+	protected $message_type = FALSE;
 
 	//queries
 	protected $query_modules = "SELECT name FROM daportal_module
@@ -186,7 +188,7 @@ class BasicTemplate extends Template
 	{
 		global $config;
 		$properties = array('action', 'footer', 'homepage', 'id',
-			'module', 'title');
+			'message', 'message_type', 'module', 'title');
 
 		foreach($properties as $p)
 			if($this->$p === FALSE)
@@ -205,6 +207,10 @@ class BasicTemplate extends Template
 		$p->append($this->getTitle($engine));
 		$main = $p->append('vbox', array('id' => 'main'));
 		$main->append($this->getMenu($engine));
+		if($this->message !== FALSE)
+			$main->append('dialog', array(
+				'type' => $this->message_type,
+				'text' => $this->message));
 		$content = $main->append('vbox', array('id' => 'content'));
 		if($page === FALSE && $this->module !== FALSE)
 		{
