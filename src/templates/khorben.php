@@ -23,10 +23,6 @@ require_once('./templates/basic.php');
 class KhorbenTemplate extends BasicTemplate
 {
 	//protected
-	//properties
-	protected $name = 'khorben';
-
-
 	//functions
 	//KhorbenTemplate::getEntries
 	protected function getEntries($engine)

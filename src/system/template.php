@@ -34,10 +34,11 @@ abstract class Template
 			$res = require_once('./templates/'.$name.'.php');
 			if($res === FALSE)
 				return FALSE;
-			$name .= 'Template';
-			$ret = new $name();
+			$class = $name.'Template';
+			$ret = new $class();
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
+			$ret->name = $name;
 			$ret->attach($engine);
 			return $ret;
 		}
@@ -49,11 +50,12 @@ abstract class Template
 				continue;
 			require_once('./templates/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Template';
-			$template = new $name();
+			$class = $name.'Template';
+			$template = new $class();
 			if(($p = $template->match($engine)) <= $priority)
 				continue;
 			$ret = $template;
+			$ret->name = $name;
 			$priority = $p;
 		}
 		closedir($dir);
@@ -72,9 +74,24 @@ abstract class Template
 
 
 	//protected
+	//accessors
+	//Template::configGet
+	protected function configGet($variable)
+	{
+		global $config;
+
+		return $config->get('template::'.$this->name, $variable);
+	}
+
+
 	//virtual
 	abstract protected function match($engine);
 	abstract protected function attach($engine);
+
+
+	//private
+	//properties
+	private $name = FALSE;
 }
 
 ?>

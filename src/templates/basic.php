@@ -25,7 +25,6 @@ class BasicTemplate extends Template
 	//protected
 	//properties
 	protected $action = FALSE;
-	protected $name = 'basic';
 	protected $footer = FALSE;
 	protected $homepage = FALSE;
 	protected $id = FALSE;
@@ -186,24 +185,12 @@ class BasicTemplate extends Template
 	protected function attach($engine)
 	{
 		global $config;
+		$properties = array('action', 'footer', 'homepage', 'id',
+			'module', 'title');
 
-		$section = 'template::'.$this->name;
-		if($this->action === FALSE)
-			$this->action = $config->get($section,
-					'action');
-		if($this->footer === FALSE)
-			$this->footer = $config->get($section,
-					'footer');
-		if($this->homepage === FALSE)
-			$this->homepage = $config->get($section,
-					'homepage');
-		if($this->id === FALSE)
-			$this->id = $config->get($section, 'id');
-		if($this->module === FALSE)
-			$this->module = $config->get($section,
-					'module');
-		if($this->title === FALSE)
-			$this->title = $config->get($section, 'title');
+		foreach($properties as $p)
+			if($this->$p === FALSE)
+				$this->$p = $this->configGet($p);
 		if($this->title === FALSE)
 			$this->title = $config->get(FALSE, 'title');
 	}
