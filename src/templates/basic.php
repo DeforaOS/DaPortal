@@ -31,6 +31,7 @@ class BasicTemplate extends Template
 	protected $module = FALSE;
 	protected $title = FALSE;
 	protected $message = FALSE;
+	protected $message_title = FALSE;
 	protected $message_type = FALSE;
 
 	//queries
@@ -188,7 +189,8 @@ class BasicTemplate extends Template
 	{
 		global $config;
 		$properties = array('action', 'footer', 'homepage', 'id',
-			'message', 'message_type', 'module', 'title');
+			'message', 'message_title', 'message_type', 'module',
+			'title');
 
 		foreach($properties as $p)
 			if($this->$p === FALSE)
@@ -210,6 +212,7 @@ class BasicTemplate extends Template
 		if($this->message !== FALSE)
 			$main->append('dialog', array(
 				'type' => $this->message_type,
+				'title' => $this->message_title,
 				'text' => $this->message));
 		$content = $main->append('vbox', array('id' => 'content'));
 		if($page === FALSE && $this->module !== FALSE)
