@@ -174,6 +174,20 @@ class Content
 	}
 
 
+	//Content::getGroup
+	public function getGroup()
+	{
+		return $this->group;
+	}
+
+
+	//Content::getGroupID
+	public function getGroupID()
+	{
+		return $this->group_id;
+	}
+
+
 	//Content::getID
 	public function getID()
 	{
