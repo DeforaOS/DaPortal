@@ -16,6 +16,7 @@
 
 
 
+require_once('./system/common.php');
 require_once('./modules/download/content.php');
 
 
@@ -33,6 +34,62 @@ class FileDownloadContent extends DownloadContent
 		$this->text_content_by = _('File from');
 		$this->text_more_content = _('Parent folder');
 		$this->text_submit = _('Upload file...');
+	}
+
+
+	//useful
+	//FileDownloadContent::displayContent
+	public function displayContent($engine, $request)
+	{
+		$root = DownloadContent::getRoot();
+		$text = $this->getContent();
+		$format = _('%A, %B %e %Y, %H:%M:%S');
+
+		//output the file details
+		$filename = $root.'/'.$this->get('download_id');
+		$error = _('Could not obtain details for this file');
+		if(($st = stat($filename)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		$hbox = new PageElement('hbox');
+		$col1 = $hbox->append('vbox');
+		$col2 = $hbox->append('vbox');
+		$request = $this->getRequest('download');
+		$this->_contentField($col1, $col2, _('Name: '),
+				new PageElement('link', array(
+					'request' => $request,
+					'text' => $this->getFilename())));
+		$request = new Request('user', FALSE, $this->getUserID(),
+			$this->getUsername());
+		$this->_contentField($col1, $col2, _('Owner: '),
+				new PageElement('link', array(
+					'request' => $request,
+					'stock' => 'user',
+					'text' => $this->getUsername())));
+		$this->_contentField($col1, $col2, _('Group: '),
+				$this->getGroup());
+		$this->_contentField($col1, $col2, _('Permissions: '),
+				$this->getPermissions());
+		$this->_contentField($col1, $col2, _('Size: '),
+				Common::getSize($st['size']));
+		$this->_contentField($col1, $col2, _('Created on: '),
+				strftime($format, $st['ctime']));
+		$this->_contentField($col1, $col2, _('Last modified: '),
+				strftime($format, $st['mtime']));
+		$this->_contentField($col1, $col2, _('Last access: '),
+				strftime($format, $st['ctime']));
+		$this->_contentField($col1, $col2, _('Comment: '), $text);
+		return $hbox;
+	}
+
+	private function _contentField($col1, $col2, $field, $value)
+	{
+		$col1->append('label', array('class' => 'bold',
+				'text' => $field.' '));
+		if($value instanceof PageElement)
+			$col2->append($value);
+		else
+			$col2->append('label', array('text' => $value));
 	}
 
 

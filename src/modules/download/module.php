@@ -21,6 +21,7 @@
 require_once('./system/common.php');
 require_once('./system/mime.php');
 require_once('./modules/content/multi.php');
+require_once('./modules/download/content.php');
 require_once('./modules/download/content/file.php');
 require_once('./modules/download/content/folder.php');
 
@@ -43,7 +44,7 @@ class DownloadModule extends MultiContentModule
 							$request->getID(),
 							$request->getTitle());
 				case 'getRoot':
-					return $this->getRoot($engine);
+					return DownloadContent::getRoot($engine);
 				case 'submit':
 					return $this->_callInternalSubmit(
 							$engine, $request);
@@ -205,22 +206,6 @@ class DownloadModule extends MultiContentModule
 			$content = FALSE, &$error = FALSE)
 	{
 		return $this->canUpdate($engine, $request, $content, $error);
-	}
-
-
-	//DownloadModule::getRoot
-	protected function getRoot($engine)
-	{
-		global $config;
-		$error = 'The download repository is not configured';
-
-		if(($root = $config->get('module::'.$this->name, 'root'))
-				=== FALSE)
-		{
-			$engine->log('LOG_WARNING', $error);
-			$root = '/tmp';
-		}
-		return $root;
 	}
 
 

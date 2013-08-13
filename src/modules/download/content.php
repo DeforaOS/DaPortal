@@ -35,6 +35,25 @@ abstract class DownloadContent extends Content
 	}
 
 
+	//static
+	//DownloadContent::getRoot
+	static public function getRoot($name = FALSE)
+	{
+		global $config;
+		$error = 'The download repository is not configured';
+
+		if($name === FALSE)
+			$name = 'download';
+		if(($root = $config->get('module::'.$name, 'root'))
+				=== FALSE)
+		{
+			$engine->log('LOG_WARNING', $error);
+			$root = '/tmp';
+		}
+		return $root;
+	}
+
+
 	//protected
 	//methods
 	//accessors
