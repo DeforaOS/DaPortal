@@ -189,10 +189,10 @@ class Content
 
 
 	//Content::getRequest
-	public function getRequest($action = FALSE)
+	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
 		return new Request($this->module->getName(), $action,
-			$this->getID(), $this->getTitle());
+			$this->getID(), $this->getTitle(), $parameters);
 	}
 
 
