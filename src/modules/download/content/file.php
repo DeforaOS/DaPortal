@@ -97,9 +97,14 @@ class FileDownloadContent extends DownloadContent
 	public function displayToolbar($engine, $request)
 	{
 		$toolbar = parent::displayToolbar($engine, $request);
-		$toolbar->append('button', array('stock' => 'download',
+		$toolbar->prepend('button', array('stock' => 'download',
 			'request' => $this->getRequest('download'),
 			'text' => _('Download')));
+		$request = new Request($this->getModule()->getName(), FALSE,
+			$this->get('parent_id'));
+		$toolbar->prepend('button', array('stock' => 'updir',
+			'request' => $request,
+			'text' => _('Browse...')));
 		return $toolbar;
 	}
 
