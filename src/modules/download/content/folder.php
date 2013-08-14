@@ -57,6 +57,7 @@ class FolderDownloadContent extends DownloadContent
 
 		$page->append('title', array('stock' => $this->stock,
 			'text' => $this->getTitle()));
+		$page->append($this->displayToolbar($engine, $request));
 		$class::$query_list = $class::$folder_query_list;
 		if(($files = $class::_listFiles($engine, $this->getModule(),
 				FALSE, FALSE, 'title ASC', $class, $this)) === FALSE)
@@ -93,6 +94,22 @@ class FolderDownloadContent extends DownloadContent
 			$view->append('row', $properties);
 		}
 		return $page;
+	}
+
+
+	//FolderDownloadContent::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		$toolbar = parent::displayToolbar($engine, $request);
+		if(($parent_id = $this->get('parent_id')) === FALSE
+				&& $this->getID() === FALSE)
+			return $toolbar;
+		$request = new Request($this->getModule()->getName(), FALSE,
+			$parent_id);
+		$toolbar->prepend('button', array('stock' => 'updir',
+			'request' => $request,
+			'text' => _('Parent folder')));
+		return $toolbar;
 	}
 
 
