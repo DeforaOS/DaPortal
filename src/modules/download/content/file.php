@@ -93,6 +93,17 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
+	//FileDownloadContent::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		$toolbar = parent::displayToolbar($engine, $request);
+		$toolbar->append('button', array('stock' => 'download',
+			'request' => $this->getRequest('download'),
+			'text' => _('Download')));
+		return $toolbar;
+	}
+
+
 	//FileDownloadContent::download
 	public function download($engine, $request)
 	{
