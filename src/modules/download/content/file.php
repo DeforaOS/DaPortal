@@ -93,6 +93,26 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
+	//FileDownloadContent::download
+	public function download($engine, $request)
+	{
+		$root = DownloadContent::getRoot();
+
+		//output the file
+		$filename = $root.'/'.$this->get('download_id');
+		$mime = Mime::getType($engine, $this->getFilename());
+		if(($fp = fopen($filename, 'rb')) === FALSE)
+		{
+			$error = _('Could not read file');
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		}
+		$engine->setType($mime);
+		return $fp;
+	}
+
+
+	//static
 	//FileDownloadContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{

@@ -103,6 +103,7 @@ class DownloadModule extends MultiContentModule
 	}
 
 
+	//accessors
 	//DownloadModule::canUpload
 	protected function canUpload($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
@@ -128,6 +129,7 @@ class DownloadModule extends MultiContentModule
 	}
 
 
+	//useful
 	//DownloadModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
@@ -139,6 +141,25 @@ class DownloadModule extends MultiContentModule
 			return $this->callDisplay($engine, $request);
 		$root = new $class($engine, $this);
 		return $root->display($engine, $request);
+	}
+
+
+	//DownloadModule::callDownload
+	protected function callDownload($engine, $request)
+	{
+		global $config;
+		$error = _('Could not fetch content');
+
+		if(($id = $request->getID()) === FALSE)
+			return $this->callDefault($engine);
+		if(($content = $this->_get($engine, $id, $request->getTitle()))
+				=== FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		if($content instanceof FileDownloadContent)
+			return $content->download($engine, $request);
+		return new PageElement('dialog', array('type' => 'error',
+			'text' => $error));
 	}
 }
 
