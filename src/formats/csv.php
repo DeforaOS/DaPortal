@@ -46,11 +46,8 @@ class CSVFormat extends PlainFormat
 	//CSVFormat::attach
 	protected function attach($engine, $type = FALSE)
 	{
-		global $config;
-
 		//configuration
-		$this->titles = $config->get('format::csv', 'titles')
-			? TRUE : FALSE;
+		$this->titles = $this->configGet('titles') ? TRUE : FALSE;
 	}
 
 
