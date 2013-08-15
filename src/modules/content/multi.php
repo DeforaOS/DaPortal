@@ -87,8 +87,8 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::canUnpost
-	protected function canUnpost($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	protected function canUnpost($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
 	{
 		if($content === FALSE)
 			$this->setContext($engine, $request, $content);
@@ -155,6 +155,14 @@ abstract class MultiContentModule extends ContentModule
 	{
 		$this->setContext($engine, $request);
 		return parent::callDefault($engine, $request);
+	}
+
+
+	//MultiContentModule::callList
+	protected function callList($engine, $request)
+	{
+		$this->setContext($engine, $request);
+		return parent::callList($engine, $request);
 	}
 }
 

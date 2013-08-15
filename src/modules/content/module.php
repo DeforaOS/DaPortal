@@ -601,6 +601,7 @@ abstract class ContentModule extends Module
 		$pcnt = FALSE;
 		$error = _('Unable to list contents');
 
+		$class = $this->content_class;
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
 		$title = $this->text_content_list_title;
@@ -650,7 +651,7 @@ abstract class ContentModule extends Module
 			'size' => 16, 'title' => _('Enabled')));
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
-			$content = new Content($engine, $this, $res[$i]);
+			$content = new $class($engine, $this, $res[$i]);
 			//title
 			$r = $content->getRequest();
 			$link = new PageElement('link', array('request' => $r,
