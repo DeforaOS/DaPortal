@@ -592,54 +592,33 @@ abstract class ContentModule extends Module
 	//ContentModule::callList
 	protected function callList($engine, $request = FALSE)
 	{
-		//FIXME rewrite to use the content class instead
 		$db = $engine->getDatabase();
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
-		$pcnt = FALSE;
 		$error = _('Unable to list contents');
 
 		$class = $this->content_class;
-		if($user === FALSE || ($uid = $user->getUserID()) == 0)
-			$uid = FALSE;
+		if($user !== FALSE && ($uid = $user->getUserID()) == 0)
+			$user = FALSE;
 		$title = $this->text_content_list_title;
-		if($uid !== FALSE)
+		if($user !== FALSE)
 			$title = $this->text_content_list_title_by.' '
 				.$user->getUsername();
 		//title
 		$page = new Page(array('title' => $title));
 		$this->helperListTitle($engine, $page, $request);
-		//query
-		$args = array('module_id' => $this->id);
-		$query = $this->query_list;
-		$cquery = $this->query_list_count;
-		if($uid !== FALSE)
-		{
-			$query = $this->query_list_user;
-			$cquery = $this->query_list_user_count;
-			$args['user_id'] = $uid;
-		}
-		$query .= ' ORDER BY title ASC';
-		//paging
-		if(($limit = $this->content_list_count) > 0)
-		{
-			//obtain the total number of records available
-			if(($res = $db->query($engine, $cquery, $args))
-					!== FALSE && count($res) == 1)
-				$pcnt = $res[0][0];
-			if($pcnt !== FALSE)
-			{
-				$offset = FALSE;
-				if(is_numeric($p) && $p > 1)
-					$offset = $limit * ($p - 1);
-				$query .= $db->offset($limit, $offset);
-			}
-		}
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
+		//obtain the total number of records available
+		$limit = $this->content_list_count;
+		$offset = FALSE;
+		if(($pcnt = $class::countAll($engine, $this, $user)) !== FALSE
+				&& is_numeric($p) && $p > 1)
+			$offset = $limit * ($p - 1);
+		if(($res = $class::listAll($engine, $this, $limit, $offset,
+				$user)) === FALSE)
 			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+				'type' => 'error', 'text' => $error));
 		//view
 		$treeview = $this->helperListView($engine, $page, $request);
 		//toolbar
@@ -649,9 +628,8 @@ abstract class ContentModule extends Module
 			'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 			'size' => 16, 'title' => _('Enabled')));
-		while(($r = array_shift($res)) != NULL)
+		while(($content = array_shift($res)) != NULL)
 		{
-			$content = new $class($engine, $this, $r);
 			$r = $content->getProperties();
 			//title
 			$rq = $content->getRequest();

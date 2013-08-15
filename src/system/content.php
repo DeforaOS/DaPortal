@@ -537,18 +537,23 @@ class Content
 
 	//public static
 	//Content::count
-	static public function countAll($engine, $module)
+	static public function countAll($engine, $module, $user = FALSE)
 	{
 		$class = get_class();
-		return $class::_countAll($engine, $module, $class);
+		return $class::_countAll($engine, $module, $user, $class);
 	}
 
-	static protected function _countAll($engine, $module, $class)
+	static protected function _countAll($engine, $module, $user, $class)
 	{
 		$database = $engine->getDatabase();
 		$query = $class::$query_list_count;
 		$args = array('module_id' => $module->getID());
 
+		if($user !== FALSE)
+		{
+			$query = $class::$query_list_user_count;
+			$args['user_id'] = $user->getUserID();
+		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
@@ -558,7 +563,7 @@ class Content
 
 	//Content::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE)
+			$offset = FALSE, $order = FALSE, $user = FALSE)
 	{
 		//XXX ugly hack
 		$class = get_class();
@@ -571,11 +576,11 @@ class Content
 				break;
 		}
 		return $class::_listAll($engine, $module, $limit, $offset,
-			$order, $class);
+			$order, $user, $class);
 	}
 
 	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $class)
+			$order, $user, $class)
 	{
 		$ret = array();
 		$vbox = new PageElement('vbox');
@@ -583,14 +588,19 @@ class Content
 		$query = $class::$query_list;
 		$args = array('module_id' => $module->getID());
 
+		if($user !== FALSE)
+		{
+			$query = $class::$query_list_user;
+			$args['user_id'] = $user->getUserID();
+		}
 		if($order !== FALSE)
 			$query .= ' ORDER BY '.$order;
 		if($limit !== FALSE || $offset !== FALSE)
 			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-			$ret[] = new $class($engine, $module, $res[$i]);
+		while(($r = array_shift($res)) != NULL)
+			$ret[] = new $class($engine, $module, $r);
 		return $ret;
 	}
 
@@ -661,6 +671,22 @@ class Content
 	static protected $query_list_count = 'SELECT COUNT(*)
 		FROM daportal_content_public
 		WHERE daportal_content_public.module_id=:module_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
+		daportal_user_enabled.user_id AS user_id, username,
+		title, daportal_content.enabled AS enabled, public, content
+		FROM daportal_content, daportal_user_enabled
+		WHERE daportal_content.module_id=:module_id
+		AND daportal_content.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_content.user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user_count = 'SELECT COUNT(*)
+		FROM daportal_content
+		WHERE daportal_content.module_id=:module_id
+		AND user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
