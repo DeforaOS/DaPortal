@@ -28,10 +28,10 @@ abstract class DownloadContent extends Content
 	//methods
 	//accessors
 	//Content::getRequest
-	public function getRequest($action = FALSE)
+	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
 		return new Request($this->getModule()->getName(), $action,
-			$this->getID(), $this->getFilename());
+			$this->getID(), $this->getFilename(), $parameters);
 	}
 
 
