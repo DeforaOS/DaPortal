@@ -511,11 +511,15 @@ class Content
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
-		//FIXME detect errors!@#$%
+		//XXX hack to detect errors
+		$id = $database->getLastID($engine, 'daportal_content',
+				'content_id');
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		$this->id = $database->getLastID($engine, 'daportal_content',
 				'content_id');
+		if($id == $this->id)
+			return FALSE;
 		return ($this->id !== FALSE) ? TRUE : FALSE;
 	}
 
