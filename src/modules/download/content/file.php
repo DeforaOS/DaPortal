@@ -31,7 +31,7 @@ class FileDownloadContent extends DownloadContent
 	{
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
-		$this->text_content_by = _('File from');
+		$this->text_content_by = _('Uploaded by');
 		$this->text_more_content = _('Parent folder');
 		$this->text_submit = _('Upload file...');
 	}
