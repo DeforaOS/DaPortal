@@ -649,28 +649,28 @@ abstract class ContentModule extends Module
 			'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 			'size' => 16, 'title' => _('Enabled')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		while(($r = array_shift($res)) != NULL)
 		{
-			$content = new $class($engine, $this, $res[$i]);
+			$content = new $class($engine, $this, $r);
+			$r = $content->getProperties();
 			//title
-			$r = $content->getRequest();
-			$link = new PageElement('link', array('request' => $r,
+			$rq = $content->getRequest();
+			$link = new PageElement('link', array('request' => $rq,
 				'text' => $content->getTitle()));
-			$res[$i]['title'] = $link;
-			$res[$i]['enabled'] = $content->isEnabled()
-				? $yes : $no;
+			$r['title'] = $link;
+			$r['enabled'] = $content->isEnabled() ? $yes : $no;
 			//username
-			$r = new Request('user', FALSE, $res[$i]['user_id'],
-				$res[$i]['username']);
-			$link = new PageElement('link', array('request' => $r,
+			$rq = new Request('user', FALSE, $r['user_id'],
+				$r['username']);
+			$link = new PageElement('link', array('request' => $rq,
 					'stock' => 'user',
-					'text' => $res[$i]['username']));
-			$res[$i]['username'] = $link;
+					'text' => $r['username']));
+			$r['username'] = $link;
 			//date
-			$res[$i]['date'] = $content->getDate($engine);
+			$r['date'] = $content->getDate($engine);
 			//id
-			$res[$i]['id'] = 'content_id:'.$res[$i]['id'];
-			$treeview->append('row', $res[$i]);
+			$r['id'] = 'content_id:'.$r['id'];
+			$treeview->append('row', $r);
 		}
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
@@ -687,8 +687,8 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 
 		if(!$this->canPost($engine, $request, FALSE, $error))
-			return new PageElement('dialog', array('type' => 'error',
-					'text' => $error));
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = $this->query_admin_post;
 		return $this->helperApply($engine, $request, $query, 'admin',
