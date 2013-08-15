@@ -41,8 +41,88 @@ class WikiContent extends Content
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		return new PageElement('htmlview', array(
+		$vbox = new PageElement('vbox');
+		$vbox->append('htmlview', array(
 			'text' => $this->getContent()));
+		$vbox->append('title', array('class' => 'revisions',
+			'stock' => $this->getModule()->getName(),
+			'text' => _('Revisions')));
+		$vbox->append($this->_contentRevisions($engine, $request));
+		return $vbox;
+	}
+
+	protected function _contentRevisions($engine, $request)
+	{
+		$error = _('Could not list revisions');
+
+		if(($root = WikiContent::getRoot()) === FALSE
+				|| strpos($this->getTitle(), '/') !== FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		//obtain the revision list
+		$cmd = 'rlog';
+		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		exec($cmd, $rcs, $res);
+		if($res != 0)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		for($i = 0, $cnt = count($rcs); $i < $cnt;)
+			if($rcs[$i++] == '----------------------------')
+				break;
+		$columns = array('title' => _('Name'), 'date' => _('Date'),
+				'username' => _('Author'),
+				'message' => _('Message'));
+		$view = new PageElement('treeview', array(
+			'class' => 'revisions', 'columns' => $columns));
+		$lsp = '======================================================';
+		$ssp = '----------------------------';
+		for(; $i < $cnt - 2; $i += 3)
+		{
+			$row = $view->append('row');
+			//name
+			$name = substr($rcs[$i], 9);
+			$r = $this->getRequest(FALSE, array(
+					'revision' => $name));
+			$name = new PageElement('link', array('request' => $r,
+					'text' => $name));
+			$row->setProperty('title', $name);
+			//date
+			$date = substr($rcs[$i + 1], 6, 19);
+			$row->setProperty('date', $date);
+			//username
+			$username = substr($rcs[$i + 1], 36);
+			$username = substr($username, 0, strspn($username,
+					'abcdefghijklmnopqrstuvwxyz'
+					.'ABCDEFGHIJKLMNOPQRSTUV'
+					.'WXYZ0123456789'));
+			if(($user = User::lookup($engine, $username)) !== FALSE)
+			{
+				$r = new Request('user', FALSE,
+					$user->getUserID(),
+					$user->getUsername());
+				$username = new PageElement('link', array(
+						'request' => $r,
+						'stock' => 'user',
+						'text' => $username));
+			}
+			$row->setProperty('username', $username);
+			//message
+			$message = $rcs[$i + 2];
+			if($message == $ssp || strncmp($message, $lsp,
+					strlen($lsp)) == 0)
+				$message = '';
+			else
+			{
+				$apnd = '';
+				for($i++; $i < $cnt && $rcs[$i + 2] != $ssp
+					&& strncmp($rcs[$i + 2], $lsp,
+						strlen($lsp)) != 0; $i++)
+						$apnd = '...';
+				$message .= $apnd;
+			}
+			$row->setProperty('message', $message);
+		}
+		return $view;
 	}
 
 
@@ -61,6 +141,15 @@ class WikiContent extends Content
 
 	//static
 	//methods
+	//WikiContent::getRoot
+	static public function getRoot()
+	{
+		global $config;
+
+		return $config->get('module::wiki', 'root');
+	}
+
+
 	//WikiContent::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $order = FALSE)

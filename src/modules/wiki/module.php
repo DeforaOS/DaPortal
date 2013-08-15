@@ -30,9 +30,7 @@ class WikiModule extends ContentModule
 	//WikiModule::WikiModule
 	public function __construct($id, $name, $title = FALSE)
 	{
-		global $config;
-
-		$this->root = $config->get('module::wiki', 'root');
+		$this->root = WikiContent::getRoot();
 		$title = ($title === FALSE) ? _('Wiki') : $title;
 		parent::__construct($id, $name);
 		$this->content_class = 'WikiContent';
@@ -156,7 +154,6 @@ class WikiModule extends ContentModule
 	protected function callMonitor($engine, $request)
 	{
 		$title = _('Wiki monitoring');
-		$root = $this->root;
 
 		$error = _('Permission denied');
 		if(!$this->canAdmin($engine, FALSE, FALSE, $error))
@@ -168,10 +165,10 @@ class WikiModule extends ContentModule
 		$vbox = $page->append('vbox');
 		//disk usage
 		$vbox->append('title', array('text' => _('Disk usage')));
-		$text = 'Disk usage for '.$root.': ';
+		$text = 'Disk usage for '.$this->root.': ';
 		$label = $vbox->append('label', array('text' => $text));
-		$free = disk_free_space($root);
-		$total = disk_total_space($root);
+		$free = disk_free_space($this->root);
+		$total = disk_total_space($this->root);
 		$avail = $total - $free;
 		$value = ($avail * 100) / $total;
 		$value = sprintf('%.1lf%%', $value);
@@ -200,7 +197,6 @@ class WikiModule extends ContentModule
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
-		$root = $this->root;
 
 		//verify the request
 		if($request === FALSE
@@ -217,10 +213,10 @@ class WikiModule extends ContentModule
 			return _('The content must be set');
 		$text = HTML::filter($engine, $text);
 		//additional checks
-		if($root === FALSE)
+		if($this->root === FALSE)
 			return _('Internal server error');
 		//XXX check first if this title already exists for this module
-		$file = $root.'/'.$title;
+		$file = $this->root.'/'.$title;
 		if(file_exists($file.',v'))
 			return _('Internal server error');
 		if(!HTML::validate($engine, '<div>'.$text.'</div>'))
@@ -271,7 +267,6 @@ class WikiModule extends ContentModule
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
 		$title = $content->getTitle();
-		$root = $this->root;
 		$res = FALSE;
 
 		//validate the content and keep the current title
@@ -288,13 +283,13 @@ class WikiModule extends ContentModule
 			$title, $parameters);
 		$r->setIdempotent($request->isIdempotent());
 		//additional checks
-		if($root === FALSE || strpos($title, '/') !== FALSE)
+		if($this->root === FALSE || strpos($title, '/') !== FALSE)
 			return _('Invalid title for this page');
 		if(!HTML::validate($engine, '<div>'.$content->getContent()
 				.'</div>'))
 			return _('Document not valid');
-		$file = $root.'/'.$title;
-		if(realpath($root.'/'.$title.',v') === FALSE)
+		$file = $this->root.'/'.$title;
+		if(realpath($this->root.'/'.$title.',v') === FALSE)
 			return _('Missing RCS file');
 		//update the content
 		if($db->transactionBegin($engine) === FALSE)
@@ -346,108 +341,6 @@ class WikiModule extends ContentModule
 	}
 
 
-	//WikiModule::helperDisplay
-	protected function helperDisplay($engine, $request, $page, $content)
-	{
-		if(($page = parent::helperDisplay($engine, $request, $page,
-				$content)) === FALSE)
-			return FALSE;
-		//link
-		$request = $this->getContentRequest($engine, $content);
-		$this->helperDisplayRevisions($engine, $request, $page,
-				$content);
-		return $page;
-	}
-
-
-	//WikiModule::helperDisplayRevisions
-	protected function helperDisplayRevisions($engine, $request, $page,
-			$content)
-	{
-		$error = _('Could not list revisions');
-
-		if($this->root === FALSE
-				|| strpos($content['title'], '/') !== FALSE)
-			return $page->append('dialog', array('type' => 'error',
-					'text' => $error));
-		//obtain the revision list
-		$cmd = 'rlog';
-		$cmd .= ' '.escapeshellarg($this->root.'/'.$content['title']);
-		exec($cmd, $rcs, $res);
-		if($res != 0)
-			return $page->append('dialog', array('type' => 'error',
-					'text' => $error));
-		for($i = 0, $cnt = count($rcs); $i < $cnt;)
-			if($rcs[$i++] == '----------------------------')
-				break;
-		$columns = array('title' => _('Name'), 'date' => _('Date'),
-				'username' => _('Author'),
-				'message' => _('Message'));
-		$vbox = $page->append('vbox');
-		$vbox->append('title', array('class' => 'revisions',
-				'text' => 'Revisions', 'stock' => $this->name));
-		$view = $vbox->append('treeview', array('class' => 'revisions',
-				'columns' => $columns));
-		$lsp = '======================================================';
-		$ssp = '----------------------------';
-		for(; $i < $cnt - 2; $i += 3)
-		{
-			$row = $view->append('row');
-			//name
-			$name = substr($rcs[$i], 9);
-			$r = new Request($this->name, FALSE, $content['id'],
-			       	$content['title'], array('revision' => $name));
-			$name = new PageElement('link', array('request' => $r,
-					'text' => $name));
-			$row->setProperty('title', $name);
-			//date
-			$date = substr($rcs[$i + 1], 6, 19);
-			$row->setProperty('date', $date);
-			//username
-			$username = substr($rcs[$i + 1], 36);
-			$username = substr($username, 0, strspn($username,
-					'abcdefghijklmnopqrstuvwxyz'
-					.'ABCDEFGHIJKLMNOPQRSTUV'
-					.'WXYZ0123456789'));
-			if(($user = User::lookup($engine, $username)) !== FALSE)
-			{
-				$r = new Request('user', FALSE,
-					$user->getUserID(),
-					$user->getUsername());
-				$username = new PageElement('link', array(
-						'request' => $r,
-						'stock' => 'user',
-						'text' => $username));
-			}
-			$row->setProperty('username', $username);
-			//message
-			$message = $rcs[$i + 2];
-			if($message == $ssp || strncmp($message, $lsp,
-					strlen($lsp)) == 0)
-				$message = '';
-			else
-			{
-				$apnd = '';
-				for($i++; $i < $cnt && $rcs[$i + 2] != $ssp
-					&& strncmp($rcs[$i + 2], $lsp,
-						strlen($lsp)) != 0; $i++)
-						$apnd = '...';
-				$message .= $apnd;
-			}
-			$row->setProperty('message', $message);
-		}
-	}
-
-
-	//WikiModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $content, $page)
-	{
-		$text = $content->getContent();
-
-		$page->append('htmlview', array('text' => $text));
-	}
-
-
 	//WikiModule::helperSubmitContent
 	protected function helperSubmitContent($engine, $request, $page)
 	{
@@ -471,12 +364,6 @@ class WikiModule extends ContentModule
 		$page->append('entry', array('name' => 'message',
 				'text' => _('Log message: '),
 				'value' => $message));
-	}
-
-
-	//WikiModule::helperUpdateTitle
-	protected function helperUpdateTitle($engine, $request, $page, $content)
-	{
 	}
 
 
