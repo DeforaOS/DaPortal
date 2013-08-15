@@ -624,32 +624,9 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
-		$no = new PageElement('image', array('stock' => 'no',
-			'size' => 16, 'title' => _('Disabled')));
-		$yes = new PageElement('image', array('stock' => 'yes',
-			'size' => 16, 'title' => _('Enabled')));
 		while(($content = array_shift($res)) != NULL)
-		{
-			$r = $content->getProperties();
-			//title
-			$rq = $content->getRequest();
-			$link = new PageElement('link', array('request' => $rq,
-				'text' => $content->getTitle()));
-			$r['title'] = $link;
-			$r['enabled'] = $content->isEnabled() ? $yes : $no;
-			//username
-			$rq = new Request('user', FALSE, $r['user_id'],
-				$r['username']);
-			$link = new PageElement('link', array('request' => $rq,
-					'stock' => 'user',
-					'text' => $r['username']));
-			$r['username'] = $link;
-			//date
-			$r['date'] = $content->getDate($engine);
-			//id
-			$r['id'] = 'content_id:'.$r['id'];
-			$treeview->append('row', $r);
-		}
+			$treeview->append($this->helperListContent($engine,
+					$request, $content));
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		//buttons
@@ -1140,6 +1117,36 @@ abstract class ContentModule extends Module
 			: new Request($this->name);
 		$page->append('link', array('request' => $r, 'stock' => 'back',
 				'text' => _('Back')));
+	}
+
+
+	//ContentModule::helperListContent
+	protected function helperListContent($engine, $request, $content)
+	{
+		$r = $content->getProperties();
+		//XXX use a class content instead?
+		$no = new PageElement('image', array('stock' => 'no',
+			'size' => 16, 'title' => _('Disabled')));
+		$yes = new PageElement('image', array('stock' => 'yes',
+			'size' => 16, 'title' => _('Enabled')));
+
+		//title
+		$rq = $content->getRequest();
+		$link = new PageElement('link', array('request' => $rq,
+			'text' => $content->getTitle()));
+		$r['title'] = $link;
+		$r['enabled'] = $content->isEnabled() ? $yes : $no;
+		//username
+		$rq = new Request('user', FALSE, $r['user_id'],
+			$r['username']);
+		$link = new PageElement('link', array('request' => $rq,
+			'stock' => 'user', 'text' => $r['username']));
+		$r['username'] = $link;
+		//date
+		$r['date'] = $content->getDate($engine);
+		//id
+		$r['id'] = 'content_id:'.$r['id'];
+		return new PageElement('row', $r);
 	}
 
 
