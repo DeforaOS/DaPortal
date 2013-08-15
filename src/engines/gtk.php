@@ -23,7 +23,7 @@ require_once('./system/template.php');
 
 
 //GtkEngine
-class GtkEngine extends CliEngine
+class GtkEngine extends CLIEngine
 {
 	//protected
 	//properties
@@ -63,7 +63,7 @@ class GtkEngine extends CliEngine
 	public function attach()
 	{
 		parent::attach();
-		$this->format = new GtkFormat;
+		$this->format = new GtkFormat('gtk');
 		$this->format->attach($this);
 	}
 
