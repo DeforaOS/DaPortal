@@ -42,8 +42,8 @@ abstract class Format
 			$res = require_once('./formats/'.$name.'.php');
 			if($res === FALSE)
 				return FALSE;
-			$name .= 'Format';
-			$ret = new $name();
+			$class = $name.'Format';
+			$ret = new $class($name);
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
 			$ret->attach($engine, $type);
@@ -57,8 +57,8 @@ abstract class Format
 				continue;
 			require_once('./formats/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Format';
-			$format = new $name();
+			$class = $name.'Format';
+			$format = new $class($name);
 			if(($p = $format->match($engine, $type)) <= $priority)
 				continue;
 			$ret = $format;
@@ -91,16 +91,35 @@ abstract class Format
 
 	//protected
 	//properties
+	protected $name = FALSE;
 	protected $parameters = array();
 
 
 	//methods
+	//essential
+	//Format::Format
+	protected function __construct($name)
+	{
+		$this->name = $name;
+	}
+
+
 	//virtual
 	abstract protected function match($engine, $type = FALSE);
 	abstract protected function attach($engine, $type = FALSE);
 
 
 	//accessors
+	//Format::configGet
+	protected function configGet($variable)
+	{
+		global $config;
+
+		return $config->get('format::'.$this->name, $variable);
+	}
+
+
+	//Format::getParameter
 	protected function getParameter($name)
 	{
 		if(!isset($this->parameters[$name]))
