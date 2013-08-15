@@ -122,6 +122,16 @@ abstract class Module
 	}
 
 
+	//accessors
+	//Module::configGet
+	protected function configGet($variable)
+	{
+		global $config;
+
+		return $config->get('module::'.$this->name, $variable);
+	}
+
+
 	//private
 	//properties
 	//queries
