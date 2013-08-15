@@ -68,7 +68,8 @@ class WikiModule extends ContentModule
 	//methods
 	//accessors
 	//WikiModule::canUpdate
-	protected function canUpdate($engine, $content = FALSE, &$error = FALSE)
+	protected function canUpdate($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
 	{
 		global $config;
 		$cred = $engine->getCredentials();
