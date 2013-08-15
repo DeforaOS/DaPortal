@@ -41,9 +41,11 @@ class WikiContent extends Content
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
+		$revision = $request->getParameter('revision');
+
 		$vbox = new PageElement('vbox');
 		$vbox->append('htmlview', array(
-			'text' => $this->getContent()));
+			'text' => $this->getMarkup($revision)));
 		$vbox->append('title', array('class' => 'revisions',
 			'stock' => $this->getModule()->getName(),
 			'text' => _('Revisions')));
@@ -174,6 +176,35 @@ class WikiContent extends Content
 		return Content::_load($engine, $module, $id, $title,
 				get_class());
 	}
+
+
+	//protected
+	//methods
+	//accessors
+	//WikiContent::getMarkup
+	protected function getMarkup($revision = FALSE)
+	{
+		if($revision === FALSE && $this->markup !== FALSE)
+			return $this->markup;
+		if(($root = WikiContent::getRoot()) === FALSE)
+			return FALSE;
+		$cmd = 'co -p -q';
+		if($revision !== FALSE)
+			$cmd .= ' -r'.escapeshellarg($revision);
+		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		exec($cmd, $rcs, $res);
+		if($res != 0)
+			return FALSE;
+		$rcs = implode("\n", $rcs);
+		if($revision === FALSE)
+			$this->markup = $rcs;
+		return $rcs;
+	}
+
+
+	//private
+	//properties
+	private $markup = FALSE;
 }
 
 ?>
