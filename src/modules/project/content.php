@@ -67,7 +67,7 @@ class ProjectContent extends Content
 	//methods
 	//ProjectContent::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE)
+			$offset = FALSE, $user = FALSE, $order = FALSE)
 	{
 		$class = get_class();
 
@@ -80,7 +80,7 @@ class ProjectContent extends Content
 		}
 		$class::$query_list = $class::$project_query_list;
 		return $class::_listAll($engine, $module, $limit, $offset,
-				$order, $class);
+				$order, $user, $class);
 	}
 
 

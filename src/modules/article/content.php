@@ -64,7 +64,7 @@ class ArticleContent extends Content
 	//methods
 	//ArticleContent::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE)
+			$offset = FALSE, $order = FALSE, $user = FALSE)
 	{
 		$class = get_class();
 
@@ -75,8 +75,8 @@ class ArticleContent extends Content
 				$order = 'timestamp DESC';
 				break;
 		}
-		return ArticleContent::_listAll($engine, $module, $limit, $offset,
-				$order, $class);
+		return $class::_listAll($engine, $module, $limit, $offset,
+				$order, $user, $class);
 	}
 
 

@@ -117,7 +117,7 @@ class FolderDownloadContent extends DownloadContent
 	//methods
 	//FolderDownloadContent::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE)
+			$offset = FALSE, $order = FALSE, $user = FALSE)
 	{
 		$class = get_class();
 
@@ -131,18 +131,18 @@ class FolderDownloadContent extends DownloadContent
 		$class::$query_list = $class::$folder_query_list;
 		$class::$query_list .= ' AND daportal_download.parent IS NULL';
 		return $class::_listAll($engine, $module, $limit, $offset,
-				$order, $class);
+				$order, $user, $class);
 	}
 
 	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $class)
+			$order, $user, $class)
 	{
 		return $class::_listFiles($engine, $module, $limit, $offset,
-				$order, $class);
+				$order, $user, $class);
 	}
 
 	static protected function _listFiles($engine, $module, $limit, $offset,
-			$order, $class, $parent = FALSE)
+			$order, $user, $class, $parent = FALSE)
 	{
 		$ret = array();
 		$vbox = new PageElement('vbox');

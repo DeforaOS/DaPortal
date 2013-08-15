@@ -152,7 +152,7 @@ class WikiContent extends Content
 
 	//WikiContent::listAll
 	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE)
+			$offset = FALSE, $user = FALSE, $order = FALSE)
 	{
 		$class = get_class();
 
@@ -164,7 +164,7 @@ class WikiContent extends Content
 				break;
 		}
 		return WikiContent::_listAll($engine, $module, $limit, $offset,
-				$order, $class);
+				$order, $user, $class);
 	}
 
 
