@@ -127,7 +127,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::previewContent
-	public function previewContent($engine, $request)
+	public function previewContent($engine, $request = FALSE)
 	{
 		$length = $this->preview_length;
 
