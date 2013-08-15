@@ -46,12 +46,9 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::attach
 	protected function attach($engine, $type = FALSE)
 	{
-		global $config;
-
 		//configuration
-		$this->javascript = $config->get('format::html',
-			'javascript') ? TRUE : FALSE;
-
+		$this->javascript = $this->configGet('javascript')
+			? TRUE : FALSE;
 		//for escaping
 		if(!defined('ENT_HTML401'))
 			define('ENT_HTML401', 0);
@@ -125,8 +122,7 @@ class HTMLFormat extends FormatElements
 		if(($refresh = $page->getProperty('refresh')) !== FALSE
 				&& is_numeric($refresh))
 			$this->renderMeta('Refresh', $refresh);
-		if(($vw = $config->get('format::html',
-				'viewport::width')) !== FALSE)
+		if(($vw = $this->configGet('viewport::width')) !== FALSE)
 		{
 			$this->renderTabs();
 			$this->tag('meta', FALSE, FALSE, array(
@@ -155,10 +151,7 @@ class HTMLFormat extends FormatElements
 
 	private function _render_favicon($page)
 	{
-		global $config;
-
-		if(($favicon = $config->get('format::html', 'favicon'))
-				=== FALSE)
+		if(($favicon = $this->configGet('favicon')) === FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the icon is not readable?
 		$this->renderTabs();
@@ -202,8 +195,7 @@ class HTMLFormat extends FormatElements
 		$this->tag('link', FALSE, FALSE, array('rel' => 'stylesheet',
 					'href' => "themes/$theme.css",
 					'title' => $theme));
-		if(($theme = $config->get('format::html',
-					'alternate_themes')) != 1)
+		if(($theme = $this->configGet('alternate_themes')) != 1)
 			return;
 		$this->_render_theme_alternate($page, $theme);
 	}
