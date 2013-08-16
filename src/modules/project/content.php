@@ -61,7 +61,8 @@ class ProjectContent extends Content
 				&& strlen($text))
 			$vbox->append('label', array('class' => 'bold',
 					'text' => $text));
-		$vbox->append('label', array('text' => $this->getContent()));
+		$vbox->append('htmlview', array(
+			'text' => HTML::format($engine, $this->getContent())));
 		return $vbox;
 	}
 
