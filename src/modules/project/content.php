@@ -266,7 +266,7 @@ class ProjectContent extends Content
 				=== FALSE)
 			return FALSE;
 		$error = _('Could not insert the project');
-		$args = array('project_id' => $ret,
+		$args = array('project_id' => $this->getID(),
 			'synopsis' => $this->get('synopsis'),
 			'cvsroot' => $this->get('cvsroot'));
 		if($database->query($engine, $query, $args)
@@ -284,7 +284,7 @@ class ProjectContent extends Content
 				=== FALSE)
 			return FALSE;
 		$error = _('Could not update the project');
-		$args = array('project_id' => $this->id,
+		$args = array('project_id' => $this->getID(),
 			'synopsis' => $this->get('synopsis'),
 			'cvsroot' => $this->get('cvsroot'));
 		if($database->query($engine, $query, $args)
