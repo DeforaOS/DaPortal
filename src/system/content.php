@@ -30,11 +30,13 @@ class Content
 		$this->class = get_class();
 		$this->stock = $module->getName();
 		$this->module = $module;
+		//properties
 		if($properties === FALSE)
 			$properties = array();
 		foreach($properties as $k => $v)
 			switch($k)
 			{
+				//private
 				case 'enabled':
 				case 'public':
 					//boolean values
@@ -49,8 +51,12 @@ class Content
 				case 'username':
 					$this->$k = $v;
 					break;
+				//protected
+				default:
+					$this->set($f, $properties[$f]);
+					break;
 			}
-		$this->properties = $properties;
+		//translations
 		$this->text_content_by = _('Content by');
 		$this->text_link = _('Permalink');
 		$this->text_more_content = _('More content...');
@@ -149,8 +155,7 @@ class Content
 	//Content::get
 	public function get($property)
 	{
-		if(!is_array($this->properties)
-				|| !isset($this->properties[$property]))
+		if(!isset($this->properties[$property]))
 			return FALSE;
 		return $this->properties[$property];
 	}
@@ -248,10 +253,10 @@ class Content
 	//Content::set
 	public function set($property, $value)
 	{
-		if(!is_array($this->properties))
-			$this->properties = array($property => $value);
-		else
-			$this->properties[$property] = $value;
+		if(!in_array($property, $this->fields))
+			return FALSE;
+		$this->properties[$property] = $value;
+		return TRUE;
 	}
 
 
@@ -506,11 +511,17 @@ class Content
 		$query = $this->query_insert;
 		$args = array('module_id' => $this->module->getID(),
 			'user_id' => $credentials->getUserID(),
-			'title' => $this->title,
-			'content' => $this->content,
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
+		foreach($this->fields as $f)
+			switch($f)
+			{
+				case 'title':
+				case 'content':
+					$args[$f] = $this->$f;
+					break;
+			}
 		//XXX hack to detect errors
 		$id = $database->getLastID($engine, 'daportal_content',
 				'content_id');
@@ -529,11 +540,17 @@ class Content
 		$query = $this->query_update;
 		$args = array('module_id' => $this->module->getID(),
 			'content_id' => $this->id,
-			'title' => $this->title,
-			'content' => $this->content,
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
+		foreach($this->fields as $f)
+			switch($f)
+			{
+				case 'title':
+				case 'content':
+					$args[$f] = $this->$f;
+					break;
+			}
 		//FIXME detect errors!@#$%
 		return $database->query($engine, $query, $args);
 	}
@@ -634,8 +651,7 @@ class Content
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		$res = $res[0];
-		return new $class($engine, $module, $res);
+		return new $class($engine, $module, $res[0]);
 	}
 
 
@@ -649,7 +665,7 @@ class Content
 	protected $stock = FALSE;
 	protected $stock_link = 'link';
 	protected $stock_open = 'open';
-	//translations
+	//strings
 	protected $text_content_by = 'Content by';
 	protected $text_link = 'Permalink';
 	protected $text_more_content = 'More content...';
@@ -731,6 +747,7 @@ class Content
 
 	//methods
 	//accessors
+	//Content::getModule
 	protected function getModule()
 	{
 		return $this->module;
@@ -748,9 +765,9 @@ class Content
 	private $group = FALSE;
 	private $title = FALSE;
 	private $content = FALSE;
-	private $enabled = FALSE;
+	private $enabled = TRUE;
 	private $public = FALSE;
-	private $properties = FALSE;
+	private $properties = array();
 }
 
 ?>
