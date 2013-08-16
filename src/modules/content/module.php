@@ -1248,7 +1248,9 @@ abstract class ContentModule extends Module
 	{
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
-		if(($pcur = $request->getParameter('page')) === FALSE)
+		if($request === FALSE
+				|| ($pcur = $request->getParameter('page'))
+				=== FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
 		$args = $request->getParameters();
