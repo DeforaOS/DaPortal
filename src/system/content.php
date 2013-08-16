@@ -53,7 +53,7 @@ class Content
 					break;
 				//protected
 				default:
-					$this->set($f, $properties[$f]);
+					$this->set($k, $v);
 					break;
 			}
 		//translations
