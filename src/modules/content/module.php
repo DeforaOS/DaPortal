@@ -815,7 +815,7 @@ abstract class ContentModule extends Module
 
 		//verify the request
 		if($request === FALSE
-				|| $request->getParameter('submit') === FALSE)
+				|| $request->getParameter('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -893,10 +893,9 @@ abstract class ContentModule extends Module
 	protected function _updateProcess($engine, $request, &$content)
 	{
 		$class = $this->content_class;
-		$fields = array('title', 'content');
 
 		//verify the request
-		if($request->getParameter('submit') === FALSE)
+		if($request->getParameter('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -1322,7 +1321,7 @@ abstract class ContentModule extends Module
 					'text' => _('Preview')));
 		$page->append('button', array('type' => 'submit',
 				'stock' => 'submit', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Submit')));
+				'value' => '_submit', 'text' => _('Submit')));
 	}
 
 
@@ -1391,7 +1390,7 @@ abstract class ContentModule extends Module
 				'value' => '_preview', 'text' => _('Preview')));
 		$hbox->append('button', array('type' => 'submit',
 				'stock' => 'update', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Update')));
+				'value' => '_submit', 'text' => _('Update')));
 	}
 }
 
