@@ -505,8 +505,9 @@ class Content
 			: $this->_saveInsert($engine, $request, $error);
 		if($ret === FALSE)
 			return FALSE;
-		foreach($this->fields as $f)
-			$this->set($f, $request->getParameter($f));
+		if($request !== FALSE)
+			foreach($this->fields as $f)
+				$this->set($f, $request->getParameter($f));
 		return $ret;
 	}
 
