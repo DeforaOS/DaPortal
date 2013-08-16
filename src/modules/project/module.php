@@ -243,8 +243,6 @@ class ProjectModule extends MultiContentModule
 	protected $project_query_project_release_insert = 'INSERT INTO
 		daportal_project_download (project_id, download_id)
 		VALUES (:project_id, :download_id)';
-	protected $project_query_project_update = 'UPDATE daportal_project
-		SET synopsis=:synopsis WHERE project_id=:project_id';
 	protected $project_query_get = "SELECT daportal_module.name AS module,
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username,
@@ -900,31 +898,6 @@ class ProjectModule extends MultiContentModule
 		$timeline = $scm->timeline($engine, $project, $request);
 		$page->append($timeline);
 		return $page;
-	}
-
-
-	//ProjectModule::callUpdate
-	protected function callUpdate($engine, $request)
-	{
-		return parent::callUpdate($engine, $request);
-	}
-
-	protected function _updateProcess($engine, $request, &$content)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_project_update;
-
-		//FIXME use a transaction
-		if(($res = parent::_updateProcess($engine, $request, $content))
-				!== FALSE)
-			return $res;
-		//update the project
-		$synopsis = $request->getParameter('synopsis');
-		$args = array('project_id' => $content->getID(),
-			'synopsis' => $synopsis);
-		if($db->query($engine, $query, $args) === FALSE)
-			return _('Internal server error');
-		return FALSE;
 	}
 
 

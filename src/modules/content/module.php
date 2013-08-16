@@ -242,11 +242,21 @@ abstract class ContentModule extends Module
 	protected function canSubmit($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$class = $this->content_class;
+		global $config;
+		$credentials = $engine->getCredentials();
 
-		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canSubmit($engine, $request, $error);
+		for(;;)
+		{
+			if($credentials->getUserID() > 0)
+				break;
+			if($this->configGet('anonymous'))
+				break;
+			$error = _('Permission denied');
+			return FALSE;
+		}
+		if($content !== FALSE)
+			return $content->canSubmit($engine, $request, $error);
+		return TRUE;
 	}
 
 
@@ -266,11 +276,21 @@ abstract class ContentModule extends Module
 	protected function canUpdate($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$class = $this->content_class;
+		global $config;
+		$credentials = $engine->getCredentials();
 
-		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canUpdate($engine, $request, $error);
+		for(;;)
+		{
+			if($credentials->getUserID() > 0)
+				break;
+			if($this->configGet('anonymous'))
+				break;
+			$error = _('Permission denied');
+			return FALSE;
+		}
+		if($content !== FALSE)
+			return $content->canUpdate($engine, $request, $error);
+		return TRUE;
 	}
 
 
@@ -800,8 +820,9 @@ abstract class ContentModule extends Module
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//store the content uploaded
-		if($content->save($engine) === FALSE)
-			return _('Internal server error');
+		$error = _('Internal server error');
+		if($content->save($engine, $request, $error) === FALSE)
+			return $error;
 		return FALSE;
 	}
 
@@ -884,9 +905,11 @@ abstract class ContentModule extends Module
 		foreach($fields as $f)
 			if(($v = $request->getParameter($f)) !== FALSE)
 				$content[$f] = $v;
+		//FIXME save the existing content directly instead
 		$content = new $class($engine, $this, $content);
-		if($content->save($engine) === FALSE)
-			return _('Internal server error');
+		$error = _('Internal server error');
+		if($content->save($engine, $request, $error) === FALSE)
+			return $error;
 		return FALSE;
 	}
 
@@ -1135,15 +1158,15 @@ abstract class ContentModule extends Module
 		$r['title'] = $link;
 		$r['enabled'] = $content->isEnabled() ? $yes : $no;
 		//username
-		$rq = new Request('user', FALSE, $r['user_id'],
-			$r['username']);
+		$rq = new Request('user', FALSE, $content->getUserID(),
+			$content->getUsername());
 		$link = new PageElement('link', array('request' => $rq,
-			'stock' => 'user', 'text' => $r['username']));
+			'stock' => 'user', 'text' => $content->getUsername()));
 		$r['username'] = $link;
 		//date
 		$r['date'] = $content->getDate($engine);
 		//id
-		$r['id'] = 'content_id:'.$r['id'];
+		$r['id'] = 'content_id:'.$content->getID();
 		return new PageElement('row', $r);
 	}
 

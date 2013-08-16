@@ -30,9 +30,9 @@ abstract class DownloadContent extends Content
 	//DownloadContent::DownloadContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
-		$this->fields[] = 'download_id';
-		$this->fields[] = 'parent_id';
-		$this->fields[] = 'mode';
+		$this->fields['download_id'] = 'Download ID';
+		$this->fields['parent_id'] = 'Parent';
+		$this->fields['mode'] = 'Permissions';
 		parent::__construct($engine, $module, $properties);
 	}
 

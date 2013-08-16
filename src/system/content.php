@@ -110,17 +110,17 @@ class Content
 	//Content::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
-		global $config;
-		$credentials = $engine->getCredentials();
-
-		//FIXME also verify that the fields are set (if not idempotent)
-		if($credentials->getUserID() > 0)
-			return TRUE;
-		if($config->get('module::'.$this->module->getName(),
-				'anonymous'))
-			return TRUE;
-		$error = _('Permission denied');
-		return FALSE;
+		if($request !== FALSE && !$request->isIdempotent())
+		{
+			$error = '';
+			//verify that the fields are set
+			foreach($this->fields as $k => $v)
+				if($request->getParameter($k) === FALSE)
+					$error .= "$v must be set\n";
+			if(strlen($error) > 0)
+				return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -253,7 +253,7 @@ class Content
 	//Content::set
 	public function set($property, $value)
 	{
-		if(!in_array($property, $this->fields))
+		if(!isset($this->fields[$property]))
 			return FALSE;
 		$this->properties[$property] = $value;
 		return TRUE;
@@ -424,9 +424,9 @@ class Content
 		$class = $this->class;
 		$properties = $this->properties;
 
-		foreach($this->fields as $f)
-			if(($p = $request->getParameter($f)) !== FALSE)
-				$properties[$f] = $p;
+		foreach($this->fields as $k => $v)
+			if(($p = $request->getParameter($k)) !== FALSE)
+				$properties[$k] = $p;
 		$vbox = new PageElement('vbox');
 		$content = new $class($engine, $this->module, $properties);
 		$vbox->append('title', array('stock' => 'preview',
@@ -498,13 +498,14 @@ class Content
 
 
 	//Content::save
-	public function save($engine)
+	public function save($engine, $request, &$error)
 	{
-		return ($this->id !== FALSE) ? $this->_saveUpdate($engine)
-			: $this->_saveInsert($engine);
+		return ($this->id !== FALSE)
+			? $this->_saveUpdate($engine, $request, $error)
+			: $this->_saveInsert($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine)
+	protected function _saveInsert($engine, $request, &$error)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -514,12 +515,14 @@ class Content
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
-		foreach($this->fields as $f)
-			switch($f)
+		if(!$this->canSubmit($engine, $request, $error))
+			return FALSE;
+		foreach($this->fields as $k => $v)
+			switch($k)
 			{
 				case 'title':
 				case 'content':
-					$args[$f] = $this->$f;
+					$args[$k] = $this->$k;
 					break;
 			}
 		//XXX hack to detect errors
@@ -534,7 +537,7 @@ class Content
 		return ($this->id !== FALSE) ? TRUE : FALSE;
 	}
 
-	protected function _saveUpdate($engine)
+	protected function _saveUpdate($engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = $this->query_update;
@@ -543,12 +546,14 @@ class Content
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
-		foreach($this->fields as $f)
-			switch($f)
+		if(!$this->canUpdate($engine, $request, $error))
+			return FALSE;
+		foreach($this->fields as $k => $v)
+			switch($k)
 			{
 				case 'title':
 				case 'content':
-					$args[$f] = $this->$f;
+					$args[$k] = $this->$k;
 					break;
 			}
 		//FIXME detect errors!@#$%
@@ -658,7 +663,7 @@ class Content
 	//protected
 	//properties
 	protected $class = FALSE;
-	protected $fields = array('title', 'content');
+	protected $fields = array('title' => 'Title', 'content' => 'Content');
 	static protected $list_order = 'timestamp DESC';
 	protected $preview_length = 150;
 	//stock icons
