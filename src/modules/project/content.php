@@ -68,7 +68,7 @@ class ProjectContent extends Content
 
 
 	//ProjectContent::save
-	public function save($engine, $request, &$error)
+	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
 		$database = $engine->getDatabase();
 
