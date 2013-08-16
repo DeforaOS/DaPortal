@@ -863,9 +863,7 @@ abstract class ContentModule extends Module
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
 		//preview
-		if($request->getParameter('_preview') !== FALSE)
-			$this->helperUpdatePreview($engine, $request, $content,
-					$page);
+		$this->helperUpdatePreview($engine, $request, $content, $page);
 		$form = $this->formUpdate($engine, $request, $content);
 		$page->append($form);
 		return $page;
@@ -1322,11 +1320,7 @@ abstract class ContentModule extends Module
 		if($request === FALSE
 				|| $request->getParameter('_preview') === FALSE)
 			return;
-		$vbox = $page->append('vbox');
-		$vbox->append('title', array('stock' => 'preview',
-			'text' => _('Preview: ').$content->getTitle()));
-		$vbox->append($content->displayMetadata($engine, $request));
-		$vbox->append($content->displayContent($engine, $request));
+		$page->append($content->formPreview($engine, $request));
 	}
 
 
@@ -1351,6 +1345,9 @@ abstract class ContentModule extends Module
 	protected function helperUpdatePreview($engine, $request, $content,
 			$page)
 	{
+		if($request === FALSE
+				|| $request->getParameter('_preview') === FALSE)
+			return;
 		$page->append($content->formPreview($engine, $request));
 	}
 

@@ -425,15 +425,15 @@ class Content
 		$properties = $this->properties;
 
 		foreach($this->fields as $f)
-		{
 			if(($p = $request->getParameter($f)) !== FALSE)
 				$properties[$f] = $p;
-			if($f == 'title')
-				$properties[$f] = _('Preview: ')
-					.$properties[$f];
-		}
+		$vbox = new PageElement('vbox');
 		$content = new $class($engine, $this->module, $properties);
-		return $content->display($engine, $request);
+		$vbox->append('title', array('stock' => 'preview',
+			'text' => _('Preview: ').$content->getTitle()));
+		$vbox->append($content->displayMetadata($engine, $request));
+		$vbox->append($content->displayContent($engine, $request));
+		return $vbox;
 	}
 
 
