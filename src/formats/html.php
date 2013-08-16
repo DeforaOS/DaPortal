@@ -55,6 +55,18 @@ class HTMLFormat extends FormatElements
 	}
 
 
+	//accessors
+	//HTMLFormat::configget
+	protected function configGet($variable)
+	{
+		global $config;
+
+		if(($ret = parent::configGet($variable)) !== FALSE)
+			return $ret;
+		return $config->get('format::html', $variable);
+	}
+
+
 	//useful
 	//escaping
 	//HTMLFormat::escape
