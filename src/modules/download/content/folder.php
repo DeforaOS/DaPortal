@@ -17,6 +17,7 @@
 
 
 require_once('./modules/download/content.php');
+require_once('./modules/download/content/file.php');
 
 
 //FolderDownloadContent
@@ -30,6 +31,7 @@ class FolderDownloadContent extends DownloadContent
 	{
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
+		//translations
 		$this->text_content_by = _('Folder from');
 		$this->text_content_list_title = _('Directory listing');
 		$this->text_more_content = _('Browse...');
@@ -41,10 +43,9 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
-		$title = parent::getTitle();
-		if($title === FALSE)
-			$title = '/';
-		return $this->text_content_list_title.': '.$title;
+		if($this->getID() === FALSE)
+			return '/';
+		return parent::getTitle();
 	}
 
 
@@ -53,14 +54,16 @@ class FolderDownloadContent extends DownloadContent
 	public function display($engine, $request)
 	{
 		$class = get_class();
-		$page = new Page(array('title' => $this->getTitle()));
+		$title = $this->text_content_list_title.': '.$this->getTitle();
+		$page = new Page(array('title' => $title));
 
 		$page->append('title', array('stock' => $this->stock,
-			'text' => $this->getTitle()));
+			'text' => $title));
 		$page->append($this->displayToolbar($engine, $request));
 		$class::$query_list = $class::$folder_query_list;
 		if(($files = $class::_listFiles($engine, $this->getModule(),
-				FALSE, FALSE, 'title ASC', $class, $this)) === FALSE)
+				FALSE, FALSE, 'title ASC', FALSE, $class,
+				$this)) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list the files'));
@@ -78,19 +81,18 @@ class FolderDownloadContent extends DownloadContent
 				'source' => $icon));
 			$properties['title'] = new PageElement('link', array(
 				'request' => $f->getRequest(),
-				'text' => $properties['title']));
-			if(($user_id = $properties['user_id']) != 0)
+				'text' => $f->getTitle()));
+			if(($user_id = $f->getUserID()) != 0)
 			{
 				$r = new Request('user', FALSE, $user_id,
-					$properties['username']);
+					$f->getUsername());
 				$link = new PageElement('link', array(
 					'request' => $r, 'stock' => 'user',
-					'text' => $properties['username']));
+					'text' => $f->getUsername()));
 				$properties['username'] = $link;
 			}
 			$properties['date'] = $f->getDate($engine);
-			$properties['mode'] = $this->getPermissions(
-					$properties['mode']);
+			$properties['mode'] = $f->getPermissions();
 			$view->append('row', $properties);
 		}
 		return $page;
@@ -164,8 +166,13 @@ class FolderDownloadContent extends DownloadContent
 			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-			$ret[] = new $class($engine, $module, $res[$i]);
+		while(($r = array_shift($res)) != NULL)
+		{
+			$class = ($r['mode'] & DownloadContent::$S_IFDIR)
+				? 'FolderDownloadContent'
+				: 'FileDownloadContent';
+			$ret[] = new $class($engine, $module, $r);
+		}
 		return $ret;
 	}
 
@@ -175,7 +182,7 @@ class FolderDownloadContent extends DownloadContent
 	{
 		$class = get_class();
 		$class::$query_load = $class::$folder_query_load;
-		return parent::_load($engine, $module, $id, $title,
+		return $class::_load($engine, $module, $id, $title,
 				get_class());
 	}
 
@@ -194,13 +201,16 @@ class FolderDownloadContent extends DownloadContent
 		FROM daportal_content_public, daportal_user_enabled,
 		daportal_group, daportal_download
 		WHERE daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id=daportal_user_enabled.user_id
+		AND daportal_content_public.user_id
+		=daportal_user_enabled.user_id
 		AND daportal_content_public.group_id=daportal_group.group_id
-		AND daportal_content_public.content_id=daportal_download.content_id';
+		AND daportal_content_public.content_id
+		=daportal_download.content_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $folder_query_load = "SELECT daportal_module.name AS module,
+	static protected $folder_query_load = "SELECT
+		daportal_module.name AS module,
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username,
 		daportal_group.group_id AS group_id,

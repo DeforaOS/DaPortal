@@ -26,12 +26,14 @@ abstract class DownloadContent extends Content
 {
 	//public
 	//methods
-	//accessors
-	//Content::getRequest
-	public function getRequest($action = FALSE, $parameters = FALSE)
+	//essential
+	//DownloadContent::DownloadContent
+	public function __construct($engine, $module, $properties = FALSE)
 	{
-		return new Request($this->getModule()->getName(), $action,
-			$this->getID(), $this->getFilename(), $parameters);
+		$this->fields[] = 'download_id';
+		$this->fields[] = 'parent_id';
+		$this->fields[] = 'mode';
+		parent::__construct($engine, $module, $properties);
 	}
 
 
@@ -57,13 +59,6 @@ abstract class DownloadContent extends Content
 	//protected
 	//methods
 	//accessors
-	//DownloadContent::getFilename
-	protected function getFilename()
-	{
-		return $this->get('title');
-	}
-
-
 	//DownloadContent::getIcon
 	protected function getIcon($engine, $size = 16)
 	{
@@ -79,14 +74,16 @@ abstract class DownloadContent extends Content
 	{
 		if($mode === FALSE)
 			$mode = $this->get('mode');
-		return Common::getPermissions($mode, $this->S_IFDIR);
+		return Common::getPermissions($mode, DownloadContent::$S_IFDIR);
 	}
 
 
 	//DownloadContent::isDirectory
-	protected function isDirectory()
+	protected function isDirectory($mode = FALSE)
 	{
-		return ($this->get('mode') & $this->S_IFDIR) ? TRUE : FALSE;
+		if($mode === FALSE)
+			$mode = $this->get('mode');
+		return ($mode & DownloadContent::$S_IFDIR) ? TRUE : FALSE;
 	}
 
 
@@ -116,7 +113,7 @@ abstract class DownloadContent extends Content
 
 
 	//properties
-	protected $S_IFDIR = 512;
+	static protected $S_IFDIR = 512;
 }
 
 ?>

@@ -58,7 +58,7 @@ class FileDownloadContent extends DownloadContent
 		$this->_contentField($col1, $col2, _('Name: '),
 				new PageElement('link', array(
 					'request' => $request,
-					'text' => $this->getFilename())));
+					'text' => $this->getTitle())));
 		$request = new Request('user', FALSE, $this->getUserID(),
 			$this->getUsername());
 		$this->_contentField($col1, $col2, _('Owner: '),
@@ -116,7 +116,7 @@ class FileDownloadContent extends DownloadContent
 
 		//output the file
 		$filename = $root.'/'.$this->get('download_id');
-		$mime = Mime::getType($engine, $this->getFilename());
+		$mime = Mime::getType($engine, $this->getTitle());
 		if(($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');

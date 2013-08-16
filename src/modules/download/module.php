@@ -120,10 +120,12 @@ class DownloadModule extends MultiContentModule
 		switch($this->content_class)
 		{
 			case 'FileDownloadContent':
-				$this->text_content_list_title = $this->file_text_content_list_title;
+				$this->text_content_list_title
+					= $this->file_text_content_list_title;
 				break;
 			case 'FolderDownloadContent':
-				$this->text_content_list_title = $this->folder_text_content_list_title;
+				$this->text_content_list_title
+					= $this->folder_text_content_list_title;
 				break;
 		}
 	}
