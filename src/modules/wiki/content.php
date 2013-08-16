@@ -13,6 +13,8 @@
 //
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//FIXME:
+//- warn when inserting a page with a title that already exists
 
 
 
@@ -46,10 +48,14 @@ class WikiContent extends Content
 		$vbox = new PageElement('vbox');
 		$vbox->append('htmlview', array(
 			'text' => $this->getMarkup($revision)));
-		$vbox->append('title', array('class' => 'revisions',
-			'stock' => $this->getModule()->getName(),
-			'text' => _('Revisions')));
-		$vbox->append($this->_contentRevisions($engine, $request));
+		if($this->getID() !== FALSE)
+		{
+			$vbox->append('title', array('class' => 'revisions',
+				'stock' => $this->getModule()->getName(),
+				'text' => _('Revisions')));
+			$vbox->append($this->_contentRevisions($engine,
+					$request));
+		}
 		return $vbox;
 	}
 
@@ -184,6 +190,8 @@ class WikiContent extends Content
 	//WikiContent::getMarkup
 	protected function getMarkup($revision = FALSE)
 	{
+		if($this->getID() === FALSE)
+			return '';
 		if($revision === FALSE && $this->markup !== FALSE)
 			return $this->markup;
 		if(($root = WikiContent::getRoot()) === FALSE)
