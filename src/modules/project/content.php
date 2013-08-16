@@ -66,6 +66,57 @@ class ProjectContent extends Content
 	}
 
 
+	//ProjectContent::save
+	public function save($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+
+		if($database->transactionBegin($engine) === FALSE)
+			return FALSE;
+		if(($ret = parent::save($engine, $request, $error)) === FALSE)
+			$database->transactionRollback($engine);
+		else if($database->transactionCommit($engine) === FALSE)
+			return FALSE;
+		return $ret;
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->project_query_insert;
+
+		if(($ret = parent::_saveInsert($engine, $request, $error))
+				=== FALSE)
+			return FALSE;
+		$error = _('Could not insert the project');
+		$args = array('project_id' => $ret,
+			'synopsis' => $this->get('synopsis'),
+			'cvsroot' => $this->get('cvsroot'));
+		if($database->query($engine, $query, $args)
+				=== FALSE)
+			return FALSE;
+		return $ret;
+	}
+
+	protected function _saveUpdate($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->project_query_update;
+
+		if(($ret = parent::_saveUpdate($engine, $request, $error))
+				=== FALSE)
+			return FALSE;
+		$error = _('Could not update the project');
+		$args = array('project_id' => $this->id,
+			'synopsis' => $this->get('synopsis'),
+			'cvsroot' => $this->get('cvsroot'));
+		if($database->query($engine, $query, $args)
+				=== FALSE)
+			return FALSE;
+		return $ret;
+	}
+
+
 	//static
 	//methods
 	//ProjectContent::listAll
@@ -100,6 +151,12 @@ class ProjectContent extends Content
 	//protected
 	//properties
 	//queries
+	//IN:	project_id
+	//	synopsis
+	//	cvsroot
+	protected $project_query_insert = 'INSERT INTO
+		daportal_project(project_id, synopsis, cvsroot)
+		VALUES (:project_id, :synopsis, :cvsroot)';
 	//IN:	module_id
 	static protected $project_query_list = 'SELECT content_id AS id,
 		daportal_content_public.enabled AS enabled, timestamp,
@@ -133,6 +190,12 @@ class ProjectContent extends Content
 		AND (daportal_content.public='1'
 		OR daportal_content.user_id=:user_id)
 		AND project_id=:content_id";
+	//IN:	project_id
+	//	synopsis
+	//	cvsroot
+	protected $project_query_update = 'UPDATE daportal_project
+		SET synopsis=:synopsis, cvsroot=:cvsroot
+		WHERE project_id=:project_id';
 }
 
 ?>
