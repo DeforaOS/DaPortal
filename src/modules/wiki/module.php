@@ -84,29 +84,6 @@ class WikiModule extends ContentModule
 	}
 
 
-	//WikiModule::_get
-	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
-	{
-		if(($content = parent::_get($engine, $id, $title)) === FALSE)
-			return FALSE;
-		if($this->root === FALSE
-				|| strpos($content->getTitle(), '/') !== FALSE)
-			return $content; //XXX fail instead?
-		$cmd = 'co -p -q';
-		if($request !== FALSE && ($revision = $request->getParameter(
-				'revision')) !== FALSE)
-			$cmd .= ' -r'.escapeshellarg($revision);
-		$cmd .= ' '.escapeshellarg($this->root
-				.'/'.$content->getTitle());
-		exec($cmd, $rcs, $res);
-		if($res != 0)
-			return FALSE;
-		//FIXME broken
-		//$content['content'] = implode("\n", $rcs);
-		return $content;
-	}
-
-
 	//calls
 	//WikiModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
