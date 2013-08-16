@@ -41,14 +41,15 @@ class CVSSCMProject extends SCMProject
 	//CVSSCMProject::browse
 	public function browse($engine, $project, $request)
 	{
+		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
 
-		if($this->cvsroot === FALSE || strlen($project['cvsroot']) == 0)
+		if($this->cvsroot === FALSE || strlen($cvsroot) == 0)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		$vbox = new PageElement('vbox');
 		//browse
-		$path = $this->cvsroot.'/'.$project['cvsroot'];
+		$path = $this->cvsroot.'/'.$cvsroot;
 		if(($file = $request->getParameter('file')) !== FALSE)
 		{
 			$file = $this->helperSanitizePath($file);
@@ -303,14 +304,15 @@ class CVSSCMProject extends SCMProject
 	{
 		$title = _('Repository');
 		$repository = 'pserver:'.$this->repository;
+		$cvsroot = $project->get('cvsroot');
 
 		//repository
-		if($this->repository === FALSE)
+		if($this->repository === FALSE || strlen($cvsroot) == 0)
 			return FALSE;
 		$vbox = new PageElement('vbox');
 		$vbox->append('title', array('text' => $title));
 		$vbox->append('label', array('text' => _('The source code can be obtained as follows: ')));
-		$text = '$ cvs -d:'.$repository.' co '.$project['cvsroot'];
+		$text = '$ cvs -d:'.$repository.' co '.$cvsroot;
 		$vbox->append('label', array('text' => $text,
 				'class' => 'preformatted'));
 		return $vbox;
@@ -320,13 +322,12 @@ class CVSSCMProject extends SCMProject
 	//CVSSCMProject::timeline
 	public function timeline($engine, $project, $request)
 	{
+		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
 
 		//check the cvsroot
-		if($this->cvsroot === FALSE || strlen($project['cvsroot']) == 0)
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
-		if(strlen($project['cvsroot']) == 0)
+		$len = strlen($cvsroot);
+		if($this->cvsroot === FALSE || $len == 0)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//history
@@ -345,13 +346,12 @@ class CVSSCMProject extends SCMProject
 		$view = $vbox->append('treeview', array(
 				'columns' => $columns));
 		//rows
-		$len = strlen($project['cvsroot']);
 		while(($line = fgets($fp)) !== FALSE)
 		{
 			$fields = explode('|', $line);
 			if(strlen($fields[4]) == 0)
 				continue;
-			if(strncmp($fields[3], $project['cvsroot'], $len) != 0)
+			if(strncmp($fields[3], $cvsroot, $len) != 0)
 				continue;
 			$event = FALSE;
 			switch($fields[0][0])
