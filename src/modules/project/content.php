@@ -29,6 +29,7 @@ class ProjectContent extends Content
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		$this->fields['synopsis'] = 'Synopsis';
+		$this->fields['scm'] = 'SCM';
 		$this->fields['cvsroot'] = 'CVS root';
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
