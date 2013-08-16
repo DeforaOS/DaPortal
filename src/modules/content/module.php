@@ -765,7 +765,13 @@ abstract class ContentModule extends Module
 				'text' => $title));
 		//toolbar
 		$class = $this->content_class;
-		$content = new $class($engine, $this);
+		$content = array('user_id' => $cred->getUserID(),
+			'username' => $cred->getUsername(),
+			'title' => $request->getParameter('title'),
+			'content' => $request->getParameter('content'),
+			'public' => $request->getParameter('public')
+			? TRUE : FALSE);
+		$content = new $class($engine, $this, $content);
 		$page->append($content->displayToolbar($engine, $request));
 		//process the request
 		if(($error = $this->_submitProcess($engine, $request, $content))
@@ -794,12 +800,6 @@ abstract class ContentModule extends Module
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//store the content uploaded
-		$content = array('title' => $request->getParameter('title'),
-			'content' => $request->getParameter('content'),
-			'enabled' => TRUE,
-			'public' => $request->getParameter('public')
-			? TRUE : FALSE);
-		$content = new $class($engine, $this, $content);
 		if($content->save($engine) === FALSE)
 			return _('Internal server error');
 		return FALSE;
@@ -1320,18 +1320,13 @@ abstract class ContentModule extends Module
 			$content)
 	{
 		$class = $this->content_class;
-		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserID());
 
 		if($request === FALSE
 				|| $request->getParameter('_preview') === FALSE)
 			return;
-		$properties = array('title' => _('Preview: ')
-				.$request->getParameter('title'),
-			'content' => $request->getParameter('content'));
-		$content = new $class($engine, $this, $properties);
 		$vbox = $page->append('vbox');
-		$vbox->append($content->displayTitle($engine, $request));
+		$vbox->append('title', array('stock' => 'preview',
+			'text' => _('Preview: ').$content->getTitle()));
 		$vbox->append($content->displayMetadata($engine, $request));
 		$vbox->append($content->displayContent($engine, $request));
 	}
