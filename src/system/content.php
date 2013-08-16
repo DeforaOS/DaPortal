@@ -498,11 +498,16 @@ class Content
 
 
 	//Content::save
-	public function save($engine, $request, &$error)
+	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
-		return ($this->id !== FALSE)
+		$ret = ($this->id !== FALSE)
 			? $this->_saveUpdate($engine, $request, $error)
 			: $this->_saveInsert($engine, $request, $error);
+		if($ret === FALSE)
+			return FALSE;
+		foreach($this->fields as $f)
+			$this->set($f, $request->getParameter($f));
+		return $ret;
 	}
 
 	protected function _saveInsert($engine, $request, &$error)
@@ -525,6 +530,7 @@ class Content
 					$args[$k] = $this->$k;
 					break;
 			}
+		$error = _('Could not insert the content');
 		//XXX hack to detect errors
 		$id = $database->getLastID($engine, 'daportal_content',
 				'content_id');
@@ -556,6 +562,7 @@ class Content
 					$args[$k] = $this->$k;
 					break;
 			}
+		$error = _('Could not update the content');
 		//FIXME detect errors!@#$%
 		return $database->query($engine, $query, $args);
 	}
