@@ -1319,8 +1319,6 @@ abstract class ContentModule extends Module
 	protected function helperSubmitPreview($engine, $page, $request,
 			$content)
 	{
-		$class = $this->content_class;
-
 		if($request === FALSE
 				|| $request->getParameter('_preview') === FALSE)
 			return;
