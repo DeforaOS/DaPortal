@@ -107,6 +107,10 @@
 	background-image:	url('Tango/32x32/actions/gtk-home.png');
 }
 
+.stock32.homepage {
+	background-image:	url('Tango/32x32/actions/gtk-home.png');
+}
+
 .stock32.info {
 	background-image:	url('Tango/32x32/status/dialog-information.png');
 }

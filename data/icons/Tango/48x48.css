@@ -107,6 +107,10 @@
 	background-image:	url('Tango/scalable/actions/gtk-home.svg');
 }
 
+.stock48.homepage {
+	background-image:	url('Tango/scalable/actions/gtk-home.svg');
+}
+
 .stock48.info {
 	background-image:	url('Tango/scalable/status/dialog-information.svg');
 }
