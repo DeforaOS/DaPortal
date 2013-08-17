@@ -110,16 +110,23 @@ class Content
 	//Content::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
-		if($request !== FALSE && !$request->isIdempotent())
+		$cred = $engine->getCredentials();
+
+		if($request === FALSE || $request->isIdempotent())
 		{
-			$error = '';
-			//verify that the fields are set
-			foreach($this->fields as $k => $v)
-				if($request->getParameter($k) === FALSE)
-					$error .= "$v must be set\n";
-			if(strlen($error) > 0)
-				return FALSE;
+			if($cred->getUserID() > 0)
+				return TRUE;
+			if($this->configGet('anonymous'))
+				return TRUE;
+			return FALSE;
 		}
+		$error = '';
+		//verify that the fields are set
+		foreach($this->fields as $k => $v)
+			if($request->getParameter($k) === FALSE)
+				$error .= "$v must be set\n";
+		if(strlen($error) > 0)
+			return FALSE;
 		return TRUE;
 	}
 
@@ -760,6 +767,16 @@ class Content
 
 	//methods
 	//accessors
+	//Content::configGet
+	protected function configGet($variable)
+	{
+		global $config;
+		$name = $this->getModule()->getName();
+
+		return $config->get('module::'.$name, $variable);
+	}
+
+
 	//Content::getModule
 	protected function getModule()
 	{
