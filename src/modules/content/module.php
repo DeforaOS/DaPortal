@@ -884,20 +884,12 @@ abstract class ContentModule extends Module
 
 	protected function _updateProcess($engine, $request, &$content)
 	{
-		$class = $this->content_class;
-
 		//verify the request
 		if($request->getParameter('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//update the content
-		$content = $content->getProperties();
-		foreach($fields as $f)
-			if(($v = $request->getParameter($f)) !== FALSE)
-				$content[$f] = $v;
-		//FIXME save the existing content directly instead
-		$content = new $class($engine, $this, $content);
 		$error = _('Internal server error');
 		if($content->save($engine, $request, $error) === FALSE)
 			return $error;

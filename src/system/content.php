@@ -569,11 +569,27 @@ class Content
 				case 'title':
 				case 'content':
 					$args[$k] = $this->$k;
+					if($request === FALSE)
+						break;
+					if(($v = $request->getParameter($k))
+							=== FALSE)
+						break;
+					$args[$k] = $v;
 					break;
 			}
 		$error = _('Could not update the content');
 		//FIXME detect errors!@#$%
-		return $database->query($engine, $query, $args);
+		if(($ret = $database->query($engine, $query, $args)) === FALSE)
+			return FALSE;
+		foreach($args as $k => $v)
+			switch($k)
+			{
+				case 'title':
+				case 'content':
+					$this->$k = $v;
+					break;
+			}
+		return $ret;
 	}
 
 

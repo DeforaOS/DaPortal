@@ -243,6 +243,49 @@ class ProjectContent extends Content
 	}
 
 
+	//ProjectContent::form
+	public function form($engine, $request = FALSE)
+	{
+		return parent::form($engine, $request);
+	}
+
+	protected function _formUpdate($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		//title
+		if(($value = $request->getParameter('title')) === FALSE)
+			$value = $this->getTitle();
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $value));
+		//synopsis
+		if(($value = $request->getParameter('synopsis')) === FALSE)
+			$value = $this->get('synopsis');
+		$vbox->append('entry', array('name' => 'synopsis',
+				'text' => _('Synopsis: '),
+				'value' => $value));
+		//description
+		$label = $vbox->append('label', array(
+				'text' => _('Description: ')));
+		if(($value = $request->getParameter('content')) === FALSE)
+			$value = $this->getContent();
+		$label->append('textview', array('name' => 'content',
+				'value' => $value));
+		//SCM
+		if(($value = $request->getParameter('scm')) === FALSE)
+			$value = $this->get('scm');
+		$vbox->append('entry', array('name' => 'scm',
+				'text' => _('SCM: '),
+				'value' => $value));
+		if(($value = $request->getParameter('cvsroot')) === FALSE)
+			$value = $this->get('cvsroot');
+		$vbox->append('entry', array('name' => 'cvsroot',
+				'text' => _('Repository: '),
+				'value' => $value));
+		return $vbox;
+	}
+
+
 	//ProjectContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -279,17 +322,26 @@ class ProjectContent extends Content
 	{
 		$database = $engine->getDatabase();
 		$query = $this->project_query_update;
+		$args = array('project_id' => $this->getID());
+		$fields = array('synopsis', 'scm', 'cvsroot');
 
 		if(($ret = parent::_saveUpdate($engine, $request, $error))
 				=== FALSE)
 			return FALSE;
 		$error = _('Could not update the project');
-		$args = array('project_id' => $this->getID(),
-			'synopsis' => $this->get('synopsis'),
-			'cvsroot' => $this->get('cvsroot'));
+		foreach($fields as $f)
+		{
+			$args[$f] = $this->get($f);
+			if($request === FALSE)
+				continue;
+			if(($v = $request->getParameter($f)) !== FALSE)
+				$args[$f] = $v;
+		}
 		if($database->query($engine, $query, $args)
 				=== FALSE)
 			return FALSE;
+		foreach($fields as $f)
+			$this->$f = $args[$f];
 		return $ret;
 	}
 
@@ -400,9 +452,10 @@ class ProjectContent extends Content
 		AND project_id=:content_id";
 	//IN:	project_id
 	//	synopsis
+	//	scm
 	//	cvsroot
 	protected $project_query_update = 'UPDATE daportal_project
-		SET synopsis=:synopsis, cvsroot=:cvsroot
+		SET synopsis=:synopsis, scm=:scm, cvsroot=:cvsroot
 		WHERE project_id=:project_id';
 }
 
