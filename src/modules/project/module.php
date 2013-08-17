@@ -43,6 +43,7 @@ class ProjectModule extends MultiContentModule
 			case 'browse':
 			case 'download':
 			case 'gallery':
+			case 'homepage':
 			case 'timeline':
 				return $this->callDisplay($engine, $request);
 			case 'bugList':
@@ -387,15 +388,6 @@ class ProjectModule extends MultiContentModule
 	}
 
 
-	//ProjectModule::getToolbar
-	protected function getToolbar($engine, $request = FALSE,
-			$content = FALSE)
-	{
-		//FIXME really implement
-		return parent::getToolbar($engine, $request, $content);
-	}
-
-
 	//ProjectModule::isManager
 	protected function isManager($engine, $project)
 	{
@@ -477,7 +469,6 @@ class ProjectModule extends MultiContentModule
 		$db = $engine->getDatabase();
 		$title = _('Bug reports');
 		$error = FALSE;
-		$toolbar = FALSE;
 		$query = $this->project_query_list_bugs;
 		$project = FALSE;
 
@@ -500,8 +491,6 @@ class ProjectModule extends MultiContentModule
 		if($project !== FALSE)
 		{
 			$title = _('Bug reports for ').$project->getTitle();
-			$toolbar = $this->getToolbar($engine, $request,
-					$project);
 			$query .= ' AND daportal_project.project_id=:project_id';
 			$args['project_id'] = $id;
 		}
@@ -533,8 +522,6 @@ class ProjectModule extends MultiContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		if($toolbar !== FALSE)
-			$page->append($toolbar);
 		if($error !== FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
@@ -592,9 +579,6 @@ class ProjectModule extends MultiContentModule
 		//title
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		//toolbar
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
 		//FIXME process the request
 		//bug
 		$vbox = $page->append('vbox'); //XXX for the title level
@@ -646,8 +630,6 @@ class ProjectModule extends MultiContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
 		//process the request
 		if(($error = $this->_submitProcessRelease($engine, $request,
 				$project, $content)) === FALSE)

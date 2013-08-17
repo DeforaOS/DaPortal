@@ -70,6 +70,7 @@ class ProjectContent extends Content
 						$request));
 				$method = '_display'.ucfirst($action);
 				return $this->$method($engine, $request, $page);
+			case 'homepage':
 			default:
 				return parent::display($engine, $request);
 		}
@@ -216,6 +217,29 @@ class ProjectContent extends Content
 		$vbox->append('htmlview', array(
 			'text' => HTML::format($engine, $this->getContent())));
 		return $vbox;
+	}
+
+
+	//ProjectContent::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		$actions = array('bug_list' => _('Bug reports'),
+			'download' => _('Download'),
+			'gallery' => _('Gallery'),
+			'timeline' => _('Timeline'),
+			'browse' => _('Browse'),
+			'homepage' => _('Homepage'));
+
+		$toolbar = parent::displayToolbar($engine, $request);
+		foreach($actions as $k => $v)
+		{
+			$r = $this->getRequest($k);
+			$button = new PageElement('button', array(
+				'stock' => $k, 'request' => $r,
+				'text' => $v));
+			$toolbar->prepend($button);
+		}
+		return $toolbar;
 	}
 
 
