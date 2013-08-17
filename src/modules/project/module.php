@@ -41,15 +41,37 @@ class ProjectModule extends MultiContentModule
 			case 'bug_reply':
 				return $this->callBugReply($engine, $request);
 			case 'browse':
-			case 'bugList':
-			case 'bugReply':
 			case 'download':
 			case 'gallery':
 			case 'timeline':
+				return $this->callDisplay($engine, $request);
+			case 'bugList':
+			case 'bugReply':
 				$action = 'call'.ucfirst($action);
 				return $this->$action($engine, $request);
 		}
 		return parent::call($engine, $request, $internal);
+	}
+
+
+	//static
+	//useful
+	//ProjectModule::attachSCM
+	static public function attachSCM($engine, $name)
+	{
+		global $config;
+
+		if(strchr($name, '/') !== FALSE)
+			return FALSE;
+		$filename = './modules/project/scm/'.$name.'.php';
+		$res = include_once($filename);
+		if($res === FALSE)
+			return FALSE;
+		$name = $name.'SCMProject';
+		$ret = new $name();
+		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret));
+		$ret->attach($engine);
+		return $ret;
 	}
 
 
@@ -133,23 +155,6 @@ class ProjectModule extends MultiContentModule
 		AND bug.content_id=daportal_bug.content_id
 		AND daportal_bug.project_id=daportal_project.project_id
 		AND project.content_id=daportal_project.project_id";
-	protected $project_query_list_downloads = "SELECT
-		daportal_download.content_id AS id, download.title AS title,
-		download.timestamp AS timestamp,
-		daportal_user_enabled.user_id AS user_id, username, groupname,
-		mode
-		FROM daportal_project_download, daportal_content project,
-		daportal_download, daportal_content download,
-		daportal_user_enabled, daportal_group
-		WHERE daportal_project_download.project_id=project.content_id
-		AND daportal_project_download.download_id=daportal_download.content_id
-		AND daportal_download.content_id=download.content_id
-		AND download.user_id=daportal_user_enabled.user_id
-		AND download.group_id=daportal_group.group_id
-		AND project.public='1' AND project.enabled='1'
-		AND download.public='1' AND download.enabled='1'
-		AND project_id=:project_id
-		ORDER BY download.timestamp DESC";
 	//IN:	module_id
 	protected $project_query_list_projects = 'SELECT content_id AS id,
 		daportal_content_public.enabled AS enabled, timestamp,
@@ -175,18 +180,6 @@ class ProjectModule extends MultiContentModule
 		=daportal_user_enabled.user_id
 		AND daportal_content_public.content_id
 		=daportal_project.project_id';
-	protected $project_query_list_screenshots = "SELECT
-		daportal_download.content_id AS id, download.title title
-		FROM daportal_project_screenshot, daportal_content project,
-		daportal_download, daportal_content download
-		WHERE daportal_project_screenshot.project_id=project.content_id
-		AND daportal_project_screenshot.download_id
-		=daportal_download.content_id
-		AND daportal_download.content_id=download.content_id
-		AND project.public='1' AND project.enabled='1'
-		AND download.public='1' AND download.enabled='1'
-		AND project_id=:project_id
-		ORDER BY download.timestamp DESC";
 	protected $project_query_list_projects_user = "SELECT content_id AS id,
 		daportal_content.enabled AS enabled,
 		timestamp, name AS module,
@@ -478,32 +471,6 @@ class ProjectModule extends MultiContentModule
 	}
 
 
-	//ProjectModule::callBrowse
-	protected function callBrowse($engine, $request)
-	{
-		if(($project = $this->_get($engine, $request->getID(),
-				$request->getTitle())) === FALSE)
-			return $this->callDefault($engine);
-		$title = _('Project: ').$project->getTitle();
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'project',
-				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
-		if(($scm = $this->attachSCM($engine, $project->get('scm')))
-				=== FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('An error occurred')));
-		$browse = $scm->browse($engine, $project, $request);
-		if(is_resource($browse))
-			//FIXME set the proper filename
-			return $browse;
-		$page->append($browse);
-		return $page;
-	}
-
-
 	//ProjectModule::callBugList
 	protected function callBugList($engine, $request)
 	{
@@ -661,138 +628,6 @@ class ProjectModule extends MultiContentModule
 	}
 
 
-	//ProjectModule::callDownload
-	protected function callDownload($engine, $request)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_list_downloads;
-
-		if(($project = $this->_get($engine, $request->getID(),
-				$request->getTitle())) === FALSE)
-			return $this->callDefault($engine);
-		$title = _('Project: ').$project->getTitle();
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'project',
-				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
-		//source code
-		if(($scm = $this->attachSCM($engine, $project->get('scm')))
-				!== FALSE
-				&& ($download = $scm->download($engine,
-				$project, $request)) !== FALSE)
-			$page->append($download);
-		//downloads
-		$error = 'Could not list downloads';
-		$args = array('project_id' => $project->getID());
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-		else
-		{
-			$vbox = $page->append('vbox');
-			$vbox->append('title', array('text' => _('Releases')));
-			$columns = array('icon' => '',
-					'filename' => _('Filename'),
-					'owner' => _('Owner'),
-					'group' => _('Group'),
-					'date' => _('Date'),
-					'permissions' => _('Permissions'));
-			$view = $vbox->append('treeview', array(
-					'columns' => $columns));
-			if($this->canUpload($engine, $request, $project))
-			{
-				$toolbar = $view->append('toolbar');
-				$req = new Request($this->name, 'submit',
-					$project->getID(),
-					$project->getTitle(),
-				       	array('type' => 'release'));
-				$link = $toolbar->append('button', array(
-						'stock' => 'new',
-						'request' => $req,
-						'text' => _('New release')));
-			}
-			foreach($res as $r)
-			{
-				$row = $view->append('row');
-				$req = new Request('download', FALSE, $r['id'],
-				       	$r['title']);
-				$icon = Mime::getIcon($engine, $r['title'], 16);
-				$icon = new PageElement('image', array(
-						'source' => $icon));
-				$row->setProperty('icon', $icon);
-				$filename = new PageElement('link', array(
-						'request' => $req,
-						'text' => $r['title']));
-				$row->setProperty('filename', $filename);
-				$req = new Request('user', FALSE, $r['user_id'],
-				       	$r['username']);
-				$username = new PageElement('link', array(
-						'stock' => 'user',
-						'request' => $req,
-						'text' => $r['username']));
-				$row->setProperty('owner', $username);
-				$row->setProperty('group', $r['groupname']);
-				$date = $db->formatDate($engine,
-						$r['timestamp']);
-				$row->setProperty('date', $date);
-				$permissions = Common::getPermissions(
-						$r['mode'], 512);
-				$permissions = new PageElement('label', array(
-						'class' => 'preformatted',
-						'text' => $permissions));
-				$row->setProperty('permissions', $permissions);
-			}
-		}
-		return $page;
-	}
-
-
-	//ProjectModule::callGallery
-	protected function callGallery($engine, $request)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_list_screenshots;
-
-		if(($project = $this->_get($engine, $request->getID(),
-				$request->getTitle())) === FALSE)
-			return $this->callDefault($engine);
-		$title = _('Project: ').$project->getTitle();
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'project',
-				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
-		//screenshots
-		$error = _('Could not list screenshots');
-		$args = array('project_id' => $project->getID());
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-		else
-		{
-			$vbox = $page->append('vbox');
-			$vbox->append('title', array('text' => _('Gallery')));
-			$view = $vbox->append('treeview', array(
-					'view' => 'thumbnails'));
-			foreach($res as $r)
-			{
-				$row = $view->append('row');
-				$req = new Request('download', 'download',
-					$r['id'], $r['title']);
-				$thumbnail = new PageElement('image', array(
-						'request' => $req));
-				$row->setProperty('thumbnail', $thumbnail);
-				$label = new PageElement('link', array(
-						'request' => $req,
-						'text' => $r['title']));
-				$row->setProperty('label', $label);
-			}
-		}
-		return $page;
-	}
-
-
 	//ProjectModule::callSubmitRelease
 	protected function callSubmitRelease($engine, $request)
 	{
@@ -874,29 +709,6 @@ class ProjectModule extends MultiContentModule
 			$content->getTitle());
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_submit_progress); //XXX
-		return $page;
-	}
-
-
-	//ProjectModule::callTimeline
-	protected function callTimeline($engine, $request)
-	{
-		if(($project = $this->_get($engine, $request->getID(),
-				$request->getTitle())) === FALSE)
-			return $this->callDefault($engine);
-		$title = _('Project: ').$project->getTitle();
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'project',
-				'text' => $title));
-		$toolbar = $this->getToolbar($engine, $request, $project);
-		$page->append($toolbar);
-		if(($scm = $this->attachSCM($engine, $project->get('scm')))
-				=== FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('An error occurred')));
-		$timeline = $scm->timeline($engine, $project, $request);
-		$page->append($timeline);
 		return $page;
 	}
 
@@ -1148,26 +960,6 @@ class ProjectModule extends MultiContentModule
 		if(isset($content['synopsis']))
 			$preview->append('label', array('class' => 'bold',
 					'text' => $content->get('synopsis')));
-	}
-
-
-	//useful
-	//ProjectModule::attachSCM
-	protected function attachSCM($engine, $name)
-	{
-		global $config;
-
-		if(strchr($name, '/') !== FALSE)
-			return FALSE;
-		$filename = './modules/'.$this->name.'/scm/'.$name.'.php';
-		$res = include_once($filename);
-		if($res === FALSE)
-			return FALSE;
-		$name = $name.'SCMProject';
-		$ret = new $name();
-		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret));
-		$ret->attach($engine);
-		return $ret;
 	}
 }
 

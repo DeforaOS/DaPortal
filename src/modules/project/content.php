@@ -17,6 +17,7 @@
 
 
 require_once('./system/content.php');
+require_once('./modules/project/module.php'); //XXX
 
 
 //ProjectContent
@@ -52,6 +53,157 @@ class ProjectContent extends Content
 
 
 	//useful
+	//ProjectContent::display
+	public function display($engine, $request)
+	{
+		switch(($action = $request->getAction()))
+		{
+			case 'browse':
+			case 'download':
+			case 'gallery':
+			case 'timeline':
+				$title = _('Project: ').$this->getTitle();
+				$page = new Page(array('title' => $title));
+				$page->append($this->displayTitle($engine,
+						$request));
+				$page->append($this->displayToolbar($engine,
+						$request));
+				$method = '_display'.ucfirst($action);
+				return $this->$method($engine, $request, $page);
+			default:
+				return parent::display($engine, $request);
+		}
+	}
+
+	protected function _displayBrowse($engine, $request, $page)
+	{
+		if(($scm = ProjectModule::attachSCM($engine,
+				$this->get('scm'))) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => _('An error occurred')));
+		$browse = $scm->browse($engine, $this, $request);
+		if(is_resource($browse))
+			//FIXME set the proper filename
+			return $browse;
+		$vbox = $page->append('vbox');
+		$page->append($browse);
+		return $page;
+	}
+
+	protected function _displayDownload($engine, $request, $page)
+	{
+		$db = $engine->getDatabase();
+		$query = $this->project_query_list_downloads;
+
+		$vbox = $page->append('vbox');
+		//source code
+		if(($scm = ProjectModule::attachSCM($engine,
+				$this->get('scm'))) !== FALSE
+				&& ($download = $scm->download($engine,
+				$this, $request)) !== FALSE)
+			$page->append($download);
+		//downloads
+		$error = 'Could not list downloads';
+		$args = array('project_id' => $this->getID());
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		$vbox->append('title', array('text' => _('Releases')));
+		$columns = array('icon' => '', 'filename' => _('Filename'),
+				'owner' => _('Owner'), 'group' => _('Group'),
+				'date' => _('Date'),
+				'permissions' => _('Permissions'));
+		$view = $vbox->append('treeview', array(
+				'columns' => $columns));
+		if($this->canUpload($engine, $request))
+		{
+			$toolbar = $view->append('toolbar');
+			$req = $this->getRequest('submit', array(
+				'type' => 'release'));
+			$link = $toolbar->append('button', array(
+					'stock' => 'new',
+					'request' => $req,
+					'text' => _('New release')));
+		}
+		foreach($res as $r)
+		{
+			$row = $view->append('row');
+			$req = new Request('download', FALSE, $r['id'],
+				$r['title']);
+			$icon = Mime::getIcon($engine, $r['title'], 16);
+			$icon = new PageElement('image', array(
+					'source' => $icon));
+			$row->setProperty('icon', $icon);
+			$filename = new PageElement('link', array(
+					'request' => $req,
+					'text' => $r['title']));
+			$row->setProperty('filename', $filename);
+			$req = new Request('user', FALSE, $r['user_id'],
+				$r['username']);
+			$username = new PageElement('link', array(
+					'stock' => 'user',
+					'request' => $req,
+					'text' => $r['username']));
+			$row->setProperty('owner', $username);
+			$row->setProperty('group', $r['groupname']);
+			$date = $db->formatDate($engine, $r['timestamp']);
+			$row->setProperty('date', $date);
+			$permissions = Common::getPermissions($r['mode'], 512);
+			$permissions = new PageElement('label', array(
+					'class' => 'preformatted',
+					'text' => $permissions));
+			$row->setProperty('permissions', $permissions);
+		}
+		return $page;
+	}
+
+	protected function _displayGallery($engine, $request, $page)
+	{
+		$db = $engine->getDatabase();
+		$query = $this->project_query_list_screenshots;
+
+		$vbox = $page->append('vbox');
+		//screenshots
+		$error = _('Could not list screenshots');
+		$args = array('project_id' => $this->getID());
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		$vbox = $page->append('vbox');
+		$vbox->append('title', array('text' => _('Gallery')));
+		$view = $vbox->append('treeview', array(
+				'view' => 'thumbnails'));
+		foreach($res as $r)
+		{
+			$row = $view->append('row');
+			$req = new Request('download', 'download', $r['id'],
+				$r['title']);
+			$thumbnail = new PageElement('image', array(
+					'request' => $req));
+			$row->setProperty('thumbnail', $thumbnail);
+			$label = new PageElement('link', array(
+					'request' => $req,
+					'text' => $r['title']));
+			$row->setProperty('label', $label);
+		}
+		return $page;
+	}
+
+	protected function _displayTimeline($engine, $request, $page)
+	{
+		$vbox = $page->append('vbox');
+		if(($scm = ProjectModule::attachSCM($engine,
+				$this->get('scm'))) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => _('An error occurred')));
+		$timeline = $scm->timeline($engine, $this, $request);
+		$vbox->append($timeline);
+		return $page;
+	}
+
+
 	//ProjectContent::displayContent
 	public function displayContent($engine, $request)
 	{
@@ -172,6 +324,37 @@ class ProjectContent extends Content
 		=daportal_user_enabled.user_id
 		AND daportal_content_public.content_id
 		=daportal_project.project_id';
+	//IN:	project_id
+	protected $project_query_list_downloads = "SELECT
+		daportal_download.content_id AS id, download.title AS title,
+		download.timestamp AS timestamp,
+		daportal_user_enabled.user_id AS user_id, username, groupname,
+		mode
+		FROM daportal_project_download, daportal_content project,
+		daportal_download, daportal_content download,
+		daportal_user_enabled, daportal_group
+		WHERE daportal_project_download.project_id=project.content_id
+		AND daportal_project_download.download_id=daportal_download.content_id
+		AND daportal_download.content_id=download.content_id
+		AND download.user_id=daportal_user_enabled.user_id
+		AND download.group_id=daportal_group.group_id
+		AND project.public='1' AND project.enabled='1'
+		AND download.public='1' AND download.enabled='1'
+		AND project_id=:project_id
+		ORDER BY download.timestamp DESC";
+	//IN:	project_id
+	protected $project_query_list_screenshots = "SELECT
+		daportal_download.content_id AS id, download.title title
+		FROM daportal_project_screenshot, daportal_content project,
+		daportal_download, daportal_content download
+		WHERE daportal_project_screenshot.project_id=project.content_id
+		AND daportal_project_screenshot.download_id
+		=daportal_download.content_id
+		AND daportal_download.content_id=download.content_id
+		AND project.public='1' AND project.enabled='1'
+		AND download.public='1' AND download.enabled='1'
+		AND project_id=:project_id
+		ORDER BY download.timestamp DESC";
 	//IN:	module_id
 	//	user_id
 	//	content_id
