@@ -303,14 +303,6 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::getToolbar
-	protected function getToolbar($engine, $request = FALSE,
-			$content = FALSE)
-	{
-		return new PageElement('toolbar');
-	}
-
-
 	//forms
 	//ContentModule::formSubmit
 	protected function formSubmit($engine, $request)
