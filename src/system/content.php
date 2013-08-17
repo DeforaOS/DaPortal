@@ -118,10 +118,11 @@ class Content
 				return TRUE;
 			if($this->configGet('anonymous'))
 				return TRUE;
+			$error = _('Permission denied');
 			return FALSE;
 		}
-		$error = '';
 		//verify that the fields are set
+		$error = '';
 		foreach($this->fields as $k => $v)
 			if($request->getParameter($k) === FALSE)
 				$error .= "$v must be set\n";
