@@ -151,6 +151,9 @@
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-home.png');
 }
 
+.stock24.homepage {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-home.png');
+
 .stock24.info {
 	background-image:	url('gnome-icon-theme/24x24/status/stock_dialog-info.png');
 }
