@@ -153,6 +153,7 @@
 
 .stock32.homepage {
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-home.png');
+}
 
 .stock32.info {
 	background-image:	url('gnome-icon-theme/32x32/status/stock_dialog-info.png');

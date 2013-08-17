@@ -153,6 +153,7 @@
 
 .stock48.homepage {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-home.png');
+}
 
 .stock48.info {
 	background-image:	url('gnome-icon-theme/48x48/status/stock_dialog-info.png');
