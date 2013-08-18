@@ -885,7 +885,8 @@ abstract class ContentModule extends Module
 	protected function _updateProcess($engine, $request, &$content)
 	{
 		//verify the request
-		if($request->getParameter('_submit') === FALSE)
+		if($request === FALSE
+				|| $request->getParameter('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -898,8 +899,7 @@ abstract class ContentModule extends Module
 
 	protected function _updateSuccess($engine, $request, $content, $page)
 	{
-		$r = new Request($this->name, FALSE, $content->getID(),
-			$content->getTitle());
+		$r = $content->getRequest();
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_update_progress);
 		return $page;
