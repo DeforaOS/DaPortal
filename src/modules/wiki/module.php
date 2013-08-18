@@ -66,24 +66,6 @@ class WikiModule extends ContentModule
 
 	//protected
 	//methods
-	//accessors
-	//WikiModule::canUpdate
-	protected function canUpdate($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		global $config;
-		$cred = $engine->getCredentials();
-
-		if($cred->getUserID() > 0)
-			return TRUE;
-		//anonymous users may be allowed to edit the wiki
-		if($config->get('module::'.$this->name, 'anonymous'))
-			return TRUE;
-		$error = _('Permission denied');
-		return FALSE;
-	}
-
-
 	//calls
 	//WikiModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
