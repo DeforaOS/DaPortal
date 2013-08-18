@@ -268,6 +268,20 @@ class Content
 	}
 
 
+	//Content::setContent
+	public function setContent($content)
+	{
+		$this->content = $content;
+	}
+
+
+	//Content::setTitle
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+
 	//useful
 	//Content::delete
 	public function delete($engine)
@@ -429,13 +443,23 @@ class Content
 	//Content::formPreview
 	public function formPreview($engine, $request)
 	{
-		$class = $this->class;
 		$properties = $this->properties;
 
 		$content = clone $this;
 		foreach($this->fields as $k => $v)
 			if(($p = $request->getParameter($k)) !== FALSE)
-				$content->set($k, $p);
+				switch($k)
+				{
+					case 'content':
+						$this->setContent($p);
+						break;
+					case 'title':
+						$this->setTitle($p);
+						break;
+					default:
+						$content->set($k, $p);
+						break;
+				}
 		$vbox = new PageElement('vbox');
 		$vbox->append('title', array('stock' => 'preview',
 				'text' => _('Preview: ').$content->getTitle()));
