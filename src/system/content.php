@@ -435,7 +435,7 @@ class Content
 		$content = clone $this;
 		foreach($this->fields as $k => $v)
 			if(($p = $request->getParameter($k)) !== FALSE)
-				$content->properties[$k] = $p;
+				$content->set($k, $p);
 		$vbox = new PageElement('vbox');
 		$vbox->append('title', array('stock' => 'preview',
 				'text' => _('Preview: ').$content->getTitle()));
