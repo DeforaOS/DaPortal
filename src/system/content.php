@@ -432,13 +432,13 @@ class Content
 		$class = $this->class;
 		$properties = $this->properties;
 
+		$content = clone $this;
 		foreach($this->fields as $k => $v)
 			if(($p = $request->getParameter($k)) !== FALSE)
-				$properties[$k] = $p;
+				$content->properties[$k] = $p;
 		$vbox = new PageElement('vbox');
-		$content = new $class($engine, $this->module, $properties);
 		$vbox->append('title', array('stock' => 'preview',
-			'text' => _('Preview: ').$content->getTitle()));
+				'text' => _('Preview: ').$content->getTitle()));
 		$vbox->append($content->displayMetadata($engine, $request));
 		$vbox->append($content->displayContent($engine, $request));
 		return $vbox;
