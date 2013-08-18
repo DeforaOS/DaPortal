@@ -72,8 +72,8 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::escape
 	protected function escape($text)
 	{
-		$from = array('<', '>', '&');
-		$to = array('&lt;', '&gt;', '&amp;');
+		$from = array('&', '<', '>');
+		$to = array('&amp;', '&lt;', '&gt;');
 
 		return str_replace($from, $to, $text);
 	}
@@ -557,6 +557,7 @@ class HTMLFormat extends FormatElements
 	protected function renderHtmledit($e)
 	{
 		require_once('./system/html.php');
+		$class = $e->getProperty('class');
 		$id1 = $e->getProperty('id');
 		$id2 = uniqid();
 
@@ -576,8 +577,10 @@ class HTMLFormat extends FormatElements
 			$this->tagClose('script');
 		}
 		$this->renderTabs();
-		$this->tag('textarea', FALSE, $id1, array(
-				'name' => $e->getProperty('name')), $text);
+		$this->tagOpen('textarea', $class, $id1, array(
+				'name' => $e->getProperty('name')));
+		print($this->escape($text));
+		$this->tagClose('textarea');
 		if($this->javascript)
 		{
 			$this->renderTabs();
