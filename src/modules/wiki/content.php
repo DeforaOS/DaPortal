@@ -191,7 +191,11 @@ class WikiContent extends Content
 	protected function getMarkup($revision = FALSE)
 	{
 		if($this->getID() === FALSE)
+		{
+			if(($content = $this->getContent()) !== FALSE)
+				return $content;
 			return '';
+		}
 		if($revision === FALSE && $this->markup !== FALSE)
 			return $this->markup;
 		if(($root = WikiContent::getRoot()) === FALSE)
