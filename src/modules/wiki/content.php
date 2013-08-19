@@ -40,7 +40,7 @@ class WikiContent extends Content
 
 
 	//accessors
-	//Content::canSubmit
+	//WikiContent::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
@@ -55,6 +55,13 @@ class WikiContent extends Content
 				|| strpos($title, '\\') !== FALSE)
 			return FALSE;
 		return TRUE;
+	}
+
+
+	//WikiContent::getContent
+	public function getContent($engine)
+	{
+		return $this->getMarkup($engine);
 	}
 
 
@@ -75,7 +82,7 @@ class WikiContent extends Content
 
 		$vbox = new PageElement('vbox');
 		$vbox->append('htmlview', array(
-			'text' => $this->getMarkup($revision)));
+			'text' => $this->getMarkup($engine, $revision)));
 		if($this->getID() !== FALSE)
 		{
 			$vbox->append('title', array('class' => 'revisions',
@@ -166,12 +173,12 @@ class WikiContent extends Content
 	//WikiContent::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
+		$content = $this->getContent($engine);
 		$length = $this->preview_length;
 
 		//FIXME verify that it doesn't break (or use plain text)
-		$text = ($length <= 0 || strlen($this->getContent()) < $length)
-			? $this->getContent()
-			: substr($this->getContent(), 0, $length).'...';
+		$text = ($length <= 0 || strlen($content) < $length)
+			? $content : substr($content, 0, $length).'...';
 		return new PageElement('htmlview', array('text' => $text));
 	}
 
@@ -295,7 +302,7 @@ class WikiContent extends Content
 	//methods
 	//accessors
 	//WikiContent::getMarkup
-	protected function getMarkup($revision = FALSE)
+	protected function getMarkup($engine, $revision = FALSE)
 	{
 		$module = $this->getModule()->getName();
 

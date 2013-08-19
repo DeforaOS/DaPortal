@@ -215,7 +215,8 @@ class ProjectContent extends Content
 			$vbox->append('label', array('class' => 'bold',
 					'text' => $text));
 		$vbox->append('htmlview', array(
-			'text' => HTML::format($engine, $this->getContent())));
+			'text' => HTML::format($engine,
+				$this->getContent($engine))));
 		return $vbox;
 	}
 
@@ -268,7 +269,7 @@ class ProjectContent extends Content
 		$label = $vbox->append('label', array(
 				'text' => _('Description: ')));
 		if(($value = $request->getParameter('content')) === FALSE)
-			$value = $this->getContent();
+			$value = $this->getContent($engine);
 		$label->append('textview', array('name' => 'content',
 				'value' => $value));
 		//SCM

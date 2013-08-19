@@ -42,7 +42,7 @@ class ArticleContent extends Content
 	//ArticleContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		$text = HTML::format($engine, $this->getContent());
+		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
 	}
 
@@ -50,11 +50,12 @@ class ArticleContent extends Content
 	//ArticleContent::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
+		$content = $this->getContent($engine);
 		$length = $this->preview_length;
 
-		$text = ($length <= 0 || strlen($this->getContent()) < $length)
-			? $this->getContent()
-			: substr($this->getContent(), 0, $length).'...';
+		$text = ($length <= 0 || strlen($content) < $length)
+			? $content
+			: substr($content, 0, $length).'...';
 		$text = HTML::format($engine, $text);
 		return new PageElement('htmlview', array('text' => $text));
 	}

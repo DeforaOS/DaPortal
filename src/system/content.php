@@ -170,7 +170,7 @@ class Content
 
 
 	//Content::getContent
-	public function getContent()
+	public function getContent($engine)
 	{
 		return $this->content;
 	}
@@ -327,7 +327,7 @@ class Content
 	//Content::displayContent
 	public function displayContent($engine, $request)
 	{
-		$text = $this->getContent();
+		$text = $this->getContent($engine);
 
 		return new PageElement('label', array('text' => $text));
 	}
@@ -433,7 +433,7 @@ class Content
 		$label = $vbox->append('label', array(
 				'text' => _('Content: ')));
 		if(($value = $request->getParameter('content')) === FALSE)
-			$value = $this->getContent();
+			$value = $this->getContent($engine);
 		$label->append('textview', array('name' => 'content',
 				'value' => $value));
 		return $vbox;
