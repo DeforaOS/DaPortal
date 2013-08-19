@@ -451,10 +451,9 @@ class Content
 				switch($k)
 				{
 					case 'content':
-						$this->setContent($p);
-						break;
 					case 'title':
-						$this->setTitle($p);
+						$method = 'set'.ucfirst($k);
+						$content->$method($p);
 						break;
 					default:
 						$content->set($k, $p);
