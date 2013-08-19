@@ -101,6 +101,9 @@ class HTML
 				.xml_get_current_column_number($html->parser);
 			$engine->log('LOG_DEBUG', $error);
 		}
+		//close the remaining tags
+		while(($tag = array_pop($html->stack)) != NULL)
+			$html->content .= "</$tag>";
 		return $html->content;
 	}
 
@@ -142,6 +145,7 @@ class HTML
 		if($tag == 'br' || $tag == 'img')
 			$this->content .= '/';
 		$this->content .= '>';
+		$this->stack[] = $tag;
 	}
 
 	protected function _filterElementEnd($parser, $name)
@@ -162,6 +166,13 @@ class HTML
 		if($tag == 'br' || $tag == 'img')
 			return;
 		$this->content .= "</$tag>";
+		//remember which tags were closed
+		for($i = count($this->stack) - 1; $i >= 0; $i--)
+			if($this->stack[$i] == $tag)
+			{
+				unset($this->stack[$i]);
+				break;
+			}
 	}
 
 
@@ -271,6 +282,7 @@ class HTML
 	protected $charset = FALSE;
 	protected $parser;
 	protected $content = '';
+	protected $stack = array();
 	protected $valid = TRUE;
 	static protected $blacklist = array('script', 'style', 'title');
 	protected $blacklist_level = 0;
