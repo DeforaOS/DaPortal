@@ -21,29 +21,66 @@ class HTML
 {
 	//public
 	//methods
+	//essential
+	//HTML::HTML
+	protected function __construct($charset = FALSE)
+	{
+		global $config;
+
+		//for escaping
+		if(!defined('ENT_HTML401'))
+			define('ENT_HTML401', 0);
+		//for encoding
+		if($charset === FALSE)
+			$charset = $config->get('defaults', 'charset');
+		$this->charset = $charset;
+		switch(strtolower($charset))
+		{
+			case 'ascii':
+				$this->parser = xml_parser_create('US-ASCII');
+				break;
+			case 'iso-8859-1':
+			case 'iso-8859-15':
+				$this->parser = xml_parser_create('ISO-8859-1');
+				break;
+			case 'utf-8':
+				$this->parser = xml_parser_create('UTF-8');
+				break;
+			default:
+				$this->parser = xml_parser_create('');
+				break;
+		}
+	}
+
+
+	//HTML::~HTML
+	public function __destruct()
+	{
+		xml_parser_free($this->parser);
+	}
+
+
 	//static
 	//useful
 	//HTML::filter
-	static public function filter($engine, $content)
+	static public function filter($engine, $content, $whitelist = FALSE)
 	{
-		$start = array('HTML', '_filterElementStart');
-		$end = array('HTML', '_filterElementEnd');
-		$filter = array('HTML', '_filterCharacterData');
+		$html = new HTML;
+		$start = array($html, '_filterElementStart');
+		$end = array($html, '_filterElementEnd');
+		$filter = array($html, '_filterCharacterData');
 		$from = array('<br>', '<hr>');
 		$to = array('<br/>', '<hr/>');
 
-		$parser = HTML::xmlParser();
-		if(xml_set_element_handler($parser, $start, $end) !== TRUE)
-		{
-			xml_parser_free($parser);
+		if($whitelist !== FALSE)
+			$html->whitelist = $whitelist;
+		if(xml_set_element_handler($html->parser, $start, $end)
+				!== TRUE)
 			return ''; //XXX report error
-		}
-		xml_set_character_data_handler($parser, $filter);
-		HTML::$blacklist_level = 0;
-		HTML::$content = '';
+		xml_set_character_data_handler($html->parser, $filter);
 		//give it more chances to validate
 		$content = str_ireplace($from, $to, $content);
-		switch(strtolower(HTML::$charset))
+		switch(strtolower($html->charset))
 		{
 			case 'iso-8859-1':
 			case 'iso-8859-15':
@@ -55,77 +92,76 @@ class HTML
 		if(strncmp('<!DOCTYPE', $content, 9) != 0
 				&& strncmp('<?xml', $content, 4) != 0)
 			$content = '<root>'.$content.'</root>';
-		if(($ret = xml_parse($parser, $content, TRUE)) != 1)
+		if(($ret = xml_parse($html->parser, $content, TRUE)) != 1)
 		{
-			$error = xml_error_string(xml_get_error_code($parser))
-				.' at line '
-				.xml_get_current_line_number($parser)
+			$error = xml_error_string(xml_get_error_code(
+					$html->parser)).' at line '
+				.xml_get_current_line_number($html->parser)
 				.', column '
-				.xml_get_current_column_number($parser);
+				.xml_get_current_column_number($html->parser);
 			$engine->log('LOG_DEBUG', $error);
 		}
-		xml_parser_free($parser);
-		return HTML::$content;
+		return $html->content;
 	}
 
-	static protected function _filterCharacterData($parser, $data)
+	protected function _filterCharacterData($parser, $data)
 	{
 		//skip the contents of blacklisted tags
-		if(HTML::$blacklist_level > 0)
+		if($this->blacklist_level > 0)
 			return;
-		HTML::$content .= htmlspecialchars($data, ENT_NOQUOTES);
+		$this->content .= htmlspecialchars($data, ENT_NOQUOTES);
 	}
 
-	static protected function _filterElementStart($parser, $name,
+	protected function _filterElementStart($parser, $name,
 			$attributes)
 	{
 		$tag = strtolower($name);
 		//skip the contents of blacklisted tags
-		if(HTML::$blacklist_level > 0)
-			return HTML::$blacklist_level++;
+		if($this->blacklist_level > 0)
+			return $this->blacklist_level++;
 		if(in_array($tag, HTML::$blacklist))
 		{
-			HTML::$blacklist_level = 1;
+			$this->blacklist_level = 1;
 			return;
 		}
 		//output whitelisted tags and attributes
-		if(!isset(HTML::$whitelist[$tag]))
+		if(!isset($this->whitelist[$tag]))
 			return;
-		HTML::$content .= "<$tag";
-		$a = HTML::$whitelist[$tag];
+		$this->content .= "<$tag";
+		$a = $this->whitelist[$tag];
 		foreach($attributes as $k => $v)
 		{
 			$attr = strtolower($k);
 			if(!in_array($attr, $a))
 				continue;
-			HTML::$content .= ' '.$attr.'="'
+			$this->content .= ' '.$attr.'="'
 				.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401,
-						HTML::$charset).'"';
+						$this->charset).'"';
 		}
 		//close the <br> and <img> tags directly
 		if($tag == 'br' || $tag == 'img')
-			HTML::$content .= '/';
-		HTML::$content .= '>';
+			$this->content .= '/';
+		$this->content .= '>';
 	}
 
-	static protected function _filterElementEnd($parser, $name)
+	protected function _filterElementEnd($parser, $name)
 	{
 		$tag = strtolower($name);
 		//skip the contents of blacklisted tags
-		if(HTML::$blacklist_level > 1)
-			return HTML::$blacklist_level--;
-		if(HTML::$blacklist_level == 1 && in_array($tag,
+		if($this->blacklist_level > 1)
+			return $this->blacklist_level--;
+		if($this->blacklist_level == 1 && in_array($tag,
 				HTML::$blacklist))
 		{
-			HTML::$blacklist_level = 0;
+			$this->blacklist_level = 0;
 			return;
 		}
-		if(!isset(HTML::$whitelist[$tag]))
+		if(!isset($this->whitelist[$tag]))
 			return;
 		//the <br> and <img> tags were already closed
 		if($tag == 'br' || $tag == 'img')
 			return;
-		HTML::$content .= "</$tag>";
+		$this->content .= "</$tag>";
 	}
 
 
@@ -179,17 +215,14 @@ class HTML
 	//HTML::validate
 	static public function validate($engine, $content)
 	{
-		$parser = HTML::xmlParser();
-		if(xml_set_element_handler($parser,
-					array('HTML', '_validateElementStart'),
-					array('HTML', '_validateElementEnd'))
+		$html = new HTML;
+		$start = array($html, '_validateElementStart');
+		$end = array($html, '_validateElementEnd');
+
+		if(xml_set_element_handler($html->parser, $start, $end)
 				!== TRUE)
-		{
-			xml_parser_free($parser);
 			return FALSE;
-		}
-		HTML::$valid = TRUE;
-		switch(strtolower(HTML::$charset))
+		switch(strtolower($html->charset))
 		{
 			case 'iso-8859-1':
 			case 'iso-8859-15':
@@ -197,51 +230,51 @@ class HTML
 				$content = utf8_encode($content);
 				break;
 		}
-		if(($ret = xml_parse($parser, $content, TRUE)) != 1)
+		if(($ret = xml_parse($html->parser, $content, TRUE)) != 1)
 		{
-			$error = xml_error_string(xml_get_error_code($parser))
-				.' at line '
-				.xml_get_current_line_number($parser)
+			$error = xml_error_string(xml_get_error_code(
+					$html->parser)).' at line '
+				.xml_get_current_line_number($html->parser)
 				.', column '
-				.xml_get_current_column_number($parser);
+				.xml_get_current_column_number($html->parser);
 			$engine->log('LOG_DEBUG', $error);
 		}
-		xml_parser_free($parser);
-		return ($ret == 1) ? HTML::$valid : FALSE;
+		return ($ret == 1) ? $html->valid : FALSE;
 	}
 
-	static protected function _validateElementStart($parser, $name,
+	protected function _validateElementStart($parser, $name,
 			$attributes)
 	{
 		//XXX report errors
 		$tag = strtolower($name);
-		if(!isset(HTML::$whitelist[$tag]))
+		if(!isset($this->whitelist[$tag]))
 		{
-			HTML::$valid = FALSE;
+			$this->valid = FALSE;
 			return;
 		}
-		$a = HTML::$whitelist[$tag];
+		$a = $this->whitelist[$tag];
 		foreach($attributes as $k => $v)
 			if(!in_array(strtolower($k), $a))
 			{
-				HTML::$valid = FALSE;
+				$this->valid = FALSE;
 				return;
 			}
 	}
 
-	static protected function _validateElementEnd($parser, $name)
+	protected function _validateElementEnd($parser, $name)
 	{
 	}
 
 
 	//protected
 	//properties
-	static protected $charset = FALSE;
-	static protected $content;
-	static protected $valid;
+	protected $charset = FALSE;
+	protected $parser;
+	protected $content = '';
+	protected $valid = TRUE;
 	static protected $blacklist = array('script', 'style', 'title');
-	static protected $blacklist_level = 0;
-	static protected $whitelist = array(
+	protected $blacklist_level = 0;
+	protected $whitelist = array(
 		'a' => array('href', 'name', 'rel', 'title'),
 		'acronym' => array('class'),
 		'b' => array('class'),
@@ -276,35 +309,6 @@ class HTML
 		'tt' => array('class'),
 		'u' => array('class'),
 		'ul' => array('class'));
-
-
-	//methods
-	//helpers
-	//HTML::xmlParser
-	static protected function xmlParser($charset = FALSE)
-	{
-		global $config;
-
-		//for escaping
-		if(!defined('ENT_HTML401'))
-			define('ENT_HTML401', 0);
-		//for encoding
-		if(HTML::$charset === FALSE)
-			HTML::$charset = $config->get('defaults', 'charset');
-		if($charset === FALSE)
-			$charset = HTML::$charset;
-		switch(strtolower($charset))
-		{
-			case 'ascii':
-				return xml_parser_create('US-ASCII');
-			case 'iso-8859-1':
-			case 'iso-8859-15':
-				return xml_parser_create('ISO-8859-1');
-			case 'utf-8':
-				return xml_parser_create('UTF-8');
-		}
-		return xml_parser_create('');
-	}
 }
 
 ?>
