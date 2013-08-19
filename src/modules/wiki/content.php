@@ -186,7 +186,15 @@ class WikiContent extends Content
 	//WikiContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
-		return parent::save($engine, $request, $error);
+		$database = $engine->getDatabase();
+
+		if($database->transactionBegin($engine) === FALSE)
+			return FALSE;
+		if(($ret = parent::save($engine, $request, $error)) === FALSE)
+			$database->transactionRollback($engine);
+		else if($database->transactionCommit($engine) === FALSE)
+			return FALSE;
+		return $ret;
 	}
 
 	protected function _saveInsert($engine, $request, &$error)
