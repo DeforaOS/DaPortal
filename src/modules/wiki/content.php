@@ -59,6 +59,28 @@ class WikiContent extends Content
 	}
 
 
+	//WikiContent::canUpdate
+	public function canUpdate($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canUpdate($engine, $request, $error) === FALSE)
+			return FALSE;
+		//verify the title
+		$title = ($request !== FALSE)
+			? $request->getParameter('title') : FALSE;
+		if($title === FALSE)
+			$title = $this->getTitle();
+		//it is forbidden to change the title
+		$error = _('The title is not allowed to change');
+		if($title != $this->getTitle())
+			return FALSE;
+		$error = _('The title must not contain slash characters');
+		if(strpos($title, '/') !== FALSE
+				|| strpos($title, '\\') !== FALSE)
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//WikiContent::getContent
 	public function getContent($engine)
 	{
@@ -264,24 +286,46 @@ class WikiContent extends Content
 
 	protected function _saveUpdate($engine, $request, &$error)
 	{
+		$cred = $engine->getCredentials();
+		$username = $cred->getUsername();
 		$module = $this->getModule()->getName();
 
 		$error = _('Could not find the wiki repository');
 		if(($root = WikiContent::getRoot($module)) === FALSE)
 			return FALSE;
-		//it is forbidden to change the title
-		if(($title = $request->getParameter('title')) !== FALSE
-				&& $title != $this->getTitle())
-		{
-			$error = _('The title is not allowed to change');
+		$file = $root.'/'.$this->getTitle();
+		$error = _('No wiki page was found with this name');
+		if(realpath($file.',v') === FALSE)
 			return FALSE;
-		}
+		//translate the content
+		//XXX remains even in case of failure
+		$this->setContent($engine, $request->getParameter('content'));
 		//update the content
-		if(parent::_saveUpdate($engine, $request, $error) === FALSE)
+		if(parent::_saveUpdate($engine, FALSE, $error) === FALSE)
 			return FALSE;
-		//FIXME implement
-		$error = _('Not yet implemented');
-		return FALSE;
+		$error = _('Could not create the wiki page');
+		if(($fp = fopen($file, 'x')) === FALSE)
+			return FALSE;
+		$message = $request->getParameter('message');
+		$emessage = ($message !== FALSE && strlen($message) > 0)
+			? ' -m'.escapeshellarg($message) : '';
+		$eusername = escapeshellarg($username);
+		$efile = escapeshellarg($file);
+		$cmd = 'rcs -q -l '.$efile;
+		exec($cmd, $rcs, $res);
+		$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
+		$res = -1;
+		if(fwrite($fp, $this->markup) !== FALSE)
+		{
+			$error = _('Could not write the wiki page');
+			if(fclose($fp) !== FALSE)
+				exec($cmd, $rcs, $res);
+		}
+		else
+			fclose($fp);
+		if(file_exists($file))
+			unlink($file);
+		return ($res == 0) ? TRUE : FALSE;
 	}
 
 
