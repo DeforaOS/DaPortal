@@ -42,7 +42,7 @@ class FileDownloadContent extends DownloadContent
 	public function displayContent($engine, $request)
 	{
 		$root = DownloadContent::getRoot();
-		$text = $this->getContent();
+		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
 		//output the file details
