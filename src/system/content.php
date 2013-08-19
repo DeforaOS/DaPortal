@@ -534,11 +534,10 @@ class Content
 		$ret = ($this->id !== FALSE)
 			? $this->_saveUpdate($engine, $request, $error)
 			: $this->_saveInsert($engine, $request, $error);
-		if($ret === FALSE)
-			return FALSE;
-		if($request !== FALSE)
-			foreach($this->fields as $f)
-				$this->set($f, $request->getParameter($f));
+		if($ret === FALSE || $request === FALSE)
+			return $ret;
+		foreach($this->fields as $f)
+			$this->set($f, $request->getParameter($f));
 		return $ret;
 	}
 
@@ -570,9 +569,7 @@ class Content
 			return FALSE;
 		$this->id = $database->getLastID($engine, 'daportal_content',
 				'content_id');
-		if($id == $this->id)
-			return FALSE;
-		return ($this->id !== FALSE) ? TRUE : FALSE;
+		return ($id != $this->id) && ($this->id !== FALSE);
 	}
 
 	protected function _saveUpdate($engine, $request, &$error)
@@ -612,7 +609,7 @@ class Content
 					$this->$k = $v;
 					break;
 			}
-		return $ret;
+		return TRUE;
 	}
 
 
