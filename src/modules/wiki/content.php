@@ -68,7 +68,8 @@ class WikiContent extends Content
 	//WikiContent::setContent
 	public function setContent($engine, $content)
 	{
-		parent::setContent(HTML::filter($engine, $content, array()));
+		parent::setContent($engine,
+				HTML::filter($engine, $content, array()));
 		$this->markup = HTML::filter($engine, $content);
 	}
 
