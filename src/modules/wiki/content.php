@@ -66,11 +66,10 @@ class WikiContent extends Content
 
 
 	//WikiContent::setContent
-	public function setContent($content)
+	public function setContent($engine, $content)
 	{
-		//XXX really wants an Engine instance
-		parent::setContent(HTML::filter(FALSE, $content, array()));
-		$this->markup = HTML::filter(FALSE, $content);
+		parent::setContent(HTML::filter($engine, $content, array()));
+		$this->markup = HTML::filter($engine, $content);
 	}
 
 
@@ -206,7 +205,7 @@ class WikiContent extends Content
 			return FALSE;
 		//translate the content
 		//XXX remains even in case of failure
-		$this->setContent($request->getParameter('content'));
+		$this->setContent($engine, $request->getParameter('content'));
 		//insert the content
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
@@ -319,7 +318,7 @@ class WikiContent extends Content
 			return FALSE;
 		$rcs = implode("\n", $rcs);
 		if($revision === FALSE)
-			$this->setContent($rcs);
+			$this->setContent($engine, $rcs);
 		return $rcs;
 	}
 

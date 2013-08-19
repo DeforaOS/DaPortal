@@ -269,7 +269,7 @@ class Content
 
 
 	//Content::setContent
-	public function setContent($content)
+	public function setContent($engine, $content)
 	{
 		$this->content = $content;
 	}
