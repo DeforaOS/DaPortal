@@ -447,18 +447,22 @@ class Content
 
 		$content = clone $this;
 		foreach($this->fields as $k => $v)
-			if(($p = $request->getParameter($k)) !== FALSE)
-				switch($k)
-				{
-					case 'content':
-					case 'title':
-						$method = 'set'.ucfirst($k);
-						$content->$method($p);
-						break;
-					default:
-						$content->set($k, $p);
-						break;
-				}
+		{
+			if(($p = $request->getParameter($k)) === FALSE)
+				continue;
+			switch($k)
+			{
+				case 'content':
+					$content->setContent($engine, $p);
+					break;
+				case 'title':
+					$content->setTitle($p);
+					break;
+				default:
+					$content->set($k, $p);
+					break;
+			}
+		}
 		$vbox = new PageElement('vbox');
 		$vbox->append('title', array('stock' => 'preview',
 				'text' => _('Preview: ').$content->getTitle()));
