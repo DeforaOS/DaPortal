@@ -39,6 +39,34 @@ class WikiContent extends Content
 	}
 
 
+	//accessors
+	//Content::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		//verify the title
+		$error = _('The title must be set and not empty');
+		if(($title = $this->getTitle()) === FALSE
+				|| strlen($title) == 0)
+			return FALSE;
+		$error = _('The title must not contain slash characters');
+		if(strpos($title, '/') !== FALSE
+				|| strpos($title, '\\') !== FALSE)
+			return FALSE;
+		return TRUE;
+	}
+
+
+	//WikiContent::setContent
+	public function setContent($content)
+	{
+		//XXX really wants an Engine instance
+		parent::setContent(HTML::filter(FALSE, $content, array()));
+		$this->markup = HTML::filter(FALSE, $content);
+	}
+
+
 	//useful
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
@@ -61,9 +89,10 @@ class WikiContent extends Content
 
 	protected function _contentRevisions($engine, $request)
 	{
+		$module = $this->getModule()->getName();
 		$error = _('Could not list revisions');
 
-		if(($root = WikiContent::getRoot()) === FALSE
+		if(($root = WikiContent::getRoot($module)) === FALSE
 				|| strpos($this->getTitle(), '/') !== FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
@@ -147,14 +176,92 @@ class WikiContent extends Content
 	}
 
 
+	//WikiContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		return parent::save($engine, $request, $error);
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$module = $this->getModule()->getName();
+		$cred = $engine->getCredentials();
+		$username = $cred->getUsername();
+		$content = $request->getParameter('content');
+
+		$error = _('Could not find the wiki repository');
+		if(($root = WikiContent::getRoot($module)) === FALSE)
+			return FALSE;
+		//XXX check first if this title already exists for this module
+		$file = $root.'/'.$this->getTitle();
+		$error = _('A wiki page already exists with this name');
+		if(file_exists($file.',v'))
+			return FALSE;
+		//translate the content
+		//XXX remains even in case of failure
+		$this->setContent($request->getParameter('content'));
+		//insert the content
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
+			return FALSE;
+		$error = _('Could not create the wiki page');
+		if(($fp = fopen($file, 'x')) === FALSE)
+			return FALSE;
+		$message = $request->getParameter('message');
+		$emessage = ($message !== FALSE && strlen($message) > 0)
+			? ' -m'.escapeshellarg($message) : '';
+		$eusername = escapeshellarg($username);
+		$efile = escapeshellarg($file);
+		$cmd = 'ci -q '.$emessage.' -w'.$eusername.' '.$efile;
+		$res = -1;
+		if(fwrite($fp, $this->markup) !== FALSE)
+		{
+			$error = _('Could not write the wiki page');
+			if(fclose($fp) !== FALSE)
+				exec($cmd, $rcs, $res);
+		}
+		else
+			fclose($fp);
+		if(file_exists($file))
+			unlink($file);
+		if(($ret = ($res == 0) ? TRUE : FALSE) === FALSE)
+			if(file_exists($file.',v'))
+				unlink($file.',v');
+		return $ret;
+	}
+
+	protected function _saveUpdate($engine, $request, &$error)
+	{
+		$module = $this->getModule()->getName();
+
+		$error = _('Could not find the wiki repository');
+		if(($root = WikiContent::getRoot($module)) === FALSE)
+			return FALSE;
+		//it is forbidden to change the title
+		if(($title = $request->getParameter('title')) !== FALSE
+				&& $title != $this->getTitle())
+		{
+			$error = _('The title is not allowed to change');
+			return FALSE;
+		}
+		//update the content
+		if(parent::_saveUpdate($engine, $request, $error) === FALSE)
+			return FALSE;
+		//FIXME implement
+		$error = _('Not yet implemented');
+		return FALSE;
+	}
+
+
 	//static
 	//methods
 	//WikiContent::getRoot
-	static public function getRoot()
+	static public function getRoot($name = FALSE)
 	{
 		global $config;
 
-		return $config->get('module::wiki', 'root');
+		if($name === FALSE)
+			$name = 'wiki';
+		return $config->get('module::'.$name, 'root');
 	}
 
 
@@ -190,15 +297,11 @@ class WikiContent extends Content
 	//WikiContent::getMarkup
 	protected function getMarkup($revision = FALSE)
 	{
-		if($this->getID() === FALSE)
-		{
-			if(($content = $this->getContent()) !== FALSE)
-				return $content;
-			return '';
-		}
+		$module = $this->getModule()->getName();
+
 		if($revision === FALSE && $this->markup !== FALSE)
 			return $this->markup;
-		if(($root = WikiContent::getRoot()) === FALSE)
+		if(($root = WikiContent::getRoot($module)) === FALSE)
 			return FALSE;
 		$cmd = 'co -p -q';
 		if($revision !== FALSE)
@@ -209,7 +312,7 @@ class WikiContent extends Content
 			return FALSE;
 		$rcs = implode("\n", $rcs);
 		if($revision === FALSE)
-			$this->markup = $rcs;
+			$this->setContent($rcs);
 		return $rcs;
 	}
 
