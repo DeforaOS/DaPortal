@@ -145,6 +145,7 @@ class HTML
 		if($tag == 'br' || $tag == 'img')
 			$this->content .= '/';
 		$this->content .= '>';
+		//remember which tags are opened
 		$this->stack[] = $tag;
 	}
 
@@ -167,12 +168,8 @@ class HTML
 			return;
 		$this->content .= "</$tag>";
 		//remember which tags were closed
-		for($i = count($this->stack) - 1; $i >= 0; $i--)
-			if($this->stack[$i] == $tag)
-			{
-				unset($this->stack[$i]);
-				break;
-			}
+		if(($key = array_search($tag, $this->stack)) !== FALSE)
+			unset($this->stack[$key]);
 	}
 
 
