@@ -232,16 +232,6 @@ class WikiModule extends ContentModule
 	}
 
 
-	//WikiModule::helperSubmitContent
-	protected function helperSubmitContent($engine, $request, $page)
-	{
-		$value = $request->getParameter('content');
-
-		$page->append('htmledit', array('name' => 'content',
-				'value' => $value));
-	}
-
-
 	//WikiModule::helperUpdateContent
 	protected function helperUpdateContent($engine, $request, $content,
 			$page)

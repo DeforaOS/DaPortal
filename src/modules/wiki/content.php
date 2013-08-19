@@ -170,6 +170,17 @@ class WikiContent extends Content
 	}
 
 
+	//WikiContent::form
+	public function form($engine, $request = FALSE)
+	{
+		$value = ($request !== FALSE)
+			? $request->getParameter('content') : FALSE;
+
+		return new PageElement('htmledit', array('name' => 'content',
+			'value' => $value));
+	}
+
+
 	//WikiContent::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
