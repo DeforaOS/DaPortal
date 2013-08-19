@@ -31,6 +31,7 @@ class WikiContent extends Content
 	//WikiContent::WikiContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
+		$this->fields['message'] = 'log message';
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		$this->text_content_by = _('Wiki page by');
@@ -173,11 +174,17 @@ class WikiContent extends Content
 	//WikiContent::form
 	public function form($engine, $request = FALSE)
 	{
+		$vbox = new PageElement('vbox');
 		$value = ($request !== FALSE)
 			? $request->getParameter('content') : FALSE;
-
-		return new PageElement('htmledit', array('name' => 'content',
-			'value' => $value));
+		$vbox->append('htmledit', array('name' => 'content',
+				'value' => $value));
+		$value = ($request !== FALSE)
+			? $request->getParameter('message') : FALSE;
+		$vbox->append('entry', array('text' => _('Log message: '),
+				'name' => 'message',
+				'value' => $value));
+		return $vbox;
 	}
 
 
