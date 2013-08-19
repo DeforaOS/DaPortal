@@ -39,8 +39,8 @@ class PgsqlDatabase extends Database
 	{
 		if($this->handle === FALSE)
 			return FALSE;
-		//FIXME untested
-		$query = "SELECT currval('".$table."_".$field."_seq');";
+		$sequence = $table.'_'.$field.'_seq';
+		$query = 'SELECT currval('.$this->escape($sequence).');';
 		if(($res = $this->query($engine, $query)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
