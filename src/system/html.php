@@ -144,9 +144,10 @@ class HTML
 		//close the <br> and <img> tags directly
 		if($tag == 'br' || $tag == 'img')
 			$this->content .= '/';
+		else
+			//remember which tags are opened
+			$this->stack[] = $tag;
 		$this->content .= '>';
-		//remember which tags are opened
-		$this->stack[] = $tag;
 	}
 
 	protected function _filterElementEnd($parser, $name)
