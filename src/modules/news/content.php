@@ -54,8 +54,7 @@ class NewsContent extends Content
 		$length = $this->preview_length;
 
 		$text = ($length <= 0 || strlen($content) < $length)
-			? $this->content
-			: substr($this->content, 0, $length).'...';
+			? $content : substr($content, 0, $length).'...';
 		$text = HTML::format($engine, $text);
 		return new PageElement('htmlview', array('text' => $text));
 	}
