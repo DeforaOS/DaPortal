@@ -80,14 +80,6 @@ class ProjectModule extends MultiContentModule
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
-	protected $project_query_bug = "SELECT daportal_bug.content_id AS id,
-		title, content, timestamp, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, bug_id,
-		project_id, state, type, priority, assigned
-		FROM daportal_content_public, daportal_bug, daportal_user
-		WHERE daportal_content_public.content_id=daportal_bug.content_id
-		AND daportal_content_public.user_id=daportal_user.user_id
-		AND daportal_content_public.content_id=:content_id";
 	protected $project_query_bug_by_id = "SELECT
 		daportal_bug.content_id AS id,
 		title, content, timestamp, daportal_user.user_id AS user_id,
@@ -381,13 +373,20 @@ class ProjectModule extends MultiContentModule
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
 		{
+			case 'BugProjectContent':
+				$this->text_content_list_title
+					= _('Bug reports');
+				$this->text_content_list_title_by
+					= _('Bug reported by');
+				$this->text_content_submit = _('Report bug...');
+				break;
 			default:
 			case 'ProjectContent':
 				$this->text_content_list_title
 					= _('Project list');
 				$this->text_content_list_title_by
 					= _('Projects from');
-				$this->text_content_submit = _('New project');
+				$this->text_content_submit = _('New project...');
 				break;
 		}
 	}
