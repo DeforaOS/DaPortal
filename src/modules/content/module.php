@@ -1105,7 +1105,7 @@ abstract class ContentModule extends Module
 	protected function helperListContent($engine, $request, $content)
 	{
 		$r = $content->getProperties();
-		//XXX use a class content instead?
+		//XXX use a class constant instead?
 		$no = new PageElement('image', array('stock' => 'no',
 			'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
