@@ -378,7 +378,7 @@ class ProjectModule extends MultiContentModule
 					= _('Bug reports');
 				$this->text_content_list_title_by
 					= _('Bug reported by');
-				$this->text_content_submit = _('Report bug...');
+				$this->text_content_submit_content = _('Report bug');
 				break;
 			default:
 			case 'ProjectContent':
@@ -386,7 +386,7 @@ class ProjectModule extends MultiContentModule
 					= _('Project list');
 				$this->text_content_list_title_by
 					= _('Projects from');
-				$this->text_content_submit = _('New project...');
+				$this->text_content_submit_content = _('New project');
 				break;
 		}
 	}

@@ -36,7 +36,7 @@ class WikiContent extends MultiContent
 		$this->class = get_class();
 		$this->text_content_by = _('Wiki page by');
 		$this->text_more_content = _('More wiki pages...');
-		$this->text_submit = _('Create a page');
+		$this->text_submit_content = _('Create a page');
 	}
 
 

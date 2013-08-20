@@ -63,7 +63,7 @@ class Content
 		$this->text_on = _('on');
 		$this->text_open = _('Open');
 		$this->text_post = _('Publish');
-		$this->text_submit = _('Submit content');
+		$this->text_submit_content = _('Submit content');
 		$this->text_update = _('Update');
 	}
 
@@ -369,7 +369,7 @@ class Content
 			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'new',
-					'text' => $this->text_submit));
+					'text' => $this->text_submit_content));
 		}
 		if($this->getID() !== FALSE)
 		{
@@ -735,7 +735,7 @@ class Content
 	protected $text_on = 'on';
 	protected $text_open = 'Open';
 	protected $text_post = 'Publish';
-	protected $text_submit = 'Submit content';
+	protected $text_submit_content = 'Submit content';
 	protected $text_update = 'Update';
 	//queries
 	//IN:	content_id

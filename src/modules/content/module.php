@@ -64,6 +64,7 @@ abstract class ContentModule extends Module
 	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_preview_length = 150;
 	protected $helper_apply_args;
+	protected $stock_content_submit = 'submit';
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_headline_title = 'Content headlines';
 	protected $text_content_list_title = 'Content list';
@@ -71,7 +72,10 @@ abstract class ContentModule extends Module
 	protected $text_content_post = 'Publish';
 	protected $text_content_publish_progress
 		= 'Publication in progress, please wait...';
-	protected $text_content_submit = 'Submit content';
+	protected $text_content_redirect_progress
+		= 'Redirection in progress, please wait...';
+	protected $text_content_submit = 'Submit';
+	protected $text_content_submit_content = 'Submit content';
 	protected $text_content_submit_progress
 		= 'Submission in progress, please wait...';
 	protected $text_content_title = 'Content';
@@ -173,7 +177,10 @@ abstract class ContentModule extends Module
 		$this->text_content_post = _('Publish');
 		$this->text_content_publish_progress
 			= _('Publication in progress, please wait...');
-		$this->text_content_submit = _('Submit content');
+		$this->text_content_redirect_progress
+			= _('Redirection in progress, please wait...');
+		$this->text_content_submit = _('Submit');
+		$this->text_content_submit_content = _('Submit content');
 		$this->text_content_submit_progress
 			= _('Submission in progress, please wait...');
 		$this->text_content_title = _('Content');
@@ -284,11 +291,18 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::getRequest
+	protected function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		return new Request($this->name, $action, $parameters);
+	}
+
+
 	//forms
 	//ContentModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$r = new Request($this->name, 'submit');
+		$r = $this->getRequest('submit');
 
 		$form = new PageElement('form', array('request' => $r));
 		//content
@@ -302,7 +316,8 @@ abstract class ContentModule extends Module
 	//ContentModule::formUpdate
 	protected function formUpdate($engine, $request, $content)
 	{
-		$r = new Request($this->name, 'update', $content->getID());
+		//XXX the title may be wrong
+		$r = $content->getRequest('update');
 
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');
@@ -356,7 +371,7 @@ abstract class ContentModule extends Module
 		$error = FALSE;
 
 		if($request === FALSE)
-			$request = new Request($this->name, 'admin');
+			$request = $this->getRequest('admin');
 		//check credentials
 		if(!$this->canAdmin($engine, $request, FALSE, $error))
 		{
@@ -409,7 +424,7 @@ abstract class ContentModule extends Module
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		if($request !== FALSE && ($type = $request->getParameter(
 					'type')) !== FALSE)
 			$r->setParameter('type', $type);
@@ -531,6 +546,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callHeadline
 	protected function callHeadline($engine, $request = FALSE)
 	{
+		//FIXME convert to the new Content API
 		$db = $engine->getDatabase();
 		$query = $this->query_list;
 		$args = array('module_id' => $this->id);
@@ -608,6 +624,7 @@ abstract class ContentModule extends Module
 				$user)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
+		//FIXME some helpers should move to the Content class
 		//view
 		$treeview = $this->helperListView($engine, $page, $request);
 		//toolbar
@@ -692,12 +709,10 @@ abstract class ContentModule extends Module
 		//XXX do not preview the buttons
 		$vbox->append($content->preview($engine));
 		//form
-		$r = new Request($this->name, 'publish', $request->getID(),
-			$request->getTitle());
+		$r = $content->getRequest('publish');
 		$form = $page->append('form', array('request' => $r));
 		//buttons
-		$r = new Request($this->name, FALSE, $request->getID(),
-				$request->getTitle());
+		$r = $content->getRequest();
 		$form->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
@@ -728,8 +743,7 @@ abstract class ContentModule extends Module
 
 	protected function _publishSuccess($engine, $request, $content, $page)
 	{
-		$r = new Request($this->name, FALSE, $content->getID(),
-			$content->getTitle());
+		$r = $content->getRequest();
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_publish_progress);
 		return $page;
@@ -741,7 +755,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$user = new User($engine, $cred->getUserID());
-		$title = $this->text_content_submit;
+		$title = $this->text_content_submit_content;
 		$error = _('Permission denied');
 
 		//check permissions
@@ -910,7 +924,7 @@ abstract class ContentModule extends Module
 
 		if($admin === 0)
 			return $ret;
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		$ret[] = $this->helperAction($engine, 'admin', $r,
 				$this->text_content_admin);
 		return $ret;
@@ -922,9 +936,9 @@ abstract class ContentModule extends Module
 	{
 		$ret = array();
 
-		$r = new Request($this->name, 'submit');
+		$r = $this->getRequest('submit');
 		$ret[] = $this->helperAction($engine, 'new', $r,
-				$this->text_content_submit);
+				$this->text_content_submit_content);
 		return $ret;
 	}
 
@@ -951,7 +965,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperAdminButtons
 	protected function helperAdminButtons($engine, $page, $request)
 	{
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 		$page->append('link', array('request' => $r, 'stock' => 'back',
 				'text' => _('Back to this module')));
 		$r = new Request('admin');
@@ -995,8 +1009,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperAdminToolbar
 	protected function helperAdminToolbar($engine, $page, $request)
 	{
-		$r = new Request($this->name, 'admin', FALSE, FALSE,
-			array('type' => $request->getParameter('type'),
+		$r = $this->getRequest('admin', array(
 				'page' => $request->getParameter('page')));
 
 		$toolbar = $page->append('toolbar');
@@ -1095,7 +1108,7 @@ abstract class ContentModule extends Module
 		$r = ($uid !== FALSE)
 			? new Request('user', 'display', $user->getUserID(),
 				$user->getUsername())
-			: new Request($this->name);
+			: $this->getRequest();
 		$page->append('link', array('request' => $r, 'stock' => 'back',
 				'text' => _('Back')));
 	}
@@ -1157,11 +1170,11 @@ abstract class ContentModule extends Module
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $r));
-		$r = new Request($this->name, 'submit');
+		$r = $this->getRequest('submit');
 		if($this->canSubmit($engine))
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
-					'text' => $this->text_content_submit));
+					'text' => $this->text_content_submit_content));
 		if($uid === $cred->getUserID())
 		{
 			$toolbar->append('button', array('stock' => 'disable',
@@ -1255,7 +1268,7 @@ abstract class ContentModule extends Module
 			$text = FALSE)
 	{
 		if($text === FALSE)
-			$text = _('Redirection in progress, please wait...');
+			$text = $this->text_content_redirect_progress;
 		$page->setProperty('location', $engine->getURL($request));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
@@ -1273,7 +1286,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperSubmitButtons
 	protected function helperSubmitButtons($engine, $request, $page)
 	{
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 
 		$hbox = $page->append('hbox');
 		$hbox->append('button', array('request' => $r,
@@ -1285,8 +1298,9 @@ abstract class ContentModule extends Module
 					'value' => '_preview',
 					'text' => _('Preview')));
 		$hbox->append('button', array('type' => 'submit',
-				'stock' => 'submit', 'name' => 'action',
-				'value' => '_submit', 'text' => _('Submit')));
+				'stock' => $this->stock_content_submit,
+				'text' => $this->text_content_submit,
+				'name' => 'action', 'value' => '_submit'));
 	}
 
 
