@@ -108,11 +108,11 @@ CREATE INDEX daportal_user_reset_token_index ON daportal_user_reset (token);
 CREATE TABLE daportal_content (
 	content_id SERIAL PRIMARY KEY,
 	timestamp TIMESTAMP NOT NULL DEFAULT now(),
-	module_id INTEGER REFERENCES daportal_module (module_id) ON DELETE RESTRICT,
-	user_id INTEGER REFERENCES daportal_user (user_id) ON DELETE RESTRICT,
-	group_id INTEGER DEFAULT 0 REFERENCES daportal_group (group_id) ON DELETE RESTRICT,
-	title VARCHAR(255),
-	content TEXT,
+	module_id INTEGER NOT NULL REFERENCES daportal_module (module_id) ON DELETE RESTRICT,
+	user_id INTEGER NOT NULL REFERENCES daportal_user (user_id) ON DELETE RESTRICT,
+	group_id INTEGER NOT NULL DEFAULT 0 REFERENCES daportal_group (group_id) ON DELETE RESTRICT,
+	title VARCHAR(255) NOT NULL,
+	content TEXT NOT NULL,
 	enabled BOOLEAN NOT NULL DEFAULT FALSE,
 	public BOOLEAN NOT NULL DEFAULT FALSE
 );
