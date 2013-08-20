@@ -417,9 +417,14 @@ class Content
 
 	protected function _formSubmit($engine, $request)
 	{
-		return new PageElement('textview', array('name' => 'content',
+		$vbox = new PageElement('vbox');
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $request->getParameter('title')));
+		$vbox->append('textview', array('name' => 'content',
 				'text' => _('Content: '),
 				'value' => $request->getParameter('content')));
+		return $vbox;
 	}
 
 	protected function _formUpdate($engine, $request)

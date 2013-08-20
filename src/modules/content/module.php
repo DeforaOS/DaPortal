@@ -288,15 +288,11 @@ abstract class ContentModule extends Module
 	//ContentModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		//FIXME use $content->form() directly instead
 		$r = new Request($this->name, 'submit');
 
 		$form = new PageElement('form', array('request' => $r));
-		$vbox = $form->append('vbox');
-		//title
-		$this->helperSubmitTitle($engine, $request, $vbox);
 		//content
-		$this->helperSubmitContent($engine, $request, $vbox);
+		$this->helperSubmitContent($engine, $request, $form);
 		//buttons
 		$this->helperSubmitButtons($engine, $request, $form);
 		return $form;
@@ -1278,15 +1274,17 @@ abstract class ContentModule extends Module
 	protected function helperSubmitButtons($engine, $request, $page)
 	{
 		$r = new Request($this->name);
-		$page->append('button', array('request' => $r,
+
+		$hbox = $page->append('hbox');
+		$hbox->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		if($this->canPreview($engine, $request))
-			$page->append('button', array('type' => 'submit',
+			$hbox->append('button', array('type' => 'submit',
 					'stock' => 'preview',
 					'name' => 'action',
 					'value' => '_preview',
 					'text' => _('Preview')));
-		$page->append('button', array('type' => 'submit',
+		$hbox->append('button', array('type' => 'submit',
 				'stock' => 'submit', 'name' => 'action',
 				'value' => '_submit', 'text' => _('Submit')));
 	}
@@ -1310,15 +1308,6 @@ abstract class ContentModule extends Module
 				|| $request->getParameter('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
-	}
-
-
-	//ContentModule::helperSubmitTitle
-	protected function helperSubmitTitle($engine, $request, $page)
-	{
-		$page->append('entry', array('name' => 'title',
-				'text' => _('Title: '),
-				'value' => $request->getParameter('title')));
 	}
 
 
