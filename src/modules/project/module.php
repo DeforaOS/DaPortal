@@ -78,10 +78,6 @@ class ProjectModule extends MultiContentModule
 
 	//protected
 	//properties
-	//translations
-	protected $project_text_content_list_title = 'Project list';
-	protected $project_text_content_submit = 'New project';
-
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
 	protected $project_query_bug = "SELECT daportal_bug.content_id AS id,
@@ -387,8 +383,11 @@ class ProjectModule extends MultiContentModule
 		{
 			default:
 			case 'ProjectContent':
-				$this->text_content_list_title = $this->project_text_content_list_title;
-				$this->text_content_submit = $this->project_text_content_submit;
+				$this->text_content_list_title
+					= _('Project list');
+				$this->text_content_list_title_by
+					= _('Projects from');
+				$this->text_content_submit = _('New project');
 				break;
 		}
 	}
