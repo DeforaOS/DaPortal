@@ -41,7 +41,8 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		$root = DownloadContent::getRoot();
+		$module = $this->getModule()->getName();
+		$root = DownloadContent::getRoot($module);
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
@@ -112,7 +113,8 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::download
 	public function download($engine, $request)
 	{
-		$root = DownloadContent::getRoot();
+		$module = $this->getModule()->getName();
+		$root = DownloadContent::getRoot($module);
 
 		//output the file
 		$filename = $root.'/'.$this->get('download_id');
