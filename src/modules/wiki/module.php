@@ -30,7 +30,7 @@ class WikiModule extends ContentModule
 	//WikiModule::WikiModule
 	public function __construct($id, $name, $title = FALSE)
 	{
-		$this->root = WikiContent::getRoot();
+		$this->root = WikiContent::getRoot($name);
 		$title = ($title === FALSE) ? _('Wiki') : $title;
 		parent::__construct($id, $name);
 		$this->content_class = 'WikiContent';
