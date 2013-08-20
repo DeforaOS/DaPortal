@@ -44,7 +44,8 @@ class DownloadModule extends MultiContentModule
 							$request->getID(),
 							$request->getTitle());
 				case 'getRoot':
-					return DownloadContent::getRoot($engine);
+					return DownloadContent::getRoot(
+							$this->name);
 				case 'submit':
 					return $this->_callInternalSubmit(
 							$engine, $request);
