@@ -23,7 +23,7 @@ require_once('./system/html.php');
 
 
 //WikiContent
-class WikiContent extends Content
+class WikiContent extends MultiContent
 {
 	//public
 	//methods
@@ -226,15 +226,7 @@ class WikiContent extends Content
 	//WikiContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
-		$database = $engine->getDatabase();
-
-		if($database->transactionBegin($engine) === FALSE)
-			return FALSE;
-		if(($ret = parent::save($engine, $request, $error)) === FALSE)
-			$database->transactionRollback($engine);
-		else if($database->transactionCommit($engine) === FALSE)
-			return FALSE;
-		return $ret;
+		return parent::save($engine, $request, $error);
 	}
 
 	protected function _saveInsert($engine, $request, &$error)

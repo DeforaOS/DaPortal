@@ -841,4 +841,23 @@ class Content
 	private $properties = array();
 }
 
+
+//MultiContent
+class MultiContent extends Content
+{
+	//MultiContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		$database = $engine->getDatabase();
+
+		if($database->transactionBegin($engine) === FALSE)
+			return FALSE;
+		if(($ret = parent::save($engine, $request, $error)) === FALSE)
+			$database->transactionRollback($engine);
+		else if($database->transactionCommit($engine) === FALSE)
+			return FALSE;
+		return $ret;
+	}
+}
+
 ?>
