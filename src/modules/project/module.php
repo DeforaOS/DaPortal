@@ -878,6 +878,8 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::helperListView
 	protected function helperListView($engine, $page, $request = FALSE)
 	{
+		if($this->content_class == 'BugProjectContent')
+			return parent::helperListView($engine, $page, $request);
 		$view = parent::helperListView($engine, $page, $request);
 		if(($columns = $view->getProperty('columns')) !== FALSE)
 		{
@@ -894,6 +896,9 @@ class ProjectModule extends MultiContentModule
 	protected function helperPreviewMetadata($engine, $preview, $request,
 			$content = FALSE)
 	{
+		if($this->content_class == 'BugProjectContent')
+			return parent::helperPreviewMetadata($engine, $preview,
+					$request, $content);
 		parent::helperPreviewMetadata($engine, $preview, $request,
 				$content);
 		if(isset($content['synopsis']))

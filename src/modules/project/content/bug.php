@@ -96,7 +96,7 @@ class BugProjectContent extends Content
 		daportal_user_enabled.user_id AS user_id, username,
 		bug.title AS title, bug.enabled AS enabled, state, type,
 		priority, daportal_project.project_id AS project_id,
-		project.title AS project
+		project.title AS project, bug.public AS bug
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
@@ -124,7 +124,7 @@ class BugProjectContent extends Content
 		daportal_user_enabled.user_id AS user_id, username,
 		bug.title AS title, bug.enabled AS enabled, state, type,
 		priority, daportal_project.project_id AS project_id,
-		project.title AS project
+		project.title AS project, daportal_bug.public AS public
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
@@ -155,7 +155,7 @@ class BugProjectContent extends Content
 		title, content, timestamp,
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username, bug_id, project_id,
-		state, type, priority, assigned
+		state, type, priority, assigned, public
 		FROM daportal_content_enabled, daportal_bug,
 		daportal_user_enabled
 		WHERE daportal_content_enabled.content_id
