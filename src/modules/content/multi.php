@@ -164,6 +164,14 @@ abstract class MultiContentModule extends ContentModule
 		$this->setContext($engine, $request);
 		return parent::callList($engine, $request);
 	}
+
+
+	//MultiContentModule::callSubmit
+	protected function callSubmit($engine, $request)
+	{
+		$this->setContext($engine, $request);
+		return parent::callSubmit($engine, $request);
+	}
 }
 
 ?>
