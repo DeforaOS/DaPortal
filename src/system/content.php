@@ -364,7 +364,7 @@ class Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->canSubmit($engine, $request))
+		if($this->canSubmit($engine))
 		{
 			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,
@@ -373,20 +373,17 @@ class Content
 		}
 		if($this->getID() !== FALSE)
 		{
-			if(!$this->isPublic() && $this->canPost($engine,
-					$request))
+			if(!$this->isPublic() && $this->canPost($engine))
 			{
-				$r = new Request($module, 'publish',
-					$this->getID(), $this->getTitle());
+				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
 						'request' => $r,
 						'stock' => 'post',
 						'text' => $this->text_post));
 			}
-			if($this->canUpdate($engine, $request))
+			if($this->canUpdate($engine))
 			{
-				$r = new Request($module, 'update',
-					$this->getID(), $this->getTitle());
+				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
 						'request' => $r,
 						'stock' => 'update',
