@@ -156,45 +156,6 @@ class ProjectModule extends MultiContentModule
 		AND bug.content_id=daportal_bug.content_id
 		AND daportal_bug.project_id=daportal_project.project_id
 		AND project.content_id=daportal_project.project_id";
-	//IN:	module_id
-	protected $project_query_list_projects = 'SELECT content_id AS id,
-		daportal_content_public.enabled AS enabled, timestamp,
-		name AS module, daportal_user_enabled.user_id AS user_id,
-		username, title, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id';
-	//IN:	module_id
-	protected $project_query_list_projects_count = 'SELECT COUNT(*)
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id';
-	protected $project_query_list_projects_user = "SELECT content_id AS id,
-		daportal_content.enabled AS enabled,
-		timestamp, name AS module,
-		daportal_user_enabled.user_id AS user_id, username, title,
-		synopsis, scm, cvsroot
-		FROM daportal_content, daportal_module, daportal_user_enabled,
-		daportal_project
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_user_enabled.user_id=:user_id";
 	protected $project_query_members = 'SELECT
 		daportal_user_enabled.user_id AS user_id, username,
 		daportal_project_user.admin AS admin
@@ -426,8 +387,6 @@ class ProjectModule extends MultiContentModule
 		{
 			default:
 			case 'ProjectContent':
-				$this->query_list = $this->project_query_list_projects;
-				$this->query_list_count = $this->project_query_list_projects_count;
 				$this->text_content_list_title = $this->project_text_content_list_title;
 				$this->text_content_submit = $this->project_text_content_submit;
 				break;

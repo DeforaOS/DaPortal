@@ -140,25 +140,6 @@ abstract class ContentModule extends Module
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id';
 	//IN:	module_id
-	protected $query_list_count = 'SELECT COUNT(*)
-		FROM daportal_content_public
-		WHERE daportal_content_public.module_id=:module_id';
-	//IN:	module_id
-	//	user_id
-	protected $query_list_user = 'SELECT content_id AS id, timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		title, daportal_content_public.enabled AS enabled
-		FROM daportal_content_public, daportal_user_enabled
-		WHERE daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id=daportal_user_enabled.user_id
-		AND daportal_user_enabled.user_id=:user_id';
-	//IN:	module_id
-	//	user_id
-	protected $query_list_user_count = 'SELECT COUNT(*)
-		FROM daportal_content_public
-		WHERE daportal_content_public.module_id=:module_id
-		AND user_id=:user_id';
-	//IN:	module_id
 	//	user_id
 	//	content_id
 	protected $query_post = "UPDATE daportal_content
