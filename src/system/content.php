@@ -847,6 +847,23 @@ class Content
 //MultiContent
 class MultiContent extends Content
 {
+	//public
+	//methods
+	//accessors
+	//MultiContent::getRequest
+	public function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		if($this->type === FALSE)
+			return parent::getRequest($action, $parameters);
+		if($parameters === FALSE)
+			return parent::getRequest($action, array(
+				'type' => $this->type));
+		$parameters['type'] = $this->type;
+		return parent::getRequest($action, $parameters);
+	}
+
+
+	//useful
 	//MultiContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -860,6 +877,28 @@ class MultiContent extends Content
 			return FALSE;
 		return $ret;
 	}
+
+
+	//protected
+	//methods
+	//accessors
+	//MultiContent::getType
+	protected function getType()
+	{
+		return $this->type;
+	}
+
+
+	//MultiContent::setType
+	protected function setType()
+	{
+		return $this->type;
+	}
+
+
+	//private
+	//properties
+	private $type = FALSE;
 }
 
 ?>
