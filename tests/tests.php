@@ -26,7 +26,7 @@ global $config;
 $config = new Config;
 $config->set('database', 'backend', 'sqlite3');
 $config->set('database::sqlite3', 'filename', '../tests/sqlite.db3');
-$engine = new CliEngine;
+$engine = new CLIEngine;
 
 //functions
 function test($engine, $request)
