@@ -223,7 +223,7 @@ abstract class ContentModule extends Module
 		$credentials = $engine->getCredentials();
 
 		$error = 'Permission denied';
-		if($credentials->getUsrID() == 0)
+		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
 				return FALSE;
 		if($content === FALSE)
@@ -255,7 +255,7 @@ abstract class ContentModule extends Module
 		$credentials = $engine->getCredentials();
 
 		$error = 'Permission denied';
-		if($credentials->getUsrID() == 0)
+		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
 				return FALSE;
 		if($content === FALSE)
