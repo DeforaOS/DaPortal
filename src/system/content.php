@@ -112,15 +112,12 @@ class Content
 	{
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
+		if($cred->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
 		if($request === FALSE || $request->isIdempotent())
-		{
-			if($cred->getUserID() > 0)
-				return TRUE;
-			if($this->configGet('anonymous'))
-				return TRUE;
-			$error = _('Permission denied');
 			return FALSE;
-		}
 		//verify that the fields are set
 		$error = '';
 		foreach($this->fields as $k => $v)
