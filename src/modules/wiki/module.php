@@ -161,22 +161,6 @@ class WikiModule extends ContentModule
 	}
 
 
-	//WikiModule::helperUpdateContent
-	protected function helperUpdateContent($engine, $request, $content,
-			$page)
-	{
-		$page->append('label', array('text' => _('Content: ')));
-		if(($value = $request->getParameter('content')) === FALSE)
-			$value = $content->getContent();
-		$page->append('htmledit', array('name' => 'content',
-				'value' => $value));
-		$message = $request->getParameter('message');
-		$page->append('entry', array('name' => 'message',
-				'text' => _('Log message: '),
-				'value' => $message));
-	}
-
-
 	//private
 	//properties
 	private $root = FALSE;
