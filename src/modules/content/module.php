@@ -69,7 +69,7 @@ abstract class ContentModule extends Module
 	protected $text_content_headline_title = 'Content headlines';
 	protected $text_content_list_title = 'Content list';
 	protected $text_content_list_title_by = 'Content by';
-	protected $text_content_post = 'Publish';
+	protected $text_content_publish = 'Publish';
 	protected $text_content_publish_progress
 		= 'Publication in progress, please wait...';
 	protected $text_content_redirect_progress
@@ -96,13 +96,13 @@ abstract class ContentModule extends Module
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	content_id
-	protected $query_admin_post = "UPDATE daportal_content
+	protected $query_admin_publish = "UPDATE daportal_content
 		SET public='1'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	content_id
-	protected $query_admin_unpost = "UPDATE daportal_content
+	protected $query_admin_unpublish = "UPDATE daportal_content
 		SET public='0'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
@@ -146,7 +146,7 @@ abstract class ContentModule extends Module
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	protected $query_post = "UPDATE daportal_content
+	protected $query_publish = "UPDATE daportal_content
 		SET public='1'
 		WHERE module_id=:module_id
 		AND user_id=:user_id
@@ -154,7 +154,7 @@ abstract class ContentModule extends Module
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	protected $query_unpost = "UPDATE daportal_content
+	protected $query_unpublish = "UPDATE daportal_content
 		SET public='0'
 		WHERE module_id=:module_id
 		AND user_id=:user_id
@@ -174,7 +174,7 @@ abstract class ContentModule extends Module
 		$this->text_content_headline_title = _('Content headlines');
 		$this->text_content_list_title = _('Content list');
 		$this->text_content_list_title_by = _('Content by');
-		$this->text_content_post = _('Publish');
+		$this->text_content_publish = _('Publish');
 		$this->text_content_publish_progress
 			= _('Publication in progress, please wait...');
 		$this->text_content_redirect_progress
@@ -194,23 +194,13 @@ abstract class ContentModule extends Module
 	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
 	{
-		$class = $this->content_class;
+		$credentials = $engine->getCredentials();
 
+		if(!$credentials->isAdmin())
+			return FALSE;
 		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canAdmin($engine, $request, $error);
-	}
-
-
-	//ContentModule::canPost
-	protected function canPost($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		$class = $this->content_class;
-
-		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canPost($engine, $request, $error);
+			return TRUE;
+		return $content->canAdmin($engine, FALSE, $error);
 	}
 
 
@@ -222,7 +212,23 @@ abstract class ContentModule extends Module
 
 		if($content === FALSE)
 			$content = new $class($engine, $this);
-		return $content->canPreview($engine, $request, $error);
+		return $content->canPreview($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canPublish
+	protected function canPublish($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = 'Permission denied';
+		if($credentials->getUsrID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canPublish($engine, FALSE, $error);
 	}
 
 
@@ -238,19 +244,23 @@ abstract class ContentModule extends Module
 				return FALSE;
 		if($content === FALSE)
 			return TRUE;
-		return $content->canSubmit($engine, $request, $error);
+		return $content->canSubmit($engine, FALSE, $error);
 	}
 
 
-	//ContentModule::canUnpost
-	protected function canUnpost($engine, $request = FALSE,
+	//ContentModule::canUnpublish
+	protected function canUnpublish($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		$class = $this->content_class;
+		$credentials = $engine->getCredentials();
 
+		$error = 'Permission denied';
+		if($credentials->getUsrID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
 		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canUnpost($engine, $request, $error);
+			return TRUE;
+		return $content->canPublish($engine, FALSE, $error);
 	}
 
 
@@ -266,7 +276,7 @@ abstract class ContentModule extends Module
 				return FALSE;
 		if($content === FALSE)
 			return TRUE;
-		return $content->canUpdate($engine, $request, $error);
+		return $content->canUpdate($engine, FALSE, $error);
 	}
 
 
@@ -355,7 +365,8 @@ abstract class ContentModule extends Module
 		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
-		$actions = array('delete', 'disable', 'enable', 'post', 'unpost');
+		$actions = array('delete', 'disable', 'enable', 'publish',
+			'unpublish');
 		$error = FALSE;
 
 		if($request === FALSE)
@@ -629,20 +640,20 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callPost
-	protected function callPost($engine, $request)
+	//ContentModule::callPublish
+	protected function callPublish($engine, $request)
 	{
-		$query = $this->query_post;
+		$query = $this->query_publish;
 		$cred = $engine->getCredentials();
 
-		if(!$this->canPost($engine, $request, FALSE, $error))
+		if(!$this->canPublish($engine, $request, FALSE, $error))
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
-			$query = $this->query_admin_post;
+			$query = $this->query_admin_publish;
 		return $this->helperApply($engine, $request, $query, 'admin',
-				_('Content could be posted successfully'),
-				_('Some content could not be posted'));
+				_('Content could be published successfully'),
+				_('Some content could not be published'));
 	}
 
 
@@ -673,11 +684,11 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//check permissions
-		if($content->canPost($engine, $request, $error) === FALSE)
+		if($content->canPublish($engine, $request, $error) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//create the page
-		$title = $this->text_content_post.' '.$content->getTitle();
+		$title = $this->text_content_publish.' '.$content->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 			'text' => $title));
@@ -705,7 +716,7 @@ abstract class ContentModule extends Module
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'name' => 'action', 'value' => 'publish',
-				'text' => $this->text_content_post));
+				'text' => $this->text_content_publish));
 		return $page;
 	}
 
@@ -713,7 +724,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$query = $this->query_post;
+		$query = $this->query_publish;
 		$args = array('module_id' => $this->id,
 			'content_id' => $content->getID(),
 			'user_id' => $cred->getUserID());
@@ -806,20 +817,20 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callUnpost
-	protected function callUnpost($engine, $request)
+	//ContentModule::callUnpublish
+	protected function callUnpublish($engine, $request)
 	{
-		$query = $this->query_unpost;
+		$query = $this->query_unpublish;
 		$cred = $engine->getCredentials();
 
-		if(!$this->canUnpost($engine, $request, FALSE, $error))
+		if(!$this->canUnpublish($engine, $request, FALSE, $error))
 			return new PageElement('dialog', array('type' => 'error',
 					'text' => $error));
 		if($cred->isAdmin())
-			$query = $this->query_admin_unpost;
+			$query = $this->query_admin_unpublish;
 		return $this->helperApply($engine, $request, $query, 'admin',
-				_('Content could be unposted successfully'),
-				_('Some content could not be unposted'));
+				_('Content could be unpublished successfully'),
+				_('Some content could not be unpublished'));
 	}
 
 
@@ -1014,16 +1025,16 @@ abstract class ContentModule extends Module
 					'text' => _('Enable'),
 					'type' => 'submit', 'name' => 'action',
 					'value' => 'enable'));
-		//unpost
-		$toolbar->append('button', array('stock' => 'unpost',
-					'text' => _('Unpost'),
+		//unpublish
+		$toolbar->append('button', array('stock' => 'unpublish',
+					'text' => _('Unpublish'),
 					'type' => 'submit', 'name' => 'action',
-					'value' => 'unpost'));
-		//post
-		$toolbar->append('button', array('stock' => 'post',
-					'text' => _('Post'),
+					'value' => 'unpublish'));
+		//publish
+		$toolbar->append('button', array('stock' => 'publish',
+					'text' => _('Publish'),
 					'type' => 'submit', 'name' => 'action',
-					'value' => 'post'));
+					'value' => 'publish'));
 		//delete
 		$toolbar->append('button', array('stock' => 'delete',
 					'text' => _('Delete'),
@@ -1196,7 +1207,7 @@ abstract class ContentModule extends Module
 		$view = $page->append('treeview', array('request' => $r));
 		$columns = array('title' => _('Title'));
 		if($this->canUpdate($engine, $request)
-				|| $this->canPost($engine, $request))
+				|| $this->canPublish($engine, $request))
 			$columns['enabled'] = _('Enabled');
 		$columns['username'] = _('Username');
 		$columns['date'] = _('Date');

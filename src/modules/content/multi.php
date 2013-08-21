@@ -56,13 +56,13 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
-	//MultiContentModule::canPost
-	protected function canPost($engine, $request = FALSE, $content = FALSE,
+	//MultiContentModule::canPublish
+	protected function canPublish($engine, $request = FALSE, $content = FALSE,
 			&$error = FALSE)
 	{
 		if($content === FALSE)
 			$this->setContext($engine, $request, $content);
-		return parent::canPost($engine, $request, $content, $error);
+		return parent::canPublish($engine, $request, $content, $error);
 	}
 
 
@@ -86,13 +86,13 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
-	//MultiContentModule::canUnpost
-	protected function canUnpost($engine, $request = FALSE,
+	//MultiContentModule::canUnpublish
+	protected function canUnpublish($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
 		if($content === FALSE)
 			$this->setContext($engine, $request, $content);
-		return parent::canUnpost($engine, $request, $content, $error);
+		return parent::canUnpublish($engine, $request, $content, $error);
 	}
 
 

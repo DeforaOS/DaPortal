@@ -62,7 +62,7 @@ class Content
 		$this->text_more_content = _('More content...');
 		$this->text_on = _('on');
 		$this->text_open = _('Open');
-		$this->text_post = _('Publish');
+		$this->text_publish = _('Publish');
 		$this->text_submit_content = _('Submit content');
 		$this->text_update = _('Update');
 	}
@@ -83,8 +83,8 @@ class Content
 	}
 
 
-	//Content::canPost
-	public function canPost($engine, $request = FALSE, &$error = FALSE)
+	//Content::canPublish
+	public function canPublish($engine, $request = FALSE, &$error = FALSE)
 	{
 		global $config;
 		$credentials = $engine->getCredentials();
@@ -118,7 +118,9 @@ class Content
 		//verify that the fields are set
 		$error = '';
 		foreach($this->fields as $k => $v)
-			if($request->getParameter($k) === FALSE)
+			if($this->get($k) !== FALSE)
+				continue;
+			else if($request->getParameter($k) === FALSE)
 				$error .= "$v must be set\n";
 		if(strlen($error) > 0)
 			return FALSE;
@@ -126,8 +128,8 @@ class Content
 	}
 
 
-	//Content::canUnpost
-	public function canUnpost($engine, $request = FALSE, &$error = FALSE)
+	//Content::canUnpublish
+	public function canUnpublish($engine, $request = FALSE, &$error = FALSE)
 	{
 		global $config;
 		$credentials = $engine->getCredentials();
@@ -369,13 +371,13 @@ class Content
 		}
 		if($this->getID() !== FALSE)
 		{
-			if(!$this->isPublic() && $this->canPost($engine))
+			if(!$this->isPublic() && $this->canPublish($engine))
 			{
 				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
 						'request' => $r,
-						'stock' => 'post',
-						'text' => $this->text_post));
+						'stock' => 'publish',
+						'text' => $this->text_publish));
 			}
 			if($this->canUpdate($engine))
 			{
@@ -727,7 +729,7 @@ class Content
 	protected $text_more_content = 'More content...';
 	protected $text_on = 'on';
 	protected $text_open = 'Open';
-	protected $text_post = 'Publish';
+	protected $text_publish = 'Publish';
 	protected $text_submit_content = 'Submit content';
 	protected $text_update = 'Update';
 	//queries
