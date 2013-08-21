@@ -230,7 +230,6 @@ abstract class ContentModule extends Module
 	protected function canSubmit($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		global $config;
 		$credentials = $engine->getCredentials();
 
 		$error = _('Anonymous submissions are not allowed');
@@ -259,7 +258,6 @@ abstract class ContentModule extends Module
 	protected function canUpdate($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
 	{
-		global $config;
 		$credentials = $engine->getCredentials();
 
 		$error = _('Anonymous updates are not allowed');
