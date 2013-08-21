@@ -568,14 +568,11 @@ class Content
 					break;
 			}
 		$error = _('Could not insert the content');
-		//XXX hack to detect errors
-		$id = $database->getLastID($engine, 'daportal_content',
-				'content_id');
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		$this->id = $database->getLastID($engine, 'daportal_content',
 				'content_id');
-		return ($id != $this->id) && ($this->id !== FALSE);
+		return ($this->id !== FALSE);
 	}
 
 	protected function _saveUpdate($engine, $request, &$error)
