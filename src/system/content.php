@@ -110,12 +110,9 @@ class Content
 	//Content::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
-		$cred = $engine->getCredentials();
+		$credentials = $engine->getCredentials();
 
-		$error = _('Permission denied');
-		if($cred->getUserID() == 0)
-			if(!$this->configGet('anonymous'))
-				return FALSE;
+		$error = _('The request expired or is invalid');
 		if($request === FALSE || $request->isIdempotent())
 			return FALSE;
 		//verify that the fields are set
@@ -149,11 +146,13 @@ class Content
 	{
 		$credentials = $engine->getCredentials();
 
-		if($credentials->isAdmin())
-			return TRUE;
-		//FIXME really implement
-		$error = _('Permission denied');
-		return FALSE;
+		$error = _('Only administrators can update content');
+		if(!$credentials->isAdmin())
+			return FALSE;
+		$error = _('The request expired or is invalid');
+		if($request === FALSE || $request->isIdempotent())
+			return FALSE;
+		return TRUE;
 	}
 
 

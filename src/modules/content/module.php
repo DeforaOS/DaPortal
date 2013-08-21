@@ -233,18 +233,13 @@ abstract class ContentModule extends Module
 		global $config;
 		$credentials = $engine->getCredentials();
 
-		for(;;)
-		{
-			if($credentials->getUserID() > 0)
-				break;
-			if($this->configGet('anonymous'))
-				break;
-			$error = _('Permission denied');
-			return FALSE;
-		}
-		if($content !== FALSE)
-			return $content->canSubmit($engine, $request, $error);
-		return TRUE;
+		$error = _('Anonymous submissions are not allowed');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canSubmit($engine, $request, $error);
 	}
 
 
@@ -267,18 +262,13 @@ abstract class ContentModule extends Module
 		global $config;
 		$credentials = $engine->getCredentials();
 
-		for(;;)
-		{
-			if($credentials->getUserID() > 0)
-				break;
-			if($this->configGet('anonymous'))
-				break;
-			$error = _('Permission denied');
-			return FALSE;
-		}
-		if($content !== FALSE)
-			return $content->canUpdate($engine, $request, $error);
-		return TRUE;
+		$error = _('Anonymous updates are not allowed');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canUpdate($engine, $request, $error);
 	}
 
 
@@ -347,7 +337,7 @@ abstract class ContentModule extends Module
 		}
 		if($request->getParameter('admin') !== FALSE)
 			return $ret;
-		if($this->canSubmit($engine))
+		if($this->canSubmit($engine, $request))
 		{
 			$r = $this->helperActionsSubmit($engine, $request);
 			$ret = array_merge($ret, $r);
@@ -756,7 +746,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 		$user = new User($engine, $cred->getUserID());
 		$title = $this->text_content_submit_content;
-		$error = _('Permission denied');
+		$error = _('Could not submit content');
 
 		//check permissions
 		if($this->canSubmit($engine, $request, FALSE, $error) === FALSE)
@@ -845,8 +835,8 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//check permissions
-		$error = _('Permission denied');
-		if($this->canUpdate($engine, $request, $content, $error)
+		$error = _('Could not update content');
+		if($this->canUpdate($engine, $request, FALSE, $error)
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -950,7 +940,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 
 		if($user->getUserID() == $cred->getUserID()
-				&& $this->canSubmit($engine))
+				&& $this->canSubmit($engine, $request))
 			$ret = $this->helperActionsSubmit($engine, $request);
 		//user's content
 		$request = new Request($this->name, 'list', $user->getUserID(),
@@ -1171,7 +1161,7 @@ abstract class ContentModule extends Module
 				'text' => _('Refresh'),
 				'request' => $r));
 		$r = $this->getRequest('submit');
-		if($this->canSubmit($engine))
+		if($this->canSubmit($engine, $request))
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
