@@ -196,6 +196,25 @@ class WikiContent extends MultiContent
 	//WikiContent::form
 	public function form($engine, $request = FALSE)
 	{
+		return parent::form($engine, $request);
+	}
+
+	public function _formSubmit($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $request->getParameter('title')));
+		$vbox->append('htmledit', array('name' => 'content',
+				'value' => $request->getParameter('content')));
+		$vbox->append('entry', array('text' => _('Log message: '),
+				'name' => 'message',
+				'value' => $request->getParameter('message')));
+		return $vbox;
+	}
+
+	public function _formUpdate($engine, $request)
+	{
 		$vbox = new PageElement('vbox');
 		$value = ($request !== FALSE)
 			? $request->getParameter('content') : FALSE;
