@@ -314,7 +314,7 @@ class WikiContent extends MultiContent
 		//update the content
 		if(parent::_saveUpdate($engine, FALSE, $error) === FALSE)
 			return FALSE;
-		$error = _('Could not create the wiki page');
+		$error = _('Could not update the wiki page');
 		if(($fp = fopen($file, 'x')) === FALSE)
 			return FALSE;
 		$message = $request->getParameter('message');
