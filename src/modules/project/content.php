@@ -234,6 +234,8 @@ class ProjectContent extends MultiContent
 			'homepage' => _('Homepage'));
 
 		$toolbar = parent::displayToolbar($engine, $request);
+		if($this->getID() === FALSE)
+			return $toolbar;
 		foreach($actions as $k => $v)
 		{
 			$r = $this->getRequest($k);
