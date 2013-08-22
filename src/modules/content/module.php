@@ -640,8 +640,8 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callPublish
-	protected function callPublish($engine, $request)
+	//ContentModule::callPost
+	protected function callPost($engine, $request)
 	{
 		$query = $this->query_publish;
 		$cred = $engine->getCredentials();
