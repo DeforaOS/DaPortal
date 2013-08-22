@@ -226,6 +226,10 @@ abstract class ContentModule extends Module
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
 				return FALSE;
+		$error = _('Only moderators can publish content');
+		if(!$credentials->isAdmin())
+			if($this->configGet('moderate'))
+				return FALSE;
 		if($content === FALSE)
 			return TRUE;
 		return $content->canPublish($engine, FALSE, $error);
@@ -257,6 +261,10 @@ abstract class ContentModule extends Module
 		$error = _('Permission denied');
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
+				return FALSE;
+		$error = _('Only moderators can unpublish content');
+		if(!$credentials->isAdmin())
+			if($this->configGet('moderate'))
 				return FALSE;
 		if($content === FALSE)
 			return TRUE;
@@ -1192,9 +1200,10 @@ abstract class ContentModule extends Module
 				$uid ? $user->getUsername() : FALSE);
 		$view = $page->append('treeview', array('request' => $r));
 		$columns = array('title' => _('Title'));
-		if($this->canUpdate($engine, $request)
-				|| $this->canPublish($engine, $request))
+		if($this->canAdmin($engine, $request))
 			$columns['enabled'] = _('Enabled');
+		if($this->canPublish($engine, $request))
+			$columns['public'] = _('Public');
 		$columns['username'] = _('Username');
 		$columns['date'] = _('Date');
 		$view->setProperty('columns', $columns);
