@@ -704,7 +704,7 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 			'text' => $title));
 		//toolbar
-		$page->append($content->displayToolbar($engine, $request));
+		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
 		if(($error = $this->_publishProcess($engine, $request,
 				$content)) === FALSE)
@@ -785,7 +785,7 @@ abstract class ContentModule extends Module
 			'public' => $request->getParameter('public')
 			? TRUE : FALSE);
 		$content = new $class($engine, $this, $content);
-		$page->append($content->displayToolbar($engine, $request));
+		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
 		if(($error = $this->_submitProcess($engine, $request, $content))
 				=== FALSE)
@@ -866,8 +866,7 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		//toolbar
-		$toolbar = $content->displayToolbar($engine, $request);
-		$page->append($toolbar);
+		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
 		if(($error = $this->_updateProcess($engine, $request, $content))
 				=== FALSE)
@@ -1319,6 +1318,19 @@ abstract class ContentModule extends Module
 				|| $request->getParameter('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
+	}
+
+
+	//ContentModule::helperToolbar
+	protected function helperToolbar($engine, $request = FALSE,
+			$content = FALSE, $page)
+	{
+		$class = $this->content_class;
+
+		if($content === FALSE)
+			$content = new $class($engine, $this);
+		return $page->append($content->displayToolbar($engine,
+				$request));
 	}
 
 
