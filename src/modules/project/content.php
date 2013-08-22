@@ -38,7 +38,8 @@ class ProjectContent extends MultiContent
 		$this->text_content_by = _('Project from');
 		$this->text_content_list_title = _('Project list');
 		$this->text_more_content = _('More projects...');
-		$this->text_submit = _('New project...');
+		$this->text_submit = _('Submit');
+		$this->text_submit_content = _('New project');
 	}
 
 
