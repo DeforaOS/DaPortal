@@ -56,16 +56,6 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
-	//MultiContentModule::canPublish
-	protected function canPublish($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canPublish($engine, $request, $content, $error);
-	}
-
-
 	//MultiContentModule::canPreview
 	protected function canPreview($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
@@ -73,6 +63,16 @@ abstract class MultiContentModule extends ContentModule
 		if($content === FALSE)
 			$this->setContext($engine, $request, $content);
 		return parent::canPreview($engine, $request, $content, $error);
+	}
+
+
+	//MultiContentModule::canPublish
+	protected function canPublish($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		if($content === FALSE)
+			$this->setContext($engine, $request, $content);
+		return parent::canPublish($engine, $request, $content, $error);
 	}
 
 
