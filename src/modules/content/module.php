@@ -365,8 +365,8 @@ abstract class ContentModule extends Module
 		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$pcnt = FALSE;
-		$actions = array('delete', 'disable', 'enable', 'publish',
-			'unpublish');
+		$actions = array('delete', 'disable', 'enable', 'post',
+			'unpost');
 		$error = FALSE;
 
 		if($request === FALSE)
@@ -817,8 +817,8 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callUnpublish
-	protected function callUnpublish($engine, $request)
+	//ContentModule::callUnpost
+	protected function callUnpost($engine, $request)
 	{
 		$query = $this->query_unpublish;
 		$cred = $engine->getCredentials();
@@ -1008,38 +1008,23 @@ abstract class ContentModule extends Module
 	//ContentModule::helperAdminToolbar
 	protected function helperAdminToolbar($engine, $page, $request)
 	{
-		$r = $this->getRequest('admin', array(
-				'page' => $request->getParameter('page')));
+		$actions = array('disable' => _('Disable'),
+			'enable' => _('Enable'),
+			'unpost' => _('Unpublish'),
+			'post' => _('Publish'),
+			'delete' => _('Delete'));
 
 		$toolbar = $page->append('toolbar');
+		$r = $this->getRequest('admin', array(
+				'page' => $request->getParameter('page')));
 		$toolbar->append('button', array('stock' => 'refresh',
-					'text' => _('Refresh'),
-					'request' => $r));
-		//disable
-		$toolbar->append('button', array('stock' => 'disable',
-					'text' => _('Disable'),
-					'type' => 'submit', 'name' => 'action',
-					'value' => 'disable'));
-		//enable
-		$toolbar->append('button', array('stock' => 'enable',
-					'text' => _('Enable'),
-					'type' => 'submit', 'name' => 'action',
-					'value' => 'enable'));
-		//unpublish
-		$toolbar->append('button', array('stock' => 'unpublish',
-					'text' => _('Unpublish'),
-					'type' => 'submit', 'name' => 'action',
-					'value' => 'unpublish'));
-		//publish
-		$toolbar->append('button', array('stock' => 'publish',
-					'text' => _('Publish'),
-					'type' => 'submit', 'name' => 'action',
-					'value' => 'publish'));
-		//delete
-		$toolbar->append('button', array('stock' => 'delete',
-					'text' => _('Delete'),
-					'type' => 'submit', 'name' => 'action',
-					'value' => 'delete'));
+					'request' => $r,
+					'text' => _('Refresh')));
+		//actions
+		foreach($actions as $k => $v)
+			$toolbar->append('button', array('stock' => $k,
+					'text' => $v, 'type' => 'submit',
+					'name' => 'action', 'value' => $k));
 	}
 
 
