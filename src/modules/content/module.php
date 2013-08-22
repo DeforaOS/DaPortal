@@ -1222,7 +1222,8 @@ abstract class ContentModule extends Module
 				=== FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
-		$args = $request->getParameters();
+		$args = ($request !== FALSE)
+			? $request->getParameters() : array();
 		unset($args['page']);
 		$r = new Request($this->name, $request->getAction(),
 			$request->getID(), $request->getTitle(), $args);
