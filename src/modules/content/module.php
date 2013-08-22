@@ -196,6 +196,7 @@ abstract class ContentModule extends Module
 	{
 		$credentials = $engine->getCredentials();
 
+		$error = _('Permission denied');
 		if(!$credentials->isAdmin())
 			return FALSE;
 		if($content === FALSE)
