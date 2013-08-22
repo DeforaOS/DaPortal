@@ -301,7 +301,8 @@ abstract class ContentModule extends Module
 	//ContentModule::getRequest
 	protected function getRequest($action = FALSE, $parameters = FALSE)
 	{
-		return new Request($this->name, $action, $parameters);
+		return new Request($this->name, $action, FALSE, FALSE,
+				$parameters);
 	}
 
 
