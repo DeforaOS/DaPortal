@@ -260,7 +260,7 @@ abstract class ContentModule extends Module
 				return FALSE;
 		if($content === FALSE)
 			return TRUE;
-		return $content->canPublish($engine, FALSE, $error);
+		return $content->canUnpublish($engine, FALSE, $error);
 	}
 
 
@@ -684,7 +684,8 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//check permissions
-		if($content->canPublish($engine, $request, $error) === FALSE)
+		if($this->canPublish($engine, $request, $content, $error)
+				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//create the page
