@@ -72,31 +72,12 @@ class Content
 	//Content::canAdmin
 	public function canAdmin($engine, $request = FALSE, &$error = FALSE)
 	{
-		global $config;
-		$credentials = $engine->getCredentials();
-
-		//FIXME also verify that the fields are set (if not idempotent)
-		if($credentials->isAdmin())
-			return TRUE;
-		$error = _('Permission denied');
-		return FALSE;
-	}
-
-
-	//Content::canPublish
-	public function canPublish($engine, $request = FALSE, &$error = FALSE)
-	{
-		global $config;
 		$credentials = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if($credentials->getUserID() == 0)
+		if(!$credentials->isAdmin())
 			return FALSE;
-		if($credentials->isAdmin())
-			return TRUE;
-		$moderate = $config->get('module::'.$this->module->getName(),
-				'moderate');
-		return ($moderate === FALSE || $moderate == 0) ? TRUE : FALSE;
+		return $this->canUpdate($engine, $request, $error);
 	}
 
 
@@ -107,13 +88,25 @@ class Content
 	}
 
 
+	//Content::canPublish
+	public function canPublish($engine, $request = FALSE, &$error = FALSE)
+	{
+		if($request === FALSE)
+			return TRUE;
+		$error = _('The request expired or is invalid');
+		return !$request->isIdempotent();
+	}
+
+
 	//Content::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
+		if($request === FALSE)
+			return TRUE;
 		$error = _('The request expired or is invalid');
-		if($request === FALSE || $request->isIdempotent())
+		if($request->isIdempotent())
 			return FALSE;
 		//verify that the fields are set
 		$error = '';
@@ -131,15 +124,10 @@ class Content
 	//Content::canUnpublish
 	public function canUnpublish($engine, $request = FALSE, &$error = FALSE)
 	{
-		global $config;
-		$credentials = $engine->getCredentials();
-
-		if($credentials->isAdmin())
+		if($request === FALSE)
 			return TRUE;
-		$error = _('Permission denied');
-		if($credentials->getUserID() == 0)
-			return FALSE;
-		return FALSE;
+		$error = _('The request expired or is invalid');
+		return !$request->isIdempotent();
 	}
 
 
@@ -151,8 +139,10 @@ class Content
 		$error = _('Only administrators can update content');
 		if(!$credentials->isAdmin())
 			return FALSE;
+		if($request === FALSE)
+			return TRUE;
 		$error = _('The request expired or is invalid');
-		if($request === FALSE || $request->isIdempotent())
+		if($request->isIdempotent())
 			return FALSE;
 		return TRUE;
 	}
