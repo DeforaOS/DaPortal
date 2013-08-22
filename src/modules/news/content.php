@@ -34,7 +34,8 @@ class NewsContent extends Content
 		$this->text_content_by = _('News by');
 		$this->text_more_content = _('More news...');
 		$this->text_open = _('Read');
-		$this->text_submit = _('Submit news');
+		$this->text_submit = _('Submit');
+		$this->text_submit_content = _('Submit news');
 	}
 
 
