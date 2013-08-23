@@ -804,10 +804,8 @@ abstract class ContentModule extends Module
 		return $page;
 	}
 
-	protected function _submitProcess($engine, $request, &$content)
+	protected function _submitProcess($engine, $request, $content)
 	{
-		$class = $this->content_class;
-
 		//verify the request
 		if($request === FALSE
 				|| $request->getParameter('_submit') === FALSE)
@@ -884,7 +882,7 @@ abstract class ContentModule extends Module
 		return $page;
 	}
 
-	protected function _updateProcess($engine, $request, &$content)
+	protected function _updateProcess($engine, $request, $content)
 	{
 		//verify the request
 		if($request === FALSE
