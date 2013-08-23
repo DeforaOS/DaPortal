@@ -487,13 +487,7 @@ class HTMLFormat extends FormatElements
 
 		$this->renderTabs();
 		$args = array('action' => 'index.php');
-		//XXX look for any file upload field
-		foreach($e->getChildren() as $c)
-			if($c->getType() == 'filechooser')
-			{
-				$args['enctype'] = 'multipart/form-data';
-				break;
-			}
+		$args['enctype'] = $this->_formEnctype($e);
 		$method = $e->getProperty('idempotent') ? 'get' : 'post';
 		$args['method'] = $method;
 		$this->tagOpen('form', $e->getType(), $e->getProperty('id'),
@@ -521,6 +515,17 @@ class HTMLFormat extends FormatElements
 		$this->renderChildren($e);
 		$this->renderTabs();
 		$this->tagClose('form');
+	}
+
+	protected function _formEnctype($e)
+	{
+		//XXX look for any file upload field
+		foreach($e->getChildren() as $c)
+			if($c->getType() == 'filechooser')
+				return 'multipart/form-data';
+			else if(($ret = $this->_formEnctype($c)) !== FALSE)
+				return $ret;
+		return FALSE;
 	}
 
 	private function _renderFormHidden($name, $value = FALSE)
