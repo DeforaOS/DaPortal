@@ -352,7 +352,7 @@ class Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->canSubmit($engine))
+		if($this->module->canSubmit($engine))
 		{
 			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,

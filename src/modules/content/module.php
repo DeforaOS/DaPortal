@@ -29,7 +29,7 @@ abstract class ContentModule extends Module
 {
 	//public
 	//methods
-	//useful
+	//calls
 	//ContentModule::call
 	public function call($engine, $request, $internal = 0)
 	{
@@ -52,6 +52,107 @@ abstract class ContentModule extends Module
 				return $this->$action($engine, $request);
 		}
 		return FALSE;
+	}
+
+
+	//accessors
+	//FIXME make these more generic: can($action)
+	//ContentModule::canAdmin
+	public function canAdmin($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Permission denied');
+		if(!$credentials->isAdmin())
+			return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canAdmin($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canPreview
+	public function canPreview($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$class = $this->content_class;
+
+		if($content === FALSE)
+			$content = new $class($engine, $this);
+		return $content->canPreview($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canPublish
+	public function canPublish($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Permission denied');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		$error = _('Only moderators can publish content');
+		if(!$credentials->isAdmin())
+			if($this->configGet('moderate'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canPublish($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canSubmit
+	public function canSubmit($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Anonymous submissions are not allowed');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canSubmit($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canUnpublish
+	public function canUnpublish($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Permission denied');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		$error = _('Only moderators can unpublish content');
+		if(!$credentials->isAdmin())
+			if($this->configGet('moderate'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canUnpublish($engine, FALSE, $error);
+	}
+
+
+	//ContentModule::canUpdate
+	public function canUpdate($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Anonymous updates are not allowed');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		return $content->canUpdate($engine, FALSE, $error);
 	}
 
 
@@ -190,105 +291,6 @@ abstract class ContentModule extends Module
 
 
 	//accessors
-	//ContentModule::canAdmin
-	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		$credentials = $engine->getCredentials();
-
-		$error = _('Permission denied');
-		if(!$credentials->isAdmin())
-			return FALSE;
-		if($content === FALSE)
-			return TRUE;
-		return $content->canAdmin($engine, FALSE, $error);
-	}
-
-
-	//ContentModule::canPreview
-	protected function canPreview($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		$class = $this->content_class;
-
-		if($content === FALSE)
-			$content = new $class($engine, $this);
-		return $content->canPreview($engine, FALSE, $error);
-	}
-
-
-	//ContentModule::canPublish
-	protected function canPublish($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		$credentials = $engine->getCredentials();
-
-		$error = _('Permission denied');
-		if($credentials->getUserID() == 0)
-			if(!$this->configGet('anonymous'))
-				return FALSE;
-		$error = _('Only moderators can publish content');
-		if(!$credentials->isAdmin())
-			if($this->configGet('moderate'))
-				return FALSE;
-		if($content === FALSE)
-			return TRUE;
-		return $content->canPublish($engine, FALSE, $error);
-	}
-
-
-	//ContentModule::canSubmit
-	protected function canSubmit($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		$credentials = $engine->getCredentials();
-
-		$error = _('Anonymous submissions are not allowed');
-		if($credentials->getUserID() == 0)
-			if(!$this->configGet('anonymous'))
-				return FALSE;
-		if($content === FALSE)
-			return TRUE;
-		return $content->canSubmit($engine, FALSE, $error);
-	}
-
-
-	//ContentModule::canUnpublish
-	protected function canUnpublish($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		$credentials = $engine->getCredentials();
-
-		$error = _('Permission denied');
-		if($credentials->getUserID() == 0)
-			if(!$this->configGet('anonymous'))
-				return FALSE;
-		$error = _('Only moderators can unpublish content');
-		if(!$credentials->isAdmin())
-			if($this->configGet('moderate'))
-				return FALSE;
-		if($content === FALSE)
-			return TRUE;
-		return $content->canUnpublish($engine, FALSE, $error);
-	}
-
-
-	//ContentModule::canUpdate
-	protected function canUpdate($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		$credentials = $engine->getCredentials();
-
-		$error = _('Anonymous updates are not allowed');
-		if($credentials->getUserID() == 0)
-			if(!$this->configGet('anonymous'))
-				return FALSE;
-		if($content === FALSE)
-			return TRUE;
-		return $content->canUpdate($engine, FALSE, $error);
-	}
-
-
 	//ContentModule::_get
 	//XXX obsolete?
 	protected function _get($engine, $id, $title = FALSE, $request = FALSE)

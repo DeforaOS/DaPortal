@@ -43,69 +43,6 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//accessors
-	//FIXME:
-	//- can*() should not need setContext()
-	//- make it more generic => can($action)
-	//MultiContentModule::canAdmin
-	protected function canAdmin($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canAdmin($engine, $request, $content, $error);
-	}
-
-
-	//MultiContentModule::canPreview
-	protected function canPreview($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canPreview($engine, $request, $content, $error);
-	}
-
-
-	//MultiContentModule::canPublish
-	protected function canPublish($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canPublish($engine, $request, $content, $error);
-	}
-
-
-	//MultiContentModule::canSubmit
-	protected function canSubmit($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canSubmit($engine, $request, $content, $error);
-	}
-
-
-	//MultiContentModule::canUnpublish
-	protected function canUnpublish($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canUnpublish($engine, $request, $content, $error);
-	}
-
-
-	//MultiContentModule::canUpdate
-	protected function canUpdate($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
-	{
-		if($content === FALSE)
-			$this->setContext($engine, $request, $content);
-		return parent::canUpdate($engine, $request, $content, $error);
-	}
-
-
 	//MultiContentModule::_get
 	//XXX obsolete?
 	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
