@@ -22,7 +22,7 @@ require_once('./system/mime.php');
 
 
 //DownloadContent
-abstract class DownloadContent extends Content
+abstract class DownloadContent extends MultiContent
 {
 	//public
 	//methods
