@@ -74,7 +74,7 @@ class DownloadModule extends MultiContentModule
 		$content = FALSE;
 		//FIXME should return $id as $content['download_id']
 		$error = $this->_submitProcessFile($engine, NULL, $filename,
-				$content, $id, TRUE);
+				$request->getTitle(), $content, $id, TRUE);
 		if($error === FALSE)
 			return $content;
 		return FALSE;
@@ -163,6 +163,23 @@ class DownloadModule extends MultiContentModule
 			return $content->download($engine, $request);
 		return new PageElement('dialog', array('type' => 'error',
 			'text' => $error));
+	}
+
+
+	//DownloadModule::callSubmit
+	protected function _submitProcessFile($engine, $parent, $pathname,
+			$filename, &$content, &$id, $copy = FALSE)
+	{
+		if($filename === FALSE)
+			$filename = basename($pathname);
+		//FIXME check for filename unicity in the current folder
+		$content = new FileDownloadContent($engine, $this, array(
+			'title' => $filename,
+			'filename' => $pathname));
+		$error = _('Internal server error');
+		if($content->save($engine, FALSE, $error) === FALSE)
+			return $error;
+		return FALSE;
 	}
 }
 
