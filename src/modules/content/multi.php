@@ -117,6 +117,22 @@ abstract class MultiContentModule extends ContentModule
 		$this->setContext($engine, $request);
 		return parent::callUpdate($engine, $request);
 	}
+
+
+	//forms
+	//MultiContentModule::formSubmit
+	protected function formSubmit($engine, $request)
+	{
+		$r = $this->getRequest('submit', array(
+				'type' => $request->getParameter('type')));
+
+		$form = new PageElement('form', array('request' => $r));
+		//content
+		$this->helperSubmitContent($engine, $request, $form);
+		//buttons
+		$this->helperSubmitButtons($engine, $request, $form);
+		return $form;
+	}
 }
 
 ?>
