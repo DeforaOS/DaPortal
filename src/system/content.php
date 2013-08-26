@@ -875,9 +875,9 @@ class MultiContent extends Content
 
 
 	//MultiContent::setType
-	protected function setType()
+	protected function setType($type)
 	{
-		return $this->type;
+		$this->type = $type;
 	}
 
 
