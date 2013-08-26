@@ -849,6 +849,55 @@ class MultiContent extends Content
 
 
 	//useful
+	//MultiContent::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		$credentials = $engine->getCredentials();
+		$module = $this->getModule()->getName();
+
+		if($this->type === FALSE)
+			return parent::displayToolbar($engine, $request);
+		//FIXME code duplication
+		$toolbar = new PageElement('toolbar');
+		if($credentials->isAdmin($engine))
+		{
+			$r = new Request($module, 'admin');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'admin',
+					'text' => _('Administration')));
+		}
+		if($this->getModule()->canSubmit($engine))
+		{
+			$r = new Request($module, 'submit', FALSE, FALSE,
+				array('type' => $this->type));
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'new',
+					'text' => $this->text_submit_content));
+		}
+		if($this->getID() !== FALSE)
+		{
+			if(!$this->isPublic() && $this->canPublish($engine))
+			{
+				$r = $this->getRequest('publish');
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'publish',
+						'text' => $this->text_publish));
+			}
+			if($this->canUpdate($engine))
+			{
+				$r = $this->getRequest('update');
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'update',
+						'text' => $this->text_update));
+			}
+		}
+		//FIXME implement
+		return $toolbar;
+	}
+
+
 	//MultiContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
