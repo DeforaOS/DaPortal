@@ -263,6 +263,13 @@ class Content
 	}
 
 
+	//Content::setPublic
+	public function setPublic($public)
+	{
+		$this->public = $public ? TRUE : FALSE;
+	}
+
+
 	//Content::setTitle
 	public function setTitle($title)
 	{
