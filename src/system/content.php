@@ -841,20 +841,6 @@ class MultiContent extends Content
 {
 	//public
 	//methods
-	//accessors
-	//MultiContent::getRequest
-	public function getRequest($action = FALSE, $parameters = FALSE)
-	{
-		if($this->type === FALSE)
-			return parent::getRequest($action, $parameters);
-		if($parameters === FALSE)
-			return parent::getRequest($action, array(
-				'type' => $this->type));
-		$parameters['type'] = $this->type;
-		return parent::getRequest($action, $parameters);
-	}
-
-
 	//useful
 	//MultiContent::displayToolbar
 	public function displayToolbar($engine, $request)
