@@ -177,7 +177,7 @@ class HTML
 	//HTML::format
 	static public function format($engine, $content)
 	{
-		$from = '/((ftp:\/\/|http:\/\/|https:\/\/|mailto:)([-+a-zA-Z0-9.:\/_%?!=,;~#@()]|&amp;)+)/';
+		$from = '/((ftp:\/\/|http:\/\/|https:\/\/|mailto:)([-+a-zA-Z0-9.:\/_%?!=;~#@()]|&amp;)+)/';
 		//FIXME obfuscate e-mail addresses
 		$to = '<a href="\1">\1</a>';
 
