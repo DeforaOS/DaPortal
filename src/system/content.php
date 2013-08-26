@@ -812,6 +812,13 @@ class Content
 	}
 
 
+	//Content::setID
+	protected function setID($id)
+	{
+		$this->id = $id;
+	}
+
+
 	//private
 	//properties
 	private $id = FALSE;
