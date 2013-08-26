@@ -105,6 +105,13 @@ CREATE TABLE daportal_user_reset (
 CREATE INDEX daportal_user_reset_token_index ON daportal_user_reset (token);
 
 
+CREATE TABLE daportal_user_group (
+	user_group_id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL REFERENCES daportal_user (user_id),
+	group_id INTEGER NOT NULL REFERENCES daportal_group (group_id)
+);
+
+
 CREATE TABLE daportal_content (
 	content_id SERIAL PRIMARY KEY,
 	timestamp TIMESTAMP NOT NULL DEFAULT now(),

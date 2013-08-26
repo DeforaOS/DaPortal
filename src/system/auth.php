@@ -66,6 +66,15 @@ class AuthCredentials
 	}
 
 
+	//AuthCredentials::isMember
+	public function isMember($engine, $group)
+	{
+		if(($user = User::lookup($engine, $this->username)) === FALSE)
+			return FALSE;
+		return $user->isMember($engine, $group);
+	}
+
+
 	//AuthCredentials::setGroupID
 	public function setGroupID($gid)
 	{

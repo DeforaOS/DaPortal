@@ -110,6 +110,21 @@ class User
 	}
 
 
+	//User::isMember
+	public function isMember($engine, $group)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->query_member;
+		$args = array('user_id' => $this->user_id,
+			'groupname' => $group);
+
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//User::setEnabled
 	public function setEnabled($engine, $enabled)
 	{
@@ -554,15 +569,15 @@ class User
 		WHERE daportal_group.enabled='1'
 		AND user_id=:user_id
 		AND username LIKE :username";
-	static private $query_get_by_username = "SELECT user_id AS id, username,
-		daportal_user.enabled AS enabled,
-		daportal_user.group_id AS group_id, groupname, admin, email,
-		fullname
-		FROM daportal_user
-		LEFT JOIN daportal_group
-		ON daportal_user.group_id=daportal_group.group_id
-		WHERE daportal_group.enabled='1'
-		AND username=:username";
+	//IN:	user_id
+	//	groupname
+	private $query_member = "SELECT user_id,
+		daportal_group.group_id AS group_id
+		FROM daportal_user_group, daportal_group
+		WHERE daportal_user_group.group_id=daportal_group.group_id
+		AND user_id=:user_id
+		AND groupname=:groupname
+		AND enabled='1'";
 	private $query_set_password = 'UPDATE daportal_user
 		SET password=:password
 		WHERE user_id=:user_id';
@@ -576,6 +591,15 @@ class User
 	static private $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
+	static private $query_get_by_username = "SELECT user_id AS id, username,
+		daportal_user.enabled AS enabled,
+		daportal_user.group_id AS group_id, groupname, admin, email,
+		fullname
+		FROM daportal_user
+		LEFT JOIN daportal_group
+		ON daportal_user.group_id=daportal_group.group_id
+		WHERE daportal_group.enabled='1'
+		AND username=:username";
 	static private $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,

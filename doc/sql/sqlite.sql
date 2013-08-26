@@ -31,6 +31,7 @@ DROP TABLE daportal_content_lang;
 DROP VIEW daportal_content_public;
 DROP VIEW daportal_content_enabled;
 DROP TABLE daportal_content;
+DROP TABLE daportal_user_group;
 DROP TABLE daportal_user_reset;
 DROP TABLE daportal_user_register;
 DROP VIEW daportal_user_enabled;
@@ -155,6 +156,14 @@ CREATE TRIGGER daportal_user_reset_insert_timestamp AFTER INSERT ON daportal_use
 BEGIN
 	UPDATE daportal_user_reset SET timestamp = datetime('now') WHERE user_id = NEW.user_id;
 END;
+
+CREATE TABLE daportal_user_group (
+	user_group_id INTEGER PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	group_id INTEGER NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
+	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
+);
 
 CREATE TABLE daportal_content (
 	content_id INTEGER PRIMARY KEY,
