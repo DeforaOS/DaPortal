@@ -25,11 +25,13 @@ class Content
 	//Content::Content
 	public function __construct($engine, $module, $properties = FALSE)
 	{
+		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 
 		$this->class = get_class();
 		$this->stock = $module->getName();
 		$this->module = $module;
+		$this->user_id = $credentials->getUserID();
 		//properties
 		if($properties === FALSE)
 			$properties = array();
@@ -544,11 +546,10 @@ class Content
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
-		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 		$query = $this->query_insert;
 		$args = array('module_id' => $this->module->getID(),
-			'user_id' => $credentials->getUserID(),
+			'user_id' => $this->user_id,
 			'enabled' => $this->enabled,
 			'public' => $this->public);
 
@@ -734,6 +735,16 @@ class Content
 	protected $query_delete = 'DELETE FROM daportal_content
 		WHERE content_id=:content_id';
 	//IN:	module_id
+	//	user_id
+	//	title
+	//	content
+	//	enabled
+	//	public
+	protected $query_insert = 'INSERT INTO daportal_content
+		(module_id, user_id, title, content, enabled, public)
+		VALUES (:module_id, :user_id, :title, :content, :enabled,
+			:public)';
+	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		title, daportal_content_public.enabled AS enabled, public,
@@ -777,16 +788,6 @@ class Content
 		AND (daportal_content.public='1'
 			OR daportal_content.user_id=:user_id)
 		AND content_id=:content_id";
-	//IN:	module_id
-	//	user_id
-	//	title
-	//	content
-	//	enabled
-	//	public
-	protected $query_insert = 'INSERT INTO daportal_content
-		(module_id, user_id, title, content, enabled, public)
-		VALUES (:module_id, :user_id, :title, :content, :enabled,
-			:public)';
 	//IN:	module_id
 	//	content_id
 	//	title
