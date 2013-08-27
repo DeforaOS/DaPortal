@@ -783,9 +783,9 @@ abstract class ContentModule extends Module
 		$content = array('user_id' => $cred->getUserID(),
 			'username' => $cred->getUsername(),
 			'title' => $request->getParameter('title'),
-			'content' => $request->getParameter('content'),
-			'public' => $request->getParameter('public')
-			? TRUE : FALSE);
+			'content' => $request->getParameter('content'));
+		if(($public = $request->getParameter('public')) !== FALSE)
+			$content['public'] = $public ? TRUE : FALSE;
 		$content = new $class($engine, $this, $content);
 		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
