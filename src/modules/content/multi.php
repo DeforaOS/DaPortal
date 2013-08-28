@@ -162,16 +162,16 @@ abstract class MultiContentModule extends ContentModule
 					'text' => $this->text_content_submit_content));
 		if($uid === $cred->getUserID())
 		{
-			$toolbar->append('button', array('stock' => 'disable',
-						'text' => _('Disable'),
+			$toolbar->append('button', array('stock' => 'post',
+						'text' => _('Publish'),
 						'type' => 'submit',
 						'name' => 'action',
-						'value' => 'disable'));
-			$toolbar->append('button', array('stock' => 'enable',
-						'text' => _('Enable'),
+						'value' => 'post'));
+			$toolbar->append('button', array('stock' => 'unpost',
+						'text' => _('Unpublish'),
 						'type' => 'submit',
 						'name' => 'action',
-						'value' => 'enable'));
+						'value' => 'unpost'));
 		}
 	}
 }
