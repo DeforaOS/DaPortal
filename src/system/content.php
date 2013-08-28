@@ -159,6 +159,14 @@ class Content
 	}
 
 
+	//Content::getColumns
+	static public function getColumns()
+	{
+		return array('icon' => '', 'title' => _('Title'),
+			'username' => _('Username'), 'date' => _('Date'));
+	}
+
+
 	//Content::getContent
 	public function getContent($engine)
 	{

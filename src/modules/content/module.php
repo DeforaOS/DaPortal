@@ -90,7 +90,7 @@ abstract class ContentModule extends Module
 	{
 		$credentials = $engine->getCredentials();
 
-		$error = _('Permission denied');
+		$error = _('You need to be logged in to publish content');
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
 				return FALSE;
@@ -381,8 +381,6 @@ abstract class ContentModule extends Module
 			'unpost');
 		$error = FALSE;
 
-		if($request === FALSE)
-			$request = $this->getRequest('admin');
 		//check credentials
 		if(!$this->canAdmin($engine, $request, FALSE, $error))
 		{
@@ -504,7 +502,8 @@ abstract class ContentModule extends Module
 
 		if($cred->isAdmin())
 			$query = $this->query_admin_delete;
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
 				_('Content could be deleted successfully'),
 				_('Some content could not be deleted'));
 	}
@@ -518,7 +517,8 @@ abstract class ContentModule extends Module
 
 		if($cred->isAdmin())
 			$query = $this->query_admin_disable;
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
 				_('Content could be disabled successfully'),
 				_('Some content could not be disabled'));
 	}
@@ -548,7 +548,8 @@ abstract class ContentModule extends Module
 
 		if($cred->isAdmin())
 			$query = $this->query_admin_enable;
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
 				_('Content could be enabled successfully'),
 				_('Some content could not be enabled'));
 	}
@@ -608,14 +609,23 @@ abstract class ContentModule extends Module
 	//ContentModule::callList
 	protected function callList($engine, $request = FALSE)
 	{
+		$class = $this->content_class;
 		$db = $engine->getDatabase();
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$error = _('Unable to list contents');
+		$actions = array('post', 'unpost');
 
-		$class = $this->content_class;
+		//perform actions if necessary
+		if($request !== FALSE)
+			foreach($actions as $a)
+				if($request->getParameter($a) !== FALSE)
+				{
+					$a = 'call'.ucfirst($a);
+					return $this->$a($engine, $request);
+				}
 		if($user !== FALSE && ($uid = $user->getUserID()) == 0)
 			$user = FALSE;
 		$title = $this->text_content_list_title;
@@ -637,7 +647,8 @@ abstract class ContentModule extends Module
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class
 		//view
-		$treeview = $this->helperListView($engine, $page, $request);
+		$treeview = $this->helperListView($engine, $request);
+		$page->append($treeview);
 		//toolbar
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
@@ -663,7 +674,8 @@ abstract class ContentModule extends Module
 				'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = $this->query_admin_publish;
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
 				_('Content could be published successfully'),
 				_('Some content could not be published'));
 	}
@@ -839,7 +851,8 @@ abstract class ContentModule extends Module
 					'text' => $error));
 		if($cred->isAdmin())
 			$query = $this->query_admin_unpublish;
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
 				_('Content could be unpublished successfully'),
 				_('Some content could not be unpublished'));
 	}
@@ -1148,23 +1161,24 @@ abstract class ContentModule extends Module
 					'text' => $this->text_content_submit_content));
 		if($uid === $cred->getUserID())
 		{
-			$toolbar->append('button', array('stock' => 'disable',
-						'text' => _('Disable'),
+			$toolbar->append('button', array('stock' => 'post',
+						'text' => _('Publish'),
 						'type' => 'submit',
 						'name' => 'action',
-						'value' => 'disable'));
-			$toolbar->append('button', array('stock' => 'enable',
-						'text' => _('Enable'),
+						'value' => 'post'));
+			$toolbar->append('button', array('stock' => 'unpost',
+						'text' => _('Unpublish'),
 						'type' => 'submit',
 						'name' => 'action',
-						'value' => 'enable'));
+						'value' => 'unpost'));
 		}
 	}
 
 
 	//ContentModule::helperListView
-	protected function helperListView($engine, $page, $request = FALSE)
+	protected function helperListView($engine, $request = FALSE)
 	{
+		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
@@ -1176,16 +1190,17 @@ abstract class ContentModule extends Module
 		if($uid === $cred->getUserID())
 			$r = new Request($this->name, 'list', $uid,
 				$uid ? $user->getUsername() : FALSE);
-		$view = $page->append('treeview', array('request' => $r));
-		$columns = array('title' => _('Title'));
+		$columns = $class::getColumns();
 		if($this->canAdmin($engine, $request))
+		{
 			$columns['enabled'] = _('Enabled');
-		if($this->canPublish($engine, $request))
 			$columns['public'] = _('Public');
-		$columns['username'] = _('Username');
-		$columns['date'] = _('Date');
-		$view->setProperty('columns', $columns);
-		return $view;
+		}
+		else if($uid === $cred->getUserID()
+				&& $this->canPublish($engine, $request))
+			$columns['public'] = _('Public');
+		return new PageElement('treeview', array('request' => $r,
+				'columns' => $columns));
 	}
 
 

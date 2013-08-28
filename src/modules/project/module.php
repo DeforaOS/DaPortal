@@ -876,11 +876,11 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::helperListView
-	protected function helperListView($engine, $page, $request = FALSE)
+	protected function helperListView($engine, $request = FALSE)
 	{
 		if($this->content_class == 'BugProjectContent')
-			return parent::helperListView($engine, $page, $request);
-		$view = parent::helperListView($engine, $page, $request);
+			return parent::helperListView($engine, $request);
+		$view = parent::helperListView($engine, $request);
 		if(($columns = $view->getProperty('columns')) !== FALSE)
 		{
 			unset($columns['date']);
