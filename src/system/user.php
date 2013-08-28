@@ -42,9 +42,15 @@ class User
 		$args = array('user_id' => $uid);
 		if($username !== FALSE)
 		{
-			//XXX workaround for friendly titles
-			$query = $this->query_get_by_id_username;
-			$username = str_replace('-', '_', $username);
+			if($engine instanceof HTTPFriendlyEngine)
+			{
+				//XXX workaround for friendly titles
+				$query .= ' AND username '
+					.$db->like().' :username';
+				$username = str_replace('-', '_', $username);
+			}
+			else
+				$query = $this->query_get_by_id_username;
 			$args['username'] = $username;
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
@@ -568,7 +574,7 @@ class User
 		ON daportal_user.group_id=daportal_group.group_id
 		WHERE daportal_group.enabled='1'
 		AND user_id=:user_id
-		AND username LIKE :username";
+		AND username=:username";
 	//IN:	user_id
 	//	groupname
 	private $query_member = "SELECT user_id,
