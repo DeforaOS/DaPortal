@@ -62,7 +62,14 @@ class WikiContent extends MultiContent
 	//WikiContent::canUpdate
 	public function canUpdate($engine, $request = FALSE, &$error = FALSE)
 	{
-		if(parent::canUpdate($engine, $request, $error) === FALSE)
+		$credentials = $engine->getCredentials();
+
+		$error = _('You need to be logged in to update wiki pages');
+		if($credentials->getUserID() == 0)
+			return FALSE;
+		//verify the request
+		$error = _('The request expired or is invalid');
+		if($request !== FALSE && $request->isIdempotent())
 			return FALSE;
 		//verify the title
 		$title = ($request !== FALSE)
@@ -216,8 +223,12 @@ class WikiContent extends MultiContent
 	public function _formUpdate($engine, $request)
 	{
 		$vbox = new PageElement('vbox');
-		$value = ($request !== FALSE)
-			? $request->getParameter('content') : FALSE;
+		$value = FALSE;
+
+		if($request !== FALSE)
+			$value = $request->getParameter('content');
+		if($value === FALSE)
+			$value = $this->getMarkup($engine);
 		$vbox->append('htmledit', array('name' => 'content',
 				'value' => $value));
 		$value = ($request !== FALSE)
