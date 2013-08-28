@@ -347,6 +347,36 @@ class Content
 	}
 
 
+	//Content::displayRow
+	public function displayRow($engine, $request = FALSE)
+	{
+		$r = array();
+		$no = new PageElement('image', array('stock' => 'no',
+			'size' => 16, 'title' => _('Disabled')));
+		$yes = new PageElement('image', array('stock' => 'yes',
+			'size' => 16, 'title' => _('Enabled')));
+
+		//title
+		$rq = $this->getRequest();
+		$link = new PageElement('link', array('request' => $rq,
+			'text' => $this->getTitle()));
+		$r['title'] = $link;
+		$r['enabled'] = $this->isEnabled() ? $yes : $no;
+		$r['public'] = $this->isPublic() ? $yes : $no;
+		//username
+		$rq = new Request('user', FALSE, $this->getUserID(),
+			$this->getUsername());
+		$link = new PageElement('link', array('request' => $rq,
+			'stock' => 'user', 'text' => $this->getUsername()));
+		$r['username'] = $link;
+		//date
+		$r['date'] = $this->getDate($engine);
+		//id
+		$r['id'] = 'content_id:'.$this->getID();
+		return new PageElement('row', $r);
+	}
+
+
 	//Content::displayToolbar
 	public function displayToolbar($engine, $request)
 	{

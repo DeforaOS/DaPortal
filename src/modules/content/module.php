@@ -1111,30 +1111,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperListContent
 	protected function helperListContent($engine, $request, $content)
 	{
-		$r = $content->getProperties();
-		//XXX use a class constant instead?
-		$no = new PageElement('image', array('stock' => 'no',
-			'size' => 16, 'title' => _('Disabled')));
-		$yes = new PageElement('image', array('stock' => 'yes',
-			'size' => 16, 'title' => _('Enabled')));
-
-		//title
-		$rq = $content->getRequest();
-		$link = new PageElement('link', array('request' => $rq,
-			'text' => $content->getTitle()));
-		$r['title'] = $link;
-		$r['enabled'] = $content->isEnabled() ? $yes : $no;
-		//username
-		$rq = new Request('user', FALSE, $content->getUserID(),
-			$content->getUsername());
-		$link = new PageElement('link', array('request' => $rq,
-			'stock' => 'user', 'text' => $content->getUsername()));
-		$r['username'] = $link;
-		//date
-		$r['date'] = $content->getDate($engine);
-		//id
-		$r['id'] = 'content_id:'.$content->getID();
-		return new PageElement('row', $r);
+		return $content->displayRow($engine, $request);
 	}
 
 
