@@ -133,6 +133,47 @@ abstract class MultiContentModule extends ContentModule
 		$this->helperSubmitButtons($engine, $request, $form);
 		return $form;
 	}
+
+
+	//helpers
+	//MultiContentModule::helperListToolbar
+	protected function helperListToolbar($engine, $page, $request = FALSE)
+	{
+		//XXX code duplicated from ContentModule
+		$cred = $engine->getCredentials();
+		$user = ($request !== FALSE)
+			? new User($engine, $request->getID(),
+				$request->getTitle()) : FALSE;
+
+		if($user === FALSE || ($uid = $user->getUserID()) == 0)
+			$uid = FALSE;
+		$r = new Request($this->name, 'list', $uid,
+			$uid ? $user->getUsername() : FALSE,
+			array('type' => $request->getParameter('type')));
+		$toolbar = $page->append('toolbar');
+		$toolbar->append('button', array('stock' => 'refresh',
+				'text' => _('Refresh'),
+				'request' => $r));
+		$r = $this->getRequest('submit', array(
+				'type' => $request->getParameter('type')));
+		if($this->canSubmit($engine, $request))
+			$toolbar->append('button', array('stock' => 'new',
+					'request' => $r,
+					'text' => $this->text_content_submit_content));
+		if($uid === $cred->getUserID())
+		{
+			$toolbar->append('button', array('stock' => 'disable',
+						'text' => _('Disable'),
+						'type' => 'submit',
+						'name' => 'action',
+						'value' => 'disable'));
+			$toolbar->append('button', array('stock' => 'enable',
+						'text' => _('Enable'),
+						'type' => 'submit',
+						'name' => 'action',
+						'value' => 'enable'));
+		}
+	}
 }
 
 ?>
