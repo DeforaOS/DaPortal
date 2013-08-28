@@ -616,9 +616,13 @@ abstract class ContentModule extends Module
 				$request->getTitle()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$error = _('Unable to list contents');
-		$actions = array('post', 'unpost');
 
 		//perform actions if necessary
+		$actions = array();
+		if($this->canPublish($engine, $request))
+			$actions[] = 'post';
+		if($this->canUnpublish($engine, $request))
+			$actions[] = 'unpost';
 		if($request !== FALSE)
 			foreach($actions as $a)
 				if($request->getParameter($a) !== FALSE)
@@ -1068,6 +1072,7 @@ abstract class ContentModule extends Module
 			return $page;
 		}
 		//prepare the fallback request
+		//FIXME let fallback be a request directly
 		$fallback = 'call'.ucfirst($fallback);
 		$r = new Request($request->getModule(), $request->getAction(),
 			$request->getID(), $request->getTitle());
@@ -1159,7 +1164,8 @@ abstract class ContentModule extends Module
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
-		if($uid === $cred->getUserID())
+		if($uid === $cred->getUserID()
+				&& $this->canPublish($engine, $request))
 		{
 			$toolbar->append('button', array('stock' => 'post',
 						'text' => _('Publish'),
