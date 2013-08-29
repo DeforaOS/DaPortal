@@ -87,6 +87,14 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//calls
+	//MultiContentModule::callAdmin
+	protected function callAdmin($engine, $request = FALSE)
+	{
+		$this->setContext($engine, $request);
+		return parent::callAdmin($engine, $request);
+	}
+
+
 	//MultiContentModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
