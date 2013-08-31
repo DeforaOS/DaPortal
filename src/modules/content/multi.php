@@ -152,12 +152,14 @@ abstract class MultiContentModule extends ContentModule
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
+		$type = ($request !== FALSE) ? $request->getParameter('type')
+			: FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
 		$r = new Request($this->name, 'list', $uid,
 			$uid ? $user->getUsername() : FALSE,
-			array('type' => $request->getParameter('type')));
+			array('type' => $type));
 		$toolbar = $page->append('toolbar');
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
