@@ -164,8 +164,7 @@ abstract class MultiContentModule extends ContentModule
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $r));
-		$r = $this->getRequest('submit', array(
-				'type' => $request->getParameter('type')));
+		$r = $this->getRequest('submit', array('type' => $type));
 		if($this->canSubmit($engine, $request))
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
