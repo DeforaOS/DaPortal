@@ -48,7 +48,7 @@ class ProjectModule extends MultiContentModule
 				return $this->callDisplay($engine, $request);
 			case 'bugList':
 			case 'bugReply':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return parent::call($engine, $request, $internal);

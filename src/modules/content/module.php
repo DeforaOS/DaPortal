@@ -48,7 +48,7 @@ abstract class ContentModule extends Module
 			case 'publish':
 			case 'submit':
 			case 'update':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return FALSE;
@@ -398,7 +398,7 @@ abstract class ContentModule extends Module
 			foreach($actions as $a)
 				if($request->getParameter($a) !== FALSE)
 				{
-					$a = 'call'.ucfirst($a);
+					$a = 'call'.$a;
 					return $this->$a($engine, $request);
 				}
 		//administrative page
@@ -627,7 +627,7 @@ abstract class ContentModule extends Module
 			foreach($actions as $a)
 				if($request->getParameter($a) !== FALSE)
 				{
-					$a = 'call'.ucfirst($a);
+					$a = 'call'.$a;
 					return $this->$a($engine, $request);
 				}
 		if($user !== FALSE && ($uid = $user->getUserID()) == 0)
@@ -1073,7 +1073,7 @@ abstract class ContentModule extends Module
 		}
 		//prepare the fallback request
 		//FIXME let fallback be a request directly
-		$fallback = 'call'.ucfirst($fallback);
+		$fallback = 'call'.$fallback;
 		$r = new Request($request->getModule(), $request->getAction(),
 			$request->getID(), $request->getTitle());
 		if(($type = $request->getParameter('type')) !== FALSE)

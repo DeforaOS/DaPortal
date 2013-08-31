@@ -56,7 +56,7 @@ class DownloadModule extends MultiContentModule
 		{
 			case 'download':
 			case 'submit':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			case 'folder_new':
 				return $this->callFolderNew($engine, $request);

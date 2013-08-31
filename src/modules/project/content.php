@@ -70,7 +70,7 @@ class ProjectContent extends MultiContent
 						$request));
 				$page->append($this->displayToolbar($engine,
 						$request));
-				$method = '_display'.ucfirst($action);
+				$method = '_display'.$action;
 				return $this->$method($engine, $request, $page);
 			case 'homepage':
 			default:

@@ -34,7 +34,7 @@ class TopModule extends Module
 		{
 			case 'admin':
 			case FALSE:
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return FALSE;

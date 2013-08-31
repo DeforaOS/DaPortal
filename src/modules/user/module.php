@@ -58,7 +58,7 @@ class UserModule extends Module
 			case 'update':
 			case 'validate':
 			case 'widget':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return FALSE;
@@ -536,7 +536,7 @@ class UserModule extends Module
 			foreach($actions as $a)
 				if($request->getParameter($a) !== FALSE)
 				{
-					$a = 'call'.ucfirst($a);
+					$a = 'call'.$a;
 					return $this->$a($engine, $request);
 				}
 		//list users
@@ -1562,7 +1562,7 @@ class UserModule extends Module
 					'text' => $error));
 			return $page;
 		}
-		$fallback = 'call'.ucfirst($fallback);
+		$fallback = 'call'.$fallback;
 		if($request->isIdempotent())
 			//must be safe
 			return $this->$fallback($engine);

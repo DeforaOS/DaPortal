@@ -38,7 +38,7 @@ class BrowserModule extends Module
 				return $this->$action($engine, $request);
 			case 'default':
 			case 'download':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
 				return FALSE;

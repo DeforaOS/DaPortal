@@ -38,7 +38,7 @@ class SearchModule extends Module
 			case 'advanced':
 			case 'default':
 			case 'widget':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return FALSE;

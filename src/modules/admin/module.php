@@ -57,7 +57,7 @@ class AdminModule extends Module
 			case 'default':
 			case 'disable':
 			case 'enable':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
 		return FALSE;
@@ -112,7 +112,7 @@ class AdminModule extends Module
 			foreach($actions as $a)
 				if($request->getParameter($a) !== FALSE)
 				{
-					$a = 'call'.ucfirst($a);
+					$a = 'call'.$a;
 					return $this->$a($engine, $request);
 				}
 		//list modules
@@ -247,7 +247,7 @@ class AdminModule extends Module
 				'text' => $error));
 			return $page;
 		}
-		$fallback = 'call'.ucfirst($fallback);
+		$fallback = 'call'.$fallback;
 		if($request->isIdempotent())
 			//must be safe
 			return $this->$fallback($engine);

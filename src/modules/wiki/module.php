@@ -55,7 +55,7 @@ class WikiModule extends ContentModule
 		switch($action)
 		{
 			case 'monitor':
-				$action = 'call'.ucfirst($action);
+				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
 				return parent::call($engine, $request,
