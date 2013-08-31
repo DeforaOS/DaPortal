@@ -1213,6 +1213,12 @@ abstract class ContentModule extends Module
 	//ContentModule::helperPaging
 	protected function helperPaging($engine, $request, $page, $limit, $pcnt)
 	{
+		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
+		$id = ($request !== FALSE) ? $request->getID() : FALSE;
+		$title = ($request !== FALSE) ? $request->getTitle() : FALSE;
+		$args = ($request !== FALSE)
+			? $request->getParameters() : array();
+
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
 		if($request === FALSE
@@ -1220,11 +1226,8 @@ abstract class ContentModule extends Module
 				=== FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
-		$args = ($request !== FALSE)
-			? $request->getParameters() : array();
 		unset($args['page']);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = new Request($this->name, $action, $id, $title, $args);
 		$form = $page->append('form', array('idempotent' => TRUE,
 				'request' => $r));
 		$hbox = $form->append('hbox');
@@ -1234,8 +1237,7 @@ abstract class ContentModule extends Module
 		//previous page
 		$a = $args;
 		$a['page'] = max(1, $pcur - 1);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $a);
+		$r = new Request($this->name, $action, $id, $title, $a);
 		$hbox->append('link', array('stock' => 'previous',
 				'request' => $r, 'text' => ''));
 		//entry
@@ -1244,14 +1246,12 @@ abstract class ContentModule extends Module
 		$hbox->append('label', array('text' => " / $pcnt"));
 		//next page
 		$args['page'] = min($pcur + 1, $pcnt);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = new Request($this->name, $action, $id, $title, $args);
 		$hbox->append('link', array('stock' => 'next',
 				'request' => $r, 'text' => ''));
 		//last page
 		$args['page'] = $pcnt;
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = new Request($this->name, $action, $id, $title, $args);
 		$hbox->append('link', array('stock' => 'gotolast',
 				'request' => $r, 'text' => ''));
 	}
