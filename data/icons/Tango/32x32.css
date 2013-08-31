@@ -187,6 +187,10 @@
 	background-image:	url('Tango/32x32/actions/gtk-remove.png');
 }
 
+.stock32.reply {
+	background-image:	url('Tango/32x32/actions/mail_reply.png');
+}
+
 .stock32.save {
 	background-image:	url('Tango/32x32/actions/stock_save.png');
 }

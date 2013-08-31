@@ -187,6 +187,10 @@
 	background-image:	url('Tango/24x24/actions/gtk-remove.png');
 }
 
+.stock24.reply {
+	background-image:	url('Tango/24x24/actions/mail_reply.png');
+}
+
 .stock24.save {
 	background-image:	url('Tango/24x24/actions/stock_save.png');
 }

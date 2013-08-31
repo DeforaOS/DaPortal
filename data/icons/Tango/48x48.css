@@ -187,6 +187,10 @@
 	background-image:	url('Tango/scalable/actions/gtk-remove.svg');
 }
 
+.stock48.reply {
+	background-image:	url('Tango/scalable/actions/mail_reply.svg');
+}
+
 .stock48.save {
 	background-image:	url('Tango/scalable/actions/stock_save.svg');
 }
