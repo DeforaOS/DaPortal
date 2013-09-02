@@ -148,6 +148,7 @@ abstract class MultiContentModule extends ContentModule
 	protected function helperListToolbar($engine, $page, $request = FALSE)
 	{
 		//XXX code duplicated from ContentModule
+		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
 			? new User($engine, $request->getID(),
@@ -165,7 +166,8 @@ abstract class MultiContentModule extends ContentModule
 				'text' => _('Refresh'),
 				'request' => $r));
 		$r = $this->getRequest('submit', array('type' => $type));
-		if($this->canSubmit($engine, $request))
+		$content = new $class($engine, $this);
+		if($this->canSubmit($engine, $request, $content))
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
