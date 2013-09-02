@@ -399,7 +399,7 @@ class Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->module->canSubmit($engine))
+		if($this->module->canSubmit($engine, FALSE, $this))
 		{
 			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,
@@ -408,7 +408,8 @@ class Content
 		}
 		if($this->getID() !== FALSE)
 		{
-			if(!$this->isPublic() && $this->canPublish($engine))
+			if(!$this->isPublic() && $this->canPublish($engine,
+					FALSE, $this))
 			{
 				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
@@ -416,7 +417,7 @@ class Content
 						'stock' => 'publish',
 						'text' => $this->text_publish));
 			}
-			if($this->canUpdate($engine))
+			if($this->canUpdate($engine, FALSE, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
@@ -905,7 +906,7 @@ class MultiContent extends Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->getModule()->canSubmit($engine))
+		if($this->getModule()->canSubmit($engine, FALSE, $content))
 		{
 			$r = new Request($module, 'submit', FALSE, FALSE,
 				array('type' => $this->type));
@@ -915,7 +916,8 @@ class MultiContent extends Content
 		}
 		if($this->getID() !== FALSE)
 		{
-			if(!$this->isPublic() && $this->canPublish($engine))
+			if(!$this->isPublic() && $this->canPublish($engine,
+					FALSE, $this))
 			{
 				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
@@ -923,7 +925,7 @@ class MultiContent extends Content
 						'stock' => 'publish',
 						'text' => $this->text_publish));
 			}
-			if($this->canUpdate($engine))
+			if($this->canUpdate($engine, FALSE, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
