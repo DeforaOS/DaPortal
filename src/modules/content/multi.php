@@ -169,7 +169,7 @@ abstract class MultiContentModule extends ContentModule
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
-		if($uid === $cred->getUserID()
+		if($uid !== FALSE && $uid === $cred->getUserID()
 				&& $this->canPublish($engine, $request))
 		{
 			$toolbar->append('button', array('stock' => 'post',

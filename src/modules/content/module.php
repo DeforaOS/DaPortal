@@ -1164,7 +1164,7 @@ abstract class ContentModule extends Module
 			$toolbar->append('button', array('stock' => 'new',
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
-		if($uid === $cred->getUserID()
+		if($uid !== FALSE && $uid === $cred->getUserID()
 				&& $this->canPublish($engine, $request))
 		{
 			$toolbar->append('button', array('stock' => 'post',
@@ -1186,7 +1186,7 @@ abstract class ContentModule extends Module
 	{
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
-		$user = ($request !== FALSE)
+		$user = ($request !== FALSE && $request->getID() !== FALSE)
 			? new User($engine, $request->getID(),
 				$request->getTitle()) : FALSE;
 		$r = FALSE;
@@ -1197,12 +1197,7 @@ abstract class ContentModule extends Module
 			$r = new Request($this->name, 'list', $uid,
 				$uid ? $user->getUsername() : FALSE);
 		$columns = $class::getColumns();
-		if($this->canAdmin($engine, $request))
-		{
-			$columns['enabled'] = _('Enabled');
-			$columns['public'] = _('Public');
-		}
-		else if($uid === $cred->getUserID()
+		if($uid === $cred->getUserID()
 				&& $this->canPublish($engine, $request))
 			$columns['public'] = _('Public');
 		return new PageElement('treeview', array('request' => $r,
