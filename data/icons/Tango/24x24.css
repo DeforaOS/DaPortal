@@ -99,6 +99,10 @@
 	background-image:	url('Tango/24x24/actions/forward.png');
 }
 
+.stock24.gallery {
+	background-image:	url('Tango/24x24/mimetypes/image-x-generic.png');
+}
+
 .stock24.gotofirst {
 	background-image:	url('Tango/24x24/actions/stock_first.png');
 }
