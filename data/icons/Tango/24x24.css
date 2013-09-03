@@ -39,6 +39,10 @@
 	background-image:	url('Tango/24x24/actions/bookmark-new.png');
 }
 
+.stock24.browse {
+	background-image:	url('Tango/24x24/places/folder.png');
+}
+
 .stock24.browser {
 	background-image:	url('Tango/24x24/apps/file-manager.png');
 }

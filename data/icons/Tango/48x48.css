@@ -39,6 +39,10 @@
 	background-image:	url('Tango/scalable/actions/bookmark-new.svg');
 }
 
+.stock48.browse {
+	background-image:	url('Tango/scalable/places/folder.png');
+}
+
 .stock48.browser {
 	background-image:	url('Tango/scalable/apps/file-manager.svg');
 }
