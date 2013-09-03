@@ -56,7 +56,6 @@ class HTTPEngine extends Engine
 		$url = $this->getURL($request);
 
 		Locale::init($this);
-		$this->setType('text/html');
 		if($this->getDebug())
 			$this->log('LOG_DEBUG', 'URL is '.$url);
 		if(isset($_SERVER['SCRIPT_NAME'])
@@ -226,11 +225,13 @@ class HTTPEngine extends Engine
 	{
 		global $config;
 		//XXX escape the headers
-		$type = $this->getType();
 		$charset = $config->get('defaults', 'charset');
 
+		//render HTML by default
+		if($this->getType() === FALSE)
+			$this->setType('text/html');
 		//mention the content type
-		$header = 'Content-Type: '.$type;
+		$header = 'Content-Type: '.$this->getType();
 		if($charset !== FALSE)
 			$header .= '; charset='.$charset;
 		header($header);
@@ -241,8 +242,6 @@ class HTTPEngine extends Engine
 
 	protected function _renderPage($page)
 	{
-		$type = $this->getType();
-
 		if($page !== FALSE)
 		{
 			if(($location = $page->getProperty('location'))
@@ -267,7 +266,6 @@ class HTTPEngine extends Engine
 					$st['mtime']);
 			header('Last-Modified: '.$lastm);
 		}
-		//XXX fpassthru() would be better but allocates too much memory
 		return parent::_renderStream($fp);
 	}
 

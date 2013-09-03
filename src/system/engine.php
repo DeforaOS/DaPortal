@@ -83,6 +83,7 @@ abstract class Engine
 			$format = Format::attachDefault($this, $type);
 		if($format !== FALSE)
 			ob_start();
+		//XXX fpassthru() would be better but allocates too much memory
 		while(!feof($fp))
 			if(($buf = fread($fp, 65536)) !== FALSE)
 				print($buf);
