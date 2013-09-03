@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ require_once('./system/page.php');
 require_once('./system/template.php');
 
 
-//CliEngine
-class CliEngine extends Engine
+//CLIEngine
+class CLIEngine extends Engine
 {
 	//public
 	//methods
@@ -36,7 +36,7 @@ class CliEngine extends Engine
 
 
 	//accessors
-	//CliEngine::getRequest
+	//CLIEngine::getRequest
 	public function getRequest()
 	{
 		if(($options = getopt('DM:fm:a:i:o:t:')) === FALSE)
@@ -95,7 +95,7 @@ class CliEngine extends Engine
 
 
 	//essential
-	//CliEngine::match
+	//CLIEngine::match
 	public function match()
 	{
 		if(isset($_SERVER['argc']) && $_SERVER['argv'])
@@ -104,7 +104,7 @@ class CliEngine extends Engine
 	}
 
 
-	//CliEngine::attach
+	//CLIEngine::attach
 	public function attach()
 	{
 		Locale::init($this);
@@ -112,7 +112,7 @@ class CliEngine extends Engine
 
 
 	//useful
-	//CliEngine::render
+	//CLIEngine::render
 	public function render($page)
 	{
 		$template = Template::attachDefault($this);
@@ -127,7 +127,7 @@ class CliEngine extends Engine
 	}
 
 
-	//CliEngine::usage
+	//CLIEngine::usage
 	protected function usage()
 	{
 		fputs(STDERR, $this->usage);
