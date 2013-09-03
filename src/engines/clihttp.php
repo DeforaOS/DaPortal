@@ -19,11 +19,11 @@
 require_once('./engines/cli.php');
 
 
-//CliHTTPEngine
-class CliHTTPEngine extends CliEngine
+//CLIHTTPEngine
+class CLIHTTPEngine extends CliEngine
 {
 	//essential
-	//CliHTTPEngine::match
+	//CLIHTTPEngine::match
 	public function match()
 	{
 		//never match by default
@@ -31,7 +31,7 @@ class CliHTTPEngine extends CliEngine
 	}
 
 
-	//CliHTTPEngine::attach
+	//CLIHTTPEngine::attach
 	public function attach()
 	{
 		global $config;
@@ -51,7 +51,7 @@ class CliHTTPEngine extends CliEngine
 
 
 	//accessors
-	//Engine::getURL
+	//CLIHTTPEngine::getURL
 	public function getURL($request, $absolute = TRUE)
 	{
 		global $config;
