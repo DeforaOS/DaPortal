@@ -906,7 +906,7 @@ class MultiContent extends Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->getModule()->canSubmit($engine, FALSE, $content))
+		if($this->getModule()->canSubmit($engine, FALSE, $this))
 		{
 			$r = new Request($module, 'submit', FALSE, FALSE,
 				array('type' => $this->type));
