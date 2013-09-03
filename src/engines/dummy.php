@@ -48,22 +48,6 @@ class DummyEngine extends Engine
 	{
 		Locale::init($this);
 	}
-
-
-	//useful
-	//DummyEngine::render
-	public function render($page)
-	{
-		$template = Template::attachDefault($this);
-		if($template !== FALSE)
-			$page = $template->render($this, $page);
-		$error = 'Could not determine the proper output format';
-		if(($output = Format::attachDefault($this, $this->getType()))
-					=== FALSE)
-			$this->log('LOG_ERR', $error);
-		else
-			$output->render($this, $page);
-	}
 }
 
 ?>

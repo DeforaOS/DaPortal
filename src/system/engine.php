@@ -31,7 +31,61 @@ abstract class Engine
 	abstract public function attach();
 
 	//useful
-	abstract public function render($content);
+	//Engine::render
+	public function render($content)
+	{
+		if($content instanceof PageElement)
+			return $this->_renderPage($content);
+		else if(is_resource($content)
+				&& get_resource_type($content) == 'stream')
+			return $this->_renderStream($content);
+		else if(is_string($content))
+			return $this->_renderString($content);
+		//default
+		return $this->_renderPage($content);
+	}
+
+	protected function _renderPage($page)
+	{
+		$type = $this->getType();
+
+		switch($type)
+		{
+			case 'application/rss+xml':
+			case 'application/xml':
+			case 'text/csv':
+			case 'text/xml':
+				break;
+			case 'text/html':
+			default:
+				$template = Template::attachDefault(
+					$this);
+				if($template === FALSE)
+					return FALSE;
+				if(($page = $template->render($this,
+					$page)) === FALSE)
+					return FALSE;
+				break;
+		}
+		$error = 'Could not determine the proper output format';
+		if(($output = Format::attachDefault($this, $type)) !== FALSE)
+			$output->render($this, $page);
+		else
+			$this->log('LOG_ERR', $error);
+	}
+
+	protected function _renderStream($fp)
+	{
+		while(!feof($fp))
+			if(($buf = fread($fp, 65536)) !== FALSE)
+				print($buf);
+		fclose($fp);
+	}
+
+	protected function _renderString($string)
+	{
+		print($string);
+	}
 
 
 	//methods

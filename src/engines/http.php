@@ -227,57 +227,35 @@ class HTTPEngine extends Engine
 		global $config;
 		//XXX escape the headers
 		$type = $this->getType();
-		$header = 'Content-Type: '.$type;
 		$charset = $config->get('defaults', 'charset');
 
+		//mention the content type
+		$header = 'Content-Type: '.$type;
 		if($charset !== FALSE)
 			$header .= '; charset='.$charset;
 		header($header);
 		//disable caching
 		header('Cache-Control: no-cache, must-revalidate');
-		if($page instanceof PageElement)
-			return $this->renderPage($page, $type);
-		else if(is_resource($page)
-				&& get_resource_type($page) == 'stream')
-			return $this->renderStream($page, $type);
-		else if(is_string($page))
-			return $this->renderString($page, $type);
-		//default
-		return $this->renderPage($page, $type);
+		return parent::render($page);
 	}
 
-	private function renderPage($page, $type)
+	protected function _renderPage($page)
 	{
+		$type = $this->getType();
+
 		if($page !== FALSE)
 		{
 			if(($location = $page->getProperty('location'))
 					!== FALSE)
 			header('Location: '.$location); //XXX escape
 		}
-		switch($type)
-		{
-			case 'application/rss+xml':
-			case 'application/xml':
-			case 'text/csv':
-			case 'text/xml':
-				break;
-			case 'text/html':
-			default:
-				$template = Template::attachDefault(
-					$this);
-				if($template === FALSE)
-					return FALSE;
-				if(($page = $template->render($this,
-					$page)) === FALSE)
-					return FALSE;
-				break;
-		}
-		if(($output = Format::attachDefault($this, $type)) !== FALSE)
-			$output->render($this, $page);
+		return parent::_renderPage($page);
 	}
 
-	private function renderStream($fp, $type)
+	protected function _renderStream($fp)
 	{
+		$type = $this->getType();
+
 		$disposition = (strncmp('image/', $type, 6) == 0)
 			? 'inline' : 'attachment';
 		//FIXME also set the filename
@@ -290,16 +268,13 @@ class HTTPEngine extends Engine
 			header('Last-Modified: '.$lastm);
 		}
 		//XXX fpassthru() would be better but allocates too much memory
-		while(!feof($fp))
-			if(($buf = fread($fp, 65536)) !== FALSE)
-				print($buf);
-		fclose($fp);
+		return parent::_renderStream($fp);
 	}
 
-	private function renderString($string, $type)
+	protected function _renderString($string)
 	{
 		header('Content-Length: '.strlen($string));
-		print($string);
+		return parent::_renderString($string);
 	}
 
 

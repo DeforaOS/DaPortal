@@ -112,21 +112,6 @@ class CLIEngine extends Engine
 
 
 	//useful
-	//CLIEngine::render
-	public function render($page)
-	{
-		$template = Template::attachDefault($this);
-		if($template !== FALSE)
-			$page = $template->render($this, $page);
-		if(($output = Format::attachDefault($this, $this->getType()))
-					=== FALSE)
-			fprintf(STDERR, "%s\n", "daportal: Could not determine"
-					." the proper output format");
-		else
-			$output->render($this, $page);
-	}
-
-
 	//CLIEngine::usage
 	protected function usage()
 	{
