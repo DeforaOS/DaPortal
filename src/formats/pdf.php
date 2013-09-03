@@ -97,6 +97,13 @@ class PDFFormat extends FormatElements
 	}
 
 
+	//PDFFormat::renderData
+	protected function renderData($e)
+	{
+		//FIXME implement (attachment?)
+	}
+
+
 	//PDFFormat::renderDialog
 	protected function renderDialog($e)
 	{

@@ -76,10 +76,23 @@ abstract class Engine
 
 	protected function _renderStream($fp)
 	{
+		$type = $this->getType();
+		$format = FALSE;
+
+		if($type !== FALSE)
+			$format = Format::attachDefault($this, $type);
+		if($format !== FALSE)
+			ob_start();
 		while(!feof($fp))
 			if(($buf = fread($fp, 65536)) !== FALSE)
 				print($buf);
 		fclose($fp);
+		if($format === FALSE)
+			return;
+		$data = ob_get_contents();
+		ob_end_clean();
+		$page = new PageElement('data', array('data' => $data));
+		$format->render($this, $page);
 	}
 
 	protected function _renderString($string)

@@ -90,11 +90,25 @@ class XMLFormat extends PlainFormat
 
 
 	//rendering
+	//XMLFormat::renderData
+	protected function renderData($e)
+	{
+		$from = ']]>';
+		$to = ']]]]><![CDATA[>';
+
+		print('<![CDATA[');
+		print(str_replace($from, $to, $e->getProperty('data')));
+		print(']]>');
+	}
+
+
 	//XMLFormat::renderElement
 	protected function renderElement($e)
 	{
 		switch($e->getType())
 		{
+			case 'data':
+				return $this->renderData($e);
 			case 'treeview':
 				return $this->renderTreeview($e);
 			default:

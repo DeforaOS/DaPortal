@@ -228,6 +228,11 @@ class GtkFormat extends FormatElements
 		return GtkComboBox::new_text();
 	}
 
+	protected function renderData($e)
+	{
+		//FIXME implement
+	}
+
 	protected function renderDialog($e)
 	{
 		if(($type = $e->getProperty('type')) === FALSE)

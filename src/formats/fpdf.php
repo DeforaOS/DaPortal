@@ -107,6 +107,13 @@ class FPDFFormat extends FormatElements
 	}
 
 
+	//FPDFFormat::renderData
+	protected function renderData($e)
+	{
+		//FIXME implement (attachment?)
+	}
+
+
 	//FPDFFormat::renderDialog
 	protected function renderDialog($e)
 	{
