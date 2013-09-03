@@ -23,7 +23,6 @@ PHP="php"
 
 PREFIX="@PREFIX@"
 ETCDIR="$PREFIX/etc"
-WEBROOT="/var/www/htdocs"
 DAPORTALDIR="$PREFIX/daportal"
 
 
