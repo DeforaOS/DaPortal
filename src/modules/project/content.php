@@ -223,6 +223,15 @@ class ProjectContent extends MultiContent
 	}
 
 
+	//ProjectContent::displayRow
+	public function displayRow($engine, $request = FALSE)
+	{
+		$ret = parent::displayRow($engine, $request);
+		$ret->setProperty('synopsis', $this->get('synopsis'));
+		return $ret;
+	}
+
+
 	//ProjectContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
