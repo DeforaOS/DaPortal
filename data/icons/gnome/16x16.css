@@ -135,6 +135,10 @@
 	background-image:	url('gnome-icon-theme/16x16/actions/forward.png');
 }
 
+.stock16.gallery {
+	background-image:	url('gnome-icon-theme/16x16/mimetypes/image-x-generic.png');
+}
+
 .stock16.gotofirst {
 	background-image:	url('gnome-icon-theme/16x16/actions/stock_first.png');
 }
