@@ -167,6 +167,10 @@
 	background-image:	url('Tango/24x24/apps/utilities-system-monitor.png');
 }
 
+.stock24.project {
+	background-image:	url('Tango/24x24/categories/applications-development.png');
+}
+
 .stock24.question {
 	background-image:	url('Tango/24x24/status/dialog-warning.png');
 }
