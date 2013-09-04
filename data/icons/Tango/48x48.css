@@ -211,6 +211,10 @@
 	background-image:	url('Tango/scalable/actions/stock_search.svg');
 }
 
+.stock48.timeline {
+	background-image:	url('Tango/scalable/apps/office-calendar.svg');
+}
+
 .stock48.update {
 	background-image:	url('Tango/scalable/apps/update-manager.svg');
 }

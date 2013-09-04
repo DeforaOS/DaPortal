@@ -211,6 +211,10 @@
 	background-image:	url('Tango/16x16/actions/stock_search.png');
 }
 
+.stock16.timeline {
+	background-image:	url('Tango/16x16/apps/office-calendar.png');
+}
+
 .stock16.update {
 	background-image:	url('Tango/16x16/apps/update-manager.png');
 }
