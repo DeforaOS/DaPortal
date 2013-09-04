@@ -263,6 +263,10 @@
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-add.png');
 }
 
+.stock48.timeline {
+	background-image:	url('gnome-icon-theme/48x48/mimetypes/stock_calendar.png');
+}
+
 .stock48.top {
 	background-image:	url('gnome-icon-theme/48x48/actions/top.png');
 }

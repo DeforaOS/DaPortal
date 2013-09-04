@@ -263,6 +263,10 @@
 	background-image:	url('gnome-icon-theme/16x16/actions/gtk-add.png');
 }
 
+.stock16.timeline {
+	background-image:	url('gnome-icon-theme/16x16/mimetypes/stock_calendar.png');
+}
+
 .stock16.top {
 	background-image:	url('gnome-icon-theme/16x16/actions/top.png');
 }
