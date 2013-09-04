@@ -526,7 +526,6 @@ class ProjectModule extends MultiContentModule
 			$reply = array('title' => _('Preview: ').$title,
 					'user_id' => $user->getUserID(),
 					'username' => $user->getUsername(),
-					'date' => $this->timestampToDate(),
 					'content' => $content);
 			$reply = new BugReplyProjectContent($engine, $this,
 					$reply);
