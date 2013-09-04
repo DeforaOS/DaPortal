@@ -240,29 +240,6 @@ class ProjectModule extends MultiContentModule
 	}
 
 
-	//ProjectModule::getBug
-	protected function getBug($engine, $id, $title = FALSE)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_bug;
-		$args = array('content_id' => $id);
-
-		if($title !== FALSE)
-		{
-			$title = str_replace('-', '_', $title);
-			$query .= ' AND daportal_content_public.title '
-				.$db->like(FALSE).' :title';
-			$args['title'] = $title;
-		}
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		$res = $res[0];
-		$res['date'] = $db->formatDate($engine, $res['timestamp']);
-		return $res;
-	}
-
-
 	//ProjectModule::getBugByID
 	protected function getBugByID($engine, $id)
 	{
@@ -526,12 +503,13 @@ class ProjectModule extends MultiContentModule
 		$cred = $engine->getCredentials();
 		$user = new User($engine, $cred->getUserID());
 
-		if(($bug = $this->getBug($engine, $request->getID(),
-				$request->getTitle())) === FALSE)
+		if(($bug = BugProjectContent::load($engine, $this,
+				$request->getID(), $request->getTitle()))
+				=== FALSE)
 			return $this->callDefault($engine);
-		$project = $this->_get($engine, $bug['project_id']);
-		$title = sprintf(_('Reply to #%u/%s: %s'), $bug['bug_id'],
-				$project->getTitle(), $bug['title']);
+		$project = $this->_get($engine, $bug->get('project_id'));
+		$title = sprintf(_('Reply to #%u/%s: %s'), $bug->get('bug_id'),
+				$project->getTitle(), $bug->getTitle());
 		$page = new Page(array('title' => $title));
 		//title
 		$page->append('title', array('stock' => $this->name,
@@ -667,7 +645,7 @@ class ProjectModule extends MultiContentModule
 				'name' => 'content',
 				'value' => $request->getParameter('content')));
 		//FIXME really implement
-		$r = new Request($this->name, FALSE, $bug['id'], $bug['title']);
+		$r = $bug->getRequest();
 		$box = $vbox->append('buttonbox');
 		$box->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
