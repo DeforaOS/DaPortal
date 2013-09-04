@@ -517,7 +517,7 @@ class ProjectModule extends MultiContentModule
 		//FIXME process the request
 		//bug
 		$vbox = $page->append('vbox'); //XXX for the title level
-		$vbox->append($bug->display($engine));
+		$vbox->append($bug->display($engine, $request));
 		//preview
 		if($request->getParameter('preview') !== FALSE)
 		{
@@ -529,7 +529,7 @@ class ProjectModule extends MultiContentModule
 					'content' => $content);
 			$reply = new BugReplyProjectContent($engine, $this,
 					$reply);
-			$vbox->append($reply->display($engine));
+			$vbox->append($reply->display($engine, $request));
 		}
 		//form
 		$form = $this->formBugReply($engine, $request, $bug, $project);
