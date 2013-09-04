@@ -517,7 +517,7 @@ class ProjectModule extends MultiContentModule
 		//FIXME process the request
 		//bug
 		$vbox = $page->append('vbox'); //XXX for the title level
-		$this->helperPreview($engine, $vbox, $bug);
+		$vbox->append($bug->display($engine));
 		//preview
 		if($request->getParameter('preview') !== FALSE)
 		{
@@ -528,8 +528,9 @@ class ProjectModule extends MultiContentModule
 					'username' => $user->getUsername(),
 					'date' => $this->timestampToDate(),
 					'content' => $content);
-			//FIXME really preview a bug reply instead
-			$this->helperPreview($engine, $vbox, $reply);
+			$reply = new BugReplyProjectContent($engine, $this,
+					$reply);
+			$vbox->append($reply->display($engine));
 		}
 		//form
 		$form = $this->formBugReply($engine, $request, $bug, $project);
