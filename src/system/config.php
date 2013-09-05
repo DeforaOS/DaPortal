@@ -113,10 +113,10 @@ class Config
 		}
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
 		{
-			if(preg_match("/^([a-zA-Z0-9-_: \t]+)=([^\r\n]*)\r?$/",
+			if(preg_match("/^([a-zA-Z0-9+-_: \t]+)=([^\r\n]*)\r?$/",
 					$line, $matches) == 1)
 				$this->set($section, $matches[1], $matches[2]);
-			else if(preg_match("/^[ \t]*\[([a-zA-Z0-9-_:\/ \t]+)\]"
+			else if(preg_match("/^[ \t]*\[([a-zA-Z0-9+-_:\/ \t]+)\]"
 						."[ \t]*\r?$/", $line, $matches)
 					== 1)
 				$section = $matches[1];
