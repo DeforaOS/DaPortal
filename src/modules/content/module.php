@@ -612,8 +612,8 @@ abstract class ContentModule extends Module
 		$class = $this->content_class;
 		$db = $engine->getDatabase();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getID(),
-				$request->getTitle()) : FALSE;
+			? User::lookup($engine, $request->getTitle(),
+					$request->getID()) : FALSE;
 		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
 		$error = _('Unable to list contents');
 
@@ -782,7 +782,8 @@ abstract class ContentModule extends Module
 	protected function callSubmit($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
-		$user = new User($engine, $cred->getUserID());
+		$user = User::lookup($engine, $cred->getUsername(),
+				$cred->getUserID());
 		$title = $this->text_content_submit_content;
 		$error = _('Could not submit content');
 
@@ -1112,8 +1113,8 @@ abstract class ContentModule extends Module
 	protected function helperListButtons($engine, $page, $request = FALSE)
 	{
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getID(),
-				$request->getTitle()) : FALSE;
+			? User::lookup($engine, $request->getTitle(),
+				$request->getID()) : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
@@ -1148,8 +1149,8 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getID(),
-				$request->getTitle()) : FALSE;
+			? User::lookup($engine, $request->getTitle(),
+				$request->getID()) : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
@@ -1187,8 +1188,8 @@ abstract class ContentModule extends Module
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE && $request->getID() !== FALSE)
-			? new User($engine, $request->getID(),
-				$request->getTitle()) : FALSE;
+			? User::lookup($engine, $request->getTitle(),
+				$request->getID()) : FALSE;
 		$r = FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)

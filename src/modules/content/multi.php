@@ -151,8 +151,8 @@ abstract class MultiContentModule extends ContentModule
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request !== FALSE)
-			? new User($engine, $request->getID(),
-				$request->getTitle()) : FALSE;
+			? User::lookup($engine, $request->getTitle(),
+				$request->getID()) : FALSE;
 		$type = ($request !== FALSE) ? $request->getParameter('type')
 			: FALSE;
 
