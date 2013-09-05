@@ -38,10 +38,10 @@ class EmailEngine extends CLIEngine
 	public function render($page)
 	{
 		$cred = $this->getCredentials();
-		$user = new User($this, $cred->getUserID(),
-				$cred->getUsername());
+		$user = User::lookup($this, $cred->getUsername(),
+				$cred->getUserID());
 
-		if($user->getUserID() == 0)
+		if($user === FALSE || $user->getUserID() == 0)
 		{
 			fprintf(STDERR, "%s\n", "daportal: Could not determine"
 					." the e-mail address");

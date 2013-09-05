@@ -75,12 +75,14 @@ class SessionAuth extends Auth
 	//SessionAuth::getCredentials
 	public function getCredentials($engine)
 	{
-		if(($uid = $this->getVariable($engine, 'SessionAuth::uid'))
-					=== FALSE
-				|| $uid == 0)
+		$uid = $this->getVariable($engine, 'SessionAuth::uid');
+		$username = $this->getVariable($engine,
+				'SessionAuth::username');
+
+		if($uid === FALSE || $uid == 0 || $username === FALSE)
 			return parent::getCredentials($engine);
-		$user = new User($engine, $uid);
-		if(!$user->isEnabled())
+		$user = User::lookup($engine, $username, $uid);
+		if($user === FALSE)
 			return parent::getCredentials($engine);
 		$cred = new AuthCredentials($user->getUserID(),
 				$user->getUsername(),
@@ -112,6 +114,8 @@ class SessionAuth extends Auth
 			$engine->log('LOG_WARNING', $message);
 		$this->setVariable($engine, 'SessionAuth::uid',
 				$credentials->getUserID());
+		$this->setVariable($engine, 'SessionAuth::username',
+				$credentials->getUsername());
 		return parent::setCredentials($engine, $credentials);
 	}
 

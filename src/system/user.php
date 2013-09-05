@@ -279,7 +279,7 @@ class User
 
 
 	//User::lookup
-	static public function lookup($engine, $username)
+	static public function lookup($engine, $username, $user_id = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = User::$query_get_by_username;
@@ -287,12 +287,20 @@ class User
 		static $cache = array();
 
 		if(isset($cache[$username]))
+		{
+			if($user_id !== FALSE && $cache[$username]->getUserID()
+					!= $user_id)
+				return FALSE;
 			return $cache[$username];
+		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res[0];
 		$cache[$username] = new User($engine, $res['id'], $username);
+		if($user_id !== FALSE && $cache[$username]->getUserID()
+				!= $user_id)
+			return FALSE;
 		return $cache[$username];
 	}
 
@@ -343,8 +351,8 @@ class User
 			$error = _('Could not register the user');
 			return FALSE;
 		}
-		$user = new User($engine, $uid);
-		if($user->getUserID() === FALSE)
+		$user = User::lookup($engine, $username, $uid);
+		if($user === FALSE || $user->getUserID() == 0)
 		{
 			$db->transactionRollback($engine);
 			$error = _('Could not register the user');
@@ -535,7 +543,7 @@ class User
 			$error = _('Could not enable the user');
 			return FALSE;
 		}
-		return new User($engine, $res['user_id']);
+		return $user;
 	}
 
 
@@ -597,15 +605,10 @@ class User
 	static private $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
-	static private $query_get_by_username = "SELECT user_id AS id, username,
-		daportal_user.enabled AS enabled,
-		daportal_user.group_id AS group_id, groupname, admin, email,
-		fullname
+	//IN:	username
+	static private $query_get_by_username = "SELECT user_id AS id
 		FROM daportal_user
-		LEFT JOIN daportal_group
-		ON daportal_user.group_id=daportal_group.group_id
-		WHERE daportal_group.enabled='1'
-		AND username=:username";
+		WHERE enabled='1' AND username=:username";
 	static private $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,

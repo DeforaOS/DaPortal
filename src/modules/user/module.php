@@ -778,21 +778,21 @@ class UserModule extends Module
 		$page = new Page;
 		if(($uid = $request->getID()) !== FALSE)
 		{
-			$user = new User($engine, $uid, $request->getTitle());
-			$uid = $user->getUserID();
-			$title = _('Content from ').$user->getUsername();
+			$user = User::lookup($engine, $request->getTitle(),
+					$uid);
+			$title = _('Content from ').$request->getTitle();
 		}
 		else if(($uid = $cred->getUserID()) != 0)
 		{
-			$user = new User($engine, $uid);
-			$uid = $user->getUserID('id');
+			$user = User::lookup($engine, $cred->getUsername(),
+					$uid);
 			$title = _('My content');
 			$r = new Request($this->name);
 			$link = new PageElement('link', array('stock' => 'back',
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
-		if($uid == 0)
+		if($user === FALSE || $user->getUserID() == 0)
 			return $this->callLogin($engine, new Request);
 		//title
 		$page->setProperty('title', $title);
@@ -978,9 +978,12 @@ class UserModule extends Module
 
 		//determine whose profile to view
 		if($id === FALSE)
-			$id = $cred->getUserID();
-		$user = new User($engine, $id, $request->getTitle());
-		if(($id = $user->getUserID()) == 0)
+			$user = User::lookup($engine, $cred->getUsername(),
+					$cred->getUserID());
+		else
+			$user = User::lookup($engine, $request->getTitle(),
+					$id);
+		if($user === FALSE || ($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
 			$error = _('There is no profile for this user');
@@ -1367,10 +1370,12 @@ class UserModule extends Module
 
 		//determine whose profile to update
 		if($id === FALSE)
-			$user = new User($engine, $cred->getUserID());
+			$user = User::lookup($engine, $cred->getUsername(),
+					$cred->getUserID());
 		else
-			$user = new User($engine, $id, $request->getTitle());
-		if(($id = $user->getUserID()) == 0)
+			$user = User::lookup($engine, $request->getTitle(),
+					$id);
+		if($user === FALSE || ($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
 			$error = _('There is no profile for this user');
