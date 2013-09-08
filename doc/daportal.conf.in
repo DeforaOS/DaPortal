@@ -111,6 +111,9 @@ backend=fpdf
 [format::application/xml]
 backend=xml
 
+[format::application/xhtml+xml]
+backend=xhtml1
+
 [format::text/csv]
 backend=csv
 
