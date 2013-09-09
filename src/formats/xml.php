@@ -142,7 +142,35 @@ class XMLFormat extends PlainFormat
 		}
 		if(($url = $e->getProperty('url')) === FALSE
 				&& ($r = $e->getProperty('request')) !== FALSE)
+		{
+			$this->_print('<request>');
+			if(($module = $r->getModule()) !== FALSE)
+			{
+				$this->_print('<module>');
+				$this->_print($this->escape($module));
+				$this->_print('</module>');
+			}
+			if(($action = $r->getAction()) !== FALSE)
+			{
+				$this->_print('<action>');
+				$this->_print($this->escape($action));
+				$this->_print('</action>');
+			}
+			if(($id = $r->getID()) !== FALSE)
+			{
+				$this->_print('<id>');
+				$this->_print($this->escape($id));
+				$this->_print('</id>');
+			}
+			if(($title = $r->getTitle()) !== FALSE)
+			{
+				$this->_print('<title>');
+				$this->_print($this->escape($title));
+				$this->_print('</title>');
+			}
+			$this->_print('</request>');
 			$url = $this->engine->getURL($r);
+		}
 		if($url !== FALSE)
 		{
 			$this->_print('<url>');
