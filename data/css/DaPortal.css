@@ -222,6 +222,10 @@ form.treeview.icons > div.table > div.row span.icon {
 	width:				48px;
 }
 
+form.treeview.icons > div.table > div.row span.icon > img {
+	display:			block;
+}
+
 form.treeview.icons > div.table > div.row span.label,
 form.treeview.thumbnails > div.table > div.row span.label {
 	display:			block;
