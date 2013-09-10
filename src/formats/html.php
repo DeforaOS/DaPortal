@@ -988,7 +988,7 @@ $('#$id1').closest('form').submit(function () {
 			$columns = array('title' => 'Title');
 		$this->renderTabs();
 		$this->tagOpen('div', 'table');
-		$this->_renderTreeviewHeaders($columns);
+		$this->_renderTreeviewHeaders($e, $columns);
 		//render rows
 		$this->_renderTreeviewRows($e, $columns);
 		$this->renderTabs(-1);
@@ -1015,13 +1015,14 @@ $('#$id1').closest('form').submit(function () {
 			}
 	}
 
-	private function _renderTreeviewHeaders($columns)
+	private function _renderTreeviewHeaders($e, $columns)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', 'header');
-		$this->tag('span', 'detail', FALSE, FALSE, '');
-		foreach($columns as $c)
-			$this->tag('span', "detail $c", FALSE, FALSE, $c);
+		if($e->getProperty('request') !== FALSE)
+			$this->tag('span', 'detail', FALSE, FALSE, '');
+		foreach($columns as $c => $v)
+			$this->tag('span', "detail $c", FALSE, FALSE, $v);
 		$this->tagClose('div');
 	}
 
@@ -1060,15 +1061,15 @@ $('#$id1').closest('form').submit(function () {
 			if(($p = $c->getProperty('class')) !== FALSE)
 				$cl .= ' '.$p;
 			$this->tagOpen('div', $cl);
-			$this->tagOpen('span', 'detail');
 			if($request !== FALSE)
 			{
+				$this->tagOpen('span', 'detail');
 				$name = $c->getProperty('id');
 				$this->tag('input', FALSE, '_check_'.$id, array(
 							'type' => 'checkbox',
 							'name' => $name));
+				$this->tagClose('span');
 			}
-			$this->tagClose('span');
 			foreach($columns as $k => $v)
 			{
 				if(($v = $c->getProperty($k)) === FALSE)
