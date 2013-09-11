@@ -107,15 +107,19 @@ class SearchModule extends Module
 	//SearchModule::callDefault
 	protected function callDefault($engine, $request)
 	{
-		$limit = $this->limit;
 		$p = $request->getParameter('page');
 
 		$page = $this->pageSearch($engine, $request);
+		if(($limit = $request->getParameter('limit')) === FALSE
+				|| !is_numeric($limit) || $limit <= 0
+				|| $limit > 100)
+			$limit = $this->limit;
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
 			return $page;
 		$count = 0;
-		$res = $this->query($engine, $q, FALSE, $count, $p, TRUE, TRUE);
+		$res = $this->query($engine, $q, FALSE, $count, $limit, $p,
+				TRUE, TRUE);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
@@ -136,11 +140,14 @@ class SearchModule extends Module
 	//SearchModule::callAdvanced
 	protected function callAdvanced($engine, $request)
 	{
-		$limit = $this->limit;
 		$case = $request->getParameter('case') ? '1' : '0';
 		$p = $request->getParameter('page');
 
 		$page = $this->pageSearch($engine, $request, TRUE);
+		if(($limit = $request->getParameter('limit')) === FALSE
+				|| !is_numeric($limit) || $limit <= 0
+				|| $limit > 100)
+			$limit = $this->limit;
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
 			return $page;
@@ -149,8 +156,8 @@ class SearchModule extends Module
 		$incontent = $request->getParameter('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
-		$res = $this->query($engine, $q, $case, $count, $p, $intitle,
-				$incontent);
+		$res = $this->query($engine, $q, $case, $count, $limit, $p,
+				$intitle, $incontent);
 		$results = $page->append('vbox');
 		$results->setProperty('id', 'search_results');
 		$label = $results->append('label');
@@ -313,8 +320,9 @@ class SearchModule extends Module
 
 
 	//SearchModule::query
-	protected function query($engine, $string, $sensitive, &$count, $page,
-			$intitle, $incontent, $user = FALSE, $module = FALSE)
+	protected function query($engine, $string, $sensitive, &$count, $limit,
+			$page, $intitle, $incontent, $user = FALSE,
+			$module = FALSE)
 	{
 		global $config;
 		$db = $engine->getDatabase();
@@ -349,7 +357,7 @@ class SearchModule extends Module
 		$fields = $this->query_fields;
 		$order = 'ORDER BY timestamp DESC';
 		//paging
-		if(($limit = $this->limit) > 0)
+		if($limit > 0)
 		{
 			$offset = FALSE;
 			if(is_numeric($page) && $page > 1)
