@@ -319,7 +319,7 @@ class SearchModule extends Module
 		global $config;
 		$db = $engine->getDatabase();
 		$query = $this->query.' AND (0=1';
-		$regexp = $config->get('module::search', 'regexp');
+		$regexp = $this->configGet('regexp');
 		$func = $regexp ? 'regexp' : 'like';
 		$wildcard = $regexp ? '' : '%';
 
