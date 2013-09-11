@@ -61,6 +61,10 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-yes.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/spinner.gif \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/Makefile \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/16x16.css \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/24x24.css \
