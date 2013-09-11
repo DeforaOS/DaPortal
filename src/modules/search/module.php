@@ -143,11 +143,11 @@ class SearchModule extends Module
 		$case = $request->getParameter('case') ? '1' : '0';
 		$p = $request->getParameter('page');
 
-		$page = $this->pageSearch($engine, $request, TRUE);
 		if(($limit = $request->getParameter('limit')) === FALSE
 				|| !is_numeric($limit) || $limit <= 0
 				|| $limit > 100)
 			$limit = $this->limit;
+		$page = $this->pageSearch($engine, $request, TRUE, $limit);
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
 			return $page;
@@ -251,7 +251,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::pageSearch
-	protected function pageSearch($engine, $request, $advanced = FALSE)
+	protected function pageSearch($engine, $request, $advanced = FALSE,
+			$limit = FALSE)
 	{
 		$q = $request->getParameter('q');
 		$args = $q ? array('q' => $q) : FALSE;
@@ -293,6 +294,13 @@ class SearchModule extends Module
 			$radio->append('label', array(
 					'text' => 'Case-sensitive',
 					'value' => '1'));
+			$hbox = $form->append('hbox');
+			$combobox = $hbox->append('combobox', array(
+					'name' => 'limit', 'value' => $limit,
+					'text' => 'Results per page:'));
+			foreach(array(10, 20, 50, 100) as $i)
+				$combobox->append('label', array('text' => $i,
+						'value' => $i));
 			$button = $form->append('button', array(
 						'type' => 'reset',
 						'text' => _('Reset')));
