@@ -32,6 +32,8 @@
 }
 
 body {
+	background-color: #fff;
+	color: #000;
 	font-size: 0.853em;
 	font-family: "open_sansregular", "Arial", sans-serif;
 	text-align: center;
@@ -225,6 +227,7 @@ a.button, button, input[type=button], input[type=reset], input[type=submit] {
 	cursor: pointer;
 	background-color: #eee;
 	border: none;
+	color: #000;
 	text-decoration: none;
 }
 
