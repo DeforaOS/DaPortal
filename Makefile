@@ -29,6 +29,22 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/css/icons.css \
 		$(PACKAGE)-$(VERSION)/data/css/index.php \
 		$(PACKAGE)-$(VERSION)/data/css/project.conf \
+		$(PACKAGE)-$(VERSION)/data/fonts/Makefile \
+		$(PACKAGE)-$(VERSION)/data/fonts/project.conf \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/Makefile \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/OpenSans-Bold-webfont.eot \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/OpenSans-Bold-webfont.svg \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/OpenSans-Bold-webfont.ttf \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/OpenSans-Bold-webfont.woff \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/stylesheet.css \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Bold/project.conf \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/Makefile \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/OpenSans-Regular-webfont.eot \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/OpenSans-Regular-webfont.svg \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/OpenSans-Regular-webfont.ttf \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/OpenSans-Regular-webfont.woff \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/stylesheet.css \
+		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/Makefile \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent.css \
 		$(PACKAGE)-$(VERSION)/data/icons/Tango.css \

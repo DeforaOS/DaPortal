@@ -19,6 +19,9 @@
 /* default includes */
 @import url("../css/DaPortal.css");
 
+@import url("../fonts/OpenSans-Regular/stylesheet.css");
+@import url("../fonts/OpenSans-Bold/stylesheet.css");
+@import url("../fonts/OpenSans-Extrabold/stylesheet.css");
 
 /**********************************
  * RESET
@@ -30,7 +33,7 @@
 
 body {
 	font-size: 0.853em;
-	font-family: 'Arial', sans-serif;
+	font-family: "open_sansregular", "Arial", sans-serif;
 	text-align: center;
 }
 
@@ -42,6 +45,15 @@ a {
 
 a:hover {
 	text-decoration: none;
+}
+
+/**********************************
+ *  FONTS
+ *  ******************************/
+b, strong, h1, h2, h3, h4, h5,
+.menuitem, .table .header {
+	font-family: "open_sansbold", "Arial", sans-serif;
+	font-weight: normal;
 }
 
 /**********************************
@@ -100,7 +112,6 @@ a:hover {
 	background-color: #006680;
 	color: #fff;
 	text-decoration: none;
-	font-weight: 700;
 	text-transform: uppercase;
 }
 
@@ -139,13 +150,11 @@ a:hover {
 	line-height: 1.4em;
 	color: #006680;
 	text-transform: uppercase;
-	font-weight: 600;
 }
 
 #content .pack h2 {
 	font-size: 2.5em;
 	color: crimson;
-	font-weight: 700;
 }
 
 #content .pack h3 {
@@ -183,10 +192,6 @@ span.label a {
 	width: 100%;
 }
 
-.table .header {
-	font-weight: 600;
-}
-
 .table .row, .table .header {
 	display: table-row;
 }
@@ -214,7 +219,6 @@ input[type=text]:focus, input[type=password]:focus {
 }
 
 input[type=submit] {
-	font-weight: 600;
 	border-radius: 0.3em;
 	box-shadow: -2px -2px 2px #ddd inset;
 	padding: 0.4em 0.8em;

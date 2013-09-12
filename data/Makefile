@@ -1,4 +1,4 @@
-SUBDIRS	= css icons js themes
+SUBDIRS	= css fonts icons js themes
 TARGETS	= index.php
 PREFIX	= /usr/local
 DESTDIR	=
