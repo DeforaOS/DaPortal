@@ -87,6 +87,7 @@ regenerate=1
 #backend=html
 #backend=html5
 #backend=pdf
+#backend=plain
 #backend=xhtml1
 #backend=xhtml11
 #backend=xml
