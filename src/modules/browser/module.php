@@ -74,11 +74,14 @@ class BrowserModule extends Module
 	protected function getPath($engine, $request)
 	{
 		$root = $this->getRoot($engine);
+		$from = array('-');
+		$to = array('?');
 
 		if(($path = $request->getTitle()) === FALSE)
 			return '/';
-		$p = str_replace('-', '?', $path);
-		if(($res = glob($root.'/'.$p)) !== FALSE && count($res) == 1)
+		$p = str_replace($from, $to, $path);
+		if(($res = glob($root.'/'.$p, GLOB_NOESCAPE)) !== FALSE
+				&& count($res) == 1)
 			$path = substr($res[0], strlen($root));
 		return $this->helperSanitizePath($path);
 	}
