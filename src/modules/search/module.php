@@ -337,6 +337,7 @@ class SearchModule extends Module
 		$query = $this->query.' AND (0=1';
 		$regexp = $this->configGet('regexp');
 		$func = $regexp ? 'regexp' : 'like';
+		$string = str_replace('\\', '\\\\', $string);
 		$wildcard = $regexp ? '' : '%';
 
 		$q = explode(' ', $string);
@@ -346,15 +347,17 @@ class SearchModule extends Module
 			foreach($q as $r)
 			{
 				$query .= ' OR title '.$db->$func($sensitive)
-					." :arg$i";
+					." :arg$i ESCAPE :escape";
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
+				$args['escape'] = '\\';
 			}
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
 				$query .= ' OR content '.$db->$func($sensitive)
-					." :arg$i";
+					." :arg$i ESCAPE :escape";
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
+				$args['escape'] = '\\';
 			}
 		$query .= ')';
 		$fields = 'SELECT COUNT (*)';

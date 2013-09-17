@@ -736,12 +736,15 @@ class Content
 		$args = array('module_id' => $module->getID(),
 			'user_id' => $credentials->getUserID(),
 			'content_id' => $id);
+		$from = array('-', '\\');
+		$to = array('_', '\\\\');
 
 		if(is_string($title))
 		{
 			$query .= ' AND title '.$database->like(FALSE)
-				.' :title';
-			$args['title'] = str_replace('-', '_', $title);
+				.' :title ESCAPE :escape';
+			$args['title'] = str_replace($from, $to, $title);
+			$args['escape'] = '\\';
 		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
