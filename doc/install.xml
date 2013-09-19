@@ -77,6 +77,8 @@
 							project;</para></listitem>
 					<listitem><para>either one of the GNOME, Tango or XFCE4 icon
 							themes.</para></listitem>
+					<listitem><para>the PHP PEAR modules for creating and decoding MIME
+							messages, Mail_Mime and Mail_mimeDecode.</para></listitem>
 			</itemizedlist></para>
 		</section>
 		<section id="introduction-database">
