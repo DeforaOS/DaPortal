@@ -347,17 +347,25 @@ class SearchModule extends Module
 			foreach($q as $r)
 			{
 				$query .= ' OR title '.$db->$func($sensitive)
-					." :arg$i ESCAPE :escape";
+					." :arg$i";
+				if($func == 'like')
+				{
+					$query .= ' ESCAPE :escape';
+					$args['escape'] = '\\';
+				}
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
-				$args['escape'] = '\\';
 			}
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
 				$query .= ' OR content '.$db->$func($sensitive)
-					." :arg$i ESCAPE :escape";
+					." :arg$i";
+				if($func == 'like')
+				{
+					$query .= ' ESCAPE :escape';
+					$args['escape'] = '\\';
+				}
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
-				$args['escape'] = '\\';
 			}
 		$query .= ')';
 		$fields = 'SELECT COUNT (*)';
