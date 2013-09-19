@@ -35,6 +35,17 @@ class UserModule extends Module
 	}
 
 
+	//accessors
+	//UserModule::getTitle
+	public function getTitle($engine)
+	{
+		$credentials = $engine->getCredentials();
+
+		return $credentials->getUserID()
+			? _('User') : parent::getTitle($engine);
+	}
+
+
 	//useful
 	//UserModule::call
 	public function call($engine, $request, $internal = 0)
