@@ -65,6 +65,10 @@ img {
 	border-width:			0;
 }
 
+table tr th, table tr td {
+	vertical-align:                 top;
+}
+
 pre {
 	background-color:		#f0f0f0;
 	border-left:			1px solid #000000;
