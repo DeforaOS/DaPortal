@@ -161,7 +161,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 		{
 			if($action === FALSE && $id === FALSE)
 				$url .= '/default';
-			$title = str_replace(array(' ', '?'), '-', $title);
+			$title = str_replace(array(' ', '?'),
+					array('%20', '%3F'), $title);
 			if($config->get($this->section, 'lowercase'))
 				$title = strtolower($title);
 			$url .= '/'.$title;
