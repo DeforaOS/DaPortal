@@ -163,7 +163,15 @@ class PgsqlDatabase extends Database
 				$engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
-		return pg_fetch_all($res);
+		switch(pg_num_rows($res))
+		{
+			case -1:
+				return FALSE;
+			case 0:
+				return array();
+			default:
+				return pg_fetch_all($res);
+		}
 	}
 
 
