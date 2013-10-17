@@ -368,11 +368,11 @@ class SearchModule extends Module
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
 			}
 		$query .= ')';
-		$fields = 'SELECT COUNT (*)';
+		$fields = 'SELECT COUNT(*) AS count';
 		if(($res = $db->query($engine, $fields.' '.$query, $args))
 				=== FALSE || count($res) != 1)
 			return $engine->log('LOG_ERR', _('Unable to search'));
-		$count = $res[0][0];
+		$count = $res[0]['count'];
 		$fields = $this->query_fields;
 		$order = 'ORDER BY timestamp DESC';
 		//paging

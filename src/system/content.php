@@ -673,7 +673,7 @@ class Content
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return $res[0][0];
+		return $res[0]['count'];
 	}
 
 
@@ -796,7 +796,7 @@ class Content
 		AND daportal_content_public.user_id
 		=daportal_user_enabled.user_id';
 	//IN:	module_id
-	static protected $query_list_count = 'SELECT COUNT(*)
+	static protected $query_list_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content_public
 		WHERE daportal_content_public.module_id=:module_id';
 	//IN:	module_id

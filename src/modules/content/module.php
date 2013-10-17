@@ -239,7 +239,7 @@ abstract class ContentModule extends Module
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id';
 	//IN:	module_id
-	protected $query_list_admin_count = 'SELECT COUNT(*)
+	protected $query_list_admin_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content, daportal_user_enabled, daportal_group
 		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user_enabled.user_id
@@ -416,7 +416,7 @@ abstract class ContentModule extends Module
 			$q = $this->query_list_admin_count;
 			if(($res = $db->query($engine, $q, $args)) !== FALSE
 					&& count($res) == 1)
-				$pcnt = $res[0][0];
+				$pcnt = $res[0]['count'];
 			if($pcnt !== FALSE)
 			{
 				$offset = FALSE;
