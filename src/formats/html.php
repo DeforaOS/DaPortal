@@ -513,7 +513,7 @@ class HTMLFormat extends FormatElements
 			$this->_renderFormHidden('_module', $r->getModule());
 			$this->_renderFormHidden('_action', $r->getAction());
 			$this->_renderFormHidden('_id', $r->getID());
-			//FIXME add the title?
+			$this->_renderFormHidden('_title', $r->getTitle());
 			if(($args = $r->getParameters()) !== FALSE)
 				foreach($args as $k => $v)
 					$this->_renderFormHidden($k, $v);
