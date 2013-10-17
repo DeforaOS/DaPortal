@@ -163,10 +163,7 @@ class PgsqlDatabase extends Database
 				$engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
-		//FIXME use pg_fetchall() instead (breaks _sql_single() for now)
-		for($array = array(); ($a = pg_fetch_array($res)) != FALSE;
-				$array[] = $a);
-		return $array;
+		return pg_fetch_all($res);
 	}
 
 
