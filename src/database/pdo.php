@@ -19,10 +19,10 @@
 require_once('./system/database.php');
 
 
-//PdoDatabase
-class PdoDatabase extends Database
+//PDODatabase
+class PDODatabase extends Database
 {
-	//PdoDatabase::~PdoDatabase
+	//PDODatabase::~PDODatabase
 	function __destruct()
 	{
 		$this->handle = FALSE;
@@ -32,7 +32,7 @@ class PdoDatabase extends Database
 	//public
 	//methods
 	//accessors
-	//PdoDatabase::getLastID
+	//PDODatabase::getLastID
 	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
@@ -51,7 +51,7 @@ class PdoDatabase extends Database
 
 
 	//useful
-	//PdoDatabase::enum
+	//PDODatabase::enum
 	public function enum($engine, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
@@ -64,7 +64,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::prepare
+	//PDODatabase::prepare
 	public function prepare($query, &$parameters = FALSE)
 	{
 		static $statements = array();
@@ -76,7 +76,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::query
+	//PDODatabase::query
 	public function query($engine, $query, &$parameters = FALSE)
 	{
 		global $config;
@@ -116,7 +116,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::regexp
+	//PDODatabase::regexp
 	public function regexp($case = TRUE, $pattern = FALSE)
 	{
 		$func = array($this, '_regexp_callback');
@@ -141,7 +141,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::transactionBegin
+	//PDODatabase::transactionBegin
 	public function transactionBegin($engine)
 	{
 		if($this->handle === FALSE)
@@ -152,7 +152,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::transactionCommit
+	//PDODatabase::transactionCommit
 	public function transactionCommit($engine)
 	{
 		if($this->handle === FALSE)
@@ -165,7 +165,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::transactionRollback
+	//PDODatabase::transactionRollback
 	public function transactionRollback($engine)
 	{
 		if($this->handle === FALSE)
@@ -180,7 +180,7 @@ class PdoDatabase extends Database
 
 	//protected
 	//methods
-	//PdoDatabase::match
+	//PDODatabase::match
 	protected function match($engine)
 	{
 		global $config;
@@ -193,7 +193,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::attach
+	//PDODatabase::attach
 	protected function attach($engine)
 	{
 		global $config;
@@ -212,7 +212,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::getBackend
+	//PDODatabase::getBackend
 	protected function getBackend()
 	{
 		global $config;
@@ -227,7 +227,7 @@ class PdoDatabase extends Database
 	}
 
 
-	//PdoDatabase::escape
+	//PDODatabase::escape
 	protected function escape($string)
 	{
 		if($this->handle === FALSE)
