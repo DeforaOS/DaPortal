@@ -202,8 +202,13 @@ class PDODatabase extends Database
 				=== FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
+		$username = $config->get('database::pdo', 'username');
+		$password = $config->get('database::pdo', 'password');
+		$args = $config->get('database::pdo', 'persistent')
+			? array(PDO::ATTR_PERSISTENT => true) : array();
 		try {
-			$this->handle = new PDO($dsn);
+			$this->handle = new PDO($dsn, $username, $password,
+				$args);
 		} catch(PDOException $e) {
 			$message = 'Could not open database: '.$e->getMessage();
 			return $engine->log('LOG_ERR', $message);

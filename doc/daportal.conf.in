@@ -47,6 +47,9 @@ regenerate=1
 
 [database::pdo]
 #dsn=sqlite:/var/www/sqlite/daportal.db3
+#username=
+#password=
+#persistent=0
 
 [database::pgsql]
 #persistent=0
