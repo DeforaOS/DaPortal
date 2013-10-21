@@ -121,12 +121,20 @@ class DownloadModule extends MultiContentModule
 		switch($this->content_class)
 		{
 			case 'FileDownloadContent':
+				$this->stock_content_submit = 'upload';
 				$this->text_content_list_title
 					= $this->file_text_content_list_title;
+				$this->text_content_submit = _('Upload');
+				$this->text_content_submit_content
+					= _('Upload file');
 				break;
 			case 'FolderDownloadContent':
+				$this->stock_content_submit = 'folder-new';
 				$this->text_content_list_title
 					= $this->folder_text_content_list_title;
+				$this->text_content_submit = _('Create');
+				$this->text_content_submit_content
+					= _('New folder');
 				break;
 		}
 	}

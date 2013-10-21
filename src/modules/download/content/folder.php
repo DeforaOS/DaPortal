@@ -36,10 +36,18 @@ class FolderDownloadContent extends DownloadContent
 		$this->text_content_list_title = _('Directory listing');
 		$this->text_more_content = _('Browse...');
 		$this->text_submit = _('New folder...');
+		$this->text_submit_content = _('New folder');
 	}
 
 
 	//accessors
+	//FolderDownloadContent::canPreview
+	public function canPreview($engine, $request = FALSE, &$error = FALSE)
+	{
+		return FALSE;
+	}
+
+
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
@@ -112,6 +120,33 @@ class FolderDownloadContent extends DownloadContent
 			'request' => $request,
 			'text' => _('Parent folder')));
 		return $toolbar;
+	}
+
+
+	//FolderDownloadContent::form
+	public function form($engine, $request = FALSE)
+	{
+		return parent::form($engine, $request);
+	}
+
+	protected function _formSubmit($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Name: '),
+				'value' => $request->getParameter('title')));
+		return $vbox;
+	}
+
+	protected function _formUpdate($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		if(($value = $request->getParameter('title')) === FALSE)
+			$value = $this->getTitle();
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Name: '),
+				'value' => $value));
+		return $vbox;
 	}
 
 
