@@ -1358,9 +1358,12 @@ abstract class ContentModule extends Module
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		$hbox->append('button', array('type' => 'reset',
 				'stock' => 'reset', 'text' => _('Reset')));
-		$hbox->append('button', array('type' => 'submit',
-				'stock' => 'preview', 'name' => 'action',
-				'value' => '_preview', 'text' => _('Preview')));
+		if($this->canPreview($engine, $request))
+			$hbox->append('button', array('type' => 'submit',
+					'stock' => 'preview',
+					'name' => 'action',
+					'value' => '_preview',
+					'text' => _('Preview')));
 		$hbox->append('button', array('type' => 'submit',
 				'stock' => 'update', 'name' => 'action',
 				'value' => '_submit', 'text' => _('Update')));
