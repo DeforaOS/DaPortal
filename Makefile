@@ -170,6 +170,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/project.conf \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/Makefile \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/fpdf.php \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/project.conf \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/Makefile \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courier.php \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courierb.php \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/courierbi.php \
@@ -184,7 +186,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/timesbi.php \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/timesi.php \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/zapfdingbats.php \
-		$(PACKAGE)-$(VERSION)/src/formats/fpdf/project.conf \
+		$(PACKAGE)-$(VERSION)/src/formats/fpdf/font/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/admin/Makefile \
