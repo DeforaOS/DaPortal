@@ -32,6 +32,7 @@ class FolderDownloadContent extends DownloadContent
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		//translations
+		$this->stock_submit = 'folder-new';
 		$this->text_content_by = _('Folder from');
 		$this->text_content_list_title = _('Directory listing');
 		$this->text_more_content = _('Browse...');
