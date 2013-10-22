@@ -403,7 +403,7 @@ class Content
 		{
 			$r = new Request($module, 'submit');
 			$toolbar->append('button', array('request' => $r,
-					'stock' => 'new',
+					'stock' => $this->stock_submit,
 					'text' => $this->text_submit_content));
 		}
 		if($this->getID() !== FALSE)
@@ -763,6 +763,7 @@ class Content
 	protected $stock = FALSE;
 	protected $stock_link = 'link';
 	protected $stock_open = 'open';
+	protected $stock_submit = 'new';
 	//strings
 	protected $text_content_by = 'Content by';
 	protected $text_link = 'Permalink';
