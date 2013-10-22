@@ -812,7 +812,7 @@ class Content
 		AND daportal_content.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
-	static protected $query_list_user_count = 'SELECT COUNT(*)
+	static protected $query_list_user_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content
 		WHERE daportal_content.module_id=:module_id
 		AND user_id=:user_id';
