@@ -1162,7 +1162,8 @@ abstract class ContentModule extends Module
 				'request' => $r));
 		$r = $this->getRequest('submit');
 		if($this->canSubmit($engine, $request))
-			$toolbar->append('button', array('stock' => 'new',
+			$toolbar->append('button', array(
+					'stock' => $this->stock_content_submit,
 					'request' => $r,
 					'text' => $this->text_content_submit_content));
 		if($uid !== FALSE && $uid === $cred->getUserID()
