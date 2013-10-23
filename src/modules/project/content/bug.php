@@ -107,7 +107,7 @@ class BugProjectContent extends Content
 		AND daportal_bug.project_id=daportal_project.project_id
 		AND project.content_id=daportal_project.project_id";
 	//IN:	module_id
-	static protected $bug_query_list_count = "SELECT COUNT(*)
+	static protected $bug_query_list_count = "SELECT COUNT(*) AS count
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
@@ -137,7 +137,7 @@ class BugProjectContent extends Content
 		AND daportal_content_public.user_id=:user_id";
 	//IN:	module_id
 	//	user_id
-	static protected $bug_query_list_user_count = "SELECT COUNT(*)
+	static protected $bug_query_list_user_count = "SELECT COUNT(*) AS count
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
