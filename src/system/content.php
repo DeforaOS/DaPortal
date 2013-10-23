@@ -104,6 +104,7 @@ class Content
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
+		$sep = '';
 
 		if($request === FALSE)
 			return TRUE;
@@ -113,10 +114,30 @@ class Content
 		//verify that the fields are set
 		$error = '';
 		foreach($this->fields as $k => $v)
-			if($this->get($k) !== FALSE)
-				continue;
-			else if($request->getParameter($k) === FALSE)
-				$error .= "$v must be set\n";
+			//XXX not so elegant
+			switch($k)
+			{
+				case 'enabled':
+				case 'public':
+				case 'content':
+				case 'group_id':
+				case 'group':
+				case 'id':
+				case 'timestamp':
+				case 'title':
+				case 'user_id':
+				case 'username':
+					break;
+				default:
+					if(array_key_exists($k, $this->properties))
+						break;
+					else if($request->getParameter($k) === FALSE)
+					{
+						$error .= $sep.$v.' must be set';
+						$sep = "\n";
+					}
+					break;
+			}
 		if(strlen($error) > 0)
 			return FALSE;
 		return TRUE;
