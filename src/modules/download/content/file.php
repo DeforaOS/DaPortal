@@ -130,6 +130,57 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
+	//FileDownloadContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		return parent::save($engine, $request, $error);
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$module = $this->getModule()->getName();
+		$root = $this->getRoot($module);
+		$db = $engine->getDatabase();
+		$query = $this->file_query_insert;
+		//XXX saves files in the root folder
+		$parent = NULL;
+
+		if(($filename = $request->getParameter('filename')) === FALSE
+				&& ($filename = $this->get('filename'))
+				=== FALSE)
+		{
+			$error = _('The filename must be specified');
+			$engine->log('LOG_ERR', $error);
+			return FALSE;
+		}
+		//FIXME check for filename unicity in the current folder
+		$name = basename($filename);
+		//set missing parameters
+		$this->set('download_id', FALSE);
+		$this->set('parent_id', $parent);
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
+			return FALSE;
+		$args = array('content_id' => $this->getID(),
+			'parent' => $parent, 'mode' => 420);
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = _('Could not register the file');
+			return FALSE;
+		}
+		//store the file
+		if(($id = $db->getLastID($engine, 'daportal_download',
+				'download_id')) === FALSE)
+		{
+			$error = _('Internal server error');
+			return FALSE;
+		}
+		//copy the file
+		$dst = $root.'/'.$id;
+		$error = _('Could not copy the file');
+		return copy($filename, $dst);
+	}
+
+
 	//static
 	//FileDownloadContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
@@ -144,6 +195,12 @@ class FileDownloadContent extends DownloadContent
 	//protected
 	//properties
 	//queries
+	//IN:	content_id
+	//	parent
+	//	mode
+	protected $file_query_insert = 'INSERT INTO daportal_download
+		(content_id, parent, mode)
+		VALUES (:content_id, :parent, :mode)';
 	//IN:	module_id
 	//	user_id
 	//	content_id

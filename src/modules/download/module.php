@@ -73,8 +73,9 @@ class DownloadModule extends MultiContentModule
 			return FALSE;
 		$content = FALSE;
 		//FIXME should return $id as $content['download_id']
-		$error = $this->_submitProcessFile($engine, NULL, $filename,
-				$request->getTitle(), $content, $id, TRUE);
+		$error = $this->_submitProcessFile($engine, $request, NULL,
+				$filename, $request->getTitle(), $content, $id,
+				TRUE);
 		if($error === FALSE)
 			return $content;
 		return FALSE;
@@ -175,17 +176,18 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::callSubmit
-	protected function _submitProcessFile($engine, $parent, $pathname,
-			$filename, &$content, &$id, $copy = FALSE)
+	protected function _submitProcessFile($engine, $request, $parent,
+			$pathname, $filename, &$content, &$id)
 	{
 		if($filename === FALSE)
 			$filename = basename($pathname);
 		//FIXME check for filename unicity in the current folder
 		$content = new FileDownloadContent($engine, $this, array(
-			'title' => $filename,
-			'filename' => $pathname));
+			'title' => $filename, 'content' => FALSE,
+			'filename' => $pathname,
+			'parent_id' => $parent, 'mode' => 0644));
 		$error = _('Internal server error');
-		if($content->save($engine, FALSE, $error) === FALSE)
+		if($content->save($engine, $request, $error) === FALSE)
 			return $error;
 		return FALSE;
 	}
