@@ -76,9 +76,10 @@ class DownloadModule extends MultiContentModule
 		$error = $this->_submitProcessFile($engine, $request, NULL,
 				$filename, $request->getTitle(), $content, $id,
 				TRUE);
-		if($error === FALSE)
-			return $content;
-		return FALSE;
+		if($error !== FALSE)
+			//XXX report the error to the user instead
+			return $engine->log('LOG_ERR', $error);
+		return $content;
 	}
 
 

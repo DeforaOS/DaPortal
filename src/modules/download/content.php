@@ -33,6 +33,7 @@ abstract class DownloadContent extends MultiContent
 		$this->fields['download_id'] = 'Download ID';
 		$this->fields['parent_id'] = 'Parent';
 		$this->fields['mode'] = 'Permissions';
+		$this->set('parent_id', NULL);
 		parent::__construct($engine, $module, $properties);
 	}
 

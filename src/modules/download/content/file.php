@@ -142,8 +142,7 @@ class FileDownloadContent extends DownloadContent
 		$root = $this->getRoot($module);
 		$db = $engine->getDatabase();
 		$query = $this->file_query_insert;
-		//XXX saves files in the root folder
-		$parent = NULL;
+		$parent = $this->get('parent_id');
 
 		if(($filename = $request->getParameter('filename')) === FALSE
 				&& ($filename = $this->get('filename'))
@@ -157,7 +156,6 @@ class FileDownloadContent extends DownloadContent
 		$name = basename($filename);
 		//set missing parameters
 		$this->set('download_id', FALSE);
-		$this->set('parent_id', $parent);
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$args = array('content_id' => $this->getID(),
@@ -168,16 +166,20 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		//store the file
-		if(($id = $db->getLastID($engine, 'daportal_download',
+		if(($did = $db->getLastID($engine, 'daportal_download',
 				'download_id')) === FALSE)
 		{
 			$error = _('Internal server error');
 			return FALSE;
 		}
-		//copy the file
-		$dst = $root.'/'.$id;
+		$this->set('download_id', $did);
+		//copy (or move) the file
+		$dst = $root.'/'.$did;
 		$error = _('Could not copy the file');
-		return copy($filename, $dst);
+		if(is_uploaded_file($filename))
+			return move_uploaded_file($filename, $dst);
+		else
+			return copy($filename, $dst);
 	}
 
 
