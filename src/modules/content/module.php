@@ -165,6 +165,7 @@ abstract class ContentModule extends Module
 	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_preview_length = 150;
 	protected $helper_apply_args;
+	protected $stock_back = 'back';
 	protected $stock_content_submit = 'submit';
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_headline_title = 'Content headlines';
@@ -993,7 +994,8 @@ abstract class ContentModule extends Module
 	protected function helperAdminButtons($engine, $page, $request)
 	{
 		$r = $this->getRequest();
-		$page->append('link', array('request' => $r, 'stock' => 'back',
+		$page->append('link', array('request' => $r,
+				'stock' => $this->stock_back,
 				'text' => _('Back to this module')));
 		$r = new Request('admin');
 		$page->append('link', array('request' => $r, 'stock' => 'admin',
@@ -1122,7 +1124,8 @@ abstract class ContentModule extends Module
 			? new Request('user', 'display', $user->getUserID(),
 				$user->getUsername())
 			: $this->getRequest();
-		$page->append('link', array('request' => $r, 'stock' => 'back',
+		$page->append('link', array('request' => $r,
+				'stock' => $this->stock_back,
 				'text' => _('Back')));
 	}
 
