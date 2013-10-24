@@ -343,7 +343,7 @@ class Content
 	{
 		$hbox = new PageElement('hbox');
 		$r = new Request($this->module->getName());
-		$hbox->append('link', array('stock' => 'back',
+		$hbox->append('link', array('stock' => $this->stock_back,
 				'request' => $r,
 				'text' => $this->text_more_content));
 		$r = $this->getRequest();
@@ -787,6 +787,7 @@ class Content
 	protected $preview_length = 150;
 	//stock icons
 	protected $stock = FALSE;
+	protected $stock_back = 'back';
 	protected $stock_link = 'link';
 	protected $stock_open = 'open';
 	protected $stock_submit = 'new';

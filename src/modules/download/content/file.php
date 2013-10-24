@@ -32,6 +32,7 @@ class FileDownloadContent extends DownloadContent
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		//translations
+		$this->stock_back = 'updir';
 		$this->stock_submit = 'upload';
 		$this->text_content_by = _('Uploaded by');
 		$this->text_more_content = _('Parent folder');
