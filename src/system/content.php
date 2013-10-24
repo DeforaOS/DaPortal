@@ -174,7 +174,7 @@ class Content
 	//Content::get
 	public function get($property)
 	{
-		if(!isset($this->properties[$property]))
+		if(!array_key_exists($property, $this->properties))
 			return FALSE;
 		return $this->properties[$property];
 	}
@@ -191,6 +191,8 @@ class Content
 	//Content::getContent
 	public function getContent($engine)
 	{
+		if($this->content === FALSE)
+			return '';
 		return $this->content;
 	}
 
@@ -290,6 +292,8 @@ class Content
 	//Content::setContent
 	public function setContent($engine, $content)
 	{
+		if($content === FALSE)
+			$content = '';
 		$this->content = $content;
 	}
 
@@ -560,11 +564,11 @@ class Content
 	//Content::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
+		$content = $this->getContent();
 		$length = $this->preview_length;
 
-		$text = ($length <= 0 || strlen($this->content) < $length)
-			? $this->content
-			: substr($this->content, 0, $length).'...';
+		$text = ($length <= 0 || strlen($content) < $length)
+			? $content : substr($content, 0, $length).'...';
 
 		return new PageElement('label', array('text' => $text));
 	}
@@ -599,6 +603,7 @@ class Content
 			: $this->_saveInsert($engine, $request, $error);
 		if($ret === FALSE || $request === FALSE)
 			return $ret;
+		//reflect the new properties
 		foreach($this->fields as $f)
 			$this->set($f, $request->getParameter($f));
 		return $ret;
@@ -713,7 +718,7 @@ class Content
 				break;
 		}
 		return $class::_listAll($engine, $module, $limit, $offset,
-			$order, $user, $class);
+				$order, $user, $class);
 	}
 
 	static protected function _listAll($engine, $module, $limit, $offset,
