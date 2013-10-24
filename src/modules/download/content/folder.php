@@ -284,10 +284,10 @@ class FolderDownloadContent extends DownloadContent
 			return FALSE;
 		while(($r = array_shift($res)) != NULL)
 		{
-			$class = ($r['mode'] & DownloadContent::$S_IFDIR)
+			$classname = ($r['mode'] & $class::$S_IFDIR)
 				? 'FolderDownloadContent'
 				: 'FileDownloadContent';
-			$ret[] = new $class($engine, $module, $r);
+			$ret[] = new $classname($engine, $module, $r);
 		}
 		return $ret;
 	}
