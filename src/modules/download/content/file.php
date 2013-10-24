@@ -32,9 +32,11 @@ class FileDownloadContent extends DownloadContent
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		//translations
+		$this->stock_submit = 'upload';
 		$this->text_content_by = _('Uploaded by');
 		$this->text_more_content = _('Parent folder');
 		$this->text_submit = _('Upload file...');
+		$this->text_submit_content = _('Upload');
 	}
 
 
@@ -98,12 +100,14 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
+		$module = $this->getModule()->getName();
+
 		$toolbar = parent::displayToolbar($engine, $request);
 		$toolbar->prepend('button', array('stock' => 'download',
 			'request' => $this->getRequest('download'),
 			'text' => _('Download')));
-		$request = new Request($this->getModule()->getName(), FALSE,
-			$this->get('parent_id'));
+		//parent folder
+		$request = new Request($module, FALSE, $this->get('parent_id'));
 		$toolbar->prepend('button', array('stock' => 'updir',
 			'request' => $request,
 			'text' => _('Browse...')));
