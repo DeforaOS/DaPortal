@@ -49,6 +49,15 @@ class FolderDownloadContent extends DownloadContent
 	}
 
 
+	//FolderDownloadContent::get
+	public function get($property)
+	{
+		if($property == 'parent_id' && $this->parent_id === NULL)
+			return FALSE;
+		return parent::get($property);
+	}
+
+
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
@@ -58,11 +67,24 @@ class FolderDownloadContent extends DownloadContent
 	}
 
 
+	//FolderDownloadContent::set
+	public function set($property, $value)
+	{
+		//XXX can't use $this->class (constructor issues)
+		$class = get_class();
+
+		if($property == 'mode' && $value !== FALSE
+				&& is_numeric($value))
+			$value |= $class::$S_IFDIR;
+		return parent::set($property, $value);
+	}
+
+
 	//useful
 	//FolderDownloadContent::display
 	public function display($engine, $request)
 	{
-		$class = get_class();
+		$class = $this->class;
 		$title = $this->text_content_list_title.': '.$this->getTitle();
 		$page = new Page(array('title' => $title));
 
@@ -115,11 +137,15 @@ class FolderDownloadContent extends DownloadContent
 		if(($parent_id = $this->get('parent_id')) === FALSE
 				&& $this->getID() === FALSE)
 			return $toolbar;
+		$request = $this->getRequest();
+		$toolbar->prepend('button', array('stock' => 'refresh',
+				'request' => $request,
+				'text' => _('Refresh')));
 		$request = new Request($this->getModule()->getName(), FALSE,
-			$parent_id);
+				$parent_id);
 		$toolbar->prepend('button', array('stock' => 'updir',
-			'request' => $request,
-			'text' => _('Parent folder')));
+				'request' => $request,
+				'text' => _('Parent folder')));
 		return $toolbar;
 	}
 
@@ -148,6 +174,51 @@ class FolderDownloadContent extends DownloadContent
 				'text' => _('Name: '),
 				'value' => $value));
 		return $vbox;
+	}
+
+
+	//FolderDownloadContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		return parent::save($engine, $request, $error);
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$class = $this->class;
+		$db = $engine->getDatabase();
+		$query = $this->folder_query_insert;
+		$parent = $this->get('parent_id');
+
+		if(($mode = $request->getParameter('mode')) !== FALSE)
+			$mode |= $class::$S_IFDIR;
+		else if(($mode = $this->get('mode')) === FALSE)
+		{
+			$mode = 0755 | $class::$S_IFDIR;
+			$this->set('mode', FALSE);
+		}
+		$error = 'Invalid mode for directory';
+		if(!$this->isDirectory($mode))
+			return FALSE;
+		//FIXME check for filename unicity in the current folder
+		//set missing parameters
+		$this->set('download_id', FALSE);
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
+			return FALSE;
+		$args = array('content_id' => $this->getID(),
+			'parent' => $parent, 'mode' => $mode);
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = _('Could not create the directory');
+			return FALSE;
+		}
+		if(($did = $db->getLastID($engine, 'daportal_download',
+				'download_id')) === FALSE)
+			return FALSE;
+		//reflect the new properties
+		$this->set('download_id', $did);
+		$this->set('mode', $mode);
+		return TRUE;
 	}
 
 
@@ -217,9 +288,9 @@ class FolderDownloadContent extends DownloadContent
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
 		$class = get_class();
+
 		$class::$query_load = $class::$folder_query_load;
-		return $class::_load($engine, $module, $id, $title,
-				get_class());
+		return $class::_load($engine, $module, $id, $title, $class);
 	}
 
 
@@ -242,6 +313,12 @@ class FolderDownloadContent extends DownloadContent
 		AND daportal_content_public.group_id=daportal_group.group_id
 		AND daportal_content_public.content_id
 		=daportal_download.content_id';
+	//IN:	content_id
+	//	parent
+	//	mode
+	protected $folder_query_insert = 'INSERT INTO daportal_download
+		(content_id, parent, mode)
+		VALUES (:content_id, :parent, :mode)';
 	//IN:	module_id
 	//	user_id
 	//	content_id
