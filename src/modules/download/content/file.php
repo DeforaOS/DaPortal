@@ -31,6 +31,7 @@ class FileDownloadContent extends DownloadContent
 	{
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
+		//translations
 		$this->text_content_by = _('Uploaded by');
 		$this->text_more_content = _('Parent folder');
 		$this->text_submit = _('Upload file...');
@@ -166,12 +167,10 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		//store the file
+		$error = _('Internal server error');
 		if(($did = $db->getLastID($engine, 'daportal_download',
 				'download_id')) === FALSE)
-		{
-			$error = _('Internal server error');
 			return FALSE;
-		}
 		$this->set('download_id', $did);
 		//copy (or move) the file
 		$dst = $root.'/'.$did;
@@ -188,9 +187,10 @@ class FileDownloadContent extends DownloadContent
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
 		$class = get_class();
+
 		$class::$query_load = $class::$file_query_load;
 		return parent::_load($engine, $module, $id, $title,
-				get_class());
+				$class);
 	}
 
 
@@ -206,7 +206,8 @@ class FileDownloadContent extends DownloadContent
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $file_query_load = "SELECT daportal_module.name AS module,
+	static protected $file_query_load = "SELECT
+		daportal_module.name AS module,
 		daportal_user_enabled.user_id AS user_id,
 		daportal_user_enabled.username AS username,
 		daportal_group.group_id AS group_id,
