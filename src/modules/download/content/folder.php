@@ -133,19 +133,28 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
+		$module = $this->getModule()->getName();
+
 		$toolbar = parent::displayToolbar($engine, $request);
 		if(($parent_id = $this->get('parent_id')) === FALSE
 				&& $this->getID() === FALSE)
 			return $toolbar;
+		//refresh
 		$request = $this->getRequest();
 		$toolbar->prepend('button', array('stock' => 'refresh',
 				'request' => $request,
 				'text' => _('Refresh')));
-		$request = new Request($this->getModule()->getName(), FALSE,
-				$parent_id);
+		//new directory
+		$request = new Request($module, FALSE, $parent_id);
 		$toolbar->prepend('button', array('stock' => 'updir',
 				'request' => $request,
 				'text' => _('Parent folder')));
+		//upload file
+		$request = new Request($module, 'submit', FALSE, FALSE, array(
+				'type' => 'file', 'parent' => $this->getID()));
+		$toolbar->append('button', array('stock' => 'upload',
+				'request' => $request,
+				'text' => _('Upload file')));
 		return $toolbar;
 	}
 
