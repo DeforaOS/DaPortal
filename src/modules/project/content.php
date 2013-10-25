@@ -420,7 +420,7 @@ class ProjectContent extends MultiContent
 		AND daportal_content_public.content_id
 		=daportal_project.project_id';
 	//IN:	module_id
-	static protected $project_query_list_count = 'SELECT COUNT(*)
+	static protected $project_query_list_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content_public, daportal_module,
 		daportal_user_enabled, daportal_project
 		WHERE daportal_content_public.module_id
@@ -479,7 +479,8 @@ class ProjectContent extends MultiContent
 		AND daportal_content_public.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
-	static protected $project_query_list_user_count = 'SELECT COUNT(*)
+	static protected $project_query_list_user_count = 'SELECT
+		COUNT(*) AS count
 		FROM daportal_content_public, daportal_module,
 		daportal_user_enabled, daportal_project
 		WHERE daportal_content_public.module_id

@@ -102,7 +102,8 @@ class ProjectModule extends MultiContentModule
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=daportal_bug.content_id";
-	protected $project_query_list_admin_bugs_count = "SELECT COUNT(*)
+	protected $project_query_list_admin_bugs_count = "SELECT
+		COUNT(*) AS count
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_bug
 		WHERE daportal_content.module_id=daportal_module.module_id
@@ -122,7 +123,8 @@ class ProjectModule extends MultiContentModule
 		AND daportal_module.module_id=:module_id
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id";
-	protected $project_query_list_admin_projects_count = "SELECT COUNT(*)
+	protected $project_query_list_admin_projects_count = "SELECT
+		COUNT(*) AS count
 		FROM daportal_content, daportal_module, daportal_user_enabled,
 		daportal_project
 		WHERE daportal_content.module_id=daportal_module.module_id
