@@ -101,17 +101,38 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
-		$module = $this->getModule()->getName();
+		$credentials = $engine->getCredentials();
+		$module = $this->getModule();
+		$parent = $this->get('parent_id');
 
-		$toolbar = parent::displayToolbar($engine, $request);
-		$toolbar->prepend('button', array('stock' => 'download',
+		$toolbar = new PageElement('toolbar');
+		$parent = ($parent != NULL) ? $parent : FALSE;
+		//parent folder
+		//XXX would be nicer with the title too
+		$r = new Request($module->getName(), FALSE, $parent);
+		$toolbar->append('button', array('stock' => 'updir',
+				'request' => $r, 'text' => _('Browse')));
+		//download
+		$toolbar->append('button', array('stock' => 'download',
 			'request' => $this->getRequest('download'),
 			'text' => _('Download')));
-		//parent folder
-		$request = new Request($module, FALSE, $this->get('parent_id'));
-		$toolbar->prepend('button', array('stock' => 'updir',
-			'request' => $request,
-			'text' => _('Browse...')));
+		if($this->getID() !== FALSE
+				&& $this->canUpdate($engine, FALSE, $this))
+		{
+			//rename
+			$r = $this->getRequest('update');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'update',
+					'text' => $this->text_update));
+		}
+		//administration
+		if($credentials->isAdmin($engine))
+		{
+			$r = new Request($module->getName(), 'admin');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'admin',
+					'text' => _('Administration')));
+		}
 		return $toolbar;
 	}
 

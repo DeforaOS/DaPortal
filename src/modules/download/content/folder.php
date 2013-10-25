@@ -138,7 +138,6 @@ class FolderDownloadContent extends DownloadContent
 		$module = $this->getModule();
 		$parent = $this->get('parent_id');
 
-		//XXX duplicated from Content::displayToolbar()
 		$toolbar = new PageElement('toolbar');
 		$parent = ($parent != NULL) ? $parent : FALSE;
 		//parent folder
@@ -166,10 +165,10 @@ class FolderDownloadContent extends DownloadContent
 					'stock' => 'upload',
 					'text' => _('Upload file')));
 		}
-		//rename
 		if($this->getID() !== FALSE
 				&& $this->canUpdate($engine, FALSE, $this))
 		{
+			//rename
 			$r = $this->getRequest('update');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'update',
