@@ -17,13 +17,14 @@
 
 #variables
 #executables
+DATE="date"
 PHP="/usr/bin/env php"
 
 
 #usage
 _usage()
 {
-	echo "Usage: tests.sh [-c] target" 1>&2
+	echo "Usage: tests.sh [-c][-P prefix] target" 1>&2
 	return 1
 }
 
@@ -53,4 +54,6 @@ target="$1"
 
 [ $clean -ne 0 ] && exit 0
 
-$PHP tests.php > "$target"
+($DATE
+echo
+$PHP tests.php) > "$target"
