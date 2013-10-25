@@ -134,28 +134,55 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
-		$module = $this->getModule()->getName();
+		$credentials = $engine->getCredentials();
+		$module = $this->getModule();
+		$parent = $this->get('parent_id');
 
-		$toolbar = parent::displayToolbar($engine, $request);
-		if(($parent_id = $this->get('parent_id')) === FALSE
-				&& $this->getID() === FALSE)
-			return $toolbar;
+		//XXX duplicated from Content::displayToolbar()
+		$toolbar = new PageElement('toolbar');
+		$parent = ($parent != NULL) ? $parent : FALSE;
+		//parent folder
+		//XXX would be nicer with the title too
+		$r = new Request($module->getName(), FALSE, $parent);
+		$toolbar->append('button', array('stock' => 'updir',
+				'request' => $r, 'text' => _('Parent folder')));
 		//refresh
-		$request = $this->getRequest();
-		$toolbar->prepend('button', array('stock' => 'refresh',
-				'request' => $request,
-				'text' => _('Refresh')));
-		//new directory
-		$request = new Request($module, FALSE, $parent_id);
-		$toolbar->prepend('button', array('stock' => 'updir',
-				'request' => $request,
-				'text' => _('Parent folder')));
-		//upload file
-		$request = new Request($module, 'submit', FALSE, FALSE, array(
-				'type' => 'file', 'parent' => $this->getID()));
-		$toolbar->append('button', array('stock' => 'upload',
-				'request' => $request,
-				'text' => _('Upload file')));
+		$r = $this->getRequest();
+		$toolbar->append('button', array('stock' => 'refresh',
+				'request' => $r, 'text' => _('Refresh')));
+		if($module->canSubmit($engine, FALSE, $this))
+		{
+			//new directory
+			$r = new Request($module->getName(), 'submit', FALSE,
+				FALSE, array('parent' => $this->getID()));
+			$toolbar->append('button', array('request' => $r,
+					'stock' => $this->stock_submit,
+					'text' => $this->text_submit_content));
+			//upload file
+			$r = new Request($module->getName(), 'submit', FALSE,
+					FALSE, array('type' => 'file',
+					'parent' => $this->getID()));
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'upload',
+					'text' => _('Upload file')));
+		}
+		//rename
+		if($this->getID() !== FALSE
+				&& $this->canUpdate($engine, FALSE, $this))
+		{
+			$r = $this->getRequest('update');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'update',
+					'text' => $this->text_update));
+		}
+		//administration
+		if($credentials->isAdmin($engine))
+		{
+			$r = new Request($module->getName(), 'admin');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'admin',
+					'text' => _('Administration')));
+		}
 		return $toolbar;
 	}
 
