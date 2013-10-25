@@ -178,6 +178,21 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
+	//FileDownloadContent::form
+	public function form($engine, $request = FALSE)
+	{
+		return parent::form($engine, $request);
+	}
+
+	protected function _formSubmit($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		$vbox->append('filechooser', array('text' => _('File: '),
+				'name' => 'files[]'));
+		return $vbox;
+	}
+
+
 	//FileDownloadContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
