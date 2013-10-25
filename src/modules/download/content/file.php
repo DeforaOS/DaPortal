@@ -29,6 +29,7 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::FileDownloadContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
+		$this->fields['filename'] = 'Filename';
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		//translations

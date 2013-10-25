@@ -72,8 +72,10 @@ class DownloadModule extends MultiContentModule
 		if(($filename = $request->getParameter('filename')) === FALSE)
 			return FALSE;
 		$content = FALSE;
+		//FIXME obtain the parent
+		$parent = NULL;
 		//FIXME should return $id as $content['download_id']
-		$error = $this->_submitProcessFile($engine, $request, NULL,
+		$error = $this->_submitProcessFile($engine, $request, $parent,
 				$filename, $request->getTitle(), $content, $id,
 				TRUE);
 		if($error !== FALSE)
@@ -177,6 +179,36 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::callSubmit
+	protected function callSubmit($engine, $request = FALSE)
+	{
+		return parent::callSubmit($engine, $request);
+	}
+
+	protected function _submitProcess($engine, $request, $content)
+	{
+		//verify the request
+		if($request === FALSE
+				|| $request->getParameter('_submit') === FALSE)
+			return TRUE;
+		if($request->isIdempotent() !== FALSE)
+			return _('The request expired or is invalid');
+		//FIXME obtain the parent
+		$parent = NULL;
+		//check known errors
+		if(!isset($_FILES['files']))
+			return TRUE;
+		foreach($_FILES['files']['error'] as $k => $v)
+			if($v != UPLOAD_ERR_OK)
+				return _('An error occurred');
+		//store each file uploaded
+		foreach($_FILES['files']['error'] as $k => $v)
+			$this->_submitProcessFile($engine, $request, $parent,
+					$_FILES['files']['tmp_name'][$k],
+					$_FILES['files']['name'][$k], $content,
+					$id);
+		return FALSE;
+	}
+
 	protected function _submitProcessFile($engine, $request, $parent,
 			$pathname, $filename, &$content, &$id)
 	{
