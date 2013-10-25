@@ -42,6 +42,27 @@ class FileDownloadContent extends DownloadContent
 
 
 	//useful
+	//FileDownloadContent::displayButtons
+	public function displayButtons($engine, $request)
+	{
+		$module = $this->getModule();
+		$parent = $this->get('parent_id');
+
+		$hbox = new PageElement('hbox');
+		$parent = ($parent != NULL) ? $parent : FALSE;
+		//parent folder
+		$r = new Request($module->getName(), FALSE, $parent);
+		$hbox->append('link', array('stock' => $this->stock_back,
+				'request' => $r,
+				'text' => $this->text_more_content));
+		$r = $this->getRequest();
+		$hbox->append('link', array('request' => $r,
+				'stock' => $this->stock_link,
+				'text' => $this->text_link));
+		return $hbox;
+	}
+
+
 	//FileDownloadContent::displayContent
 	public function displayContent($engine, $request)
 	{
