@@ -72,6 +72,13 @@ class Config
 	}
 
 
+	//Config::getSections
+	public function getSections()
+	{
+		return array_keys($this->sections);
+	}
+
+
 	//Config::getVariable
 	//XXX obsoleted
 	public function getVariable($section, $name)
