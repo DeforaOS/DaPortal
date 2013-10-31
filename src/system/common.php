@@ -54,7 +54,7 @@ class Common
 		if(!is_numeric($size))
 			return 'unknown';
 		if($size < 1024)
-			return $size.' '._('bytes');
+			return $size.' '.($size > 1 ? _('bytes') : _('byte'));
 		if(($size = round($size / 1024)) < 1024)
 			return $size.' '._('kB');
 		if(($size = round($size / 1024)) < 1024)
