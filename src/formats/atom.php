@@ -75,9 +75,8 @@ class AtomFormat extends Format
 		if($link !== FALSE)
 		{
 			print("\t\t<link>".$this->escape($link)."</link>\n");
-			//FIXME this link can only work with HttpFriendlyEngine
 			print("\t\t".'<atom:link href="'
-				.$this->escapeAttribute($link).'.rss"'
+				.$this->escapeAttribute($link).'"'
 				.' rel="self"'
 				.' type="application/rss+xml"/>'."\n");
 		}
