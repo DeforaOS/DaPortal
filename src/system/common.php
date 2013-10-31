@@ -59,9 +59,9 @@ class Common
 			return $size.' '._('kB');
 		if(($size = round($size / 1024)) < 1024)
 			return $size.' '._('MB');
-		if(($size = round($size / 1024)) < 1024)
+		if(($size = round($size / 1024, 1)) < 1024)
 			return $size.' '._('GB');
-		return $size.' '._('TB');
+		return round($size / 1024, 1).' '._('TB');
 	}
 }
 
