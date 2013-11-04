@@ -666,8 +666,12 @@ $('#$id1').closest('form').submit(function () {
 	{
 		$text = $e->getProperty('text');
 		if($e->getType() !== FALSE)
-			$this->tag('span', $e->getType(), $e->getProperty('id'),
-					FALSE, $text);
+		{
+			$this->tagOpen('span', $e->getType(),
+					$e->getProperty('id'), FALSE, $text);
+			$this->renderChildren($e);
+			$this->tagClose('span');
+		}
 		else if($text !== FALSE)
 			print($this->escapeText($text));
 	}
