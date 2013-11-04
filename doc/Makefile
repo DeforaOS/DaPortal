@@ -49,6 +49,7 @@ install: $(TARGETS)
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.1"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.html"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -i -- "daportal.conf"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.conf.5"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.conf.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "install.html"
@@ -58,6 +59,7 @@ uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.1"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.html"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -u -- "daportal.conf"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.conf.5"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.conf.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "install.html"
