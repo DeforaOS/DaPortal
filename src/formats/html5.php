@@ -87,7 +87,7 @@ class HTML5Format extends HTMLFormat
 			$args['title'] = $v;
 		$this->tagOpen($tag, $e->getProperty('class'),
 			$e->getProperty('id'), $args, $v);
-		$this->renderChildren($e, 1);
+		$this->renderChildren($e);
 		$this->tagClose($tag);
 	}
 
@@ -99,7 +99,7 @@ class HTML5Format extends HTMLFormat
 		$this->tagOpen('footer', $e->getProperty('class'),
 				$e->getProperty('id'), FALSE,
 				$e->getProperty('text'));
-		$this->renderChildren($e, 1);
+		$this->renderChildren($e);
 		$this->tagClose('footer');
 	}
 }

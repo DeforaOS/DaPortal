@@ -785,7 +785,7 @@ $('#$id1').closest('form').submit(function () {
 
 	protected function renderPage($e)
 	{
-		$this->renderChildren($e, 1);
+		$this->renderChildren($e);
 	}
 
 
@@ -828,7 +828,7 @@ $('#$id1').closest('form').submit(function () {
 		$this->renderTabs();
 		$this->tagOpen('div', 'statusbar', $e->getProperty('id'), FALSE,
 				$e->getProperty('text'));
-		$this->renderChildren($e, 1);
+		$this->renderChildren($e);
 		$this->tagClose('div');
 	}
 
