@@ -86,9 +86,9 @@ class HTML5Format extends HTMLFormat
 		if(($v = $e->getProperty('text')) !== FALSE)
 			$args['title'] = $v;
 		$this->tagOpen($tag, $e->getProperty('class'),
-			$e->getProperty('id'), $args, $v);
-		$this->renderChildren($e);
+				$e->getProperty('id'), $args, $v);
 		$this->tagClose($tag);
+		$this->renderChildren($e);
 	}
 
 
