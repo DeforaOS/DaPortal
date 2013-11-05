@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 22:51+0200\n"
+"POT-Creation-Date: 2013-11-06 00:51+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -18,6 +18,10 @@ msgstr ""
 #: ../src/system/common.php:57
 msgid "bytes"
 msgstr "octets"
+
+#: ../src/system/common.php:57
+msgid "byte"
+msgstr "octet"
 
 #: ../src/system/common.php:59
 msgid "kB"
@@ -35,7 +39,7 @@ msgstr "Go"
 msgid "TB"
 msgstr "To"
 
-#: ../src/system/content.php:62 ../src/modules/content/module.php:278
+#: ../src/system/content.php:62 ../src/modules/content/module.php:279
 msgid "Content by"
 msgstr "Contenu de"
 
@@ -55,17 +59,17 @@ msgstr "le"
 msgid "Open"
 msgstr "Ouvrir"
 
-#: ../src/system/content.php:67 ../src/modules/content/module.php:279
-#: ../src/modules/content/module.php:1044
-#: ../src/modules/content/module.php:1176
+#: ../src/system/content.php:67 ../src/modules/content/module.php:280
+#: ../src/modules/content/module.php:1045
+#: ../src/modules/content/module.php:1177
 msgid "Publish"
 msgstr "Publier"
 
-#: ../src/system/content.php:68 ../src/modules/content/module.php:285
+#: ../src/system/content.php:68 ../src/modules/content/module.php:286
 msgid "Submit content"
 msgstr "Soumettre un contenu"
 
-#: ../src/system/content.php:69 ../src/modules/content/module.php:1373
+#: ../src/system/content.php:69 ../src/modules/content/module.php:1374
 #: ../src/modules/user/module.php:331 ../src/modules/user/module.php:1030
 #: ../src/modules/user/module.php:1034
 msgid "Update"
@@ -73,7 +77,7 @@ msgstr "Modifier"
 
 #: ../src/system/content.php:79 ../src/modules/admin/module.php:48
 #: ../src/modules/admin/module.php:247 ../src/modules/content/module.php:66
-#: ../src/modules/content/module.php:129 ../src/modules/project/module.php:560
+#: ../src/modules/content/module.php:129 ../src/modules/project/module.php:562
 #: ../src/modules/user/module.php:123 ../src/modules/user/module.php:467
 #: ../src/modules/user/module.php:1285 ../src/modules/user/module.php:1401
 #: ../src/modules/user/module.php:1576 ../src/modules/wiki/module.php:118
@@ -82,35 +86,37 @@ msgstr "Permission non accordée"
 
 #: ../src/system/content.php:98 ../src/system/content.php:111
 #: ../src/system/content.php:152 ../src/system/content.php:167
-#: ../src/modules/content/module.php:766 ../src/modules/content/module.php:832
-#: ../src/modules/content/module.php:911 ../src/modules/project/module.php:593
-#: ../src/modules/user/module.php:679 ../src/modules/user/module.php:901
-#: ../src/modules/user/module.php:1348 ../src/modules/wiki/content.php:71
+#: ../src/modules/content/module.php:767 ../src/modules/content/module.php:833
+#: ../src/modules/content/module.php:912
+#: ../src/modules/download/module.php:194
+#: ../src/modules/project/module.php:595 ../src/modules/user/module.php:679
+#: ../src/modules/user/module.php:901 ../src/modules/user/module.php:1348
+#: ../src/modules/wiki/content.php:71
 msgid "The request expired or is invalid"
 msgstr "La requête a expiré ou est invalide"
 
 #: ../src/system/content.php:162
 msgid "Only administrators can update content"
-msgstr ""
+msgstr "Seuls les administrateurs peuvent modifier le contenu"
 
 #: ../src/system/content.php:186 ../src/modules/browser/module.php:248
-#: ../src/modules/content/module.php:441 ../src/modules/content/module.php:569
-#: ../src/modules/project/module.php:465 ../src/modules/search/module.php:127
+#: ../src/modules/content/module.php:442 ../src/modules/content/module.php:570
+#: ../src/modules/project/module.php:467 ../src/modules/search/module.php:127
 #: ../src/modules/search/module.php:165
 msgid "Title"
 msgstr "Titre"
 
-#: ../src/system/content.php:187 ../src/modules/content/module.php:443
+#: ../src/system/content.php:187 ../src/modules/content/module.php:444
 #: ../src/modules/search/module.php:128 ../src/modules/search/module.php:166
 #: ../src/modules/user/module.php:565
 msgid "Username"
 msgstr "Utilisateur"
 
 #: ../src/system/content.php:187 ../src/modules/browser/module.php:250
-#: ../src/modules/content/module.php:443 ../src/modules/content/module.php:569
+#: ../src/modules/content/module.php:444 ../src/modules/content/module.php:570
 #: ../src/modules/download/content/folder.php:105
 #: ../src/modules/project/content.php:118
-#: ../src/modules/project/module.php:467 ../src/modules/project/scm/cvs.php:85
+#: ../src/modules/project/module.php:469 ../src/modules/project/scm/cvs.php:85
 #: ../src/modules/project/scm/cvs.php:200
 #: ../src/modules/project/scm/cvs.php:341
 #: ../src/modules/project/scm/git.php:82 ../src/modules/search/module.php:128
@@ -119,16 +125,16 @@ msgid "Date"
 msgstr "Date"
 
 #: ../src/system/content.php:388 ../src/modules/admin/module.php:146
-#: ../src/modules/content/module.php:1011
-#: ../src/modules/project/module.php:826 ../src/modules/user/module.php:511
+#: ../src/modules/content/module.php:1012
+#: ../src/modules/project/module.php:828 ../src/modules/user/module.php:511
 #: ../src/modules/user/module.php:595
 msgid "Disabled"
 msgstr "Désactivé"
 
 #: ../src/system/content.php:390 ../src/modules/admin/module.php:129
-#: ../src/modules/admin/module.php:148 ../src/modules/content/module.php:442
-#: ../src/modules/content/module.php:1013
-#: ../src/modules/project/module.php:828 ../src/modules/user/module.php:235
+#: ../src/modules/admin/module.php:148 ../src/modules/content/module.php:443
+#: ../src/modules/content/module.php:1014
+#: ../src/modules/project/module.php:830 ../src/modules/user/module.php:235
 #: ../src/modules/user/module.php:266 ../src/modules/user/module.php:496
 #: ../src/modules/user/module.php:513 ../src/modules/user/module.php:567
 #: ../src/modules/user/module.php:597
@@ -137,24 +143,25 @@ msgstr "Activé"
 
 #: ../src/system/content.php:425 ../src/system/content.php:938
 #: ../src/modules/admin/module.php:31 ../src/modules/admin/module.php:174
-#: ../src/modules/download/content/file.php:155
+#: ../src/modules/download/content/file.php:156
 #: ../src/modules/download/content/folder.php:183
 msgid "Administration"
 msgstr "Administration"
 
 #: ../src/system/content.php:480 ../src/system/content.php:494
-#: ../src/modules/project/content.php:273
-#: ../src/modules/project/module.php:642 ../src/modules/wiki/content.php:213
+#: ../src/modules/project/content.php:270
+#: ../src/modules/project/content.php:296
+#: ../src/modules/project/module.php:644 ../src/modules/wiki/content.php:213
 msgid "Title: "
 msgstr "Titre : "
 
 #: ../src/system/content.php:483 ../src/system/content.php:497
-#: ../src/modules/project/module.php:644
+#: ../src/modules/project/module.php:646
 msgid "Content: "
 msgstr "Contenu : "
 
-#: ../src/system/content.php:531 ../src/modules/content/module.php:737
-#: ../src/modules/project/module.php:526
+#: ../src/system/content.php:531 ../src/modules/content/module.php:738
+#: ../src/modules/project/module.php:528
 msgid "Preview: "
 msgstr "Prévisualisation : "
 
@@ -293,24 +300,24 @@ msgid "Module"
 msgstr "Module"
 
 #: ../src/modules/admin/module.php:136 ../src/modules/browser/module.php:129
-#: ../src/modules/content/module.php:1052
-#: ../src/modules/content/module.php:1164
+#: ../src/modules/content/module.php:1053
+#: ../src/modules/content/module.php:1165
 #: ../src/modules/download/content/folder.php:151
 #: ../src/modules/user/module.php:508 ../src/modules/user/module.php:580
 msgid "Refresh"
 msgstr "Rafraîchir"
 
-#: ../src/modules/admin/module.php:138 ../src/modules/content/module.php:1041
+#: ../src/modules/admin/module.php:138 ../src/modules/content/module.php:1042
 #: ../src/modules/user/module.php:583
 msgid "Disable"
 msgstr "Désactiver"
 
-#: ../src/modules/admin/module.php:142 ../src/modules/content/module.php:1042
+#: ../src/modules/admin/module.php:142 ../src/modules/content/module.php:1043
 #: ../src/modules/user/module.php:587
 msgid "Enable"
 msgstr "Activer"
 
-#: ../src/modules/admin/module.php:166 ../src/modules/content/module.php:1002
+#: ../src/modules/admin/module.php:166 ../src/modules/content/module.php:1003
 #: ../src/modules/user/module.php:536 ../src/modules/user/module.php:626
 msgid "Back to the administration"
 msgstr "Retour à l'administration"
@@ -411,7 +418,7 @@ msgid "Parent directory"
 msgstr "Dossier parent"
 
 #: ../src/modules/browser/module.php:136
-#: ../src/modules/download/content/file.php:139
+#: ../src/modules/download/content/file.php:140
 #: ../src/modules/project/content.php:239
 msgid "Download"
 msgstr "Télécharger"
@@ -491,126 +498,126 @@ msgstr "Accédé le :"
 
 #: ../src/modules/content/module.php:93
 msgid "You need to be logged in to publish content"
-msgstr ""
+msgstr "Vous devez être authentifié pour pouvoir publier des contenus"
 
 #: ../src/modules/content/module.php:97
 msgid "Only moderators can publish content"
-msgstr ""
+msgstr "Seuls les modérateurs peuvent publier les contenus"
 
 #: ../src/modules/content/module.php:113
 msgid "Anonymous submissions are not allowed"
-msgstr ""
+msgstr "Les soumissions anonymes ne sont pas autorisées"
 
 #: ../src/modules/content/module.php:133
 msgid "Only moderators can unpublish content"
-msgstr ""
+msgstr "Seuls les modérateurs peuvent retirer des contenus"
 
 #: ../src/modules/content/module.php:149
 msgid "Anonymous updates are not allowed"
 msgstr "Les modifications anonymes no sont pas autorisées"
 
-#: ../src/modules/content/module.php:275
+#: ../src/modules/content/module.php:276
 msgid "Content administration"
 msgstr "Administration des contenus"
 
-#: ../src/modules/content/module.php:276
+#: ../src/modules/content/module.php:277
 msgid "Content headlines"
 msgstr "Contenus principaux"
 
-#: ../src/modules/content/module.php:277
+#: ../src/modules/content/module.php:278
 msgid "Content list"
 msgstr "Liste des contenus"
 
-#: ../src/modules/content/module.php:281
+#: ../src/modules/content/module.php:282
 msgid "Publication in progress, please wait..."
 msgstr "Publication en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:283 ../src/modules/user/module.php:1614
+#: ../src/modules/content/module.php:284 ../src/modules/user/module.php:1614
 msgid "Redirection in progress, please wait..."
 msgstr "Redirection en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:284 ../src/modules/news/content.php:37
-#: ../src/modules/project/content.php:41 ../src/modules/project/module.php:676
+#: ../src/modules/content/module.php:285 ../src/modules/news/content.php:37
+#: ../src/modules/project/content.php:41 ../src/modules/project/module.php:678
 msgid "Submit"
 msgstr "Envoyer"
 
-#: ../src/modules/content/module.php:287
+#: ../src/modules/content/module.php:288
 msgid "Submission in progress, please wait..."
 msgstr "Soumission en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:288
+#: ../src/modules/content/module.php:289
 msgid "Content"
 msgstr "Contenu"
 
-#: ../src/modules/content/module.php:290
+#: ../src/modules/content/module.php:291
 msgid "Update in progress, please wait..."
 msgstr "Mise à jour en cours, veuillez patienter..."
 
-#: ../src/modules/content/module.php:393 ../src/modules/user/module.php:172
+#: ../src/modules/content/module.php:394 ../src/modules/user/module.php:172
 #: ../src/modules/user/module.php:355 ../src/modules/user/module.php:1523
 msgid "Login"
 msgstr "Se connecter"
 
-#: ../src/modules/content/module.php:433 ../src/modules/content/module.php:577
-#: ../src/modules/content/module.php:619
+#: ../src/modules/content/module.php:434 ../src/modules/content/module.php:578
+#: ../src/modules/content/module.php:620
 msgid "Unable to list contents"
 msgstr "Impossible de lister les contenus"
 
-#: ../src/modules/content/module.php:442
-#: ../src/modules/content/module.php:1207
+#: ../src/modules/content/module.php:443
+#: ../src/modules/content/module.php:1208
 msgid "Public"
 msgstr "Public"
 
-#: ../src/modules/content/module.php:508
+#: ../src/modules/content/module.php:509
 msgid "Content could be deleted successfully"
 msgstr "Le(s) contenu(s) ont pu être effacé(s)"
 
-#: ../src/modules/content/module.php:509
+#: ../src/modules/content/module.php:510
 msgid "Some content could not be deleted"
 msgstr "Certains contenus n'ont pas pu être supprimés"
 
-#: ../src/modules/content/module.php:523
+#: ../src/modules/content/module.php:524
 msgid "Content could be disabled successfully"
 msgstr "Le(s) contenu(s) ont pu être désactivé(s)"
 
-#: ../src/modules/content/module.php:524
+#: ../src/modules/content/module.php:525
 msgid "Some content could not be disabled"
 msgstr "Certains contenus n'ont pas pu être désactivés"
 
-#: ../src/modules/content/module.php:531
+#: ../src/modules/content/module.php:532
 msgid "Could not display content"
 msgstr "Impossible d'afficher le contenu"
 
-#: ../src/modules/content/module.php:554
+#: ../src/modules/content/module.php:555
 msgid "Content could be enabled successfully"
 msgstr "Le(s) contenu(s) ont pu être activé(s)"
 
-#: ../src/modules/content/module.php:555
+#: ../src/modules/content/module.php:556
 msgid "Some content could not be enabled"
 msgstr "Certains contenus n'ont pas pu être activés"
 
-#: ../src/modules/content/module.php:570 ../src/modules/project/scm/cvs.php:87
+#: ../src/modules/content/module.php:571 ../src/modules/project/scm/cvs.php:87
 #: ../src/modules/project/scm/cvs.php:201
 #: ../src/modules/project/scm/cvs.php:343 ../src/modules/wiki/content.php:147
 msgid "Author"
 msgstr "Auteur"
 
-#: ../src/modules/content/module.php:684
+#: ../src/modules/content/module.php:685
 msgid "Content could be published successfully"
 msgstr "Le(s) contenu(s) ont pu être publié(s)"
 
-#: ../src/modules/content/module.php:685
+#: ../src/modules/content/module.php:686
 msgid "Some content could not be published"
 msgstr "Certains contenus n'ont pas pu être publiés"
 
-#: ../src/modules/content/module.php:692 ../src/modules/content/module.php:708
+#: ../src/modules/content/module.php:693 ../src/modules/content/module.php:709
 msgid "Could not preview content"
 msgstr "Impossible d'apercevoir le contenu"
 
-#: ../src/modules/content/module.php:746
-#: ../src/modules/content/module.php:1287
-#: ../src/modules/content/module.php:1362
-#: ../src/modules/project/module.php:651 ../src/modules/project/module.php:674
+#: ../src/modules/content/module.php:747
+#: ../src/modules/content/module.php:1288
+#: ../src/modules/content/module.php:1363
+#: ../src/modules/project/module.php:653 ../src/modules/project/module.php:676
 #: ../src/modules/user/module.php:142 ../src/modules/user/module.php:167
 #: ../src/modules/user/module.php:187 ../src/modules/user/module.php:205
 #: ../src/modules/user/module.php:244 ../src/modules/user/module.php:271
@@ -619,172 +626,177 @@ msgstr "Impossible d'apercevoir le contenu"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../src/modules/content/module.php:769 ../src/modules/content/module.php:834
-#: ../src/modules/content/module.php:913
-#: ../src/modules/download/content/file.php:217
-#: ../src/modules/download/module.php:190
-#: ../src/modules/project/module.php:600 ../src/modules/project/module.php:605
-#: ../src/modules/project/module.php:611 ../src/modules/project/module.php:616
+#: ../src/modules/content/module.php:770 ../src/modules/content/module.php:835
+#: ../src/modules/content/module.php:914
+#: ../src/modules/download/content/file.php:233
+#: ../src/modules/download/module.php:222
+#: ../src/modules/project/module.php:602 ../src/modules/project/module.php:607
+#: ../src/modules/project/module.php:613 ../src/modules/project/module.php:618
 msgid "Internal server error"
 msgstr "Erreur interne du serveur"
 
-#: ../src/modules/content/module.php:789
+#: ../src/modules/content/module.php:790
 msgid "Could not submit content"
 msgstr "Impossible d'envoyer le contenu"
 
-#: ../src/modules/content/module.php:862
+#: ../src/modules/content/module.php:863
 msgid "Content could be unpublished successfully"
 msgstr "Le(s) contenu(s) ont pu être retiré(s)"
 
-#: ../src/modules/content/module.php:863
+#: ../src/modules/content/module.php:864
 msgid "Some content could not be unpublished"
 msgstr "Certains contenus n'ont pas pu être retirés"
 
-#: ../src/modules/content/module.php:871
+#: ../src/modules/content/module.php:872
 msgid "Unable to fetch content"
 msgstr "Impossible d'obtenir le contenu"
 
-#: ../src/modules/content/module.php:877
+#: ../src/modules/content/module.php:878
 msgid "Could not update content"
 msgstr "Impossible de modifier le contenu"
 
-#: ../src/modules/content/module.php:883
+#: ../src/modules/content/module.php:884
 msgid "Update "
 msgstr "Modifier "
 
-#: ../src/modules/content/module.php:999
+#: ../src/modules/content/module.php:1000
 msgid "Back to this module"
 msgstr "Retour à ce module"
 
-#: ../src/modules/content/module.php:1043
-#: ../src/modules/content/module.php:1181
+#: ../src/modules/content/module.php:1044
+#: ../src/modules/content/module.php:1182
 msgid "Unpublish"
 msgstr "Retirer"
 
-#: ../src/modules/content/module.php:1045 ../src/modules/user/module.php:591
+#: ../src/modules/content/module.php:1046 ../src/modules/user/module.php:591
 msgid "Delete"
 msgstr "Effacer"
 
-#: ../src/modules/content/module.php:1072
+#: ../src/modules/content/module.php:1073
 msgid "Must be logged in"
 msgstr "Vous devez être connecté(e)"
 
-#: ../src/modules/content/module.php:1129
+#: ../src/modules/content/module.php:1130
 msgid "Back"
 msgstr "Retour"
 
-#: ../src/modules/content/module.php:1271 ../src/modules/user/module.php:920
+#: ../src/modules/content/module.php:1272 ../src/modules/user/module.php:920
 #: ../src/modules/user/module.php:1620
 msgid "If you are not redirected within 30 seconds, please "
 msgstr "Si vous n'êtes pas redirigé(e) d'ici 30 secondes, veuillez "
 
-#: ../src/modules/content/module.php:1273 ../src/modules/user/module.php:922
+#: ../src/modules/content/module.php:1274 ../src/modules/user/module.php:922
 #: ../src/modules/user/module.php:1622
 msgid "click here"
 msgstr "cliquer ici"
 
-#: ../src/modules/content/module.php:1293
-#: ../src/modules/content/module.php:1370
-#: ../src/modules/project/module.php:654 ../src/modules/search/module.php:129
+#: ../src/modules/content/module.php:1294
+#: ../src/modules/content/module.php:1371
+#: ../src/modules/project/module.php:656 ../src/modules/search/module.php:129
 #: ../src/modules/search/module.php:167
 msgid "Preview"
 msgstr "Prévisualiser"
 
-#: ../src/modules/content/module.php:1364
-#: ../src/modules/project/module.php:279 ../src/modules/search/module.php:306
+#: ../src/modules/content/module.php:1365
+#: ../src/modules/project/module.php:281 ../src/modules/search/module.php:306
 #: ../src/modules/user/module.php:208 ../src/modules/user/module.php:1238
 msgid "Reset"
 msgstr ""
 
-#: ../src/modules/download/content/file.php:37
+#: ../src/modules/download/content/file.php:38
 msgid "Uploaded by"
 msgstr "Envoyé par"
 
-#: ../src/modules/download/content/file.php:38
+#: ../src/modules/download/content/file.php:39
 #: ../src/modules/download/content/folder.php:147
 msgid "Parent folder"
 msgstr "Dossier parent"
 
-#: ../src/modules/download/content/file.php:39
+#: ../src/modules/download/content/file.php:40
 msgid "Upload file..."
 msgstr "Envoyer un fichier..."
 
-#: ../src/modules/download/content/file.php:40
-#: ../src/modules/download/module.php:129
+#: ../src/modules/download/content/file.php:41
+#: ../src/modules/download/module.php:131
 msgid "Upload"
 msgstr "Envoyer"
 
-#: ../src/modules/download/content/file.php:72
+#: ../src/modules/download/content/file.php:73
 msgid "%A, %B %e %Y, %H:%M:%S"
 msgstr "%A %B %e %Y, %H:%M:%S"
 
-#: ../src/modules/download/content/file.php:76
+#: ../src/modules/download/content/file.php:77
 msgid "Could not obtain details for this file"
 msgstr "Impossible d'obtenir les informations sur ce fichier"
 
-#: ../src/modules/download/content/file.php:84
+#: ../src/modules/download/content/file.php:85
 #: ../src/modules/download/content/folder.php:199
 #: ../src/modules/download/content/folder.php:210
 #: ../src/modules/user/module.php:260
 msgid "Name: "
 msgstr "Nom : "
 
-#: ../src/modules/download/content/file.php:90
+#: ../src/modules/download/content/file.php:91
 msgid "Owner: "
 msgstr "Propriétaire :"
 
-#: ../src/modules/download/content/file.php:95
+#: ../src/modules/download/content/file.php:96
 msgid "Group: "
 msgstr "Groupe :"
 
-#: ../src/modules/download/content/file.php:97
+#: ../src/modules/download/content/file.php:98
 msgid "Permissions: "
 msgstr "Permissions :"
 
-#: ../src/modules/download/content/file.php:99
+#: ../src/modules/download/content/file.php:100
 msgid "Size: "
 msgstr "Taille :"
 
-#: ../src/modules/download/content/file.php:101
+#: ../src/modules/download/content/file.php:102
 msgid "Created on: "
 msgstr "Créé le :"
 
-#: ../src/modules/download/content/file.php:103
+#: ../src/modules/download/content/file.php:104
 msgid "Last modified: "
 msgstr "Modifié le :"
 
-#: ../src/modules/download/content/file.php:105
+#: ../src/modules/download/content/file.php:106
 msgid "Last access: "
 msgstr "Accédé le :"
 
-#: ../src/modules/download/content/file.php:107
+#: ../src/modules/download/content/file.php:108
 msgid "Comment: "
 msgstr "Commentaire :"
 
-#: ../src/modules/download/content/file.php:135
+#: ../src/modules/download/content/file.php:136
 #: ../src/modules/project/content.php:242
 msgid "Browse"
 msgstr "Parcourir"
 
-#: ../src/modules/download/content/file.php:172
+#: ../src/modules/download/content/file.php:173
 msgid "Could not read file"
 msgstr "Impossible de lire le fichier"
 
-#: ../src/modules/download/content/file.php:199
+#: ../src/modules/download/content/file.php:191
+#: ../src/modules/project/module.php:668
+msgid "File: "
+msgstr "Fichier : "
+
+#: ../src/modules/download/content/file.php:215
 msgid "The filename must be specified"
 msgstr "Le nom du fichier doit être spécifié"
 
-#: ../src/modules/download/content/file.php:213
+#: ../src/modules/download/content/file.php:229
 msgid "Could not register the file"
 msgstr "Impossible d'enregistrer le fichier"
 
-#: ../src/modules/download/content/file.php:224
+#: ../src/modules/download/content/file.php:240
 msgid "Could not copy the file"
 msgstr "Impossible de copier le fichier"
 
 #: ../src/modules/download/content/folder.php:36
 msgid "Folder from"
-msgstr ""
+msgstr "Dossier de"
 
 #: ../src/modules/download/content/folder.php:37
 msgid "Directory listing"
@@ -799,7 +811,7 @@ msgid "New folder..."
 msgstr "Nouveau dossier..."
 
 #: ../src/modules/download/content/folder.php:40
-#: ../src/modules/download/module.php:139
+#: ../src/modules/download/module.php:141
 msgid "New folder"
 msgstr "Nouveau dossier"
 
@@ -817,7 +829,7 @@ msgid "Owner"
 msgstr "Propriétaire"
 
 #: ../src/modules/download/content/folder.php:166
-#: ../src/modules/download/module.php:131
+#: ../src/modules/download/module.php:133
 msgid "Upload file"
 msgstr "Envoyer un fichier"
 
@@ -825,19 +837,26 @@ msgstr "Envoyer un fichier"
 msgid "Could not create the directory"
 msgstr "Impossible de créér le dossier"
 
-#: ../src/modules/download/module.php:100
-#: ../src/modules/download/module.php:105
+#: ../src/modules/download/module.php:102
+#: ../src/modules/download/module.php:107
 msgid "Downloads"
 msgstr "Téléchargements"
 
-#: ../src/modules/download/module.php:137 ../src/modules/user/module.php:247
+#: ../src/modules/download/module.php:139 ../src/modules/user/module.php:247
 #: ../src/modules/user/module.php:274
 msgid "Create"
 msgstr "Créer"
 
-#: ../src/modules/download/module.php:164
+#: ../src/modules/download/module.php:166
 msgid "Could not fetch content"
 msgstr "Impossible d'obtenir le contenu"
+
+#: ../src/modules/download/module.php:202
+#: ../src/modules/project/content.php:87
+#: ../src/modules/project/content.php:203
+#: ../src/modules/project/module.php:802
+msgid "An error occurred"
+msgstr "Une erreur est survenue"
 
 #: ../src/modules/news/content.php:34 ../src/modules/news/module.php:39
 msgid "News by"
@@ -867,7 +886,7 @@ msgstr "Liste des dépêches"
 msgid "Project from"
 msgstr "Projet de"
 
-#: ../src/modules/project/content.php:39 ../src/modules/project/module.php:363
+#: ../src/modules/project/content.php:39 ../src/modules/project/module.php:365
 msgid "Project list"
 msgstr "Liste des projets"
 
@@ -875,20 +894,14 @@ msgstr "Liste des projets"
 msgid "More projects..."
 msgstr "Plus de projets..."
 
-#: ../src/modules/project/content.php:42 ../src/modules/project/module.php:366
+#: ../src/modules/project/content.php:42 ../src/modules/project/module.php:368
 msgid "New project"
 msgstr "Nouveau projet"
 
-#: ../src/modules/project/content.php:67 ../src/modules/project/module.php:271
-#: ../src/modules/project/module.php:751
+#: ../src/modules/project/content.php:67 ../src/modules/project/module.php:273
+#: ../src/modules/project/module.php:753
 msgid "Project: "
 msgstr "Projet : "
-
-#: ../src/modules/project/content.php:87
-#: ../src/modules/project/content.php:203
-#: ../src/modules/project/module.php:800
-msgid "An error occurred"
-msgstr "Une erreur est survenue"
 
 #: ../src/modules/project/content.php:115
 msgid "Releases"
@@ -909,7 +922,7 @@ msgstr "Gallerie"
 
 #: ../src/modules/project/content.php:238
 #: ../src/modules/project/content/bug.php:41
-#: ../src/modules/project/module.php:355 ../src/modules/project/module.php:404
+#: ../src/modules/project/module.php:357 ../src/modules/project/module.php:406
 msgid "Bug reports"
 msgstr "Rapports de bugs"
 
@@ -922,27 +935,38 @@ msgstr "Déroulement"
 msgid "Homepage"
 msgstr "Accueil"
 
-#: ../src/modules/project/content.php:279
+#: ../src/modules/project/content.php:273
+#: ../src/modules/project/content.php:302
 msgid "Synopsis: "
 msgstr "Résumé : "
 
-#: ../src/modules/project/content.php:283
+#: ../src/modules/project/content.php:276
+#: ../src/modules/project/content.php:306
 msgid "Description: "
 msgstr "Description : "
 
-#: ../src/modules/project/content.php:292
+#: ../src/modules/project/content.php:279
+#: ../src/modules/project/content.php:315
 msgid "SCM: "
-msgstr ""
+msgstr "SCM : "
 
-#: ../src/modules/project/content.php:297
+#: ../src/modules/project/content.php:281
+msgid "(none)"
+msgstr "(aucun)"
+
+#: ../src/modules/project/content.php:284
+msgid "SCM root: "
+msgstr "Racine SCM : "
+
+#: ../src/modules/project/content.php:320
 msgid "Repository: "
 msgstr "Dépôt : "
 
-#: ../src/modules/project/content.php:317
+#: ../src/modules/project/content.php:342
 msgid "Could not insert the project"
 msgstr "Impossible d'enregistrer le projet"
 
-#: ../src/modules/project/content.php:337
+#: ../src/modules/project/content.php:363
 msgid "Could not update the project"
 msgstr "Impossible de mettre à jour le projet"
 
@@ -956,151 +980,147 @@ msgstr "Plus de rapports..."
 
 #: ../src/modules/project/content/bug.php:43
 msgid "Report bug..."
-msgstr ""
+msgstr "Rapporter un bug..."
 
-#: ../src/modules/project/module.php:224
+#: ../src/modules/project/module.php:226
 msgid "Projects"
 msgstr "Projets"
 
-#: ../src/modules/project/module.php:274
+#: ../src/modules/project/module.php:276
 msgid "Submitted by: "
 msgstr "Envoyé par : "
 
-#: ../src/modules/project/module.php:282
+#: ../src/modules/project/module.php:284
 msgid "Filter"
 msgstr "Filtrer"
 
-#: ../src/modules/project/module.php:357
+#: ../src/modules/project/module.php:359
 msgid "Bug reported by"
 msgstr "Bug rapporté par"
 
-#: ../src/modules/project/module.php:358
+#: ../src/modules/project/module.php:360
 msgid "Report bug"
-msgstr ""
+msgstr "Rapporter un bug"
 
-#: ../src/modules/project/module.php:365
+#: ../src/modules/project/module.php:367
 msgid "Projects from"
 msgstr "Projets de"
 
-#: ../src/modules/project/module.php:391 ../src/modules/project/module.php:690
+#: ../src/modules/project/module.php:393 ../src/modules/project/module.php:692
 msgid "Bugs administration"
 msgstr "Administration des bugs"
 
-#: ../src/modules/project/module.php:414 ../src/modules/project/module.php:422
+#: ../src/modules/project/module.php:416 ../src/modules/project/module.php:424
 msgid "Unknown project"
 msgstr "Projet inconnu"
 
-#: ../src/modules/project/module.php:427
+#: ../src/modules/project/module.php:429
 msgid "Bug reports for "
 msgstr "Rapports de bugs pour "
 
-#: ../src/modules/project/module.php:435
+#: ../src/modules/project/module.php:437
 msgid " by "
 msgstr " par "
 
-#: ../src/modules/project/module.php:453
+#: ../src/modules/project/module.php:455
 msgid "Unable to list bugs"
 msgstr "Impossible de lister les bugs"
 
-#: ../src/modules/project/module.php:466
+#: ../src/modules/project/module.php:468
 msgid "ID"
 msgstr "ID"
 
-#: ../src/modules/project/module.php:466
+#: ../src/modules/project/module.php:468
 msgid "Project"
 msgstr "Projet"
 
-#: ../src/modules/project/module.php:467
+#: ../src/modules/project/module.php:469
 msgid "State"
 msgstr "État"
 
-#: ../src/modules/project/module.php:468
+#: ../src/modules/project/module.php:470
 msgid "Type"
 msgstr "Type"
 
-#: ../src/modules/project/module.php:468
+#: ../src/modules/project/module.php:470
 msgid "Priority"
 msgstr "Priorité"
 
-#: ../src/modules/project/module.php:511
+#: ../src/modules/project/module.php:513
 #, php-format
 msgid "Reply to #%u/%s: %s"
 msgstr "Réponse à #%u/%s: %s"
 
-#: ../src/modules/project/module.php:556
+#: ../src/modules/project/module.php:558
 msgid "Invalid project"
 msgstr "Projet invalide"
 
-#: ../src/modules/project/module.php:564
+#: ../src/modules/project/module.php:566
 msgid "New release for project "
 msgstr "Nouvelle version du projet"
 
-#: ../src/modules/project/module.php:666
-msgid "File: "
-msgstr "Fichier : "
-
-#: ../src/modules/project/module.php:669
+#: ../src/modules/project/module.php:671
 msgid "Directory: "
 msgstr "Dossier : "
 
-#: ../src/modules/project/module.php:702
+#: ../src/modules/project/module.php:704
 #, php-format
 msgid "#%u/%s: %s"
 msgstr "#%u/%s: %s"
 
-#: ../src/modules/project/module.php:717
+#: ../src/modules/project/module.php:719
 msgid "Reply"
 msgstr "Répondre"
 
-#: ../src/modules/project/module.php:756
+#: ../src/modules/project/module.php:758
 msgid "Submitter: "
 msgstr "Envoyé par : "
 
-#: ../src/modules/project/module.php:761
+#: ../src/modules/project/module.php:763
 msgid "Date: "
 msgstr "Date :"
 
-#: ../src/modules/project/module.php:768
+#: ../src/modules/project/module.php:770
 msgid "State: "
 msgstr "État : "
 
-#: ../src/modules/project/module.php:772
+#: ../src/modules/project/module.php:774
 msgid "Type: "
 msgstr "Type : "
 
-#: ../src/modules/project/module.php:776
+#: ../src/modules/project/module.php:778
 msgid "Priority: "
 msgstr "Priorité : "
 
-#: ../src/modules/project/module.php:780
+#: ../src/modules/project/module.php:782
 msgid "Assigned to: "
 msgstr "Assigné à : "
 
-#: ../src/modules/project/module.php:821
+#: ../src/modules/project/module.php:823
 msgid "Members"
 msgstr "Membres"
 
-#: ../src/modules/project/module.php:822 ../src/modules/wiki/content.php:146
+#: ../src/modules/project/module.php:824 ../src/modules/wiki/content.php:146
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/modules/project/module.php:823 ../src/modules/user/module.php:240
+#: ../src/modules/project/module.php:825 ../src/modules/user/module.php:240
 #: ../src/modules/user/module.php:568
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: ../src/modules/project/module.php:865
+#: ../src/modules/project/module.php:867
 msgid "Manager"
 msgstr "Manager"
 
-#: ../src/modules/project/module.php:866 ../src/modules/project/scm/cvs.php:88
+#: ../src/modules/project/module.php:868 ../src/modules/project/scm/cvs.php:88
 msgid "Description"
 msgstr "Description"
 
 #: ../src/modules/project/scm/cvs.php:45
 #: ../src/modules/project/scm/cvs.php:326
 msgid "No CVS repository defined"
-msgstr ""
+msgstr "Aucun dépôt CVS configuré"
 
 #: ../src/modules/project/scm/cvs.php:60 ../src/modules/project/scm/git.php:60
 msgid "No such file or directory"
@@ -1136,7 +1156,7 @@ msgstr "Dépôt"
 #: ../src/modules/project/scm/cvs.php:314
 #: ../src/modules/project/scm/git.php:161
 msgid "The source code can be obtained as follows: "
-msgstr ""
+msgstr "Le code source peut être obtenu ainsi : "
 
 #: ../src/modules/project/scm/cvs.php:334
 msgid "Could not open the project history"
@@ -1144,7 +1164,7 @@ msgstr "Impossible d'ouvrir l'historique"
 
 #: ../src/modules/project/scm/cvs.php:341
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 #: ../src/modules/project/scm/cvs.php:392
 msgid "%d/%m/%Y %H:%M:%S"
@@ -1153,7 +1173,7 @@ msgstr "%d/%m/%Y %H:%M:%S"
 #: ../src/modules/project/scm/git.php:42
 #: ../src/modules/project/scm/git.php:173
 msgid "No Git repository defined"
-msgstr ""
+msgstr "Aucun dépôt Git configuré"
 
 #: ../src/modules/project/scm/git.php:146
 msgid "Commit log"
@@ -1196,6 +1216,18 @@ msgstr "titres"
 #: ../src/modules/search/module.php:285
 msgid "content"
 msgstr "contenus"
+
+#: ../src/modules/search/module.php:292
+msgid "Case-insensitive"
+msgstr "Sans la casse"
+
+#: ../src/modules/search/module.php:295
+msgid "Case-sensitive"
+msgstr "Avec la casse"
+
+#: ../src/modules/search/module.php:300
+msgid "Results per page:"
+msgstr "Résultats par page :"
 
 #: ../src/modules/search/module.php:315
 msgid "Simpler search..."
@@ -1592,7 +1624,7 @@ msgstr "Le titre ne peut pas contenir de slash"
 
 #: ../src/modules/wiki/content.php:67
 msgid "You need to be logged in to update wiki pages"
-msgstr ""
+msgstr "Vous devez être authentifiés pour mettre à jour les pages wiki"
 
 #: ../src/modules/wiki/content.php:80
 msgid "The title is not allowed to change"
@@ -1620,7 +1652,7 @@ msgstr "Impossible d'enregistrer la page wiki"
 
 #: ../src/modules/wiki/content.php:319
 msgid "No wiki page was found with this name"
-msgstr ""
+msgstr "Aucune page wiki n'a été trouvée avec ce nom"
 
 #: ../src/modules/wiki/content.php:328
 msgid "Could not update the wiki page"
