@@ -263,6 +263,29 @@ class ProjectContent extends MultiContent
 		return parent::form($engine, $request);
 	}
 
+	protected function _formSubmit($engine, $request)
+	{
+		$vbox = new PageElement('vbox');
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $request->getParameter('title')));
+		$vbox->append('entry', array('name' => 'synopsis',
+				'text' => _('Synopsis: '),
+				'value' => $request->getParameter('synopsis')));
+		$vbox->append('textview', array('name' => 'content',
+				'text' => _('Description: '),
+				'value' => $request->getParameter('content')));
+		$combobox = $vbox->append('combobox', array('name' => 'scm',
+				'text' => _('SCM: ')));
+		$combobox->append('label', array('value' => '',
+				'text' => _('(none)')));
+		//FIXME list the SCMs available
+		$vbox->append('entry', array('name' => 'cvsroot',
+				'text' => _('SCM root: '),
+				'value' => $request->getParameter('cvsroot')));
+		return $vbox;
+	}
+
 	protected function _formUpdate($engine, $request)
 	{
 		$vbox = new PageElement('vbox');
