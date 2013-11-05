@@ -166,6 +166,7 @@ abstract class ContentModule extends Module
 	protected $content_preview_length = 150;
 	protected $helper_apply_args;
 	protected $stock_back = 'back';
+	protected $stock_content_new = 'new';
 	protected $stock_content_submit = 'submit';
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_headline_title = 'Content headlines';
@@ -965,8 +966,8 @@ abstract class ContentModule extends Module
 		$ret = array();
 
 		$r = $this->getRequest('submit');
-		$ret[] = $this->helperAction($engine, 'new', $r,
-				$this->text_content_submit_content);
+		$ret[] = $this->helperAction($engine, $this->stock_content_new,
+				$r, $this->text_content_submit_content);
 		return $ret;
 	}
 
