@@ -334,6 +334,9 @@ class ProjectContent extends MultiContent
 		$database = $engine->getDatabase();
 		$query = $this->project_query_insert;
 
+		$this->set('synopsis', $request->getParameter('synopsis'));
+		$this->set('scm', $request->getParameter('scm'));
+		$this->set('cvsroot', $request->getParameter('cvsroot'));
 		if(($ret = parent::_saveInsert($engine, $request, $error))
 				=== FALSE)
 			return FALSE;
