@@ -337,17 +337,17 @@ class ProjectContent extends MultiContent
 		$this->set('synopsis', $request->getParameter('synopsis'));
 		$this->set('scm', $request->getParameter('scm'));
 		$this->set('cvsroot', $request->getParameter('cvsroot'));
-		if(($ret = parent::_saveInsert($engine, $request, $error))
-				=== FALSE)
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not insert the project');
 		$args = array('project_id' => $this->getID(),
 			'synopsis' => $this->get('synopsis'),
+			'scm' => $this->get('scm'),
 			'cvsroot' => $this->get('cvsroot'));
 		if($database->query($engine, $query, $args)
 				=== FALSE)
 			return FALSE;
-		return $ret;
+		return TRUE;
 	}
 
 	protected function _saveUpdate($engine, $request, &$error)
@@ -429,8 +429,8 @@ class ProjectContent extends MultiContent
 	//	synopsis
 	//	cvsroot
 	protected $project_query_insert = 'INSERT INTO
-		daportal_project(project_id, synopsis, cvsroot)
-		VALUES (:project_id, :synopsis, :cvsroot)';
+		daportal_project(project_id, synopsis, scm, cvsroot)
+		VALUES (:project_id, :synopsis, :scm, :cvsroot)';
 	//IN:	module_id
 	static protected $project_query_list = 'SELECT content_id AS id,
 		daportal_content_public.enabled AS enabled, timestamp,
