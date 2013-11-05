@@ -49,6 +49,8 @@ if(!function_exists('http_build_url'))
 		//path
 		if(isset($url['path']))
 			$ret .= ltrim($url['path'], '/');
+		else
+			$ret .= '/';
 		//query
 		if(isset($url['query']))
 			$ret .= '?'.$url['query'];
