@@ -289,15 +289,15 @@ class SearchModule extends Module
 			$radio = $hbox->append('radiobutton', array(
 					'name' => 'case', 'value' => $case));
 			$radio->append('label', array(
-					'text' => 'Case-insensitive',
+					'text' => _('Case-insensitive'),
 					'value' => '0'));
 			$radio->append('label', array(
-					'text' => 'Case-sensitive',
+					'text' => _('Case-sensitive'),
 					'value' => '1'));
 			$hbox = $form->append('hbox');
 			$combobox = $hbox->append('combobox', array(
 					'name' => 'limit', 'value' => $limit,
-					'text' => 'Results per page:'));
+					'text' => _('Results per page:')));
 			foreach(array(10, 20, 50, 100) as $i)
 				$combobox->append('label', array('text' => $i,
 						'value' => $i));
