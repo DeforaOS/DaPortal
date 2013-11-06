@@ -1714,12 +1714,14 @@ class UserModule extends Module
 		WHERE user_id=:user_id";
 	//IN:	user_id
 	private $query_groups_user = 'SELECT dug.group_id AS id,
-		groupname, COUNT(members.user_id) AS count
+		groupname, COUNT(member.user_id) AS count
 		FROM daportal_user_group dug, daportal_group,
-		daportal_user_group members
+		daportal_user_group member
 		WHERE dug.group_id=daportal_group.group_id
 		AND dug.user_id=:user_id
-		AND daportal_group.group_id=members.group_id';
+		AND daportal_group.group_id=member.group_id
+		GROUP BY dug.group_id, groupname
+		ORDER BY groupname ASC';
 	//IN:	user_id
 	//	fullname
 	//	email
