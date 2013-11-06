@@ -162,7 +162,8 @@ CREATE TABLE daportal_user_group (
 	user_id INTEGER NOT NULL,
 	group_id INTEGER NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
-	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
+	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id),
+	UNIQUE (user_id, group_id)
 );
 
 CREATE TABLE daportal_content (
