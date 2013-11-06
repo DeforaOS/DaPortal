@@ -60,6 +60,7 @@ class UserModule extends Module
 			case 'close':
 			case 'default':
 			case 'display':
+			case 'groups':
 			case 'login':
 			case 'logout':
 			case 'profile':
@@ -393,6 +394,14 @@ class UserModule extends Module
 					'stock' => 'user'));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => _('My content')));
+			$ret[] = new PageElement('row', array('icon' => $icon,
+					'label' => $link));
+			//user's groups
+			$r = new Request($this->name, 'groups');
+			$icon = new PageElement('image', array(
+					'stock' => 'user'));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => _('My groups')));
 			$ret[] = new PageElement('row', array('icon' => $icon,
 					'label' => $link));
 			//user's profile
@@ -842,6 +851,61 @@ class UserModule extends Module
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('User(s) could be enabled successfully'),
 			_('Some user(s) could not be enabled'));
+	}
+
+
+	//UserModule::callGroups
+	protected function callGroups($engine, $request)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->query_groups_user;
+		$cred = $engine->getCredentials();
+		$id = $request->getID();
+
+		//determine whose groups to view
+		if($id === FALSE)
+			$user = User::lookup($engine, $cred->getUsername(),
+					$cred->getUserID());
+		else
+			$user = User::lookup($engine, $request->getTitle(),
+					$id);
+		if($user === FALSE || ($id = $user->getUserID()) == 0)
+		{
+			//the anonymous user has no memberships
+			$error = _('There are no groups for this user');
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		}
+		if($id === $cred->getUserID())
+			//viewing own profile
+			$id = FALSE;
+		//output the page
+		$title = $id ? _('Groups for ').$user->getUsername()
+			: _('My groups');
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => 'user',
+				'text' => $title));
+		$args = array('user_id' => $user->getUserID());
+		if(($res = $database->query($engine, $query, $args)) === FALSE)
+		{
+			$error = _('Could not list the groups');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = array('title' => _('Group'),
+			'count' => _('Members'));
+		$view = $page->append('treeview', array('columns' => $columns));
+		while(($group = array_shift($res)) !== NULL)
+		{
+			$r = new Request('group', FALSE, $group['id'],
+				$group['groupname']);
+			$group['title'] = new PageElement('link', array(
+				'request' => $r, 'stock' => 'group',
+				'text' => $group['groupname']));
+			$view->append('row', $group);
+		}
+		return $page;
 	}
 
 
@@ -1648,6 +1712,17 @@ class UserModule extends Module
 	private $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
+	//IN:	user_id
+	private $query_groups_user = 'SELECT dug.group_id AS id,
+		groupname, COUNT(members.user_id) AS count
+		FROM daportal_user_group dug, daportal_group,
+		daportal_user_group members
+		WHERE dug.group_id=daportal_group.group_id
+		AND dug.user_id=:user_id
+		AND daportal_group.group_id=members.group_id';
+	//IN:	user_id
+	//	fullname
+	//	email
 	private $query_update = 'UPDATE daportal_user
 		SET fullname=:fullname, email=:email
 		WHERE user_id=:user_id';
