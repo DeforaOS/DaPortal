@@ -883,7 +883,8 @@ class UserModule extends Module
 		$title = $id ? _('Groups for ').$user->getUsername()
 			: _('My groups');
 		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'user',
+		$vbox = $page->append('vbox');
+		$vbox->append('title', array('stock' => 'user',
 				'text' => $title));
 		$args = array('user_id' => $user->getUserID());
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
@@ -895,7 +896,7 @@ class UserModule extends Module
 		}
 		$columns = array('title' => _('Group'),
 			'count' => _('Members'));
-		$view = $page->append('treeview', array('columns' => $columns));
+		$view = $vbox->append('treeview', array('columns' => $columns));
 		while(($group = array_shift($res)) !== NULL)
 		{
 			$r = new Request('group', FALSE, $group['id'],
@@ -904,6 +905,13 @@ class UserModule extends Module
 				'request' => $r, 'stock' => 'group',
 				'text' => $group['groupname']));
 			$view->append('row', $group);
+		}
+		if($id === FALSE)
+		{
+			$r = new Request($this->name);
+			$vbox->append('link', array('stock' => 'back',
+					'request' => $r,
+					'text' => _('Back to my account')));
 		}
 		return $page;
 	}
