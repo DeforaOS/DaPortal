@@ -12,6 +12,7 @@
 ../src/modules/download/content/file.php
 ../src/modules/download/content/folder.php
 ../src/modules/download/module.php
+../src/modules/group/module.php
 ../src/modules/news/content.php
 ../src/modules/news/module.php
 ../src/modules/project/content.php
