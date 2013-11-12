@@ -36,6 +36,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 format.php $(DESTDIR)$(PREFIX)/daportal/src/system/format.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
+	$(INSTALL) -m 0644 group.php $(DESTDIR)$(PREFIX)/daportal/src/system/group.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 html.php $(DESTDIR)$(PREFIX)/daportal/src/system/html.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 locale.php $(DESTDIR)$(PREFIX)/daportal/src/system/locale.php
@@ -66,6 +68,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/engine.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/format.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/group.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/html.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/locale.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/mail.php
