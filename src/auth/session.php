@@ -86,7 +86,7 @@ class SessionAuth extends Auth
 			return parent::getCredentials($engine);
 		$cred = new AuthCredentials($user->getUserID(),
 				$user->getUsername(),
-				$user->getGroupID(),
+				$user->getGroupID(), $user->getGroupname(),
 				$user->isAdmin());
 		parent::setCredentials($engine, $cred);
 		return parent::getCredentials($engine);

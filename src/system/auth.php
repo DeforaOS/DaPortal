@@ -25,7 +25,7 @@ class AuthCredentials
 	//public
 	//essential
 	public function __construct($uid = FALSE, $username = FALSE,
-			$gid = FALSE, $admin = FALSE)
+			$gid = FALSE, $groupname = FALSE, $admin = FALSE)
 	{
 		if($uid === FALSE || !is_string($username) || !is_bool($admin))
 			return;
@@ -34,6 +34,7 @@ class AuthCredentials
 			return;
 		$this->setGroupID($gid);
 		$this->username = $username;
+		$this->groupname = $groupname;
 	}
 
 
@@ -42,6 +43,13 @@ class AuthCredentials
 	public function getGroupID()
 	{
 		return $this->gid;
+	}
+
+
+	//AuthCredentials::getGroupname
+	public function getGroupname()
+	{
+		return $this->groupname;
 	}
 
 
@@ -67,12 +75,12 @@ class AuthCredentials
 
 
 	//AuthCredentials::isMember
-	public function isMember($engine, $group)
+	public function isMember($engine, $groupname)
 	{
 		if(($user = User::lookup($engine, $this->username,
 				$this->uid)) === FALSE)
 			return FALSE;
-		return $user->isMember($engine, $group);
+		return $user->isMember($engine, $groupname);
 	}
 
 
@@ -106,7 +114,7 @@ class AuthCredentials
 	private $uid = 0;
 	private $username = FALSE;
 	private $gid = 0;
-	private $group = FALSE;
+	private $groupname = FALSE;
 	private $groups = array();
 	private $admin = FALSE;
 }
