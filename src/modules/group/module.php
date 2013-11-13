@@ -18,6 +18,7 @@
 
 
 
+require_once('./system/group.php');
 require_once('./system/module.php');
 
 
@@ -101,6 +102,35 @@ class GroupModule extends Module
 	}
 
 
+	//GroupModule::formUpdate
+	protected function formUpdate($engine, $request, $group, $id, $error)
+	{
+		//output the page
+		$title = _('Update group ').$group->getGroupname();
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		if(is_string($error))
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+		$r = new Request($this->name, 'update', $request->getID(),
+			$request->getID() ? $request->getTitle() : FALSE);
+		$form = $page->append('form', array('request' => $r));
+		//fields
+		//groupname
+		$form->append('entry', array('text' => _('Group name: '),
+				'name' => 'groupname',
+				'value' => $group->getGroupname()));
+		//buttons
+		$r = new Request($this->name, 'admin');
+		$form->append('button', array('stock' => 'cancel',
+				'request' => $r, 'text' => _('Cancel')));
+		$form->append('button', array('stock' => 'update',
+				'type' => 'submit', 'text' => _('Update')));
+		return $page;
+	}
+
+
 	//useful
 	//GroupModule::actions
 	protected function actions($engine, $request)
@@ -109,11 +139,10 @@ class GroupModule extends Module
 
 		if($request->getParameter('user') !== FALSE)
 			return FALSE;
-		$ret = array();
 		if($request->getParameter('admin'))
 			return $this->_actions_admin($engine, $cred,
 					$this->name, $ret);
-		return $ret;
+		return FALSE;
 	}
 
 	private function _actions_admin($engine, $cred, $module, &$ret)
@@ -221,9 +250,8 @@ class GroupModule extends Module
 
 		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
-		//FIXME add content?
-		$title = ($cred->getUserID() != 0) ? _('My account')
-			: _('Site menu');
+		$title = ($cred->getUserID() != 0) ? _('My groups')
+			: _('Groups');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
@@ -296,24 +324,24 @@ class GroupModule extends Module
 					'type' => 'error',
 					'text' => 'Could not list modules'));
 		$page = new Page;
-		if(($uid = $request->getID()) !== FALSE)
+		if(($gid = $request->getID()) !== FALSE)
 		{
-			$user = User::lookup($engine, $request->getTitle(),
-					$uid);
+			$group = Group::lookup($engine, $request->getTitle(),
+					$gid);
 			$title = _('Content from ').$request->getTitle();
 		}
-		else if(($uid = $cred->getUserID()) != 0)
+		else if(($gid = $cred->getGroupID()) != 0)
 		{
-			$user = User::lookup($engine, $cred->getUsername(),
-					$uid);
+			$group = Group::lookup($engine, $cred->getUsername(),
+					$gid);
 			$title = _('My content');
 			$r = new Request($this->name);
 			$link = new PageElement('link', array('stock' => 'back',
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
-		if($user === FALSE || $user->getUserID() == 0)
-			return $this->callLogin($engine, new Request);
+		if($group === FALSE || $group->getGroupID() == 0)
+			return $this->callDefault($engine, new Request);
 		//title
 		$page->setProperty('title', $title);
 		$page->append('title', array('stock' => $this->name,
@@ -324,7 +352,7 @@ class GroupModule extends Module
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
 			$r = new Request($res[$i]['name'], 'actions', FALSE,
-				FALSE, array('user' => $user));
+				FALSE, array('group' => $group));
 			$rows = $engine->process($r);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
@@ -382,15 +410,16 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
+		$groupname = $request->getTitle();
 		$error = TRUE;
 
 		//determine whose profile to update
 		if($id === FALSE)
-			$user = User::lookup($engine, $cred->getUsername(),
-					$cred->getUserID());
-		else
-			$user = User::lookup($engine, $request->getTitle(),
-					$id);
+		{
+			$id = $cred->getGroupID();
+			$groupname = $cred->getGroupname();
+		}
+		$group = Group::lookup($engine, $groupname, $id);
 		if($user === FALSE || ($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
@@ -418,47 +447,22 @@ class GroupModule extends Module
 				$error);
 	}
 
-	private function _updateProcess($engine, $request, $user)
+	private function _updateProcess($engine, $request, $group)
 	{
 		$ret = '';
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 
-		if(($fullname = $request->getParameter('fullname')) === FALSE)
-			$ret .= _("The full name is required\n");
-		if(($email = $request->getParameter('email')) === FALSE)
-			$ret .= _("The e-mail address is required\n");
+		if(($groupname = $request->getParameter('groupname')) === FALSE)
+			$ret .= _("The group name is required\n");
 		if(strlen($ret) > 0)
 			return $ret;
-		//update the profile
+		//update the group
 		$error = '';
-		$args = array('user_id' => $user->getUserID(),
-			'fullname' => $fullname, 'email' => $email);
+		$args = array('group_id' => $group->getGroupID(),
+			'groupname' => $groupname);
 		if($db->query($engine, $this->query_update, $args) === FALSE)
-			return _('Could not update the profile');
-		//update the password if requested
-		if(($password1 = $request->getParameter('password1')) === FALSE
-				|| strlen($password1) == 0
-				|| ($password2 = $request->getParameter(
-					'password2')) === FALSE
-				|| strlen($password2) == 0)
-			return FALSE;
-		//check the current password (if not an admin)
-		if(!$cred->isAdmin())
-		{
-			$error = _('The current password must be specified');
-			if(($password = $request->getParameter('password'))
-					=== FALSE
-					|| strlen($password) == 0)
-				return $error;
-			if($user->authenticate($engine, $password) === FALSE)
-				return $error;
-		}
-		//verify that the new password matches
-		if($password1 != $password2)
-			return _('The new password does not match');
-		if(!$user->setPassword($engine, $password1))
-			return _('Could not set the new password');
+			return _('Could not update the group');
 		return FALSE;
 	}
 
@@ -479,7 +483,7 @@ class GroupModule extends Module
 			$r = new Request($this->name, 'admin');
 			$dialog->append('button', array('stock' => 'admin',
 					'request' => $r,
-					'text' => _('User administration')));
+					'text' => _('Groups administration')));
 			$text = _('User profile');
 		}
 		else
