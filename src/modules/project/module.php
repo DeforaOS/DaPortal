@@ -359,6 +359,8 @@ class ProjectModule extends MultiContentModule
 					= _('Bug reports');
 				$this->text_content_list_title_by
 					= _('Bugs reported by');
+				$this->text_content_list_title_by_group
+					= _('Bugs reported by group');
 				$this->text_content_submit_content
 					= _('Report bug');
 				break;
@@ -369,6 +371,8 @@ class ProjectModule extends MultiContentModule
 					= _('Bug replies');
 				$this->text_content_list_title_by
 					= _('Bug replies by');
+				$this->text_content_list_title_by_group
+					= _('Bug replies by group');
 				$this->text_content_submit_content
 					= _('Reply to a bug');
 				break;
@@ -380,6 +384,8 @@ class ProjectModule extends MultiContentModule
 					= _('Project list');
 				$this->text_content_list_title_by
 					= _('Projects from');
+				$this->text_content_list_title_by_group
+					= _('Projects from group');
 				$this->text_content_submit_content
 					= _('New project');
 				break;

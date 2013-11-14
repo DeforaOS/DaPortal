@@ -20,6 +20,7 @@
 
 
 require_once('./system/content.php');
+require_once('./system/group.php');
 require_once('./system/module.php');
 require_once('./system/user.php');
 
@@ -42,6 +43,7 @@ abstract class ContentModule extends Module
 			case 'admin':
 			case 'default':
 			case 'display':
+			case 'group':
 			case 'headline':
 			case 'list':
 			case 'preview':
@@ -558,6 +560,58 @@ abstract class ContentModule extends Module
 				$request->getAction(),
 				_('Content could be enabled successfully'),
 				_('Some content could not be enabled'));
+	}
+
+
+	//ContentModule::callGroup
+	protected function callGroup($engine, $request)
+	{
+		$class = $this->content_class;
+		$cred = $engine->getCredentials();
+		$db = $engine->getDatabase();
+		$group = ($request !== FALSE)
+			? Group::lookup($engine, $request->getTitle(),
+					$request->getID())
+				: Group::lookup($engine, $cred->getGroupname(),
+						$cred->getGroupID());
+		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+
+		$title = $this->text_content_list_title_group;
+		$title = $this->text_content_list_title_by_group.' '
+			.$group->getGroupname();
+		//title
+		$page = new Page(array('title' => $title));
+		$this->helperListTitle($engine, $page, $request);
+		$error = _('Unable to lookup the group');
+		if($group === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		//obtain the total number of records available
+		$limit = $this->content_list_count;
+		$offset = FALSE;
+		if(($pcnt = $class::countAll($engine, $this, $group)) !== FALSE
+				&& is_numeric($p) && $p > 1)
+			$offset = $limit * ($p - 1);
+		$error = _('Unable to list the content');
+		if(($res = $class::listAll($engine, $this, $limit, $offset,
+				$user)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		//FIXME some helpers should move to the Content class
+		//view
+		$treeview = $this->helperListView($engine, $request);
+		$page->append($treeview);
+		//toolbar
+		$this->helperListToolbar($engine, $treeview, $request);
+		//rows
+		while(($content = array_shift($res)) != NULL)
+			$treeview->append($this->helperListContent($engine,
+					$request, $content));
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
+		//buttons
+		$this->helperListButtons($engine, $page, $request);
+		return $page;
 	}
 
 

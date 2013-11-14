@@ -340,7 +340,8 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 
-		if($request->getParameter('user') !== FALSE)
+		if($request->getParameter('user') !== FALSE
+				|| $request->getParameter('group') !== FALSE)
 			return FALSE;
 		$ret = array();
 		if($request->getParameter('admin'))

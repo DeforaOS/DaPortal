@@ -87,7 +87,8 @@ class AdminModule extends Module
 	//AdminModule::actions
 	protected function actions($engine, $request)
 	{
-		if($request->getParameter('user') !== FALSE)
+		if($request->getParameter('user') !== FALSE
+				|| $request->getParameter('group') !== FALSE)
 			return FALSE;
 		$r = new Request($this->name, 'admin');
 		$icon = new PageElement('image', array('stock' => 'admin'));
