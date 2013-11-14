@@ -353,6 +353,8 @@ class ProjectModule extends MultiContentModule
 		switch($this->content_class)
 		{
 			case 'BugProjectContent':
+				$this->text_content_admin
+					= _('Bugs administration');
 				$this->text_content_list_title
 					= _('Bug reports');
 				$this->text_content_list_title_by
@@ -361,6 +363,8 @@ class ProjectModule extends MultiContentModule
 					= _('Report bug');
 				break;
 			case 'BugReplyProjectContent':
+				$this->text_content_admin
+					= _('Bug replies administration');
 				$this->text_content_list_title
 					= _('Bug replies');
 				$this->text_content_list_title_by
@@ -370,6 +374,8 @@ class ProjectModule extends MultiContentModule
 				break;
 			default:
 			case 'ProjectContent':
+				$this->text_content_admin
+					= _('Projects administration');
 				$this->text_content_list_title
 					= _('Project list');
 				$this->text_content_list_title_by
@@ -692,18 +698,6 @@ class ProjectModule extends MultiContentModule
 
 
 	//helpers
-	//ProjectModule::helperActionsAdmin
-	protected function helperActionsAdmin($engine, $request)
-	{
-		$ret = parent::helperActionsAdmin($engine, $request);
-		$r = new Request($this->name, 'admin', FALSE, FALSE,
-			array('type' => 'bug'));
-		$ret[] = $this->helperAction($engine, 'admin', $r,
-				_('Bugs administration'));
-		return $ret;
-	}
-
-
 	//ProjectModule::helperDisplayBug
 	protected function helperDisplayBug($engine, $request, $page, $content)
 	{
