@@ -328,7 +328,7 @@ class GroupModule extends Module
 		{
 			$group = Group::lookup($engine, $request->getTitle(),
 					$gid);
-			$title = _('Content from ').$request->getTitle();
+			$title = _('Content from group ').$request->getTitle();
 		}
 		else if(($gid = $cred->getGroupID()) != 0)
 		{
