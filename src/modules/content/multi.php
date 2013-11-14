@@ -144,6 +144,24 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//helpers
+	//MultiContentModule::helperActionsAdmin
+	protected function helperActionsAdmin($engine, $request)
+	{
+		$ret = array();
+
+		if($request->getParameter('admin') === 0)
+			return $ret;
+		foreach($this->content_classes as $t => $c)
+		{
+			$r = $this->getRequest('admin', array('type' => $t));
+			$this->setContext($engine, $r); /* XXX */
+			$ret[] = $this->helperAction($engine, 'admin', $r,
+					$this->text_content_admin);
+		}
+		return $ret;
+	}
+
+
 	//MultiContentModule::helperActionsList
 	protected function helperActionsList($engine, $request, $user)
 	{
