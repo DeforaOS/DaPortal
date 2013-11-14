@@ -144,6 +144,22 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//helpers
+	//MultiContentModule::helperActionsSubmit
+	protected function helperActionsSubmit($engine, $request, $user)
+	{
+		$ret = array();
+
+		foreach($this->content_classes as $t => $c)
+		{
+			$r = $this->getRequest('submit', array('type' => $t));
+			$this->setContext($engine, $r); /* XXX */
+			$ret[] = $this->helperAction($engine, $this->stock_content_new,
+					$r, $this->text_content_submit_content);
+		}
+		return $ret;
+	}
+
+
 	//MultiContentModule::helperListToolbar
 	protected function helperListToolbar($engine, $page, $request = FALSE)
 	{
