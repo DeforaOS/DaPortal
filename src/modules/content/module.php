@@ -172,6 +172,7 @@ abstract class ContentModule extends Module
 	protected $text_content_headline_title = 'Content headlines';
 	protected $text_content_list_title = 'Content list';
 	protected $text_content_list_title_by = 'Content by';
+	protected $text_content_list_title_by_group = 'Content by group';
 	protected $text_content_publish = 'Publish';
 	protected $text_content_publish_progress
 		= 'Publication in progress, please wait...';
@@ -351,6 +352,9 @@ abstract class ContentModule extends Module
 		if(($user = $request->getParameter('user')) !== FALSE)
 			return $this->helperActionsUser($engine, $request,
 					$user);
+		if(($group = $request->getParameter('group')) !== FALSE)
+			return $this->helperActionsGroup($engine, $request,
+					$group);
 		$ret = array();
 		if($cred->isAdmin())
 		{
@@ -954,6 +958,21 @@ abstract class ContentModule extends Module
 		$r = $this->getRequest('admin');
 		$ret[] = $this->helperAction($engine, 'admin', $r,
 				$this->text_content_admin);
+		return $ret;
+	}
+
+
+	//ContentModule::helperActionsGroup
+	protected function helperActionsGroup($engine, $request, $group)
+	{
+		$ret = array();
+
+		//group's content
+		$r = new Request($this->name, 'group', $group->getGroupID(),
+			$group->getGroupname());
+		$ret[] = $this->helperAction($engine, $this->name, $r,
+				$this->text_content_list_title_by_group
+				.' '.$group->getGroupname());
 		return $ret;
 	}
 
