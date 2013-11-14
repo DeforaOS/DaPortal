@@ -33,7 +33,7 @@ class Content
 		$this->module = $module;
 		$this->user_id = $credentials->getUserID();
 		$this->username = $credentials->getUsername();
-		$this->group_id = $credentials->geGroupID();
+		$this->group_id = $credentials->getGroupID();
 		$this->group = $credentials->getGroupname();
 		//properties
 		if($properties === FALSE)
@@ -844,37 +844,47 @@ class Content
 	//	group_id
 	static protected $query_list_group = 'SELECT content_id AS id,
 		timestamp, daportal_user_enabled.user_id AS user_id, username,
-		title, daportal_content.enabled AS enabled, public, content
-		FROM daportal_content, daportal_user_enabled
-		WHERE daportal_content.module_id=:module_id
-		AND daportal_content.user_id
+		title, daportal_content_enabled.enabled AS enabled, public,
+		content
+		FROM daportal_content_enabled, daportal_user_enabled,
+		daportal_user_group, daportal_group_enabled
+		WHERE daportal_content_enabled.user_id
 		=daportal_user_enabled.user_id
-		AND daportal_user_enabled.group_id=:group_id';
+		AND daportal_user_enabled.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_user_enabled.group_id=:group_id)';
 	//IN:	module_id
 	//	group_id
 	static protected $query_list_group_count = 'SELECT COUNT(*) AS count
-		FROM daportal_content, daportal_user_enabled
-		WHERE daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND group_id=:group_id';
+		FROM daportal_content_enabled, daportal_user_enabled,
+		daportal_user_group, daportal_group_enabled
+		WHERE daportal_content_enabled.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_user_enabled.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_user_enabled.group_id=:group_id)';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		title, daportal_content.enabled AS enabled, public, content
-		FROM daportal_content, daportal_user_enabled
-		WHERE daportal_content.module_id=:module_id
-		AND daportal_content.user_id
+		FROM daportal_content_enabled, daportal_user_enabled
+		WHERE daportal_content_enabled.module_id=:module_id
+		AND daportal_content_enabled.user_id
 		=daportal_user_enabled.user_id
-		AND daportal_content.user_id=:user_id';
+		AND daportal_content_enabled.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user_count = 'SELECT COUNT(*) AS count
-		FROM daportal_content_public, daportal_user_enabled
-		WHERE daportal_content_public.user_id
+		FROM daportal_content_enabled, daportal_user_enabled
+		WHERE daportal_content_enabled.user_id
 		=daportal_user_enabled.user_id
-		AND daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id=:user_id';
+		AND daportal_content_enabled.module_id=:module_id
+		AND daportal_content_enabled.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
