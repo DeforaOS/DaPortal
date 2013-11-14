@@ -144,8 +144,27 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//helpers
+	//MultiContentModule::helperActionsList
+	protected function helperActionsList($engine, $request, $user)
+	{
+		$ret = array();
+
+		foreach($this->content_classes as $t => $c)
+		{
+			$r = new Request($this->name, 'list',
+				$user->getUserID(), $user->getUsername(), array(
+					'type' => $t));
+			$this->setContext($engine, $r); /* XXX */
+			$ret[] = $this->helperAction($engine, $this->name, $r,
+					$this->text_content_list_title_by
+					.' '.$user->getUsername());
+		}
+		return $ret;
+	}
+
+
 	//MultiContentModule::helperActionsSubmit
-	protected function helperActionsSubmit($engine, $request, $user)
+	protected function helperActionsSubmit($engine, $request)
 	{
 		$ret = array();
 
@@ -153,7 +172,8 @@ abstract class MultiContentModule extends ContentModule
 		{
 			$r = $this->getRequest('submit', array('type' => $t));
 			$this->setContext($engine, $r); /* XXX */
-			$ret[] = $this->helperAction($engine, $this->stock_content_new,
+			$ret[] = $this->helperAction($engine,
+					$this->stock_content_new,
 					$r, $this->text_content_submit_content);
 		}
 		return $ret;
