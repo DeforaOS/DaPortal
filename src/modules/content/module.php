@@ -173,6 +173,7 @@ abstract class ContentModule extends Module
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_headline_title = 'Content headlines';
 	protected $text_content_list_title = 'Content list';
+	protected $text_content_list_title_group = 'Content list for group';
 	protected $text_content_list_title_by = 'Content by';
 	protected $text_content_list_title_by_group = 'Content by group';
 	protected $text_content_publish = 'Publish';
@@ -594,7 +595,7 @@ abstract class ContentModule extends Module
 			$offset = $limit * ($p - 1);
 		$error = _('Unable to list the content');
 		if(($res = $class::listAll($engine, $this, $limit, $offset,
-				$user)) === FALSE)
+				$group)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class
