@@ -162,6 +162,25 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
+	//MultiContentModule::helperActionsGroup
+	protected function helperActionsGroup($engine, $request, $group)
+	{
+		$ret = array();
+
+		//group's content
+		foreach($this->content_classes as $t => $c)
+		{
+			$r = new Request($this->name, 'group', $group->getGroupID(),
+					$group->getGroupname(), array('type' => $t));
+			$this->setContext($engine, $r);
+			$ret[] = $this->helperAction($engine, $this->name, $r,
+				$this->text_content_list_title_by_group
+				.' '.$group->getGroupname());
+		}
+		return $ret;
+	}
+
+
 	//MultiContentModule::helperActionsList
 	protected function helperActionsList($engine, $request, $user)
 	{
