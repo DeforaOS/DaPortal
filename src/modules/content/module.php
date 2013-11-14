@@ -960,6 +960,20 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::helperActionsList
+	protected function helperActionsList($engine, $request, $user)
+	{
+		$ret = array();
+
+		//user's content
+		$r = new Request($this->name, 'list', $user->getUserID(),
+			$user->getUsername());
+		$ret[] = $this->helperAction($engine, $this->name, $r,
+				$this->text_content_list_title_by
+				.' '.$user->getUsername());
+	}
+
+
 	//ContentModule::helperActionsSubmit
 	protected function helperActionsSubmit($engine, $request)
 	{
@@ -981,12 +995,9 @@ abstract class ContentModule extends Module
 		if($user->getUserID() == $cred->getUserID()
 				&& $this->canSubmit($engine, $request))
 			$ret = $this->helperActionsSubmit($engine, $request);
-		//user's content
-		$request = new Request($this->name, 'list', $user->getUserID(),
-			$user->getUsername());
-		$ret[] = $this->helperAction($engine, $this->name, $request,
-				$this->text_content_list_title_by
-				.' '.$user->getUsername());
+		if(($r = $this->helperActionsList($engine, $request, $user))
+				!== FALSE)
+			$ret = array_merge($ret, $r);
 		return $ret;
 	}
 
