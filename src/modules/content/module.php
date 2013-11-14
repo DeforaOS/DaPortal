@@ -948,11 +948,9 @@ abstract class ContentModule extends Module
 	//ContentModule::helperActionsAdmin
 	protected function helperActionsAdmin($engine, $request)
 	{
+		if($request->getParameter('admin') === 0)
+			return FALSE;
 		$ret = array();
-		$admin = $request->getParameter('admin');
-
-		if($admin === 0)
-			return $ret;
 		$r = $this->getRequest('admin');
 		$ret[] = $this->helperAction($engine, 'admin', $r,
 				$this->text_content_admin);
@@ -971,6 +969,7 @@ abstract class ContentModule extends Module
 		$ret[] = $this->helperAction($engine, $this->name, $r,
 				$this->text_content_list_title_by
 				.' '.$user->getUsername());
+		return $ret;
 	}
 
 
