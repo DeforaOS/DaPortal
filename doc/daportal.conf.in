@@ -158,6 +158,8 @@ globs=@PREFIX@/share/mime/globs
 [module::user]
 #allow users (not administrators) to close their own account (default: disabled)
 #close=1
+#allow users to be listed
+#list=1
 #allow new users to register an account (default: disabled)
 #register=1
 #allow users to reset their password (default: disabled)

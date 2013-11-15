@@ -61,6 +61,7 @@ class UserModule extends Module
 			case 'default':
 			case 'display':
 			case 'groups':
+			case 'list':
 			case 'login':
 			case 'logout':
 			case 'profile':
@@ -339,6 +340,7 @@ class UserModule extends Module
 	protected function actions($engine, $request)
 	{
 		$cred = $engine->getCredentials();
+		$list = $this->configGet('list');
 
 		if($request->getParameter('user') !== FALSE)
 			return FALSE;
@@ -346,6 +348,16 @@ class UserModule extends Module
 		if($request->getParameter('admin'))
 			return $this->_actions_admin($engine, $cred,
 					$this->name, $ret);
+		if($list == 1)
+		{
+			$r = new Request($this->name, 'list');
+			$icon = new PageElement('image', array(
+					'stock' => 'user'));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => _('User list')));
+			$ret[] = new PageElement('row', array('icon' => $icon,
+					'important' => TRUE, 'label' => $link));
+		}
 		if($cred->getUserID() == 0)
 		{
 			//not logged in yet
@@ -912,6 +924,47 @@ class UserModule extends Module
 			$vbox->append('link', array('stock' => 'back',
 					'request' => $r,
 					'text' => _('Back to my account')));
+		}
+		return $page;
+	}
+
+
+	//UserModule::callList
+	protected function callList($engine, $request)
+	{
+		$db = $engine->getDatabase();
+		$query = $this->query_list;
+		$title = _('User list');
+		$list = $this->configGet('list');
+
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => 'login',
+				'text' => $title));
+		$error = _('Permission denied');
+		if($list != 1)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$error = _('Could not list the users');
+		if(($res = $db->query($engine, $query)) === FALSE)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = array('title' => 'Username',
+			'fullname' => 'Full name');
+		$view = $page->append('treeview', array('columns' => $columns));
+		while(($r = array_shift($res)) !== NULL)
+		{
+			$req = new Request($this->name, FALSE, $r['user_id'],
+				$r['username']);
+			$link = new PageElement('link', array('request' => $req,
+				'stock' => 'user', 'text' => $r['username']));
+			$r['title'] = $link;
+			$view->append('row', $r);
 		}
 		return $page;
 	}
@@ -1730,6 +1783,8 @@ class UserModule extends Module
 		AND daportal_group.group_id=member.group_id
 		GROUP BY dug.group_id, groupname
 		ORDER BY groupname ASC';
+	private $query_list = 'SELECT user_id, username, fullname
+		FROM daportal_user_enabled';
 	//IN:	user_id
 	//	fullname
 	//	email
