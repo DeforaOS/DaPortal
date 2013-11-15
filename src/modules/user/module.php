@@ -1784,7 +1784,8 @@ class UserModule extends Module
 		GROUP BY dug.group_id, groupname
 		ORDER BY groupname ASC';
 	private $query_list = 'SELECT user_id, username, fullname
-		FROM daportal_user_enabled';
+		FROM daportal_user_enabled
+		ORDER BY username ASC';
 	//IN:	user_id
 	//	fullname
 	//	email
