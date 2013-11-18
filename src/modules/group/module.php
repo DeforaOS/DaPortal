@@ -385,6 +385,8 @@ class GroupModule extends Module
 		$db = $engine->getDatabase();
 		$query = $this->query_list;
 
+		if($request !== FALSE && $request->getID() !== FALSE)
+			return $this->_listGroup($engine, $request);
 		$title = _('Group list');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -397,7 +399,8 @@ class GroupModule extends Module
 					'text' => $error));
 			return $page;
 		}
-		$columns = array('title' => 'Group');
+		$columns = array('title' => _('Group'),
+			'members' => _('Members'));
 		$view = $page->append('treeview', array('columns' => $columns));
 		while(($r = array_shift($res)) != NULL)
 		{
@@ -406,11 +409,57 @@ class GroupModule extends Module
 			$r['title'] = new PageElement('link', array(
 				'stock' => 'group', 'request' => $request,
 				'text' => $r['groupname']));
+			$request = new Request($this->name, 'list', $r['id'],
+				$r['groupname']);
+			$r['members'] = new PageElement('link', array(
+				'stock' => 'user', 'request' => $request,
+				'text' => _('Members of group')
+					.' '.$r['groupname']));
 			$view->append('row', $r);
 		}
-		$r = new Request();
+		$r = new Request($this->name);
 		$page->append('link', array('stock' => 'back', 'request' => $r,
-				'text' => _('Back to the site')));
+				'text' => _('Back to the group menu')));
+		return $page;
+	}
+
+	private function _listGroup($engine, $request)
+	{
+		$db = $engine->getDatabase();
+		$id = $request->getID();
+		$group = $request->getTitle();
+		$query = ($group !== FALSE) ? $this->query_list_group_groupname
+			: $this->query_list_group;
+		$args = ($group !== FALSE) ? array('group_id' => $id,
+			'groupname' => $group) : array('group_id' => $id);
+
+		$title = _('Members of group').' '.$group;
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		//obtain the list of groups
+		$error = _('Could not list the members for this group');
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = array('title' => _('Username'),
+			'fullname' => _('Full name'));
+		$view = $page->append('treeview', array('columns' => $columns));
+		while(($r = array_shift($res)) != NULL)
+		{
+			$request = new Request('user', FALSE, $r['id'],
+				$r['username']);
+			$r['title'] = new PageElement('link', array(
+				'stock' => 'user', 'request' => $request,
+				'text' => $r['username']));
+			$view->append('row', $r);
+		}
+		$r = new Request($this->name, 'list');
+		$page->append('link', array('stock' => 'back', 'request' => $r,
+				'text' => _('Back to the group list')));
 		return $page;
 	}
 
@@ -619,6 +668,23 @@ class GroupModule extends Module
 	private $query_list = "SELECT group_id AS id, groupname
 		FROM daportal_group_enabled
 		WHERE group_id <> '0'";
+	//IN:	group_id
+	private $query_list_group = 'SELECT daportal_user_enabled.user_id AS id,
+		username, fullname
+		FROM daportal_user_group, daportal_user_enabled
+		WHERE daportal_user_group.user_id=daportal_user_enabled.user_id
+		AND daportal_user_group.group_id=:group_id';
+	//IN:	group_id
+	//	groupname
+	//FIXME should return an error if the group does not exist
+	private $query_list_group_groupname = 'SELECT
+		daportal_user_enabled.user_id AS id, username, fullname
+		FROM daportal_group_enabled, daportal_user_group,
+		daportal_user_enabled
+		WHERE daportal_group_enabled.group_id=daportal_user_group.group_id
+		AND daportal_user_group.user_id=daportal_user_enabled.user_id
+		AND daportal_user_group.group_id=:group_id
+		AND daportal_group_enabled.groupname=:groupname';
 	//IN:	group_id
 	//	groupname
 	private $query_update = 'UPDATE daportal_group
