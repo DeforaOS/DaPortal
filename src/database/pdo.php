@@ -121,9 +121,9 @@ class PDODatabase extends Database
 	{
 		$func = array($this, '_regexp_callback');
 
-		if(!$this->regexp)
+		if(!$this->func_regexp)
 		{
-			$this->regexp = TRUE;
+			$this->func_regexp = TRUE;
 			if($this->getBackend() == 'sqlite')
 				$this->handle->sqliteCreateFunction('regexp',
 						$func);
@@ -178,6 +178,17 @@ class PDODatabase extends Database
 	}
 
 
+	//functions
+	//PDODatabase::_date_trunc
+	public function _date_trunc($where, $value)
+	{
+		if($where == 'month')
+			return substr($value, 0, 8).'01';
+		//FIXME really implement
+		return $value;
+	}
+
+
 	//protected
 	//methods
 	//PDODatabase::match
@@ -213,6 +224,15 @@ class PDODatabase extends Database
 			$message = 'Could not open database: '.$e->getMessage();
 			return $engine->log('LOG_ERR', $message);
 		}
+		//database-specific hacks
+		switch($this->getBackend())
+		{
+			case 'sqlite':
+				$func = array($this, '_date_trunc');
+				$this->handle->sqliteCreateFunction(
+						'date_trunc', $func);
+				break;
+		}
 		return TRUE;
 	}
 
@@ -247,8 +267,9 @@ class PDODatabase extends Database
 	//properties
 	private $handle = FALSE;
 	private $transaction = 0;
-	private $regexp = FALSE;
 	private $case;
+	//functions
+	private $func_regexp = FALSE;
 }
 
 ?>
