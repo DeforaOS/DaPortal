@@ -313,6 +313,7 @@ class GroupModule extends Module
 		$database = $engine->getDatabase();
 		$query = $this->query_content;
 		$cred = $engine->getCredentials();
+		$stock = $this->name;
 		$link = FALSE;
 
 		//obtain the list of modules
@@ -325,7 +326,9 @@ class GroupModule extends Module
 		{
 			$group = Group::lookup($engine, $request->getTitle(),
 					$gid);
-			$title = _('Content from group ').$request->getTitle();
+			$title = _('Content from group')
+				.' '.$request->getTitle();
+			$stock = 'content';
 		}
 		else if(($gid = $cred->getGroupID()) != 0)
 		{
@@ -341,11 +344,11 @@ class GroupModule extends Module
 			return $this->callDefault($engine, new Request);
 		//title
 		$page->setProperty('title', $title);
-		$page->append('title', array('stock' => $this->name,
+		$page->append('title', array('stock' => $stock,
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
-		$vbox = $vbox->append('vbox');
+		$vbox2 = $vbox->append('vbox');
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
 			$r = new Request($res[$i]['name'], 'actions', FALSE,
@@ -354,16 +357,24 @@ class GroupModule extends Module
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
 			$text = ucfirst($res[$i]['name']);
-			$vbox->append('title', array(
+			$vbox2->append('title', array(
 					'stock' => $res[$i]['name'],
 					'text' => $text));
-			$view = $vbox->append('iconview');
+			$view = $vbox2->append('iconview');
 			foreach($rows as $r)
 				$view->append($r);
 		}
 		//buttons
 		if($link !== FALSE)
-			$page->append($link);
+			$vbox->append($link);
+		$r = new Request($this->name, 'list', $group->getGroupID(),
+			$group->getGroupname());
+		$vbox->append('link', array('request' => $r, 'stock' => 'user',
+			'text' => _('Members of group')
+				.' '.$group->getGroupname()));
+		$r = new Request($this->name);
+		$vbox->append('link', array('request' => $r, 'stock' => 'back',
+				'text' => _('Back to the group menu')));
 		return $page;
 	}
 
@@ -437,6 +448,7 @@ class GroupModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
+		$vbox = $page->append('vbox');
 		//obtain the list of groups
 		$error = _('Could not list the members for this group');
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
@@ -447,7 +459,7 @@ class GroupModule extends Module
 		}
 		$columns = array('title' => _('Username'),
 			'fullname' => _('Full name'));
-		$view = $page->append('treeview', array('columns' => $columns));
+		$view = $vbox->append('treeview', array('columns' => $columns));
 		while(($r = array_shift($res)) != NULL)
 		{
 			$request = new Request('user', FALSE, $r['id'],
@@ -457,8 +469,13 @@ class GroupModule extends Module
 				'text' => $r['username']));
 			$view->append('row', $r);
 		}
+		//buttons
+		$r = new Request($this->name, FALSE, $id, $group);
+		$vbox->append('link', array('stock' => 'content',
+				'request' => $r,
+				'text' => _('Content from  group').' '.$group));
 		$r = new Request($this->name, 'list');
-		$page->append('link', array('stock' => 'back', 'request' => $r,
+		$vbox->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => _('Back to the group list')));
 		return $page;
 	}
