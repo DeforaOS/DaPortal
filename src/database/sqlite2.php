@@ -81,6 +81,17 @@ class SQLite2Database extends Database
 	}
 
 
+	//functions
+	//SQLite2Database::_date_trunc
+	public function _date_trunc($where, $value)
+	{
+		if($where == 'month')
+			return substr($value, 0, 8).'01';
+		//FIXME really implement
+		return $value;
+	}
+
+
 	//protected
 	//methods
 	//SQLite2Database::match
@@ -108,6 +119,8 @@ class SQLite2Database extends Database
 				=== FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not open database: '.$error);
+		$func = array($this, '_date_trunc');
+		sqlite_create_function($this->handle, 'date_trunc', $func);
 		return TRUE;
 	}
 
@@ -126,9 +139,9 @@ class SQLite2Database extends Database
 	{
 		$func = array($this, '_regexp_callback');
 
-		if(!$this->regexp)
+		if(!$this->func_regexp)
 		{
-			$this->regexp = TRUE;
+			$this->func_regexp = TRUE;
 			sqlite_create_function($this->handle, 'regexp', $func);
 		}
 		//XXX applies globally
@@ -147,8 +160,9 @@ class SQLite2Database extends Database
 	//private
 	//properties
 	private $handle = FALSE;
-	private $regexp = FALSE;
 	private $case;
+	//functions
+	private $func_regexp = FALSE;
 }
 
 ?>
