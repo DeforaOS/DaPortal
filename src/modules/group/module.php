@@ -49,6 +49,7 @@ class GroupModule extends Module
 			case 'admin':
 			case 'default':
 			case 'display':
+			case 'list':
 			case 'submit':
 			case 'update':
 				$action = 'call'.$action;
@@ -382,6 +383,42 @@ class GroupModule extends Module
 	}
 
 
+	//GroupModule::callList
+	protected function callList($engine, $request)
+	{
+		$db = $engine->getDatabase();
+		$query = $this->query_list;
+
+		$title = _('Group list');
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		//obtain the list of groups
+		$error = _('Could not list the groups');
+		if(($res = $db->query($engine, $query)) === FALSE)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = array('title' => 'Group');
+		$view = $page->append('treeview', array('columns' => $columns));
+		while(($r = array_shift($res)) != NULL)
+		{
+			$request = new Request($this->name, FALSE, $r['id'],
+				$r['groupname']);
+			$r['title'] = new PageElement('link', array(
+				'stock' => 'group', 'request' => $request,
+				'text' => $r['groupname']));
+			$view->append('row', $r);
+		}
+		$r = new Request();
+		$page->append('link', array('stock' => 'back', 'request' => $r,
+				'text' => _('Back to the site')));
+		return $page;
+	}
+
+
 	//GroupModule::callSubmit
 	protected function callSubmit($engine, $request = FALSE)
 	{
@@ -583,6 +620,9 @@ class GroupModule extends Module
 	private $query_enable = "UPDATE daportal_group
 		SET enabled='1'
 		WHERE group_id=:group_id";
+	private $query_list = "SELECT group_id AS id, groupname
+		FROM daportal_group_enabled
+		WHERE group_id <> '0'";
 	//IN:	group_id
 	//	groupname
 	private $query_update = 'UPDATE daportal_group
