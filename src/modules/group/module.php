@@ -245,42 +245,38 @@ class GroupModule extends Module
 	//GroupModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
-		$db = $engine->getDatabase();
-		$query = $this->query_content;
 		$cred = $engine->getCredentials();
+		$title = _('Group menu');
+		$actions = array();
 
 		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
-		$title = ($cred->getUserID() != 0) ? _('My groups')
-			: _('Groups');
+		//determine the actions available
+		if($cred->isAdmin())
+			$actions[] = array('action' => 'admin',
+				'stock' => 'admin',
+				'title' => _('Groups administration'));
+		if($this->canSubmit($engine))
+			$actions[] = array('action' => 'submit',
+				'stock' => 'new', 'title' => _('New group'));
+		$actions[] = array('action' => 'list',
+			'stock' => 'group', 'title' => _('Group list'));
+		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		//obtain the list of modules
-		if(($res = $db->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => 'Could not list modules'));
 		$vbox = $page->append('vbox');
-		$vbox->append('title'); //XXX to reduce the next level of titles
-		$vbox = $vbox->append('vbox');
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		//list the actions available
+		$view = $vbox->append('iconview');
+		foreach($actions as $a)
 		{
-			$r = new Request($res[$i]['name'], 'actions', FALSE,
-					FALSE, array('admin' => 0));
-			$rows = $engine->process($r);
-			if(!is_array($rows) || count($rows) == 0)
-				continue;
-			$r = new Request($res[$i]['name']);
-			$text = ucfirst($res[$i]['name']);
+			$icon = new PageElement('image', array(
+				'stock' => $a['stock']));
+			$r = new Request($this->name, $a['action']);
 			$link = new PageElement('link', array('request' => $r,
-					'text' => $text));
-			$title = $vbox->append('title', array(
-					'stock' => $res[$i]['name']));
-			$title->append($link);
-			$view = $vbox->append('iconview');
-			foreach($rows as $r)
-				$view->append($r);
+					'text' => $a['title']));
+			$row = array('icon' => $icon, 'label' => $link);
+			$view->append('row', $row);
 		}
 		$r = new Request();
 		$page->append('link', array('stock' => 'back', 'request' => $r,
