@@ -177,7 +177,7 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$actions = array('disable', 'enable');
+		$actions = array('delete', 'disable', 'enable');
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
@@ -226,6 +226,10 @@ class GroupModule extends Module
 				'text' => _('Enable'),
 				'type' => 'submit', 'name' => 'action',
 				'value' => 'enable'));
+		$toolbar->append('button', array('stock' => 'delete',
+				'text' => _('Delete'),
+				'type' => 'submit', 'name' => 'action',
+				'value' => 'delete'));
 		$no = new PageElement('image', array('stock' => 'no',
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
