@@ -567,24 +567,17 @@ class GroupModule extends Module
 		$groupname = $request->getTitle();
 		$error = TRUE;
 
-		//determine whose profile to update
+		//determine which group to update
 		if($id === FALSE)
-		{
-			$id = $cred->getGroupID();
-			$groupname = $cred->getGroupname();
-		}
+			$groupname = FALSE;
 		$group = Group::lookup($engine, $groupname, $id);
-		if($user === FALSE || ($id = $user->getUserID()) == 0)
+		if($group === FALSE || ($id = $group->getGroupID()) == 0)
 		{
-			//the anonymous user has no profile
-			$error = _('There is no profile for this user');
+			$error = _('Could not find the group to update');
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		}
-		if($id === $cred->getUserID())
-			//viewing own profile
-			$id = FALSE;
-		if($id !== FALSE && !$cred->isAdmin())
+		if(!$cred->isAdmin())
 		{
 			$error = _('Permission denied');
 			return new PageElement('dialog', array(
@@ -593,11 +586,11 @@ class GroupModule extends Module
 		//process update
 		if(!$request->isIdempotent())
 			$error = $this->_updateProcess($engine, $request,
-					$user);
+					$group);
 		if($error === FALSE)
 			//update was successful
 			return $this->_updateSuccess($engine, $request);
-		return $this->formUpdate($engine, $request, $user, $id,
+		return $this->formUpdate($engine, $request, $group, $id,
 				$error);
 	}
 
@@ -624,26 +617,19 @@ class GroupModule extends Module
 	{
 		$id = $request->getID();
 
-		$title = _('Profile update');
+		$title = _('Group update');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$info = $id ? _('The profile was updated successfully')
-			: _('Your profile was updated successfully');
+		$info = _('The group was updated successfully');
 		$dialog = $page->append('dialog', array('type' => 'info',
 				'text' => $info));
-		if($id)
-		{
-			$r = new Request($this->name, 'admin');
-			$dialog->append('button', array('stock' => 'admin',
-					'request' => $r,
-					'text' => _('Groups administration')));
-			$text = _('User profile');
-		}
-		else
-			$text = _('My profile');
-		$r = new Request($this->name, 'profile', $id,
-			$request->getTitle());
+		$r = new Request($this->name, 'admin');
+		$dialog->append('button', array('stock' => 'admin',
+				'request' => $r,
+				'text' => _('Groups administration')));
+		$text = _('Group menu');
+		$r = new Request($this->name, FALSE);
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
 		return $page;
