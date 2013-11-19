@@ -129,7 +129,7 @@ class Group
 		$args = array('groupname' => $groupname,
 			'enabled' => $enabled ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
-		if($res === FALSE || ($uid = $db->getLastID($engine,
+		if($res === FALSE || ($gid = $db->getLastID($engine,
 						'daportal_group', 'group_id'))
 				=== FALSE)
 		{
