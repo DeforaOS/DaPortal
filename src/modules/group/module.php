@@ -62,7 +62,7 @@ class GroupModule extends Module
 	//methods
 	//accessors
 	//GroupModule::canSubmit
-	protected function canSubmit($engine, &$error)
+	protected function canSubmit($engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 

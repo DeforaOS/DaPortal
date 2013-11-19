@@ -116,7 +116,7 @@ class UserModule extends Module
 
 
 	//UserModule::canSubmit
-	protected function canSubmit($engine, &$error)
+	protected function canSubmit($engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
