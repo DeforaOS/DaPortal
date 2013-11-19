@@ -1328,43 +1328,13 @@ class UserModule extends Module
 	protected function callSubmit($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
-		$error = _('Permission denied');
+		$title = _('New user');
 
 		//check permissions
+		$error = _('Permission denied');
 		if($this->canSubmit($engine, $error) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		if($request === FALSE)
-			return $this->_submitUser($engine, $request);
-		switch($request->getParameter('type'))
-		{
-			case 'group':
-				return $this->_submitGroup($engine, $request);
-			case 'user':
-			default:
-				return $this->_submitUser($engine, $request);
-		}
-	}
-
-	private function _submitGroup($engine, $request)
-	{
-		$title = _('New group');
-
-		//create the page
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-		//FIXME really implement
-		//form
-		$form = $this->formSubmitGroup($engine, $request);
-		$page->append($form);
-		return $page;
-	}
-
-	private function _submitUser($engine, $request)
-	{
-		$title = _('New user');
-
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,

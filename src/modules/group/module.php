@@ -515,10 +515,46 @@ class GroupModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		//FIXME really implement
+		//process the request
+		$group = FALSE;
+		if(($error = $this->_submitProcess($engine, $request, $group))
+				=== FALSE)
+			return $this->_submitSuccess($engine, $request, $page,
+					$group);
+		else if(is_string($error))
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
 		//form
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
+		return $page;
+	}
+
+	protected function _submitProcess($engine, $request, &$group)
+	{
+		//verify the request
+		if($request === FALSE
+				|| $request->getParameter('submit') === FALSE)
+			return TRUE;
+		if($request->isIdempotent() !== FALSE)
+			return _('The request expired or is invalid');
+		if(($groupname = $request->getParameter('groupname')) === FALSE)
+			return _('Invalid arguments');
+		$enabled = $request->getParameter('enabled') ? TRUE : FALSE;
+		//create the group
+		$error = FALSE;
+		$group = Group::insert($engine, $groupname, $enabled, $error);
+		if($group === FALSE)
+			return $error;
+		//no error
+		return FALSE;
+	}
+
+	protected function _submitSuccess($engine, $request, $page, $group)
+	{
+		$r = new Request($this->name, FALSE, $group->getGroupID(),
+			$group->getGroupname());
+		$this->helperRedirect($engine, $r, $page);
 		return $page;
 	}
 
