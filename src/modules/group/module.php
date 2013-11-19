@@ -177,13 +177,20 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
+		$actions = array('disable', 'enable');
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('Permission denied')));
-		if($request === FALSE)
-			return $this->_adminUsers($engine, $request);
+		//perform actions if necessary
+		if($request !== FALSE)
+			foreach($actions as $a)
+				if($request->getParameter($a) !== FALSE)
+				{
+					$a = 'call'.$a;
+					return $this->$a($engine, $request);
+				}
 		//list groups
 		$title = _('Groups administration');
 		$page = new Page(array('title' => $title));
@@ -211,6 +218,14 @@ class GroupModule extends Module
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $r));
+		$toolbar->append('button', array('stock' => 'disable',
+				'text' => _('Disable'),
+				'type' => 'submit', 'name' => 'action',
+				'value' => 'disable'));
+		$toolbar->append('button', array('stock' => 'enable',
+				'text' => _('Enable'),
+				'type' => 'submit', 'name' => 'action',
+				'value' => 'enable'));
 		$no = new PageElement('image', array('stock' => 'no',
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
@@ -623,10 +638,10 @@ class GroupModule extends Module
 		foreach($parameters as $k => $v)
 		{
 			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != 'user_id'
+			if(count($x) != 2 || $x[0] != 'group_id'
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('user_id' => $x[1]);
+			$args = array('group_id' => $x[1]);
 			$res = $db->query($engine, $query, $args);
 			if($res !== FALSE)
 				continue;
