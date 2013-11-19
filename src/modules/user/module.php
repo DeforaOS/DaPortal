@@ -422,14 +422,6 @@ class UserModule extends Module
 				'text' => _('New user')));
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
-		//group creation
-		$r = new Request($module, 'submit', FALSE, FALSE,
-			array('type' => 'group'));
-		$icon = new PageElement('image', array('stock' => 'new'));
-		$link = new PageElement('link', array('request' => $r,
-				'text' => _('New group')));
-		$ret[] = new PageElement('row', array('icon' => $icon,
-				'label' => $link));
 		//administration
 		$r = new Request($module, ($module == 'admin')
 			? FALSE : 'admin');
