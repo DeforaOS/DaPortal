@@ -251,33 +251,6 @@ class UserModule extends Module
 	}
 
 
-	//UserModule::formSubmitGroup
-	protected function formSubmitGroup($engine, $request)
-	{
-		$r = new Request($this->name, 'submit', FALSE, FALSE,
-			array('type' => 'group'));
-		$form = new PageElement('form', array('request' => $r));
-		$vbox = $form->append('vbox');
-		$vbox->append('entry', array('name' => 'groupname',
-				'text' => _('Name: '),
-				'value' => $request->getParameter('groupname')));
-		//enabled
-		$vbox->append('checkbox', array('name' => 'enabled',
-				'value' => $request->getParameter('enabled')
-					? TRUE : FALSE,
-				'text' => _('Enabled')));
-		//buttons
-		$r = new Request($this->name, 'admin', FALSE, FALSE,
-			array('type' => 'group'));
-		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
-		$form->append('button', array('type' => 'submit',
-				'stock' => 'new', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Create')));
-		return $form;
-	}
-
-
 	//UserModule::formUpdate
 	protected function formUpdate($engine, $request, $user, $id, $error)
 	{
