@@ -362,7 +362,8 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 		{
 			$r = $this->helperActionsAdmin($engine, $request);
-			$ret = array_merge($ret, $r);
+			if(is_array($r))
+				$ret = array_merge($ret, $r);
 		}
 		if($request->getParameter('admin') !== FALSE)
 			return $ret;
