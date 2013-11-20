@@ -808,6 +808,11 @@ class UserModule extends Module
 			$group['title'] = new PageElement('link', array(
 				'request' => $r, 'stock' => 'group',
 				'text' => $group['groupname']));
+			$r = new Request('group', 'list', $group['id'],
+				$group['groupname']);
+			$group['count'] = new PageElement('link', array(
+				'request' => $r, 'stock' => 'group',
+				'text' => $group['count']));
 			$view->append('row', $group);
 		}
 		if($id === FALSE)
