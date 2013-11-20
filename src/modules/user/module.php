@@ -550,7 +550,7 @@ class UserModule extends Module
 		}
 		$vbox = $page->append('vbox');
 		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'back',
+		$vbox->append('link', array('request' => $r, 'stock' => 'user',
 			'text' => _('Back to my account')));
 		$r = new Request('admin');
 		$vbox->append('link', array('request' => $r, 'stock' => 'admin',
@@ -640,7 +640,7 @@ class UserModule extends Module
 		}
 		$vbox = $page->append('vbox');
 		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'back',
+		$vbox->append('link', array('request' => $r, 'stock' => 'user',
 			'text' => _('Back to my account')));
 		$r = new Request('admin');
 		$vbox->append('link', array('request' => $r, 'stock' => 'admin',
@@ -717,8 +717,8 @@ class UserModule extends Module
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		$vbox->append('label', array('text' => $text));
-		$vbox->append('link', array('stock' => 'back',
-				'text' => _('Back to the site'),
+		$vbox->append('link', array('stock' => 'home',
+				'text' => _('Back to the homepage'),
 				'request' => new Request()));
 		return $page;
 	}
@@ -766,8 +766,8 @@ class UserModule extends Module
 				$view->append($r);
 		}
 		$r = new Request();
-		$page->append('link', array('stock' => 'back', 'request' => $r,
-				'text' => _('Back to the site')));
+		$page->append('link', array('stock' => 'home', 'request' => $r,
+				'text' => _('Back to the homepage')));
 		return $page;
 	}
 
@@ -807,7 +807,6 @@ class UserModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => 'Could not list modules'));
-		$page = new Page;
 		if(($uid = $request->getID()) !== FALSE)
 		{
 			$user = User::lookup($engine, $request->getTitle(),
@@ -820,19 +819,19 @@ class UserModule extends Module
 					$uid);
 			$title = _('My content');
 			$r = new Request($this->name);
-			$link = new PageElement('link', array('stock' => 'back',
+			$link = new PageElement('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
 		if($user === FALSE || $user->getUserID() == 0)
 			return $this->callLogin($engine, new Request);
+		$page = new Page(array('title' => $title));
 		//title
-		$page->setProperty('title', $title);
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
-		$vbox = $vbox->append('vbox');
+		$vbox2 = $vbox->append('vbox');
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
 			$r = new Request($res[$i]['name'], 'actions', FALSE,
@@ -841,16 +840,23 @@ class UserModule extends Module
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
 			$text = ucfirst($res[$i]['name']);
-			$vbox->append('title', array(
+			$vbox2->append('title', array(
 					'stock' => $res[$i]['name'],
 					'text' => $text));
-			$view = $vbox->append('iconview');
+			$view = $vbox2->append('iconview');
 			foreach($rows as $r)
 				$view->append($r);
 		}
 		//buttons
 		if($link !== FALSE)
-			$page->append($link);
+			$vbox->append($link);
+		if($this->configGet('list'))
+		{
+			$r = new Request($this->name, 'list');
+			$vbox->append('link', array('request' => $r,
+					'stock' => 'back',
+					'text' => _('Back to the user list')));
+		}
 		return $page;
 	}
 
@@ -921,7 +927,7 @@ class UserModule extends Module
 		if($id === FALSE)
 		{
 			$r = new Request($this->name);
-			$vbox->append('link', array('stock' => 'back',
+			$vbox->append('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
@@ -934,29 +940,31 @@ class UserModule extends Module
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_list;
+		$cred = $engine->getCredentials();
 		$title = _('User list');
 		$list = $this->configGet('list');
 
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'login',
 				'text' => $title));
+		$vbox = $page->append('vbox');
 		$error = _('Permission denied');
 		if($list != 1)
 		{
-			$page->append('dialog', array('type' => 'error',
+			$vbox->append('dialog', array('type' => 'error',
 					'text' => $error));
 			return $page;
 		}
 		$error = _('Could not list the users');
 		if(($res = $db->query($engine, $query)) === FALSE)
 		{
-			$page->append('dialog', array('type' => 'error',
+			$vbox->append('dialog', array('type' => 'error',
 					'text' => $error));
 			return $page;
 		}
 		$columns = array('title' => 'Username',
 			'fullname' => 'Full name');
-		$view = $page->append('treeview', array('columns' => $columns));
+		$view = $vbox->append('treeview', array('columns' => $columns));
 		while(($r = array_shift($res)) !== NULL)
 		{
 			$req = new Request($this->name, FALSE, $r['user_id'],
@@ -966,6 +974,15 @@ class UserModule extends Module
 			$r['title'] = $link;
 			$view->append('row', $r);
 		}
+		//buttons
+		$r = new Request($this->name);
+		$text = $cred->getUserID() ? _('Back to my account')
+			: _('Back to the site menu');
+		$vbox->append('link', array('request' => $r, 'stock' => 'user',
+				'text' => $text));
+		$r = new Request();
+		$vbox->append('link', array('request' => $r, 'stock' => 'home',
+				'text' => _('Back to the homepage')));
 		return $page;
 	}
 
@@ -1065,9 +1082,9 @@ class UserModule extends Module
 			$page->append('dialog', array('type' => 'info',
 						'text' => $text));
 			$r = new Request();
-			$page->append('link', array('stock' => 'back',
+			$page->append('link', array('stock' => 'home',
 					'request' => $r,
-					'text' => _('Back to the site')));
+					'text' => _('Back to the homepage')));
 			return $page;
 		}
 		$r = new Request($this->name, 'logout');
@@ -1162,7 +1179,7 @@ class UserModule extends Module
 		if($id === FALSE)
 		{
 			$r = new Request($this->name);
-			$vbox->append('link', array('stock' => 'back',
+			$vbox->append('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
 			if($this->canClose($engine))
@@ -1241,8 +1258,8 @@ class UserModule extends Module
 				'text' => $title));
 		$page->append('dialog', array('type' => 'info',
 				'text' => $text));
-		$page->append('link', array('stock' => 'back',
-				'text' => _('Back to the site'),
+		$page->append('link', array('stock' => 'home',
+				'text' => _('Back to the homepage'),
 				'request' => new Request()));
 		return $page;
 	}
@@ -1316,8 +1333,8 @@ class UserModule extends Module
 				'text' => $title));
 		$page->append('dialog', array('type' => 'info',
 				'text' => _("You should receive an e-mail shortly, with a link allowing you to reset your password.\n")));
-		$page->append('link', array('stock' => 'back',
-				'text' => _('Back to the site'),
+		$page->append('link', array('stock' => 'home',
+				'text' => _('Back to the homepage'),
 				'request' => new Request()));
 		return $page;
 	}
@@ -1392,8 +1409,8 @@ class UserModule extends Module
 				'text' => $title));
 		$page->append('dialog', array('type' => 'info',
 				'text' => _("Your password was reset successfully.\n")));
-		$page->append('link', array('stock' => 'back',
-				'text' => _('Back to the site'),
+		$page->append('link', array('stock' => 'home',
+				'text' => _('Back to the homepage'),
 				'request' => new Request()));
 		$page->append('link', array('stock' => 'login',
 				'text' => _('Proceed to login page'),
@@ -1648,8 +1665,8 @@ class UserModule extends Module
 					'text' => _('Login')));
 		}
 		$r = new Request();
-		$box->append('link', array('stock' => 'back', 'request' => $r,
-			'text' => _('Back to the site')));
+		$box->append('link', array('stock' => 'home', 'request' => $r,
+			'text' => _('Back to the homepage')));
 		return $page;
 	}
 
