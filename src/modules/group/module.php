@@ -138,18 +138,18 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 
-		if($request->getParameter('user') !== FALSE)
-			return FALSE;
+		if(($user = $request->getParameter('user')) !== FALSE)
+			return $this->_actionsUser($engine, $user);
 		if($request->getParameter('admin'))
-			return $this->_actions_admin($engine, $cred,
-					$this->name, $ret);
+			return $this->_actionsAdmin($engine, $cred,
+					$this->name);
 		return FALSE;
 	}
 
-	private function _actions_admin($engine, $cred, $module, &$ret)
+	private function _actionsAdmin($engine, $cred, $module)
 	{
 		if(!$cred->isAdmin())
-			return $ret;
+			return FALSE;
 		//group creation
 		$r = new Request($module, 'submit', FALSE, FALSE,
 			array('type' => 'group'));
@@ -167,6 +167,32 @@ class GroupModule extends Module
 				'text' => _('Groups administration')));
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
+		return $ret;
+	}
+
+	private function _actionsUser($engine, $user)
+	{
+		$ret = array();
+		$db = $engine->getDatabase();
+		$query = $this->query_list_members;
+		$args = array('user_id' => $user->getUserID());
+
+		if($user->getUserID() == 0)
+			return FALSE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return FALSE;
+		while(($r = array_shift($res)) !== NULL)
+		{
+			$req = new Request($this->name, FALSE, $r['group_id'],
+				$r['groupname']);
+			$icon = new PageElement('image', array(
+				'stock' => 'group'));
+			$link = new PageElement('link', array('request' => $req,
+					'text' => _('Content from group')
+						.' '.$r['groupname']));
+			$ret[] = new PageElement('row', array('icon' => $icon,
+				'label' => $link));
+		}
 		return $ret;
 	}
 
@@ -743,6 +769,13 @@ class GroupModule extends Module
 		AND daportal_user_group.user_id=daportal_user_enabled.user_id
 		AND daportal_user_group.group_id=:group_id
 		AND daportal_group_enabled.groupname=:groupname';
+	//IN:	user_id
+	private $query_list_members = 'SELECT
+		daportal_group_enabled.group_id AS group_id, groupname
+		FROM daportal_user_group, daportal_group_enabled
+		WHERE daportal_user_group.group_id
+		=daportal_group_enabled.group_id
+		AND user_id=:user_id';
 	//IN:	group_id
 	//	groupname
 	private $query_update = 'UPDATE daportal_group
