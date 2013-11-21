@@ -17,6 +17,7 @@
 
 
 require_once('./tests.php');
+require_once('./system/module.php');
 
 
 //functions

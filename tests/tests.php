@@ -20,7 +20,6 @@ if(chdir('../src') === FALSE)
 	exit(2);
 require_once('./system/config.php');
 require_once('./engines/cli.php');
-require_once('./system/module.php');
 
 global $config;
 $config = new Config;
