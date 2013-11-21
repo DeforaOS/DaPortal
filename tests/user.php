@@ -16,16 +16,18 @@
 
 
 
-if(chdir('../src') === FALSE)
-	exit(2);
-require_once('./system/config.php');
-require_once('./engines/cli.php');
-require_once('./system/module.php');
+require_once('./tests.php');
+require_once('./system/user.php');
 
-global $config;
-$config = new Config;
-$config->set('database', 'backend', 'sqlite3');
-$config->set('database::sqlite3', 'filename', '../tests/sqlite.db3');
-$engine = new CLIEngine;
+
+//functions
+$user = new User($engine, 1, 'admin');
+if(($res = $user->authenticate($engine, 'password')) === FALSE)
+	exit(2);
+if($res instanceof AuthCredentials
+		&& $res->getUserID() == $user->getUserID()
+		&& $res->getUsername() == $user->getUsername())
+	exit(0);
+exit(2);
 
 ?>

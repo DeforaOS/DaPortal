@@ -275,10 +275,12 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/templates/khorben.php \
 		$(PACKAGE)-$(VERSION)/src/templates/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
+		$(PACKAGE)-$(VERSION)/tests/coverage.php \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
 		$(PACKAGE)-$(VERSION)/tests/tests.php \
 		$(PACKAGE)-$(VERSION)/tests/tests.sh \
+		$(PACKAGE)-$(VERSION)/tests/user.php \
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
 		$(PACKAGE)-$(VERSION)/tools/Makefile \
 		$(PACKAGE)-$(VERSION)/tools/daportal.in \
