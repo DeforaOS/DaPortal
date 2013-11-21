@@ -81,6 +81,7 @@ $DATE > "$target"
 FAILED=
 echo "Performing tests:" 1>&2
 _test "coverage"
+_test "module"
 _test "user"
 #echo "Expected failures:" 1>&2
 #_fail "test"
