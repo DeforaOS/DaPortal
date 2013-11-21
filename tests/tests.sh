@@ -21,6 +21,29 @@ DATE="date"
 PHP="/usr/bin/env php"
 
 
+#functions
+#test
+_test()
+{
+	test="$1"
+
+	shift
+	echo -n "$test:" 1>&2
+	(echo
+	echo "Testing: $test" "$@"
+	$PHP "./$test.php" "$@") >> "$target" 2>&1
+	res=$?
+	if [ $res -ne 0 ]; then
+		echo " FAILED" 1>&2
+		FAILED="$FAILED $test(error $res)"
+		return 2
+	else
+		echo " PASS" 1>&2
+		return 0
+	fi
+}
+
+
 #usage
 _usage()
 {
@@ -54,6 +77,15 @@ target="$1"
 
 [ $clean -ne 0 ] && exit 0
 
-($DATE
-echo
-$PHP tests.php) > "$target"
+$DATE > "$target"
+FAILED=
+echo "Performing tests:" 1>&2
+_test "coverage"
+_test "user"
+#echo "Expected failures:" 1>&2
+#_fail "test"
+if [ -n "$FAILED" ]; then
+	echo "Failed tests:$FAILED" 1>&2
+	exit 2
+fi
+echo "All tests completed" 1>&2
