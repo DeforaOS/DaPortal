@@ -567,7 +567,7 @@ class Content
 	//Content::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
-		$content = $this->getContent();
+		$content = $this->getContent($engine);
 		$length = $this->preview_length;
 
 		$text = ($length <= 0 || strlen($content) < $length)
