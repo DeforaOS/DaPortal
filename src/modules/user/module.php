@@ -116,7 +116,7 @@ class UserModule extends Module
 
 
 	//UserModule::canSubmit
-	protected function canSubmit($engine, &$error)
+	protected function canSubmit($engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -251,33 +251,6 @@ class UserModule extends Module
 	}
 
 
-	//UserModule::formSubmitGroup
-	protected function formSubmitGroup($engine, $request)
-	{
-		$r = new Request($this->name, 'submit', FALSE, FALSE,
-			array('type' => 'group'));
-		$form = new PageElement('form', array('request' => $r));
-		$vbox = $form->append('vbox');
-		$vbox->append('entry', array('name' => 'groupname',
-				'text' => _('Name: '),
-				'value' => $request->getParameter('groupname')));
-		//enabled
-		$vbox->append('checkbox', array('name' => 'enabled',
-				'value' => $request->getParameter('enabled')
-					? TRUE : FALSE,
-				'text' => _('Enabled')));
-		//buttons
-		$r = new Request($this->name, 'admin', FALSE, FALSE,
-			array('type' => 'group'));
-		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
-		$form->append('button', array('type' => 'submit',
-				'stock' => 'new', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Create')));
-		return $form;
-	}
-
-
 	//UserModule::formUpdate
 	protected function formUpdate($engine, $request, $user, $id, $error)
 	{
@@ -342,7 +315,8 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$list = $this->configGet('list');
 
-		if($request->getParameter('user') !== FALSE)
+		if($request->getParameter('user') !== FALSE
+				|| $request->getParameter('group') !== FALSE)
 			return FALSE;
 		$ret = array();
 		if($request->getParameter('admin'))
@@ -448,14 +422,6 @@ class UserModule extends Module
 				'text' => _('New user')));
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
-		//group creation
-		$r = new Request($module, 'submit', FALSE, FALSE,
-			array('type' => 'group'));
-		$icon = new PageElement('image', array('stock' => 'new'));
-		$link = new PageElement('link', array('request' => $r,
-				'text' => _('New group')));
-		$ret[] = new PageElement('row', array('icon' => $icon,
-				'label' => $link));
 		//administration
 		$r = new Request($module, ($module == 'admin')
 			? FALSE : 'admin');
@@ -467,11 +433,6 @@ class UserModule extends Module
 		$r = new Request($module, ($module == 'admin')
 			? FALSE : 'admin', FALSE, FALSE,
 			array('type' => 'group'));
-		$icon = new PageElement('image', array('stock' => 'admin'));
-		$link = new PageElement('link', array('request' => $r,
-				'text' => _('Groups administration')));
-		$ret[] = new PageElement('row', array('icon' => $icon,
-				'label' => $link));
 		return $ret;
 	}
 
@@ -481,88 +442,13 @@ class UserModule extends Module
 	protected function callAdmin($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
+		$db = $engine->getDatabase();
+		$actions = array('delete', 'disable', 'enable');
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('Permission denied')));
-		if($request === FALSE)
-			return $this->_adminUsers($engine, $request);
-		switch($request->getParameter('type'))
-		{
-			case 'group':
-				return $this->_adminGroups($engine, $request);
-			default:
-				return $this->_adminUsers($engine, $request);
-		}
-	}
-
-	private function _adminGroups($engine, $request)
-	{
-		$db = $engine->getDatabase();
-
-		//list groups
-		$title = _('Groups administration');
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-		$query = $this->query_admin_group;
-		//FIXME implement sorting
-		$query .= ' ORDER BY groupname ASC';
-		if(($res = $db->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Could not list groups')));
-		$columns = array('groupname' => _('Group'),
-				'enabled' => _('Enabled'));
-		$r = new Request($this->name, 'admin');
-		$view = $page->append('treeview', array('request' => $r,
-				'view' => 'details', 'columns' => $columns));
-		//toolbar
-		$toolbar = $view->append('toolbar');
-		$toolbar->append('button', array('stock' => 'new',
-				'text' => _('New group'),
-				'request' => new Request($this->name,
-					'submit', FALSE, FALSE,
-					array('type' => 'group'))));
-		$toolbar->append('button', array('stock' => 'refresh',
-				'text' => _('Refresh'),
-				'request' => $r));
-		$no = new PageElement('image', array('stock' => 'no',
-				'size' => 16, 'title' => _('Disabled')));
-		$yes = new PageElement('image', array('stock' => 'yes',
-				'size' => 16, 'title' => _('Enabled')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-		{
-			$row = $view->append('row');
-			$row->setProperty('id', 'group_id:'.$res[$i]['id']);
-			$row->setProperty('groupname', $res[$i]['groupname']);
-			$r = new Request($this->name, 'update', $res[$i]['id'],
-				$res[$i]['groupname'],
-				array('type' => 'group'));
-			$link = new PageElement('link', array(
-					'stock' => 'group', 'request' => $r,
-					'text' => $res[$i]['groupname']));
-			if($res[$i]['id'] != 0)
-				$row->setProperty('groupname', $link);
-			$row->setProperty('enabled', $db->isTrue(
-					$res[$i]['enabled']) ? $yes : $no);
-		}
-		$vbox = $page->append('vbox');
-		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'user',
-			'text' => _('Back to my account')));
-		$r = new Request('admin');
-		$vbox->append('link', array('request' => $r, 'stock' => 'admin',
-			'text' => _('Back to the administration')));
-		return $page;
-	}
-
-	private function _adminUsers($engine, $request)
-	{
-		$db = $engine->getDatabase();
-		$actions = array('delete', 'disable', 'enable');
-
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
@@ -922,6 +808,11 @@ class UserModule extends Module
 			$group['title'] = new PageElement('link', array(
 				'request' => $r, 'stock' => 'group',
 				'text' => $group['groupname']));
+			$r = new Request('group', 'list', $group['id'],
+				$group['groupname']);
+			$group['count'] = new PageElement('link', array(
+				'request' => $r, 'stock' => 'group',
+				'text' => $group['count']));
 			$view->append('row', $group);
 		}
 		if($id === FALSE)
@@ -1424,43 +1315,13 @@ class UserModule extends Module
 	protected function callSubmit($engine, $request = FALSE)
 	{
 		$cred = $engine->getCredentials();
-		$error = _('Permission denied');
+		$title = _('New user');
 
 		//check permissions
+		$error = _('Permission denied');
 		if($this->canSubmit($engine, $error) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		if($request === FALSE)
-			return $this->_submitUser($engine, $request);
-		switch($request->getParameter('type'))
-		{
-			case 'group':
-				return $this->_submitGroup($engine, $request);
-			case 'user':
-			default:
-				return $this->_submitUser($engine, $request);
-		}
-	}
-
-	private function _submitGroup($engine, $request)
-	{
-		$title = _('New group');
-
-		//create the page
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-		//FIXME really implement
-		//form
-		$form = $this->formSubmitGroup($engine, $request);
-		$page->append($form);
-		return $page;
-	}
-
-	private function _submitUser($engine, $request)
-	{
-		$title = _('New user');
-
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,

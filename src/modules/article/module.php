@@ -37,6 +37,7 @@ class ArticleModule extends ContentModule
 		$this->text_content_admin = _('Articles administration');
 		$this->text_content_list_title = _('Article list');
 		$this->text_content_list_title_by = _('Articles by');
+		$this->text_content_list_title_by_group = _('Articles by group');
 		$this->text_content_submit = _('New article...');
 		$this->text_content_title = _('Articles');
 	}

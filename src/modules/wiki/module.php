@@ -40,6 +40,7 @@ class WikiModule extends ContentModule
 		$this->text_content_items = _('Wiki pages');
 		$this->text_content_list_title = _('Wiki pages');
 		$this->text_content_list_title_by = _('Wiki pages by');
+		$this->text_content_list_title_by_group = _('Wiki pages by group');
 		$this->text_content_more_content = _('More wiki pages...');
 		$this->text_content_submit_content = _('New wiki page');
 		$this->text_content_title = _('Wiki');

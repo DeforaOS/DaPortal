@@ -92,8 +92,10 @@ class DownloadModule extends MultiContentModule
 	//translations
 	protected $file_text_content_list_title = 'File list';
 	protected $file_text_content_list_title_by = 'Files from';
+	protected $file_text_content_list_title_by_group = 'Files from group';
 	protected $folder_text_content_list_title = 'Folder list';
 	protected $folder_text_content_list_title_by = 'Folders from';
+	protected $folder_text_content_list_title_by_group = 'Folders from group';
 
 
 	//methods
@@ -132,6 +134,8 @@ class DownloadModule extends MultiContentModule
 					= $this->file_text_content_list_title;
 				$this->text_content_list_title_by
 					= $this->file_text_content_list_title_by;
+				$this->text_content_list_title_by_group
+					= $this->file_text_content_list_title_by_group;
 				$this->text_content_submit = _('Upload');
 				$this->text_content_submit_content
 					= _('Upload file');
@@ -142,6 +146,8 @@ class DownloadModule extends MultiContentModule
 					= $this->folder_text_content_list_title;
 				$this->text_content_list_title_by
 					= $this->folder_text_content_list_title_by;
+				$this->text_content_list_title_by_group
+					= $this->folder_text_content_list_title_by_group;
 				$this->text_content_submit = _('Create');
 				$this->text_content_submit_content
 					= _('New folder');

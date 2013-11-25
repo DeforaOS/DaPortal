@@ -103,6 +103,14 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
+	//MultiContentModule::callGroup
+	protected function callGroup($engine, $request = FALSE)
+	{
+		$this->setContext($engine, $request);
+		return parent::callGroup($engine, $request);
+	}
+
+
 	//MultiContentModule::callList
 	protected function callList($engine, $request = FALSE)
 	{
@@ -157,6 +165,25 @@ abstract class MultiContentModule extends ContentModule
 			$this->setContext($engine, $r); /* XXX */
 			$ret[] = $this->helperAction($engine, 'admin', $r,
 					$this->text_content_admin);
+		}
+		return $ret;
+	}
+
+
+	//MultiContentModule::helperActionsGroup
+	protected function helperActionsGroup($engine, $request, $group)
+	{
+		$ret = array();
+
+		//group's content
+		foreach($this->content_classes as $t => $c)
+		{
+			$r = new Request($this->name, 'group', $group->getGroupID(),
+					$group->getGroupname(), array('type' => $t));
+			$this->setContext($engine, $r);
+			$ret[] = $this->helperAction($engine, $this->name, $r,
+				$this->text_content_list_title_by_group
+				.' '.$group->getGroupname());
 		}
 		return $ret;
 	}

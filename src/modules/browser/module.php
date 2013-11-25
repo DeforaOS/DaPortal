@@ -159,7 +159,9 @@ class BrowserModule extends Module
 	protected function actions($engine, $request)
 	{
 		$ret = array();
-		if($request->getParameter('user') !== FALSE)
+
+		if($request->getParameter('user') !== FALSE
+				|| $request->getParameter('group') !== FALSE)
 			return $ret;
 		if($request->getParameter('admin') != 0)
 			return $ret;

@@ -214,6 +214,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/download/content/file.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/content/folder.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/content/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/group/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/group/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/group/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/news/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/news/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
@@ -253,6 +256,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
 		$(PACKAGE)-$(VERSION)/src/system/format.php \
+		$(PACKAGE)-$(VERSION)/src/system/group.php \
 		$(PACKAGE)-$(VERSION)/src/system/html.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale.php \
 		$(PACKAGE)-$(VERSION)/src/system/mail.php \

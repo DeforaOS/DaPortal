@@ -32,6 +32,9 @@ class Content
 		$this->stock = $module->getName();
 		$this->module = $module;
 		$this->user_id = $credentials->getUserID();
+		$this->username = $credentials->getUsername();
+		$this->group_id = $credentials->getGroupID();
+		$this->group = $credentials->getGroupname();
 		//properties
 		if($properties === FALSE)
 			$properties = array();
@@ -678,7 +681,7 @@ class Content
 
 
 	//public static
-	//Content::count
+	//Content::countAll
 	static public function countAll($engine, $module, $user = FALSE)
 	{
 		$class = get_class();
@@ -691,10 +694,15 @@ class Content
 		$query = $class::$query_list_count;
 		$args = array('module_id' => $module->getID());
 
-		if($user !== FALSE)
+		if($user !== FALSE && $user instanceof User)
 		{
 			$query = $class::$query_list_user_count;
 			$args['user_id'] = $user->getUserID();
+		}
+		else if($user !== FALSE && $user instanceof Group)
+		{
+			$query = $class::$query_list_group_count;
+			$args['group_id'] = $user->getGroupID();
 		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
@@ -730,10 +738,15 @@ class Content
 		$query = $class::$query_list;
 		$args = array('module_id' => $module->getID());
 
-		if($user !== FALSE)
+		if($user !== FALSE && $user instanceof User)
 		{
 			$query = $class::$query_list_user;
 			$args['user_id'] = $user->getUserID();
+		}
+		else if($user !== FALSE && $user instanceof Group)
+		{
+			$query = $class::$query_list_group;
+			$args['group_id'] = $user->getGroupID();
 		}
 		if($order !== FALSE)
 			$query .= ' ORDER BY '.$order;
@@ -828,21 +841,50 @@ class Content
 		FROM daportal_content_public
 		WHERE daportal_content_public.module_id=:module_id';
 	//IN:	module_id
+	//	group_id
+	static protected $query_list_group = 'SELECT content_id AS id,
+		timestamp, daportal_user_enabled.user_id AS user_id, username,
+		title, daportal_content_enabled.enabled AS enabled, public,
+		content
+		FROM daportal_content_enabled, daportal_user_enabled,
+		daportal_user_group, daportal_group_enabled
+		WHERE daportal_content_enabled.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_user_enabled.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_user_enabled.group_id=:group_id)';
+	//IN:	module_id
+	//	group_id
+	static protected $query_list_group_count = 'SELECT COUNT(*) AS count
+		FROM daportal_content_enabled, daportal_user_enabled,
+		daportal_user_group, daportal_group_enabled
+		WHERE daportal_content_enabled.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_user_enabled.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_user_enabled.group_id=:group_id)';
+	//IN:	module_id
 	//	user_id
 	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		title, daportal_content.enabled AS enabled, public, content
-		FROM daportal_content, daportal_user_enabled
-		WHERE daportal_content.module_id=:module_id
-		AND daportal_content.user_id
+		FROM daportal_content_enabled, daportal_user_enabled
+		WHERE daportal_content_enabled.module_id=:module_id
+		AND daportal_content_enabled.user_id
 		=daportal_user_enabled.user_id
-		AND daportal_content.user_id=:user_id';
+		AND daportal_content_enabled.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user_count = 'SELECT COUNT(*) AS count
-		FROM daportal_content
-		WHERE daportal_content.module_id=:module_id
-		AND user_id=:user_id';
+		FROM daportal_content_enabled, daportal_user_enabled
+		WHERE daportal_content_enabled.user_id
+		=daportal_user_enabled.user_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND daportal_content_enabled.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
@@ -901,11 +943,11 @@ class Content
 	//properties
 	private $id = FALSE;
 	private $timestamp = FALSE;
-	private $module = FALSE;
-	private $user_id = FALSE;
-	private $username = FALSE;
-	private $group_id = FALSE;
-	private $group = FALSE;
+	private $module;
+	private $user_id;
+	private $username;
+	private $group_id;
+	private $group;
 	private $title = FALSE;
 	private $content = FALSE;
 	private $enabled = TRUE;

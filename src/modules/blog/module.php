@@ -38,6 +38,7 @@ class BlogModule extends ContentModule
 		$this->text_content_items = _('Blog posts');
 		$this->text_content_list_title = _('Latest posts');
 		$this->text_content_list_title_by = _('Posts by');
+		$this->text_content_list_title_by_group = _('Posts by group');
 		$this->text_content_submit = _('New post');
 		$this->text_content_title = _('Planet');
 	}

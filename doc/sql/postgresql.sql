@@ -59,7 +59,14 @@ CREATE TABLE daportal_group (
 	groupname VARCHAR(255) NOT NULL UNIQUE,
 	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+INSERT INTO daportal_module (name, enabled) VALUES ('group', '1');
 INSERT INTO daportal_group (group_id, groupname, enabled) VALUES ('0', 'nogroup', '1');
+
+CREATE VIEW daportal_group_enabled AS
+SELECT group_id, groupname, enabled
+FROM daportal_group
+WHERE enabled='1';
 
 
 CREATE TABLE daportal_user (

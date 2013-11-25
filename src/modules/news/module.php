@@ -37,6 +37,7 @@ class NewsModule extends ContentModule
 		$this->text_content_admin = _('News administration');
 		$this->text_content_list_title = _('News list');
 		$this->text_content_list_title_by = _('News by');
+		$this->text_content_list_title_by_group = _('News by group');
 		$this->text_content_submit_content = _('Submit news');
 		$this->text_content_title = _('News');
 	}

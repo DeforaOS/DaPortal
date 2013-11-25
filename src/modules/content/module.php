@@ -20,6 +20,7 @@
 
 
 require_once('./system/content.php');
+require_once('./system/group.php');
 require_once('./system/module.php');
 require_once('./system/user.php');
 
@@ -42,6 +43,7 @@ abstract class ContentModule extends Module
 			case 'admin':
 			case 'default':
 			case 'display':
+			case 'group':
 			case 'headline':
 			case 'list':
 			case 'preview':
@@ -171,7 +173,9 @@ abstract class ContentModule extends Module
 	protected $text_content_admin = 'Content administration';
 	protected $text_content_headline_title = 'Content headlines';
 	protected $text_content_list_title = 'Content list';
+	protected $text_content_list_title_group = 'Content list for group';
 	protected $text_content_list_title_by = 'Content by';
+	protected $text_content_list_title_by_group = 'Content by group';
 	protected $text_content_publish = 'Publish';
 	protected $text_content_publish_progress
 		= 'Publication in progress, please wait...';
@@ -351,11 +355,15 @@ abstract class ContentModule extends Module
 		if(($user = $request->getParameter('user')) !== FALSE)
 			return $this->helperActionsUser($engine, $request,
 					$user);
+		if(($group = $request->getParameter('group')) !== FALSE)
+			return $this->helperActionsGroup($engine, $request,
+					$group);
 		$ret = array();
 		if($cred->isAdmin())
 		{
 			$r = $this->helperActionsAdmin($engine, $request);
-			$ret = array_merge($ret, $r);
+			if(is_array($r))
+				$ret = array_merge($ret, $r);
 		}
 		if($request->getParameter('admin') !== FALSE)
 			return $ret;
@@ -554,6 +562,58 @@ abstract class ContentModule extends Module
 				$request->getAction(),
 				_('Content could be enabled successfully'),
 				_('Some content could not be enabled'));
+	}
+
+
+	//ContentModule::callGroup
+	protected function callGroup($engine, $request)
+	{
+		$class = $this->content_class;
+		$cred = $engine->getCredentials();
+		$db = $engine->getDatabase();
+		$group = ($request !== FALSE)
+			? Group::lookup($engine, $request->getTitle(),
+					$request->getID())
+				: Group::lookup($engine, $cred->getGroupname(),
+						$cred->getGroupID());
+		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+
+		$title = $this->text_content_list_title_group;
+		$title = $this->text_content_list_title_by_group.' '
+			.$group->getGroupname();
+		//title
+		$page = new Page(array('title' => $title));
+		$this->helperListTitle($engine, $page, $request);
+		$error = _('Unable to lookup the group');
+		if($group === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		//obtain the total number of records available
+		$limit = $this->content_list_count;
+		$offset = FALSE;
+		if(($pcnt = $class::countAll($engine, $this, $group)) !== FALSE
+				&& is_numeric($p) && $p > 1)
+			$offset = $limit * ($p - 1);
+		$error = _('Unable to list the content');
+		if(($res = $class::listAll($engine, $this, $limit, $offset,
+				$group)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		//FIXME some helpers should move to the Content class
+		//view
+		$treeview = $this->helperListView($engine, $request);
+		$page->append($treeview);
+		//toolbar
+		$this->helperListToolbar($engine, $treeview, $request);
+		//rows
+		while(($content = array_shift($res)) != NULL)
+			$treeview->append($this->helperListContent($engine,
+					$request, $content));
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
+		//buttons
+		$this->helperListButtons($engine, $page, $request);
+		return $page;
 	}
 
 
@@ -954,6 +1014,21 @@ abstract class ContentModule extends Module
 		$r = $this->getRequest('admin');
 		$ret[] = $this->helperAction($engine, 'admin', $r,
 				$this->text_content_admin);
+		return $ret;
+	}
+
+
+	//ContentModule::helperActionsGroup
+	protected function helperActionsGroup($engine, $request, $group)
+	{
+		$ret = array();
+
+		//group's content
+		$r = new Request($this->name, 'group', $group->getGroupID(),
+			$group->getGroupname());
+		$ret[] = $this->helperAction($engine, $this->name, $r,
+				$this->text_content_list_title_by_group
+				.' '.$group->getGroupname());
 		return $ret;
 	}
 

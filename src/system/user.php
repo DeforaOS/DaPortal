@@ -32,13 +32,6 @@ class User
 		$db = $engine->getDatabase();
 		$query = $this->query_get_by_id;
 
-		$this->user_id = 0;
-		$this->username = 'anonymous';
-		$this->group_id = 0;
-		$this->groupname = 'nogroup';
-		$this->admin = FALSE;
-		$this->email = FALSE;
-		$this->fullname = FALSE;
 		$args = array('user_id' => $uid);
 		if($username !== FALSE)
 		{
@@ -85,6 +78,13 @@ class User
 	public function getGroupID()
 	{
 		return $this->group_id;
+	}
+
+
+	//User::getGroupname
+	public function getGroupname()
+	{
+		return $this->groupname;
 	}
 
 
@@ -201,7 +201,8 @@ class User
 			return FALSE;
 		//the password is correct
 		return new AuthCredentials($res['user_id'], $res['username'],
-				$res['group_id'], $db->isTrue($res['admin']));
+				$res['group_id'], $res['groupname'],
+				$db->isTrue($res['admin']));
 	}
 
 
@@ -549,9 +550,10 @@ class User
 
 	//private
 	//properties
-	private $user_id = FALSE;
-	private $username = FALSE;
-	private $group_id = FALSE;
+	private $user_id = 0;
+	private $username = 'username';
+	private $group_id = 0;
+	private $groupname = 'nogroup';
 	private $enabled = FALSE;
 	private $admin = FALSE;
 	private $email = FALSE;
@@ -560,10 +562,16 @@ class User
 	static private $timestamp_format = '%Y-%m-%d %H:%M:%S';
 
 	//queries
-	private $query_authenticate = "SELECT user_id, group_id, username,
-		admin, password
+	//IN:	username
+	private $query_authenticate = "SELECT user_id, username,
+		daportal_user.group_id AS group_id, groupname, admin, password
 		FROM daportal_user
-		WHERE username=:username AND enabled='1'";
+		LEFT JOIN daportal_group
+		ON daportal_user.group_id=daportal_group.group_id
+		WHERE username=:username
+		AND daportal_user.enabled='1'
+		AND daportal_group.enabled='1'";
+	//IN:	user_id
 	private $query_get_by_id = "SELECT user_id AS id, username,
 		daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
@@ -573,6 +581,8 @@ class User
 		ON daportal_user.group_id=daportal_group.group_id
 		WHERE daportal_group.enabled='1'
 		AND user_id=:user_id";
+	//IN:	user_id
+	//	username
 	private $query_get_by_id_username = "SELECT user_id AS id, username,
 		daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
