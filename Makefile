@@ -280,6 +280,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/templates/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
 		$(PACKAGE)-$(VERSION)/tests/coverage.php \
+		$(PACKAGE)-$(VERSION)/tests/daportal.conf \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
 		$(PACKAGE)-$(VERSION)/tests/module.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \

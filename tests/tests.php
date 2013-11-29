@@ -18,13 +18,14 @@
 
 if(chdir('../src') === FALSE)
 	exit(2);
-require_once('./system/config.php');
-require_once('./engines/cli.php');
 
+require_once('./system/config.php');
 global $config;
 $config = new Config;
-$config->set('database', 'backend', 'sqlite3');
-$config->set('database::sqlite3', 'filename', '../tests/sqlite.db3');
-$engine = new CLIEngine;
+if($config->load('../tests/daportal.conf') === FALSE)
+	exit(2);
+
+require_once('./system/engine.php');
+$engine = Engine::attachDefault();
 
 ?>

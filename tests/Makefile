@@ -18,7 +18,7 @@ sqlite.db: ../doc/sql/sqlite.sql database.sh
 sqlite.db3: ../doc/sql/sqlite.sql database.sh
 	./database.sh -P "$(PREFIX)" -- "sqlite.db3"
 
-tests.log: coverage.php module.php sqlite.db3 tests.php tests.sh user.php
+tests.log: coverage.php daportal.conf module.php sqlite.db3 tests.php tests.sh user.php
 	./tests.sh -P "$(PREFIX)" -- "tests.log"
 
 clean:
