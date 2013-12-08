@@ -46,7 +46,7 @@ abstract class Module
 	//static
 	//useful
 	//Module::load
-	public static function load($engine, $name)
+	static public function load($engine, $name)
 	{
 		if($name === FALSE)
 			return FALSE;
@@ -78,25 +78,18 @@ abstract class Module
 		return $ret;
 	}
 
-	protected static function _loadID($engine, $name)
+	static protected function _loadID($engine, $name)
 	{
 		static $modules = FALSE;
 		$db = $engine->getDatabase();
 
 		//load the list of modules if necessary
-		if($modules === FALSE && ($modules = $db->query($engine,
-				Module::$query_modules)) === FALSE)
-			return FALSE;
-		foreach($modules as $m)
-			if($m['name'] == $name)
-				break;
-		if($m['name'] != $name)
+		if($modules === FALSE)
+			$modules = $engine->getModules();
+		if(($ret = array_search($name, $modules)) === FALSE)
 			return $engine->log('LOG_DEBUG', 'Module '.$name
 					.' is not available');
-		if(!$db->isTrue($m['enabled']))
-			return $engine->log('LOG_DEBUG', 'Module '.$name
-					.' is not enabled');
-		return $m['id'];
+		return $ret;
 	}
 
 
@@ -130,14 +123,6 @@ abstract class Module
 
 		return $config->get('module::'.$this->name, $variable);
 	}
-
-
-	//private
-	//properties
-	//queries
-	static private $query_modules = 'SELECT module_id AS id, name, enabled
-		FROM daportal_module
-		ORDER BY enabled, module_id';
 }
 
 ?>
