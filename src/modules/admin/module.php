@@ -121,7 +121,7 @@ class AdminModule extends Module
 		if(($res = $database->query($engine, $query)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
-					'text' => 'Could not list modules'));
+					'text' => _('Could not list modules')));
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'admin',
 			'text' => $title));
@@ -180,7 +180,7 @@ class AdminModule extends Module
 		if(($res = $database->query($engine, $query)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
-					'text' => 'Could not list modules'));
+					'text' => _('Could not list modules')));
 		$page = new Page(array('title' => $title));
 		//title
 		$page->append('title', array('stock' => $this->name,
