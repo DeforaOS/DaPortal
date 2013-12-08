@@ -155,7 +155,7 @@ abstract class Engine
 		if(($res = $database->query($this, $query)) === FALSE)
 			return $modules;
 		foreach($res as $r)
-			$modules[] = $r['name'];
+			$modules[$r['id']] = $r['name'];
 		return $modules;
 	}
 
@@ -332,7 +332,7 @@ abstract class Engine
 	//properties
 	static protected $debug = FALSE;
 	//queries
-	protected $query_modules = "SELECT name
+	protected $query_modules = "SELECT module_id AS id, name
 		FROM daportal_module
 		WHERE enabled='1'
 		ORDER BY name ASC";
