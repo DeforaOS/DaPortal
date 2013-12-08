@@ -70,6 +70,22 @@ class HTTPEngine extends Engine
 
 
 	//accessors
+	//HTTPEngine::getModules
+	public function getModules()
+	{
+		global $config;
+		$credentials = $this->getCredentials();
+
+		if(!$config->get('engine::http', 'private')
+				|| $credentials->getUserID() != 0)
+			return parent::getModules();
+		if(($module = $config->get('engine::http', 'private::module'))
+				=== FALSE)
+			return array();
+		return array($module);
+	}
+
+
 	//HTTPEngine::getRequest
 	public function getRequest()
 	{
