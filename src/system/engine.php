@@ -143,6 +143,23 @@ abstract class Engine
 	}
 
 
+	//Engine::getModules
+	public function getModules()
+	{
+		static $modules = array();
+		$database = $this->getDatabase();
+		$query = $this->query_modules;
+
+		if(count($modules) != 0)
+			return $modules;
+		if(($res = $database->query($this, $query)) === FALSE)
+			return $modules;
+		foreach($res as $r)
+			$modules[] = $r['name'];
+		return $modules;
+	}
+
+
 	//Engine::getRequest
 	public function getRequest()
 	{
@@ -313,7 +330,12 @@ abstract class Engine
 
 	//protected
 	//properties
-	protected static $debug = FALSE;
+	static protected $debug = FALSE;
+	//queries
+	protected $query_modules = "SELECT name
+		FROM daportal_module
+		WHERE enabled='1'
+		ORDER BY name ASC";
 
 
 	//private

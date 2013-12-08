@@ -34,10 +34,6 @@ class BasicTemplate extends Template
 	protected $message_title = FALSE;
 	protected $message_type = FALSE;
 
-	//queries
-	protected $query_modules = "SELECT name FROM daportal_module
-		WHERE enabled='1' ORDER BY name ASC";
-
 
 	//methods
 	//accessors
@@ -153,15 +149,7 @@ class BasicTemplate extends Template
 	//BasicTemplate::getModules
 	protected function getModules($engine)
 	{
-		$database = $engine->getDatabase();
-		$query = $this->query_modules;
-
-		if(($modules = $database->query($engine, $query)) === FALSE)
-			return FALSE;
-		$ret = array();
-		foreach($modules as $m)
-			$ret[] = $m['name'];
-		return $ret;
+		return $engine->getModules();
 	}
 
 
