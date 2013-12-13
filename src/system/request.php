@@ -126,7 +126,8 @@ class Request
 			$this->module = $module;
 			return TRUE;
 		}
-		if(strchr($module, '.') !== FALSE
+		if(!is_string($module)
+				|| strchr($module, '.') !== FALSE
 				|| strchr($module, '/') !== FALSE)
 			return $this->reset();
 		$this->module = $module;
@@ -142,7 +143,8 @@ class Request
 			$this->action = FALSE;
 			return TRUE;
 		}
-		if(strchr($action, '.') !== FALSE
+		if(!is_string($action)
+				|| strchr($action, '.') !== FALSE
 				|| strchr($action, '/') !== FALSE)
 			return $this->reset();
 		$this->action = basename($action);
@@ -173,6 +175,8 @@ class Request
 	//Request::setTitle
 	private function setTitle($title)
 	{
+		if($title !== FALSE && !is_string($title))
+			return $this->reset();
 		$this->title = $title;
 		return TRUE;
 	}
