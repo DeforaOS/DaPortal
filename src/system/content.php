@@ -874,9 +874,9 @@ class Content
 		title, daportal_content_enabled.enabled AS enabled, public,
 		content
 		FROM daportal_content_enabled, daportal_user_enabled
-		WHERE daportal_content_enabled.module_id=:module_id
-		AND daportal_content_enabled.user_id
+		WHERE daportal_content_enabled.user_id
 		=daportal_user_enabled.user_id
+		AND daportal_content_enabled.module_id=:module_id
 		AND daportal_content_enabled.user_id=:user_id';
 	//IN:	module_id
 	//	user_id
