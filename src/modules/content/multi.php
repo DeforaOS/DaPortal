@@ -69,14 +69,12 @@ abstract class MultiContentModule extends ContentModule
 			$this->content_class = get_class($content);
 			return;
 		}
-		$type = ($request !== FALSE)
-			? $request->getParameter('type') : FALSE;
-		foreach($this->content_classes as $t => $c)
-			if($type == $t)
-			{
-				$this->content_class = $c;
-				return;
-			}
+		if($request !== FALSE && ($t = $request->getParameter('type'))
+				!== FALSE && isset($this->content_classes[$t]))
+		{
+			$this->content_class = $this->content_classes[$t];
+			return;
+		}
 		//default to the first content type known
 		foreach($this->content_classes as $t => $c)
 		{
