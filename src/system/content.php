@@ -174,6 +174,24 @@ class Content
 	}
 
 
+	//Content::canUpdateTimestamp
+	public function canUpdateTimestamp($engine, $request = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		$error = _('Only administrators can update timestamps');
+		if(!$credentials->isAdmin())
+			return FALSE;
+		if($request === FALSE)
+			return TRUE;
+		$error = _('The request expired or is invalid');
+		if($request->isIdempotent())
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//Content::get
 	public function get($property)
 	{
@@ -606,6 +624,9 @@ class Content
 			: $this->_saveInsert($engine, $request, $error);
 		if($ret === FALSE || $request === FALSE)
 			return $ret;
+		if(($timestamp = $request->getParameter('timestamp')) !== FALSE)
+			$this->_saveUpdateTimestamp($engine, $timestamp,
+					$error);
 		//reflect the new properties
 		foreach($this->fields as $f)
 			$this->set($f, $request->getParameter($f));
@@ -676,6 +697,21 @@ class Content
 					$this->$k = $v;
 					break;
 			}
+		return TRUE;
+	}
+
+	protected function _saveUpdateTimestamp($engine, $timestamp, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->query_update_timestamp;
+		$args = array('module_id' => $this->module->getID(),
+			'content_id' => $this->id, 'timestamp' => $timestamp);
+
+		if(!$this->canUpdateTimestamp($engine, $request, $error))
+			return FALSE;
+		$error = _('Could not update the timestamp');
+		if(($ret = $database->query($engine, $query, $args)) === FALSE)
+			return FALSE;
 		return TRUE;
 	}
 
@@ -910,6 +946,13 @@ class Content
 	protected $query_update = 'UPDATE daportal_content
 		SET title=:title, content=:content, enabled=:enabled,
 		public=:public
+		WHERE module_id=:module_id
+		AND content_id=:content_id';
+	//IN:	module_id
+	//	content_id
+	//	timestamp
+	protected $query_update_timestamp = 'UPDATE daportal_content
+		SET timestamp=:timestamp
 		WHERE module_id=:module_id
 		AND content_id=:content_id';
 
