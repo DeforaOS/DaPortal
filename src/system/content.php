@@ -624,9 +624,6 @@ class Content
 			: $this->_saveInsert($engine, $request, $error);
 		if($ret === FALSE || $request === FALSE)
 			return $ret;
-		if(($timestamp = $request->getParameter('timestamp')) !== FALSE)
-			$this->_saveUpdateTimestamp($engine, $timestamp,
-					$error);
 		//reflect the new properties
 		foreach($this->fields as $f)
 			$this->set($f, $request->getParameter($f));
@@ -652,12 +649,19 @@ class Content
 					$args[$k] = $this->$k;
 					break;
 			}
+		//set the timestamp if necessary
+		if(($timestamp = $request->getParameter('timestamp')) !== FALSE
+				&& $this->canUpdateTimestamp($engine, $request))
+		{
+			$query = $this->query_insert_timestamp;
+			$args['timestamp'] = $timestamp;
+		}
+		//insert the content
 		$error = _('Could not insert the content');
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
-		$this->id = $database->getLastID($engine, 'daportal_content',
-				'content_id');
-		return ($this->id !== FALSE);
+		return ($this->id = $database->getLastID($engine,
+				'daportal_content', 'content_id')) !== FALSE;
 	}
 
 	protected function _saveUpdate($engine, $request, &$error)
@@ -685,6 +689,14 @@ class Content
 					$args[$k] = $v;
 					break;
 			}
+		//set the timestamp if necessary
+		if(($timestamp = $request->getParameter('timestamp')) !== FALSE
+				&& $this->canUpdateTimestamp($engine, $request))
+		{
+			$query = $this->query_update_timestamp;
+			$args['timestamp'] = $timestamp;
+		}
+		//update the content
 		$error = _('Could not update the content');
 		//FIXME detect errors!@#$%
 		if(($ret = $database->query($engine, $query, $args)) === FALSE)
@@ -697,21 +709,6 @@ class Content
 					$this->$k = $v;
 					break;
 			}
-		return TRUE;
-	}
-
-	protected function _saveUpdateTimestamp($engine, $timestamp, &$error)
-	{
-		$database = $engine->getDatabase();
-		$query = $this->query_update_timestamp;
-		$args = array('module_id' => $this->module->getID(),
-			'content_id' => $this->id, 'timestamp' => $timestamp);
-
-		if(!$this->canUpdateTimestamp($engine, $request, $error))
-			return FALSE;
-		$error = _('Could not update the timestamp');
-		if(($ret = $database->query($engine, $query, $args)) === FALSE)
-			return FALSE;
 		return TRUE;
 	}
 
@@ -864,6 +861,17 @@ class Content
 		VALUES (:module_id, :user_id, :title, :content, :enabled,
 			:public)';
 	//IN:	module_id
+	//	user_id
+	//	title
+	//	content
+	//	enabled
+	//	public
+	//	timestamp
+	protected $query_insert_timestamp = 'INSERT INTO daportal_content
+		(module_id, user_id, title, content, enabled, public, timestamp)
+		VALUES (:module_id, :user_id, :title, :content, :enabled,
+			:public, :timestamp)';
+	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		title, daportal_content_public.enabled AS enabled, public,
@@ -950,9 +958,14 @@ class Content
 		AND content_id=:content_id';
 	//IN:	module_id
 	//	content_id
+	//	title
+	//	content
+	//	enabled
+	//	public
 	//	timestamp
 	protected $query_update_timestamp = 'UPDATE daportal_content
-		SET timestamp=:timestamp
+		SET title=:title, content=:content, enabled=:enabled,
+		public=:public, timestamp=:timestamp
 		WHERE module_id=:module_id
 		AND content_id=:content_id';
 
