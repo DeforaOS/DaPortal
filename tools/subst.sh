@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, version 3 of the License.
@@ -33,6 +33,14 @@ _debug()
 {
 	echo "$@" 1>&2
 	"$@"
+}
+
+
+#error
+_error()
+{
+	echo "subst.sh: $@" 1>&2
+	return 2
 }
 
 
@@ -76,6 +84,16 @@ if [ $# -eq 0 ]; then
 	exit $?
 fi
 
+#check the variables
+if [ -z "$PACKAGE" ]; then
+	_error "The PACKAGE variable needs to be set"
+	exit $?
+fi
+if [ -z "$VERSION" ]; then
+	_error "The VERSION variable needs to be set"
+	exit $?
+fi
+
 while [ $# -gt 0 ]; do
 	target="$1"
 	shift
@@ -100,8 +118,11 @@ while [ $# -gt 0 ]; do
 	fi
 
 	#create
-	$DEBUG $SED -e "s,@PREFIX@,$PREFIX," \
-		-e "s,@VERSION@,$VERSION," "$target.in" > "$target"
+	$DEBUG $SED -e "s,@PACKAGE@,$PACKAGE," \
+		-e "s,@VERSION@,$VERSION," \
+		-e "s,@PREFIX@,$PREFIX," \
+		-e "s,@PWD@,$PWD," \
+		-- "$target.in" > "$target"
 	if [ $? -ne 0 ]; then
 		$RM -- "$target" 2> "$DEVNULL"
 		exit 2
