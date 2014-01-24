@@ -15,6 +15,9 @@ charset=utf-8
 #action=
 #id=
 
+#[defaults::email]
+#from=
+
 [engine]
 #backend=cgi
 #backend=cli

@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -34,16 +34,13 @@ class Mail
 	{
 		global $config;
 
+		if(($from = $config->get('defaults::email', 'from')) === FALSE
+				&& isset($_SERVER['SERVER_ADMIN']))
+			$from = $_SERVER['SERVER_ADMIN'];
 		if($from === FALSE)
 		{
-			//FIXME try the configuration file first
-			if(isset($_SERVER['SERVER_ADMIN']))
-				$from = $_SERVER['SERVER_ADMIN'];
-			else
-			{
-				$pw = posix_getpwuid(posix_getuid());
-				$from = $pw['name'];
-			}
+			$pw = posix_getpwuid(posix_getuid());
+			$from = $pw['name'];
 		}
 		//verify parameters
 		$error = 'Could not send e-mail (invalid parameters)';
