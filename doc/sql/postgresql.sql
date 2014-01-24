@@ -1,6 +1,6 @@
 /* $Id$ */
 /* This file is part of DeforaOS Web DaPortal */
-/* Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org> */
 
 
 
@@ -117,6 +117,15 @@ CREATE TABLE daportal_user_group (
 	user_id INTEGER NOT NULL REFERENCES daportal_user (user_id),
 	group_id INTEGER NOT NULL REFERENCES daportal_group (group_id),
 	UNIQUE (user_id, group_id)
+);
+
+
+CREATE TABLE daportal_auth_variable (
+	auth_variable_id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL REFERENCES daportal_user (user_id) ON DELETE CASCADE,
+	variable VARCHAR(255) NOT NULL,
+	value VARCHAR(255) NOT NULL,
+	UNIQUE (user_id, variable)
 );
 
 

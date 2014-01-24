@@ -1,6 +1,6 @@
 /* $Id$ */
 /* This file is part of DeforaOS Web DaPortal */
-/* Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org> */
 
 
 
@@ -31,6 +31,7 @@ DROP TABLE daportal_content_lang;
 DROP VIEW daportal_content_public;
 DROP VIEW daportal_content_enabled;
 DROP TABLE daportal_content;
+DROP TABLE daportal_auth_variable;
 DROP TABLE daportal_user_group;
 DROP TABLE daportal_user_reset;
 DROP TABLE daportal_user_register;
@@ -171,6 +172,15 @@ CREATE TABLE daportal_user_group (
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
 	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id),
 	UNIQUE (user_id, group_id)
+);
+
+CREATE TABLE daportal_auth_variable (
+	auth_variable_id INTEGER PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	variable VARCHAR(255) NOT NULL,
+	value VARCHAR(255) NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
+	UNIQUE (user_id, variable)
 );
 
 CREATE TABLE daportal_content (

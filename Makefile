@@ -279,6 +279,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/templates/khorben.php \
 		$(PACKAGE)-$(VERSION)/src/templates/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
+		$(PACKAGE)-$(VERSION)/tests/auth.php \
 		$(PACKAGE)-$(VERSION)/tests/coverage.php \
 		$(PACKAGE)-$(VERSION)/tests/daportal.conf \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \

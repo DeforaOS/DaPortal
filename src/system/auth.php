@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -137,8 +137,19 @@ abstract class Auth
 	//Auth::getVariable
 	public function getVariable($engine, $variable)
 	{
-		//FIXME implement (through the database?)
-		return FALSE;
+		$credentials = $this->getCredentials($engine);
+		$database = $engine->getDatabase();
+		$query = $this->query_variable_get;
+		$args = array('user_id' => $credentials->getUserID(),
+			'variable' => $variable);
+
+		if($args['user_id'] == 0)
+			//variables are only allowed for authenticated users
+			return FALSE;
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
+			return FALSE;
+		return unserialize($res[0]['value']);
 	}
 
 
@@ -160,8 +171,28 @@ abstract class Auth
 	//Auth::setVariable
 	public function setVariable($engine, $variable, $value)
 	{
-		//FIXME implement (through the database?)
-		return FALSE;
+		$credentials = $this->getCredentials($engine);
+		$database = $engine->getDatabase();
+		$query = $this->query_variable_set;
+		$args = array('user_id' => $credentials->getUserID(),
+			'variable' => $variable);
+
+		if($args['user_id'] == 0)
+			//variables are only allowed for authenticated users
+			return FALSE;
+		if($value === FALSE)
+			$query = $this->query_variable_remove;
+		else if(($v = $this->getVariable($engine, $variable)) === FALSE)
+		{
+			//this variable is not in the database
+			$query = $this->query_variable_add;
+			$args['value'] = serialize($value);
+		}
+		else if($v == $value)
+			//no need to issue any query
+			return TRUE;
+		return ($database->query($engine, $query, $args) !== FALSE)
+			? TRUE : FALSE;
 	}
 
 
@@ -214,6 +245,18 @@ abstract class Auth
 	//protected
 	//properties
 	protected $credentials = FALSE;
+	//queries
+	protected $query_variable_add = 'INSERT INTO daportal_auth_variable
+		(user_id, variable, value)
+		VALUES (:user_id, :variable, :value)';
+	protected $query_variable_get = 'SELECT value
+		FROM daportal_auth_variable
+		WHERE user_id=:user_id AND variable=:variable';
+	protected $query_variable_remove = 'DELETE FROM daportal_auth_variable
+		WHERE user_id=:user_id AND variable=:variable';
+	protected $query_variable_set = 'UPDATE daportal_auth_variable
+		SET value=:value
+		WHERE user_id=:user_id AND variable=:variable';
 
 
 	//methods

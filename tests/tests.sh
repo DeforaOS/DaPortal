@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, version 3 of the License.
@@ -80,6 +80,7 @@ target="$1"
 $DATE > "$target"
 FAILED=
 echo "Performing tests:" 1>&2
+_test "auth"
 _test "coverage"
 _test "module"
 _test "user"
