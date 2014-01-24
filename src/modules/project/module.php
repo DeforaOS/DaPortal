@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -227,6 +227,7 @@ class ProjectModule extends MultiContentModule
 		$this->content_classes = array('project' => 'ProjectContent',
 			'bug' => 'BugProjectContent',
 			'bugreply' => 'BugReplyProjectContent');
+		$this->content_list_count = 20;
 		parent::__construct($id, $name, $title);
 	}
 
