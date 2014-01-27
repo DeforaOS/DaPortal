@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -16,8 +16,11 @@
 
 
 
+require_once('./system/mutator.php');
+
+
 //Request
-class Request
+class Request extends Mutator
 {
 	//public
 	//methods
@@ -60,16 +63,14 @@ class Request
 	//Request::getParameter
 	public function getParameter($name)
 	{
-		if(!isset($this->parameters[$name]))
-			return FALSE;
-		return $this->parameters[$name];
+		return $this->get($name);
 	}
 
 
 	//Request::getParameters
 	public function getParameters()
 	{
-		return $this->parameters;
+		return $this->properties;
 	}
 
 
@@ -95,23 +96,9 @@ class Request
 
 
 	//Request::setParameter
-	//XXX should be private but needed for isIdempotent()
 	public function setParameter($name, $value)
 	{
-		if($value === FALSE)
-		{
-			if(!is_array($this->parameters))
-				return;
-			if(isset($this->parameters[$name]))
-				unset($this->parameters[$name]);
-			if(count($this->parameters) == 0)
-				$this->parameters = FALSE;
-			return TRUE;
-		}
-		if(!is_array($this->parameters))
-			$this->parameters = array();
-		$this->parameters[$name] = $value;
-		return TRUE;
+		return $this->set($name, $value);
 	}
 
 
@@ -165,9 +152,16 @@ class Request
 	//Request::setParameters
 	private function setParameters($parameters)
 	{
-		if($parameters !== FALSE && !is_array($parameters))
+		if($parameters === FALSE)
+		{
+			$this->properties = array();
+			return TRUE;
+		}
+		if(!is_array($parameters))
 			return $this->reset();
-		$this->parameters = $parameters;
+		foreach($parameters as $k => $v)
+			if($this->set($k, $v) === FALSE)
+				return $this->reset();
 		return TRUE;
 	}
 
@@ -190,7 +184,7 @@ class Request
 		$this->action = FALSE;
 		$this->id = FALSE;
 		$this->title = FALSE;
-		$this->parameters = FALSE;
+		$this->properties = array();
 		return FALSE;
 	}
 
@@ -202,7 +196,6 @@ class Request
 	private $action = FALSE;
 	private $id = FALSE;
 	private $title = FALSE;
-	private $parameters = FALSE;
 }
 
 ?>
