@@ -16,30 +16,30 @@
 
 
 
+require_once('./system/mutator.php');
+
+
 //ConfigSection
-class ConfigSection
+class ConfigSection extends Mutator
 {
-	//properties
-	//private
-	private $variables = array();
-
-
 	//methods
 	//public
 	//accessors
-	//ConfigSection::get
-	public function get($name)
+	//Config::getVariables
+	public function getVariables()
 	{
-		if(!isset($this->variables[$name]))
-			return FALSE;
-		return $this->variables[$name];
+		//XXX implement as a list method in Mutator
+		return array_keys($this->properties);
 	}
 
 
 	//ConfigSection::set
 	public function set($name, $value)
 	{
-		$this->variables[$name] = $value;
+		//values must be strings as well
+		if($value !== FALSE && !is_string($value))
+			return FALSE;
+		return parent::set($name, $value);
 	}
 }
 
