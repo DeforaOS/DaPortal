@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -79,14 +79,6 @@ class Config
 	}
 
 
-	//Config::getVariable
-	//XXX obsoleted
-	public function getVariable($section, $name)
-	{
-		return $this->get($section, $name);
-	}
-
-
 	//Config::set
 	public function set($section, $name, $value)
 	{
@@ -95,14 +87,6 @@ class Config
 		if(!isset($this->sections[$section]))
 			$this->sections[$section] = new ConfigSection;
 		$this->sections[$section]->set($name, $value);
-	}
-
-
-	//Config::setVariable
-	//XXX obsoleted
-	public function setVariable($section, $name, $value)
-	{
-		$this->set($section, $name, $value);
 	}
 
 
