@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -74,7 +74,8 @@ abstract class Module
 						'Undefined module '.$name);
 		}
 		if(($ret = new $module($id, $name)) == NULL)
-			return FALSE;
+			return $engine->log('LOG_ERR',
+					'Uninstanciable module '.$name);
 		return $ret;
 	}
 
