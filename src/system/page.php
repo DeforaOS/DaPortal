@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,15 @@
 
 
 
+require_once('./system/mutator.php');
+
+
 //PageElement
-class PageElement
+class PageElement extends Mutator
 {
 	//members
 	private $type;
 	private $children = array();
-	private $properties = array();
 
 
 	//essential
@@ -47,6 +49,7 @@ class PageElement
 	//PageElement::getProperties
 	public function getProperties()
 	{
+		//XXX implement in Mutator
 		return $this->properties;
 	}
 
@@ -54,9 +57,9 @@ class PageElement
 	//PageElement::getProperty
 	public function getProperty($name, $default = FALSE)
 	{
-		if(!isset($this->properties[$name]))
+		if(($ret = $this->get($name)) === FALSE)
 			return $default;
-		return $this->properties[$name];
+		return $ret;
 	}
 
 
@@ -77,7 +80,7 @@ class PageElement
 	//PageElement::setProperty
 	public function setProperty($name, $value)
 	{
-		$this->properties[$name] = $value;
+		return $this->set($name, $value);
 	}
 
 
