@@ -56,7 +56,7 @@ class Config
 	//Config::Config
 	public function __construct()
 	{
-		$this->sections[''] = new ConfigSection;
+		$this->reset();
 	}
 
 
@@ -119,6 +119,13 @@ class Config
 		}
 		fclose($fp);
 		return TRUE;
+	}
+
+
+	//Config::reset
+	public function reset()
+	{
+		$this->sections = array('' => new ConfigSection);
 	}
 }
 
