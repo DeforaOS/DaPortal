@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -207,7 +207,9 @@ class BasicTemplate extends Template
 		{
 			$request = new Request($this->module, $this->action,
 				$this->id);
+			//XXX
 			$page = $engine->process($request);
+			$page = $page->getContent();
 		}
 		if($page !== FALSE)
 		{
