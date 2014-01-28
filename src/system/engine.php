@@ -203,8 +203,9 @@ abstract class Engine
 					: ''));
 		if(($handle = Module::load($this, $module)) === FALSE)
 			//XXX report errors?
-			return new PageResponse(FALSE);
-		$ret = $handle->call($this, $request, $internal);
+			$ret = new PageResponse(FALSE);
+		else
+			$ret = $handle->call($this, $request, $internal);
 		//XXX every call should return a response directly instead
 		if($ret instanceof PageElement)
 			$ret = new PageResponse($ret);
