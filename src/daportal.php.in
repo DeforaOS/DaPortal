@@ -37,8 +37,8 @@ require_once('./system/engine.php');
 if(($engine = Engine::attachDefault()) !== FALSE
 		&& ($request = $engine->getRequest()) !== FALSE)
 {
-	$page = $engine->process($request);
-	$engine->render($page);
+	$response = $engine->process($request);
+	$engine->render($response);
 }
 $ret = $engine->getReturn();
 if($profile)
