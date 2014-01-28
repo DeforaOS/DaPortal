@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -264,7 +264,10 @@ class CVSSCMProject extends SCMProject
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($request->getParameter('download') !== FALSE)
-			return $fp;
+		{
+			$ret = new StreamResponse($fp);
+			return $ret;
+		}
 		$label = $vbox->append('label');
 		//link back
 		$r = new Request('project', 'browse', $request->getID(),
