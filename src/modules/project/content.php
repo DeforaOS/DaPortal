@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ class ProjectContent extends MultiContent
 					'type' => 'error',
 					'text' => _('An error occurred')));
 		$browse = $scm->browse($engine, $this, $request);
-		if(is_resource($browse))
+		if(!($browse instanceof PageElement))
 			//FIXME set the proper filename
 			return $browse;
 		$vbox = $page->append('vbox');
