@@ -52,6 +52,7 @@ class HTTPEngine extends Engine
 	//HTTPEngine::attach
 	public function attach()
 	{
+		$index = '/index.php';
 		$request = $this->getRequest();
 		$url = $this->getURL($request);
 
@@ -60,7 +61,7 @@ class HTTPEngine extends Engine
 			$this->log('LOG_DEBUG', 'URL is '.$url);
 		if(isset($_SERVER['SCRIPT_NAME'])
 				&& substr($_SERVER['SCRIPT_NAME'], -10)
-				!= '/index.php')
+				!= $index)
 		{
 			//FIXME might be an invalid address
 	 		header('Location: '.dirname($url));
@@ -91,8 +92,7 @@ class HTTPEngine extends Engine
 	{
 		global $config;
 
-		if(($private = $config->get('engine::http', 'private'))
-				== 1)
+		if(($private = $config->get('engine::http', 'private')) == 1)
 			return $this->_getRequestPrivate();
 		return $this->_getRequestDo();
 	}
@@ -111,6 +111,7 @@ class HTTPEngine extends Engine
 		$id = FALSE;
 		$title = FALSE;
 		$parameters = FALSE;
+		$type = FALSE;
 		if($_SERVER['REQUEST_METHOD'] == 'GET')
 			$request = $_GET;
 		else if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -140,7 +141,7 @@ class HTTPEngine extends Engine
 					$title = $request[$key];
 					break;
 				case '_type':
-					$this->setType($request[$key]);
+					$type = $request[$key];
 					break;
 				default:
 					if($parameters === FALSE)
@@ -150,11 +151,17 @@ class HTTPEngine extends Engine
 			}
 		}
 		if($module === FALSE)
-			return parent::getRequest();
-		$this->request = new Request($module, $action, $id, $title,
-			$parameters);
-		$auth = $this->getAuth();
-		$auth->setIdempotent($this, $this->request, $idempotent);
+			$this->request = parent::getRequest();
+		else
+		{
+			$this->request = new Request($module, $action, $id,
+				$title, $parameters);
+			$auth = $this->getAuth();
+			$auth->setIdempotent($this, $this->request,
+					$idempotent);
+		}
+		if($type !== FALSE && strlen($type) > 0)
+			$this->request->setType($type);
 		return $this->request;
 	}
 
@@ -192,6 +199,7 @@ class HTTPEngine extends Engine
 		$port = $_SERVER['SERVER_PORT'];
 		if($absolute)
 		{
+			//XXX use http_build_url()?
 			$url = $_SERVER['SERVER_NAME'];
 			if(isset($_SERVER['HTTPS']))
 			{
@@ -237,58 +245,48 @@ class HTTPEngine extends Engine
 
 	//useful
 	//HTTPEngine::render
-	public function render($page)
+	public function render($response)
 	{
-		global $config;
+		if(!($response instanceof Response))
+		{
+			header($_SERVER['SERVER_PROTOCOL']
+					.' 500 Internal server error');
+			return FALSE;
+		}
 		//XXX escape the headers
-		$charset = $config->get('defaults', 'charset');
-
-		//render HTML by default
-		if($this->getType() === FALSE)
-			$this->setType('text/html');
-		//mention the content type
-		$header = 'Content-Type: '.$this->getType();
-		if($charset !== FALSE)
+		//obtain the current content's type (and default to HTML)
+		if(($type = $response->getType($this)) == FALSE)
+		{
+			$type = 'text/html';
+			$response->setType($type);
+		}
+		//set the content type and character set
+		$header = 'Content-Type: '.$type;
+		if(($charset = $response->getCharset($this)) !== FALSE)
 			$header .= '; charset='.$charset;
 		header($header);
-		//disable caching
-		header('Cache-Control: no-cache, must-revalidate');
-		return parent::render($page);
-	}
-
-	protected function _renderPage($page)
-	{
-		if($page !== FALSE)
-		{
-			if(($location = $page->getProperty('location'))
-					!== FALSE)
-			header('Location: '.$location); //XXX escape
-		}
-		return parent::_renderPage($page);
-	}
-
-	protected function _renderStream($fp)
-	{
-		$type = $this->getType();
-
-		$disposition = (strncmp('image/', $type, 6) == 0)
+		//set the disposition
+		$disposition = (strncmp('image/', $type, 6) == 0
+				|| strncmp('text/', $type, 5) == 0)
 			? 'inline' : 'attachment';
 		//FIXME also set the filename
 		header('Content-Disposition: '.$disposition);
-		if(($st = fstat($fp)) !== FALSE)
+		//set the length
+		if(($length = $response->getLength($this)) !== FALSE
+				&& is_numeric($length))
+			header('Content-Length: '.$length);
+		//set the modification time
+		if(($mtime = $response->getModified($this)) !== FALSE)
 		{
-			header('Content-Length: '.$st['size']);
-			$lastm = gmstrftime('%a, %d %b %Y %H:%M:%S',
-					$st['mtime']);
-			header('Last-Modified: '.$lastm);
+			$mtime = gmstrftime('%a, %d %b %Y %H:%M:%S', $mtime);
+			header('Last-Modified: '.$mtime);
 		}
-		return parent::_renderStream($fp);
-	}
-
-	protected function _renderString($string)
-	{
-		header('Content-Length: '.strlen($string));
-		return parent::_renderString($string);
+		//disable caching
+		header('Cache-Control: no-cache, must-revalidate');
+		//optional extra fields
+		if(($location = $response->get('location')) !== FALSE)
+			header('Location: '.$location);
+		return parent::render($response);
 	}
 
 

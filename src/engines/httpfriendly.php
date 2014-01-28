@@ -43,6 +43,9 @@ class HTTPFriendlyEngine extends HTTPEngine
 
 	protected function _getRequestDo()
 	{
+		//XXX hack to avoid testing twice for idempotence
+		if($this->request !== FALSE)
+			return $this->request;
 		if(!isset($_SERVER['PATH_INFO']))
 			return parent::_getRequestDo();
 		$path = explode('/', $_SERVER['PATH_INFO']);
@@ -56,6 +59,7 @@ class HTTPFriendlyEngine extends HTTPEngine
 		$action = FALSE;
 		$id = FALSE;
 		$title = FALSE;
+		$type = FALSE;
 		$extension = FALSE;
 		$args = FALSE;
 		if(count($path) > 0)
@@ -88,29 +92,15 @@ class HTTPFriendlyEngine extends HTTPEngine
 			if($title === FALSE && $q[0] == '_title')
 				$title = $q[1];
 			else if($q[0] == '_type')
-				$this->setType($q[1]);
+				$type = $q[1];
 			else
 				$args[$q[0]] = $q[1];
 		}
-		//analyze the extension
-		$this->_getRequestType($extension);
-		return new Request($module, $action, $id, $title, $args);
-	}
-
-	protected function _getRequestType($extension)
-	{
-		switch($extension)
-		{
-			case 'htm':
-			case 'html':
-				$this->setType('text/html');
-				break;
-			case 'rss':
-				$this->setType('application/rss+xml');
-				break;
-			default:
-				break;
-		}
+		$this->request = new Request($module, $action, $id, $title,
+			$args);
+		if($type !== FALSE && strlen($type) > 0)
+			$this->request->setType($type);
+		return $this->request;
 	}
 
 

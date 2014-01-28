@@ -34,9 +34,9 @@ if(($profile = $config->get(FALSE, 'profile')))
 }
 
 require_once('./system/engine.php');
-if(($engine = Engine::attachDefault()) !== FALSE
-		&& ($request = $engine->getRequest()) !== FALSE)
+if(($engine = Engine::attachDefault()) !== FALSE)
 {
+	$request = $engine->getRequest();
 	$response = $engine->process($request);
 	$engine->render($response);
 }

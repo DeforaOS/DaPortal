@@ -81,6 +81,13 @@ class Request extends Mutator
 	}
 
 
+	//Request::getType
+	public function getType()
+	{
+		return $this->type;
+	}
+
+
 	//Request::isIdempotent
 	public function isIdempotent()
 	{
@@ -99,6 +106,13 @@ class Request extends Mutator
 	public function setParameter($name, $value)
 	{
 		return $this->set($name, $value);
+	}
+
+
+	//Request::setType
+	public function setType($type)
+	{
+		$this->type = $type;
 	}
 
 
@@ -196,6 +210,7 @@ class Request extends Mutator
 	private $action = FALSE;
 	private $id = FALSE;
 	private $title = FALSE;
+	private $type = FALSE;
 }
 
 ?>

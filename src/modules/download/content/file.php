@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -136,8 +136,8 @@ class FileDownloadContent extends DownloadContent
 				'request' => $r, 'text' => _('Browse')));
 		//download
 		$toolbar->append('button', array('stock' => 'download',
-			'request' => $this->getRequest('download'),
-			'text' => _('Download')));
+				'request' => $this->getRequest('download'),
+				'text' => _('Download')));
 		if($this->getID() !== FALSE
 				&& $this->canUpdate($engine, FALSE, $this))
 		{
@@ -174,8 +174,9 @@ class FileDownloadContent extends DownloadContent
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		}
-		$engine->setType($mime);
-		return $fp;
+		$ret = new StreamResponse($fp);
+		$ret->setType($mime);
+		return $ret;
 	}
 
 

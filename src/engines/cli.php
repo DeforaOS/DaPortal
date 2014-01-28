@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -28,13 +28,6 @@ class CLIEngine extends Engine
 {
 	//public
 	//methods
-	//essential
-	public function __construct()
-	{
-		$this->setType('text/plain');
-	}
-
-
 	//accessors
 	//CLIEngine::getRequest
 	public function getRequest()
@@ -47,6 +40,7 @@ class CLIEngine extends Engine
 		$id = FALSE;
 		$title = FALSE;
 		$parameters = array();
+		$type = 'text/plain';
 		foreach($options as $key => $value)
 			switch($key)
 			{
@@ -54,7 +48,7 @@ class CLIEngine extends Engine
 					$this->setDebug(TRUE);
 					break;
 				case 'M':
-					$this->setType($options['M']);
+					$type = $options['M'];
 					break;
 				case 'f':
 					$idempotent = FALSE;
@@ -90,6 +84,8 @@ class CLIEngine extends Engine
 			}
 		$ret = new Request($module, $action, $id, $title, $parameters);
 		$ret->setIdempotent($idempotent);
+		if($ret->getType() === FALSE)
+			$ret->setType($type);
 		return $ret;
 	}
 

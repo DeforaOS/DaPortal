@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -196,9 +196,10 @@ class BrowserModule extends Module
 		$path = $this->getPath($engine, $request);
 		if(($fp = fopen($root.'/'.$path, 'rb')) !== FALSE)
 		{
-			$mime = Mime::getType($engine, $path);
-			$engine->setType($mime);
-			return $fp;
+			$ret = new StreamResponse($fp);
+			if(($type = Mime::getType($engine, $path)) !== FALSE)
+				$ret->setType($type);
+			return $ret;
 		}
 		$title = _('Browser: ').$path;
 		$page = new Page(array('title' => $title));

@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -19,86 +19,26 @@
 require_once('./system/auth.php');
 require_once('./system/module.php');
 require_once('./system/request.php');
+require_once('./system/response.php');
 
 
 //Engine
 abstract class Engine
 {
 	//public
-	//virtual
+	//methods
 	//essential
 	abstract public function match();
 	abstract public function attach();
 
+
 	//useful
 	//Engine::render
-	public function render($content)
+	public function render($response)
 	{
-		if($content instanceof PageElement)
-			return $this->_renderPage($content);
-		else if(is_resource($content)
-				&& get_resource_type($content) == 'stream')
-			return $this->_renderStream($content);
-		else if(is_string($content))
-			return $this->_renderString($content);
-		//default
-		return $this->_renderPage($content);
-	}
-
-	protected function _renderPage($page)
-	{
-		$type = $this->getType();
-
-		switch($type)
-		{
-			case 'application/rss+xml':
-			case 'application/xml':
-			case 'text/csv':
-			case 'text/xml':
-				break;
-			case 'text/html':
-			default:
-				$template = Template::attachDefault(
-					$this);
-				if($template === FALSE)
-					return FALSE;
-				if(($page = $template->render($this,
-					$page)) === FALSE)
-					return FALSE;
-				break;
-		}
-		$error = 'Could not determine the proper output format';
-		if(($output = Format::attachDefault($this, $type)) !== FALSE)
-			$output->render($this, $page);
-		else
-			$this->log('LOG_ERR', $error);
-	}
-
-	protected function _renderStream($fp)
-	{
-		$type = $this->getType();
-		$format = FALSE;
-
-		if($type !== FALSE)
-			$format = Format::attachDefault($this, $type);
-		if($format !== FALSE)
-			ob_start();
-		//XXX fpassthru() would be better but allocates too much memory
-		while(!feof($fp))
-			if(($buf = fread($fp, 65536)) !== FALSE)
-				print($buf);
-		fclose($fp);
-		if($format === FALSE)
-			return;
-		$data = ob_get_contents();
-		ob_end_clean();
-		$page = new PageElement('data', array('data' => $data));
-		$format->render($this, $page);
-	}
-
-	protected function _renderString($string)
-	{
-		print($string);
+		if($response instanceof Response)
+			return $response->render($this);
+		return $this->log('LOG_ERR', 'Invalid response');
 	}
 
 
@@ -179,13 +119,6 @@ abstract class Engine
 	}
 
 
-	//Engine::getType
-	public function getType()
-	{
-		return $this->type;
-	}
-
-
 	//Engine::getURL
 	public function getURL($request, $absolute = TRUE)
 	{
@@ -206,13 +139,6 @@ abstract class Engine
 	public function setDebug($debug)
 	{
 		$this->debug = ($debug !== FALSE) ? TRUE : FALSE;
-	}
-
-
-	//Engine::setType
-	public function setType($type)
-	{
-		$this->type = $type;
 	}
 
 
@@ -262,9 +188,13 @@ abstract class Engine
 	//Engine::process
 	public function process($request, $internal = FALSE)
 	{
+		//return an empty page if no valid request is provided
 		if($request === FALSE
 				|| ($module = $request->getModule()) === FALSE)
-			return FALSE;
+			return new PageResponse(FALSE);
+		//preserve the type
+		$type = $request->getType();
+		//obtain the response
 		$action = $request->getAction();
 		$this->log('LOG_DEBUG', 'Processing'
 				.($internal ? ' internal' : '')
@@ -272,8 +202,22 @@ abstract class Engine
 				.(($action !== FALSE) ? ", action $action"
 					: ''));
 		if(($handle = Module::load($this, $module)) === FALSE)
-			return FALSE;
-		return $handle->call($this, $request, $internal);
+			//XXX report errors?
+			return new PageResponse(FALSE);
+		$ret = $handle->call($this, $request, $internal);
+		//XXX every call should return a response directly instead
+		if($ret instanceof PageElement)
+			$ret = new PageResponse($ret);
+		else if(is_resource($ret))
+			$ret = new StreamResponse($ret);
+		else if(is_string($ret))
+			$ret = new StringResponse($ret);
+		else if(!($ret instanceof Response))
+			return $this->log('LOG_ERR', 'Unknown response type');
+		//restore the type if not already enforced
+		if($type !== FALSE && $ret->getType() === FALSE)
+			$ret->setType($type);
+		return $ret;
 	}
 
 
@@ -340,7 +284,6 @@ abstract class Engine
 
 	//private
 	//properties
-	private $type = FALSE;
 	private $auth = FALSE;
 	private $database = FALSE;
 	private $ret = 0;
