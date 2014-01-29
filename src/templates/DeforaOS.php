@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -41,11 +41,11 @@ class DeforaOSTemplate extends BasicTemplate
 		//search widget
 		$request = new Request('search', 'widget');
 		if(($widget = $engine->process($request)) !== FALSE)
-			$vbox->append($widget);
+			$vbox->append($widget->getContent());
 		//user widget
 		$request = new Request('user', 'widget');
 		if(($widget = $engine->process($request)) !== FALSE)
-			$vbox->append($widget);
+			$vbox->append($widget->getContent());
 		return $vbox;
 	}
 
