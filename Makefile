@@ -90,6 +90,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/project.conf \
 		$(PACKAGE)-$(VERSION)/data/js/Makefile \
+		$(PACKAGE)-$(VERSION)/data/js/DaPortal.js \
 		$(PACKAGE)-$(VERSION)/data/js/editor.js \
 		$(PACKAGE)-$(VERSION)/data/js/index.php \
 		$(PACKAGE)-$(VERSION)/data/js/jquery.js \

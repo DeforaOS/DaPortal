@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2011-2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,11 +105,11 @@ div.expander > div.title {
 	padding-left:			20px;
 }
 
-div.expander:hover > div.title {
+body:not(.js-activated) div.expander:hover > div.title {
 	background-image:		url('../icons/generic/16x16/expanded.png');
 }
 
-div.expander:hover > * {
+body:not(.js-activated) div.expander:hover > * {
 	display:			block;
 }
 

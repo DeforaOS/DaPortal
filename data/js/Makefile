@@ -13,6 +13,8 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/js
+	$(INSTALL) -m 0644 DaPortal.js $(DESTDIR)$(PREFIX)/daportal/data/js/DaPortal.js
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/js
 	$(INSTALL) -m 0644 editor.js $(DESTDIR)$(PREFIX)/daportal/data/js/editor.js
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/js
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/js/index.php
@@ -20,6 +22,7 @@ install:
 	$(INSTALL) -m 0644 jquery.js $(DESTDIR)$(PREFIX)/daportal/data/js/jquery.js
 
 uninstall:
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/js/DaPortal.js
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/js/editor.js
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/js/index.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/js/jquery.js

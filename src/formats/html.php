@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -186,14 +186,19 @@ class HTMLFormat extends FormatElements
 
 	private function _render_javascript($page)
 	{
-		if($this->javascript !== FALSE)
-		{
-			$this->renderTabs();
-			$this->tagOpen('script', FALSE, FALSE, array(
-					'type' => 'text/javascript',
-					'src' => 'js/jquery.js'));
-			$this->tagClose('script');
-		}
+		$tag = 'script';
+		$type = 'text/javascript';
+
+		if($this->javascript === FALSE)
+			return;
+		$this->renderTabs();
+		$this->tagOpen($tag, FALSE, FALSE, array('type' => $type,
+				'src' => 'js/jquery.js'));
+		$this->tagClose($tag);
+		$this->renderTabs();
+		$this->tagOpen($tag, FALSE, FALSE, array('type' => $type,
+				'src' => 'js/DaPortal.js'));
+		$this->tagClose($tag);
 	}
 
 	private function _render_theme($page)
