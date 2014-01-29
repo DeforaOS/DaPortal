@@ -18,7 +18,37 @@
 $(document).ready(function() {
 	$('body').addClass('js-activated');
 
-	//expanders
+	//editor
+	$('iframe.editor').each(function(index) {
+		//hide the textarea and copy its content over to the iframe
+		textarea = $(this).siblings('textarea');
+		if(textarea.size() == 1)
+		{
+			textarea.css('display', 'none');
+			$(this).contents().find('body').html(
+				textarea.slice(0).text());
+		}
+
+		//enable design mode
+		$(this).get(0).contentWindow.document.designMode = 'on';
+
+		//set the focus to the first instance
+		if(index == 0)
+			$(this).get(0).contentWindow.focus();
+
+		//copy the HTML content back to the form when submitting
+		$(this).closest('form').on('submit',
+			{ iframe: $(this), textarea: textarea},
+			function(event) {
+				iframe = event.data.iframe;
+				text = iframe.contents().find('body').html();
+				textarea = event.data.textarea;
+
+				textarea.text(text);
+			});
+	});
+
+	//expander
 	$('div.expander > div.title').on('click', function(event) {
 		children = $(this).siblings();
 		visible = (children.size() > 0

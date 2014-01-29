@@ -574,46 +574,24 @@ class HTMLFormat extends FormatElements
 	{
 		require_once('./system/html.php');
 		$class = $e->getProperty('class');
-		$id1 = $e->getProperty('id');
-		$id2 = uniqid();
 
-		if($id1 === FALSE)
-			$id1 = uniqid();
+		$class = ($class === FALSE) ? 'editor' : 'editor '.$class;
 		if(($text = $e->getProperty('value')) === FALSE
 				|| !is_string($text))
 			$text = '';
 		$text = HTML::filter($this->engine, $text);
-		if($this->javascript)
-		{
-			//XXX use inline jquery instead
-			$this->renderTabs();
-			$this->tagOpen('script', FALSE, FALSE, array(
-					'type' => 'text/javascript',
-					'src' => 'js/editor.js'));
-			$this->tagClose('script');
-		}
 		$this->renderTabs();
-		$this->tagOpen('textarea', $class, $id1, array(
+		$this->tagOpen('textarea', $class, $e->getProperty('id'), array(
 				'name' => $e->getProperty('name')));
 		print($this->escape($text));
 		$this->tagClose('textarea');
 		if($this->javascript)
 		{
 			$this->renderTabs();
-			$this->tagOpen('iframe', 'hidden', $id2, array(
-					'onload' => "editorStart(this, '$id1')",
+			$this->tagOpen('iframe', $class, FALSE, array(
 					'width' => '450px',
 					'height' => '250px'));
 			$this->tagClose('iframe');
-			$this->renderTabs();
-			$this->tagOpen('script', FALSE, FALSE, array(
-					'type' => 'text/javascript'));
-			//XXX should escape accordingly
-			print("<!--
-$('#$id1').closest('form').submit(function () {
-	$('#$id1').text($('#$id2').contents().find('body').html());
-}); //-->");
-			$this->tagClose('script');
 		}
 	}
 

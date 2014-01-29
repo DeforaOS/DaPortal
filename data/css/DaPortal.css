@@ -82,6 +82,11 @@ form div.checkbox input[type="checkbox"] {
 	vertical-align:			text-bottom;
 }
 
+/* editor */
+body:not(.js-activated) iframe.editor {
+	display:			none;
+}
+
 /* entry */
 form div.entry, form div.textview {
 	display:			table-row;
