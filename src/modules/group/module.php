@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -398,7 +398,7 @@ class GroupModule extends Module
 		{
 			$r = new Request($res[$i]['name'], 'actions', FALSE,
 				FALSE, array('group' => $group));
-			$rows = $engine->process($r);
+			$rows = $engine->process($r, TRUE);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
 			$text = ucfirst($res[$i]['name']);
