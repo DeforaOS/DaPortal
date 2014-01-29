@@ -206,6 +206,8 @@ abstract class Engine
 			$ret = new PageResponse(FALSE);
 		else
 			$ret = $handle->call($this, $request, $internal);
+		if($internal)
+			return $ret;
 		//XXX every call should return a response directly instead
 		if($ret instanceof PageElement)
 			$ret = new PageResponse($ret);
