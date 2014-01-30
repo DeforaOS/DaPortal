@@ -71,14 +71,14 @@ input[type="password"], input[type="text"], label {
 }
 
 /* buttonbox */
-div.buttonbox > a.button, div.buttonbox > button,
-div.buttonbox > input[type="button"], div.buttonbox > input[type="reset"],
-div.buttonbox > input[type="submit"] {
+.buttonbox > a.button, .buttonbox > button,
+.buttonbox > input[type="button"], .buttonbox > input[type="reset"],
+.buttonbox > input[type="submit"] {
 	width:				10ex;
 }
 
 /* checkbox */
-form div.checkbox input[type="checkbox"] {
+form .checkbox input[type="checkbox"] {
 	vertical-align:			text-bottom;
 }
 
@@ -88,20 +88,20 @@ body:not(.js-activated) iframe.editor {
 }
 
 /* entry */
-form div.entry, form div.textview {
+form .entry, form .textview {
 	display:			table-row;
 }
 
-form div.entry span.label, form div.entry input {
+form .entry .label, form .entry input {
 	display:			table-cell;
 }
 
 /* expander */
-div.expander > * {
+.expander > * {
 	display:			none;
 }
 
-div.expander > div.title {
+.expander > .title {
 	background-image:		url('../icons/generic/16x16/collapsed.png');
 	background-position:		0 0;
 	background-repeat:		no-repeat;
@@ -110,46 +110,46 @@ div.expander > div.title {
 	padding-left:			20px;
 }
 
-body:not(.js-activated) div.expander:hover > div.title {
+body:not(.js-activated) .expander:hover > .title {
 	background-image:		url('../icons/generic/16x16/expanded.png');
 }
 
-body:not(.js-activated) div.expander:hover > * {
+body:not(.js-activated) .expander:hover > * {
 	display:			block;
 }
 
-body.js-activated div.expander > div.title {
+body.js-activated .expander > .title {
 	cursor:				pointer;
 }
 
 /* frame */
-div.frame > span.title {
+.frame > .title {
 	float:				left;
 }
 
-div.frame > div {
+.frame > div {
 	clear:				left;
 }
 
-div.frame:after {
+.frame:after {
 	clear:				left;
 	content:			"";
 	display:			block;
 }
 
 /* hbox */
-div.hbox:after {
+.hbox:after {
 	clear:				left;
 	content:			"";
 	display:			block;
 }
 
-div.hbox > div.pack {
+.hbox > .pack {
 	float:				left;
 	padding-left:			1ex;
 }
 
-div.hbox > div.pack:first-child {
+.hbox > .pack:first-child {
 	padding-left:			0;
 }
 
@@ -163,7 +163,7 @@ img {
 	border-width:			0;
 }
 
-div.messagebox {
+.messagebox {
 	padding:			1ex;
 }
 
@@ -179,51 +179,51 @@ form.treeview:after {
 	display:			block;
 }
 
-form.treeview > div.table > div.header {
+form.treeview > .table > .header {
 	display:			none;
 	font-weight:			bold;
 	text-align:			left;
 }
 
-form.treeview > div.table > div.row > span.detail {
+form.treeview > .table > .row > .detail {
 	display:			none;
 }
 
-form.treeview.details > div.table {
+form.treeview.details > .table {
 	display:			table;
 	width:				100%;
 }
 
-form.treeview.details > div.table > div.header,
-form.treeview.details > div.table > div.row {
+form.treeview.details > .table > .header,
+form.treeview.details > .table > .row {
 	display:			table-row;
 }
 
-form.treeview.details > div.table > div.header > span.detail,
-form.treeview.details > div.table > div.row > span.detail {
+form.treeview.details > .table > .header > .detail,
+form.treeview.details > .table > .row > .detail {
 	display:			table-cell;
 	padding-right:			0.5ex;
 }
 
-form.treeview.details > div.table > div.row.level > span.detail {
+form.treeview.details > .table > .row.level > .detail {
 	font-size:			95%;
 	padding-left:			2ex;
 }
 
-form.treeview.details > div.table > div.row.level2 > span.detail {
+form.treeview.details > .table > .row.level2 > .detail {
 	font-size:			90%;
 	padding-left:			4ex;
 }
 
-form.treeview.icons > div.table > div.row,
-form.treeview.thumbnails > div.table > div.row {
+form.treeview.icons > .table > .row,
+form.treeview.thumbnails > .table > .row {
 	float:				left;
 	padding:			0.5ex;
 	text-align:			center;
 	width:				12ex;
 }
 
-form.treeview.icons > div.table > div.row span.icon {
+form.treeview.icons > .table > .row .icon {
 	display:			block;
 	height:				48px;
 	margin-left:			auto;
@@ -231,37 +231,37 @@ form.treeview.icons > div.table > div.row span.icon {
 	width:				48px;
 }
 
-form.treeview.icons > div.table > div.row span.icon > img {
+form.treeview.icons > .table > .row .icon > img {
 	display:			block;
 }
 
-form.treeview.icons > div.table > div.row span.label,
-form.treeview.thumbnails > div.table > div.row span.label {
+form.treeview.icons > .table > .row .label,
+form.treeview.thumbnails > .table > .row .label {
 	display:			block;
 	height:				3.5em;
 	text-align:			center;
 	word-wrap:			break-word;
 }
 
-form.treeview.list > div.table > div.row {
+form.treeview.list > .table > .row {
 	display:			block;
 }
 
-form.treeview.list > div.table > div.row span.icon,
-form.treeview.list > div.table > div.row span.label {
+form.treeview.list > .table > .row .icon,
+form.treeview.list > .table > .row .label {
 	display:			inline;
 }
 
-form.treeview.list > div.table > div.row span.icon img.stock48 {
+form.treeview.list > .table > .row .icon img.stock48 {
 	background-size:		16px 16px;
 	padding:			8px;
 }
 
-form.treeview.preview > div.table > div.row span.detail.preview {
+form.treeview.preview > .table > .row .detail.preview {
 	display:			block;
 }
 
-form.treeview.thumbnails > div.table > div.row span.thumbnail {
+form.treeview.thumbnails > .table > .row .thumbnail {
 	display:			block;
 	height:				96px;
 	margin-left:			auto;
@@ -269,17 +269,17 @@ form.treeview.thumbnails > div.table > div.row span.thumbnail {
 	width:				96px;
 }
 
-form.treeview.thumbnails > div.table > div.row span.thumbnail > img {
+form.treeview.thumbnails > .table > .row .thumbnail > img {
 	max-height:			96px;
 	max-width:			96px;
 }
 
-div.vbox > div.pack {
+.vbox > .pack {
 	display:			block;
 	padding-top:			0.5ex;
 	clear:				left;
 }
 
-div.vbox > div.pack:first-child {
+.vbox > .pack:first-child {
 	padding-top:			0;
 }
