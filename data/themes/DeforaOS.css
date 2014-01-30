@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -175,13 +175,13 @@ html {
 	display:			block;
 }
 
-#menu form div.entry input {
+#menu form .entry input {
 	max-width:			11ex;
 }
 
-#menu form div.entry span.label,
-#menu form div.entry input[type="password"],
-#menu form div.entry input[type="text"] {
+#menu form .entry .label,
+#menu form .entry input[type="password"],
+#menu form .entry input[type="text"] {
 	display:			table-row;
 }
 
@@ -210,11 +210,11 @@ h1#title {
 	color:				#000000;
 }
 
-#content > div.pack {
+#content > .pack {
 	padding:			16px;
 }
 
-#content > div.pack > *:first-child {
+#content > .pack > *:first-child {
 	-moz-border-radius-topleft:	16px;
 	-moz-border-radius-topright:	16px;
 	-webkit-border-top-left-radius:	16px;
@@ -228,12 +228,12 @@ h1#title {
 	padding-top:			16px;
 }
 
-#content > div.pack > h1:first-child {
+#content > .pack > h1:first-child {
 	background-color:		#00007f;
 	color:				#ffffff;
 }
 
-#content > div.pack > h1:first-child.stock48 {
+#content > .pack > h1:first-child.stock48 {
 	background-position:		8px 4px;
 	min-height:			44px;
 	padding:			4px;
@@ -241,34 +241,34 @@ h1#title {
 	padding-left:			60px;
 }
 
-#content > div.pack > h1:first-child.browser {
+#content > .pack > h1:first-child.browser {
 	background-color:		#7f7f7f;
 }
 
-#content > div.pack > h1:first-child.download {
+#content > .pack > h1:first-child.download {
 	background-color:		#ff7f00;
 }
 
-#content > div.pack > h1:first-child.error {
+#content > .pack > h1:first-child.error {
 	background-color:		#ff0000;
 }
 
-#content > div.pack > h1:first-child.project {
+#content > .pack > h1:first-child.project {
 	background-color:		#007f00;
 }
 
-#content > div.pack > h1:first-child.logout,
-#content > div.pack > h1:first-child.user {
+#content > .pack > h1:first-child.logout,
+#content > .pack > h1:first-child.user {
 	background-color:		#ff7f00;
 }
 
-#content > div.pack > h1:first-child.wiki {
+#content > .pack > h1:first-child.wiki {
 	background-color:		#7f7fff;
 }
 
 
 /* dialogs */
-div.dialog {
+.dialog {
 	background-color:		#000000;
 	color:				#ffffff;
 	margin-bottom:			4px;
@@ -280,7 +280,7 @@ div.dialog {
 
 
 /* statusbar */
-div.statusbar, footer {
+.statusbar, footer {
 	background-color:		#ffffff;
 	color:				#000000;
 	-moz-border-radius-bottomleft:	16px;
@@ -296,7 +296,7 @@ div.statusbar, footer {
 
 
 /* toolbars */
-div.toolbar {
+.toolbar {
 	background-color:		#a0a0a0;
 	margin-bottom:			0.5ex;
 	margin-left:			-16px;
@@ -307,31 +307,31 @@ div.toolbar {
 	padding-top:			1ex;
 }
 
-div.toolbar a.button, div.toolbar button, div.toolbar input[type="reset"],
-div.toolbar input[type="submit"] {
+.toolbar a.button, .toolbar button, .toolbar input[type="reset"],
+.toolbar input[type="submit"] {
 	border-color:			#a0a0a0;
 	border-width:			1px;
 }
 
-div.toolbar a.button:hover, div.toolbar input[type="submit"]:hover {
+.toolbar a.button:hover, .toolbar input[type="submit"]:hover {
 	background-color:		#b0b0b0;
 	border-color:			#c0c0c0;
 }
 
 
 /* treeviews */
-form.treeview div.header span.detail {
+form.treeview .header .detail {
 	text-align:			left;
 }
 
-form.treeview.alternate > div.table > div.row:nth-child(odd) {
+form.treeview.alternate > .table > .row:nth-child(odd) {
 	background-color:		#f0f0f0;
 }
 
 
 /* small screens */
 @media screen and (max-width: 80ex) {
-	#menu > div.pack > * {
+	#menu > .pack > * {
 		display:		none;
 	}
 
@@ -359,7 +359,7 @@ form.treeview.alternate > div.table > div.row:nth-child(odd) {
 		padding-right:		16ex;
 	}
 
-	#content, div.statusbar, footer {
+	#content, .statusbar, footer {
 		opacity:		0.8;
 	}
 
