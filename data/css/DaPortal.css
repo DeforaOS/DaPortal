@@ -118,6 +118,10 @@ body:not(.js-activated) div.expander:hover > * {
 	display:			block;
 }
 
+body.js-activated div.expander > div.title {
+	cursor:				pointer;
+}
+
 /* frame */
 div.frame > span.title {
 	float:				left;
