@@ -38,6 +38,7 @@ class HTTPEngine extends Engine
 		{
 			case 'HTTP/1.1':
 			case 'HTTP/1.0':
+			case 'HTTP/0.9':
 				return 100;
 			default:
 				if(strncmp($_SERVER['SERVER_PROTOCOL'], 'HTTP/',
