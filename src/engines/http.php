@@ -269,7 +269,8 @@ class HTTPEngine extends Engine
 		$disposition = (strncmp('image/', $type, 6) == 0
 				|| strncmp('text/', $type, 5) == 0)
 			? 'inline' : 'attachment';
-		//FIXME also set the filename
+		if(($filename = $response->getFilename($this)) !== FALSE)
+			$disposition .= '; filename="'.$filename.'"';
 		header('Content-Disposition: '.$disposition);
 		//set the length
 		if(($length = $response->getLength($this)) !== FALSE
