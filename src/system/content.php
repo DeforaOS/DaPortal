@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -661,7 +661,8 @@ class Content
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		return ($this->id = $database->getLastID($engine,
-				'daportal_content', 'content_id')) !== FALSE;
+				'daportal_content', 'content_id')) !== FALSE
+			? TRUE : FALSE;
 	}
 
 	protected function _saveUpdate($engine, $request, &$error)
