@@ -53,6 +53,13 @@ abstract class Response extends Mutator
 	}
 
 
+	//Response::getFilename
+	public function getFilename()
+	{
+		return $this->filename;
+	}
+
+
 	//Response::getLength
 	public function getLength()
 	{
@@ -82,6 +89,17 @@ abstract class Response extends Mutator
 	}
 
 
+	//Response::setFilename
+	public function setFilename($filename)
+	{
+		if($filename !== FALSE && (!is_string($filename)
+					|| strlen($filename) <= 0))
+			return FALSE;
+		$this->filename = $filename;
+		return TRUE;
+	}
+
+
 	//Response::setType
 	public function setType($type)
 	{
@@ -98,6 +116,7 @@ abstract class Response extends Mutator
 	//protected
 	//properties
 	protected $content = FALSE;
+	protected $filename = FALSE;
 	protected $type = FALSE;
 }
 
