@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DaPortal
 //
 //DaPortal is free software; you can redistribute it and/or modify
@@ -87,7 +87,10 @@ class SearchModule extends Module
 		$row->setProperty('date', $res['date']);
 		$r = new Request($res['module'], 'preview', $res['id'],
 				$res['title']);
-		$row->setProperty('preview', $engine->process($r));
+		if(($r = $engine->process($r)) === FALSE
+				|| !($r instanceof PageResponse))
+			return;
+		$row->setProperty('preview', $r->getContent());
 	}
 
 
