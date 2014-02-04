@@ -199,6 +199,7 @@ class BrowserModule extends Module
 			$ret = new StreamResponse($fp);
 			if(($type = Mime::getType($engine, $path)) !== FALSE)
 				$ret->setType($type);
+			$ret->setFilename(basename($path));
 			return $ret;
 		}
 		$title = _('Browser: ').$path;
@@ -319,7 +320,8 @@ class BrowserModule extends Module
 				$this->getGroup($st['gid']));
 		//permissions
 		$this->_displayFileField($col1, $col2, _('Permissions:'),
-				$this->getPermissions($st['mode']));
+				$this->getPermissions($st['mode']),
+				'preformatted');
 		//size
 		$this->_displayFileField($col1, $col2, _('Size:'),
 				Common::getSize($st['size']));
@@ -334,11 +336,13 @@ class BrowserModule extends Module
 				$this->getDate($st['atime']));
 	}
 
-	private function _displayFileField($col1, $col2, $field, $value)
+	private function _displayFileField($col1, $col2, $field, $value,
+			$class = FALSE)
 	{
 		$col1->append('label', array('class' => 'bold',
 				'text' => $field.' '));
-		$col2->append('label', array('text' => $value));
+		$col2->append('label', array('class' => $class,
+				'text' => $value));
 	}
 
 
