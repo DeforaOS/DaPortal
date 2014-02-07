@@ -58,7 +58,29 @@ $(document).ready(function() {
 			: '../icons/generic/16x16/collapsed.png';
 		display = visible ? 'block' : 'none';
 
+		//update the expander's icon
 		$(this).css('background-image', "url('" + image + "')");
+		//hide or show the content
 		children.css('display', display);
+	});
+
+	//file chooser
+	$('input.filechooser[type=file]').each(function() {
+		//locate the "more" button
+		button = $(this).siblings('input[type=button]');
+
+		if(button.size() == 1)
+		{
+			button.on('click', { filechooser: $(this) },
+				function(event) {
+				filechooser = event.data.filechooser;
+				name = filechooser.attr('name');
+
+				//add a file chooser
+				filechooser.parent().append('<br/>'
+					+ '<input type="file" name="'
+					+ name + '"/>');
+			});
+		}
 	});
 });

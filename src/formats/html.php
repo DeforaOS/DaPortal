@@ -475,6 +475,10 @@ class HTMLFormat extends FormatElements
 
 	protected function renderFileChooser($e)
 	{
+		$class = ($e->getProperty('class') !== FALSE)
+			? 'filechooser '.$e->getProperty('class')
+			: 'filechooser';
+
 		$this->renderTabs();
 		$this->tagOpen('div', $e->getType());
 		if(($text = $e->getProperty('text')) !== FALSE)
@@ -485,9 +489,13 @@ class HTMLFormat extends FormatElements
 		}
 		$name = $e->getProperty('name');
 		$type = 'file';
-		$this->tag('input', $e->getProperty('class'),
-				$e->getProperty('id'),
+		$this->tag('input', $class, $e->getProperty('id'),
 				array('type' => $type, 'name' => $name));
+		if($this->javascript && is_string($name)
+				&& substr($name, -2) == '[]')
+			$this->tag('input', 'stock16 add', FALSE, array(
+					'type' => 'button',
+					'value' => _('More')));
 		$this->tagClose('div');
 	}
 

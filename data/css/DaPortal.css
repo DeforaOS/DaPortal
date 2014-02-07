@@ -122,6 +122,11 @@ body.js-activated .expander > .title {
 	cursor:				pointer;
 }
 
+/* file chooser */
+body:not(.js-activated) div.filechooser > input[type="button"] {
+	display:			none;
+}
+
 /* frame */
 .frame > .title {
 	float:				left;
