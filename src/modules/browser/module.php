@@ -38,6 +38,7 @@ class BrowserModule extends Module
 				return $this->$action($engine, $request);
 			case 'default':
 			case 'download':
+			case 'upload':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
@@ -49,6 +50,36 @@ class BrowserModule extends Module
 	//protected
 	//methods
 	//accessors
+	//BrowserModule::canUpload
+	protected function canUpload($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+		$error = _('Permission denied');
+
+		//check for the global setting
+		if(!$this->configGet('upload'))
+			return FALSE;
+		//check for anonymous submissions
+		$error = _('Anonymous submissions are not allowed');
+		if($credentials->getUserID() == 0)
+			if(!$this->configGet('anonymous'))
+				return FALSE;
+		if($content === FALSE)
+			return TRUE;
+		//check for idempotence
+		$error = _('The request expired or is invalid');
+		if($request !== FALSE && $request->isIdempotent())
+			return FALSE;
+		//check for write permissions
+		$error = _('Could not lookup the path');
+		if(($path = $this->getPath($engine, $request)) === FALSE)
+			return FALSE;
+		$error = _('Permission denied');
+		return posix_access($path, W_OK) ? TRUE : FALSE;
+	}
+
+
 	//BrowserModule::getDate
 	protected function getDate($time)
 	{
@@ -135,6 +166,14 @@ class BrowserModule extends Module
 					'stock' => 'download',
 					'text' => _('Download')));
 		}
+		else if($this->canUpload($engine))
+		{
+			$r = new Request($this->name, 'upload', FALSE,
+					ltrim($path, '/'));
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'upload',
+					'text' => _('Upload')));
+		}
 		return $toolbar;
 	}
 
@@ -208,6 +247,117 @@ class BrowserModule extends Module
 				'text' => $title));
 		$page->append('dialog', array('type' => 'error',
 				'text' => $error));
+		return $page;
+	}
+
+
+	//BrowserModule::callUpload
+	protected function callUpload($engine, $request)
+	{
+		$root = $this->getRoot($engine);
+
+		//check permissions
+		$error = _('Unknown error');
+		if($this->canUpload($engine, $request, FALSE, $error) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		//obtain the path requested
+		$path = $this->getPath($engine, $request);
+		//create the page
+		$title = _('Browser: ')._('Upload to ').$path;
+		$page = new Page(array('title' => $title));
+		//title
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		//toolbar
+		//FIXME let stat() vs lstat() be configurable
+		$error = _('Could not open the file or directory requested');
+		if(($st = @stat($root.'/'.$path)) === FALSE)
+		{
+			$page->append('dialog', array(
+					'type' => 'error', 'text' => $error));
+			return $page;
+		}
+		if(($st['mode'] & Common::$S_IFDIR) == Common::$S_IFDIR)
+			$toolbar = $this->getToolbar($engine, $path, TRUE);
+		else
+			$toolbar = $this->getToolbar($engine, $path, FALSE);
+		$page->append($toolbar);
+		//process the request
+		if(($error = $this->_uploadProcess($engine, $request, $path))
+				=== FALSE)
+			return $this->_uploadSuccess($engine, $request, $path,
+					$page);
+		else if(is_string($error))
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+		//form
+		$r = new Request($this->name, 'upload', FALSE, ltrim($path,
+				'/'));
+		$form = $page->append('form', array('request' => $r));
+		$form->append('filechooser', array('name' => 'files[]'));
+		$r = new Request($this->name, FALSE, FALSE, ltrim($path, '/'));
+		$form->append('button', array('request' => $r,
+				'stock' => 'cancel', 'text' => _('Cancel')));
+		$form->append('button', array('type' => 'submit',
+				'name' => 'action', 'value' => '_upload',
+				'text' => _('Upload')));
+		return $page;
+	}
+
+	protected function _uploadProcess($engine, $request, $path)
+	{
+		$ret = TRUE;
+
+		//verify the request
+		if($request === FALSE || $request->get('_upload') === FALSE)
+			return TRUE;
+		if($request->isIdempotent() !== FALSE)
+			return _('The request expired or is invalid');
+		//upload the file(s)
+		$error = _('Internal server error');
+		//check known errors
+		if(!isset($_FILES['files']))
+			return TRUE;
+		//no files were really uploaded
+		if(count($_FILES['files']['error']) == 1
+				&& $_FILES['files']['error'][0] == 4)
+			return FALSE;
+		foreach($_FILES['files']['error'] as $k => $v)
+			if($v != UPLOAD_ERR_OK)
+				return _('An error occurred');
+		//store each file uploaded
+		//XXX if $path is a file authorize only one file at a time
+		foreach($_FILES['files']['error'] as $k => $v)
+		{
+			$res = $this->_uploadProcessFile($engine, $request,
+					$path, $_FILES['files']['tmp_name'][$k],
+					$_FILES['files']['name'][$k], $content);
+			if($res === FALSE)
+				return $error;
+		}
+		return FALSE;
+	}
+
+	protected function _uploadProcessFile($engine, $request, $parent,
+			$pathname, $filename, &$content)
+	{
+		$root = $this->getRoot($engine);
+		$dst = $root.'/'.$parent.'/'.$filename;
+
+		//XXX is this check necessary?
+		if(is_uploaded_file($pathname))
+			//XXX can it handle cross-partition?
+			return move_uploaded_file($pathname, $dst);
+		return FALSE;
+	}
+
+	protected function _uploadSuccess($engine, $request, $path, $page)
+	{
+		$r = new Request($this->name, FALSE, FALSE, ltrim($path, '/'));
+
+		$this->helperRedirect($engine, $r, $page,
+				$this->text_upload_progress);
 		return $page;
 	}
 
@@ -346,6 +496,27 @@ class BrowserModule extends Module
 	}
 
 
+	//DownloadModule::helperRedirect
+	protected function helperRedirect($engine, $request, $page,
+			$text = FALSE)
+	{
+		//XXX duplicated from ContentModule
+		if($text === FALSE)
+			$text = $this->text_redirect_progress;
+		$page->setProperty('location', $engine->getURL($request));
+		$page->setProperty('refresh', 30);
+		$box = $page->append('vbox');
+		$box->append('label', array('text' => $text));
+		$box = $box->append('hbox');
+		$text = _('If you are not redirected within 30 seconds, please ');
+		$box->append('label', array('text' => $text));
+		$box->append('link', array('text' => _('click here'),
+				'request' => $request));
+		$box->append('label', array('text' => '.'));
+		return $page;
+	}
+
+
 	//BrowserModule::helperSanitizePath
 	protected function helperSanitizePath($path)
 	{
@@ -356,6 +527,11 @@ class BrowserModule extends Module
 			return '/';
 		return $path;
 	}
+
+
+	//properties
+	protected $text_redirect_progress = 'Redirection in progress, please wait...';
+	protected $text_upload_progress = 'Upload in progress, please wait...';
 }
 
 ?>

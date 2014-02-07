@@ -142,6 +142,8 @@ globs=@PREFIX@/share/mime/globs
 
 [module::browser]
 #root=/tmp
+#upload=1
+#anonymous=1
 
 [module::content]
 #moderate=1
