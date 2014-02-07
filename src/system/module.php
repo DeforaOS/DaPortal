@@ -124,6 +124,14 @@ abstract class Module
 
 		return $config->get('module::'.$this->name, $variable);
 	}
+
+
+	//ContentModule::getRequest
+	protected function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		return new Request($this->name, $action, FALSE, FALSE,
+				$parameters);
+	}
 }
 
 ?>

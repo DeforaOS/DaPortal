@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -306,14 +306,6 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::getRequest
-	protected function getRequest($action = FALSE, $parameters = FALSE)
-	{
-		return new Request($this->name, $action, FALSE, FALSE,
-				$parameters);
-	}
-
-
 	//forms
 	//ContentModule::formSubmit
 	protected function formSubmit($engine, $request)
@@ -352,10 +344,10 @@ abstract class ContentModule extends Module
 		//FIXME review
 		$cred = $engine->getCredentials();
 
-		if(($user = $request->getParameter('user')) !== FALSE)
+		if(($user = $request->get('user')) !== FALSE)
 			return $this->helperActionsUser($engine, $request,
 					$user);
-		if(($group = $request->getParameter('group')) !== FALSE)
+		if(($group = $request->get('group')) !== FALSE)
 			return $this->helperActionsGroup($engine, $request,
 					$group);
 		$ret = array();
@@ -365,7 +357,7 @@ abstract class ContentModule extends Module
 			if(is_array($r))
 				$ret = array_merge($ret, $r);
 		}
-		if($request->getParameter('admin') !== FALSE)
+		if($request->get('admin') !== FALSE)
 			return $ret;
 		if($this->canSubmit($engine, $request))
 		{
@@ -385,7 +377,7 @@ abstract class ContentModule extends Module
 		$db = $engine->getDatabase();
 		$query = $this->query_list_admin;
 		$args = array('module_id' => $this->id);
-		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 		$actions = array('delete', 'disable', 'enable', 'post',
 			'unpost');
@@ -406,7 +398,7 @@ abstract class ContentModule extends Module
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
-				if($request->getParameter($a) !== FALSE)
+				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
 					return $this->$a($engine, $request);
@@ -444,8 +436,8 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$r = $this->getRequest('admin');
-		if($request !== FALSE && ($type = $request->getParameter(
-					'type')) !== FALSE)
+		if($request !== FALSE
+				&& ($type = $request->get('type')) !== FALSE)
 			$r->setParameter('type', $type);
 		$columns = array('icon' => '', 'title' => _('Title'),
 			'enabled' => _('Enabled'), 'public' => _('Public'),
@@ -473,7 +465,7 @@ abstract class ContentModule extends Module
 	protected function callDefault($engine, $request = FALSE)
 	{
 		$class = $this->content_class;
-		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 
 		if($request !== FALSE && $request->getID() !== FALSE)
@@ -576,7 +568,7 @@ abstract class ContentModule extends Module
 					$request->getID())
 				: Group::lookup($engine, $cred->getGroupname(),
 						$cred->getGroupID());
-		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$p = ($request !== FALSE) ? $request->get('page') : 0;
 
 		$title = $this->text_content_list_title_group;
 		$title = $this->text_content_list_title_by_group.' '
@@ -676,7 +668,7 @@ abstract class ContentModule extends Module
 		$user = ($request !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 					$request->getID()) : FALSE;
-		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$error = _('Unable to list contents');
 
 		//perform actions if necessary
@@ -687,7 +679,7 @@ abstract class ContentModule extends Module
 			$actions[] = 'unpost';
 		if($request !== FALSE)
 			foreach($actions as $a)
-				if($request->getParameter($a) !== FALSE)
+				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
 					return $this->$a($engine, $request);
@@ -821,7 +813,7 @@ abstract class ContentModule extends Module
 			'user_id' => $cred->getUserID());
 
 		//verify the request
-		if($request->getParameter('publish') === FALSE)
+		if($request->get('publish') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -861,9 +853,9 @@ abstract class ContentModule extends Module
 		$class = $this->content_class;
 		$content = array('user_id' => $cred->getUserID(),
 			'username' => $cred->getUsername(),
-			'title' => $request->getParameter('title'),
-			'content' => $request->getParameter('content'));
-		if(($public = $request->getParameter('public')) !== FALSE)
+			'title' => $request->get('title'),
+			'content' => $request->get('content'));
+		if(($public = $request->get('public')) !== FALSE)
 			$content['public'] = $public ? TRUE : FALSE;
 		$content = new $class($engine, $this, $content);
 		$this->helperToolbar($engine, $request, $content, $page);
@@ -886,8 +878,7 @@ abstract class ContentModule extends Module
 	protected function _submitProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE
-				|| $request->getParameter('_submit') === FALSE)
+		if($request === FALSE || $request->get('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -965,8 +956,7 @@ abstract class ContentModule extends Module
 	protected function _updateProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE
-				|| $request->getParameter('_submit') === FALSE)
+		if($request === FALSE || $request->get('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -1008,7 +998,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperActionsAdmin
 	protected function helperActionsAdmin($engine, $request)
 	{
-		if($request->getParameter('admin') === 0)
+		if($request->get('admin') === 0)
 			return FALSE;
 		$ret = array();
 		$r = $this->getRequest('admin');
@@ -1132,7 +1122,7 @@ abstract class ContentModule extends Module
 
 		$toolbar = $page->append('toolbar');
 		$r = $this->getRequest('admin', array(
-				'page' => $request->getParameter('page')));
+				'page' => $request->get('page')));
 		$toolbar->append('button', array('stock' => 'refresh',
 					'request' => $r,
 					'text' => _('Refresh')));
@@ -1165,7 +1155,7 @@ abstract class ContentModule extends Module
 		$fallback = 'call'.$fallback;
 		$r = new Request($request->getModule(), $request->getAction(),
 			$request->getID(), $request->getTitle());
-		if(($type = $request->getParameter('type')) !== FALSE)
+		if(($type = $request->get('type')) !== FALSE)
 			$r->setParameter('type', $type);
 		//verify the request
 		if($request->isIdempotent())
@@ -1308,8 +1298,7 @@ abstract class ContentModule extends Module
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
 		if($request === FALSE
-				|| ($pcur = $request->getParameter('page'))
-				=== FALSE)
+				|| ($pcur = $request->get('page')) === FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
 		unset($args['page']);
@@ -1398,8 +1387,7 @@ abstract class ContentModule extends Module
 	protected function helperSubmitPreview($engine, $request, $page,
 			$content)
 	{
-		if($request === FALSE
-				|| $request->getParameter('_preview') === FALSE)
+		if($request === FALSE || $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
 	}
@@ -1430,8 +1418,7 @@ abstract class ContentModule extends Module
 	protected function helperUpdatePreview($engine, $request, $content,
 			$page)
 	{
-		if($request === FALSE
-				|| $request->getParameter('_preview') === FALSE)
+		if($request === FALSE || $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
 	}
