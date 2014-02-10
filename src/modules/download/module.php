@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -182,11 +182,11 @@ class DownloadModule extends MultiContentModule
 		if(($content = $this->_get($engine, $id, $request->getTitle()))
 				=== FALSE)
 			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+					'type' => 'error', 'text' => $error));
 		if($content instanceof FileDownloadContent)
 			return $content->download($engine, $request);
 		return new PageElement('dialog', array('type' => 'error',
-			'text' => $error));
+				'text' => $error));
 	}
 
 
