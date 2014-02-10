@@ -167,15 +167,15 @@ class FileDownloadContent extends DownloadContent
 
 		//output the file
 		$filename = $root.'/'.$this->get('download_id');
-		$mime = Mime::getType($engine, $this->getTitle());
+		$type = Mime::getType($engine, $this->getTitle());
 		if(($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');
 			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+					'type' => 'error', 'text' => $error));
 		}
 		$ret = new StreamResponse($fp);
-		$ret->setType($mime);
+		$ret->setType($type);
 		return $ret;
 	}
 
