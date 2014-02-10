@@ -876,7 +876,7 @@ abstract class ContentModule extends Module
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
 		//preview
-		$this->helperSubmitPreview($engine, $request, $page, $content);
+		$this->helperSubmitPreview($engine, $request, $content, $page);
 		//form
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
@@ -1392,10 +1392,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperSubmitPreview
-	protected function helperSubmitPreview($engine, $request, $page,
-			$content)
+	protected function helperSubmitPreview($engine, $request, $content,
+			$page)
 	{
-		if($request === FALSE || $request->get('_preview') === FALSE)
+		if($this->canPreview($engine, $request, $content) === FALSE
+				|| $request === FALSE
+				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
 	}
@@ -1426,7 +1428,9 @@ abstract class ContentModule extends Module
 	protected function helperUpdatePreview($engine, $request, $content,
 			$page)
 	{
-		if($request === FALSE || $request->get('_preview') === FALSE)
+		if($this->canPreview($engine, $request, $content) === FALSE
+				|| $request === FALSE
+				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
 	}
