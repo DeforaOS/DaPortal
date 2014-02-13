@@ -65,16 +65,23 @@ abstract class Database
 	}
 
 
-	//Database::offset
-	public function offset($limit, $offset = FALSE)
+	//Database::limit
+	public function limit($limit = FALSE, $offset = FALSE)
 	{
-		//XXX report errors
-		if(!is_numeric($limit))
-			$limit = 0;
-		$ret = " LIMIT $limit";
+		if($limit === FALSE && $offset === FALSE)
+			return '';
+		$ret = ($limit !== FALSE && !is_numeric($limit))
+			? " LIMIT $limit" : ' LIMIT NULL';
 		if($offset !== FALSE && is_numeric($offset))
 			$ret .= " OFFSET $offset";
 		return $ret;
+	}
+
+
+	//Database::offset
+	public function offset($limit, $offset = FALSE)
+	{
+		return $this->limit($limit, $offset);
 	}
 
 
