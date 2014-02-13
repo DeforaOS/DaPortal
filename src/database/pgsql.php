@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -107,18 +107,15 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::offset
-	public function offset($limit, $offset = FALSE)
+	//PgsqlDatabase::limit
+	public function limit($limit = FALSE, $offset = FALSE)
 	{
-		$ret = '';
-
-		//FIXME untested
-		//XXX report errors
-		if($offset !== FALSE && is_numeric($offset))
-			$ret .= " OFFSET $offset";
-		if(!is_numeric($limit))
-			$limit = 0;
-		$ret .= " LIMIT $limit";
+		if($limit === FALSE && $offset === FALSE)
+			return '';
+		$ret = ($offset !== FALSE && is_numeric($offset))
+			? " OFFSET $offset" : '';
+		if($limit !== FALSE && is_numeric($limit))
+			$ret .= " LIMIT $limit";
 		return $ret;
 	}
 
