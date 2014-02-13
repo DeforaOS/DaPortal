@@ -936,17 +936,23 @@ class HTMLFormat extends FormatElements
 				$view = 'details';
 				break;
 		}
+		$r = $e->get('request');
+		$tag = ($r !== FALSE) ? 'form' : 'div';
 		$class = "treeview $view";
 		if($e->get('alternate'))
 			$class .= ' alternate';
 		if(($c = $e->get('class')) !== FALSE && strlen($c))
 			$class .= " $c";
-		$method = $e->get('idempotent') ? 'get' : 'post';
+		$args = FALSE;
+		if($r !== FALSE)
+		{
+			$method = $e->get('idempotent') ? 'get' : 'post';
+			$args = array('action' => 'index.php',
+				'method' => $method);
+		}
 		$this->renderTabs();
-		$this->tagOpen('form', $class, $e->get('id'), array(
-					'action' => 'index.php',
-					'method' => $method));
-		if($method === 'post')
+		$this->tagOpen($tag, $class, $e->get('id'), $args);
+		if($r !== FALSE && $method === 'post')
 		{
 			$token = sha1(uniqid(php_uname(), TRUE));
 			if(($tokens = $auth->getVariable($this->engine,
@@ -956,7 +962,7 @@ class HTMLFormat extends FormatElements
 			$auth->setVariable($this->engine, 'tokens', $tokens);
 			$this->_renderTreeviewHidden('_token', $token);
 		}
-		if(($r = $e->get('request')) !== FALSE)
+		if($r !== FALSE)
 		{
 			//FIXME copied from renderForm()
 			$this->_renderTreeviewHidden('_module', $r->getModule());
@@ -981,7 +987,7 @@ class HTMLFormat extends FormatElements
 		$this->renderTabs(-1);
 		//render the (optional) controls
 		$this->_renderTreeviewControls($e);
-		$this->tagClose('form');
+		$this->tagClose($tag);
 	}
 
 	private function _renderTreeviewControls($e)
