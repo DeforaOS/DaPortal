@@ -317,7 +317,8 @@ class HTMLFormat extends FormatElements
 				$args['href'] = $url;
 				$this->tagOpen($tag, $class, $id, $args);
 				$this->renderChildren($e);
-				print($this->escape($e->get('text')));
+				if(($text = $e->get('text')) !== FALSE)
+					print($this->escape($text));
 				$this->tagClose($tag);
 				break;
 		}
