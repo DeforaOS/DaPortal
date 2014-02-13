@@ -178,57 +178,57 @@ img {
 }
 
 /* treeview */
-form.treeview:after {
+.treeview:after {
 	clear:				left;
 	content:			"";
 	display:			block;
 }
 
-form.treeview > .table > .header {
+.treeview > .table > .header {
 	display:			none;
 	font-weight:			bold;
 	text-align:			left;
 }
 
-form.treeview > .table > .row > .detail {
+.treeview > .table > .row > .detail {
 	display:			none;
 }
 
-form.treeview.details > .table {
+.treeview.details > .table {
 	display:			table;
 	width:				100%;
 }
 
-form.treeview.details > .table > .header,
-form.treeview.details > .table > .row {
+.treeview.details > .table > .header,
+.treeview.details > .table > .row {
 	display:			table-row;
 }
 
-form.treeview.details > .table > .header > .detail,
-form.treeview.details > .table > .row > .detail {
+.treeview.details > .table > .header > .detail,
+.treeview.details > .table > .row > .detail {
 	display:			table-cell;
 	padding-right:			0.5ex;
 }
 
-form.treeview.details > .table > .row.level > .detail {
+.treeview.details > .table > .row.level > .detail {
 	font-size:			95%;
 	padding-left:			2ex;
 }
 
-form.treeview.details > .table > .row.level2 > .detail {
+.treeview.details > .table > .row.level2 > .detail {
 	font-size:			90%;
 	padding-left:			4ex;
 }
 
-form.treeview.icons > .table > .row,
-form.treeview.thumbnails > .table > .row {
+.treeview.icons > .table > .row,
+.treeview.thumbnails > .table > .row {
 	float:				left;
 	padding:			0.5ex;
 	text-align:			center;
 	width:				12ex;
 }
 
-form.treeview.icons > .table > .row .icon {
+.treeview.icons > .table > .row .icon {
 	display:			block;
 	height:				48px;
 	margin-left:			auto;
@@ -236,37 +236,37 @@ form.treeview.icons > .table > .row .icon {
 	width:				48px;
 }
 
-form.treeview.icons > .table > .row .icon > img {
+.treeview.icons > .table > .row .icon > img {
 	display:			block;
 }
 
-form.treeview.icons > .table > .row .label,
-form.treeview.thumbnails > .table > .row .label {
+.treeview.icons > .table > .row .label,
+.treeview.thumbnails > .table > .row .label {
 	display:			block;
 	height:				3.5em;
 	text-align:			center;
 	word-wrap:			break-word;
 }
 
-form.treeview.list > .table > .row {
+.treeview.list > .table > .row {
 	display:			block;
 }
 
-form.treeview.list > .table > .row .icon,
-form.treeview.list > .table > .row .label {
+.treeview.list > .table > .row .icon,
+.treeview.list > .table > .row .label {
 	display:			inline;
 }
 
-form.treeview.list > .table > .row .icon img.stock48 {
+.treeview.list > .table > .row .icon img.stock48 {
 	background-size:		16px 16px;
 	padding:			8px;
 }
 
-form.treeview.preview > .table > .row .detail.preview {
+.treeview.preview > .table > .row .detail.preview {
 	display:			block;
 }
 
-form.treeview.thumbnails > .table > .row .thumbnail {
+.treeview.thumbnails > .table > .row .thumbnail {
 	display:			block;
 	height:				96px;
 	margin-left:			auto;
@@ -274,7 +274,7 @@ form.treeview.thumbnails > .table > .row .thumbnail {
 	width:				96px;
 }
 
-form.treeview.thumbnails > .table > .row .thumbnail > img {
+.treeview.thumbnails > .table > .row .thumbnail > img {
 	max-height:			96px;
 	max-width:			96px;
 }
