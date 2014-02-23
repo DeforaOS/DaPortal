@@ -31,6 +31,16 @@ class DownloadModule extends MultiContentModule
 {
 	//public
 	//methods
+	//accessors
+	//DownloadModule::canPreview
+	public function canPreview($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		//XXX previewing is not always irrelevant
+		return FALSE;
+	}
+
+
 	//useful
 	//DownloadModule::call
 	public function call($engine, $request, $internal = 0)
