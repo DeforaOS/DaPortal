@@ -363,7 +363,7 @@ class Content
 	public function displayButtons($engine, $request)
 	{
 		$hbox = new PageElement('hbox');
-		$r = new Request($this->module->getName());
+		$r = $this->module->getRequest();
 		$hbox->append('link', array('stock' => $this->stock_back,
 				'request' => $r,
 				'text' => $this->text_more_content));
@@ -435,19 +435,18 @@ class Content
 	public function displayToolbar($engine, $request)
 	{
 		$credentials = $engine->getCredentials();
-		$module = $this->module->getName();
 
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin($engine))
 		{
-			$r = new Request($module, 'admin');
+			$r = $this->module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
 		if($this->module->canSubmit($engine, FALSE, $this))
 		{
-			$r = new Request($module, 'submit');
+			$r = $this->module->getRequest('submit');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => $this->stock_submit,
 					'text' => $this->text_submit_content));
@@ -1024,7 +1023,6 @@ class MultiContent extends Content
 	public function displayToolbar($engine, $request)
 	{
 		$credentials = $engine->getCredentials();
-		$module = $this->getModule()->getName();
 
 		if($this->type === FALSE)
 			return parent::displayToolbar($engine, $request);
@@ -1032,15 +1030,15 @@ class MultiContent extends Content
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin($engine))
 		{
-			$r = new Request($module, 'admin');
+			$r = $this->module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
 		if($this->getModule()->canSubmit($engine, FALSE, $this))
 		{
-			$r = new Request($module, 'submit', FALSE, FALSE,
-				array('type' => $this->type));
+			$r = $this->module->getRequest('submit', array(
+					'type' => $this->type));
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'new',
 					'text' => $this->text_submit_content));
