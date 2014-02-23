@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY internals "internals.xml">
+]>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&internals;"/>
+<!-- vim: set noet ts=1 sw=1 sts=1 tw=80: -->

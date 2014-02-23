@@ -1,5 +1,5 @@
 SUBDIRS	= apache sql
-TARGETS	= daportal.1 daportal.html daportal.conf daportal.conf.5 daportal.conf.html install.html internals.html
+TARGETS	= daportal.1 daportal.html daportal.conf daportal.conf.5 daportal.conf.html install.html internals.html internals-print.pdf
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -34,15 +34,18 @@ install.html: install.xml install.xsl
 internals.html: internals.xml internals.xsl
 	./docbook.sh -P "$(PREFIX)" -- "internals.html"
 
+internals-print.pdf: internals-print.xml internals-print.xsl
+	./docbook.sh -P "$(PREFIX)" -- "internals-print.pdf"
+
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
-	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
+	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS)
-	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(install.html_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
+	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)
