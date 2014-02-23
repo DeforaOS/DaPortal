@@ -105,6 +105,19 @@ class WikiContent extends MultiContent
 
 
 	//useful
+	//WikiContent::display
+	public function display($engine, $request)
+	{
+		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$types = array('revisions');
+
+		//allow more content types to be explicitly displayed
+		if(in_array($type, $types))
+			return $this->displayContent($engine, $request);
+		return parent::display($engine, $request);
+	}
+
+
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
