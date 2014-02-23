@@ -3,3 +3,4 @@
 	<xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 	<xsl:param name="section.autolabel" select="1"/>
 </xsl:stylesheet>
+<!-- vim: set noet ts=1 sw=1 sts=1 tw=80: -->
