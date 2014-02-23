@@ -112,7 +112,7 @@ class WikiContent extends MultiContent
 		$revision = $request->getParameter('revision');
 
 		$vbox = new PageElement('vbox');
-		if($type === FALSE)
+		if($type === FALSE || $type == 'content')
 			$vbox->append('htmlview', array(
 					'text' => $this->getMarkup($engine,
 						$revision)));
