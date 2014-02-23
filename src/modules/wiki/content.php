@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -108,12 +108,16 @@ class WikiContent extends MultiContent
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
+		$type = $request->getParameter('type');
 		$revision = $request->getParameter('revision');
 
 		$vbox = new PageElement('vbox');
-		$vbox->append('htmlview', array(
-			'text' => $this->getMarkup($engine, $revision)));
-		if($this->getID() !== FALSE)
+		if($type === FALSE)
+			$vbox->append('htmlview', array(
+					'text' => $this->getMarkup($engine,
+						$revision)));
+		if($this->getID() !== FALSE
+				&& ($type === FALSE || $type == 'revisions'))
 		{
 			$vbox->append('title', array('class' => 'revisions',
 				'stock' => $this->getModule()->getName(),
