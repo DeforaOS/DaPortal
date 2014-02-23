@@ -116,14 +116,26 @@ class WikiContent extends MultiContent
 			$vbox->append('htmlview', array(
 					'text' => $this->getMarkup($engine,
 						$revision)));
-		if($this->getID() !== FALSE
-				&& ($type === FALSE || $type == 'revisions'))
+		if($this->getID() !== FALSE)
 		{
-			$vbox->append('title', array('class' => 'revisions',
-				'stock' => $this->getModule()->getName(),
-				'text' => _('Revisions')));
-			$vbox->append($this->_contentRevisions($engine,
-					$request));
+			$stock = $this->getModule()->getName();
+			$title = _('Revisions');
+			$revisions = $this->_contentRevisions($engine,
+					$request);
+			if($type === FALSE)
+			{
+				$expander = $vbox->append('expander',
+						array('title' => $title));
+				$expander->append($revisions);
+			}
+			else if($type == 'revisions')
+			{
+				$container = $vbox->append('title', array(
+						'class' => 'revisions',
+						'stock' => $stock,
+						'text' => $title));
+				$vbox->append($revisions);
+			}
 		}
 		return $vbox;
 	}
