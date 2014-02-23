@@ -36,6 +36,14 @@ abstract class Module
 	}
 
 
+	//Module::getRequest
+	public function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		return new Request($this->name, $action, FALSE, FALSE,
+				$parameters);
+	}
+
+
 	//Module::getTitle
 	public function getTitle($engine)
 	{
