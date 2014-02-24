@@ -484,6 +484,7 @@ abstract class ContentModule extends Module
 					$offset = $limit * ($p - 1);
 			}
 		}
+		$error = _('Could not list the content available');
 		if(($list = $class::listAll($engine, $this, $limit, $offset))
 				=== FALSE)
 			return new PageElement('dialog', array(
