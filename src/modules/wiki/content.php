@@ -157,15 +157,16 @@ class WikiContent extends MultiContent
 	protected function _contentRevisions($engine, $request)
 	{
 		$module = $this->getModule()->getName();
+		$title = $this->getTitle();
 		$error = _('Could not list revisions');
 
 		if(($root = WikiContent::getRoot($module)) === FALSE
-				|| strpos($this->getTitle(), '/') !== FALSE)
+				|| strpos($title, '/') !== FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//obtain the revision list
 		$cmd = 'rlog';
-		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return new PageElement('dialog', array(
@@ -443,6 +444,7 @@ class WikiContent extends MultiContent
 		$revision = ($request !== FALSE) ? $request->get('revision')
 			: FALSE;
 		$module = $this->getModule()->getName();
+		$title = $this->getTitle();
 
 		if($revision !== FALSE)
 			return $this->getMarkupRevision($engine, $revision);
@@ -455,10 +457,11 @@ class WikiContent extends MultiContent
 		}
 		if($this->markup !== FALSE)
 			return $this->markup;
-		if(($root = WikiContent::getRoot($module)) === FALSE)
+		if(($root = WikiContent::getRoot($module)) === FALSE
+				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'co -p -q';
-		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
@@ -472,14 +475,16 @@ class WikiContent extends MultiContent
 	protected function getMarkupDiff($engine, $r1, $r2)
 	{
 		$module = $this->getModule()->getName();
+		$title = $this->getTitle();
 
 		if($r1 === FALSE || $r2 === FALSE)
 			return FALSE;
-		if(($root = WikiContent::getRoot($module)) === FALSE)
+		if(($root = WikiContent::getRoot($module)) === FALSE
+				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'rcsdiff -r'.escapeshellarg($r1)
 			.' -r'.escapeshellarg($r2);
-		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0 && $res != 1)
 			return FALSE;
@@ -493,11 +498,13 @@ class WikiContent extends MultiContent
 	protected function getMarkupRevision($engine, $revision)
 	{
 		$module = $this->getModule()->getName();
+		$title = $this->getTitle();
 
-		if(($root = WikiContent::getRoot($module)) === FALSE)
+		if(($root = WikiContent::getRoot($module)) === FALSE
+				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'co -p -q -r'.escapeshellarg($revision);
-		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
