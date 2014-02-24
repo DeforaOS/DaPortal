@@ -482,7 +482,7 @@ class WikiContent extends MultiContent
 		if(($root = WikiContent::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return FALSE;
-		$cmd = 'rcsdiff -r'.escapeshellarg($r1)
+		$cmd = 'rcsdiff -q -r'.escapeshellarg($r1)
 			.' -r'.escapeshellarg($r2);
 		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
