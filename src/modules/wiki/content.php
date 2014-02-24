@@ -484,7 +484,7 @@ class WikiContent extends MultiContent
 			return FALSE;
 		$cmd = 'rcsdiff -q -r'.escapeshellarg($r1)
 			.' -r'.escapeshellarg($r2);
-		$cmd .= ' '.escapeshellarg($root.'/'.$title);
+		$cmd .= ' -u '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0 && $res != 1)
 			return FALSE;
