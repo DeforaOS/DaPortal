@@ -121,14 +121,15 @@ class WikiContent extends MultiContent
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		$type = $request->getParameter('type');
-		$revision = $request->getParameter('revision');
+		$type = $request->get('type');
+		$revision = $request->get('revision');
+		$diff = $request->get('diff');
 
 		$vbox = new PageElement('vbox');
 		if($type === FALSE || $type == 'content')
 			$vbox->append('htmlview', array(
 					'text' => $this->getMarkup($engine,
-						$revision)));
+						$request)));
 		if($this->getID() !== FALSE)
 		{
 			$stock = $this->getModule()->getName();
@@ -183,11 +184,25 @@ class WikiContent extends MultiContent
 		{
 			$row = $view->append('row');
 			//name
-			$name = substr($rcs[$i], 9);
+			$revision = substr($rcs[$i], 9);
 			$r = $this->getRequest(FALSE, array(
-					'revision' => $name));
-			$name = new PageElement('link', array('request' => $r,
-					'text' => $name));
+					'revision' => $revision));
+			$name = new PageElement('label');
+			$name->append('link', array('request' => $r,
+					'text' => $revision));
+			if($i < $cnt - 5)
+			{
+				//FIXME revision1 may be wrong
+				$revision1 = substr($rcs[$i + 4], 9);
+				$r = $this->getRequest(FALSE, array(
+						'diff' => '',
+						'r1' => $revision1,
+						'r2' => $revision));
+				$name->append('label', array('text' => ' ('));
+				$name->append('link', array('request' => $r,
+						'text' => 'diff'));
+				$name->append('label', array('text' => ')'));
+			}
 			$row->setProperty('title', $name);
 			//date
 			$date = substr($rcs[$i + 1], 6, 19);
@@ -423,24 +438,70 @@ class WikiContent extends MultiContent
 	//methods
 	//accessors
 	//WikiContent::getMarkup
-	protected function getMarkup($engine, $revision = FALSE)
+	protected function getMarkup($engine, $request = FALSE)
 	{
+		$revision = ($request !== FALSE) ? $request->get('revision')
+			: FALSE;
 		$module = $this->getModule()->getName();
 
-		if($revision === FALSE && $this->markup !== FALSE)
+		if($revision !== FALSE)
+			return $this->getMarkupRevision($engine, $revision);
+		if($request !== FALSE && $request->get('diff') !== FALSE)
+		{
+			$r1 = $request->get('r1');
+			$r2 = $request->get('r2');
+			if($r1 !== FALSE && $r2 !== FALSE)
+				return $this->getMarkupDiff($engine, $r1, $r2);
+		}
+		if($this->markup !== FALSE)
 			return $this->markup;
 		if(($root = WikiContent::getRoot($module)) === FALSE)
 			return FALSE;
 		$cmd = 'co -p -q';
-		if($revision !== FALSE)
-			$cmd .= ' -r'.escapeshellarg($revision);
 		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
 		$rcs = implode("\n", $rcs);
-		if($revision === FALSE)
-			$this->setContent($engine, $rcs);
+		$this->setContent($engine, $rcs);
+		return $rcs;
+	}
+
+
+	//WikiContent::getMarkupDiff
+	protected function getMarkupDiff($engine, $r1, $r2)
+	{
+		$module = $this->getModule()->getName();
+
+		if($r1 === FALSE || $r2 === FALSE)
+			return FALSE;
+		if(($root = WikiContent::getRoot($module)) === FALSE)
+			return FALSE;
+		$cmd = 'rcsdiff -r'.escapeshellarg($r1)
+			.' -r'.escapeshellarg($r2);
+		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		exec($cmd, $rcs, $res);
+		if($res != 0 && $res != 1)
+			return FALSE;
+		$rcs = implode("\n", $rcs);
+		//XXX improve the output format
+		return '<pre>'.htmlspecialchars($rcs).'</pre>';
+	}
+
+
+	//WikiContent::getMarkupRevision
+	protected function getMarkupRevision($engine, $revision)
+	{
+		$module = $this->getModule()->getName();
+
+		if(($root = WikiContent::getRoot($module)) === FALSE)
+			return FALSE;
+		$cmd = 'co -p -q -r'.escapeshellarg($revision);
+		$cmd .= ' '.escapeshellarg($root.'/'.$this->getTitle());
+		exec($cmd, $rcs, $res);
+		if($res != 0)
+			return FALSE;
+		$rcs = implode("\n", $rcs);
 		return $rcs;
 	}
 
