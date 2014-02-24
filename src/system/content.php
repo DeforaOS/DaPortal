@@ -698,7 +698,9 @@ class Content
 					break;
 			}
 		//set the timestamp if necessary
-		if(($timestamp = $request->getParameter('timestamp')) !== FALSE
+		if($request !== FALSE
+				&& ($timestamp = $request->get('timestamp'))
+				!== FALSE
 				&& $this->canUpdateTimestamp($engine, $request))
 		{
 			$query = $this->query_update_timestamp;
