@@ -247,7 +247,8 @@ class ProjectContent extends MultiContent
 			return $toolbar;
 		foreach($actions as $k => $v)
 		{
-			$r = $this->getRequest($k);
+			$r = ($k == 'homepage') ? $this->getRequest()
+				: $this->getRequest($k);
 			$button = new PageElement('button', array(
 				'stock' => $k, 'request' => $r,
 				'text' => $v));
