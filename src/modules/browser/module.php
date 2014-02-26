@@ -32,18 +32,24 @@ class BrowserModule extends Module
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
+		if($internal)
+			switch($action)
+			{
+				case 'actions':
+					return $this->$action($engine,
+							$request);
+				default:
+					return FALSE;
+			}
 		switch($action)
 		{
-			case 'actions':
-				return $this->$action($engine, $request);
 			case 'default':
 			case 'download':
 			case 'upload':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
-			default:
-				return FALSE;
 		}
+		return FALSE;
 	}
 
 

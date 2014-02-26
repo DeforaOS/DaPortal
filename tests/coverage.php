@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,25 @@ require_once('./system/module.php');
 
 
 //functions
-function test($engine, $request)
+function test($engine, $request, $internal = FALSE)
 {
-	if(($page = $engine->process($request)) !== FALSE
-			&& $page instanceof PageElement)
-		$engine->render($page);
+	$module = $request->getModule();
+	$action = $request->getAction();
+
+	print("Testing module $module");
+	if($action !== FALSE)
+		print(", action $action");
+	if($internal !== FALSE)
+		print(" (internal)");
+	print("\n");
+	if(($res = $engine->process($request, $internal)) !== FALSE)
+	{
+		if($internal && $action == 'actions' && !is_array($res))
+			return FALSE;
+		if($res instanceof PageElement)
+			$engine->render($res);
+	}
+	return TRUE;
 }
 
 function tests($engine, $format = FALSE)
@@ -39,13 +53,20 @@ function tests($engine, $format = FALSE)
 	test($engine, new Request($module));
 	//content modules
 	$modules = array('article', 'blog', 'download', 'news', 'wiki');
-	$actions = array(FALSE, 'actions', 'admin', 'default', 'headline',
-		'list', 'preview', 'publish', 'submit', 'update');
+	$internal = array('actions');
+	$actions = array('admin', 'default', 'headline', 'list', 'preview',
+		'publish', 'submit', 'update');
 	foreach($modules as $module)
 	{
-		test($engine, new Request($module));
+		if(test($engine, new Request($module)) === FALSE)
+			exit(2);
+		foreach($internal as $a)
+			if(test($engine, new Request($module, $a), TRUE)
+					=== FALSE)
+				exit(3);
 		foreach($actions as $a)
-			test($engine, new Request($module, $a));
+			if(test($engine, new Request($module, $a)) === FALSE)
+				exit(4);
 	}
 	//multi-content modules
 	$modules = array(
@@ -53,11 +74,18 @@ function tests($engine, $format = FALSE)
 	foreach($modules as $module => $types)
 		foreach($types as $t)
 		{
-			test($engine, new Request($module, FALSE, FALSE, FALSE,
-					array('type' => $t)));
+			if(test($engine, new Request($module, FALSE, FALSE,
+					FALSE, array('type' => $t))) === FALSE)
+				exit(5);
+			foreach($internal as $a)
+				if(test($engine, new Request($module, $a), TRUE)
+						=== FALSE)
+					exit(6);
 			foreach($actions as $a)
-				test($engine, new Request($module, $a, FALSE,
-					FALSE, array('type' => $t)));
+				if(test($engine, new Request($module, $a, FALSE,
+						FALSE, array('type' => $t)))
+						=== FALSE)
+					exit(7);
 		}
 }
 

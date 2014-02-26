@@ -36,10 +36,17 @@ abstract class ContentModule extends Module
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
+		if($internal)
+			switch($action)
+			{
+				case 'actions':
+					return $this->$action($engine,
+							$request);
+				default:
+					return FALSE;
+			}
 		switch($action)
 		{
-			case 'actions':
-				return $this->$action($engine, $request);
 			case 'admin':
 			case 'default':
 			case 'display':
