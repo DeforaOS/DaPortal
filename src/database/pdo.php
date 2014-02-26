@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -86,33 +86,30 @@ class PDODatabase extends Database
 		if($config->get('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
-		{
-			$error = $this->handle->errorInfo();
-			$error[] = '';
-			$error[] = 'Unknown error';
-			return $engine->log('LOG_ERR',
-				'Could not prepare statement: '
-				.$error[0].': '.$error[2]);
-		}
+			return $this->_queryError($engine,
+				'Could not prepare statement');
 		if($parameters === FALSE)
 			$parameters = array();
 		$args = array();
 		foreach($parameters as $k => $v)
-		{
 			if(is_bool($v))
-				$v = $v ? 1 : 0;
-			$args[':'.$k] = $v;
-		}
+				$args[':'.$k] = $v ? 1 : 0;
+			else
+				$args[':'.$k] = $v;
 		if($stmt->execute($args) !== TRUE)
-		{
-			$error = $stmt->errorInfo();
-			$error[] = '';
-			$error[] = 'Unknown error';
-			return $engine->log('LOG_ERR',
-					'Could not execute query: '
-					.$error[0].': '.$error[2]);
-		}
+			return $this->_queryError($engine,
+				'Could not execute query');
 		return $stmt->fetchAll();
+	}
+
+	protected function _queryError($engine, $message)
+	{
+		$error = $this->handle->errorInfo();
+
+		if(count($error) == 3)
+			return $engine->log('LOG_ERR', $message.': '.$error[0]
+					.': '.$error[2]);
+		return $engine->log('LOG_ERR', $message.': '.$error[0]);
 	}
 
 
