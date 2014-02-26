@@ -60,7 +60,7 @@ class BasicTemplate extends Template
 				continue;
 			$title = $module->getTitle($engine);
 			$request = new Request($name, 'actions');
-			if(($actions = $module->call($engine, $request))
+			if(($actions = $module->call($engine, $request, TRUE))
 					=== FALSE)
 				continue;
 			$ret[$name] = array('name' => $name, 'title' => $title,
