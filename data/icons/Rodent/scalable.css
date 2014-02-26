@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,7 +176,7 @@
 }
 
 .stock16.update, .stock24.update, .stock32.update {
-	background-image:		url('xfce4-icon-theme/scalable/stock/stock_ok.svg');
+	background-image:		url('xfce4-icon-theme/scalable/stock/stock_edit.svg');
 }
 
 .stock16.upload, .stock24.upload, .stock32.upload {

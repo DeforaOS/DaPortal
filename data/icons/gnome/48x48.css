@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -280,7 +280,7 @@
 }
 
 .stock48.update {
-	background-image:	url('gnome-icon-theme/48x48/actions/stock_refresh.png');
+	background-image:	url('gnome-icon-theme/48x48/apps/text-editor.png');
 }
 
 .stock48.updir {
