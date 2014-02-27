@@ -17,6 +17,8 @@
 
 #variables
 DEBUG=
+DEVNULL="/dev/null"
+FORCE=0
 PACKAGE=
 VERSION=
 PREFIX="/usr/local"
@@ -66,6 +68,13 @@ _deploy()
 }
 
 
+#test
+_tests()
+{
+	(cd "tests" && $MAKE distclean all)
+}
+
+
 #debug
 _debug()
 {
@@ -77,7 +86,8 @@ _debug()
 #usage
 _usage()
 {
-	echo "Usage: deploy.sh [-P prefix][-v] hostname" 1>&2
+	echo "Usage: deploy.sh [-f][-P prefix][-v] hostname" 1>&2
+	echo "  -f    Skip running the tests before deploying" 1>&2
 	echo "  -v    Verbose mode" 1>&2
 	return 1
 }
@@ -89,8 +99,11 @@ if [ -z "$PACKAGE" -o -z "$VERSION" ]; then
 	exit 2
 fi
 ARCHIVE="$PACKAGE-$VERSION.tar.gz"
-while getopts "P:v" name; do
+while getopts "fP:v" name; do
 	case "$name" in
+		f)
+			FORCE=1
+			;;
 		P)
 			PREFIX="$OPTARG"
 			;;
@@ -113,4 +126,15 @@ fi
 DAPORTALDIR="$PREFIX/daportal"
 REMOTE="$1"
 
+if [ $FORCE -eq 0 ]; then
+	if [ $VERBOSE -ne 0 ]; then
+		_tests
+	else
+		_tests > "$DEVNULL"
+	fi
+	if [ $? -ne 0 ]; then
+		echo "deploy.sh: Could not deploy: Some tests failed" 1>&2
+		exit 2
+	fi
+fi
 _deploy "$DAPORTALDIR" "$REMOTE"
