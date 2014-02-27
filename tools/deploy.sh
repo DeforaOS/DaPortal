@@ -68,7 +68,7 @@ _deploy()
 }
 
 
-#test
+#tests
 _tests()
 {
 	(cd "tests" && $MAKE distclean all)
