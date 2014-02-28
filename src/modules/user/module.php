@@ -53,7 +53,7 @@ class UserModule extends Module
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
 		if($internal)
-			switch($actions)
+			switch($action)
 			{
 				case 'actions':
 					return $this->$action($engine,
