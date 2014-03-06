@@ -240,7 +240,7 @@ abstract class Engine
 			$res = require_once('./engines/'.$name.'.php');
 			if($res === FALSE)
 				return FALSE;
-			$class .= 'Engine';
+			$class = $name.'Engine';
 			$ret = new $class();
 		}
 		else if(($dir = opendir('engines')) !== FALSE)
