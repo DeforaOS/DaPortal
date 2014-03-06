@@ -70,7 +70,11 @@ regenerate=1
 [database::sqlite3]
 #filename=/var/www/sqlite/daportal.db3
 
+[engine::cli]
+#debug=1
+
 [engine::clihttp]
+#debug=1
 #hostname=localhost
 #port=80
 #friendly=1
@@ -79,11 +83,13 @@ regenerate=1
 #port=443
 
 [engine::http]
+#debug=1
 #private=1
 #private::module=user
 #private::actions=login,register,reset
 
 [engine::httpfriendly]
+#debug=1
 #kicker=
 #lowercase=0
 

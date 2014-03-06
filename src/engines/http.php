@@ -61,8 +61,8 @@ class HTTPEngine extends Engine
 		if($this->getDebug())
 			$this->log('LOG_DEBUG', 'URL is '.$url);
 		if(isset($_SERVER['SCRIPT_NAME'])
-				&& substr($_SERVER['SCRIPT_NAME'], -10)
-				!= $index)
+				&& substr($_SERVER['SCRIPT_NAME'],
+					-strlen($index)) != $index)
 		{
 			//FIXME might be an invalid address
 	 		header('Location: '.dirname($url));
@@ -96,6 +96,20 @@ class HTTPEngine extends Engine
 		if(($private = $config->get('engine::http', 'private')) == 1)
 			return $this->_getRequestPrivate();
 		return $this->_getRequestDo();
+	}
+
+	protected function _getRequestDebug()
+	{
+		$request = $this->request;
+
+		if(($module = $request->getModule()) !== FALSE)
+			header('X-DaPortal-Request-Module: '.$module);
+		if(($action = $request->getAction()) !== FALSE)
+			header('X-DaPortal-Request-Action: '.$action);
+		if(($id = $request->getID()) !== FALSE)
+			header('X-DaPortal-Request-ID: '.$id);
+		if(($title = $request->getTitle()) !== FALSE)
+			header('X-DaPortal-Request-Title: '.$title);
 	}
 
 	protected function _getRequestDo()
@@ -163,6 +177,8 @@ class HTTPEngine extends Engine
 		}
 		if($type !== FALSE && strlen($type) > 0)
 			$this->request->setType($type);
+		if($this->getDebug())
+			$this->_getRequestDebug();
 		return $this->request;
 	}
 

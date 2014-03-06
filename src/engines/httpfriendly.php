@@ -100,6 +100,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 			$args);
 		if($type !== FALSE && strlen($type) > 0)
 			$this->request->setType($type);
+		if($this->getDebug())
+			$this->_getRequestDebug();
 		return $this->request;
 	}
 

@@ -240,36 +240,36 @@ abstract class Engine
 			$res = require_once('./engines/'.$name.'.php');
 			if($res === FALSE)
 				return FALSE;
-			$name .= 'Engine';
-			$ret = new $name();
-			$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
-					.' (default)');
-			$ret->attach();
-			return $ret;
+			$class .= 'Engine';
+			$ret = new $class();
 		}
-		if(($dir = opendir('engines')) === FALSE)
-			return FALSE;
-		while(($de = readdir($dir)) !== FALSE)
+		else if(($dir = opendir('engines')) !== FALSE)
 		{
-			if(substr($de, -4) != '.php')
-				continue;
-			$res = require_once('./engines/'.$de);
-			if($res === FALSE)
-				continue;
-			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Engine';
-			$engine = new $name();
-			if(($p = $engine->match()) <= $priority)
-				continue;
-			$ret = $engine;
-			$priority = $p;
+			while(($de = readdir($dir)) !== FALSE)
+			{
+				if(substr($de, -4) != '.php')
+					continue;
+				$res = require_once('./engines/'.$de);
+				if($res === FALSE)
+					continue;
+				$n = substr($de, 0, strlen($de) - 4);
+				$class = $n.'Engine';
+				$engine = new $class();
+				if(($p = $engine->match()) <= $priority)
+					continue;
+				$ret = $engine;
+				$name = $n;
+				$priority = $p;
+			}
+			closedir($dir);
 		}
-		closedir($dir);
 		if($ret !== FALSE)
 		{
-			$ret->attach();
+			if($config->get("engine::$name", 'debug') == 1)
+				Engine::$debug = TRUE;
 			$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
+			$ret->attach();
 		}
 		return $ret;
 	}
