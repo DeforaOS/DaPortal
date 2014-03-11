@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2011-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2011-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DaPortal
 //
 //DaPortal is free software; you can redistribute it and/or modify
@@ -28,12 +28,14 @@ class TopModule extends Module
 	//TopModule::call
 	function call($engine, $request, $internal = 0)
 	{
+		if($internal)
+			return FALSE;
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
 		switch($action)
 		{
 			case 'admin':
-			case FALSE:
+			case 'default':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
@@ -45,7 +47,7 @@ class TopModule extends Module
 	//methods
 	//calls
 	//TopModule::callAdmin
-	protected function admin($engine, $request)
+	protected function callAdmin($engine, $request)
 	{
 		$cred = $engine->getCredentials();
 

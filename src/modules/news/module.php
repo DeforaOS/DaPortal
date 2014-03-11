@@ -47,6 +47,8 @@ class NewsModule extends ContentModule
 	//NewsModule::call
 	public function call($engine, $request, $internal = 0)
 	{
+		if($internal)
+			return parent::call($engine, $request, $internal);
 		switch($request->getAction())
 		{
 			case 'rss':

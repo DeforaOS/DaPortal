@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -51,6 +51,8 @@ class WikiModule extends ContentModule
 	//WikiModule::call
 	public function call($engine, $request, $internal = 0)
 	{
+		if($internal)
+			return parent::call($engine, $request, $internal);
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
 		switch($action)
@@ -58,10 +60,8 @@ class WikiModule extends ContentModule
 			case 'monitor':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
-			default:
-				return parent::call($engine, $request,
-						$internal);
 		}
+		return parent::call($engine, $request, $internal);
 	}
 
 

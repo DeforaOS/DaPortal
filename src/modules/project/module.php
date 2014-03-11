@@ -34,6 +34,8 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::call
 	public function call($engine, $request, $internal = 0)
 	{
+		if($internal)
+			return parent::call($engine, $request, $internal);
 		switch(($action = $request->getAction()))
 		{
 			case 'bug_list':
