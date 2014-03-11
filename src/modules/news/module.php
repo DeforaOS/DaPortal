@@ -53,7 +53,7 @@ class NewsModule extends ContentModule
 				//for backward compatibility
 				return $this->callRSS($engine, $request);
 		}
-		return parent::call($engine, $request);
+		return parent::call($engine, $request, $internal);
 	}
 
 
