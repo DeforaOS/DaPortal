@@ -59,20 +59,22 @@ class DownloadModule extends MultiContentModule
 				case 'submit':
 					return $this->_callInternalSubmit(
 							$engine, $request);
-				default:
-					return FALSE;
 			}
-		switch($action)
-		{
-			case 'download':
-			case 'submit':
-				$action = 'call'.$action;
-				return $this->$action($engine, $request);
-			case 'folder_new':
-				return $this->callFolderNew($engine, $request);
-			case 'file_insert':
-				return $this->callSubmit($engine, $request);
-		}
+		else
+			switch($action)
+			{
+				case 'download':
+				case 'submit':
+					$action = 'call'.$action;
+					return $this->$action($engine,
+							$request);
+				case 'folder_new':
+					return $this->callFolderNew($engine,
+							$request);
+				case 'file_insert':
+					return $this->callSubmit($engine,
+							$request);
+			}
 		return parent::call($engine, $request, $internal);
 	}
 
