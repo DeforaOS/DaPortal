@@ -266,6 +266,10 @@ class CVSSCMProject extends SCMProject
 		if($request->getParameter('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
+			$filename = basename($file);
+			$ret->setFilename($filename);
+			$type = Mime::getType($engine, $filename);
+			$ret->setType($type);
 			return $ret;
 		}
 		$label = $vbox->append('label');
