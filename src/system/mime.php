@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,8 @@ class Mime
 			return $default;
 		//FIXME use lstat() if the filename is absolute or relative
 		foreach(Mime::$types as $g)
-			if(isset($g[1]) && fnmatch($g[1], $filename))
+			if(isset($g[1]) && fnmatch($g[1], $filename,
+					FNM_CASEFOLD))
 				return $g[0];
 		return $default;
 	}
@@ -92,6 +93,8 @@ class Mime
 	{
 		$ret = TRUE;
 
+		if(!defined(FNM_CASEFOLD))
+			define(FNM_CASEFOLD, 0);
 		if(Mime::$types === FALSE)
 			$ret = Mime::_init_types($engine);
 		if(Mime::$iconpath === FALSE)
