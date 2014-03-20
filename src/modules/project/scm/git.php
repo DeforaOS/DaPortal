@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -142,10 +142,43 @@ class GitSCMProject extends SCMProject
 
 	private function _browseFile($engine, $request, $vbox, $path, $file)
 	{
-		//view
-		$vbox->append('title', array('text' => _('Commit log')));
-		$view = $vbox->append('treeview');
-		//FIXME really implement
+		if(($fp = fopen($path, 'r')) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		if($request->getParameter('download') !== FALSE)
+		{
+			$ret = new StreamResponse($fp);
+			return $ret;
+		}
+		$label = $vbox->append('label');
+		//link back
+		$r = new Request('project', 'browse', $request->getID(),
+			$request->getTitle(), array('file' => dirname($file)));
+		$label->append('link', array('request' => $r,
+				'stock' => 'updir', 'text' => 'Browse'));
+		//link to the download
+		$label->append('label', array('text' => ' '));
+		$r = new Request('project', 'browse', $request->getID(),
+			$request->getTitle(), array('file' => $file,
+			'download' => 1));
+		$label->append('link', array('request' => $r,
+					'stock' => 'download',
+					'text' => 'Download file'));
+		//link to this page
+		$label->append('label', array('text' => ' '));
+		$r = new Request('project', 'browse', $request->getID(),
+			$request->getTitle(), array('file' => $file));
+		$label->append('link', array('request' => $r,
+					'stock' => 'link',
+					'text' => 'Permalink'));
+		while(($line = fgets($fp)) !== FALSE)
+		{
+			$line = rtrim($line, "\r\n");
+			$vbox->append('label', array(
+					'class' => 'preformatted',
+					'text' => $line));
+		}
+		fclose($fp);
 		return $vbox;
 	}
 
