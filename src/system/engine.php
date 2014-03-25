@@ -217,6 +217,9 @@ abstract class Engine
 			$ret = new StringResponse($ret);
 		else if(!($ret instanceof Response))
 			return $this->log('LOG_ERR', 'Unknown response type');
+		//check if the request recommends a default type
+		if($type === FALSE)
+			$type = $request->getType();
 		//restore the type if not already enforced
 		if($type !== FALSE && $ret->getType() === FALSE)
 			$ret->setType($type);
