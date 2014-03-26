@@ -86,6 +86,27 @@ class Content
 	}
 
 
+	//Content::canDelete
+	public function canDelete($engine, $request = FALSE, &$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
+	//Content::canDisable
+	public function canDisable($engine, $request = FALSE, &$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
+	//Content::canEnable
+	public function canEnable($engine, $request = FALSE, &$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
 	//Content::canPreview
 	public function canPreview($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -341,6 +362,34 @@ class Content
 		$query = $this->query_delete;
 		$args = array('content_id' => $this->id);
 
+		if(!$this->canDelete($engine))
+			return FALSE;
+		return $database->query($engine, $query, $args);
+	}
+
+
+	//Content::disable
+	public function disable($engine)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->query_disable;
+		$args = array('content_id' => $this->id);
+
+		if(!$this->canDisable($engine))
+			return FALSE;
+		return $database->query($engine, $query, $args);
+	}
+
+
+	//Content::enable
+	public function enable($engine)
+	{
+		$database = $engine->getDatabase();
+		$query = $this->query_enable;
+		$args = array('content_id' => $this->id);
+
+		if(!$this->canEnable($engine))
+			return FALSE;
 		return $database->query($engine, $query, $args);
 	}
 
@@ -860,6 +909,14 @@ class Content
 	//IN:	content_id
 	protected $query_delete = 'DELETE FROM daportal_content
 		WHERE content_id=:content_id';
+	//IN:	content_id
+	protected $query_disable = "UPDATE daportal_content
+		SET enabled='0'
+		WHERE content_id=:content_id";
+	//IN:	content_id
+	protected $query_enable = "UPDATE daportal_content
+		SET enabled='1'
+		WHERE content_id=:content_id";
 	//IN:	module_id
 	//	user_id
 	//	title

@@ -81,6 +81,30 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::canDelete
+	public function canDelete($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
+	//ContentModule::canDisable
+	public function canDisable($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
+	//ContentModule::canEnable
+	public function canEnable($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		return $this->canAdmin($engine, $request, $content, $error);
+	}
+
+
 	//ContentModule::canPreview
 	public function canPreview($engine, $request = FALSE,
 			$content = FALSE, &$error = FALSE)
@@ -1122,11 +1146,7 @@ abstract class ContentModule extends Module
 	//ContentModule::helperAdminToolbar
 	protected function helperAdminToolbar($engine, $page, $request)
 	{
-		$actions = array('disable' => _('Disable'),
-			'enable' => _('Enable'),
-			'unpost' => _('Unpublish'),
-			'post' => _('Publish'),
-			'delete' => _('Delete'));
+		$actions = array();
 
 		$toolbar = $page->append('toolbar');
 		$r = $this->getRequest('admin', array(
@@ -1135,6 +1155,16 @@ abstract class ContentModule extends Module
 					'request' => $r,
 					'text' => _('Refresh')));
 		//actions
+		if($this->canDisable($engine, $request))
+			$actions['disable'] = _('Disable');
+		if($this->canEnable($engine, $request))
+			$actions['enable'] = _('Enable');
+		if($this->canUnpublish($engine, $request))
+			$actions['unpost'] = _('Unpublish');
+		if($this->canPublish($engine, $request))
+			$actions['post'] = _('Publish');
+		if($this->canDelete($engine, $request))
+			$actions['delete'] = _('Delete');
 		foreach($actions as $k => $v)
 			$toolbar->append('button', array('stock' => $k,
 					'text' => $v, 'type' => 'submit',
