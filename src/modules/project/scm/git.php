@@ -100,8 +100,8 @@ class GitSCMProject extends SCMProject
 		foreach($folders as $de => $st)
 		{
 			$row = $view->append('row');
-			$icon = new PageElement('image', array('size' => 16,
-					'stock' => 'folder'));
+			$icon = Mime::getIconByType($engine, 'inode/directory',
+					16);
 			$row->setProperty('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
