@@ -102,6 +102,8 @@ class GitSCMProject extends SCMProject
 			$row = $view->append('row');
 			$icon = Mime::getIconByType($engine, 'inode/directory',
 					16);
+			$icon = new PageElement('image', array(
+					'source' => $icon));
 			$row->setProperty('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
