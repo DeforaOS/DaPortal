@@ -18,6 +18,7 @@
 #variables
 #executables
 DATE="date"
+DEBUG="_debug"
 PHP="/usr/bin/env php"
 
 
@@ -31,9 +32,10 @@ _test()
 	echo -n "$test:" 1>&2
 	(echo
 	echo "Testing: $test" "$@"
-	$PHP "./$test.php" "$@") >> "$target" 2>&1
+	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
+		echo "./${test}.php: Failed with error code $res" >> "$target"
 		echo " FAILED" 1>&2
 		FAILED="$FAILED $test(error $res)"
 		return 2
@@ -41,6 +43,14 @@ _test()
 		echo " PASS" 1>&2
 		return 0
 	fi
+}
+
+
+#debug
+_debug()
+{
+	echo "$@" 1>&2
+	"$@"
 }
 
 
