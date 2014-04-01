@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -138,7 +138,7 @@ abstract class MultiContentModule extends ContentModule
 	protected function formSubmit($engine, $request)
 	{
 		$r = $this->getRequest('submit', array(
-				'type' => $request->getParameter('type')));
+				'type' => $request->get('type')));
 
 		$form = new PageElement('form', array('request' => $r));
 		//content
