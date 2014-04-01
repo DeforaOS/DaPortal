@@ -225,9 +225,12 @@ class FolderDownloadContent extends DownloadContent
 		$class = $this->class;
 		$db = $engine->getDatabase();
 		$query = $this->folder_query_insert;
-		$parent = $this->get('parent_id');
+		$parent = $request->get('parent');
+		$mode = $request->get('mode');
 
-		if(($mode = $request->getParameter('mode')) !== FALSE)
+		if($parent === FALSE)
+			$parent = NULL;
+		if($mode !== FALSE)
 			$mode |= $class::$S_IFDIR;
 		else if(($mode = $this->get('mode')) === FALSE)
 		{

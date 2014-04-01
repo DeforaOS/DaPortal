@@ -169,6 +169,7 @@ class DownloadModule extends MultiContentModule
 
 
 	//useful
+	//calls
 	//DownloadModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
@@ -214,6 +215,14 @@ class DownloadModule extends MultiContentModule
 		if($request === FALSE
 				|| $request->getParameter('_submit') === FALSE)
 			return TRUE;
+		switch($request->get('type'))
+		{
+			case 'file':
+				break;
+			default:
+				return parent::_submitProcess($engine, $request,
+						$content);
+		}
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//FIXME obtain the parent
@@ -247,6 +256,23 @@ class DownloadModule extends MultiContentModule
 		if($content->save($engine, $request, $error) === FALSE)
 			return $error;
 		return FALSE;
+	}
+
+
+	//forms
+	//DownloadModule::formSubmit
+	protected function formSubmit($engine, $request)
+	{
+		$r = $this->getRequest('submit', array(
+				'type' => $request->get('type'),
+				'parent' => $request->get('parent')));
+
+		$form = new PageElement('form', array('request' => $r));
+		//content
+		$this->helperSubmitContent($engine, $request, $form);
+		//buttons
+		$this->helperSubmitButtons($engine, $request, $form);
+		return $form;
 	}
 }
 
