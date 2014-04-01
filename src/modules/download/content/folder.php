@@ -137,6 +137,7 @@ class FolderDownloadContent extends DownloadContent
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
 		$parent = $this->get('parent_id');
+		$download_id = $this->get('download_id');
 
 		$toolbar = new PageElement('toolbar');
 		$parent = ($parent != NULL) ? $parent : FALSE;
@@ -153,14 +154,14 @@ class FolderDownloadContent extends DownloadContent
 		{
 			//new directory
 			$r = new Request($module->getName(), 'submit', FALSE,
-				FALSE, array('parent' => $this->getID()));
+				FALSE, array('parent' => $download_id));
 			$toolbar->append('button', array('request' => $r,
 					'stock' => $this->stock_submit,
 					'text' => $this->text_submit_content));
 			//upload file
 			$r = new Request($module->getName(), 'submit', FALSE,
 					FALSE, array('type' => 'file',
-					'parent' => $this->getID()));
+					'parent' => $download_id));
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'upload',
 					'text' => _('Upload file')));
