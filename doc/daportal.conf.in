@@ -29,6 +29,7 @@ charset=utf-8
 #backend=httpfriendly
 
 [auth]
+#backend=env
 #backend=http
 #backend=session
 #backend=unix

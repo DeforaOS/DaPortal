@@ -134,6 +134,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/daportal.php.in \
 		$(PACKAGE)-$(VERSION)/src/project.conf \
 		$(PACKAGE)-$(VERSION)/src/auth/Makefile \
+		$(PACKAGE)-$(VERSION)/src/auth/env.php \
 		$(PACKAGE)-$(VERSION)/src/auth/http.php \
 		$(PACKAGE)-$(VERSION)/src/auth/session.php \
 		$(PACKAGE)-$(VERSION)/src/auth/unix.php \
