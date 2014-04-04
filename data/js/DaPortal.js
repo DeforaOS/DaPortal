@@ -48,6 +48,26 @@ $(document).ready(function() {
 			});
 	});
 
+	//entry
+	$('input.entry[type=text]').each(function() {
+		//locate the "more" button
+		button = $(this).siblings('input[type=button]');
+
+		if(button.size() == 1)
+		{
+			button.on('click', { entry: $(this) },
+				function(event) {
+				entry = event.data.entry;
+				name = entry.attr('name');
+
+				//add an entry
+				entry.parent().append('<br/>'
+					+ '<input type="text" name="'
+					+ name + '"/>');
+			});
+		}
+	});
+
 	//expander
 	$('div.expander > div.title').on('click', function(event) {
 		children = $(this).siblings();

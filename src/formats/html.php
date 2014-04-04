@@ -431,6 +431,9 @@ class HTMLFormat extends FormatElements
 
 	protected function renderEntry($e)
 	{
+		$class = ($e->get('class') !== FALSE)
+			? 'entry '.$e->get('class') : 'entry';
+
 		$this->renderTabs();
 		$this->tagOpen('div', $e->getType());
 		if(($text = $e->get('text')) !== FALSE)
@@ -447,8 +450,12 @@ class HTMLFormat extends FormatElements
 			'value' => $value);
 		if(($width = $e->get('width')) !== FALSE && is_numeric($width))
 			$attributes['style'] = 'width: '.$width.'ex';
-		$this->tag('input', $e->get('class'), $e->get('id'),
-				$attributes);
+		$this->tag('input', $class, $e->get('id'), $attributes);
+		if($this->javascript && is_string($name)
+				&& substr($name, -2) == '[]')
+			$this->tag('input', 'stock16 add', FALSE, array(
+					'type' => 'button',
+					'value' => _('More')));
 		$this->tagClose('div');
 	}
 
