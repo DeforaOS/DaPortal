@@ -25,6 +25,8 @@
 		</authorgroup>
 		<copyright>
 			<year>2012</year>
+			<year>2013</year>
+			<year>2014</year>
 			<holder>&firstname; &surname; &lt;&email;&gt;</holder>
 		</copyright>
 		<legalnotice>
@@ -157,6 +159,22 @@
 				</varlistentry>
 			</variablelist>
 		</para>
+	</refsect1>
+	<refsect1 id="environment">
+		<title>Environment</title>
+		<para>The following environment variables affect the execution of
+			<command>&name;</command>:</para>
+		<variablelist>
+			<varlistentry><term>DAPORTALCONF</term>
+				<listitem><para>Path to an alternative configuration file for
+						<command>daportal<manvolnum>1</manvolnum></command> (defaults to
+						<filename>@PREFIX@/etc/daportal.conf</filename>)</para></listitem>
+			</varlistentry>
+			<varlistentry><term>DAPORTAL_USERNAME</term>
+				<listitem><para>Username to login against (requires environment-based
+						authentication, like provided by the EnvAuth authentication
+						backend)</para></listitem></varlistentry>
+		</variablelist>
 	</refsect1>
 	<refsect1 id="bugs">
 		<title>Bugs</title>
