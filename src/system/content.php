@@ -408,7 +408,8 @@ class Content
 		if($type === FALSE || $type == 'metadata')
 			$vbox->append($this->displayMetadata($engine,
 					$request));
-		if($type === FALSE || $type == 'content')
+		if($type === FALSE || $type == 'content'
+				|| strncmp($type, 'content::', 9) == 0)
 			$vbox->append($this->displayContent($engine, $request));
 		if($type === FALSE || $type == 'buttons')
 			$vbox->append($this->displayButtons($engine, $request));
