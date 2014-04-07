@@ -1091,6 +1091,7 @@ class MultiContent extends Content
 	public function displayToolbar($engine, $request)
 	{
 		$credentials = $engine->getCredentials();
+		$module = $this->getModule();
 
 		if($this->type === FALSE)
 			return parent::displayToolbar($engine, $request);
@@ -1098,14 +1099,14 @@ class MultiContent extends Content
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin($engine))
 		{
-			$r = $this->module->getRequest('admin');
+			$r = $module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->getModule()->canSubmit($engine, FALSE, $this))
+		if($module->canSubmit($engine, FALSE, $this))
 		{
-			$r = $this->module->getRequest('submit', array(
+			$r = $module->getRequest('submit', array(
 					'type' => $this->type));
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'new',
