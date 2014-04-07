@@ -362,9 +362,10 @@ class GroupModule extends Module
 	//GroupModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
+		$cred = $engine->getCredentials();
 		$database = $engine->getDatabase();
 		$query = $this->query_content;
-		$cred = $engine->getCredentials();
+		$title = FALSE;
 		$stock = $this->name;
 		$link = FALSE;
 
@@ -373,17 +374,18 @@ class GroupModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => 'Could not list modules'));
-		$page = new Page;
 		if(($gid = $request->getID()) !== FALSE)
 		{
 			$group = Group::lookup($engine, $request->getTitle(),
 					$gid);
-			$title = _('Content from group')
-				.' '.$request->getTitle();
+			if($group !== FALSE)
+				$title = _('Content from group')
+					.' '.$group->getGroupname();
 			$stock = 'content';
 		}
 		else if(($gid = $cred->getGroupID()) != 0)
 		{
+			//FIXME use the default group instead
 			$group = Group::lookup($engine, $cred->getUsername(),
 					$gid);
 			$title = _('My content');
@@ -392,10 +394,10 @@ class GroupModule extends Module
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
+		$page = new Page(array('title' => $title));;
 		if($group === FALSE || $group->getGroupID() == 0)
 			return $this->callDefault($engine, new Request);
 		//title
-		$page->setProperty('title', $title);
 		$page->append('title', array('stock' => $stock,
 				'text' => $title));
 		$vbox = $page->append('vbox');
