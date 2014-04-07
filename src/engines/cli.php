@@ -74,8 +74,16 @@ class CLIEngine extends Engine
 							return FALSE;
 						}
 						$key = array_shift($o);
-						$o = implode('=', $o);
-						$parameters[$key] = $o;
+						$value = implode('=', $o);
+						if(substr($key, -2) == '[]')
+						{
+							$key = substr($key, 0, -2);
+							if(!isset($parameters[$key]))
+								$parameters[$key] = array();
+							$parameters[$key][] = $value;
+						}
+						else
+							$parameters[$key] = $value;
 					}
 					break;
 				case 't':
