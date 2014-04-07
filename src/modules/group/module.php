@@ -92,10 +92,10 @@ class GroupModule extends Module
 		$vbox = $form->append('vbox');
 		$vbox->append('entry', array('name' => 'groupname',
 				'text' => _('Name: '),
-				'value' => $request->getParameter('groupname')));
+				'value' => $request->get('groupname')));
 		//enabled
 		$vbox->append('checkbox', array('name' => 'enabled',
-				'value' => $request->getParameter('enabled')
+				'value' => $request->get('enabled')
 					? TRUE : FALSE,
 				'text' => _('Enabled')));
 		//buttons
@@ -145,9 +145,9 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 
-		if(($user = $request->getParameter('user')) !== FALSE)
+		if(($user = $request->get('user')) !== FALSE)
 			return $this->_actionsUser($engine, $user);
-		if($request->getParameter('admin'))
+		if($request->get('admin'))
 			return $this->_actionsAdmin($engine, $cred,
 					$this->name);
 		return FALSE;
@@ -219,7 +219,7 @@ class GroupModule extends Module
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
-				if($request->getParameter($a) !== FALSE)
+				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
 					return $this->$a($engine, $request);
@@ -566,14 +566,13 @@ class GroupModule extends Module
 	protected function _submitProcess($engine, $request, &$group)
 	{
 		//verify the request
-		if($request === FALSE
-				|| $request->getParameter('submit') === FALSE)
+		if($request === FALSE || $request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
-		if(($groupname = $request->getParameter('groupname')) === FALSE)
+		if(($groupname = $request->get('groupname')) === FALSE)
 			return _('Invalid arguments');
-		$enabled = $request->getParameter('enabled') ? TRUE : FALSE;
+		$enabled = $request->get('enabled') ? TRUE : FALSE;
 		//create the group
 		$error = FALSE;
 		$group = Group::insert($engine, $groupname, $enabled, $error);
@@ -633,7 +632,7 @@ class GroupModule extends Module
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 
-		if(($groupname = $request->getParameter('groupname')) === FALSE)
+		if(($groupname = $request->get('groupname')) === FALSE)
 			$ret .= _("The group name is required\n");
 		if(strlen($ret) > 0)
 			return $ret;
