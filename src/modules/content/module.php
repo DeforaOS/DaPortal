@@ -59,6 +59,8 @@ abstract class ContentModule extends Module
 			case 'update':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
+			default:
+				return $this->callDefault($engine);
 		}
 		return FALSE;
 	}
