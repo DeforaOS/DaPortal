@@ -105,7 +105,7 @@ class GroupModule extends Module
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'stock' => 'new', 'name' => 'action',
-				'value' => 'submit', 'text' => _('Create')));
+				'value' => '_submit', 'text' => _('Create')));
 		return $form;
 	}
 
@@ -133,8 +133,9 @@ class GroupModule extends Module
 		$r = new Request($this->name, 'admin');
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r, 'text' => _('Cancel')));
-		$form->append('button', array('stock' => 'update',
-				'type' => 'submit', 'text' => _('Update')));
+		$form->append('button', array('type' => 'submit',
+				'stock' => 'update', 'name' => 'action',
+				'value' => '_submit', 'text' => _('Update')));
 		return $page;
 	}
 
@@ -568,7 +569,7 @@ class GroupModule extends Module
 	protected function _submitProcess($engine, $request, &$group)
 	{
 		//verify the request
-		if($request === FALSE || $request->get('submit') === FALSE)
+		if($request === FALSE || $request->get('_submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -634,6 +635,11 @@ class GroupModule extends Module
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 
+		//verify the request
+		if($request === FALSE || $request->get('_submit') === FALSE)
+			return TRUE;
+		if($request->isIdempotent() !== FALSE)
+			return _('The request expired or is invalid');
 		if(($groupname = $request->get('groupname')) === FALSE)
 			$ret .= _("The group name is required\n");
 		if(strlen($ret) > 0)
