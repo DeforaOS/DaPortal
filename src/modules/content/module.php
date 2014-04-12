@@ -507,12 +507,12 @@ abstract class ContentModule extends Module
 		$page->append('title', array('stock' => $this->name,
 				'text' => $this->text_content_title));
 		//paging
+		$offset = FALSE;
 		if(($limit = $this->content_list_count) > 0)
 		{
 			$pcnt = $class::countAll($engine, $this);
 			if($pcnt !== FALSE)
 			{
-				$offset = FALSE;
 				if(is_numeric($p) && $p > 1)
 					$offset = $limit * ($p - 1);
 			}
