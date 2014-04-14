@@ -87,7 +87,7 @@ class PDODatabase extends Database
 			$engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 			return $this->_queryError($engine,
-				'Could not prepare statement');
+					'Could not prepare statement');
 		if($parameters === FALSE)
 			$parameters = array();
 		$args = array();
@@ -98,7 +98,7 @@ class PDODatabase extends Database
 				$args[':'.$k] = $v;
 		if($stmt->execute($args) !== TRUE)
 			return $this->_queryError($engine,
-				'Could not execute query');
+					'Could not execute query');
 		return $stmt->fetchAll();
 	}
 
