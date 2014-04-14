@@ -155,7 +155,7 @@ class Content
 				default:
 					if(array_key_exists($k, $this->properties))
 						break;
-					else if($request->getParameter($k) === FALSE)
+					else if($request->get($k) === FALSE)
 					{
 						$error .= $sep.$v.' must be set';
 						$sep = "\n";
@@ -556,24 +556,24 @@ class Content
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
-				'value' => $request->getParameter('title')));
+				'value' => $request->get('title')));
 		$vbox->append('textview', array('name' => 'content',
 				'text' => _('Content: '),
-				'value' => $request->getParameter('content')));
+				'value' => $request->get('content')));
 		return $vbox;
 	}
 
 	protected function _formUpdate($engine, $request)
 	{
 		$vbox = new PageElement('vbox');
-		if(($value = $request->getParameter('title')) === FALSE)
+		if(($value = $request->get('title')) === FALSE)
 			$value = $this->getTitle();
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
 				'value' => $value));
 		$label = $vbox->append('label', array(
 				'text' => _('Content: ')));
-		if(($value = $request->getParameter('content')) === FALSE)
+		if(($value = $request->get('content')) === FALSE)
 			$value = $this->getContent($engine);
 		$label->append('textview', array('name' => 'content',
 				'value' => $value));
@@ -589,7 +589,7 @@ class Content
 		$content = clone $this;
 		foreach($this->fields as $k => $v)
 		{
-			if(($p = $request->getParameter($k)) === FALSE)
+			if(($p = $request->get($k)) === FALSE)
 				continue;
 			switch($k)
 			{
@@ -683,7 +683,7 @@ class Content
 			return $ret;
 		//reflect the new properties
 		foreach($this->fields as $f)
-			$this->set($f, $request->getParameter($f));
+			$this->set($f, $request->get($f));
 		return $ret;
 	}
 
@@ -743,8 +743,7 @@ class Content
 					$args[$k] = $this->$k;
 					if($request === FALSE)
 						break;
-					if(($v = $request->getParameter($k))
-							=== FALSE)
+					if(($v = $request->get($k)) === FALSE)
 						break;
 					$args[$k] = $v;
 					break;
