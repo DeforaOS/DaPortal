@@ -96,7 +96,7 @@ class BugProjectContent extends Content
 		daportal_user_enabled.user_id AS user_id, username,
 		bug.title AS title, bug.enabled AS enabled, state, type,
 		priority, daportal_project.project_id AS project_id,
-		project.title AS project, bug.public AS bug
+		project.title AS project, bug.public AS public
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
