@@ -30,7 +30,7 @@ class Mail
 	//useful
 	//Mail::send
 	static public function send($engine, $from, $to, $subject, $page,
-			$headers = array())
+			$headers = FALSE, $attachments = FALSE)
 	{
 		global $config;
 
@@ -61,7 +61,7 @@ class Mail
 			$charset = strtoupper($charset);
 		$headers['Content-Type'] = "text/plain; charset=$charset\n";
 		//prepare the message
-		$page = Mail::render($engine, $page, $headers);
+		$page = Mail::render($engine, $page, $headers, $attachments);
 		//assemble the headers
 		$hdr = "From: $from\n";
 		if(is_array($headers))
@@ -110,15 +110,31 @@ class Mail
 
 
 	//Mail::render
-	static protected function render($engine, $page, &$headers)
+	static protected function render($engine, $page, &$headers,
+			$attachments = FALSE)
 	{
 		$text = Mail::pageToText($engine, $page);
 		if(!class_exists('Mail_Mime'))
 			return $text;
 		$mime = new Mail_Mime(array('eol' => "\n"));
+		//plain text content
 		$mime->setTXTBody($text);
+		//HTML contents
 		$html = Mail::pageToHTML($engine, $page);
 		$mime->setHTMLBody($html);
+		//attachments
+		if(!is_array($attachments))
+			$attachments = array();
+		foreach($attachments as $filename => $data)
+		{
+			if(!is_string($filename) || !is_string($data))
+				continue;
+			$type = 'application/octet-stream';
+			if(($e = $mime->addAttachment($data, $type, $filename,
+					FALSE)) !== TRUE)
+				$engine->log('LOG_ERR', $e->getMessage());
+		}
+		//headers
 		$hdrs = $mime->headers(array());
 		foreach($hdrs as $h => $v)
 			$headers[$h] = $v;
