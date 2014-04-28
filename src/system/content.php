@@ -293,6 +293,14 @@ class Content
 	}
 
 
+	//Content::getUser
+	public function getUser($engine)
+	{
+		//XXX may fail
+		return new User($engine, $this->user_id, $this->username);
+	}
+
+
 	//Content::getUserID
 	public function getUserID()
 	{
