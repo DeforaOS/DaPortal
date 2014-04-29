@@ -151,13 +151,8 @@
 		<para>
 			<variablelist>
 				<varlistentry>
-					<term><filename>$PREFIX/etc/daportal.conf</filename></term>
-					<listitem><para>Can override some values for the &name;
-							script.</para></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><filename>$DAPORTALDIR/daportal.conf</filename></term>
-					<listitem><para>The configuration file for DaPortal.</para></listitem>
+					<term><filename>@PREFIX@/etc/daportal.conf</filename></term>
+					<listitem><para>Configuration file for the &name; script.</para></listitem>
 				</varlistentry>
 			</variablelist>
 		</para>
@@ -168,9 +163,7 @@
 			<command>&name;</command>:</para>
 		<variablelist>
 			<varlistentry><term>DAPORTALCONF</term>
-				<listitem><para>Path to an alternative configuration file for
-						<command>daportal<manvolnum>1</manvolnum></command> (defaults to
-						<filename>@PREFIX@/etc/daportal.conf</filename>)</para></listitem>
+				<listitem><para>Path to an alternative configuration file.</para></listitem>
 			</varlistentry>
 			<varlistentry><term>DAPORTAL_USERNAME</term>
 				<listitem><para>Username to login against (requires environment-based
