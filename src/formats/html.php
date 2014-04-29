@@ -219,7 +219,7 @@ class HTMLFormat extends FormatElements
 	{
 		$themes = dirname($_SERVER['SCRIPT_FILENAME']).'/themes';
 
-		if(($dir = opendir($themes)) === FALSE)
+		if(($dir = @opendir($themes)) === FALSE)
 			return;
 		while(($de = readdir($dir)) !== FALSE)
 		{
