@@ -217,8 +217,9 @@ class HTMLFormat extends FormatElements
 
 	private function _render_theme_alternate($page, $theme)
 	{
-		if(($dir = opendir(dirname($_SERVER['SCRIPT_FILENAME'])
-				.'/themes')) === FALSE)
+		$themes = dirname($_SERVER['SCRIPT_FILENAME']).'/themes';
+
+		if(($dir = opendir($themes)) === FALSE)
 			return;
 		while(($de = readdir($dir)) !== FALSE)
 		{
