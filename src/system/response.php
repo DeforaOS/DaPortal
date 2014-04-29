@@ -30,8 +30,9 @@ abstract class Response extends Mutator
 	//methods
 	//essential
 	//Response::Response
-	public function __construct($content)
+	public function __construct($content, $code = 0)
 	{
+		$this->setCode($code);
 		$this->setContent($content);
 	}
 
@@ -43,6 +44,13 @@ abstract class Response extends Mutator
 		global $config;
 
 		return $config->get('defaults', 'charset');
+	}
+
+
+	//Response::getCode
+	public function getCode()
+	{
+		return $this->code;
 	}
 
 
@@ -81,6 +89,16 @@ abstract class Response extends Mutator
 	}
 
 
+	//Response::setCode
+	public function setCode($code)
+	{
+		if(!is_integer($code))
+			return FALSE;
+		$this->code = $code;
+		return TRUE;
+	}
+
+
 	//Response::setContent
 	public function setContent($content)
 	{
@@ -113,8 +131,17 @@ abstract class Response extends Mutator
 	abstract public function render($engine);
 
 
+	//properties
+	static public $CODE_SUCCESS = 0;
+	static public $CODE_EINVAL = 1;
+	static public $CODE_EIO = 2;
+	static public $CODE_ENOENT = 3;
+	static public $CODE_EPERM = 4;
+
+
 	//protected
 	//properties
+	protected $code = 0;
 	protected $content = FALSE;
 	protected $filename = FALSE;
 	protected $type = FALSE;
@@ -162,7 +189,11 @@ class PageResponse extends Response
 		if(($output = Format::attachDefault($engine, $type)) !== FALSE)
 			$output->render($engine, $page);
 		else
+		{
 			$engine->log('LOG_ERR', $error);
+			return Response::$CODE_EIO;
+		}
+		return $this->getCode();
 	}
 }
 
