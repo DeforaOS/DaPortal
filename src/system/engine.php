@@ -168,7 +168,7 @@ abstract class Engine
 			case 'LOG_NOTICE':
 				if($this->verbose > 0
 						|| Engine::$debug !== TRUE)
-					break;
+					return FALSE;
 				$level = 'Info';
 				break;
 			default:
