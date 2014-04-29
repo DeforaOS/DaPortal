@@ -54,7 +54,9 @@
 			<arg choice="opt"><option>-m</option> <replaceable>module</replaceable></arg>
 			<arg choice="opt"><option>-a</option> <replaceable>action</replaceable></arg>
 			<arg choice="opt"><option>-i</option> <replaceable>ID</replaceable></arg>
+			<arg choice="opt"><option>-q</option></arg>
 			<arg choice="opt"><option>-t</option> <replaceable>title</replaceable></arg>
+			<arg choice="opt"><option>-v</option></arg>
 			<arg choice="opt" rep="repeat"><option>-o</option> <replaceable>variable=value</replaceable></arg>
 		</cmdsynopsis>
 	</refsynopsisdiv>

@@ -32,7 +32,7 @@ class CLIEngine extends Engine
 	//CLIEngine::getRequest
 	public function getRequest()
 	{
-		if(($options = getopt('DM:fm:a:i:o:t:')) === FALSE)
+		if(($options = getopt('DM:fm:a:i:o:qt:v')) === FALSE)
 			return parent::getRequest();
 		$idempotent = TRUE;
 		$module = FALSE;
@@ -86,8 +86,14 @@ class CLIEngine extends Engine
 							$parameters[$key] = $value;
 					}
 					break;
+				case 'q':
+					$this->verbose = 0;
+					break;
 				case 't':
 					$title = $options['t'];
+					break;
+				case 'v':
+					$this->verbose++;
 					break;
 			}
 		$ret = new Request($module, $action, $id, $title, $parameters);
@@ -125,7 +131,7 @@ class CLIEngine extends Engine
 
 	//protected
 	//properties
-	protected $usage = "Usage: daportal [-Df][-M mime-type][-m module [-a action]][-i ID][-t title]
+	protected $usage = "Usage: daportal [-Dfqv][-M mime-type][-m module [-a action][-i ID][-t title]]
                 [-o parameter=value...]\n";
 }
 

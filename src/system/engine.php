@@ -166,10 +166,15 @@ abstract class Engine
 				break;
 			case 'LOG_INFO':
 			case 'LOG_NOTICE':
+				if($this->verbose > 0
+						|| Engine::$debug !== TRUE)
+					break;
+				$level = 'Info';
+				break;
 			default:
 				if(Engine::$debug !== TRUE)
 					return FALSE;
-				$level = 'Info';
+				$level = 'Unknown';
 				break;
 		}
 		if(!is_string($message))
@@ -281,6 +286,7 @@ abstract class Engine
 	//protected
 	//properties
 	static protected $debug = FALSE;
+	protected $verbose = 0;
 	//queries
 	protected $query_modules = "SELECT module_id AS id, name
 		FROM daportal_module
