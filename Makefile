@@ -109,7 +109,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/Makefile \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf.in \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf.xml \
-		$(PACKAGE)-$(VERSION)/doc/daportal.xml \
+		$(PACKAGE)-$(VERSION)/doc/daportal.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/docbook.sh \
 		$(PACKAGE)-$(VERSION)/doc/install.xml \
 		$(PACKAGE)-$(VERSION)/doc/install.xsl \
