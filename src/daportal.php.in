@@ -39,8 +39,10 @@ if(($engine = Engine::attachDefault()) !== FALSE)
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
 	$engine->render($response);
+	$ret = $engine->getReturn();
 }
-$ret = $engine->getReturn();
+else
+	$ret = 2;
 if($profile)
 	Profile::stop($engine);
 unset($engine);
