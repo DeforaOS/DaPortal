@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2013 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ class Profile
 	//methods
 	//static
 	//Profile::start
-	static public function start()
+	static public function start($engine)
 	{
 		Profile::$time = microtime(TRUE);
 	}

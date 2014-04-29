@@ -27,24 +27,24 @@ $config->load($daportalconf);
 require_once('./system/compat.php');
 
 //profiling
-if(($profile = $config->get(FALSE, 'profile')))
-{
+$profile = $config->get(FALSE, 'profile') ? TRUE : FALSE;
+if($profile)
 	require_once('./system/profile.php');
-	Profile::start();
-}
 
 require_once('./system/engine.php');
 if(($engine = Engine::attachDefault()) !== FALSE)
 {
+	if($profile)
+		Profile::start($engine);
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
 	$engine->render($response);
 	$ret = $engine->getReturn();
+	if($profile)
+		Profile::stop($engine);
 }
 else
 	$ret = 2;
-if($profile)
-	Profile::stop($engine);
 unset($engine);
 exit($ret);
 
