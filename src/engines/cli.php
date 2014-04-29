@@ -32,7 +32,7 @@ class CLIEngine extends Engine
 	//CLIEngine::getRequest
 	public function getRequest()
 	{
-		if(($options = getopt('DM:fm:a:i:o:qt:v')) === FALSE)
+		if(($options = getopt('DM:fm:a:i:O:o:qt:v')) === FALSE)
 			return parent::getRequest();
 		$idempotent = TRUE;
 		$module = FALSE;
@@ -62,10 +62,11 @@ class CLIEngine extends Engine
 				case 'i':
 					$id = $options['i'];
 					break;
+				case 'O':
 				case 'o':
-					if(!is_array($options['o']))
-						$options['o'] = array($options['o']);
-					foreach($options['o'] as $o)
+					if(!is_array($options[$key]))
+						$options[$key] = array($options[$key]);
+					foreach($options[$key] as $o)
 					{
 						$o = explode('=', $o);
 						if(count($o) < 2)
