@@ -115,7 +115,11 @@ class Mail
 	{
 		$text = Mail::pageToText($engine, $page);
 		if(!class_exists('Mail_Mime'))
+		{
+			$engine->log('LOG_WARNING',
+					'Mail_Mime: Class not found');
 			return $text;
+		}
 		$mime = new Mail_Mime(array('eol' => "\n"));
 		//plain text content
 		$mime->setTXTBody($text);
