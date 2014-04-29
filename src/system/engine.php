@@ -36,6 +36,9 @@ abstract class Engine
 	//Engine::render
 	public function render($response)
 	{
+		if($this->verbose == 0)
+			//FIXME check for errors nonetheless
+			return FALSE;
 		if($response instanceof Response)
 			return $response->render($this);
 		return $this->log('LOG_ERR', 'Invalid response');
@@ -166,7 +169,7 @@ abstract class Engine
 				break;
 			case 'LOG_INFO':
 			case 'LOG_NOTICE':
-				if($this->verbose > 0
+				if($this->verbose >= 2
 						|| Engine::$debug !== TRUE)
 					return FALSE;
 				$level = 'Info';
@@ -286,7 +289,7 @@ abstract class Engine
 	//protected
 	//properties
 	static protected $debug = FALSE;
-	protected $verbose = 0;
+	protected $verbose = 1;
 	//queries
 	protected $query_modules = "SELECT module_id AS id, name
 		FROM daportal_module
