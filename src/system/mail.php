@@ -133,7 +133,8 @@ class Mail
 		{
 			if(!is_string($filename) || !is_string($data))
 				continue;
-			$type = 'application/octet-stream';
+			$type = Mime::getType($engine, $filename,
+					'application/octet-stream');
 			if(($e = $mime->addAttachment($data, $type, $filename,
 					FALSE)) !== TRUE)
 				$engine->log('LOG_ERR', $e->getMessage());
