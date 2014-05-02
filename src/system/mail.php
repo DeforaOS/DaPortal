@@ -17,6 +17,7 @@
 
 
 require_once('./system/format.php');
+require_once('./system/mime.php');
 @include_once('Mail.php');
 @include_once('Mail/mime.php');
 
