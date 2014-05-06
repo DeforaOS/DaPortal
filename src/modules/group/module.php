@@ -238,7 +238,8 @@ class GroupModule extends Module
 					'type' => 'error',
 					'text' => _('Could not list groups')));
 		$columns = array('groupname' => _('Group'),
-				'enabled' => _('Enabled'));
+				'enabled' => _('Enabled'),
+				'members' => _('Members'));
 		$r = new Request($this->name, 'admin');
 		$view = $page->append('treeview', array('request' => $r,
 				'view' => 'details', 'columns' => $columns));
@@ -271,8 +272,18 @@ class GroupModule extends Module
 		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
 		{
 			$row = $view->append('row');
-			$row->setProperty('id', 'group_id:'.$res[$i]['id']);
-			$row->setProperty('groupname', $res[$i]['groupname']);
+			$row->set('id', 'group_id:'.$res[$i]['id']);
+			//members
+			$row->set('members', $res[$i]['count']);
+			$r = new Request($this->name, 'list', $res[$i]['id'],
+					$res[$i]['groupname']);
+			$link = new PageElement('link', array(
+					'stock' => 'group', 'request' => $r,
+					'text' => $res[$i]['count']));
+			if($res[$i]['id'] != 0)
+				$row->set('members', $link);
+			//groupname
+			$row->set('groupname', $res[$i]['groupname']);
 			$r = new Request($this->name, 'update', $res[$i]['id'],
 				$res[$i]['groupname'],
 				array('type' => 'group'));
@@ -280,9 +291,9 @@ class GroupModule extends Module
 					'stock' => 'group', 'request' => $r,
 					'text' => $res[$i]['groupname']));
 			if($res[$i]['id'] != 0)
-				$row->setProperty('groupname', $link);
-			$row->setProperty('enabled', $db->isTrue(
-					$res[$i]['enabled']) ? $yes : $no);
+				$row->set('groupname', $link);
+			$row->set('enabled', $db->isTrue($res[$i]['enabled'])
+				? $yes : $no);
 		}
 		$vbox = $page->append('vbox');
 		$r = new Request($this->name);
@@ -728,8 +739,8 @@ class GroupModule extends Module
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');
-		$page->setProperty('location', $engine->getURL($request));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($request));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
@@ -745,9 +756,12 @@ class GroupModule extends Module
 	//private
 	//properties
 	//queries
-	private $query_admin = 'SELECT group_id AS id, groupname,
-		daportal_group.enabled AS enabled
-		FROM daportal_group';
+	private $query_admin = 'SELECT daportal_group.group_id AS id, groupname,
+		COUNT(user_id) AS count, daportal_group.enabled AS enabled
+		FROM daportal_group
+		LEFT JOIN daportal_user_group
+		ON daportal_group.group_id=daportal_user_group.group_id
+		GROUP BY daportal_group.group_id';
 	private $query_content = "SELECT name
 	       	FROM daportal_module
 		WHERE enabled='1'
