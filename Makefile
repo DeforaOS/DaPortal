@@ -115,6 +115,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/install.xsl \
 		$(PACKAGE)-$(VERSION)/doc/internals.xml \
 		$(PACKAGE)-$(VERSION)/doc/internals.xsl \
+		$(PACKAGE)-$(VERSION)/doc/internals-print.xml \
+		$(PACKAGE)-$(VERSION)/doc/internals-print.xsl \
 		$(PACKAGE)-$(VERSION)/doc/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/apache/Makefile \
 		$(PACKAGE)-$(VERSION)/doc/apache/httpd-php5.conf \
