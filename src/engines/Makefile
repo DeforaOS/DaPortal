@@ -19,6 +19,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 clihttp.php $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
+	$(INSTALL) -m 0644 clilog.php $(DESTDIR)$(PREFIX)/daportal/src/engines/clilog.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 daportal.php $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/engines
 	$(INSTALL) -m 0644 dummy.php $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
@@ -35,6 +37,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cgi.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/cli.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/clihttp.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/clilog.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/daportal.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/dummy.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/engines/email.php

@@ -152,6 +152,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/engines/cgi.php \
 		$(PACKAGE)-$(VERSION)/src/engines/cli.php \
 		$(PACKAGE)-$(VERSION)/src/engines/clihttp.php \
+		$(PACKAGE)-$(VERSION)/src/engines/clilog.php \
 		$(PACKAGE)-$(VERSION)/src/engines/daportal.php \
 		$(PACKAGE)-$(VERSION)/src/engines/dummy.php \
 		$(PACKAGE)-$(VERSION)/src/engines/email.php \

@@ -22,6 +22,7 @@ charset=utf-8
 #backend=cgi
 #backend=cli
 #backend=clihttp
+#backend=clilog
 #backend=dummy
 #backend=email
 #backend=gtk
