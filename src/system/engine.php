@@ -145,6 +145,13 @@ abstract class Engine
 	}
 
 
+	//Engine::setVerbose
+	public function setVerbose($verbose)
+	{
+		$this->verbose = $verbose ? 2 : 0;
+	}
+
+
 	//useful
 	//Engine::log
 	public function log($priority, $message)
@@ -169,8 +176,8 @@ abstract class Engine
 				break;
 			case 'LOG_INFO':
 			case 'LOG_NOTICE':
-				if($this->verbose >= 2
-						|| Engine::$debug !== TRUE)
+				if($this->verbose < 2
+						&& Engine::$debug !== TRUE)
 					return FALSE;
 				$level = 'Info';
 				break;
