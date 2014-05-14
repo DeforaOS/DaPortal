@@ -61,6 +61,8 @@ class Mime
 		}
 		$icon = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
 			.$icon.'.png';
+		if(!is_readable('../data/'.$icon))
+			return $default;
 		return $icon;
 	}
 
