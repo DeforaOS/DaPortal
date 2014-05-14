@@ -25,14 +25,15 @@ class Mime
 	//Mime::getIcon
 	static public function getIcon($engine, $filename, $size = 48)
 	{
-		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
-			.'/mimetypes/gtk-file.png';
+		$ret = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
+			.Mime::$default;
 
 		if(Mime::init($engine) === FALSE)
 			return $default;
-		if(($type = Mime::getType($engine, $filename, FALSE)) === FALSE)
-			return $default;
-		return Mime::getIconByType($engine, $type, $size);
+		if(($type = Mime::getType($engine, $filename, FALSE)) !== FALSE)
+			return Mime::getIconByType($engine, $type, $size);
+		return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
+			.Mime::$default;
 	}
 
 
@@ -85,7 +86,7 @@ class Mime
 	//private
 	//static
 	//properties
-	static private $default = FALSE;
+	static private $default = 'mimetypes/gtk-file.png';
 	static private $iconpath = FALSE;
 	static private $types = FALSE;
 
