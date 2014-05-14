@@ -40,7 +40,7 @@ class Mime
 	static public function getIconByType($engine, $type, $size = 48)
 	{
 		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
-			.'/mimetypes/gtk-file.png';
+			.'/'.Mime::$default;
 		$from = array('application/', 'audio/', 'image/', 'text/',
 			'video/');
 		$to = array('application-', 'audio-', 'image-', 'text-',
@@ -85,6 +85,7 @@ class Mime
 	//private
 	//static
 	//properties
+	static private $default = FALSE;
 	static private $iconpath = FALSE;
 	static private $types = FALSE;
 
@@ -113,10 +114,12 @@ class Mime
 		{
 			case 'Tango':
 				Mime::$iconpath = 'Tango/Tango';
+				Mime::$default = 'mimetypes/unknown.png';
 				break;
 			case 'gnome':
 			default:
 				Mime::$iconpath = 'gnome/gnome-icon-theme';
+				Mime::$default = 'mimetypes/gtk-file.png';
 				break;
 		}
 	}
