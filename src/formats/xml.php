@@ -135,48 +135,28 @@ class XMLFormat extends PlainFormat
 		$this->_print('<link>');
 		if(($text = $e->getProperty('text')) !== FALSE
 				&& strlen($text) > 0)
-		{
-			$this->_print('<text>');
-			$this->_print($this->escape($text));
-			$this->_print('</text>');
-		}
+			$this->_print('<text>'.$this->escape($text).'</text>');
 		if(($url = $e->getProperty('url')) === FALSE
 				&& ($r = $e->getProperty('request')) !== FALSE)
 		{
 			$this->_print('<request>');
 			if(($module = $r->getModule()) !== FALSE)
-			{
-				$this->_print('<module>');
-				$this->_print($this->escape($module));
-				$this->_print('</module>');
-			}
+				$this->_print('<module>'.$this->escape($module)
+						.'</module>');
 			if(($action = $r->getAction()) !== FALSE)
-			{
-				$this->_print('<action>');
-				$this->_print($this->escape($action));
-				$this->_print('</action>');
-			}
+				$this->_print('<action>'.$this->escape($action)
+						.'</action>');
 			if(($id = $r->getID()) !== FALSE)
-			{
-				$this->_print('<id>');
-				$this->_print($this->escape($id));
-				$this->_print('</id>');
-			}
+				$this->_print('<id>'.$this->escape($id)
+						.'</id>');
 			if(($title = $r->getTitle()) !== FALSE)
-			{
-				$this->_print('<title>');
-				$this->_print($this->escape($title));
-				$this->_print('</title>');
-			}
+				$this->_print('<title>'.$this->escape($title)
+						.'</title>');
 			$this->_print('</request>');
 			$url = $this->engine->getURL($r);
 		}
 		if($url !== FALSE)
-		{
-			$this->_print('<url>');
-			$this->_print($this->escape($url));
-			$this->_print('</url>');
-		}
+			$this->_print('<url>'.$this->escape($url).'</url>');
 		$this->renderChildren($e);
 		$this->_print('</link>');
 	}
