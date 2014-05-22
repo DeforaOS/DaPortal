@@ -97,11 +97,7 @@ class Config
 		$section = '';
 
 		if(($fp = @fopen($filename, 'r')) === FALSE)
-		{
-			$error = "$filename: Could not load configuration file";
-			error_log($error);
 			return FALSE;
-		}
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
 		{
 			if(preg_match("/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/",

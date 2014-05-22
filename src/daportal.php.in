@@ -21,7 +21,8 @@ global $config;
 $config = new Config();
 if(!isset($daportalconf) && ($daportalconf = getenv('DAPORTALCONF')) === FALSE)
 	$daportalconf = '@PREFIX@/etc/daportal.conf';
-$config->load($daportalconf);
+if($config->load($daportalconf) === FALSE)
+	error_log($daportalconf.': Could not load configuration file');
 
 //essential compatibility fixes
 require_once('./system/compat.php');
