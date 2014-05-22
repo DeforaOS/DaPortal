@@ -72,8 +72,13 @@ abstract class Format
 			$ret->attach($engine, $type);
 		}
 		else
-			$engine->log('LOG_ERR', 'Could not attach a formatting'
-					.' backend for '.$type);
+		{
+			$error = 'Could not attach ';
+			$error .= ($type !== FALSE)
+				? 'formatting backend for '.$type
+				: 'the default formatting backend';
+			$engine->log('LOG_ERR', $error);
+		}
 		return $ret;
 	}
 
