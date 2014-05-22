@@ -144,6 +144,8 @@ class GitSCMProject extends SCMProject
 
 	private function _browseFile($engine, $request, $vbox, $path, $file)
 	{
+		$error = _('Could not open file');
+
 		if(($fp = fopen($path, 'r')) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
