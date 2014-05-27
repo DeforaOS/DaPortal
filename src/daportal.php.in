@@ -17,25 +17,7 @@
 
 
 //auto-loader
-function autoload($class)
-{
-	if(strchr($class, '/') !== FALSE)
-		return;
-	$len = strlen($class);
-	if($len > 7 && substr($class, -7) == 'Content')
-	{
-		$module = substr($class, 0, $len - 7);
-		$filename = './modules/'.strtolower($module).'/content.php';
-	}
-	else if($len > 8 && substr($class, -8) == 'Response')
-		$filename = './system/response.php';
-	else
-		$filename = './system/'.strtolower($class).'.php';
-	if(file_exists($filename))
-		require_once($filename);
-}
-
-spl_autoload_register('autoload');
+require_once('./system/autoload.php');
 
 
 global $config;

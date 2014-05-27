@@ -17,7 +17,6 @@
 
 
 require_once('./tests.php');
-require_once('./system/config.php');
 
 
 //functions
