@@ -17,9 +17,6 @@
 
 
 
-require_once('./system/module.php');
-
-
 //SearchModule
 class SearchModule extends Module
 {

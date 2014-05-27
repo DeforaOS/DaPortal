@@ -16,11 +16,6 @@
 
 
 
-require_once('./system/common.php');
-require_once('./system/mime.php');
-require_once('./system/module.php');
-
-
 //BrowserModule
 class BrowserModule extends Module
 {

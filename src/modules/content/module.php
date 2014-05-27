@@ -19,12 +19,6 @@
 
 
 
-require_once('./system/content.php');
-require_once('./system/group.php');
-require_once('./system/module.php');
-require_once('./system/user.php');
-
-
 //ContentModule
 abstract class ContentModule extends Module
 {

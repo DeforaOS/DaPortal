@@ -18,10 +18,6 @@
 
 
 
-require_once('./system/group.php');
-require_once('./system/module.php');
-
-
 //GroupModule
 class GroupModule extends Module
 {

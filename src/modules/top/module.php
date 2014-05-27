@@ -17,9 +17,6 @@
 
 
 
-require_once('./system/module.php');
-
-
 //TopModule
 class TopModule extends Module
 {

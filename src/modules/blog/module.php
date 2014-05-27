@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/html.php');
-require_once('./modules/content/module.php');
-
-
 //BlogModule
 class BlogModule extends ContentModule
 {

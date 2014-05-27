@@ -16,11 +16,7 @@
 
 
 
-require_once('./system/common.php');
-require_once('./system/html.php');
-require_once('./system/user.php');
 require_once('./modules/content/multi.php');
-require_once('./modules/project/content.php');
 require_once('./modules/project/content/bug.php');
 require_once('./modules/project/content/bugreply.php');
 

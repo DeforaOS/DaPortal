@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/module.php');
-
-
 //AdminModule
 class AdminModule extends Module
 {

@@ -18,10 +18,7 @@
 
 
 
-require_once('./system/common.php');
-require_once('./system/mime.php');
 require_once('./modules/content/multi.php');
-require_once('./modules/download/content.php');
 require_once('./modules/download/content/file.php');
 require_once('./modules/download/content/folder.php');
 

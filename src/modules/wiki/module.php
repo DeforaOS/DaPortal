@@ -16,11 +16,6 @@
 
 
 
-require_once('./system/user.php');
-require_once('./modules/content/module.php');
-require_once('./modules/wiki/content.php');
-
-
 //WikiModule
 class WikiModule extends ContentModule
 {

@@ -16,11 +16,6 @@
 
 
 
-require_once('./system/html.php');
-require_once('./modules/content/module.php');
-require_once('./modules/news/content.php');
-
-
 //NewsModule
 class NewsModule extends ContentModule
 {
