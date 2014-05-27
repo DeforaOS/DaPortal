@@ -31,7 +31,6 @@ function autoload($class)
 		$filename = './system/response.php';
 	else
 		$filename = './system/'.strtolower($class).'.php';
-	fprintf(STDERR, "$filename\n");
 	if(file_exists($filename))
 		require_once($filename);
 }
