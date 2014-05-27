@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/page.php');
-
-
 //Format
 abstract class Format
 {

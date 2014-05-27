@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/mutator.php');
-
-
 //Request
 class Request extends Mutator
 {

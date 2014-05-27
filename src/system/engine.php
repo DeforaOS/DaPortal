@@ -16,12 +16,6 @@
 
 
 
-require_once('./system/auth.php');
-require_once('./system/module.php');
-require_once('./system/request.php');
-require_once('./system/response.php');
-
-
 //Engine
 abstract class Engine
 {
@@ -316,7 +310,6 @@ abstract class Engine
 	{
 		if($this->auth !== FALSE)
 			return TRUE;
-		require_once('./system/auth.php');
 		$this->auth = Auth::attachDefault($this);
 		return ($this->auth !== FALSE) ? TRUE : FALSE;
 	}

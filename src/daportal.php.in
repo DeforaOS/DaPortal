@@ -16,7 +16,29 @@
 
 
 
-require_once('./system/config.php');
+//auto-loader
+function autoload($class)
+{
+	if(strchr($class, '/') !== FALSE)
+		return;
+	$len = strlen($class);
+	if($len > 7 && substr($class, -7) == 'Content')
+	{
+		$module = substr($class, 0, $len - 7);
+		$filename = './modules/'.strtolower($module).'/content.php';
+	}
+	else if($len > 8 && substr($class, -8) == 'Response')
+		$filename = './system/response.php';
+	else
+		$filename = './system/'.strtolower($class).'.php';
+	fprintf(STDERR, "$filename\n");
+	if(file_exists($filename))
+		require_once($filename);
+}
+
+spl_autoload_register('autoload');
+
+
 global $config;
 $config = new Config();
 if(!isset($daportalconf) && ($daportalconf = getenv('DAPORTALCONF')) === FALSE)
@@ -29,18 +51,15 @@ require_once('./system/compat.php');
 
 //profiling
 $profile = $config->get(FALSE, 'profile') ? TRUE : FALSE;
-if($profile)
-	require_once('./system/profile.php');
 
-require_once('./system/engine.php');
 if(($engine = Engine::attachDefault()) !== FALSE)
 {
 	if($profile)
 		Profile::start($engine);
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
-	$engine->render($response);
-	$ret = $engine->getReturn();
+	if(($ret = $engine->render($response)) === FALSE)
+		$ret = -1;
 	if($profile)
 		Profile::stop($engine);
 }

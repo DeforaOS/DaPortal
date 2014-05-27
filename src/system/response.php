@@ -16,13 +16,6 @@
 
 
 
-require_once('./system/mutator.php');
-//XXX for PageResponse (and StreamResponse)
-require_once('./system/format.php');
-require_once('./system/page.php');
-require_once('./system/template.php');
-
-
 //Response
 abstract class Response extends Mutator
 {

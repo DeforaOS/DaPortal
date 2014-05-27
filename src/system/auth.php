@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/request.php');
-
-
 //AuthCredentials
 class AuthCredentials
 {
