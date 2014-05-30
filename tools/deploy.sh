@@ -40,7 +40,7 @@ _deploy()
 {
 	DAPORTALDIR="$1"
 	REMOTE="$2"
-	TARX="$TAR -xzf"
+	TARX="$TAR -xzpf"
 
 	[ "$VERBOSE" -ne 0 ] && TARX="$TAR -xzvf"
 	$DEBUG $MAKE dist					|| return 2
