@@ -21,34 +21,39 @@ function autoload($class)
 {
 	if(strchr($class, '/') !== FALSE)
 		return;
+	if(($filename = _autoload_filename($class)) !== FALSE
+			&& file_exists($filename))
+		require_once($filename);
+}
+
+function _autoload_filename($class)
+{
+	switch($class)
+	{
+		case 'AuthCredentials':
+			return './system/auth.php';
+		case 'MultiContent':
+			return './system/content.php';
+	}
+
+	//fallback
 	$len = strlen($class);
 	//Content sub-classes
 	if($len > 7 && substr($class, -7) == 'Content')
 	{
 		$module = substr($class, 0, $len - 7);
-		$filename = './modules/'.strtolower($module).'/content.php';
+		return './modules/'.strtolower($module).'/content.php';
 	}
 	//Modules
 	else if($len > 6 && substr($class, -6) == 'Module')
 	{
 		$module = substr($class, 0, $len - 6);
-		$filename = './modules/'.strtolower($module).'/module.php';
+		return './modules/'.strtolower($module).'/module.php';
 	}
 	//Responses
 	else if($len > 8 && substr($class, -8) == 'Response')
-		$filename = './system/response.php';
-	else
-		switch($class)
-		{
-			case 'AuthCredentials':
-				$filename = './system/auth.php';
-				break;
-			default:
-				$filename = './system/'.strtolower($class).'.php';
-				break;
-		}
-	if(file_exists($filename))
-		require_once($filename);
+		return './system/response.php';
+	return './system/'.strtolower($class).'.php';
 }
 
 spl_autoload_register('autoload');
