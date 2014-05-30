@@ -185,7 +185,10 @@ abstract class Auth
 			$query = $this->query_variable_add;
 			$args['value'] = serialize($value);
 		}
-		else if($v == $value)
+		else if($v != $value)
+			//update the variable in the database
+			$args['value'] = serialize($value);
+		else
 			//no need to issue any query
 			return TRUE;
 		return ($database->query($engine, $query, $args) !== FALSE)
