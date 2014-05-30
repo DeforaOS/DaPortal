@@ -16,7 +16,7 @@ subdirs:
 daportal.1: daportal.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.1"
 
-daportal.html: daportal.xml
+daportal.html: daportal.css.xml daportal.xml manual.css.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.html"
 
 daportal.conf: daportal.conf.in
@@ -25,7 +25,7 @@ daportal.conf: daportal.conf.in
 daportal.conf.5: daportal.conf.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.conf.5"
 
-daportal.conf.html: daportal.conf.xml
+daportal.conf.html: daportal.conf.css.xml daportal.conf.xml manual.css.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.conf.html"
 
 daportal.xml: daportal.xml.in

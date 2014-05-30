@@ -107,8 +107,10 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/themes/khorben.css \
 		$(PACKAGE)-$(VERSION)/data/themes/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/Makefile \
+		$(PACKAGE)-$(VERSION)/doc/daportal.conf.css.xml \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf.in \
 		$(PACKAGE)-$(VERSION)/doc/daportal.conf.xml \
+		$(PACKAGE)-$(VERSION)/doc/daportal.css.xml \
 		$(PACKAGE)-$(VERSION)/doc/daportal.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/docbook.sh \
 		$(PACKAGE)-$(VERSION)/doc/install.xml \
@@ -117,6 +119,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/internals.xsl \
 		$(PACKAGE)-$(VERSION)/doc/internals-print.xml \
 		$(PACKAGE)-$(VERSION)/doc/internals-print.xsl \
+		$(PACKAGE)-$(VERSION)/doc/manual.css.xml \
 		$(PACKAGE)-$(VERSION)/doc/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/apache/Makefile \
 		$(PACKAGE)-$(VERSION)/doc/apache/httpd-php5.conf \
