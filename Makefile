@@ -113,7 +113,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/daportal.css.xml \
 		$(PACKAGE)-$(VERSION)/doc/daportal.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/docbook.sh \
-		$(PACKAGE)-$(VERSION)/doc/install.xml \
+		$(PACKAGE)-$(VERSION)/doc/install.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/install.xsl \
 		$(PACKAGE)-$(VERSION)/doc/internals.xml \
 		$(PACKAGE)-$(VERSION)/doc/internals.xsl \

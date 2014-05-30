@@ -130,15 +130,15 @@
 			<para>For increased security, &package; 2 is meant to be installed in a
 				separate directory, outside of the web server's document root folder. On
 				most systems, this might be:<itemizedlist>
-					<listitem><para><filename>/usr/local/daportal</filename> for &package;
+					<listitem><para><filename>@PREFIX@/daportal</filename> for &package;
 							2;</para></listitem>
 					<listitem><para><filename>/var/www/htdocs</filename> for the web
 							server's document root.</para></listitem>
 			</itemizedlist>This guide will assume these locations to be used in the
 			following instructions.</para>
 		<para>Uncompress &package; 2 to the destination folder:</para>
-			<programlisting>$ tar xzvf DaPortal-version.tar.gz
-$ cd DaPortal-version
+			<programlisting>$ tar xzvf DaPortal-@VERSION@.tar.gz
+$ cd DaPortal-@VERSION@
 $ make install</programlisting>
 			<para>You should then move, copy or alias the contents of &package;'s
 				<filename>data</filename> sub-directory in the web server's own document
@@ -146,10 +146,10 @@ $ make install</programlisting>
 				configuration file, as shown in <xref linkend="example-apache"/>.</para>
 			<example id="example-apache">
 				<title>Data directory aliasing in Apache</title>
-				<programlisting>Alias /css/ "/usr/local/daportal/data/css/"
-Alias /icons/ "/usr/local/daportal/data/icons/"
-Alias /js/ "/usr/local/daportal/data/js/"
-Alias /themes/ "/usr/local/daportal/data/themes/"</programlisting>
+				<programlisting>Alias /css/ "@PREFIX@/daportal/data/css/"
+Alias /icons/ "@PREFIX@/daportal/data/icons/"
+Alias /js/ "@PREFIX@/daportal/data/js/"
+Alias /themes/ "@PREFIX@/daportal/data/themes/"</programlisting>
 			</example>
 			<para>Likewise, you may have to copy and modify the default index file,
 				<filename>index.php</filename>, from the <filename>data</filename> directory
@@ -157,7 +157,7 @@ Alias /themes/ "/usr/local/daportal/data/themes/"</programlisting>
 					linkend="example-index.php"/>:</para>
 			<example id="example-index.php">
 				<title>index.php in the document root</title>
-				<programlisting>&lt;?php if(chdir('/usr/local/daportal/src')) require('./daportal.php'); ?&gt;</programlisting>
+				<programlisting>&lt;?php if(chdir('@PREFIX@/daportal/src')) require('./daportal.php'); ?&gt;</programlisting>
 			</example>
 			<para>Be sure to set <filename>index.php</filename> as a valid index file in
 				the web server's configuration (directive <varname>DirectoryIndex</varname>
@@ -251,7 +251,7 @@ filename=/var/www/sqlite/daportal.db</programlisting>
 			<programlisting>$ mkdir -p /var/www/sqlite
 $ touch /var/www/sqlite/daportal.db
 $ sqlite /var/www/sqlite/daportal.db
-sqlite&gt; .read /usr/local/share/doc/DaPortal/sql/sqlite.sql
+sqlite&gt; .read @PREFIX@/share/doc/DaPortal/sql/sqlite.sql
 sqlite&gt; .quit</programlisting>
 			<warning>
 				<title>Warning: privileges for the SQLite database folder</title>
@@ -298,9 +298,9 @@ backend=session</programlisting>
 		<para>The <command>&name;</command> command can be installed to the system as
 			follows:</para>
 		<programlisting>$ cd /var/www/daportal/tools
-$ make PREFIX="/usr/local" install</programlisting>
+$ make PREFIX="@PREFIX@" install</programlisting>
 		<para>Specifying the <varname>PREFIX</varname> value is optional, and defaults
-			to <filename>/usr/local</filename>.</para>
+			to <filename>@PREFIX@</filename>.</para>
 	</section>
 	<section>
 		<title>Configuration</title>
@@ -349,8 +349,8 @@ $ make PREFIX="/usr/local" install</programlisting>
 			<para>The user interface for &package; supports multiple languages through
 				the GNU Gettext PHP extension. For this to work, the locale database for
 				&package; must be installed; this can be done as follows:</para>
-			<programlisting>$ cd /var/www/daportal/po
-$ make PREFIX="/usr/local" install</programlisting>
+			<programlisting>$ cd @PREFIX@/daportal/po
+$ make PREFIX="@PREFIX@" install</programlisting>
 			<para>The value of <varname>PREFIX</varname> can be changed; in this case,
 				the <varname>prefix</varname> variable in <filename>daportal.conf</filename>
 			must be adjusted as well.</para>
