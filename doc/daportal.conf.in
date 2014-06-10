@@ -48,7 +48,11 @@ regenerate=1
 #backend=pgsql
 #backend=sqlite2
 #backend=sqlite3
+#uncomment to collect debugging information (depends on global debugging)
 #debug=1
+#uncomment to collect profiling information (threshold in milliseconds)
+#profile=1
+#profile_threshold=30000
 
 [database::pdo]
 #dsn=sqlite:/var/www/sqlite/daportal.db3

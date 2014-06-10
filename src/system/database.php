@@ -173,6 +173,9 @@ abstract class Database
 
 
 	//protected
+	//properties
+	protected $query_sql_profile = 'INSERT INTO daportal_sql_profile
+		(time, query) VALUES (:time, :query)';
 	//methods
 	//virtual
 	abstract protected function match($engine);
@@ -198,6 +201,31 @@ abstract class Database
 		}
 		//FIXME should really use preg_replace() with proper matching
 		return str_replace($from, $to, $query);
+	}
+
+
+	//Database::profile
+	protected function profile($engine, $query, $duration)
+	{
+		global $config;
+
+		if($config->get('database', 'profile') == FALSE
+				|| ($threshold = $config->get('database',
+						'profile_threshold')) === FALSE
+				|| !is_numeric($threshold)
+				|| $duration < $threshold)
+			return;
+		//prevent any foreseeable failure (may break transactions)
+		if(strlen($query) > 255)
+		{
+			$error = 'Could not store query for profiling';
+			$engine->log('LOG_ERR', $error);
+			return TRUE;
+		}
+		$database = $engine->getDatabase();
+		$args = array('time' => $duration, 'query' => $query);
+		return $database->query($engine, $this->query_sql_profile,
+				$args);
 	}
 }
 

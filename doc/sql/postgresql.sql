@@ -42,6 +42,13 @@ CREATE TABLE daportal_profile (
 	mem_peak_real INTEGER NOT NULL
 );
 
+CREATE TABLE daportal_sql_profile (
+	sql_profile_id SERIAL PRIMARY KEY,
+	timestamp TIMESTAMP NOT NULL DEFAULT now(),
+	time INTEGER NOT NULL,
+	query VARCHAR(255) NOT NULL
+);
+
 
 CREATE TABLE daportal_lang (
 	lang_id VARCHAR(2) PRIMARY KEY,

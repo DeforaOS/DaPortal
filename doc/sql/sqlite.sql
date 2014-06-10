@@ -40,6 +40,7 @@ DROP TABLE daportal_user;
 DROP VIEW daportal_group_enabled;
 DROP TABLE daportal_group;
 DROP TABLE daportal_lang;
+DROP TABLE daportal_sql_profile;
 DROP TABLE daportal_profile;
 DROP TABLE daportal_config;
 DROP TABLE daportal_config_enum_type;
@@ -94,6 +95,17 @@ CREATE TABLE daportal_profile (
 CREATE TRIGGER daportal_profile_insert_timestamp AFTER INSERT ON daportal_profile
 BEGIN
 	UPDATE daportal_profile SET timestamp = datetime('now') WHERE profile_id = NEW.profile_id;
+END;
+
+CREATE TABLE daportal_sql_profile (
+	sql_profile_id INTEGER PRIMARY KEY,
+	timestamp TIMESTAMP DEFAULT NULL,
+	time INTEGER NOT NULL,
+	query VARCHAR(255) NOT NULL
+);
+CREATE TRIGGER daportal_sql_profile_insert_timestamp AFTER INSERT ON daportal_sql_profile
+BEGIN
+	UPDATE daportal_sql_profile SET timestamp = datetime('now') WHERE sql_profile_id = NEW.sql_profile_id;
 END;
 
 

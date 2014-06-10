@@ -87,7 +87,7 @@ class PgsqlDatabase extends Database
 	{
 		if($informat !== FALSE
 				|| ($timestamp = strtotime($date)) === FALSE
-					|| $timestamp == -1)
+				|| $timestamp == -1)
 			return parent::formatDate($engine, $date, $outformat,
 					$informat);
 		if($outformat === FALSE)
