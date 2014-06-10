@@ -238,10 +238,7 @@ abstract class Database
 		//prevent any foreseeable failure (may break transactions)
 		$error = 'Could not store query for profiling';
 		if(strlen($query) > 255)
-		{
-			$engine->log('LOG_ERR', $error.' (too long)');
-			return TRUE;
-		}
+			$query = substr($query, 0, 252).'...';
 		$args = array('time' => $time, 'query' => $query);
 		$this->profile = TRUE;
 		if($this->query($engine, $this->query_sql_profile, $args)
