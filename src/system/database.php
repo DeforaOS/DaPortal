@@ -174,8 +174,14 @@ abstract class Database
 
 	//protected
 	//properties
+	//profiling
+	protected $profile = FALSE;
+
+	//queries
 	protected $query_sql_profile = 'INSERT INTO daportal_sql_profile
 		(time, query) VALUES (:time, :query)';
+
+
 	//methods
 	//virtual
 	abstract protected function match($engine);
@@ -204,28 +210,45 @@ abstract class Database
 	}
 
 
-	//Database::profile
-	protected function profile($engine, $query, $duration)
+	//Database::profileStart
+	protected function profileStart($engine)
+	{
+		if($this->profile === FALSE)
+			$this->profile = microtime(TRUE);
+		return TRUE;
+	}
+
+
+	//Database::profileStop
+	protected function profileStop($engine, $query)
 	{
 		global $config;
 
+		if(($time = $this->profile) === FALSE
+				|| $this->profile === TRUE)
+			return TRUE;
+		$this->profile = FALSE;
 		if($config->get('database', 'profile') == FALSE
 				|| ($threshold = $config->get('database',
 						'profile_threshold')) === FALSE
 				|| !is_numeric($threshold)
-				|| $duration < $threshold)
-			return;
+				|| ($time = round((microtime(TRUE) - $time)
+					* 1000)) < $threshold)
+			return TRUE;
 		//prevent any foreseeable failure (may break transactions)
+		$error = 'Could not store query for profiling';
 		if(strlen($query) > 255)
 		{
-			$error = 'Could not store query for profiling';
-			$engine->log('LOG_ERR', $error);
+			$engine->log('LOG_ERR', $error.' (too long)');
 			return TRUE;
 		}
-		$database = $engine->getDatabase();
-		$args = array('time' => $duration, 'query' => $query);
-		return $database->query($engine, $this->query_sql_profile,
-				$args);
+		$args = array('time' => $time, 'query' => $query);
+		$this->profile = TRUE;
+		if($this->query($engine, $this->query_sql_profile, $args)
+				=== FALSE)
+			$engine->log('LOG_ERR', $error.' (SQL error)');
+		$this->profile = FALSE;
+		return TRUE;
 	}
 }
 
