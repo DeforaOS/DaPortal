@@ -155,12 +155,15 @@ class PgsqlDatabase extends Database
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
 		//execute the query
+		$this->profileStart($engine);
 		if(($res = pg_execute($this->handle, $q, $args)) === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
+			$this->profileStop($engine, $query);
 			return FALSE;
 		}
+		$this->profileStop($engine, $query);
 		switch(pg_num_rows($res))
 		{
 			case -1:
