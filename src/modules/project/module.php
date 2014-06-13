@@ -16,7 +16,6 @@
 
 
 
-require_once('./modules/content/multi.php');
 require_once('./modules/project/content/bug.php');
 require_once('./modules/project/content/bugreply.php');
 

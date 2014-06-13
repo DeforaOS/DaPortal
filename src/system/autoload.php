@@ -28,12 +28,15 @@ function autoload($class)
 
 function _autoload_filename($class)
 {
+	//special cases
 	switch($class)
 	{
 		case 'AuthCredentials':
 			return './system/auth.php';
 		case 'MultiContent':
 			return './system/content.php';
+		case 'MultiContentModule':
+			return './modules/content/multi.php';
 	}
 
 	//fallback
