@@ -47,6 +47,12 @@ function _autoload_filename($class)
 		$module = substr($class, 0, $len - 7);
 		return './modules/'.strtolower($module).'/content.php';
 	}
+	//Engines
+	else if($len > 6 && substr($class, -6) == 'Engine')
+	{
+		$engine = substr($class, 0, $len - 6);
+		return './engines/'.strtolower($engine).'.php';
+	}
 	//Modules
 	else if($len > 6 && substr($class, -6) == 'Module')
 	{
