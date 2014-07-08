@@ -169,12 +169,12 @@ Alias /themes/ "@PREFIX@/daportal/data/themes/"</programlisting>
 		<section>
 			<title>Configuration</title>
 			<para>&package; has a single configuration file,
-				<filename>daportal.conf</filename>, located within its own root folder. It
-				is meant to be edited manually, and consists of a series of variable
-				assignments (eg <varname>variable_name=the value</varname>), sorted within a
-				number of sections (which names are surrounded by brackets, "[" and "]").
-				Comment lines are allowed as well, and begin with the "#"
-				character.</para>
+				<filename>daportal.conf</filename>, located in
+				<filename>@PREFIX@/etc/daportal.conf</filename>. It is meant to be easy to
+				edit manually, and consists of a series of variable assignments (eg
+				<varname>variable_name=the value</varname>), sorted within a number of
+				sections (which names are surrounded by brackets, "[" and "]").  Comment
+				lines are allowed as well, and begin with the "#" character.</para>
 			<para>&package;'s HTTP engine should be selected automatically when PHP runs
 				in the context of a web server. Otherwise (or for performance reasons) it is
 				possible to enforce the appropriate engine by modifying the
@@ -306,12 +306,13 @@ $ make PREFIX="@PREFIX@" install</programlisting>
 		<title>Configuration</title>
 		<para>It may be necessary to help the <command>daportal</command> script to
 			locate the folder where &package; is installed; if available, the
-			configuration file <filename>$PREFIX/etc/daportal.conf</filename> will be
-			automatically read.</para>
+			configuration file <filename>@PREFIX@/etc/defaults/daportal.conf</filename>
+			will be automatically read.</para>
 		<para>An example for this file is provided in <xref
-				linkend="example-etc/daportal.conf"/> below:</para>
-		<example id="example-etc/daportal.conf">
-			<title>Example of configuration file in $PREFIX/etc/daportal.conf</title>
+				linkend="example-etc/defaults/daportal.conf"/> below:</para>
+		<example id="example-etc/defaults/daportal.conf">
+			<title>Example of configuration file in
+				<filename>@PREFIX@/etc/defaults/daportal.conf</filename></title>
 			<programlisting>DAPORTALDIR=/var/www/daportal</programlisting>
 		</example>
 	</section>
