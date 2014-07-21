@@ -117,7 +117,7 @@ class XMLFormat extends PlainFormat
 	}
 
 
-	//PlainFormat::renderInline
+	//XMLFormat::renderInline
 	protected function renderInline($e)
 	{
 		if(($text = $e->getProperty('text')) !== FALSE)
@@ -129,7 +129,7 @@ class XMLFormat extends PlainFormat
 	}
 
 
-	//PlainFormat::renderLink
+	//XMLFormat::renderLink
 	protected function renderLink($e)
 	{
 		$this->_print('<link>');
