@@ -642,6 +642,11 @@ class HTMLFormat extends FormatElements
 			if(($s = $e->get('size')) !== FALSE && is_numeric($s))
 				$size = $s;
 			$class = "stock$size $stock";
+			//XXX to display the "alt" text only when relevant
+			$attributes['src'] = "icons/generic/$size".'x'
+				."$size/stock.png";
+			$attributes['width'] = 0;
+			$attributes['height'] = 0;
 		}
 		else if(($r = $e->get('request')) !== FALSE)
 			$attributes['src'] = $this->engine->getURL($r, FALSE);

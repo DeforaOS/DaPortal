@@ -76,11 +76,21 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-ok.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/gtk-yes.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/stock.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/16x16/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/24x24/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/24x24/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/24x24/stock.png \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/24x24/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/32x32/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/32x32/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/32x32/stock.png \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/32x32/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/spinner.gif \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/spinner.xcf \
-		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/stock.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/Makefile \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome/16x16.css \
