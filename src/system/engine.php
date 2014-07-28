@@ -168,8 +168,10 @@ abstract class Engine
 			case 'LOG_WARNING':
 				$level = 'Warning';
 				break;
-			case 'LOG_INFO':
 			case 'LOG_NOTICE':
+				$level = 'Notice';
+				break;
+			case 'LOG_INFO':
 				if($this->verbose < 2
 						&& Engine::$debug !== TRUE)
 					return FALSE;
