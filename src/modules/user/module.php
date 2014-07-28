@@ -926,20 +926,37 @@ class UserModule extends Module
 	protected function _loginProcess($engine, $request)
 	{
 		$db = $engine->getDatabase();
+		$log = $this->configGet('log');
 
 		if(($username = $request->getParameter('username')) === FALSE
 				|| strlen($username) == 0
 				|| ($password = $request->getParameter(
 						'password')) === FALSE)
+			//no real login attempt
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		if(($user = User::lookup($engine, $username)) === FALSE
 				|| ($cred = $user->authenticate($engine,
 					$password)) === FALSE)
+		{
+			if($log)
+				$engine->log('LOG_NOTICE',
+						'Invalid login attempt for user'
+						.' "'.$username.'"');
 			return _('Invalid username or password');
+		}
 		if($engine->setCredentials($cred) !== TRUE)
+		{
+			if($log)
+				$engine->log('LOG_NOTICE',
+						'Unable to login user "'
+						.$username.'"');
 			return _('An error occurred while authenticating');
+		}
+		if($log)
+			$engine->log('LOG_NOTICE',
+					'User "'.$username.'" logged in');
 		return FALSE;
 	}
 
