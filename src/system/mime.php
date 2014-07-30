@@ -25,15 +25,14 @@ class Mime
 	//Mime::getIcon
 	static public function getIcon($engine, $filename, $size = 48)
 	{
-		$ret = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
+		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
 			.Mime::$default;
 
 		if(Mime::init($engine) === FALSE)
 			return $default;
 		if(($type = Mime::getType($engine, $filename, FALSE)) !== FALSE)
 			return Mime::getIconByType($engine, $type, $size);
-		return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
-			.Mime::$default;
+		return $default;
 	}
 
 
