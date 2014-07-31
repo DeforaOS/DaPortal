@@ -53,7 +53,7 @@ CREATE TABLE daportal_sql_profile (
 CREATE TABLE daportal_lang (
 	lang_id VARCHAR(2) PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
-	enabled BOOLEAN NOT NULL DEFAULT false
+	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('en', 'English', '1');
@@ -97,7 +97,6 @@ CREATE VIEW daportal_user_enabled AS
 SELECT user_id, username, group_id, password, enabled, admin, fullname, email
 FROM daportal_user
 WHERE enabled='1';
-
 
 CREATE TABLE daportal_user_register (
 	user_register_id SERIAL PRIMARY KEY,
@@ -262,11 +261,10 @@ INSERT INTO daportal_module (name, enabled) VALUES ('project', '1');
 
 
 /* module: probe */
+CREATE TABLE daportal_probe_host (
+	host_id INTEGER NOT NULL UNIQUE REFERENCES daportal_content (content_id) ON DELETE CASCADE
+);
 INSERT INTO daportal_module (name, enabled) VALUES ('probe', '0');
-
-
-/* module: webmail */
-INSERT INTO daportal_module (name, enabled) VALUES ('webmail', '0');
 
 
 /* module: bookmark */
@@ -305,6 +303,10 @@ INSERT INTO daportal_module (name, enabled) VALUES ('article', '1');
 
 /* module: wiki */
 INSERT INTO daportal_module (name, enabled) VALUES ('wiki', '1');
+
+
+/* module: webmail */
+INSERT INTO daportal_module (name, enabled) VALUES ('webmail', '0');
 
 
 /* module: pki */

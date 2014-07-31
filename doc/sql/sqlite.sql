@@ -114,6 +114,7 @@ CREATE TABLE daportal_lang (
 	name VARCHAR(255) NOT NULL,
 	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
+
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('en', 'English', '1');
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('fr', 'Français', '1');
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('de', 'Deutsch', '1');
@@ -124,6 +125,7 @@ CREATE TABLE daportal_group (
 	groupname VARCHAR(255) NOT NULL UNIQUE,
 	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('group', '1');
 INSERT INTO daportal_group (group_id, groupname, enabled) VALUES ('0', 'nogroup', '1');
 
@@ -144,6 +146,7 @@ CREATE TABLE daportal_user (
 	email VARCHAR(255) NOT NULL,
 	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('user', '1');
 INSERT INTO daportal_user (user_id, username, password, enabled, fullname, email) VALUES ('0', 'Anonymous', '', '1', 'Anonymous user', '');
 INSERT INTO daportal_user (username, password, enabled, admin, fullname, email) VALUES ('admin', '$1$?0p*PI[G$kbHyE5VE/S32UrV88Unz/1', '1', '1', 'Administrator', 'username@domain.tld');
@@ -186,6 +189,7 @@ CREATE TABLE daportal_user_group (
 	UNIQUE (user_id, group_id)
 );
 
+
 CREATE TABLE daportal_auth_variable (
 	auth_variable_id INTEGER PRIMARY KEY,
 	user_id INTEGER NOT NULL,
@@ -194,6 +198,7 @@ CREATE TABLE daportal_auth_variable (
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
 	UNIQUE (user_id, variable)
 );
+
 
 CREATE TABLE daportal_content (
 	content_id INTEGER PRIMARY KEY,
@@ -226,6 +231,7 @@ AND daportal_content.user_id=daportal_user.user_id
 AND daportal_module.enabled='1'
 AND daportal_user.enabled='1'
 AND daportal_content.enabled='1';
+
 CREATE VIEW daportal_content_public AS
 SELECT daportal_content.content_id AS content_id,
 daportal_content.timestamp AS timestamp,
@@ -263,6 +269,7 @@ CREATE TABLE daportal_comment (
 	FOREIGN KEY (comment_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_content (content_id)
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('comment', '0');
 
 
@@ -272,6 +279,7 @@ CREATE TABLE daportal_top (
 	name VARCHAR(255),
 	link VARCHAR(255)
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('top', '0');
 
 
@@ -420,6 +428,7 @@ CREATE TABLE daportal_category_content (
 	FOREIGN KEY (category_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (content_id) REFERENCES daportal_content (content_id)
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('category', '0');
 
 
@@ -432,6 +441,7 @@ CREATE TABLE daportal_download (
 	FOREIGN KEY (content_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_download (download_id)
 );
+
 INSERT INTO daportal_module (name, enabled) VALUES ('download', '1');
 
 
@@ -448,8 +458,6 @@ INSERT INTO daportal_module (name, enabled) VALUES ('webmail', '0');
 
 
 /* module: pki */
-INSERT INTO daportal_module (name, enabled) VALUES ('pki', '0');
-
 CREATE TABLE daportal_ca (
 	ca_id INTEGER UNIQUE NOT NULL,
 	parent INTEGER DEFAULT NULL,
@@ -491,6 +499,8 @@ CREATE TABLE daportal_caserver (
 	FOREIGN KEY (caserver_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_ca (ca_id)
 );
+
+INSERT INTO daportal_module (name, enabled) VALUES ('pki', '0');
 
 
 /* module: browser */
