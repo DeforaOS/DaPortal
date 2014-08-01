@@ -82,7 +82,7 @@ INSERT INTO daportal_config_enum_type (name) VALUES ('string');
 
 CREATE TABLE daportal_profile (
 	profile_id INTEGER PRIMARY KEY,
-	timestamp TIMESTAMP DEFAULT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	load1 INTEGER NOT NULL,
 	load5 INTEGER NOT NULL,
 	load15 INTEGER NOT NULL,
@@ -92,21 +92,13 @@ CREATE TABLE daportal_profile (
 	mem_peak INTEGER NOT NULL,
 	mem_peak_real INTEGER NOT NULL
 );
-CREATE TRIGGER daportal_profile_insert_timestamp AFTER INSERT ON daportal_profile
-BEGIN
-	UPDATE daportal_profile SET timestamp = datetime('now') WHERE profile_id = NEW.profile_id;
-END;
 
 CREATE TABLE daportal_sql_profile (
 	sql_profile_id INTEGER PRIMARY KEY,
-	timestamp TIMESTAMP DEFAULT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	time INTEGER NOT NULL,
 	query VARCHAR(255) NOT NULL
 );
-CREATE TRIGGER daportal_sql_profile_insert_timestamp AFTER INSERT ON daportal_sql_profile
-BEGIN
-	UPDATE daportal_sql_profile SET timestamp = datetime('now') WHERE sql_profile_id = NEW.sql_profile_id;
-END;
 
 
 CREATE TABLE daportal_lang (
@@ -160,25 +152,17 @@ CREATE TABLE daportal_user_register (
 	user_register_id INTEGER PRIMARY KEY,
 	user_id INTEGER NOT NULL,
 	token VARCHAR(255) UNIQUE NOT NULL,
-	timestamp TIMESTAMP DEFAULT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id)
 );
-CREATE TRIGGER daportal_user_register_insert_timestamp AFTER INSERT ON daportal_user_register
-BEGIN
-	UPDATE daportal_user_register SET timestamp = datetime('now') WHERE user_id = NEW.user_id;
-END;
 
 CREATE TABLE daportal_user_reset (
 	user_reset_id INTEGER PRIMARY KEY,
 	user_id INTEGER NOT NULL,
 	token VARCHAR(255) UNIQUE NOT NULL,
-	timestamp TIMESTAMP DEFAULT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id)
 );
-CREATE TRIGGER daportal_user_reset_insert_timestamp AFTER INSERT ON daportal_user_reset
-BEGIN
-	UPDATE daportal_user_reset SET timestamp = datetime('now') WHERE user_id = NEW.user_id;
-END;
 
 CREATE TABLE daportal_user_group (
 	user_group_id INTEGER PRIMARY KEY,
@@ -202,7 +186,7 @@ CREATE TABLE daportal_auth_variable (
 
 CREATE TABLE daportal_content (
 	content_id INTEGER PRIMARY KEY,
-	timestamp TIMESTAMP DEFAULT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	module_id INTEGER,
 	user_id INTEGER,
 	group_id INTEGER DEFAULT '0',
@@ -214,10 +198,6 @@ CREATE TABLE daportal_content (
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
 	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
 );
-CREATE TRIGGER daportal_content_insert_timestamp AFTER INSERT ON daportal_content
-BEGIN
-	UPDATE daportal_content SET timestamp = datetime('now') WHERE content_id = NEW.content_id;
-END;
 CREATE VIEW daportal_content_enabled AS
 SELECT daportal_content.content_id AS content_id,
 daportal_content.timestamp AS timestamp,
