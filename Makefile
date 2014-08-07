@@ -277,6 +277,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
 		$(PACKAGE)-$(VERSION)/src/system/format.php \
+		$(PACKAGE)-$(VERSION)/src/system/format/elements.php \
 		$(PACKAGE)-$(VERSION)/src/system/group.php \
 		$(PACKAGE)-$(VERSION)/src/system/html.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale.php \
