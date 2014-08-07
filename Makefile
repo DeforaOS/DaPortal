@@ -289,6 +289,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/profile.php \
 		$(PACKAGE)-$(VERSION)/src/system/request.php \
 		$(PACKAGE)-$(VERSION)/src/system/response.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/page.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/stream.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/string.php \
 		$(PACKAGE)-$(VERSION)/src/system/template.php \
 		$(PACKAGE)-$(VERSION)/src/system/user.php \
 		$(PACKAGE)-$(VERSION)/src/system/project.conf \

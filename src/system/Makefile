@@ -60,6 +60,12 @@ install:
 	$(INSTALL) -m 0644 request.php $(DESTDIR)$(PREFIX)/daportal/src/system/request.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 response.php $(DESTDIR)$(PREFIX)/daportal/src/system/response.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
+	$(INSTALL) -m 0644 response/page.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
+	$(INSTALL) -m 0644 response/stream.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/stream.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
+	$(INSTALL) -m 0644 response/string.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/string.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 template.php $(DESTDIR)$(PREFIX)/daportal/src/system/template.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
@@ -90,6 +96,9 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/profile.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/request.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/stream.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/string.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/template.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/user.php
 

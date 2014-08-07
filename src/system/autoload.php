@@ -67,7 +67,10 @@ function _autoload_filename_default($class)
 	}
 	//Responses
 	else if($len > 8 && substr($class, -8) == 'Response')
-		return './system/response.php';
+	{
+		$response = substr($class, 0, $len - 8);
+		return './system/response/'.strtolower($response).'.php';
+	}
 	return './system/'.strtolower($class).'.php';
 }
 
