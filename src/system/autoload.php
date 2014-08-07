@@ -41,6 +41,8 @@ function _autoload_filename($class)
 			return './system/content/multi.php';
 		case 'MultiContentModule':
 			return './modules/content/multi.php';
+		case 'PageElement':
+			return './system/page/element.php';
 		default:
 			return _autoload_filename_default($class);
 	}

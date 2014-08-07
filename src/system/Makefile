@@ -56,6 +56,8 @@ install:
 	$(INSTALL) -m 0644 mutator.php $(DESTDIR)$(PREFIX)/daportal/src/system/mutator.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 page.php $(DESTDIR)$(PREFIX)/daportal/src/system/page.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/page
+	$(INSTALL) -m 0644 page/element.php $(DESTDIR)$(PREFIX)/daportal/src/system/page/element.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 profile.php $(DESTDIR)$(PREFIX)/daportal/src/system/profile.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
@@ -96,6 +98,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/module.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/mutator.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/page.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/page/element.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/profile.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/request.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response.php

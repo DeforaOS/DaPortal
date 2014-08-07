@@ -287,6 +287,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/module.php \
 		$(PACKAGE)-$(VERSION)/src/system/mutator.php \
 		$(PACKAGE)-$(VERSION)/src/system/page.php \
+		$(PACKAGE)-$(VERSION)/src/system/page/element.php \
 		$(PACKAGE)-$(VERSION)/src/system/profile.php \
 		$(PACKAGE)-$(VERSION)/src/system/request.php \
 		$(PACKAGE)-$(VERSION)/src/system/response.php \
