@@ -16,31 +16,6 @@
 
 
 
-//ConfigSection
-class ConfigSection extends Mutator
-{
-	//methods
-	//public
-	//accessors
-	//Config::getVariables
-	public function getVariables()
-	{
-		//XXX implement as a list method in Mutator
-		return array_keys($this->properties);
-	}
-
-
-	//ConfigSection::set
-	public function set($name, $value)
-	{
-		//values must be strings as well
-		if($value !== FALSE && !is_string($value))
-			return FALSE;
-		return parent::set($name, $value);
-	}
-}
-
-
 //Config
 class Config
 {

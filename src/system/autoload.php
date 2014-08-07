@@ -33,6 +33,8 @@ function _autoload_filename($class)
 	{
 		case 'AuthCredentials':
 			return './system/auth/credentials.php';
+		case 'ConfigSection':
+			return './system/config/section.php';
 		case 'MultiContent':
 			return './system/content/multi.php';
 		case 'MultiContentModule':

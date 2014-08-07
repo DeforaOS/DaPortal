@@ -271,6 +271,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/common.php \
 		$(PACKAGE)-$(VERSION)/src/system/compat.php \
 		$(PACKAGE)-$(VERSION)/src/system/config.php \
+		$(PACKAGE)-$(VERSION)/src/system/config/section.php \
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
 		$(PACKAGE)-$(VERSION)/src/system/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \

@@ -24,6 +24,8 @@ install:
 	$(INSTALL) -m 0644 compat.php $(DESTDIR)$(PREFIX)/daportal/src/system/compat.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 config.php $(DESTDIR)$(PREFIX)/daportal/src/system/config.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/config
+	$(INSTALL) -m 0644 config/section.php $(DESTDIR)$(PREFIX)/daportal/src/system/config/section.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/daportal/src/system/content.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/content
@@ -70,6 +72,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/common.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/compat.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/config.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/config/section.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/content.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/content/multi.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
