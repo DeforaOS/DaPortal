@@ -39,9 +39,13 @@ function _autoload_filename($class)
 			return './system/content/multi.php';
 		case 'MultiContentModule':
 			return './modules/content/multi.php';
+		default:
+			return _autoload_filename_default($class);
 	}
+}
 
-	//fallback
+function _autoload_filename_default($class)
+{
 	$len = strlen($class);
 	//Content sub-classes
 	if($len > 7 && substr($class, -7) == 'Content')
