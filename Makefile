@@ -271,12 +271,14 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/compat.php \
 		$(PACKAGE)-$(VERSION)/src/system/config.php \
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
+		$(PACKAGE)-$(VERSION)/src/system/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
 		$(PACKAGE)-$(VERSION)/src/system/format.php \
 		$(PACKAGE)-$(VERSION)/src/system/group.php \
 		$(PACKAGE)-$(VERSION)/src/system/html.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale.php \
+		$(PACKAGE)-$(VERSION)/src/system/locale/gettext.php \
 		$(PACKAGE)-$(VERSION)/src/system/mail.php \
 		$(PACKAGE)-$(VERSION)/src/system/mime.php \
 		$(PACKAGE)-$(VERSION)/src/system/module.php \
@@ -288,9 +290,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/template.php \
 		$(PACKAGE)-$(VERSION)/src/system/user.php \
 		$(PACKAGE)-$(VERSION)/src/system/project.conf \
-		$(PACKAGE)-$(VERSION)/src/system/locale/Makefile \
-		$(PACKAGE)-$(VERSION)/src/system/locale/gettext.php \
-		$(PACKAGE)-$(VERSION)/src/system/locale/project.conf \
 		$(PACKAGE)-$(VERSION)/src/templates/Makefile \
 		$(PACKAGE)-$(VERSION)/src/templates/DeforaOS.php \
 		$(PACKAGE)-$(VERSION)/src/templates/EdgeBSD.php \

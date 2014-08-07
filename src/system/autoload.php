@@ -34,7 +34,7 @@ function _autoload_filename($class)
 		case 'AuthCredentials':
 			return './system/auth.php';
 		case 'MultiContent':
-			return './system/content.php';
+			return './system/content/multi.php';
 		case 'MultiContentModule':
 			return './modules/content/multi.php';
 	}
