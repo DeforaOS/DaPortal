@@ -14,6 +14,8 @@ distclean: clean
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 auth.php $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/auth
+	$(INSTALL) -m 0644 auth/credentials.php $(DESTDIR)$(PREFIX)/daportal/src/system/auth/credentials.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 autoload.php $(DESTDIR)$(PREFIX)/daportal/src/system/autoload.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
@@ -63,6 +65,7 @@ install:
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/auth/credentials.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/autoload.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/common.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/compat.php

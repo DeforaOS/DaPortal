@@ -32,7 +32,7 @@ function _autoload_filename($class)
 	switch($class)
 	{
 		case 'AuthCredentials':
-			return './system/auth.php';
+			return './system/auth/credentials.php';
 		case 'MultiContent':
 			return './system/content/multi.php';
 		case 'MultiContentModule':

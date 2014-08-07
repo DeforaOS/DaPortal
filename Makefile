@@ -266,6 +266,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/wiki/project.conf \
 		$(PACKAGE)-$(VERSION)/src/system/Makefile \
 		$(PACKAGE)-$(VERSION)/src/system/auth.php \
+		$(PACKAGE)-$(VERSION)/src/system/auth/credentials.php \
 		$(PACKAGE)-$(VERSION)/src/system/autoload.php \
 		$(PACKAGE)-$(VERSION)/src/system/common.php \
 		$(PACKAGE)-$(VERSION)/src/system/compat.php \
