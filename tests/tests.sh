@@ -36,7 +36,7 @@ _test()
 	res=$?
 	if [ $res -ne 0 ]; then
 		echo "./${test}.php: Failed with error code $res" >> "$target"
-		echo " FAILED" 1>&2
+		echo " FAIL" 1>&2
 		FAILED="$FAILED $test(error $res)"
 		return 2
 	else
