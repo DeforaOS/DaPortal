@@ -70,8 +70,7 @@ target="$1"
 [ $clean -ne 0 ] && return 0
 
 ret=0
-> "$target"
 for i in $($FIND "../doc" "../src" "../tests" "../tools" -name '*.sh'); do
-	$DEBUG $SHLINT "$i" 2>> "$target"			|| ret=2
-done
+	$DEBUG $SHLINT "$i"					|| ret=2
+done 2> "$target"
 exit $ret
