@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/auth.php');
-require_once('./system/user.php');
-
-
 //HTTPAuth
 class HTTPAuth extends Auth
 {
