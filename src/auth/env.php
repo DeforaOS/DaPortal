@@ -39,7 +39,7 @@ class EnvAuth extends UnixAuth
 			return TRUE;
 		$cred = new AuthCredentials($user->getUserID(),
 				$user->getUsername(), $user->getGroupID(),
-				$user->isAdmin());
+				$user->getGroupname(), $user->isAdmin());
 		$this->setCredentials($engine, $cred);
 		return TRUE;
 	}
