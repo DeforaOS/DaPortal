@@ -16,9 +16,6 @@
 
 
 
-require_once('./auth/unix.php');
-
-
 //EnvAuth
 class EnvAuth extends UnixAuth
 {
