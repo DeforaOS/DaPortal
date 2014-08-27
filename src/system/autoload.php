@@ -51,8 +51,14 @@ function _autoload_filename($class)
 function _autoload_filename_default($class)
 {
 	$len = strlen($class);
+	//Auth sub-classes
+	if($len > 4 && substr($class, -4) == 'Auth')
+	{
+		$auth = substr($class, 0, $len - 4);
+		return './auth/'.strtolower($auth).'.php';
+	}
 	//Content sub-classes
-	if($len > 7 && substr($class, -7) == 'Content')
+	else if($len > 7 && substr($class, -7) == 'Content')
 	{
 		$module = substr($class, 0, $len - 7);
 		return './modules/'.strtolower($module).'/content.php';
