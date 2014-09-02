@@ -42,6 +42,8 @@ class PageResponse extends Response
 		$page = $this->getContent();
 		$type = $this->getType();
 
+		if($type === FALSE)
+			$type = $engine->getDefaultType();
 		switch($type)
 		{
 			case 'text/html':

@@ -29,6 +29,13 @@ class CLIEngine extends Engine
 	//public
 	//methods
 	//accessors
+	//CLIEngine::getDefaultType
+	public function getDefaultType()
+	{
+		return 'text/plain';
+	}
+
+
 	//CLIEngine::getRequest
 	public function getRequest()
 	{

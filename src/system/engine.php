@@ -80,6 +80,13 @@ abstract class Engine
 	}
 
 
+	//Engine::getDefaultType
+	public function getDefaultType()
+	{
+		return 'text/html';
+	}
+
+
 	//Engine::getModules
 	public function getModules()
 	{
