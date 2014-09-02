@@ -67,19 +67,18 @@
 		<title>Entry point</title>
 		<para>&package; has a single entry-point for all of its applications, found
 			in <filename>src/daportal.php</filename>. Its contents are simple enough to
-			be reproduced here fully:</para>
+			be reproduced here:</para>
 		<programlisting><![CDATA[<?php
-require_once('./system/config.php');
+require_once('./system/autoload.php');
 global $config;
 $config = new Config();
 $config->load('../daportal.conf');
 
-require_once('./system/engine.php');
-if(($engine = Engine::attachDefault()) !== FALSE
-		&& ($request = $engine->getRequest()) !== FALSE)
+if(($engine = Engine::attachDefault()) !== FALSE)
 {
-	$page = $engine->process($request);
-	$engine->render($page);
+	$request = $engine->getRequest();
+	$response = $engine->process($request);
+	$engine->render($response);
 }
 unset($engine);
 
