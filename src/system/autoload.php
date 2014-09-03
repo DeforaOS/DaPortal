@@ -97,7 +97,9 @@ function _autoload_filename_default($class)
 	else if($len > 8 && substr($class, -8) == 'Template')
 	{
 		$template = substr($class, 0, $len - 8);
-		return './templates/'.$template.'.php';
+		if(realpath('./templates/'.$template.'.php') !== FALSE)
+			return './templates/'.$template.'.php';
+		return './templates/'.strtolower($template).'.php';
 	}
 	return './system/'.strtolower($class).'.php';
 }
