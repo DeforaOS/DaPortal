@@ -19,7 +19,7 @@
 
 //DaPortalEngine
 //XXX this engine is only useful while migrating to the newer framework.
-class DaPortalEngine extends HttpEngine
+class DaPortalEngine extends HTTPEngine
 {
 	//public
 	//methods
