@@ -60,8 +60,8 @@ abstract class DownloadContent extends MultiContent
 	protected function getIcon($engine, $size = 16)
 	{
 		if($this->isDirectory())
-			return Mime::getIconByType($engine,
-				'inode/directory', $size);
+			return Mime::getIconByType($engine, 'inode/directory',
+					$size);
 		return Mime::getIcon($engine, $this->getTitle(), $size);
 	}
 
