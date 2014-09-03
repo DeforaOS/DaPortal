@@ -127,9 +127,6 @@ abstract class Database
 
 		if(($name = $config->get('database', 'backend')) !== FALSE)
 		{
-			$res = require_once('./database/'.$name.'.php');
-			if($res === FALSE)
-				return FALSE;
 			$name .= 'Database';
 			$ret = new $name();
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
@@ -144,7 +141,6 @@ abstract class Database
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			require_once('./database/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
 			$name .= 'Database';
 			$db = new $name();

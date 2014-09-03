@@ -16,7 +16,6 @@
 
 
 
-require_once('./system/format.php');
 require('./formats/fpdf/fpdf.php');
 
 

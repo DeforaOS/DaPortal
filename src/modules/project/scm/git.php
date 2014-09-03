@@ -16,8 +16,6 @@
 
 
 
-require_once('./system/mime.php');
-require_once('./system/page.php');
 require_once('./modules/project/scm.php');
 
 

@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/database.php');
-
-
 //PDODatabase
 class PDODatabase extends Database
 {

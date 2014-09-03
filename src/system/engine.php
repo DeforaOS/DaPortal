@@ -62,11 +62,9 @@ abstract class Engine
 	{
 		if($this->database !== FALSE)
 			return $this->database;
-		require_once('./system/database.php');
 		if(($this->database = Database::attachDefault($this))
 				!== FALSE)
 			return $this->database;
-		require_once('./database/dummy.php');
 		$this->database = new DummyDatabase;
 		$this->ret = 2;
 		return $this->database;
@@ -258,9 +256,6 @@ abstract class Engine
 			Engine::$debug = TRUE;
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
-			$res = require_once('./engines/'.$name.'.php');
-			if($res === FALSE)
-				return FALSE;
 			$class = $name.'Engine';
 			$ret = new $class();
 		}
@@ -269,9 +264,6 @@ abstract class Engine
 			while(($de = readdir($dir)) !== FALSE)
 			{
 				if(substr($de, -4) != '.php')
-					continue;
-				$res = require_once('./engines/'.$de);
-				if($res === FALSE)
 					continue;
 				$n = substr($de, 0, strlen($de) - 4);
 				$class = $n.'Engine';

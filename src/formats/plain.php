@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/format.php');
-
-
 //PlainFormat
 class PlainFormat extends Format
 {

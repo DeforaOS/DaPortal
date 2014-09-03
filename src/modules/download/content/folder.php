@@ -16,7 +16,6 @@
 
 
 
-require_once('./modules/download/content.php');
 require_once('./modules/download/content/file.php');
 
 

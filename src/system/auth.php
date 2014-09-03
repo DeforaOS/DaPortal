@@ -105,9 +105,6 @@ abstract class Auth
 
 		if(($name = $config->get('auth', 'backend')) !== FALSE)
 		{
-			$res = require_once('./auth/'.$name.'.php');
-			if($res === FALSE)
-				return FALSE;
 			$name .= 'Auth';
 			$ret = new $name();
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
@@ -121,7 +118,6 @@ abstract class Auth
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			require_once('./auth/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
 			$name .= 'Auth';
 			$auth = new $name();

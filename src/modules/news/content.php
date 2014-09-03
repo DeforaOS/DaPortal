@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/content.php');
-require_once('./system/html.php');
-
-
 //NewsContent
 class NewsContent extends Content
 {

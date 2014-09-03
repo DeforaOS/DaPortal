@@ -63,11 +63,23 @@ function _autoload_filename_default($class)
 		$module = substr($class, 0, $len - 7);
 		return './modules/'.strtolower($module).'/content.php';
 	}
+	//Databases
+	else if($len > 8 && substr($class, -8) == 'Database')
+	{
+		$database = substr($class, 0, $len - 8);
+		return './database/'.strtolower($database).'.php';
+	}
 	//Engines
 	else if($len > 6 && substr($class, -6) == 'Engine')
 	{
 		$engine = substr($class, 0, $len - 6);
 		return './engines/'.strtolower($engine).'.php';
+	}
+	//Formats
+	else if($len > 6 && substr($class, -6) == 'Format')
+	{
+		$format = substr($class, 0, $len - 6);
+		return './formats/'.strtolower($format).'.php';
 	}
 	//Modules
 	else if($len > 6 && substr($class, -6) == 'Module')
@@ -80,6 +92,12 @@ function _autoload_filename_default($class)
 	{
 		$response = substr($class, 0, $len - 8);
 		return './system/response/'.strtolower($response).'.php';
+	}
+	//Templates
+	else if($len > 8 && substr($class, -8) == 'Template')
+	{
+		$template = substr($class, 0, $len - 8);
+		return './templates/'.strtolower($template).'.php';
 	}
 	return './system/'.strtolower($class).'.php';
 }

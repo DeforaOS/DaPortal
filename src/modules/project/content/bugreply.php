@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/content.php');
-
-
 //BugReplyProjectContent
 class BugReplyProjectContent extends Content
 {

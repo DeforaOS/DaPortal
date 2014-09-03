@@ -16,9 +16,6 @@
 
 
 
-require_once('./engines/cli.php');
-
-
 //CLILogEngine
 class CLILogEngine extends CLIEngine
 {

@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/template.php');
-
-
 //BasicTemplate
 class BasicTemplate extends Template
 {

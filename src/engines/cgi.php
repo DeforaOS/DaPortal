@@ -16,9 +16,6 @@
 
 
 
-require_once('./engines/http.php');
-
-
 //CGIEngine
 class CGIEngine extends HTTPEngine
 {

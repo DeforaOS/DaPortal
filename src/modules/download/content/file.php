@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/common.php');
-require_once('./modules/download/content.php');
-
-
 //FileDownloadContent
 class FileDownloadContent extends DownloadContent
 {

@@ -16,9 +16,6 @@
 
 
 
-require_once('./formats/html.php');
-
-
 //XHTML11Format
 class XHTML11Format extends HTMLFormat
 {

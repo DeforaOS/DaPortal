@@ -16,9 +16,6 @@
 
 
 
-require_once('./modules/content/module.php');
-
-
 //MultiContentModule
 abstract class MultiContentModule extends ContentModule
 {

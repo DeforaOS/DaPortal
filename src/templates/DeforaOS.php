@@ -16,9 +16,6 @@
 
 
 
-require_once('./templates/basic.php');
-
-
 //DeforaOSTemplate
 class DeforaOSTemplate extends BasicTemplate
 {

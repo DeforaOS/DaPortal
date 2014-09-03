@@ -16,9 +16,6 @@
 
 
 
-require_once('./engines/cli.php');
-
-
 //CLIHTTPEngine
 class CLIHTTPEngine extends CLIEngine
 {
@@ -57,17 +54,10 @@ class CLIHTTPEngine extends CLIEngine
 		global $config;
 
 		if($config->get('engine::clihttp', 'friendly'))
-		{
-			require_once('./engines/httpfriendly.php');
-			$hfe = new HttpFriendlyEngine();
-			return $hfe->getURL($request, $absolute);
-		}
+			$engine = new HTTPFriendlyEngine();
 		else
-		{
-			require_once('./engines/http.php');
-			$he = new HttpEngine();
-			return $he->getURL($request, $absolute);
-		}
+			$engine = new HTTPEngine();
+		return $engine->getURL($request, $absolute);
 	}
 }
 

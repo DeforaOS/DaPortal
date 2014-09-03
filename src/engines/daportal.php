@@ -17,9 +17,6 @@
 
 
 
-require_once('./engines/http.php');
-
-
 //DaPortalEngine
 //XXX this engine is only useful while migrating to the newer framework.
 class DaPortalEngine extends HttpEngine

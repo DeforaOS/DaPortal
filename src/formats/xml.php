@@ -16,9 +16,6 @@
 
 
 
-require_once('./formats/plain.php');
-
-
 //XMLFormat
 class XMLFormat extends PlainFormat
 {

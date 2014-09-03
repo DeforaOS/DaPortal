@@ -16,13 +16,6 @@
 
 
 
-require_once('./system/engine.php');
-require_once('./system/format.php');
-require_once('./system/locale.php');
-require_once('./system/page.php');
-require_once('./system/template.php');
-
-
 //HTTPEngine
 class HTTPEngine extends Engine
 {

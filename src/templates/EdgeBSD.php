@@ -16,9 +16,6 @@
 
 
 
-require_once('./templates/DeforaOS.php');
-
-
 //EdgeBSDTemplate
 class EdgeBSDTemplate extends DeforaOSTemplate
 {

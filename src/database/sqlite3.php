@@ -16,9 +16,6 @@
 
 
 
-require_once('./system/database.php');
-
-
 //SQLite3Database
 class SQLite3Database extends Database
 {

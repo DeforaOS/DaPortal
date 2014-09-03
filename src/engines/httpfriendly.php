@@ -16,9 +16,6 @@
 
 
 
-require_once('./engines/http.php');
-
-
 //HTTPFriendlyEngine
 class HTTPFriendlyEngine extends HTTPEngine
 {

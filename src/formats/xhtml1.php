@@ -18,9 +18,6 @@
 
 
 
-require_once('./formats/html.php');
-
-
 //XHTML1Format
 class XHTML1Format extends HTMLFormat
 {

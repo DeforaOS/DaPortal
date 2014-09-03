@@ -16,11 +16,6 @@
 
 
 
-require_once('./system/common.php');
-require_once('./system/content.php');
-require_once('./system/mime.php');
-
-
 //DownloadContent
 abstract class DownloadContent extends MultiContent
 {

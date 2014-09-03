@@ -16,9 +16,6 @@
 
 
 
-require_once('./formats/html.php');
-
-
 //HTML5Format
 class HTML5Format extends HTMLFormat
 {

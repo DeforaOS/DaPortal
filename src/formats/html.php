@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/format.php');
-require_once('./system/request.php');
-
-
 //HTMLFormat
 class HTMLFormat extends FormatElements
 {
@@ -581,7 +577,6 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmledit($e)
 	{
-		require_once('./system/html.php');
 		$class = $e->get('class');
 
 		$class = ($class === FALSE) ? 'editor' : 'editor '.$class;
@@ -606,8 +601,6 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmlview($e)
 	{
-		require_once('./system/html.php');
-
 		if(($text = $e->get('text')) === FALSE || !is_string($text))
 			return;
 		if($e->get('trusted') === TRUE)

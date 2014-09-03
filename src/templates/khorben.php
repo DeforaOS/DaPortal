@@ -16,9 +16,6 @@
 
 
 
-require_once('./templates/basic.php');
-
-
 //KhorbenTemplate
 class KhorbenTemplate extends BasicTemplate
 {

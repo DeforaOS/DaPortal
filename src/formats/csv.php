@@ -16,9 +16,6 @@
 
 
 
-require_once('./formats/plain.php');
-
-
 //CSVFormat
 class CSVFormat extends PlainFormat
 {

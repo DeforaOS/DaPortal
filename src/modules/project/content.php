@@ -16,10 +16,6 @@
 
 
 
-require_once('./system/content.php');
-require_once('./modules/project/module.php'); //XXX
-
-
 //ProjectContent
 class ProjectContent extends MultiContent
 {
