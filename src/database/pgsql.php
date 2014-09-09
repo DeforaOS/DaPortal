@@ -71,9 +71,10 @@ class PgsqlDatabase extends Database
 
 		if(($res = $this->query($engine, $query, $args)) === FALSE)
 			return array();
-		$res = explode("'", $res[0]['constraint']);
+		$res0 = $res->current();
+		$res = explode("'", $res0['constraint']);
 		$str = array();
-		for($i = 1, $cnt = count($res); $i < $cnt; $i+=2)
+		for($i = 1, $cnt = count($res); $i < $cnt; $i += 2)
 			$str[] = $res[$i];
 		return $str;
 	}
