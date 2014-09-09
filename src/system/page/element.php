@@ -19,11 +19,8 @@
 //PageElement
 class PageElement extends Mutator
 {
-	//members
-	private $type;
-	private $children = array();
-
-
+	//public
+	//methods
 	//essential
 	//PageElement::PageElement
 	public function __construct($type, $properties = FALSE)
@@ -31,7 +28,7 @@ class PageElement extends Mutator
 		$this->type = $type;
 		if(is_array($properties))
 			foreach($properties as $key => $value)
-				$this->setProperty($key, $value);
+				$this->set($key, $value);
 	}
 
 
@@ -64,13 +61,6 @@ class PageElement extends Mutator
 	public function getType()
 	{
 		return $this->type;
-	}
-
-
-	//PageElement::setContent
-	public function setContent($content)
-	{
-		$this->content = $content;
 	}
 
 
@@ -117,6 +107,12 @@ class PageElement extends Mutator
 		$this->children = array_merge(array($element), $this->children);
 		return $element;
 	}
+
+
+	//private
+	//properties
+	private $type;
+	private $children = array();
 }
 
 ?>
