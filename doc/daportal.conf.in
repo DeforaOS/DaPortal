@@ -125,6 +125,9 @@ regenerate=1
 #viewport::width=device-width
 #viewport::width=device-width,maximum-scale=1.0
 
+[format::plain]
+#wrap=80
+
 [format::application/pdf]
 backend=fpdf
 
