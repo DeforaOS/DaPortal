@@ -112,7 +112,7 @@ class PDODatabase extends Database
 		if($stmt->execute($args) !== TRUE)
 			return $this->_queryError($engine,
 					'Could not execute query');
-		return $stmt->fetchAll();
+		return new PDODatabaseResult($stmt);
 	}
 
 	protected function _queryError($engine, $message)
@@ -280,6 +280,35 @@ class PDODatabase extends Database
 	private $case;
 	//functions
 	private $func_regexp = FALSE;
+}
+
+
+//PDODatabaseResult
+class PDODatabaseResult extends DatabaseResult
+{
+	//public
+	//methods
+	//PDODatabaseResult::PDODatabaseResult
+	public function __construct($stmt)
+	{
+		//XXX may not always work
+		$this->count = $stmt->rowCount();
+		$this->res = $stmt;
+	}
+
+
+	//SeekableIterator
+	//PDODatabaseResult::current
+	public function current()
+	{
+		return $this->res->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS,
+				$this->key);
+	}
+
+
+	//private
+	//properties
+	private $stmt;
 }
 
 ?>
