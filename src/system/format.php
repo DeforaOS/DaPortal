@@ -76,14 +76,6 @@ abstract class Format extends Mutator
 	}
 
 
-	//accessors
-	//Format::setParameter
-	public function setParameter($name, $value)
-	{
-		return $this->set($name, $value);
-	}
-
-
 	//virtual
 	abstract public function render($engine, $page, $filename = FALSE);
 
@@ -114,13 +106,6 @@ abstract class Format extends Mutator
 		global $config;
 
 		return $config->get('format::'.$this->name, $variable);
-	}
-
-
-	//Format::getParameter
-	protected function getParameter($name)
-	{
-		return $this->get($name);
 	}
 }
 
