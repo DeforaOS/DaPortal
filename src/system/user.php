@@ -45,7 +45,7 @@ class User
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return;
-		$res = $res[0];
+		$res = $res->current();
 		$this->user_id = $res['id'];
 		$this->username = $res['username'];
 		$this->enabled = $db->isTrue($res['enabled']);
@@ -172,7 +172,7 @@ class User
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		$res = $res[0];
+		$res = $res->current();
 		if(strlen($res['password']) > 0 && $res['password'][0] == '$')
 		{
 			//the password is salted
@@ -301,7 +301,7 @@ class User
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		$res = $res[0];
+		$res = $res->current();
 		$cache[$username] = new User($engine, $res['id'], $username);
 		if($user_id !== FALSE && $cache[$username]->getUserID()
 				!= $user_id)
@@ -417,7 +417,7 @@ class User
 			$error = _('Could not reset the password');
 			return FALSE;
 		}
-		$res = $res[0];
+		$res = $res->current();
 		$query = User::$query_reset_token;
 		$uid = $res['user_id'];
 		//generate a token
@@ -518,7 +518,7 @@ class User
 			$error = _('Could not validate the user');
 			return FALSE;
 		}
-		$res = $res[0];
+		$res = $res->current();
 		if($db->transactionBegin($engine) === FALSE)
 		{
 			$error = _('Could not validate the user');
