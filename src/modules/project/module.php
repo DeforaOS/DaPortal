@@ -250,7 +250,7 @@ class ProjectModule extends MultiContentModule
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		$res = $res[0];
+		$res = $res->current();
 		$res['date'] = $db->formatDate($engine, $res['timestamp']);
 		return $res;
 	}
@@ -310,7 +310,7 @@ class ProjectModule extends MultiContentModule
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return $res[0];
+		return $res->current();
 	}
 
 
@@ -631,7 +631,8 @@ class ProjectModule extends MultiContentModule
 		if(($res = $db->query($engine, $q, $args)) === FALSE
 				|| count($res) != 1)
 			return _('Internal server error');
-		$did = $res[0]['id'];
+		$res = $res->current();
+		$did = $res['id'];
 		$args = array('project_id' => $project['id'],
 			'download_id' => $did);
 		if($db->query($engine, $query, $args) === FALSE)

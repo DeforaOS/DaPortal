@@ -45,7 +45,8 @@ abstract class Auth
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return unserialize($res[0]['value']);
+		$res = $res->current();
+		return unserialize($res['value']);
 	}
 
 

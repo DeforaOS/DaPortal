@@ -45,7 +45,7 @@ class Group
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return;
-		$res = $res[0];
+		$res = $res->current();
 		$this->group_id = $res['id'];
 		$this->groupname = $res['groupname'];
 		$this->enabled = $db->isTrue($res['enabled']);
@@ -166,7 +166,7 @@ class Group
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		$res = $res[0];
+		$res = $res->current();
 		$cache[$groupname] = new Group($engine, $res['id'], $groupname);
 		if($group_id !== FALSE && $cache[$groupname]->getGroupID()
 				!= $group_id)
