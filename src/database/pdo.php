@@ -61,6 +61,22 @@ class PDODatabase extends Database
 	}
 
 
+	//PDODatabase::like
+	public function like($case = TRUE, $pattern = FALSE)
+	{
+		switch($this->getBackend())
+		{
+			case 'pgsql':
+				$ret = $case ? 'LIKE' : 'ILIKE';
+				if($pattern !== FALSE)
+					$ret .= ' '.$this->escape($pattern);
+				return $ret;
+			default:
+				return parent::like($case, $pattern);
+		}
+	}
+
+
 	//PDODatabase::prepare
 	public function prepare($query, &$parameters = FALSE)
 	{
