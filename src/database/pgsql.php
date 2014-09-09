@@ -270,4 +270,45 @@ class PgsqlDatabase extends Database
 		AND conname=:field';
 }
 
+
+//PgsqlDatabaseResult
+class PgsqlDatabaseResult extends DatabaseResult
+{
+	//public
+	//methods
+	//PgsqlDatabaseResult::PgsqlDatabaseResult
+	public function __construct($res)
+	{
+		$this->count = pg_num_rows($res);
+		$this->res = $res;
+	}
+
+
+	//SeekableIterator
+	//PgsqlDatabaseResult::current
+	public function current()
+	{
+		return pg_fetch_array($this->res, $this->key,  PGSQL_ASSOC);
+	}
+
+
+	//PgsqlDatabaseResult::key
+	public function key()
+	{
+		return $this->key;
+	}
+
+
+	//PgsqlDatabaseResult::valid
+	public function valid()
+	{
+		return pg_result_seek($this->res, $this->key);
+	}
+
+
+	//private
+	//properties
+	private $res;
+}
+
 ?>
