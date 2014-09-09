@@ -247,6 +247,7 @@ class PDODatabase extends Database
 	}
 
 
+	//accessors
 	//PDODatabase::getBackend
 	protected function getBackend()
 	{
@@ -262,6 +263,7 @@ class PDODatabase extends Database
 	}
 
 
+	//useful
 	//PDODatabase::escape
 	protected function escape($string)
 	{
