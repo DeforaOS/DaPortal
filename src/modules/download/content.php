@@ -112,7 +112,7 @@ abstract class DownloadContent extends MultiContent
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return new $class($engine, $module, $res[0]);
+		return new $class($engine, $module, $res->current());
 	}
 
 

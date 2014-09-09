@@ -379,7 +379,8 @@ class SearchModule extends Module
 		if(($res = $db->query($engine, $fields.' '.$query, $args))
 				=== FALSE || count($res) != 1)
 			return $engine->log('LOG_ERR', _('Unable to search'));
-		$count = $res[0]['count'];
+		$res = $res->current();
+		$count = $res['count'];
 		$fields = $this->query_fields;
 		$order = 'ORDER BY timestamp DESC';
 		//paging

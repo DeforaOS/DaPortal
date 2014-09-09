@@ -803,7 +803,7 @@ class UserModule extends Module
 		$columns = array('title' => _('Group'),
 			'count' => _('Members'));
 		$view = $vbox->append('treeview', array('columns' => $columns));
-		while(($group = array_shift($res)) !== NULL)
+		foreach($res as $group)
 		{
 			$r = new Request('group', FALSE, $group['id'],
 				$group['groupname']);
@@ -858,7 +858,7 @@ class UserModule extends Module
 		$columns = array('title' => 'Username',
 			'fullname' => 'Full name');
 		$view = $vbox->append('treeview', array('columns' => $columns));
-		while(($r = array_shift($res)) !== NULL)
+		foreach($res as $r)
 		{
 			$req = new Request($this->name, FALSE, $r['user_id'],
 				$r['username']);

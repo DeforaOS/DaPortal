@@ -185,7 +185,7 @@ class GroupModule extends Module
 			return FALSE;
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		while(($r = array_shift($res)) !== NULL)
+		foreach($res as $r)
 		{
 			$req = new Request($this->name, FALSE, $r['group_id'],
 				$r['groupname']);
@@ -475,7 +475,7 @@ class GroupModule extends Module
 		$columns = array('title' => _('Group'),
 			'members' => _('Members'));
 		$view = $page->append('treeview', array('columns' => $columns));
-		while(($r = array_shift($res)) != NULL)
+		foreach($res as $r)
 		{
 			$request = new Request($this->name, FALSE, $r['id'],
 				$r['groupname']);
@@ -522,7 +522,7 @@ class GroupModule extends Module
 		$columns = array('title' => _('Username'),
 			'fullname' => _('Full name'));
 		$view = $vbox->append('treeview', array('columns' => $columns));
-		while(($r = array_shift($res)) != NULL)
+		foreach($res as $r)
 		{
 			$request = new Request('user', FALSE, $r['id'],
 				$r['username']);

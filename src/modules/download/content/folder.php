@@ -312,7 +312,7 @@ class FolderDownloadContent extends DownloadContent
 			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		while(($r = array_shift($res)) != NULL)
+		foreach($res as $r)
 		{
 			$classname = ($r['mode'] & $class::$S_IFDIR)
 				? 'FolderDownloadContent'
