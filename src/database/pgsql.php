@@ -38,7 +38,7 @@ class PgsqlDatabase extends Database
 			return FALSE;
 		$sequence = $table.'_'.$field.'_seq';
 		$query = 'SELECT currval('.$this->escape($sequence).')'
-			.' AS currval;';
+			.' AS currval';
 		if(($res = $this->query($engine, $query)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
@@ -69,10 +69,11 @@ class PgsqlDatabase extends Database
 		$args = array('table' => $table,
 			'field' => $table.'_'.$field);
 
-		if(($res = $this->query($engine, $query, $args)) === FALSE)
+		if(($res = $this->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
 			return array();
-		$res0 = $res->current();
-		$res = explode("'", $res0['constraint']);
+		$res = $res->current();
+		$res = explode("'", $res['constraint']);
 		$str = array();
 		for($i = 1, $cnt = count($res); $i < $cnt; $i += 2)
 			$str[] = $res[$i];
