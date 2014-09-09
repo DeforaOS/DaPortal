@@ -267,10 +267,10 @@ class ProjectModule extends MultiContentModule
 		$vbox2 = $hbox->append('vbox');
 		//FIXME fetch the project name in additional cases
 		$vbox1->append('entry', array('name' => 'project',
-			'value' => $request->getParameter('project'),
+			'value' => $request->get('project'),
 			'text' => _('Project: ')));
 		$vbox2->append('entry', array('name' => 'username',
-			'value' => $request->getParameter('username'),
+			'value' => $request->get('username'),
 			'text' => _('Submitted by: ')));
 		//FIXME implement the rest
 		$bbox = $vbox2->append('hbox');
@@ -397,7 +397,7 @@ class ProjectModule extends MultiContentModule
 	{
 		if($request === FALSE)
 			return parent::callAdmin($engine, $request);
-		switch($request->getParameter('type'))
+		switch($request->get('type'))
 		{
 			case 'bug':
 				return $this->_adminBugs($engine, $request);
@@ -434,7 +434,7 @@ class ProjectModule extends MultiContentModule
 				&& ($project = $this->_get($engine, $id,
 					$request->getTitle())) === FALSE)
 			$error = _('Unknown project');
-		else if(($name = $request->getParameter('project')) !== FALSE
+		else if(($name = $request->get('project')) !== FALSE
 				&& strlen($name))
 		{
 			if(($project = $this->_getProjectByName($engine,
@@ -452,14 +452,14 @@ class ProjectModule extends MultiContentModule
 		}
 		$filter = $this->getFilter($engine, $request);
 		//filter by user_id
-		if(($uid = $request->getParameter('user_id')) !== FALSE)
+		if(($uid = $request->get('user_id')) !== FALSE)
 		{
 			$title .= _(' by ').$uid; //XXX
 			$query .= ' AND bug.user_id=:user_id';
 			$args['user_id'] = $uid;
 		}
 		//sorting out
-		switch(($order = $request->getParameter('sort')))
+		switch(($order = $request->get('sort')))
 		{
 			case 'date':	$order = 'bug.timestamp DESC';	break;
 			case 'title':	$order = 'bug.title ASC';	break;
@@ -541,10 +541,10 @@ class ProjectModule extends MultiContentModule
 		$vbox = $page->append('vbox'); //XXX for the title level
 		$vbox->append($bug->display($engine, $request));
 		//preview
-		if($request->getParameter('preview') !== FALSE)
+		if($request->get('preview') !== FALSE)
 		{
-			$title = $request->getParameter('title');
-			$content = $request->getParameter('content');
+			$title = $request->get('title');
+			$content = $request->get('content');
 			$reply = array('title' => _('Preview: ').$title,
 					'user_id' => $user->getUserID(),
 					'username' => $user->getUsername(),
@@ -608,8 +608,7 @@ class ProjectModule extends MultiContentModule
 		$query = $this->project_query_project_release_insert;
 
 		//verify the request
-		if($request === FALSE
-				|| $request->getParameter('submit') === FALSE)
+		if($request === FALSE || $request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -661,12 +660,12 @@ class ProjectModule extends MultiContentModule
 			$request->getTitle());
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');
-		$title = $request->getParameter('title');
+		$title = $request->get('title');
 		$vbox->append('entry', array('text' => _('Title: '),
 				'name' => 'title', 'value' => $title));
 		$vbox->append('textview', array('text' => _('Content: '),
 				'name' => 'content',
-				'value' => $request->getParameter('content')));
+				'value' => $request->get('content')));
 		//FIXME really implement
 		$r = $bug->getRequest();
 		$box = $vbox->append('buttonbox');
@@ -688,7 +687,7 @@ class ProjectModule extends MultiContentModule
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('filechooser', array('text' => _('File: '),
 				'name' => 'files[]'));
-		$value = $request->getParameter('directory');
+		$value = $request->get('directory');
 		$form->append('entry', array('text' => _('Directory: '),
 				'name' => 'directory', 'value' => $value));
 		$r = new Request($this->name, 'download', $project->getID(),
@@ -870,7 +869,7 @@ class ProjectModule extends MultiContentModule
 		if($this->content_class == 'BugProjectContent')
 			return parent::helperListView($engine, $request);
 		$view = parent::helperListView($engine, $request);
-		if(($columns = $view->getProperty('columns')) !== FALSE)
+		if(($columns = $view->get('columns')) !== FALSE)
 		{
 			unset($columns['date']);
 			$columns['username'] = _('Manager');
