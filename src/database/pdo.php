@@ -295,7 +295,7 @@ class PDODatabaseResult extends DatabaseResult
 	{
 		//XXX may not always work
 		$this->count = $stmt->rowCount();
-		$this->res = $stmt;
+		$this->stmt = $stmt;
 	}
 
 
@@ -303,7 +303,7 @@ class PDODatabaseResult extends DatabaseResult
 	//PDODatabaseResult::current
 	public function current()
 	{
-		return $this->res->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS,
+		return $this->stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS,
 				$this->key);
 	}
 
