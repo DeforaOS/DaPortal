@@ -67,14 +67,14 @@ class SQLite2Database extends Database
 		if($config->get('database', 'debug'))
 			$engine->log('LOG_DEBUG', $query);
 		$error = FALSE;
-		if(($ret = sqlite_query($this->handle, $query, SQLITE_BOTH,
-						$error)) === FALSE)
+		if(($res = sqlite_query($this->handle, $query, SQLITE_ASSOC,
+					$error)) === FALSE)
 		{
 			if($error !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
-		return sqlite_fetch_all($ret);
+		return new SQLite2DatabaseResult($res);
 	}
 
 
@@ -160,6 +160,35 @@ class SQLite2Database extends Database
 	private $case;
 	//functions
 	private $func_regexp = FALSE;
+}
+
+
+//SQLite2DatabaseResult
+class SQLite2DatabaseResult extends DatabaseResult
+{
+	//public
+	//methods
+	//essential
+	//SQLite2DatabaseResult::SQLite2DatabaseResult
+	public function __construct($res)
+	{
+		//XXX this obtains every result directly
+		$this->res = sqlite_fetch_all($res);
+		$this->count = count($this->res);
+	}
+
+
+	//SeekableIterator
+	//SQLite2DatabaseResult::current
+	public function current()
+	{
+		return $this->res[$this->key];
+	}
+
+
+	//private
+	//properties
+	private $res;
 }
 
 ?>
