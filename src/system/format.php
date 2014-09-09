@@ -36,9 +36,6 @@ abstract class Format extends Mutator
 			$name = $config->get('format', 'backend');
 		if($name !== FALSE)
 		{
-			$res = require_once('./formats/'.$name.'.php');
-			if($res === FALSE)
-				return FALSE;
 			$class = $name.'Format';
 			$ret = new $class($name);
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
@@ -52,7 +49,6 @@ abstract class Format extends Mutator
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			require_once('./formats/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
 			$class = $name.'Format';
 			$format = new $class($name);
