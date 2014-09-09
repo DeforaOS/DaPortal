@@ -42,7 +42,8 @@ class PgsqlDatabase extends Database
 		if(($res = $this->query($engine, $query)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return $res[0]['currval'];
+		$res = $res->current();
+		return $res['currval'];
 	}
 
 
