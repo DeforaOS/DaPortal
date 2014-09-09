@@ -289,13 +289,6 @@ class PgsqlDatabaseResult extends DatabaseResult
 	}
 
 
-	//PgsqlDatabaseResult::key
-	public function key()
-	{
-		return $this->key;
-	}
-
-
 	//PgsqlDatabaseResult::valid
 	public function valid()
 	{
