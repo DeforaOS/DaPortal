@@ -65,7 +65,7 @@ abstract class DatabaseResult implements Countable, SeekableIterator
 	//DatabaseResult::valid
 	public function valid()
 	{
-		return $this->valid;
+		return $this->key < $this->count;
 	}
 
 
@@ -73,7 +73,6 @@ abstract class DatabaseResult implements Countable, SeekableIterator
 	//properties
 	protected $count = 0;
 	protected $key = 0;
-	protected $valid = FALSE;
 }
 
 ?>
