@@ -36,8 +36,12 @@ if(($res = $database->query($engine, $query, $args)) === FALSE)
 //check the results
 if(count($res) != 2)
 	exit(4);
-if($res[0]['user_id'] != 0 || $res[1]['user_id'] != 1)
+$r = $res->current();
+if($r['user_id'] != 0)
 	exit(5);
+$res->next();
+$r = $res->current();
+if($r['user_id'] != 1)
 
 exit(0);
 
