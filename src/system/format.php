@@ -17,7 +17,7 @@
 
 
 //Format
-abstract class Format
+abstract class Format extends Mutator
 {
 	//public
 	//methods
@@ -81,9 +81,10 @@ abstract class Format
 
 
 	//accessors
+	//Format::setParameter
 	public function setParameter($name, $value)
 	{
-		$this->parameters[$name] = $value;
+		return $this->set($name, $value);
 	}
 
 
@@ -94,7 +95,6 @@ abstract class Format
 	//protected
 	//properties
 	protected $name = FALSE;
-	protected $parameters = array();
 
 
 	//methods
@@ -124,9 +124,7 @@ abstract class Format
 	//Format::getParameter
 	protected function getParameter($name)
 	{
-		if(!isset($this->parameters[$name]))
-			return FALSE;
-		return $this->parameters[$name];
+		return $this->get($name);
 	}
 }
 
