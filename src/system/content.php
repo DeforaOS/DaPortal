@@ -809,7 +809,8 @@ class Content
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return $res[0]['count'];
+		$res = $res->current();
+		return $res['count'];
 	}
 
 
@@ -856,7 +857,7 @@ class Content
 			$query .= $database->offset($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		while(($r = array_shift($res)) != NULL)
+		foreach($res as $r)
 			$ret[] = new $class($engine, $module, $r);
 		return $ret;
 	}
@@ -890,7 +891,7 @@ class Content
 		if(($res = $database->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
-		return new $class($engine, $module, $res[0]);
+		return new $class($engine, $module, $res->current());
 	}
 
 

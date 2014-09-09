@@ -445,7 +445,10 @@ abstract class ContentModule extends Module
 			$q = $this->query_list_admin_count;
 			if(($res = $db->query($engine, $q, $args)) !== FALSE
 					&& count($res) == 1)
-				$pcnt = $res[0]['count'];
+			{
+				$res = $res->current();
+				$pcnt = $res['count'];
+			}
 			if($pcnt !== FALSE)
 			{
 				$offset = FALSE;
@@ -474,10 +477,11 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperAdminToolbar($engine, $treeview, $request);
 		//rows
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		$cnt = count($res);
+		foreach($res as $r)
 		{
 			$row = $treeview->append('row');
-			$this->helperAdminRow($engine, $row, $res[$i]);
+			$this->helperAdminRow($engine, $row, $r);
 		}
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);

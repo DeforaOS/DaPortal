@@ -192,23 +192,25 @@ class AdminModule extends Module
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox = $vbox->append('vbox');
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		$cnt = count($res);
+		foreach($res as $r)
 		{
-			$r = new Request($res[$i]['name'], 'actions', FALSE,
+			$request = new Request($r['name'], 'actions', FALSE,
 					FALSE, array('admin' => TRUE));
-			$rows = $engine->process($r, TRUE);
+			$rows = $engine->process($request, TRUE);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
-			$text = ucfirst($res[$i]['name']);
-			$r = new Request($res[$i]['name']);
-			$link = new PageElement('link', array('request' => $r,
+			$text = ucfirst($r['name']);
+			$request = new Request($r['name']);
+			$link = new PageElement('link', array(
+					'request' => $request,
 					'text' => $text));
 			$title = $vbox->append('title', array(
-				'stock' => $res[$i]['name']));
+				'stock' => $r['name']));
 			$title->append($link);
 			$view = $vbox->append('iconview');
-			foreach($rows as $r)
-				$view->append($r);
+			foreach($rows as $row)
+				$view->append($row);
 		}
 		return $page;
 	}
