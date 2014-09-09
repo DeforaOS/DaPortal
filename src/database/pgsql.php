@@ -161,15 +161,9 @@ class PgsqlDatabase extends Database
 			return FALSE;
 		}
 		$this->profileStop($engine, $query);
-		switch(pg_num_rows($res))
-		{
-			case -1:
-				return FALSE;
-			case 0:
-				return array();
-			default:
-				return pg_fetch_all($res);
-		}
+		if(pg_num_rows($res) == -1)
+			return FALSE;
+		return new PgsqlDatabaseResult($res);
 	}
 
 
