@@ -1,6 +1,7 @@
 #!/bin/sh
 #$Id$
 #Copyright (c) 2013-2014 Pierre Pronchery <khorben@defora.org>
+#This file is part of DeforaOS Web DaPortal
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, version 3 of the License.
@@ -23,6 +24,25 @@ PHP="/usr/bin/env php"
 
 
 #functions
+#fail
+_fail()
+{
+	test="$1"
+
+	shift
+	echo -n "$test:" 1>&2
+	(echo
+	echo "Testing: $test" "$@"
+	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
+	res=$?
+	if [ $res -ne 0 ]; then
+		echo " FAIL (error $res)" 1>&2
+	else
+		echo " PASS" 1>&2
+	fi
+}
+
+
 #test
 _test()
 {
@@ -35,7 +55,6 @@ _test()
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
-		echo "./${test}.php: Failed with error code $res" >> "$target"
 		echo " FAIL" 1>&2
 		FAILED="$FAILED $test(error $res)"
 		return 2
@@ -64,7 +83,7 @@ _usage()
 
 #main
 clean=0
-while getopts "cP:" "name"; do
+while getopts "cP:" name; do
 	case "$name" in
 		c)
 			clean=1
