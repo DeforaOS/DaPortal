@@ -136,8 +136,8 @@ class SearchModule extends Module
 			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
-		for($i = 0; $i < count($res); $i++)
-			$this->appendResult($engine, $view, $res[$i]);
+		foreach($res as $r)
+			$this->appendResult($engine, $view, $r);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count);
 		return $page;
@@ -174,8 +174,8 @@ class SearchModule extends Module
 			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
-		for($i = 0; $i < count($res); $i++)
-			$this->appendResult($engine, $view, $res[$i]);
+		foreach($res as $r)
+			$this->appendResult($engine, $view, $r);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count);
 		return $page;
