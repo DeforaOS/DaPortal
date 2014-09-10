@@ -112,7 +112,7 @@ class PDODatabase extends Database
 		if($stmt->execute($args) !== TRUE)
 			return $this->_queryError($engine,
 					'Could not execute query');
-		return new PDODatabaseResult($stmt);
+		return new $this->result_class($stmt);
 	}
 
 	protected function _queryError($engine, $message)
@@ -238,6 +238,7 @@ class PDODatabase extends Database
 		switch($this->getBackend())
 		{
 			case 'sqlite':
+				$this->result_class = 'PDODatabaseResultCached';
 				$func = array($this, '_date_trunc');
 				$this->handle->sqliteCreateFunction(
 						'date_trunc', $func);
@@ -278,6 +279,7 @@ class PDODatabase extends Database
 	//private
 	//properties
 	private $handle = FALSE;
+	private $result_class = 'PDODatabaseResult';
 	private $transaction = 0;
 	private $case;
 	//functions
@@ -293,7 +295,6 @@ class PDODatabaseResult extends DatabaseResult
 	//PDODatabaseResult::PDODatabaseResult
 	public function __construct($stmt)
 	{
-		//XXX may not always work
 		$this->count = $stmt->rowCount();
 		$this->stmt = $stmt;
 	}
@@ -311,6 +312,33 @@ class PDODatabaseResult extends DatabaseResult
 	//private
 	//properties
 	private $stmt;
+}
+
+
+//PDODatabaseResultCached
+class PDODatabaseResultCached extends DatabaseResult
+{
+	//public
+	//methods
+	//PDODatabaseResult::PDODatabaseResult
+	public function __construct($stmt)
+	{
+		$this->res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$this->count = count($this->res);
+	}
+
+
+	//SeekableIterator
+	//PDODatabaseResult::current
+	public function current()
+	{
+		return $this->res[$this->key];
+	}
+
+
+	//private
+	//properties
+	private $res;
 }
 
 ?>
