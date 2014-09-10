@@ -477,7 +477,6 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperAdminToolbar($engine, $treeview, $request);
 		//rows
-		$cnt = count($res);
 		foreach($res as $r)
 		{
 			$row = $treeview->append('row');
