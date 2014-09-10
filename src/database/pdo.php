@@ -219,8 +219,7 @@ class PDODatabase extends Database
 	{
 		global $config;
 
-		if(($dsn = $config->get('database::pdo', 'dsn'))
-				=== FALSE)
+		if(($dsn = $config->get('database::pdo', 'dsn')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
 		$username = $config->get('database::pdo', 'username');
