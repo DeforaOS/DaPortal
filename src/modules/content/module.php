@@ -433,7 +433,7 @@ abstract class ContentModule extends Module
 		//administrative page
 		$page = new Page;
 		$title = $this->text_content_admin;
-		$page->setProperty('title', $title);
+		$page->set('title', $title);
 		$element = $page->append('title', array('stock' => 'admin',
 				'text' => $title));
 		if(is_string(($order = $this->content_list_admin_order)))
@@ -664,29 +664,30 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//rows
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
+			//FIXME use the $content_class instead
 			$row = $view->append('row');
-			$r = new Request($this->name, FALSE, $res[$i]['id'],
-				$res[$i]['title']);
-			$link = new PageElement('link', array('request' => $r,
-					'text' => $res[$i]['title']));
-			$row->setProperty('title', $link);
-			$row->setProperty('timestamp', $res[$i]['timestamp']);
-			$row->setProperty('date', $db->formatDate($engine,
-					$res[$i]['timestamp']));
-			$r = new Request('user', FALSE, $res[$i]['user_id'],
-				$res[$i]['username']);
-			$link = new PageElement('link', array('request' => $r,
-					'stock' => 'user',
-					'text' => $res[$i]['username']));
-			$row->setProperty('username', $link);
-			//FIXME use the $content_class somehow
-			$content = $res[$i]['content'];
+			$request = new Request($this->name, FALSE, $r['id'],
+				$r['title']);
+			$link = new PageElement('link', array(
+					'request' => $request,
+					'text' => $r['title']));
+			$row->set('title', $link);
+			$row->set('timestamp', $r['timestamp']);
+			$row->set('date', $db->formatDate($engine,
+					$r['timestamp']));
+			$request = new Request('user', FALSE, $r['user_id'],
+				$r['username']);
+			$link = new PageElement('link', array(
+				'request' => $request, 'stock' => 'user',
+				'text' => $r['username']));
+			$row->set('username', $link);
+			$content = $r['content'];
 			if(($len = $this->content_preview_length) > 0
 					&& strlen($content) > $len)
 				$content = substr($content, 0, $len).'...';
-			$row->setProperty('content', $content);
+			$row->set('content', $content);
 		}
 		return $view;
 	}
@@ -1120,26 +1121,24 @@ abstract class ContentModule extends Module
 		$yes = new PageElement('image', array('stock' => 'yes',
 				'size' => 16, 'title' => _('Enabled')));
 
-		$row->setProperty('id', 'content_id:'.$res['id']);
-		$row->setProperty('icon', '');
+		$row->set('id', 'content_id:'.$res['id']);
+		$row->set('icon', '');
 		$r = new Request($this->name, 'update', $res['id'],
 			$res['title']);
 		$link = new PageElement('link', array('request' => $r,
 				'stock' => $this->name,
 				'text' => $res['title']));
-		$row->setProperty('title', $link);
-		$row->setProperty('enabled', $db->isTrue($res['enabled'])
-				? $yes : $no);
-		$row->setProperty('public', $db->isTrue($res['public'])
-				? $yes : $no);
+		$row->set('title', $link);
+		$row->set('enabled', $db->isTrue($res['enabled']) ? $yes : $no);
+		$row->set('public', $db->isTrue($res['public']) ? $yes : $no);
 		$r = new Request('user', FALSE, $res['user_id'],
 			$res['username']);
 		$link = new PageElement('link', array('request' => $r,
 				'stock' => 'user',
 				'text' => $res['username']));
-		$row->setProperty('username', $link);
+		$row->set('username', $link);
 		$date = $db->formatDate($engine, $res['timestamp']);
-		$row->setProperty('date', $date);
+		$row->set('date', $date);
 	}
 
 
@@ -1211,8 +1210,7 @@ abstract class ContentModule extends Module
 			$args[$key] = $x[1];
 			if(!$cred->isAdmin())
 				$args['user_id'] = $uid;
-			if(($res = $db->query($engine, $query, $args))
-					!== FALSE)
+			if($db->query($engine, $query, $args) !== FALSE)
 				continue;
 			$type = 'error';
 			$message = $failure;
@@ -1376,8 +1374,8 @@ abstract class ContentModule extends Module
 	{
 		if($text === FALSE)
 			$text = $this->text_content_redirect_progress;
-		$page->setProperty('location', $engine->getURL($request));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($request));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
