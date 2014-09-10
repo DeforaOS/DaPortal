@@ -151,22 +151,21 @@ class AdminModule extends Module
 			'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 			'size' => 16, 'title' => _('Enabled')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->setProperty('id', 'module_id:'
-					.$res[$i]['module_id']);
-			$r = new Request($res[$i]['name'], 'admin');
-			$text = ucfirst($res[$i]['name']);
-			$link = new PageElement('link', array('request' => $r,
-				'stock' => $res[$i]['name'],
+			$row->setProperty('id', 'module_id:'.$r['module_id']);
+			$request = new Request($r['name'], 'admin');
+			$text = ucfirst($r['name']);
+			$link = new PageElement('link', array(
+				'request' => $request, 'stock' => $r['name'],
 				'text' => $text));
 			$row->setProperty('module', $link);
 			$row->setProperty('enabled', $database->isTrue(
-					$res[$i]['enabled']) ? $yes : $no);
+					$r['enabled']) ? $yes : $no);
 		}
-		$r = new Request($this->name);
-		$page->append('link', array('request' => $r,
+		$request = new Request($this->name);
+		$page->append('link', array('request' => $request,
 				'stock' => $this->stock_back,
 				'text' => _('Back to the administration')));
 		return $page;
@@ -192,7 +191,6 @@ class AdminModule extends Module
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox = $vbox->append('vbox');
-		$cnt = count($res);
 		foreach($res as $r)
 		{
 			$request = new Request($r['name'], 'actions', FALSE,
