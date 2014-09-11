@@ -236,8 +236,8 @@ class GroupModule extends Module
 		$columns = array('groupname' => _('Group'),
 				'enabled' => _('Enabled'),
 				'members' => _('Members'));
-		$r = new Request($this->name, 'admin');
-		$view = $page->append('treeview', array('request' => $r,
+		$request = new Request($this->name, 'admin');
+		$view = $page->append('treeview', array('request' => $request,
 				'view' => 'details', 'columns' => $columns));
 		//toolbar
 		$toolbar = $view->append('toolbar');
@@ -248,7 +248,7 @@ class GroupModule extends Module
 					array('type' => 'group'))));
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
-				'request' => $r));
+				'request' => $request));
 		$toolbar->append('button', array('stock' => 'disable',
 				'text' => _('Disable'),
 				'type' => 'submit', 'name' => 'action',
@@ -265,38 +265,40 @@ class GroupModule extends Module
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 				'size' => 16, 'title' => _('Enabled')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->set('id', 'group_id:'.$res[$i]['id']);
+			$row->set('id', 'group_id:'.$r['id']);
 			//members
-			$row->set('members', $res[$i]['count']);
-			$r = new Request($this->name, 'list', $res[$i]['id'],
-					$res[$i]['groupname']);
+			$row->set('members', $r['count']);
+			$request = new Request($this->name, 'list', $r['id'],
+					$r['groupname']);
 			$link = new PageElement('link', array(
-					'stock' => 'group', 'request' => $r,
-					'text' => $res[$i]['count']));
-			if($res[$i]['id'] != 0)
+					'stock' => 'group',
+					'request' => $request,
+					'text' => $r['count']));
+			if($r['id'] != 0)
 				$row->set('members', $link);
 			//groupname
-			$row->set('groupname', $res[$i]['groupname']);
-			$r = new Request($this->name, 'update', $res[$i]['id'],
-				$res[$i]['groupname'],
-				array('type' => 'group'));
+			$row->set('groupname', $r['groupname']);
+			$request = new Request($this->name, 'update', $r['id'],
+				$r['groupname'], array('type' => 'group'));
 			$link = new PageElement('link', array(
-					'stock' => 'group', 'request' => $r,
-					'text' => $res[$i]['groupname']));
-			if($res[$i]['id'] != 0)
+					'stock' => 'group',
+					'request' => $request,
+					'text' => $r['groupname']));
+			if($r['id'] != 0)
 				$row->set('groupname', $link);
-			$row->set('enabled', $db->isTrue($res[$i]['enabled'])
+			$row->set('enabled', $db->isTrue($r['enabled'])
 				? $yes : $no);
 		}
 		$vbox = $page->append('vbox');
-		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'back',
-			'text' => _('Back to my account')));
-		$r = new Request('admin');
-		$vbox->append('link', array('request' => $r, 'stock' => 'admin',
+		$request = new Request($this->name);
+		$vbox->append('link', array('request' => $request,
+			'stock' => 'back', 'text' => _('Back to my account')));
+		$request = new Request('admin');
+		$vbox->append('link', array('request' => $request,
+			'stock' => 'admin',
 			'text' => _('Back to the administration')));
 		return $page;
 	}
@@ -332,14 +334,16 @@ class GroupModule extends Module
 		{
 			$icon = new PageElement('image', array(
 				'stock' => $a['stock']));
-			$r = new Request($this->name, $a['action']);
-			$link = new PageElement('link', array('request' => $r,
+			$request = new Request($this->name, $a['action']);
+			$link = new PageElement('link', array(
+					'request' => $request,
 					'text' => $a['title']));
 			$row = array('icon' => $icon, 'label' => $link);
 			$view->append('row', $row);
 		}
-		$r = new Request();
-		$page->append('link', array('stock' => 'back', 'request' => $r,
+		$request = new Request();
+		$page->append('link', array('stock' => 'back',
+				'request' => $request,
 				'text' => _('Back to the site')));
 		return $page;
 	}
