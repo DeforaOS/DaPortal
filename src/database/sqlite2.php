@@ -162,33 +162,4 @@ class SQLite2Database extends Database
 	private $func_regexp = FALSE;
 }
 
-
-//SQLite2DatabaseResult
-class SQLite2DatabaseResult extends DatabaseResult
-{
-	//public
-	//methods
-	//essential
-	//SQLite2DatabaseResult::SQLite2DatabaseResult
-	public function __construct($res)
-	{
-		//XXX this obtains every result directly
-		$this->res = sqlite_fetch_all($res);
-		$this->count = count($this->res);
-	}
-
-
-	//SeekableIterator
-	//SQLite2DatabaseResult::current
-	public function current()
-	{
-		return $this->res[$this->key];
-	}
-
-
-	//private
-	//properties
-	private $res;
-}
-
 ?>

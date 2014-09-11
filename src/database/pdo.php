@@ -286,35 +286,8 @@ class PDODatabase extends Database
 }
 
 
-//PDODatabaseResult
-class PDODatabaseResult extends DatabaseResult
-{
-	//public
-	//methods
-	//PDODatabaseResult::PDODatabaseResult
-	public function __construct($stmt)
-	{
-		$this->count = $stmt->rowCount();
-		$this->stmt = $stmt;
-	}
-
-
-	//SeekableIterator
-	//PDODatabaseResult::current
-	public function current()
-	{
-		return $this->stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS,
-				$this->key);
-	}
-
-
-	//private
-	//properties
-	private $stmt;
-}
-
-
 //PDODatabaseResultCached
+//FIXME move to a separate file
 class PDODatabaseResultCached extends DatabaseResult
 {
 	//public
