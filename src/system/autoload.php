@@ -71,6 +71,12 @@ function _autoload_filename_default($class)
 		$database = substr($class, 0, $len - 8);
 		return './database/'.strtolower($database).'.php';
 	}
+	//Database reults
+	else if($len > 14 && substr($class, -14) == 'DatabaseResult')
+	{
+		$database = substr($class, 0, $len - 14);
+		return './database/'.strtolower($database).'/result.php';
+	}
 	//Engines
 	else if($len > 6 && substr($class, -6) == 'Engine')
 	{

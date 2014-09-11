@@ -225,36 +225,4 @@ class SQLite3Database extends Database
 	private $func_regexp = FALSE;
 }
 
-
-//SQLite3DatabaseResult
-class SQLite3DatabaseResult extends DatabaseResult
-{
-	//public
-	//methods
-	//essential
-	//SQLite3DatabaseResult::SQLite3DatabaseResult
-	public function __construct($res)
-	{
-		//XXX this obtains every result directly
-		$this->res = array();
-		while(($r = $res->fetchArray(SQLITE3_ASSOC)) !== FALSE
-				&& is_array($r))
-			$this->res[] = $r;
-		$this->count = count($this->res);
-	}
-
-
-	//SeekableIterator
-	//SQLite3DatabaseResult::current
-	public function current()
-	{
-		return $this->res[$this->key];
-	}
-
-
-	//private
-	//properties
-	private $res;
-}
-
 ?>
