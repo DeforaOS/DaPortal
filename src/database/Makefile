@@ -15,6 +15,10 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 dummy.php $(DESTDIR)$(PREFIX)/daportal/src/database/dummy.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
+	$(INSTALL) -m 0644 pdo.php $(DESTDIR)$(PREFIX)/daportal/src/database/pdo.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/pdo
+	$(INSTALL) -m 0644 pdo/result.php $(DESTDIR)$(PREFIX)/daportal/src/database/pdo/result.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 pgsql.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql
 	$(INSTALL) -m 0644 pgsql/result.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/result.php
@@ -27,6 +31,8 @@ install:
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/dummy.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2.php
