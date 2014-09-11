@@ -635,26 +635,28 @@ class UserModule extends Module
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox = $vbox->append('vbox');
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
-			$r = new Request($res[$i]['name'], 'actions', FALSE,
-					FALSE, array('admin' => 0));
-			$rows = $engine->process($r, TRUE);
+			$request = new Request($r['name'], 'actions',
+				FALSE, FALSE, array('admin' => 0));
+			$rows = $engine->process($request, TRUE);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
-			$r = new Request($res[$i]['name']);
-			$text = ucfirst($res[$i]['name']);
-			$link = new PageElement('link', array('request' => $r,
+			$request = new Request($r['name']);
+			$text = ucfirst($r['name']);
+			$link = new PageElement('link', array(
+					'request' => $request,
 					'text' => $text));
 			$title = $vbox->append('title', array(
-					'stock' => $res[$i]['name']));
+					'stock' => $r['name']));
 			$title->append($link);
 			$view = $vbox->append('iconview');
-			foreach($rows as $r)
-				$view->append($r);
+			foreach($rows as $row)
+				$view->append($row);
 		}
-		$r = new Request();
-		$page->append('link', array('stock' => 'home', 'request' => $r,
+		$request = new Request();
+		$page->append('link', array('stock' => 'home',
+				'request' => $request,
 				'text' => _('Back to the homepage')));
 		return $page;
 	}
