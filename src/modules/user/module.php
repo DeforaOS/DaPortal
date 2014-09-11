@@ -504,34 +504,36 @@ class UserModule extends Module
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 				'size' => 16, 'title' => _('Enabled')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->setProperty('id', 'user_id:'.$res[$i]['id']);
-			$row->setProperty('username', $res[$i]['username']);
-			$r = new Request($this->name, 'update', $res[$i]['id'],
-				$res[$i]['username']);
+			$row->set('id', 'user_id:'.$r['id']);
+			$row->set('username', $r['username']);
+			$request = new Request($this->name, 'update', $r['id'],
+				$r['username']);
 			$link = new PageElement('link', array('stock' => 'user',
-					'request' => $r,
-					'text' => $res[$i]['username']));
-			if($res[$i]['id'] != 0)
-				$row->setProperty('username', $link);
-			$row->setProperty('group', $res[$i]['groupname']);
-			$row->setProperty('enabled', $db->isTrue(
-					$res[$i]['enabled']) ? $yes : $no);
-			$row->setProperty('admin', $db->isTrue(
-					$res[$i]['admin']) ? $yes : $no);
+					'request' => $request,
+					'text' => $r['username']));
+			if($r['id'] != 0)
+				$row->set('username', $link);
+			$row->set('group', $r['groupname']);
+			$row->set('enabled', $db->isTrue($r['enabled'])
+				? $yes : $no);
+			$row->set('admin', $db->isTrue($r['admin'])
+				? $yes : $no);
 			$link = new PageElement('link', array(
-					'url' => 'mailto:'.$res[$i]['email'],
-					'text' => $res[$i]['email']));
-			$row->setProperty('email', $link);
+					'url' => 'mailto:'.$r['email'],
+					'text' => $r['email']));
+			$row->set('email', $link);
 		}
 		$vbox = $page->append('vbox');
-		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'user',
+		$request = new Request($this->name);
+		$vbox->append('link', array('request' => $request,
+			'stock' => 'user',
 			'text' => _('Back to my account')));
-		$r = new Request('admin');
-		$vbox->append('link', array('request' => $r, 'stock' => 'admin',
+		$request = new Request('admin');
+		$vbox->append('link', array('request' => $request,
+			'stock' => 'admin',
 			'text' => _('Back to the administration')));
 		return $page;
 	}
