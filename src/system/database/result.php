@@ -29,11 +29,6 @@ abstract class DatabaseResult implements Countable, SeekableIterator
 	}
 
 
-	//SeekableIterator
-	//DatabaseResult::current
-	abstract public function current();
-
-
 	//DatabaseResult::key
 	public function key()
 	{
