@@ -293,10 +293,13 @@ class ProjectModule extends MultiContentModule
 
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return FALSE;
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
-			$res[$i]['admin'] = ($db->isTrue($res[$i]['admin']))
-				? TRUE : FALSE;
-		return $res;
+		$ret = array();
+		foreach($res as $r)
+		{
+			$r['admin'] = ($db->isTrue($r['admin'])) ? TRUE : FALSE;
+			$ret[] = $r;
+		}
+		return $ret;
 	}
 
 
@@ -488,32 +491,35 @@ class ProjectModule extends MultiContentModule
 			'bug_id' => _('ID'), 'project' => _('Project'),
 			'date' => _('Date'), 'state' => _('State'),
 			'type' => _('Type'), 'priority' => _('Priority')));
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
 			$row = $treeview->append('row');
-			$r = new Request($this->name, FALSE, $res[$i]['id'],
-				$res[$i]['title']);
-			$link = new PageElement('link', array('request' => $r,
-					'text' => $res[$i]['title'],
-					'title' => $res[$i]['title']));
+			$request = new Request($this->name, FALSE, $r['id'],
+				$r['title']);
+			$link = new PageElement('link', array(
+					'request' => $request,
+					'text' => $r['title'],
+					'title' => $r['title']));
 			$row->setProperty('title', $link);
-			$link = new PageElement('link', array('request' => $r,
-					'text' => '#'.$res[$i]['bug_id'],
-					'title' => $res[$i]['title']));
+			$link = new PageElement('link', array(
+					'request' => $request,
+					'text' => '#'.$r['bug_id'],
+					'title' => $r['title']));
 			$row->setProperty('bug_id', $link);
-			$row->setProperty('id', 'bug_id:'.$res[$i]['id']);
-			$r = new Request($this->name, FALSE,
-					$res[$i]['project_id'],
-					$res[$i]['project']);
-			$link = new PageElement('link', array('request' => $r,
-					'text' => $res[$i]['project'],
-					'title' => $res[$i]['project']));
+			$row->setProperty('id', 'bug_id:'.$r['id']);
+			$request = new Request($this->name, FALSE,
+					$r['project_id'],
+					$r['project']);
+			$link = new PageElement('link', array(
+					'request' => $request,
+					'text' => $r['project'],
+					'title' => $r['project']));
 			$row->setProperty('project', $link);
-			$date = $db->formatDate($engine, $res[$i]['timestamp']);
+			$date = $db->formatDate($engine, $r['timestamp']);
 			$row->setProperty('date', $date);
-			$row->setProperty('state', $res[$i]['state']);
-			$row->setProperty('type', $res[$i]['type']);
-			$row->setProperty('priority', $res[$i]['priority']);
+			$row->setProperty('state', $r['state']);
+			$row->setProperty('type', $r['type']);
+			$row->setProperty('priority', $r['priority']);
 		}
 		return $page;
 	}
