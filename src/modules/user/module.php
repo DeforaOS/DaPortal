@@ -724,28 +724,28 @@ class UserModule extends Module
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox2 = $vbox->append('vbox');
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
-			$r = new Request($res[$i]['name'], 'actions', FALSE,
+			$request = new Request($r['name'], 'actions', FALSE,
 				FALSE, array('user' => $user));
-			$rows = $engine->process($r, TRUE);
+			$rows = $engine->process($request, TRUE);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
-			$text = ucfirst($res[$i]['name']);
+			$text = ucfirst($r['name']);
 			$vbox2->append('title', array(
-					'stock' => $res[$i]['name'],
+					'stock' => $r['name'],
 					'text' => $text));
 			$view = $vbox2->append('iconview');
-			foreach($rows as $r)
-				$view->append($r);
+			foreach($rows as $row)
+				$view->append($row);
 		}
 		//buttons
 		if($link !== FALSE)
 			$vbox->append($link);
 		if($this->configGet('list'))
 		{
-			$r = new Request($this->name, 'list');
-			$vbox->append('link', array('request' => $r,
+			$request = $this->getRequest('list');
+			$vbox->append('link', array('request' => $request,
 					'stock' => 'back',
 					'text' => _('Back to the user list')));
 		}
