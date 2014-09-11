@@ -401,9 +401,9 @@ class GroupModule extends Module
 			$group = Group::lookup($engine, $cred->getUsername(),
 					$gid);
 			$title = _('My content');
-			$r = new Request($this->name);
+			$request = new Request($this->name);
 			$link = new PageElement('link', array('stock' => 'back',
-					'request' => $r,
+					'request' => $request,
 					'text' => _('Back to my account')));
 		}
 		$page = new Page(array('title' => $title));;
@@ -415,31 +415,32 @@ class GroupModule extends Module
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox2 = $vbox->append('vbox');
-		for($i = 0, $cnt = count($res); $i < $cnt; $i++)
+		foreach($res as $r)
 		{
-			$r = new Request($res[$i]['name'], 'actions', FALSE,
+			$request = new Request($r['name'], 'actions', FALSE,
 				FALSE, array('group' => $group));
-			$rows = $engine->process($r, TRUE);
+			$rows = $engine->process($request, TRUE);
 			if(!is_array($rows) || count($rows) == 0)
 				continue;
-			$text = ucfirst($res[$i]['name']);
-			$vbox2->append('title', array(
-					'stock' => $res[$i]['name'],
+			$text = ucfirst($r['name']);
+			$vbox2->append('title', array('stock' => $r['name'],
 					'text' => $text));
 			$view = $vbox2->append('iconview');
-			foreach($rows as $r)
-				$view->append($r);
+			foreach($rows as $row)
+				$view->append($row);
 		}
 		//buttons
 		if($link !== FALSE)
 			$vbox->append($link);
-		$r = new Request($this->name, 'list', $group->getGroupID(),
-			$group->getGroupname());
-		$vbox->append('link', array('request' => $r, 'stock' => 'user',
+		$request = new Request($this->name, 'list',
+			$group->getGroupID(), $group->getGroupname());
+		$vbox->append('link', array('request' => $request,
+			'stock' => 'user',
 			'text' => _('Members of group')
 				.' '.$group->getGroupname()));
-		$r = new Request($this->name);
-		$vbox->append('link', array('request' => $r, 'stock' => 'back',
+		$request = new Request($this->name);
+		$vbox->append('link', array('request' => $request,
+				'stock' => 'back',
 				'text' => _('Back to the group menu')));
 		return $page;
 	}
