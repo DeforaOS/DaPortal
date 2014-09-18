@@ -292,7 +292,7 @@ class PDODatabaseResultCached extends DatabaseResult
 {
 	//public
 	//methods
-	//PDODatabaseResult::PDODatabaseResult
+	//PDODatabaseResultCached::PDODatabaseResultCached
 	public function __construct($stmt)
 	{
 		$this->res = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -301,9 +301,11 @@ class PDODatabaseResultCached extends DatabaseResult
 
 
 	//SeekableIterator
-	//PDODatabaseResult::current
+	//PDODatabaseResultCached::current
 	public function current()
 	{
+		if(!isset($this->res[$this->key]))
+			return FALSE;
 		return $this->res[$this->key];
 	}
 
