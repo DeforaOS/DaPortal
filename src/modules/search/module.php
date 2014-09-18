@@ -180,7 +180,8 @@ class SearchModule extends Module
 				$res->next())
 			$this->appendResult($engine, $view, $r);
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $count);
+		$this->helperPaging($engine, $request, $page, $limit, $count,
+				$p);
 		return $page;
 	}
 
@@ -227,7 +228,8 @@ class SearchModule extends Module
 				$res->next())
 			$this->appendResult($engine, $view, $r);
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $count);
+		$this->helperPaging($engine, $request, $page, $limit, $count,
+				$p);
 		return $page;
 	}
 
@@ -263,18 +265,16 @@ class SearchModule extends Module
 
 
 	//SearchModule::helperPaging
-	protected function helperPaging($engine, $request, $page, $limit, $pcnt)
+	protected function helperPaging($engine, $request, $page, $limit, $pcnt,
+			$pcur)
 	{
 		//XXX copied from ContentModule
-		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
+		if($pcnt <= $limit)
 			return;
-		if(($pcur = $request->get('page')) === FALSE)
-			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
 		$args = $request->getParameters();
 		unset($args['page']);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = $this->getRequest($request->getAction(), $args);
 		$form = $page->append('form', array('idempotent' => TRUE,
 				'request' => $r));
 		$hbox = $form->append('hbox');
@@ -282,10 +282,8 @@ class SearchModule extends Module
 		$hbox->append('link', array('stock' => 'gotofirst',
 				'request' => $r, 'text' => ''));
 		//previous page
-		$a = $args;
-		$a['page'] = max(1, $pcur - 1);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $a);
+		$args['page'] = max(1, $pcur - 1);
+		$r = $this->getRequest($request->getAction(), $args);
 		$hbox->append('link', array('stock' => 'previous',
 				'request' => $r, 'text' => ''));
 		//entry
@@ -294,14 +292,12 @@ class SearchModule extends Module
 		$hbox->append('label', array('text' => " / $pcnt"));
 		//next page
 		$args['page'] = min($pcur + 1, $pcnt);
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = $this->getRequest($request->getAction(), $args);
 		$hbox->append('link', array('stock' => 'next',
 				'request' => $r, 'text' => ''));
 		//last page
 		$args['page'] = $pcnt;
-		$r = new Request($this->name, $request->getAction(),
-			$request->getID(), $request->getTitle(), $args);
+		$r = $this->getRequest($request->getAction(), $args);
 		$hbox->append('link', array('stock' => 'gotolast',
 				'request' => $r, 'text' => ''));
 	}
