@@ -69,6 +69,7 @@ regenerate=1
 #port=
 #timeout=
 #service=
+#sslmode=
 
 [database::sqlite2]
 #filename=/var/www/sqlite/daportal.db

@@ -257,7 +257,8 @@ class PgsqlDatabase extends Database
 		'database' => 'dbname', 'hostname' => 'host',
 		'port' => 'port',
 		'timeout' => 'connect_timeout',
-		'service' => 'service');
+		'service' => 'service',
+		'sslmode' => 'sslmode');
 
 	//queries
 	private $query_enum = 'SELECT
