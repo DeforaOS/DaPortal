@@ -88,10 +88,10 @@ class SearchModule extends Module
 	//SearchModule::actions
 	protected function actions($engine, $request)
 	{
-		if($request->getParameter('admin') !== FALSE)
+		if($request->get('admin') !== FALSE)
 			return FALSE;
-		if($request->getParameter('user') !== FALSE
-				|| $request->getParameter('group') !== FALSE)
+		if($request->get('user') !== FALSE
+				|| $request->get('group') !== FALSE)
 			return FALSE;
 		$ret = array();
 		//advanced search
@@ -106,15 +106,15 @@ class SearchModule extends Module
 	protected function appendResult($engine, &$view, &$res)
 	{
 		$row = $view->append('row');
-		$row->setProperty('title', $res['title']);
-		$row->setProperty('username', $res['username']);
-		$row->setProperty('date', $res['date']);
+		$row->set('title', $res['title']);
+		$row->set('username', $res['username']);
+		$row->set('date', $res['date']);
 		$r = new Request($res['module'], 'preview', $res['id'],
 				$res['title']);
 		if(($r = $engine->process($r)) === FALSE
 				|| !($r instanceof PageResponse))
 			return;
-		$row->setProperty('preview', $r->getContent());
+		$row->set('preview', $r->getContent());
 	}
 
 
@@ -135,20 +135,19 @@ class SearchModule extends Module
 	//SearchModule::callDefault
 	protected function callDefault($engine, $request)
 	{
-		$p = $request->getParameter('page');
+		$p = $request->get('page');
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, FALSE, $limit);
-		if(($q = $request->getParameter('q')) === FALSE
-				|| strlen($q) == 0)
+		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
 			return $page;
 		$count = 0;
 		$res = $this->query($engine, $q, FALSE, $count, $limit, $p,
 				TRUE, TRUE);
 		$results = $page->append('vbox');
-		$results->setProperty('id', 'search_results');
+		$results->set('id', 'search_results');
 		$label = $results->append('label');
-		$label->setProperty('text', $count.' result(s)');
+		$label->set('text', $count.' result(s)');
 		$columns = array('title' => _('Title'),
 			'username' => _('Username'), 'date' => _('Date'),
 			'preview' => _('Preview'));
@@ -165,25 +164,24 @@ class SearchModule extends Module
 	//SearchModule::callAdvanced
 	protected function callAdvanced($engine, $request)
 	{
-		$case = $request->getParameter('case') ? '1' : '0';
-		$p = $request->getParameter('page');
+		$case = $request->get('case') ? '1' : '0';
+		$p = $request->get('page');
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, TRUE, $limit);
-		if(($q = $request->getParameter('q')) === FALSE
-				|| strlen($q) == 0)
+		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
 			return $page;
 		$count = 0;
-		$intitle = $request->getParameter('intitle');
-		$incontent = $request->getParameter('incontent');
+		$intitle = $request->get('intitle');
+		$incontent = $request->get('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
 		$res = $this->query($engine, $q, $case, $count, $limit, $p,
 				$intitle, $incontent);
 		$results = $page->append('vbox');
-		$results->setProperty('id', 'search_results');
+		$results->set('id', 'search_results');
 		$label = $results->append('label');
-		$label->setProperty('text', $count.' result(s)');
+		$label->set('text', $count.' result(s)');
 		$columns = array('title' => _('Title'),
 			'username' => _('Username'), 'date' => _('Date'),
 			'preview' => _('Preview'));
@@ -202,11 +200,12 @@ class SearchModule extends Module
 	{
 		$form = new PageElement('form', array('idempotent' => TRUE));
 		$r = new Request('search');
-		$form->setProperty('request', $r);
+
+		$form->set('request', $r);
 		$hbox = $form->append('hbox');
 		$entry = $hbox->append('entry');
-		$entry->setProperty('name', 'q');
-		$entry->setProperty('value', _('Search...'));
+		$entry->set('name', 'q');
+		$entry->set('value', _('Search...'));
 		$button = $hbox->append('button', array('stock' => 'search',
 					'type' => 'submit',
 					'text' => _('Search'),
@@ -233,7 +232,7 @@ class SearchModule extends Module
 		//XXX copied from ContentModule
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
-		if(($pcur = $request->getParameter('page')) === FALSE)
+		if(($pcur = $request->get('page')) === FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
 		$args = $request->getParameters();
@@ -276,37 +275,35 @@ class SearchModule extends Module
 	protected function pageSearch($engine, $request, $advanced = FALSE,
 			$limit = FALSE)
 	{
-		$q = $request->getParameter('q');
+		$q = $request->get('q');
 		$args = $q ? array('q' => $q) : FALSE;
-		$case = $request->getParameter('case') ? '1' : '0';
+		$case = $request->get('case') ? '1' : '0';
 
 		$page = new Page;
-		$page->setProperty('title', _('Search'));
+		$page->set('title', _('Search'));
 		$title = $page->append('title', array('stock' => 'search'));
-		$title->setProperty('text', $q ? _('Search results')
+		$title->set('text', $q ? _('Search results')
 				: _('Search'));
 		$form = $page->append('form');
 		$r = new Request('search', $advanced ? 'advanced' : FALSE);
-		$form->setProperty('request', $r);
+		$form->set('request', $r);
 		$entry = $form->append('entry');
-		$entry->setProperty('text', _('Search query: '));
-		$entry->setProperty('name', 'q');
-		$entry->setProperty('value', $request->getParameter('q'));
+		$entry->set('text', _('Search query: '));
+		$entry->set('name', 'q');
+		$entry->set('value', $request->get('q'));
 		if($advanced)
 		{
 			$hbox = $form->append('hbox');
 			$label = $hbox->append('label');
-			$label->setProperty('text', _('Search in: '));
+			$label->set('text', _('Search in: '));
 			$checkbox = $hbox->append('checkbox');
-			$checkbox->setProperty('name', 'intitle');
-			$checkbox->setProperty('text', _('titles'));
-			$checkbox->setProperty('value',
-					$request->getParameter('intitle'));
+			$checkbox->set('name', 'intitle');
+			$checkbox->set('text', _('titles'));
+			$checkbox->set('value', $request->get('intitle'));
 			$checkbox = $hbox->append('checkbox');
-			$checkbox->setProperty('name', 'incontent');
-			$checkbox->setProperty('text', _('content'));
-			$checkbox->setProperty('value',
-					$request->getParameter('incontent'));
+			$checkbox->set('name', 'incontent');
+			$checkbox->set('text', _('content'));
+			$checkbox->set('value', $request->get('incontent'));
 			$hbox = $form->append('hbox');
 			$radio = $hbox->append('radiobutton', array(
 					'name' => 'case', 'value' => $case));
@@ -333,16 +330,16 @@ class SearchModule extends Module
 		$link = $page->append('link');
 		if($advanced)
 		{
-			$link->setProperty('stock', 'remove');
-			$link->setProperty('text', _('Simpler search...'));
-			$link->setProperty('request', new Request('search',
+			$link->set('stock', 'remove');
+			$link->set('text', _('Simpler search...'));
+			$link->set('request', new Request('search',
 				FALSE, FALSE, FALSE, $args));
 		}
 		else
 		{
-			$link->setProperty('stock', 'add');
-			$link->setProperty('text', _('Advanced search...'));
-			$link->setProperty('request', new Request('search',
+			$link->set('stock', 'add');
+			$link->set('text', _('Advanced search...'));
+			$link->set('request', new Request('search',
 				'advanced', FALSE, FALSE, $args));
 		}
 		return $page;
