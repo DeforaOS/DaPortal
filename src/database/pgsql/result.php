@@ -33,7 +33,7 @@ class PgsqlDatabaseResult extends DatabaseResult
 	//PgsqlDatabaseResult::current
 	public function current()
 	{
-		return pg_fetch_array($this->res, $this->key,  PGSQL_ASSOC);
+		return pg_fetch_array($this->res, $this->key, PGSQL_ASSOC);
 	}
 
 
