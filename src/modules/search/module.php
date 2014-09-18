@@ -52,15 +52,15 @@ class SearchModule extends Module
 	//protected
 	//properties
 	protected $limit = FALSE;
-	protected $query = 'FROM daportal_content_public, daportal_module,
+	protected $query = 'SELECT content_id AS id, timestamp AS date,
+		name AS module, daportal_content_public.user_id AS user_id,
+		title, content, username
+		FROM daportal_content_public, daportal_module,
 		daportal_user_enabled
 		WHERE daportal_content_public.module_id
 		=daportal_module.module_id
 		AND daportal_content_public.user_id
 		=daportal_user_enabled.user_id';
-	protected $query_fields = 'SELECT content_id AS id, timestamp AS date,
-		name AS module, daportal_content_public.user_id AS user_id,
-		title, content, username';
 
 
 	//methods
@@ -81,6 +81,16 @@ class SearchModule extends Module
 		else
 			$this->limit = 20;
 		return $this->limit;
+	}
+
+
+	//SearchModule::getPage
+	protected function getPage($engine, $request = FALSE)
+	{
+		if($request !== FALSE && ($p = $request->get('page')) !== FALSE
+				&& is_numeric($p) && $p >= 1)
+			return $p;
+		return 1;
 	}
 
 
@@ -135,15 +145,27 @@ class SearchModule extends Module
 	//SearchModule::callDefault
 	protected function callDefault($engine, $request)
 	{
-		$p = $request->get('page');
+		$case = FALSE;
+		$p = $this->getPage($engine, $request);
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, FALSE, $limit);
 		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
 			return $page;
-		$count = 0;
-		$res = $this->query($engine, $q, FALSE, $count, $limit, $p,
-				TRUE, TRUE);
+		if(($res = $this->query($engine, $q, $case, TRUE, TRUE))
+				=== FALSE)
+		{
+			$error = _('Unable to search');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$count = count($res);
+		if(($offset = ($p - 1) * $limit) >= $count)
+		{
+			$p = 1;
+			$offset = 0;
+		}
 		$results = $page->append('vbox');
 		$results->set('id', 'search_results');
 		$label = $results->append('label');
@@ -153,7 +175,9 @@ class SearchModule extends Module
 			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
-		foreach($res as $r)
+		for($i = 0, $res->seek($offset); $i++ < $limit
+					&& ($r = $res->current()) !== FALSE;
+				$res->next())
 			$this->appendResult($engine, $view, $r);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count);
@@ -165,19 +189,30 @@ class SearchModule extends Module
 	protected function callAdvanced($engine, $request)
 	{
 		$case = $request->get('case') ? '1' : '0';
-		$p = $request->get('page');
+		$p = $this->getPage($engine, $request);
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, TRUE, $limit);
 		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
 			return $page;
-		$count = 0;
 		$intitle = $request->get('intitle');
 		$incontent = $request->get('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
-		$res = $this->query($engine, $q, $case, $count, $limit, $p,
-				$intitle, $incontent);
+		if(($res = $this->query($engine, $q, $case, $intitle,
+				$incontent)) === FALSE)
+		{
+			$error = _('Unable to search');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$count = count($res);
+		if(($offset = ($p - 1) * $limit) >= $count)
+		{
+			$p = 1;
+			$offset = 0;
+		}
 		$results = $page->append('vbox');
 		$results->set('id', 'search_results');
 		$label = $results->append('label');
@@ -187,7 +222,9 @@ class SearchModule extends Module
 			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
-		foreach($res as $r)
+		for($i = 0, $res->seek($offset); $i++ < $limit
+					&& ($r = $res->current()) !== FALSE;
+				$res->next())
 			$this->appendResult($engine, $view, $r);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count);
@@ -345,9 +382,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::query
-	protected function query($engine, $string, $sensitive, &$count, $limit,
-			$page, $intitle, $incontent, $user = FALSE,
-			$module = FALSE)
+	protected function query($engine, $string, $case, $intitle, $incontent,
+			$user = FALSE, $module = FALSE)
 	{
 		global $config;
 		$db = $engine->getDatabase();
@@ -363,7 +399,7 @@ class SearchModule extends Module
 		if($intitle && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR title '.$db->$func($sensitive)
+				$query .= ' OR title '.$db->$func($case)
 					." :arg$i";
 				if($func == 'like')
 				{
@@ -375,7 +411,7 @@ class SearchModule extends Module
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR content '.$db->$func($sensitive)
+				$query .= ' OR content '.$db->$func($case)
 					." :arg$i";
 				if($func == 'like')
 				{
@@ -384,30 +420,10 @@ class SearchModule extends Module
 				}
 				$args['arg'.$i++] = $wildcard.$r.$wildcard;
 			}
-		$query .= ')';
-		$fields = 'SELECT COUNT(*) AS count';
-		if(($res = $db->query($engine, $fields.' '.$query, $args))
-				=== FALSE || count($res) != 1)
-			return $engine->log('LOG_ERR', _('Unable to search'));
-		$res = $res->current();
-		$count = $res['count'];
-		$fields = $this->query_fields;
-		$order = 'ORDER BY timestamp DESC';
+		$query .= ') ORDER BY timestamp DESC';
 		//paging
-		if($limit > 0)
-		{
-			$offset = FALSE;
-			if(is_numeric($page) && $page > 1)
-			{
-				$offset = $limit * ($page - 1);
-				if($offset >= $count)
-					$offset = 0;
-			}
-			$order .= ' '.$db->offset($limit, $offset);
-		}
-		if(($res = $db->query($engine, $fields.' '.$query.' '.$order,
-					$args)) === FALSE)
-			return $engine->log('LOG_ERR', _('Unable to search'));
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return $engine->log('LOG_ERR', 'Unable to search');
 		return $res;
 	}
 }
