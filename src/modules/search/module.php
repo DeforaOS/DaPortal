@@ -22,6 +22,7 @@ class SearchModule extends Module
 {
 	//public
 	//methods
+	//useful
 	//SearchModule::call
 	public function call($engine, $request, $internal = 0)
 	{
@@ -50,7 +51,7 @@ class SearchModule extends Module
 
 	//protected
 	//properties
-	protected $limit = 20;
+	protected $limit = FALSE;
 	protected $query = 'FROM daportal_content_public, daportal_module,
 		daportal_user_enabled
 		WHERE daportal_content_public.module_id
@@ -63,6 +64,26 @@ class SearchModule extends Module
 
 
 	//methods
+	//accessors
+	//SearchModule::getLimit
+	protected function getLimit($engine, $request = FALSE)
+	{
+		if($request !== FALSE
+				&& ($limit = $request->get('limit')) !== FALSE
+				&& is_numeric($limit)
+				&& $limit > 0 && $limit <= 500)
+			return $limit;
+		if($this->limit === FALSE
+				&& ($limit = $this->configGet('limit'))
+					!== FALSE && is_numeric($limit)
+				&& $limit > 0 && $limit <= 500)
+			$this->limit = $limit;
+		else
+			$this->limit = 20;
+		return $this->limit;
+	}
+
+
 	//useful
 	//SearchModule::actions
 	protected function actions($engine, $request)
@@ -115,12 +136,9 @@ class SearchModule extends Module
 	protected function callDefault($engine, $request)
 	{
 		$p = $request->getParameter('page');
+		$limit = $this->getLimit($engine, $request);
 
-		$page = $this->pageSearch($engine, $request);
-		if(($limit = $request->getParameter('limit')) === FALSE
-				|| !is_numeric($limit) || $limit <= 0
-				|| $limit > 100)
-			$limit = $this->limit;
+		$page = $this->pageSearch($engine, $request, FALSE, $limit);
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)
 			return $page;
@@ -149,11 +167,8 @@ class SearchModule extends Module
 	{
 		$case = $request->getParameter('case') ? '1' : '0';
 		$p = $request->getParameter('page');
+		$limit = $this->getLimit($engine, $request);
 
-		if(($limit = $request->getParameter('limit')) === FALSE
-				|| !is_numeric($limit) || $limit <= 0
-				|| $limit > 100)
-			$limit = $this->limit;
 		$page = $this->pageSearch($engine, $request, TRUE, $limit);
 		if(($q = $request->getParameter('q')) === FALSE
 				|| strlen($q) == 0)

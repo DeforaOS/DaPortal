@@ -173,6 +173,8 @@ globs=@PREFIX@/share/mime/globs
 #scm::backend::cvs::repository=localhost:/tmp/cvs
 
 [module::search]
+#default amount of results per page
+#limit=20
 #match using regular expressions instead of SQL wildcards
 #regexp=1
 
