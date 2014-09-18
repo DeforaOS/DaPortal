@@ -95,8 +95,8 @@ class SearchModule extends Module
 			return FALSE;
 		$ret = array();
 		//advanced search
-		$r = new Request($this->name, 'advanced');
-		$ret[] = $this->helperAction($engine, 'add', $r,
+		$ret[] = $this->helperAction($engine, 'add',
+				$r = $this->getRequest('advanced'),
 				_('Advanced search'));
 		return $ret;
 	}
@@ -199,9 +199,8 @@ class SearchModule extends Module
 	protected function callWidget($engine, $request)
 	{
 		$form = new PageElement('form', array('idempotent' => TRUE));
-		$r = new Request('search');
 
-		$form->set('request', $r);
+		$form->set('request', $this->getRequest());
 		$hbox = $form->append('hbox');
 		$entry = $hbox->append('entry');
 		$entry->set('name', 'q');
@@ -285,7 +284,7 @@ class SearchModule extends Module
 		$title->set('text', $q ? _('Search results')
 				: _('Search'));
 		$form = $page->append('form');
-		$r = new Request('search', $advanced ? 'advanced' : FALSE);
+		$r = $this->getRequest($advanced ? 'advanced' : FALSE);
 		$form->set('request', $r);
 		$entry = $form->append('entry');
 		$entry->set('text', _('Search query: '));
@@ -332,15 +331,14 @@ class SearchModule extends Module
 		{
 			$link->set('stock', 'remove');
 			$link->set('text', _('Simpler search...'));
-			$link->set('request', new Request('search',
-				FALSE, FALSE, FALSE, $args));
+			$link->set('request', $this->getRequest(FALSE, $args));
 		}
 		else
 		{
 			$link->set('stock', 'add');
 			$link->set('text', _('Advanced search...'));
-			$link->set('request', new Request('search',
-				'advanced', FALSE, FALSE, $args));
+			$link->set('request', $this->getRequest('advanced',
+					$args));
 		}
 		return $page;
 	}
