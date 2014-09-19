@@ -99,6 +99,7 @@ class Mail
 		if(($format = Format::attachDefault($engine, 'text/plain'))
 				=== FALSE)
 			return FALSE;
+		$format = clone $format;
 		$format->set('wrap', 72);
 		ob_start();
 		$format->render($engine, $page);

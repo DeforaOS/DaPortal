@@ -17,7 +17,7 @@
 
 
 //Format
-abstract class Format
+abstract class Format extends Mutator
 {
 	//public
 	//methods

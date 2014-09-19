@@ -43,11 +43,29 @@ class PlainFormat extends Format
 	//PlainFormat::attach
 	protected function attach($engine, $type = FALSE)
 	{
+		$this->set('wrap', $this->configGet('wrap'));
 	}
 
 
 	//public
 	//methods
+	//accessors
+	//PlainFormat::set
+	public function set($name, $value)
+	{
+		switch($name)
+		{
+			case 'wrap':
+				if($value === FALSE)
+					$value = 0;
+				else if(!is_numeric($value) || $value < 0)
+					return FALSE;
+				break;
+		}
+		return parent::set($name, $value);
+	}
+
+
 	//rendering
 	//PlainFormat::render
 	public function render($engine, $page, $filename = FALSE)
@@ -56,8 +74,7 @@ class PlainFormat extends Format
 		if($page === FALSE)
 			$page = new Page;
 		$this->engine = $engine;
-		if(($wrap = $this->configGet('wrap')) !== FALSE
-				&& is_numeric($wrap))
+		if(($wrap = $this->get('wrap')) > 0)
 		{
 			//XXX it would be more efficient to improve _print()
 			ob_start();
