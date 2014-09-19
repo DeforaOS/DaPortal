@@ -113,6 +113,7 @@ _test "auth"
 _test "config"
 _test "coverage"
 _test "database"
+_test "mail"
 _test "module"
 _test "user"
 #echo "Expected failures:" 1>&2

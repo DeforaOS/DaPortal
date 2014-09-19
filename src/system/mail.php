@@ -33,17 +33,19 @@ class Mail
 	{
 		global $config;
 
-		if(($from = $config->get('defaults::email', 'from')) === FALSE
-				&& isset($_SERVER['SERVER_ADMIN']))
+		//obtain the sender
+		if($from === FALSE)
+			$from = $config->get('defaults::email', 'from');
+		if($from === FALSE && isset($_SERVER['SERVER_ADMIN']))
 			$from = $_SERVER['SERVER_ADMIN'];
 		if($from === FALSE)
 		{
 			$pw = posix_getpwuid(posix_getuid());
 			$from = $pw['name'];
 		}
-		//verify parameters
+		//verify the parameters
 		$error = 'Could not send e-mail (invalid parameters)';
-		if(strpos($from, "\n") !== FALSE || strpos($to, "\n") !== FALSE
+		if(strpos($from, "\n") !== FALSE
 				|| strpos($subject, "\n") !== FALSE)
 			return $engine->log('LOG_ERR', $error);
 		//verify the headers
@@ -53,7 +55,7 @@ class Mail
 			if(strpos($h, "\n") !== FALSE
 					|| strpos($v, "\n") !== FALSE)
 				return $engine->log('LOG_ERR', $error);
-		//prepare the headers
+		//obtain the charset
 		if(($charset = $config->get('defaults', 'charset')) === FALSE)
 			$charset = 'UTF-8';
 		else
@@ -61,11 +63,33 @@ class Mail
 		$headers['Content-Type'] = "text/plain; charset=$charset\n";
 		//prepare the message
 		$page = Mail::render($engine, $page, $headers, $attachments);
+		//send to each desired recipient
+		if(is_array($to))
+		{
+			$ret = TRUE;
+			foreach($to as $t)
+				if(Mail::_send_to($engine, $from, $t, $subject,
+						$page, $headers, $attachments)
+						=== FALSE)
+					$ret = FALSE;
+		}
+		else
+			$ret = Mail::_send_to($engine, $from, $to, $subject,
+					$page, $headers, $attachments);
+		return $ret;
+	}
+
+	static protected function _send_to($engine, $from, $to, $subject,
+			$page, $headers, $attachments)
+	{
+		//verify the recipient
+		$error = 'Could not send e-mail (invalid recipient)';
+		if(strpos($to, "\n") !== FALSE)
+			return $engine->log('LOG_ERR', $error);
 		//assemble the headers
 		$hdr = "From: $from\n";
-		if(is_array($headers))
-			foreach($headers as $h => $v)
-				$hdr .= "$h: $v\n";
+		foreach($headers as $h => $v)
+			$hdr .= "$h: $v\n";
 		//send the message
 		$error = 'Could not send e-mail';
 		if(mail($to, $subject, $page, $hdr) === FALSE)
