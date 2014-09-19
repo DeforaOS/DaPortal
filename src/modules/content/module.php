@@ -468,7 +468,7 @@ abstract class ContentModule extends Module
 		$r = $this->getRequest('admin');
 		if($request !== FALSE
 				&& ($type = $request->get('type')) !== FALSE)
-			$r->setParameter('type', $type);
+			$r->set('type', $type);
 		$columns = array('icon' => '', 'title' => _('Title'),
 			'enabled' => _('Enabled'), 'public' => _('Public'),
 			'username' => _('Username'), 'date' => _('Date'));
@@ -1192,7 +1192,7 @@ abstract class ContentModule extends Module
 		$r = new Request($request->getModule(), $request->getAction(),
 			$request->getID(), $request->getTitle());
 		if(($type = $request->get('type')) !== FALSE)
-			$r->setParameter('type', $type);
+			$r->set('type', $type);
 		//verify the request
 		if($request->isIdempotent())
 			return $this->$fallback($engine, $r);
