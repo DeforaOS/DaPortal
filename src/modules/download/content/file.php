@@ -171,6 +171,7 @@ class FileDownloadContent extends DownloadContent
 					'type' => 'error', 'text' => $error));
 		}
 		$ret = new StreamResponse($fp);
+		$ret->setFilename($this->getTitle());
 		$ret->setType($type);
 		return $ret;
 	}
