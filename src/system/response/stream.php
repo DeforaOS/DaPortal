@@ -52,14 +52,19 @@ class StreamResponse extends Response
 	//StreamResponse::render
 	public function render($engine)
 	{
+		$ret = TRUE;
 		$fp = $this->getContent();
 
-		//XXX fpassthru() would be better but allocates too much memory
-		while(!feof($fp))
-			if(($buf = fread($fp, 65536)) !== FALSE)
-				print($buf);
-		fclose($fp);
-		return TRUE;
+		//FIXME apparently necessary to avoid trouble
+		ob_end_flush();
+		//FIXME really this method should rewind() and not fclose()
+		if(fpassthru($fp) === FALSE)
+			$ret = $engine->log('LOG_ERR',
+					'Could not render the stream');
+		if(fclose($fp) === FALSE && $ret === TRUE)
+			$ret = $engine->log('LOG_ERR',
+					'Could not close the stream');
+		return $ret;
 	}
 
 
