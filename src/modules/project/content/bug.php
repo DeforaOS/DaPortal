@@ -41,6 +41,15 @@ class BugProjectContent extends Content
 	}
 
 
+	//useful
+	//BugProjectContent::displayContent
+	public function displayContent($engine, $request)
+	{
+		$text = HTML::format($engine, $this->getContent($engine));
+		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
 	//static
 	//methods
 	//BugProjectContent::countAll
