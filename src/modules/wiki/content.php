@@ -285,13 +285,14 @@ class WikiContent extends MultiContent
 	//WikiContent::previewContent
 	public function previewContent($engine, $request = FALSE)
 	{
-		$content = $this->getContent($engine);
+		//XXX use the cache from the database instead
+		$content = HTML::filter($engine, $this->getContent($engine),
+				array());
 		$length = $this->preview_length;
-
-		//FIXME verify that it doesn't break (or use plain text)
 		$text = ($length <= 0 || strlen($content) < $length)
 			? $content : substr($content, 0, $length).'...';
-		return new PageElement('htmlview', array('text' => $text));
+
+		return new PageElement('label', array('text' => $text));
 	}
 
 
