@@ -652,7 +652,6 @@ class Content
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;
-
 		$text = ($length <= 0 || strlen($content) < $length)
 			? $content : substr($content, 0, $length).'...';
 
