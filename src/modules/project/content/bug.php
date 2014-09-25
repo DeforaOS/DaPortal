@@ -73,6 +73,14 @@ class BugProjectContent extends Content
 	}
 
 
+	//BugProjectContent::getRequest
+	public function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		return new Request($this->getModule()->getName(), $action,
+			$this->getID(), parent::getTitle(), $parameters);
+	}
+
+
 	//BugProjectContent::getTitle
 	public function getTitle()
 	{
