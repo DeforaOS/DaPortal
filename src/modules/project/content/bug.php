@@ -69,7 +69,7 @@ class BugProjectContent extends Content
 	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
 		return new Request($this->getModule()->getName(), $action,
-			$this->getID(), parent::getTitle($engine), $parameters);
+			$this->getID(), parent::getTitle(), $parameters);
 	}
 
 
