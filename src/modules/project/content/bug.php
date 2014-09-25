@@ -38,7 +38,10 @@ class BugProjectContent extends Content
 		if(!isset($properties['state']))
 			$properties['state'] = 'New';
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
+		if(($project_id = $this->get('project_id')) !== FALSE)
+			$this->project = ProjectContent::load($engine,
+					$module, $project_id);
+		$this->class = $class;
 		//translations
 		$this->text_content_by = _('Bug report from');
 		$this->text_content_list_title = _('Bug reports');
@@ -62,29 +65,20 @@ class BugProjectContent extends Content
 
 
 	//accessors
-	//BugProjectContent::getProject
-	public function getProject($engine)
-	{
-		if($this->project !== FALSE)
-			return $this->project;
-		$this->project = ProjectContent::load($engine,
-				$this->getModule(), $this->get('project_id'));
-		return $this->project;
-	}
-
-
 	//BugProjectContent::getRequest
 	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
 		return new Request($this->getModule()->getName(), $action,
-			$this->getID(), parent::getTitle(), $parameters);
+			$this->getID(), parent::getTitle($engine), $parameters);
 	}
 
 
 	//BugProjectContent::getTitle
 	public function getTitle()
 	{
-		return '#'.$this->get('bug_id').': '.parent::getTitle();
+		$title = ($this->project !== FALSE)
+			? $this->project->getTitle().'/' : '';
+		return $title.'#'.$this->get('bug_id').': '.parent::getTitle();
 	}
 
 
@@ -127,8 +121,9 @@ class BugProjectContent extends Content
 	//BugProjectContent::displayToolbar
 	public function displayToolbar($engine, $request)
 	{
-		if(($project = $this->getProject($engine)) !== FALSE)
-			return $project->displayToolbar($engine, $request);
+		if($this->project !== FALSE)
+			return $this->project->displayToolbar($engine,
+					$request);
 		return FALSE;
 	}
 
