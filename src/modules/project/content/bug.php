@@ -62,6 +62,24 @@ class BugProjectContent extends Content
 
 
 	//accessors
+	//BugProjectContent::getProject
+	public function getProject($engine)
+	{
+		if($this->project !== FALSE)
+			return $this->project;
+		$this->project = ProjectContent::load($engine,
+				$this->getModule(), $this->get('project_id'));
+		return $this->project;
+	}
+
+
+	//BugProjectContent::getTitle
+	public function getTitle()
+	{
+		return '#'.$this->get('bug_id').': '.parent::getTitle();
+	}
+
+
 	//BugProjectContent::set
 	public function set($name, $value)
 	{
@@ -95,6 +113,15 @@ class BugProjectContent extends Content
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
+	//BugProjectContent::displayToolbar
+	public function displayToolbar($engine, $request)
+	{
+		if(($project = $this->getProject($engine)) !== FALSE)
+			return $project->displayToolbar($engine, $request);
+		return FALSE;
 	}
 
 
@@ -179,6 +206,8 @@ class BugProjectContent extends Content
 
 	//protected
 	//properties
+	protected $project = FALSE;
+	//static
 	static protected $priorities = array('Urgent' => 'Urgent',
 		'High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low');
 	static protected $states = array('New' => 'New',
