@@ -630,8 +630,8 @@ abstract class ContentModule extends Module
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
 		while(($content = array_shift($res)) != NULL)
-			$treeview->append($this->helperListContent($engine,
-					$request, $content));
+			$treeview->append($content->displayRow($engine,
+					$request));
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		//buttons
@@ -743,8 +743,8 @@ abstract class ContentModule extends Module
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
 		while(($content = array_shift($res)) != NULL)
-			$treeview->append($this->helperListContent($engine,
-					$request, $content));
+			$treeview->append($content->displayRow($engine,
+					$request));
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
 		//buttons
@@ -1238,13 +1238,6 @@ abstract class ContentModule extends Module
 		$page->append('link', array('request' => $r,
 				'stock' => $this->stock_back,
 				'text' => _('Back')));
-	}
-
-
-	//ContentModule::helperListContent
-	protected function helperListContent($engine, $request, $content)
-	{
-		return $content->displayRow($engine, $request);
 	}
 
 
