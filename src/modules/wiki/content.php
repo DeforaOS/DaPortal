@@ -28,6 +28,8 @@ class WikiContent extends MultiContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		$this->fields['message'] = 'log message';
+		//let wiki pages always be public
+		$this->setPublic(TRUE);
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		$this->text_content_by = _('Wiki page by');
