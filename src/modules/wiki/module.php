@@ -145,7 +145,7 @@ class WikiModule extends ContentModule
 	//WikiModule::helperActionsAdmin
 	protected function helperActionsAdmin($engine, $request)
 	{
-		$admin = $request->getParameter('admin');
+		$admin = $request->get('admin');
 
 		$ret = parent::helperActionsAdmin($engine, $request);
 		if($admin === 0)

@@ -70,8 +70,7 @@ class WikiContent extends MultiContent
 		if($request !== FALSE && $request->isIdempotent())
 			return FALSE;
 		//verify the title
-		$title = ($request !== FALSE)
-			? $request->getParameter('title') : FALSE;
+		$title = ($request !== FALSE) ? $request->get('title') : FALSE;
 		if($title === FALSE)
 			$title = $this->getTitle();
 		//it is forbidden to change the title
@@ -202,10 +201,10 @@ class WikiContent extends MultiContent
 						'text' => 'diff'));
 				$name->append('label', array('text' => ')'));
 			}
-			$row->setProperty('title', $name);
+			$row->set('title', $name);
 			//date
 			$date = substr($rcs[$i + 1], 6, 19);
-			$row->setProperty('date', $date);
+			$row->set('date', $date);
 			//username
 			$username = substr($rcs[$i + 1], 36);
 			$username = substr($username, 0, strspn($username,
@@ -222,7 +221,7 @@ class WikiContent extends MultiContent
 						'stock' => 'user',
 						'text' => $username));
 			}
-			$row->setProperty('username', $username);
+			$row->set('username', $username);
 			//message
 			$message = $rcs[$i + 2];
 			if($message == $ssp || strncmp($message, $lsp,
@@ -237,7 +236,7 @@ class WikiContent extends MultiContent
 						$apnd = '...';
 				$message .= $apnd;
 			}
-			$row->setProperty('message', $message);
+			$row->set('message', $message);
 		}
 		return $view;
 	}
@@ -254,12 +253,12 @@ class WikiContent extends MultiContent
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
-				'value' => $request->getParameter('title')));
+				'value' => $request->get('title')));
 		$vbox->append('htmledit', array('name' => 'content',
-				'value' => $request->getParameter('content')));
+				'value' => $request->get('content')));
 		$vbox->append('entry', array('text' => _('Log message: '),
 				'name' => 'message',
-				'value' => $request->getParameter('message')));
+				'value' => $request->get('message')));
 		return $vbox;
 	}
 
@@ -269,13 +268,13 @@ class WikiContent extends MultiContent
 		$value = FALSE;
 
 		if($request !== FALSE)
-			$value = $request->getParameter('content');
+			$value = $request->get('content');
 		if($value === FALSE)
 			$value = $this->getMarkup($engine);
 		$vbox->append('htmledit', array('name' => 'content',
 				'value' => $value));
 		$value = ($request !== FALSE)
-			? $request->getParameter('message') : FALSE;
+			? $request->get('message') : FALSE;
 		$vbox->append('entry', array('text' => _('Log message: '),
 				'name' => 'message',
 				'value' => $value));
@@ -307,7 +306,7 @@ class WikiContent extends MultiContent
 		$module = $this->getModule()->getName();
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
-		$content = $request->getParameter('content');
+		$content = $request->get('content');
 
 		$error = _('Could not find the wiki repository');
 		if(($root = WikiContent::getRoot($module)) === FALSE)
@@ -319,14 +318,14 @@ class WikiContent extends MultiContent
 			return FALSE;
 		//translate the content
 		//XXX remains even in case of failure
-		$this->setContent($engine, $request->getParameter('content'));
+		$this->setContent($engine, $request->get('content'));
 		//insert the content
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not create the wiki page');
 		if(($fp = fopen($file, 'x')) === FALSE)
 			return FALSE;
-		$message = $request->getParameter('message');
+		$message = $request->get('message');
 		$emessage = ($message !== FALSE && strlen($message) > 0)
 			? ' -m'.escapeshellarg($message) : '';
 		$eusername = escapeshellarg($username);
@@ -364,14 +363,14 @@ class WikiContent extends MultiContent
 			return FALSE;
 		//translate the content
 		//XXX remains even in case of failure
-		$this->setContent($engine, $request->getParameter('content'));
+		$this->setContent($engine, $request->get('content'));
 		//update the content
 		if(parent::_saveUpdate($engine, FALSE, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not update the wiki page');
 		if(($fp = fopen($file, 'x')) === FALSE)
 			return FALSE;
-		$message = $request->getParameter('message');
+		$message = $request->get('message');
 		$emessage = ($message !== FALSE && strlen($message) > 0)
 			? ' -m'.escapeshellarg($message) : '';
 		$eusername = escapeshellarg($username);
