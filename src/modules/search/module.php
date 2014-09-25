@@ -176,6 +176,7 @@ class SearchModule extends Module
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
 		for($i = 0, $res->seek($offset); $i++ < $limit
+					&& $res->valid()
 					&& ($r = $res->current()) !== FALSE;
 				$res->next())
 			$this->appendResult($engine, $view, $r);
