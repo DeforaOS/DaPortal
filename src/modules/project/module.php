@@ -481,6 +481,9 @@ class ProjectModule extends MultiContentModule
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
+		if($project !== FALSE)
+			$page->append($project->displayToolbar($engine,
+					$request));
 		if($error !== FALSE)
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
