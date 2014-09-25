@@ -119,20 +119,14 @@ class HTTPFriendlyEngine extends HTTPEngine
 		$name = ltrim($name, '/');
 		if($absolute)
 		{
-			//prepare the complete address
-			$url = $_SERVER['SERVER_NAME'];
-			if(isset($_SERVER['HTTPS']))
-			{
-				if($_SERVER['SERVER_PORT'] != 443)
-					$url .= ':'.$_SERVER['SERVER_PORT'];
-				$url = 'https://'.$url;
-			}
-			else if($_SERVER['SERVER_PORT'] != 80)
-				$url = 'http://'.$url.':'
-				.$_SERVER['SERVER_PORT'];
-			else
-				$url = 'http://'.$url;
-			$url .= '/'.$name;
+			$url = array('scheme' => isset($_SERVER['HTTPS'])
+					? 'https' : 'http',
+				'host' => $_SERVER['SERVER_NAME'],
+				'port' => $_SERVER['SERVER_PORT'],
+				'path' => $name);
+			if(($url = http_build_url($url)) === FALSE)
+				//fallback to a relative address
+				$url = basename($name);
 		}
 		else
 			//prepare a relative address

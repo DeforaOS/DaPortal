@@ -206,22 +206,16 @@ class HTTPEngine extends Engine
 			return FALSE;
 		$name = isset($_SERVER['SCRIPT_NAME'])
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
-		$port = $_SERVER['SERVER_PORT'];
 		if($absolute)
 		{
-			//XXX use http_build_url()?
-			$url = $_SERVER['SERVER_NAME'];
-			if(isset($_SERVER['HTTPS']))
-			{
-				if($port != 443)
-					$url .= ':'.$port;
-				$url = 'https://'.$url;
-			}
-			else if($port != 80)
-				$url = 'http://'.$url.':'.$port;
-			else
-				$url = 'http://'.$url;
-			$url .= '/'.$name;
+			$url = array('scheme' => isset($_SERVER['HTTPS'])
+					? 'https' : 'http',
+				'host' => $_SERVER['SERVER_NAME'],
+				'port' => $_SERVER['SERVER_PORT'],
+				'path' => $name);
+			if(($url = http_build_url($url)) === FALSE)
+				//fallback to a relative address
+				$url = basename($name);
 		}
 		else
 			$url = basename($name);

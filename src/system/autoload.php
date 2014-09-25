@@ -16,6 +16,9 @@
 
 
 
+require_once('./system/compat.php');
+
+
 //autoload
 function autoload($class)
 {
