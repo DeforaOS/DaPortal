@@ -25,22 +25,18 @@ class Mime
 	//Mime::getIcon
 	static public function getIcon($engine, $filename, $size = 48)
 	{
-		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
-			.Mime::$default;
-
 		if(Mime::init($engine) === FALSE)
-			return $default;
+			return 'icons/generic/'.$size.'x'.$size.'/'.Mime::$default;
 		if(($type = Mime::getType($engine, $filename, FALSE)) !== FALSE)
 			return Mime::getIconByType($engine, $type, $size);
-		return $default;
+		return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
+			.Mime::$default;
 	}
 
 
 	//Mime::getIconByType
 	static public function getIconByType($engine, $type, $size = 48)
 	{
-		$default = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
-			.'/'.Mime::$default;
 		$from = array('application/', 'audio/', 'image/', 'text/',
 			'video/');
 		$to = array('application-', 'audio-', 'image-', 'text-',
@@ -48,7 +44,7 @@ class Mime
 		$icons = array('inode/directory' => 'places/folder');
 
 		if(Mime::init($engine) === FALSE)
-			return $default;
+			return 'icons/generic/'.$size.'x'.$size.'/'.Mime::$default;
 		//well-known
 		if(isset($icons[$type]))
 			$icon = $icons[$type];
@@ -62,7 +58,8 @@ class Mime
 		$icon = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
 			.$icon.'.png';
 		if(!is_readable('../data/'.$icon))
-			return $default;
+			return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
+				.'/'.Mime::$default;
 		return $icon;
 	}
 
@@ -85,7 +82,7 @@ class Mime
 	//private
 	//static
 	//properties
-	static private $default = 'mimetypes/gtk-file.png';
+	static private $default = 'stock.png';
 	static private $iconpath = FALSE;
 	static private $types = FALSE;
 
