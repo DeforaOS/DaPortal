@@ -31,6 +31,10 @@ class BugProjectContent extends Content
 		$this->fields['type'] = 'type';
 		$this->fields['priority'] = 'priority';
 		$this->fields['assigned'] = 'assigned';
+		if($properties === FALSE)
+			$properties = array();
+		if(!isset($properties['state']))
+			$properties['state'] = 'New';
 		parent::__construct($engine, $module, $properties);
 		$this->class = get_class();
 		//translations
@@ -41,12 +45,75 @@ class BugProjectContent extends Content
 	}
 
 
+	//accessors
+	//BugProjectContent::set
+	public function set($name, $value)
+	{
+		$class = get_class();
+
+		switch($name)
+		{
+			case 'priority':
+				if(!array_key_exists($value, $class::$priorities))
+					return FALSE;
+				break;
+			case 'state':
+				if(!array_key_exists($value, $class::$states))
+					return FALSE;
+				break;
+			case 'bug_type':
+				//XXX workaround for the MultiContent class
+				$name = 'type';
+			case 'type':
+				if(!array_key_exists($value, $class::$types))
+					return FALSE;
+				break;
+		}
+		return parent::set($name, $value);
+	}
+
+
 	//useful
 	//BugProjectContent::displayContent
 	public function displayContent($engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
+	//BugProjectContent::form
+	public function form($engine, $request = FALSE)
+	{
+		return parent::form($engine, $request);
+	}
+
+	protected function _formSubmit($engine, $request)
+	{
+		$class = get_class();
+
+		$vbox = new PageElement('vbox');
+		$vbox->append('entry', array('name' => 'title',
+				'text' => _('Title: '),
+				'value' => $request->getParameter('title')));
+		$vbox->append('textview', array('name' => 'content',
+				'text' => _('Description: '),
+				'value' => $request->getParameter('content')));
+		//type
+		$combobox = $vbox->append('combobox', array('name' => 'bug_type',
+				'text' => _('Type: '),
+				'value' => $request->get('type')));
+		foreach($class::$types as $value => $text)
+			$combobox->append('label', array('value' => $value,
+				'text' => $text));
+		//priority
+		$combobox = $vbox->append('combobox', array('name' => 'priority',
+				'text' => _('Priority: '),
+				'value' => $request->get('priority')));
+		foreach($class::$priorities as $value => $text)
+			$combobox->append('label', array('value' => $value,
+				'text' => $text));
+		return $vbox;
 	}
 
 
@@ -95,6 +162,15 @@ class BugProjectContent extends Content
 
 
 	//protected
+	//properties
+	static protected $priorities = array('Urgent' => 'Urgent',
+		'High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low');
+	static protected $states = array('New' => 'New',
+		'Assigned' => 'Assigned', 'Closed' => 'Closed',
+		'Fixed' => 'Fixed', 'Implemented' => 'Implemented',
+		'Re-opened' => 'Re-opened');
+	static protected $types = array('Major' => 'Major', 'Minor' => 'Minor',
+		'Functionality' => 'Functionality', 'Feature' => 'Feature');
 	//queries
 	//IN:	module_id
 	static protected $bug_query_list = "SELECT bug_id,
