@@ -25,6 +25,8 @@ class BugProjectContent extends Content
 	//BugProjectContent::BugProjectContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
+		$class = get_class();
+
 		$this->fields['project_id'] = 'project ID';
 		$this->fields['bug_id'] = 'bug #';
 		$this->fields['state'] = 'state';
@@ -42,6 +44,20 @@ class BugProjectContent extends Content
 		$this->text_content_list_title = _('Bug reports');
 		$this->text_more_content = _('More reports...');
 		$this->text_submit = _('Report bug...');
+		$class::$priorities['Urgent'] = _('Urgent');
+		$class::$priorities['High'] = _('High');
+		$class::$priorities['Medium'] = _('Medium');
+		$class::$priorities['Low'] = _('Low');
+		$class::$states['Assigned'] = _('Assigned');
+		$class::$states['Closed'] = _('Closed');
+		$class::$states['Fixed'] = _('Fixed');
+		$class::$states['Implemented'] = _('Implemented');
+		$class::$states['New'] = _('New');
+		$class::$states['Re-opened'] = _('Re-opened');
+		$class::$types['Major'] = _('Major');
+		$class::$types['Minor'] = _('Minor');
+		$class::$types['Functionality'] = _('Functionality');
+		$class::$types['Feature'] = _('Feature');
 	}
 
 
