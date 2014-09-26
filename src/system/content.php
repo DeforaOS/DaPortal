@@ -710,7 +710,8 @@ class Content
 			{
 				case 'title':
 				case 'content':
-					$args[$k] = $this->$k;
+					$args[$k] = ($this->$k !== FALSE)
+						? $this->$k : '';
 					break;
 			}
 		//set the timestamp if necessary
@@ -747,7 +748,8 @@ class Content
 			{
 				case 'title':
 				case 'content':
-					$args[$k] = $this->$k;
+					$args[$k] = ($this->$k !== FALSE)
+						? $this->$k : '';
 					if($request === FALSE)
 						break;
 					if(($v = $request->get($k)) === FALSE)
