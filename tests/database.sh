@@ -72,25 +72,25 @@ target="$1"
 
 case "$target" in
 	sqlite.db)
-		$RM -- "$target"				|| return 2
+		$RM -- "$target"				|| exit 2
 		#XXX run twice to ensure there are no false positives
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target"
 		res=$?
 		if [ $res -ne 0 ]; then
 			echo "database.sh: $target: Error $res" 1>&2
-			return 2
+			exit 2
 		fi
 		;;
 	sqlite.db3)
-		$RM -- "$target"				|| return 2
+		$RM -- "$target"				|| exit 2
 		#XXX run twice to ensure there are no false positives
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target"
 		res=$?
 		if [ $res -ne 0 ]; then
 			echo "database.sh: $target: Error $res" 1>&2
-			return 2
+			exit 2
 		fi
 		;;
 esac
