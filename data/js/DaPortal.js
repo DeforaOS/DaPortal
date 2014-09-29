@@ -24,9 +24,10 @@ $(document).ready(function() {
 		textarea = $(this).siblings('textarea');
 		if(textarea.size() == 1)
 		{
+			textarea = textarea.slice(0);
 			textarea.css('display', 'none');
 			$(this).contents().find('body').html(
-				textarea.slice(0).text());
+				textarea.text());
 		}
 
 		//enable design mode
