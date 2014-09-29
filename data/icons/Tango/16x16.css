@@ -199,6 +199,10 @@
 	background-image:	url('Tango/16x16/actions/gtk-open.png');
 }
 
+.stock16.redo {
+	background-image:	url('Tango/16x16/actions/gtk-redo-ltr.png');
+}
+
 .stock16.refresh {
 	background-image:	url('Tango/16x16/actions/gtk-refresh.png');
 }
@@ -225,6 +229,10 @@
 
 .stock16.timeline {
 	background-image:	url('Tango/16x16/apps/office-calendar.png');
+}
+
+.stock16.undo {
+	background-image:	url('Tango/16x16/actions/gtk-undo-ltr.png');
 }
 
 .stock16.update {

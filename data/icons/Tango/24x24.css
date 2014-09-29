@@ -199,6 +199,10 @@
 	background-image:	url('Tango/24x24/actions/gtk-open.png');
 }
 
+.stock24.redo {
+	background-image:	url('Tango/24x24/actions/gtk-redo-ltr.png');
+}
+
 .stock24.refresh {
 	background-image:	url('Tango/24x24/actions/gtk-refresh.png');
 }
@@ -225,6 +229,10 @@
 
 .stock24.timeline {
 	background-image:	url('Tango/24x24/apps/office-calendar.png');
+}
+
+.stock24.undo {
+	background-image:	url('Tango/24x24/actions/gtk-undo-ltr.png');
 }
 
 .stock24.update {

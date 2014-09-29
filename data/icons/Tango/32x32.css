@@ -199,6 +199,10 @@
 	background-image:	url('Tango/32x32/actions/gtk-open.png');
 }
 
+.stock32.redo {
+	background-image:	url('Tango/32x32/actions/gtk-redo-ltr.png');
+}
+
 .stock32.refresh {
 	background-image:	url('Tango/32x32/actions/gtk-refresh.png');
 }
@@ -225,6 +229,10 @@
 
 .stock32.timeline {
 	background-image:	url('Tango/32x32/apps/office-calendar.png');
+}
+
+.stock32.undo {
+	background-image:	url('Tango/32x32/actions/gtk-undo-ltr.png');
 }
 
 .stock32.update {
