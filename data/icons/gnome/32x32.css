@@ -83,6 +83,14 @@
 	background-image:	url('gnome-icon-theme/32x32/apps/text-editor.png');
 }
 
+.stock32.copy {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-copy.png');
+}
+
+.stock32.cut {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-cut.png');
+}
+
 .stock32.delete {
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-delete.png');
 }
@@ -193,6 +201,10 @@
 
 .stock32.open {
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-open.png');
+}
+
+.stock32.paste {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-paste.png');
 }
 
 .stock32.pki {

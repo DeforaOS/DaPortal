@@ -83,6 +83,14 @@
 	background-image:	url('gnome-icon-theme/24x24/apps/text-editor.png');
 }
 
+.stock24.copy {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-copy.png');
+}
+
+.stock24.cut {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-cut.png');
+}
+
 .stock24.delete {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-delete.png');
 }
@@ -193,6 +201,10 @@
 
 .stock24.open {
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-open.png');
+}
+
+.stock24.paste {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-paste.png');
 }
 
 .stock24.pki {
