@@ -20,6 +20,8 @@ $(document).ready(function() {
 
 	//editor
 	$('iframe.editor').each(function(index) {
+		editor = $(this);
+
 		//hide the textarea and copy its content over to the iframe
 		textarea = $(this).siblings('textarea');
 		if(textarea.size() == 1)
@@ -38,6 +40,24 @@ $(document).ready(function() {
 			$(this).get(0).contentWindow.focus();
 
 		//configure the toolbar
+		$(this).siblings('.toolbar').find('.button').each(function() {
+			$(this).on('click', editor, function(event) {
+				editor = event.data;
+				classes = $(this).attr('class').split(' ');
+				for(i = 0; i < classes.length; i++)
+					switch(classes[i])
+					{
+						case 'copy':
+						case 'cut':
+						case 'paste':
+						case 'redo':
+						case 'undo':
+							editor.get(0).contentWindow.document.execCommand(classes[i], false, null);
+							editor.get(0).contentWindow.focus();
+							break;
+					}
+			});
+		});
 		$(this).siblings('.toolbar').find('.combobox > select').each(function() {
 			$(this).val(0);
 			$(this).on('change', $(this), function(event) {
