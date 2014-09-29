@@ -39,6 +39,7 @@ $(document).ready(function() {
 
 		//configure the toolbar
 		$(this).siblings('.toolbar').find('.combobox > select').each(function() {
+			$(this).val(0);
 			$(this).on('change', $(this), function(event) {
 				event.data.val(0);
 			});
