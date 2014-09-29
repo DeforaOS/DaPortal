@@ -37,6 +37,13 @@ $(document).ready(function() {
 		if(index == 0)
 			$(this).get(0).contentWindow.focus();
 
+		//configure the toolbar
+		$(this).siblings('.toolbar').find('.combobox > select').each(function() {
+			$(this).on('change', $(this), function(event) {
+				event.data.val(0);
+			});
+		});
+
 		//copy the HTML content back to the form when submitting
 		$(this).closest('form').on('submit',
 			{ iframe: $(this), textarea: textarea},
