@@ -593,12 +593,66 @@ class HTMLFormat extends FormatElements
 		$this->tagClose('textarea');
 		if($this->javascript)
 		{
+			$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
+				'paste' => _('Paste'), 'undo' => _('Undo'),
+				'redo' => _('Redo'));
+			$styles = array('' => _('Style'),
+				'h1' => _('Heading 1'), 'h2' => _('Heading 2'),
+				'h3' => _('Heading 3'), 'h4' => _('Heading 4'),
+				'h5' => _('Heading 5'), 'h6' => _('Heading 6'),
+				'p' => _('Normal'), 'pre' => _('Preformatted'));
+			$fonts = array('' => _('Font'),
+				'cursive' => _('Cursive'),
+				'fantasy' => _('Fantasy'),
+				'monospace' => _('Monospace'),
+				'sans-serif' => _('Sans serif'),
+				'serif' => _('Serif'));
+			$sizes = array('' => _('Size'),
+				1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6);
+
+			$toolbar = $this->_htmleditToolbar($actions);
+			$this->renderElement($toolbar);
+			$toolbar = $this->_htmleditToolbar();
+			//style
+			$toolbar->append($this->_htmleditSelector('formatblock',
+						$styles));
+			//font
+			$toolbar->append($this->_htmleditSelector('fontname',
+						$fonts));
+			//size
+			$toolbar->append($this->_htmleditSelector('fontsize',
+						$sizes));
+			$this->renderElement($toolbar);
 			$this->renderTabs();
 			$this->tagOpen('iframe', $class, FALSE, array(
 					'width' => '450px',
 					'height' => '250px'));
 			$this->tagClose('iframe');
 		}
+	}
+
+	private function _htmleditSelector($class, $values = array())
+	{
+		$combobox = new PageElement('combobox', array(
+				'class' => $class));
+
+		foreach($values as $v => $t)
+			$combobox->append('label', array('value' => $v,
+					'text' => $t));
+		return $combobox;
+	}
+
+	private function _htmleditToolbar($actions = array())
+	{
+		$toolbar = new PageElement('toolbar');
+
+		foreach($actions as $a => $t)
+		{
+			$button = new PageElement('button', array('class' => $a,
+				'stock' => $a, 'text' => $t));
+			$toolbar->append($button);
+		}
+		return $toolbar;
 	}
 
 
