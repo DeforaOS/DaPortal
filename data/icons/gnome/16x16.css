@@ -227,6 +227,10 @@
 	background-image:	url('gnome-icon-theme/16x16/actions/gtk-open.png');
 }
 
+.stock16.redo {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-redo-ltr.png');
+}
+
 .stock16.refresh {
 	background-image:	url('gnome-icon-theme/16x16/actions/stock_refresh.png');
 }
@@ -273,6 +277,10 @@
 
 .stock16.translate {
 	background-image:	url('gnome-icon-theme/16x16/apps/config-language.png');
+}
+
+.stock16.undo {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-undo-ltr.png');
 }
 
 .stock16.unsubscribe {

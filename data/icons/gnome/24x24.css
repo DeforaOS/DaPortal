@@ -227,6 +227,10 @@
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-open.png');
 }
 
+.stock24.redo {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-redo-ltr.png');
+}
+
 .stock24.refresh {
 	background-image:	url('gnome-icon-theme/24x24/actions/stock_refresh.png');
 }
@@ -273,6 +277,10 @@
 
 .stock24.translate {
 	background-image:	url('gnome-icon-theme/24x24/apps/config-language.png');
+}
+
+.stock24.undo {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-undo-ltr.png');
 }
 
 .stock24.unsubscribe {
