@@ -63,6 +63,14 @@
 	background-image:	url('Tango/scalable/actions/go-jump.svg');
 }
 
+.stock48.copy {
+	background-image:	url('Tango/scalable/actions/gtk-copy.svg');
+}
+
+.stock48.cut {
+	background-image:	url('Tango/scalable/actions/gtk-cut.svg');
+}
+
 .stock48.delete {
 	background-image:	url('Tango/scalable/actions/gtk-delete.svg');
 }
@@ -153,6 +161,10 @@
 
 .stock48.open {
 	background-image:	url('Tango/scalable/actions/gtk-open.svg');
+}
+
+.stock48.paste {
+	background-image:	url('Tango/scalable/actions/gtk-paste.svg');
 }
 
 .stock48.pki {
