@@ -39,24 +39,31 @@ $(document).ready(function() {
 		if(index == 0)
 			$(this).get(0).contentWindow.focus();
 
-		//configure the toolbar
+		//configure the toolbar buttons
 		$(this).siblings('.toolbar').find('.button').each(function() {
-			$(this).on('click', editor, function(event) {
-				editor = event.data.get(0).contentWindow;
-				classes = $(this).attr('class').split(' ');
+			if((classes = $(this).attr('class')) === undefined)
+				return;
+			classes = classes.split(' ');
+			for(i = 0; i < classes.length; i++)
+				switch(classes[i])
+				{
+					case 'copy':
+					case 'cut':
+					case 'paste':
+					case 'redo':
+					case 'undo':
+						command = classes[i];
+						break;
+				}
+			if(command === undefined)
+				return;
+			$(this).on('click', { editor: editor, command: command },
+					function(event) {
+				editor = event.data.editor.get(0).contentWindow;
+				command = event.data.command;
 
-				for(i = 0; i < classes.length; i++)
-					switch(classes[i])
-					{
-						case 'copy':
-						case 'cut':
-						case 'paste':
-						case 'redo':
-						case 'undo':
-							editor.document.execCommand(classes[i], false, null);
-							editor.focus();
-							break;
-					}
+				editor.document.execCommand(command, false, null);
+				editor.focus();
 			});
 		});
 		$(this).siblings('.toolbar').find('.combobox > select').each(function() {
