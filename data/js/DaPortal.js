@@ -66,10 +66,33 @@ $(document).ready(function() {
 				editor.focus();
 			});
 		});
+
+		//configure the toolbar selectors
 		$(this).siblings('.toolbar').find('.combobox > select').each(function() {
+			if((classes = $(this).attr('class')) === undefined)
+				return;
+			classes = classes.split(' ');
+			for(i = 0; i < classes.length; i++)
+				switch(classes[i])
+				{
+					case 'fontname':
+					case 'fontsize':
+					case 'formatblock':
+						command = classes[i];
+						break;
+				}
+			if(command === undefined)
+				return;
 			$(this).val(0);
-			$(this).on('change', $(this), function(event) {
-				event.data.val(0);
+			$(this).on('change', { editor: editor, command: command },
+					function(event) {
+				editor = event.data.editor.get(0).contentWindow;
+				command = event.data.command;
+
+				editor.document.execCommand(command, false,
+						$(this).val());
+				$(this).val(0);
+				editor.focus();
 			});
 		});
 
