@@ -286,9 +286,11 @@ class HTMLFormat extends FormatElements
 			$url = $this->engine->getURL($r, FALSE);
 		else
 			$url = $e->get('url');
-		if(($class = $e->get('class')) === FALSE
-				&& ($class = $e->get('stock')) !== FALSE)
-			$class = "stock16 $class";
+		$class = 'button';
+		if(($s = $e->get('stock')) !== FALSE)
+			$class .= ' stock16 '.$s;
+		if(($c = $e->get('class')) !== FALSE && $c != $s)
+			$class .= ' '.$c;
 		$tag = 'a';
 		$args = array();
 		switch(($type = $e->get('type')))
@@ -297,8 +299,8 @@ class HTMLFormat extends FormatElements
 			case 'submit':
 				$tag = 'input';
 				$url = FALSE;
-				if($class === FALSE)
-					$class = "stock16 $type";
+				if($s === FALSE && $c === FALSE)
+					$class .= ' stock16 '.$type;
 				$args['type'] = $type;
 				if(($name = $e->get('value')) !== FALSE)
 					$args['name'] = $name;
@@ -309,9 +311,10 @@ class HTMLFormat extends FormatElements
 			case 'button':
 			default:
 				$type = 'button';
-				if($class !== FALSE)
-					$class = "button $class";
-				$args['href'] = $url;
+				if($s === FALSE && $c === FALSE)
+					$class .= ' stock16 '.$type;
+				if($url !== FALSE)
+					$args['href'] = $url;
 				$this->tagOpen($tag, $class, $id, $args);
 				$this->renderChildren($e);
 				if(($text = $e->get('text')) !== FALSE)
