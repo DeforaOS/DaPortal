@@ -42,8 +42,9 @@ $(document).ready(function() {
 		//configure the toolbar
 		$(this).siblings('.toolbar').find('.button').each(function() {
 			$(this).on('click', editor, function(event) {
-				editor = event.data;
+				editor = event.data.get(0).contentWindow;
 				classes = $(this).attr('class').split(' ');
+
 				for(i = 0; i < classes.length; i++)
 					switch(classes[i])
 					{
@@ -52,8 +53,8 @@ $(document).ready(function() {
 						case 'paste':
 						case 'redo':
 						case 'undo':
-							editor.get(0).contentWindow.document.execCommand(classes[i], false, null);
-							editor.get(0).contentWindow.focus();
+							editor.document.execCommand(classes[i], false, null);
+							editor.focus();
 							break;
 					}
 			});
