@@ -35,6 +35,10 @@
 	background-image:	url('Tango/32x32/actions/back.png');
 }
 
+.stock32.bold {
+	background-image:	url('Tango/32x32/actions/gtk-bold.png');
+}
+
 .stock32.bookmark {
 	background-image:	url('Tango/32x32/actions/bookmark-new.png');
 }
@@ -129,6 +133,10 @@
 
 .stock32.info {
 	background-image:	url('Tango/32x32/status/dialog-information.png');
+}
+
+.stock32.italic {
+	background-image:	url('Tango/32x32/actions/gtk-italic.png');
 }
 
 .stock32.link {
@@ -227,8 +235,16 @@
 	background-image:	url('Tango/32x32/actions/stock_search.png');
 }
 
+.stock32.strikethrough {
+	background-image:	url('Tango/32x32/actions/gtk-strikethrough.png');
+}
+
 .stock32.timeline {
 	background-image:	url('Tango/32x32/apps/office-calendar.png');
+}
+
+.stock32.underline {
+	background-image:	url('Tango/32x32/actions/gtk-underline.png');
 }
 
 .stock32.undo {

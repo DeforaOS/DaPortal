@@ -35,6 +35,10 @@
 	background-image:	url('Tango/scalable/actions/back.svg');
 }
 
+.stock48.bold {
+	background-image:	url('Tango/scalable/actions/gtk-bold.svg');
+}
+
 .stock48.bookmark {
 	background-image:	url('Tango/scalable/actions/bookmark-new.svg');
 }
@@ -129,6 +133,10 @@
 
 .stock48.info {
 	background-image:	url('Tango/scalable/status/dialog-information.svg');
+}
+
+.stock48.italic {
+	background-image:	url('Tango/scalable/actions/gtk-italic.svg');
 }
 
 .stock48.link {
@@ -227,8 +235,16 @@
 	background-image:	url('Tango/scalable/actions/stock_search.svg');
 }
 
+.stock48.strikethrough {
+	background-image:	url('Tango/scalable/actions/gtk-strikethrough.svg');
+}
+
 .stock48.timeline {
 	background-image:	url('Tango/scalable/apps/office-calendar.svg');
+}
+
+.stock48.underline {
+	background-image:	url('Tango/scalable/actions/gtk-underline.svg');
 }
 
 .stock48.undo {
