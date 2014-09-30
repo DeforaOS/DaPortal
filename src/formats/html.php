@@ -630,8 +630,8 @@ class HTMLFormat extends FormatElements
 			$this->renderElement($toolbar);
 			$this->renderTabs();
 			$this->tagOpen('iframe', $class, FALSE, array(
-					'width' => '450px',
-					'height' => '250px'));
+					'width' => '100%',
+					'height' => '400px'));
 			$this->tagClose('iframe');
 		}
 	}
