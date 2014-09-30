@@ -609,19 +609,24 @@ class HTMLFormat extends FormatElements
 				'serif' => _('Serif'));
 			$sizes = array('' => _('Size'),
 				1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6);
+			$format = array('bold' => _('Bold'),
+				'italic' => _('Italic'),
+				'underline' => _('Underline'),
+				'strikethrough' => _('Strikethrough'));
 
 			$toolbar = $this->_htmleditToolbar($actions);
 			$this->renderElement($toolbar);
-			$toolbar = $this->_htmleditToolbar();
-			//style
-			$toolbar->append($this->_htmleditSelector('formatblock',
-						$styles));
-			//font
-			$toolbar->append($this->_htmleditSelector('fontname',
-						$fonts));
+			//format
+			$toolbar = $this->_htmleditToolbar($format);
 			//size
-			$toolbar->append($this->_htmleditSelector('fontsize',
-						$sizes));
+			$toolbar->prepend($this->_htmleditSelector(
+					'fontsize', $sizes));
+			//font
+			$toolbar->prepend($this->_htmleditSelector(
+					'fontname', $fonts));
+			//style
+			$toolbar->prepend($this->_htmleditSelector(
+					'formatblock', $styles));
 			$this->renderElement($toolbar);
 			$this->renderTabs();
 			$this->tagOpen('iframe', $class, FALSE, array(

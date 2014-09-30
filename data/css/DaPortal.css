@@ -52,6 +52,10 @@ table.bordered td, table.bordered th {
 	white-space:			pre-wrap;
 }
 
+.strikethrough {
+	text-decoration:		line-through;
+}
+
 .underline {
 	text-decoration:		underline;
 }

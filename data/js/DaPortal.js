@@ -47,10 +47,14 @@ $(document).ready(function() {
 			for(i = 0; i < classes.length; i++)
 				switch(classes[i])
 				{
+					case 'bold':
 					case 'copy':
 					case 'cut':
+					case 'italic':
 					case 'paste':
 					case 'redo':
+					case 'strikethrough':
+					case 'underline':
 					case 'undo':
 						command = classes[i];
 						break;

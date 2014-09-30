@@ -171,6 +171,10 @@
 	background-image:	url('gnome-icon-theme/32x32/status/stock_dialog-info.png');
 }
 
+.stock32.italic {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-italic.png');
+}
+
 .stock32.link {
 	background-image:	url('gnome-icon-theme/32x32/categories/stock_internet.png');
 }
@@ -271,6 +275,10 @@
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-find.png');
 }
 
+.stock32.strikethrough {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-strikethrough.png');
+}
+
 .stock32.submit {
 	background-image:	url('gnome-icon-theme/32x32/actions/document-send.png');
 }
@@ -289,6 +297,10 @@
 
 .stock32.translate {
 	background-image:	url('gnome-icon-theme/32x32/apps/config-language.png');
+}
+
+.stock32.underline {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-underline.png');
 }
 
 .stock32.undo {
