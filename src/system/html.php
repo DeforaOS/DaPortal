@@ -78,6 +78,9 @@ class HTML
 				!== TRUE)
 			return ''; //XXX report error
 		xml_set_character_data_handler($html->parser, $filter);
+		//plain text conversion needs carriage returns
+		if(is_array($whitelist) && count($whitelist) == 0)
+			$to = "\n";
 		//give it more chances to validate
 		$content = str_ireplace($from, $to, $content);
 		switch(strtolower($html->charset))
