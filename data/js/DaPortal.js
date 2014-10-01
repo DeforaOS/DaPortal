@@ -58,6 +58,18 @@ $(document).ready(function() {
 					case 'undo':
 						command = classes[i];
 						break;
+					case 'justify-center':
+						command = 'justifycenter';
+						break;
+					case 'justify-fill':
+						command = 'justifyfill';
+						break;
+					case 'justify-left':
+						command = 'justifyleft';
+						break;
+					case 'justify-right':
+						command = 'justifyright';
+						break;
 				}
 			if(command === undefined)
 				return;

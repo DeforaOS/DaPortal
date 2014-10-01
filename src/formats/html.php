@@ -620,7 +620,11 @@ class HTMLFormat extends FormatElements
 			$format = array('bold' => _('Bold'),
 				'italic' => _('Italic'),
 				'underline' => _('Underline'),
-				'strikethrough' => _('Strikethrough'));
+				'strikethrough' => _('Strikethrough'),
+				'justify-left' => _('Align left'),
+				'justify-center' => _('Center'),
+				'justify-right' => _('Align right'),
+				'justify-fill' => _('Justify'));
 
 			$toolbar = $this->_htmleditToolbar($actions);
 			$this->renderElement($toolbar);

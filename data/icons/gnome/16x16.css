@@ -175,6 +175,22 @@
 	background-image:	url('gnome-icon-theme/16x16/actions/gtk-italic.png');
 }
 
+.stock16.justify-center {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-justify-center.png');
+}
+
+.stock16.justify-fill {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-justify-fill.png');
+}
+
+.stock16.justify-left {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-justify-left.png');
+}
+
+.stock16.justify-right {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-justify-right.png');
+}
+
 .stock16.link {
 	background-image:	url('gnome-icon-theme/16x16/categories/stock_internet.png');
 }
