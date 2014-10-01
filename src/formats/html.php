@@ -663,7 +663,7 @@ class HTMLFormat extends FormatElements
 		foreach($actions as $a => $t)
 		{
 			$button = new PageElement('button', array('class' => $a,
-				'stock' => $a, 'text' => $t));
+				'stock' => $a, 'tooltip' => $t));
 			$toolbar->append($button);
 		}
 		return $toolbar;
