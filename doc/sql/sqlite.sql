@@ -44,6 +44,7 @@ DROP TABLE daportal_sql_profile;
 DROP TABLE daportal_profile;
 DROP TABLE daportal_config;
 DROP TABLE daportal_config_enum_type;
+DROP VIEW daportal_module_enabled;
 DROP TABLE daportal_module;
 
 
@@ -58,6 +59,11 @@ CREATE TABLE daportal_module (
 
 INSERT INTO daportal_module (name, enabled) VALUES ('admin', '1');
 INSERT INTO daportal_module (name, enabled) VALUES ('search', '1');
+
+CREATE VIEW daportal_module_enabled AS
+SELECT module_id, name, enabled
+FROM daportal_module
+WHERE enabled='1';
 
 
 CREATE TABLE daportal_config (

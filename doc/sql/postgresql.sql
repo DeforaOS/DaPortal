@@ -16,6 +16,11 @@ CREATE TABLE daportal_module (
 INSERT INTO daportal_module (name, enabled) VALUES ('admin', '1');
 INSERT INTO daportal_module (name, enabled) VALUES ('search', '1');
 
+CREATE VIEW daportal_module_enabled AS
+SELECT module_id, name, enabled
+FROM daportal_module
+WHERE enabled='1';
+
 
 CREATE TABLE daportal_config (
 	config_id SERIAL PRIMARY KEY,
