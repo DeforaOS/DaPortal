@@ -50,6 +50,7 @@ $(document).ready(function() {
 					case 'bold':
 					case 'copy':
 					case 'cut':
+					case 'indent':
 					case 'italic':
 					case 'paste':
 					case 'redo':
@@ -69,6 +70,9 @@ $(document).ready(function() {
 						break;
 					case 'justify-right':
 						command = 'justifyright';
+						break;
+					case 'unindent':
+						command = 'outdent';
 						break;
 				}
 			if(command === undefined)

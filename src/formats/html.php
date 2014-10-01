@@ -624,7 +624,9 @@ class HTMLFormat extends FormatElements
 				'justify-left' => _('Align left'),
 				'justify-center' => _('Center'),
 				'justify-right' => _('Align right'),
-				'justify-fill' => _('Justify'));
+				'justify-fill' => _('Justify'),
+				'unindent' => _('Unindent'),
+				'indent' => _('Indent'));
 
 			$toolbar = $this->_htmleditToolbar($actions);
 			$this->renderElement($toolbar);

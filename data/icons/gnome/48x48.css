@@ -167,6 +167,10 @@
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-home.png');
 }
 
+.stock48.indent {
+	background-image:	url('gnome-icon-theme/48x48/actions/gtk-indent-ltr.png');
+}
+
 .stock48.info {
 	background-image:	url('gnome-icon-theme/48x48/status/stock_dialog-info.png');
 }
@@ -321,6 +325,10 @@
 
 .stock48.undo {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-undo-ltr.png');
+}
+
+.stock48.unindent {
+	background-image:	url('gnome-icon-theme/48x48/actions/gtk-unindent-ltr.png');
 }
 
 .stock48.unsubscribe {
