@@ -600,58 +600,58 @@ class HTMLFormat extends FormatElements
 		print($this->escape($text));
 		$this->tagClose('textarea');
 		if($this->javascript)
-		{
-			$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
-				'paste' => _('Paste'), 'undo' => _('Undo'),
-				'redo' => _('Redo'));
-			$styles = array('' => _('Style'),
-				'h1' => _('Heading 1'), 'h2' => _('Heading 2'),
-				'h3' => _('Heading 3'), 'h4' => _('Heading 4'),
-				'h5' => _('Heading 5'), 'h6' => _('Heading 6'),
-				'p' => _('Normal'), 'pre' => _('Preformatted'));
-			$fonts = array('' => _('Font'),
-				'cursive' => _('Cursive'),
-				'fantasy' => _('Fantasy'),
-				'monospace' => _('Monospace'),
-				'sans-serif' => _('Sans serif'),
-				'serif' => _('Serif'));
-			$sizes = array('' => _('Size'),
-				1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6);
-			$format = array('bold' => _('Bold'),
-				'italic' => _('Italic'),
-				'underline' => _('Underline'),
-				'strikethrough' => _('Strikethrough'),
-				'subscript' => _('Subscript'),
-				'superscript' => _('Superscript'),
-				'justify-left' => _('Align left'),
-				'justify-center' => _('Center'),
-				'justify-right' => _('Align right'),
-				'justify-fill' => _('Justify'),
-				'numbering' => _('Numbering'),
-				'bullets' => _('Bullets'),
-				'unindent' => _('Unindent'),
-				'indent' => _('Indent'));
+			$this->_htmleditJavascript($e, $class);
+	}
 
-			$toolbar = $this->_htmleditToolbar($actions);
-			$this->renderElement($toolbar);
-			//format
-			$toolbar = $this->_htmleditToolbar($format);
-			//size
-			$toolbar->prepend($this->_htmleditSelector(
-					'fontsize', $sizes));
-			//font
-			$toolbar->prepend($this->_htmleditSelector(
-					'fontname', $fonts));
-			//style
-			$toolbar->prepend($this->_htmleditSelector(
-					'formatblock', $styles));
-			$this->renderElement($toolbar);
-			$this->renderTabs();
-			$this->tagOpen('iframe', $class, FALSE, array(
-					'width' => '100%',
-					'height' => '400px'));
-			$this->tagClose('iframe');
-		}
+	private function _htmleditJavascript($e, $class)
+	{
+		$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
+			'paste' => _('Paste'), 'undo' => _('Undo'),
+			'redo' => _('Redo'));
+		$styles = array('' => _('Style'),
+			'h1' => _('Heading 1'), 'h2' => _('Heading 2'),
+			'h3' => _('Heading 3'), 'h4' => _('Heading 4'),
+			'h5' => _('Heading 5'), 'h6' => _('Heading 6'),
+			'p' => _('Normal'), 'pre' => _('Preformatted'));
+		$fonts = array('' => _('Font'),
+			'cursive' => _('Cursive'),
+			'fantasy' => _('Fantasy'),
+			'monospace' => _('Monospace'),
+			'sans-serif' => _('Sans serif'),
+			'serif' => _('Serif'));
+		$sizes = array('' => _('Size'),
+			1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6);
+		$format = array('bold' => _('Bold'),
+			'italic' => _('Italic'),
+			'underline' => _('Underline'),
+			'strikethrough' => _('Strikethrough'),
+			'subscript' => _('Subscript'),
+			'superscript' => _('Superscript'),
+			'justify-left' => _('Align left'),
+			'justify-center' => _('Center'),
+			'justify-right' => _('Align right'),
+			'justify-fill' => _('Justify'),
+			'numbering' => _('Numbering'),
+			'bullets' => _('Bullets'),
+			'unindent' => _('Unindent'),
+			'indent' => _('Indent'));
+
+		$toolbar = $this->_htmleditToolbar($actions);
+		$this->renderElement($toolbar);
+		//format
+		$toolbar = $this->_htmleditToolbar($format);
+		//size
+		$toolbar->prepend($this->_htmleditSelector('fontsize', $sizes));
+		//font
+		$toolbar->prepend($this->_htmleditSelector('fontname', $fonts));
+		//style
+		$toolbar->prepend($this->_htmleditSelector('formatblock',
+					$styles));
+		$this->renderElement($toolbar);
+		$this->renderTabs();
+		$this->tagOpen('iframe', $class, FALSE, array(
+				'width' => '100%', 'height' => '400px'));
+		$this->tagClose('iframe');
 	}
 
 	private function _htmleditSelector($class, $values = array())
