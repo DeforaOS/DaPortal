@@ -63,6 +63,10 @@
 	background-image:	url('gnome-icon-theme/32x32/categories/applications-development.png');
 }
 
+.stock32.bullets {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-sort-descending.png');
+}
+
 .stock32.cancel {
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-cancel.png');
 }
@@ -221,6 +225,10 @@
 
 .stock32.next {
 	background-image:	url('gnome-icon-theme/32x32/actions/next.png');
+}
+
+.stock32.numbering {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-sort-ascending.png');
 }
 
 .stock32.open {

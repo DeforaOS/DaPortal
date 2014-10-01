@@ -625,6 +625,8 @@ class HTMLFormat extends FormatElements
 				'justify-center' => _('Center'),
 				'justify-right' => _('Align right'),
 				'justify-fill' => _('Justify'),
+				'numbering' => _('Numbering'),
+				'bullets' => _('Bullets'),
 				'unindent' => _('Unindent'),
 				'indent' => _('Indent'));
 

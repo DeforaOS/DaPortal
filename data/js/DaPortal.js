@@ -59,6 +59,9 @@ $(document).ready(function() {
 					case 'undo':
 						command = classes[i];
 						break;
+					case 'bullets':
+						command = 'insertunorderedlist';
+						break;
 					case 'justify-center':
 						command = 'justifycenter';
 						break;
@@ -70,6 +73,9 @@ $(document).ready(function() {
 						break;
 					case 'justify-right':
 						command = 'justifyright';
+						break;
+					case 'numbering':
+						command = 'insertorderedlist';
 						break;
 					case 'unindent':
 						command = 'outdent';
