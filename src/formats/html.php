@@ -251,8 +251,12 @@ class HTMLFormat extends FormatElements
 	//rendering
 	protected function renderBlock($e, $tag = 'div')
 	{
+		$class = $e->getType();
+
+		if(($c = $e->get('class')) !== FALSE)
+			$class .= ' '.$c;
 		$this->renderTabs();
-		$this->tagOpen($tag, $e->getType());
+		$this->tagOpen($tag, $class);
 		$this->renderChildren($e);
 		$this->renderTabs();
 		$this->tagClose($tag);
@@ -649,7 +653,8 @@ class HTMLFormat extends FormatElements
 
 	private function _htmleditToolbar($actions = array())
 	{
-		$toolbar = new PageElement('toolbar');
+		$toolbar = new PageElement('toolbar', array(
+				'class' => 'editor'));
 
 		foreach($actions as $a => $t)
 		{
@@ -971,10 +976,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderToolbar($e)
 	{
-		$this->renderTabs();
-		$this->tagOpen('div', 'toolbar');
-		$this->renderChildren($e);
-		$this->tagClose('div', 'toolbar');
+		return $this->renderBlock($e);
 	}
 
 

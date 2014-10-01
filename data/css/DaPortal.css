@@ -87,7 +87,7 @@ form .checkbox input[type="checkbox"] {
 }
 
 /* editor */
-body:not(.js-activated) iframe.editor {
+body:not(.js-activated) iframe.editor, body:not(.js-activated) .toolbar.editor {
 	display:			none;
 }
 
