@@ -285,6 +285,8 @@ class HTMLFormat extends FormatElements
 	protected function renderButton($e)
 	{
 		$id = $e->get('id');
+		$text = $e->get('text');
+		$tooltip = $e->get('tooltip');
 
 		if(($r = $e->get('request')) !== FALSE)
 			$url = $this->engine->getURL($r, FALSE);
@@ -297,6 +299,8 @@ class HTMLFormat extends FormatElements
 			$class .= ' '.$c;
 		$tag = 'a';
 		$args = array();
+		if($tooltip !== FALSE)
+			$args['title'] = $tooltip;
 		switch(($type = $e->get('type')))
 		{
 			case 'reset':
@@ -308,8 +312,8 @@ class HTMLFormat extends FormatElements
 				$args['type'] = $type;
 				if(($name = $e->get('value')) !== FALSE)
 					$args['name'] = $name;
-				if(($value = $e->get('text')) !== FALSE)
-					$args['value'] = $value;
+				if($text !== FALSE)
+					$args['value'] = $text;
 				$this->tag($tag, $class, $id, $args);
 				break;
 			case 'button':
@@ -321,7 +325,7 @@ class HTMLFormat extends FormatElements
 					$args['href'] = $url;
 				$this->tagOpen($tag, $class, $id, $args);
 				$this->renderChildren($e);
-				if(($text = $e->get('text')) !== FALSE)
+				if($text !== FALSE)
 					print($this->escape($text));
 				$this->tagClose($tag);
 				break;
