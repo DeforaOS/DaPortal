@@ -55,6 +55,8 @@ $(document).ready(function() {
 					case 'paste':
 					case 'redo':
 					case 'strikethrough':
+					case 'subscript':
+					case 'superscript':
 					case 'underline':
 					case 'undo':
 						command = classes[i];

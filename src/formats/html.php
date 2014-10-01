@@ -621,6 +621,8 @@ class HTMLFormat extends FormatElements
 				'italic' => _('Italic'),
 				'underline' => _('Underline'),
 				'strikethrough' => _('Strikethrough'),
+				'subscript' => _('Subscript'),
+				'superscript' => _('Superscript'),
 				'justify-left' => _('Align left'),
 				'justify-center' => _('Center'),
 				'justify-right' => _('Align right'),

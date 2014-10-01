@@ -315,6 +315,14 @@
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-add.png');
 }
 
+.stock32.subscript {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-goto-bottom.png');
+}
+
+.stock32.superscript {
+	background-image:	url('gnome-icon-theme/32x32/actions/gtk-goto-top.png');
+}
+
 .stock32.timeline {
 	background-image:	url('gnome-icon-theme/32x32/mimetypes/stock_calendar.png');
 }
