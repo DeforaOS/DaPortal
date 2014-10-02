@@ -613,10 +613,11 @@ class HTMLFormat extends FormatElements
 			'insert-image' => _('Insert image'),
 			'insert-table' => _('Insert table'));
 		$styles = array('' => _('Style'),
-			'h1' => _('Heading 1'), 'h2' => _('Heading 2'),
-			'h3' => _('Heading 3'), 'h4' => _('Heading 4'),
-			'h5' => _('Heading 5'), 'h6' => _('Heading 6'),
-			'p' => _('Normal'), 'pre' => _('Preformatted'));
+			'<h1>' => _('Heading 1'), '<h2>' => _('Heading 2'),
+			'<h3>' => _('Heading 3'), '<h4>' => _('Heading 4'),
+			'<h5>' => _('Heading 5'), '<h6>' => _('Heading 6'),
+			'<p>' => _('Normal'), '<pre>' => _('Preformatted'),
+			'<blockquote>' => _('Quotation'));
 		$fonts = array('' => _('Font'),
 			'cursive' => _('Cursive'),
 			'fantasy' => _('Fantasy'),
