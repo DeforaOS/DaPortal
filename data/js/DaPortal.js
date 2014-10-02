@@ -43,6 +43,7 @@ $(document).ready(function() {
 		$(this).siblings('.toolbar').find('.button').each(function() {
 			if((classes = $(this).attr('class')) === undefined)
 				return;
+			arg = null;
 			classes = classes.split(' ');
 			for(i = 0; i < classes.length; i++)
 				switch(classes[i])
@@ -63,6 +64,10 @@ $(document).ready(function() {
 						break;
 					case 'bullets':
 						command = 'insertunorderedlist';
+						break;
+					case 'insert-hrule':
+						command = 'inserthtml';
+						arg = '<hr>';
 						break;
 					case 'justify-center':
 						command = 'justifycenter';
@@ -85,12 +90,13 @@ $(document).ready(function() {
 				}
 			if(command === undefined)
 				return;
-			$(this).on('click', { editor: editor, command: command },
-					function(event) {
+			$(this).on('click', { editor: editor, command: command,
+					arg: arg }, function(event) {
 				editor = event.data.editor.get(0).contentWindow;
 				command = event.data.command;
+				arg = event.data.arg;
 
-				editor.document.execCommand(command, false, null);
+				editor.document.execCommand(command, false, arg);
 				editor.focus();
 			});
 		});

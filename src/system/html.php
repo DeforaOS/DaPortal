@@ -69,8 +69,8 @@ class HTML
 		$start = array($html, '_filterElementStart');
 		$end = array($html, '_filterElementEnd');
 		$filter = array($html, '_filterCharacterData');
-		$from = array('<br>', '<hr>');
-		$to = array('<br/>', '<hr/>');
+		$from = array('<br>', '<hr></hr>', '<hr>');
+		$to = array('<br/>', '<hr/>', '<hr/>');
 
 		if($whitelist !== FALSE)
 			$html->whitelist = $whitelist;

@@ -179,6 +179,10 @@
 	background-image:	url('gnome-icon-theme/16x16/status/stock_dialog-info.png');
 }
 
+.stock16.insert-hrule {
+	background-image:	url('gnome-icon-theme/16x16/actions/gtk-remove.png');
+}
+
 .stock16.italic {
 	background-image:	url('gnome-icon-theme/16x16/actions/gtk-italic.png');
 }
