@@ -606,8 +606,8 @@ class HTMLFormat extends FormatElements
 	private function _htmleditJavascript($e, $class)
 	{
 		$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
-			'paste' => _('Paste'), 'undo' => _('Undo'),
-			'redo' => _('Redo'),
+			'paste' => _('Paste'),
+			'undo' => _('Undo'), 'redo' => _('Redo'),
 			'insert-hrule' => _('Insert ruler'),
 			'insert-link' => _('Insert link'),
 			'insert-image' => _('Insert image'),
