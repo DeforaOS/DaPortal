@@ -23,7 +23,7 @@ class HTML
 	//methods
 	//essential
 	//HTML::HTML
-	protected function __construct($charset = FALSE)
+	protected function __construct($charset = FALSE, $form = FALSE)
 	{
 		global $config;
 
@@ -50,6 +50,22 @@ class HTML
 				$this->parser = xml_parser_create('');
 				break;
 		}
+		if($form)
+		{
+			$this->whitelist['button'] = array('class', 'disabled',
+				'name', 'type', 'value');
+			$this->whitelist['datalist'] = array('class', 'id');
+			$this->whitelist['fieldset'] = array('class');
+			$this->whitelist['form'] = array('action', 'class',
+				'enctype', 'method');
+			$this->whitelist['input'] = array('checked', 'class',
+				'id', 'list', 'name', 'type', 'value');
+			$this->whitelist['label'] = array('class', 'for');
+			$this->whitelist['legend'] = array('class');
+			$this->whitelist['option'] = array('class', 'value');
+			$this->whitelist['select'] = array('class', 'name');
+			$this->whitelist['textarea'] = array('class', 'name');
+		}
 	}
 
 
@@ -63,9 +79,10 @@ class HTML
 	//static
 	//useful
 	//HTML::filter
-	static public function filter($engine, $content, $whitelist = FALSE)
+	static public function filter($engine, $content, $whitelist = FALSE,
+			$form = FALSE)
 	{
-		$html = new HTML;
+		$html = new HTML(FALSE, $form);
 		$start = array($html, '_filterElementStart');
 		$end = array($html, '_filterElementEnd');
 		$filter = array($html, '_filterCharacterData');
