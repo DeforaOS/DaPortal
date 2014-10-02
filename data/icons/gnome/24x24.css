@@ -299,6 +299,10 @@
 	background-image:	url('gnome-icon-theme/24x24/actions/gtk-remove.png');
 }
 
+.stock24.remove-format {
+	background-image:	url('gnome-icon-theme/24x24/actions/gtk-clear.png');
+}
+
 .stock24.reply {
 	background-image:	url('gnome-icon-theme/24x24/actions/mail-reply-sender.png');
 }

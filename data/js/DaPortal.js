@@ -106,6 +106,9 @@ $(document).ready(function() {
 					case 'numbering':
 						command = 'insertorderedlist';
 						break;
+					case 'remove-format':
+						command = 'removeformat';
+						break;
 					case 'unindent':
 						command = 'outdent';
 						break;

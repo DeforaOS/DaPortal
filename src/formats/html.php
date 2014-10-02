@@ -630,6 +630,7 @@ class HTMLFormat extends FormatElements
 			'strikethrough' => _('Strikethrough'),
 			'subscript' => _('Subscript'),
 			'superscript' => _('Superscript'),
+			'remove-format' => _('Remove format'),
 			'justify-left' => _('Align left'),
 			'justify-center' => _('Center'),
 			'justify-right' => _('Align right'),

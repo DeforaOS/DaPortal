@@ -299,6 +299,10 @@
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-remove.png');
 }
 
+.stock48.remove-format {
+	background-image:	url('gnome-icon-theme/48x48/actions/gtk-clear.png');
+}
+
 .stock48.reply {
 	background-image:	url('gnome-icon-theme/48x48/actions/mail-reply-sender.png');
 }
