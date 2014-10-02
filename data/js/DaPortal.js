@@ -90,6 +90,13 @@ $(document).ready(function() {
 							editor.focus();
 						});
 						return;
+					case 'insert-table':
+						command = 'inserthtml';
+						arg = '<table border="1">'
+							+ '<tr><td></td><td></td></tr>'
+							+ '<tr><td></td><td></td></tr>'
+							+ '</table>';
+						break;
 					case 'justify-center':
 						command = 'justifycenter';
 						break;

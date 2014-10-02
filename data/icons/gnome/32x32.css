@@ -191,6 +191,10 @@
 	background-image:	url('gnome-icon-theme/32x32/actions/insert-link.png');
 }
 
+.stock32.insert-table {
+	background-image:	url('gnome-icon-theme/32x32/actions/insert-object.png');
+}
+
 .stock32.italic {
 	background-image:	url('gnome-icon-theme/32x32/actions/gtk-italic.png');
 }
