@@ -144,8 +144,8 @@ class HTML
 				.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401,
 						$this->charset).'"';
 		}
-		//close the <br> and <img> tags directly
-		if($tag == 'br' || $tag == 'img')
+		//close the <br>, <hr> and <img> tags directly
+		if($tag == 'br' || $tag == 'hr' || $tag == 'img')
 			$this->content .= '/';
 		else
 			//remember which tags are opened
