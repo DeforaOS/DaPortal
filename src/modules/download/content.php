@@ -69,22 +69,18 @@ abstract class DownloadContent extends MultiContent
 	//DownloadContent::getPermissions
 	protected function getPermissions($mode = FALSE)
 	{
-		$class = get_class();
-
 		if($mode === FALSE)
 			$mode = $this->get('mode');
-		return Common::getPermissions($mode, $class::$S_IFDIR);
+		return Common::getPermissions($mode, self::$S_IFDIR);
 	}
 
 
 	//DownloadContent::isDirectory
 	protected function isDirectory($mode = FALSE)
 	{
-		$class = get_class();
-
 		if($mode === FALSE)
 			$mode = $this->get('mode');
-		return ($mode & $class::$S_IFDIR) ? TRUE : FALSE;
+		return ($mode & self::$S_IFDIR) ? TRUE : FALSE;
 	}
 
 

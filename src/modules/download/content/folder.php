@@ -70,11 +70,9 @@ class FolderDownloadContent extends DownloadContent
 	public function set($property, $value)
 	{
 		//XXX can't use $this->class (constructor issues)
-		$class = get_class();
-
 		if($property == 'mode' && $value !== FALSE
 				&& is_numeric($value))
-			$value |= $class::$S_IFDIR;
+			$value |= self::$S_IFDIR;
 		return parent::set($property, $value);
 	}
 
@@ -83,16 +81,15 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::display
 	public function display($engine, $request)
 	{
-		$class = $this->class;
 		$title = $this->text_content_list_title.': '.$this->getTitle();
 		$page = new Page(array('title' => $title));
 
 		$page->append('title', array('stock' => $this->stock,
 			'text' => $title));
 		$page->append($this->displayToolbar($engine, $request));
-		$class::$query_list = $class::$folder_query_list;
-		if(($files = $class::_listFiles($engine, $this->getModule(),
-				FALSE, FALSE, 'title ASC', FALSE, $class,
+		self::$query_list = self::$folder_query_list;
+		if(($files = self::_listFiles($engine, $this->getModule(),
+				FALSE, FALSE, 'title ASC', FALSE, get_class(),
 				$this)) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
@@ -221,7 +218,6 @@ class FolderDownloadContent extends DownloadContent
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
-		$class = $this->class;
 		$db = $engine->getDatabase();
 		$query = $this->folder_query_insert;
 		$parent = $request->get('parent');
@@ -230,10 +226,10 @@ class FolderDownloadContent extends DownloadContent
 		if($parent === FALSE)
 			$parent = NULL;
 		if($mode !== FALSE)
-			$mode |= $class::$S_IFDIR;
+			$mode |= self::$S_IFDIR;
 		else if(($mode = $this->get('mode')) === FALSE)
 		{
-			$mode = 0755 | $class::$S_IFDIR;
+			$mode = 0755 | self::$S_IFDIR;
 			$this->set('mode', FALSE);
 		}
 		$error = 'Invalid mode for directory';
@@ -267,8 +263,6 @@ class FolderDownloadContent extends DownloadContent
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $order = FALSE, $user = FALSE)
 	{
-		$class = get_class();
-
 		switch($order)
 		{
 			case FALSE:
@@ -276,16 +270,16 @@ class FolderDownloadContent extends DownloadContent
 				$order = 'title ASC';
 				break;
 		}
-		$class::$query_list = $class::$folder_query_list;
-		$class::$query_list .= ' AND daportal_download.parent IS NULL';
-		return $class::_listAll($engine, $module, $limit, $offset,
-				$order, $user, $class);
+		self::$query_list = self::$folder_query_list;
+		self::$query_list .= ' AND daportal_download.parent IS NULL';
+		return self::_listAll($engine, $module, $limit, $offset,
+				$order, $user, get_class());
 	}
 
 	static protected function _listAll($engine, $module, $limit, $offset,
 			$order, $user, $class)
 	{
-		return $class::_listFiles($engine, $module, $limit, $offset,
+		return self::_listFiles($engine, $module, $limit, $offset,
 				$order, $user, $class);
 	}
 
@@ -295,7 +289,7 @@ class FolderDownloadContent extends DownloadContent
 		$ret = array();
 		$vbox = new PageElement('vbox');
 		$database = $engine->getDatabase();
-		$query = $class::$query_list;
+		$query = self::$query_list;
 		$args = array('module_id' => $module->getID());
 
 		if($parent !== FALSE && ($id = $parent->get('download_id'))
@@ -314,7 +308,7 @@ class FolderDownloadContent extends DownloadContent
 			return FALSE;
 		foreach($res as $r)
 		{
-			$classname = ($r['mode'] & $class::$S_IFDIR)
+			$classname = ($r['mode'] & self::$S_IFDIR)
 				? 'FolderDownloadContent'
 				: 'FileDownloadContent';
 			$ret[] = new $classname($engine, $module, $r);
@@ -326,10 +320,8 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		$class = get_class();
-
-		$class::$query_load = $class::$folder_query_load;
-		return $class::_load($engine, $module, $id, $title, $class);
+		self::$query_load = self::$folder_query_load;
+		return self::_load($engine, $module, $id, $title, get_class());
 	}
 
 

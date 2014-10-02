@@ -17,7 +17,7 @@
 
 
 //BugReplyProjectContent
-class BugReplyProjectContent extends Content
+class BugReplyProjectContent extends MultiContent
 {
 }
 

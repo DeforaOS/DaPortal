@@ -411,8 +411,6 @@ class WikiContent extends MultiContent
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $user = FALSE, $order = FALSE)
 	{
-		$class = get_class();
-
 		switch($order)
 		{
 			case FALSE:
@@ -420,16 +418,15 @@ class WikiContent extends MultiContent
 				$order = 'title ASC';
 				break;
 		}
-		return WikiContent::_listAll($engine, $module, $limit, $offset,
-				$order, $user, $class);
+		return self::_listAll($engine, $module, $limit, $offset, $order,
+				$user, get_class());
 	}
 
 
 	//WikiContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		return Content::_load($engine, $module, $id, $title,
-				get_class());
+		return self::_load($engine, $module, $id, $title, get_class());
 	}
 
 

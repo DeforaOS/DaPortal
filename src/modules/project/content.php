@@ -380,12 +380,10 @@ class ProjectContent extends MultiContent
 	//ProjectContent::countAll
 	static public function countAll($engine, $module, $user = FALSE)
 	{
-		$class = get_class();
-		$class::$query_list_count = $class::$project_query_list_count;
-		$class::$query_list_user_count
-			= $class::$project_query_list_user_count;
+		self::$query_list = self::$project_query_list;
+		self::$query_list_user = self::$project_query_list_user;
 
-		return $class::_countAll($engine, $module, $user, $class);
+		return self::_countAll($engine, $module, $user, get_class());
 	}
 
 
@@ -393,8 +391,6 @@ class ProjectContent extends MultiContent
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $user = FALSE, $order = FALSE)
 	{
-		$class = get_class();
-
 		switch($order)
 		{
 			case FALSE:
@@ -402,20 +398,18 @@ class ProjectContent extends MultiContent
 				$order = 'title ASC';
 				break;
 		}
-		$class::$query_list = $class::$project_query_list;
-		$class::$query_list_user = $class::$project_query_list_user;
-		return $class::_listAll($engine, $module, $limit, $offset,
-				$order, $user, $class);
+		self::$query_list = self::$project_query_list;
+		self::$query_list_user = self::$project_query_list_user;
+		return self::_listAll($engine, $module, $limit, $offset, $order,
+				$user, get_class());
 	}
 
 
 	//ProjectContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		$class = get_class();
-
-		$class::$query_load = $class::$project_query_load;
-		return $class::_load($engine, $module, $id, $title, $class);
+		self::$query_load = self::$project_query_load;
+		return self::_load($engine, $module, $id, $title, get_class());
 	}
 
 
@@ -433,17 +427,6 @@ class ProjectContent extends MultiContent
 		daportal_content_public.enabled AS enabled, timestamp,
 		name AS module, daportal_user_enabled.user_id AS user_id,
 		username, title, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id';
-	//IN:	module_id
-	static protected $project_query_list_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content_public, daportal_module,
 		daportal_user_enabled, daportal_project
 		WHERE daportal_content_public.module_id
@@ -490,20 +473,6 @@ class ProjectContent extends MultiContent
 		daportal_content_public.enabled AS enabled, timestamp,
 		name AS module, daportal_user_enabled.user_id AS user_id,
 		username, title, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id
-		AND daportal_content_public.user_id=:user_id';
-	//IN:	module_id
-	//	user_id
-	static protected $project_query_list_user_count = 'SELECT
-		COUNT(*) AS count
 		FROM daportal_content_public, daportal_module,
 		daportal_user_enabled, daportal_project
 		WHERE daportal_content_public.module_id

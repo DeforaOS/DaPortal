@@ -247,11 +247,9 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		$class = get_class();
-
-		$class::$query_load = $class::$file_query_load;
+		self::$query_load = self::$file_query_load;
 		return parent::_load($engine, $module, $id, $title,
-				$class);
+				get_class());
 	}
 
 

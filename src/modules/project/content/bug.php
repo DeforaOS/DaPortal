@@ -17,7 +17,7 @@
 
 
 //BugProjectContent
-class BugProjectContent extends Content
+class BugProjectContent extends MultiContent
 {
 	//public
 	//methods
@@ -25,8 +25,6 @@ class BugProjectContent extends Content
 	//BugProjectContent::BugProjectContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
-		$class = get_class();
-
 		$this->fields['project_id'] = 'project ID';
 		$this->fields['bug_id'] = 'bug #';
 		$this->fields['state'] = 'state';
@@ -41,26 +39,26 @@ class BugProjectContent extends Content
 		if(($project_id = $this->get('project_id')) !== FALSE)
 			$this->project = ProjectContent::load($engine,
 					$module, $project_id);
-		$this->class = $class;
+		$this->class = get_class();
 		//translations
 		$this->text_content_by = _('Bug report from');
 		$this->text_content_list_title = _('Bug reports');
 		$this->text_more_content = _('More reports...');
 		$this->text_submit = _('Report bug...');
-		$class::$priorities['Urgent'] = _('Urgent');
-		$class::$priorities['High'] = _('High');
-		$class::$priorities['Medium'] = _('Medium');
-		$class::$priorities['Low'] = _('Low');
-		$class::$states['Assigned'] = _('Assigned');
-		$class::$states['Closed'] = _('Closed');
-		$class::$states['Fixed'] = _('Fixed');
-		$class::$states['Implemented'] = _('Implemented');
-		$class::$states['New'] = _('New');
-		$class::$states['Re-opened'] = _('Re-opened');
-		$class::$types['Major'] = _('Major');
-		$class::$types['Minor'] = _('Minor');
-		$class::$types['Functionality'] = _('Functionality');
-		$class::$types['Feature'] = _('Feature');
+		self::$priorities['Urgent'] = _('Urgent');
+		self::$priorities['High'] = _('High');
+		self::$priorities['Medium'] = _('Medium');
+		self::$priorities['Low'] = _('Low');
+		self::$states['Assigned'] = _('Assigned');
+		self::$states['Closed'] = _('Closed');
+		self::$states['Fixed'] = _('Fixed');
+		self::$states['Implemented'] = _('Implemented');
+		self::$states['New'] = _('New');
+		self::$states['Re-opened'] = _('Re-opened');
+		self::$types['Major'] = _('Major');
+		self::$types['Minor'] = _('Minor');
+		self::$types['Functionality'] = _('Functionality');
+		self::$types['Feature'] = _('Feature');
 	}
 
 
@@ -85,23 +83,21 @@ class BugProjectContent extends Content
 	//BugProjectContent::set
 	public function set($name, $value)
 	{
-		$class = get_class();
-
 		switch($name)
 		{
 			case 'priority':
-				if(!array_key_exists($value, $class::$priorities))
+				if(!array_key_exists($value, self::$priorities))
 					return FALSE;
 				break;
 			case 'state':
-				if(!array_key_exists($value, $class::$states))
+				if(!array_key_exists($value, self::$states))
 					return FALSE;
 				break;
 			case 'bug_type':
 				//XXX workaround for the MultiContent class
 				$name = 'type';
 			case 'type':
-				if(!array_key_exists($value, $class::$types))
+				if(!array_key_exists($value, self::$types))
 					return FALSE;
 				break;
 		}
@@ -136,8 +132,6 @@ class BugProjectContent extends Content
 
 	protected function _formSubmit($engine, $request)
 	{
-		$class = get_class();
-
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
@@ -149,14 +143,14 @@ class BugProjectContent extends Content
 		$combobox = $vbox->append('combobox', array('name' => 'bug_type',
 				'text' => _('Type: '),
 				'value' => $request->get('type')));
-		foreach($class::$types as $value => $text)
+		foreach(self::$types as $value => $text)
 			$combobox->append('label', array('value' => $value,
 				'text' => $text));
 		//priority
 		$combobox = $vbox->append('combobox', array('name' => 'priority',
 				'text' => _('Priority: '),
 				'value' => $request->get('priority')));
-		foreach($class::$priorities as $value => $text)
+		foreach(self::$priorities as $value => $text)
 			$combobox->append('label', array('value' => $value,
 				'text' => $text));
 		return $vbox;
@@ -168,12 +162,10 @@ class BugProjectContent extends Content
 	//BugProjectContent::countAll
 	static public function countAll($engine, $module, $user = FALSE)
 	{
-		$class = get_class();
-		$class::$query_list_count = $class::$bug_query_list_count;
-		$class::$query_list_user_count
-			= $class::$bug_query_list_user_count;
+		self::$query_list = self::$bug_query_list;
+		self::$query_list_user = self::$bug_query_list_user;
 
-		return $class::_countAll($engine, $module, $user, $class);
+		return self::_countAll($engine, $module, $user, get_class());
 	}
 
 
@@ -181,8 +173,6 @@ class BugProjectContent extends Content
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $user = FALSE, $order = FALSE)
 	{
-		$class = get_class();
-
 		switch($order)
 		{
 			case FALSE:
@@ -190,20 +180,18 @@ class BugProjectContent extends Content
 				$order = 'bug_id DESC';
 				break;
 		}
-		$class::$query_list = $class::$bug_query_list;
-		$class::$query_list_user = $class::$bug_query_list_user;
-		return $class::_listAll($engine, $module, $limit, $offset,
-				$order, $user, $class);
+		self::$query_list = self::$bug_query_list;
+		self::$query_list_user = self::$bug_query_list_user;
+		return self::_listAll($engine, $module, $limit, $offset, $order,
+				$user, get_class());
 	}
 
 
 	//BugProjectContent::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		$class = get_class();
-
-		$class::$query_load = $class::$bug_query_load;
-		return $class::_load($engine, $module, $id, $title, $class);
+		self::$query_load = self::$bug_query_load;
+		return self::_load($engine, $module, $id, $title, get_class());
 	}
 
 
@@ -237,17 +225,6 @@ class BugProjectContent extends Content
 		AND daportal_bug.project_id=daportal_project.project_id
 		AND project.content_id=daportal_project.project_id";
 	//IN:	module_id
-	static protected $bug_query_list_count = "SELECT COUNT(*) AS count
-		FROM daportal_content_public bug, daportal_module,
-		daportal_user_enabled, daportal_bug,
-		daportal_content_public project, daportal_project
-		WHERE bug.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND bug.user_id=daportal_user_enabled.user_id
-		AND bug.content_id=daportal_bug.content_id
-		AND daportal_bug.project_id=daportal_project.project_id
-		AND project.content_id=daportal_project.project_id";
-	//IN:	module_id
 	//	user_id
 	static protected $bug_query_list_user = "SELECT bug_id,
 		bug.content_id AS id, bug.timestamp AS timestamp,
@@ -255,19 +232,6 @@ class BugProjectContent extends Content
 		bug.title AS title, bug.enabled AS enabled, state, type,
 		priority, daportal_project.project_id AS project_id,
 		project.title AS project, daportal_bug.public AS public
-		FROM daportal_content_public bug, daportal_module,
-		daportal_user_enabled, daportal_bug,
-		daportal_content_public project, daportal_project
-		WHERE bug.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND bug.user_id=daportal_user_enabled.user_id
-		AND bug.content_id=daportal_bug.content_id
-		AND daportal_bug.project_id=daportal_project.project_id
-		AND project.content_id=daportal_project.project_id
-		AND daportal_content_public.user_id=:user_id";
-	//IN:	module_id
-	//	user_id
-	static protected $bug_query_list_user_count = "SELECT COUNT(*) AS count
 		FROM daportal_content_public bug, daportal_module,
 		daportal_user_enabled, daportal_bug,
 		daportal_content_public project, daportal_project
