@@ -66,8 +66,7 @@ $(document).ready(function() {
 						command = 'insertunorderedlist';
 						break;
 					case 'insert-hrule':
-						command = 'inserthtml';
-						arg = '<hr>';
+						command = 'inserthorizontalrule';
 						break;
 					case 'insert-image':
 						$(this).on('click', { editor: editor }, function(event) {
