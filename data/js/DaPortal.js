@@ -69,6 +69,17 @@ $(document).ready(function() {
 						command = 'inserthtml';
 						arg = '<hr>';
 						break;
+					case 'insert-image':
+						$(this).on('click', { editor: editor }, function(event) {
+							editor = event.data.editor.get(0).contentWindow;
+
+							url = prompt('Enter URL:', 'http://');
+							if(url == null || url == '')
+								return;
+							editor.document.execCommand('insertimage', false, url);
+							editor.focus();
+						});
+						return;
 					case 'insert-link':
 						$(this).on('click', { editor: editor }, function(event) {
 							editor = event.data.editor.get(0).contentWindow;

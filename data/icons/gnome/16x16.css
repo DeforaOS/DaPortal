@@ -183,6 +183,10 @@
 	background-image:	url('gnome-icon-theme/16x16/actions/gtk-remove.png');
 }
 
+.stock16.insert-image {
+	background-image:	url('gnome-icon-theme/16x16/actions/insert-image.png');
+}
+
 .stock16.insert-link {
 	background-image:	url('gnome-icon-theme/16x16/actions/insert-link.png');
 }
