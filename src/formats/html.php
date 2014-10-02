@@ -625,7 +625,7 @@ class HTMLFormat extends FormatElements
 			'sans-serif' => _('Sans serif'),
 			'serif' => _('Serif'));
 		$sizes = array('' => _('Size'),
-			1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6);
+			1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7);
 		$format = array('bold' => _('Bold'),
 			'italic' => _('Italic'),
 			'underline' => _('Underline'),
