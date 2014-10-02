@@ -195,6 +195,10 @@
 	background-image:	url('gnome-icon-theme/48x48/actions/insert-object.png');
 }
 
+.stock48.insert-text {
+	background-image:	url('gnome-icon-theme/48x48/actions/insert-text.png');
+}
+
 .stock48.italic {
 	background-image:	url('gnome-icon-theme/48x48/actions/gtk-italic.png');
 }

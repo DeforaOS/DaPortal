@@ -611,7 +611,8 @@ class HTMLFormat extends FormatElements
 			'insert-hrule' => _('Insert ruler'),
 			'insert-link' => _('Insert link'),
 			'insert-image' => _('Insert image'),
-			'insert-table' => _('Insert table'));
+			'insert-table' => _('Insert table'),
+			'insert-text' => _('Insert text'));
 		$styles = array('' => _('Style'),
 			'<h1>' => _('Heading 1'), '<h2>' => _('Heading 2'),
 			'<h3>' => _('Heading 3'), '<h4>' => _('Heading 4'),

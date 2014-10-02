@@ -97,6 +97,17 @@ $(document).ready(function() {
 							+ '<tr><td></td><td></td></tr>'
 							+ '</table>';
 						break;
+					case 'insert-text':
+						$(this).on('click', { editor: editor }, function(event) {
+							editor = event.data.editor.get(0).contentWindow;
+
+							text = prompt('Enter text:', '');
+							if(text == null || text == '')
+								return;
+							editor.document.execCommand('inserttext', false, text);
+							editor.focus();
+						});
+						return;
 					case 'justify-center':
 						command = 'justifycenter';
 						break;
