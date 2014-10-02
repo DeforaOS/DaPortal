@@ -167,8 +167,8 @@ class HTML
 		}
 		if(!isset($this->whitelist[$tag]))
 			return;
-		//the <br> and <img> tags were already closed
-		if($tag == 'br' || $tag == 'img')
+		//the <br>, <hr> and <img> tags were already closed
+		if($tag == 'br' || $tag == 'hr' || $tag == 'img')
 			return;
 		$this->content .= "</$tag>";
 		//remember which tags were closed
