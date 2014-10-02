@@ -608,7 +608,8 @@ class HTMLFormat extends FormatElements
 		$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
 			'paste' => _('Paste'), 'undo' => _('Undo'),
 			'redo' => _('Redo'),
-			'insert-hrule' => _('Insert ruler'));
+			'insert-hrule' => _('Insert ruler'),
+			'insert-link' => _('Insert link'));
 		$styles = array('' => _('Style'),
 			'h1' => _('Heading 1'), 'h2' => _('Heading 2'),
 			'h3' => _('Heading 3'), 'h4' => _('Heading 4'),
