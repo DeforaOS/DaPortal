@@ -315,7 +315,7 @@ class HTML
 		'span' => array('class'),
 		'sub' => array('class'),
 		'sup' => array('class'),
-		'table' => array('class'),
+		'table' => array('border', 'class'),
 		'tbody' => array('class'),
 		'td' => array('class', 'colspan', 'rowspan'),
 		'th' => array('class', 'colspan', 'rowspan'),
