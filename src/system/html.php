@@ -71,6 +71,8 @@ class HTML
 		$filter = array($html, '_filterCharacterData');
 		$from = array('<br>', '<hr>');
 		$to = array('<br/>', '<hr/>');
+		$rfrom = '/(<img [^>]*)>/';
+		$rto = '$1/>';
 
 		if($whitelist !== FALSE)
 			$html->whitelist = $whitelist;
@@ -81,6 +83,9 @@ class HTML
 		//plain text conversion needs carriage returns
 		if(is_array($whitelist) && count($whitelist) == 0)
 			$to = "\n";
+		else
+			//adjust images
+			$content = preg_replace($rfrom, $rto, $content);
 		//give it more chances to validate
 		$content = str_ireplace($from, $to, $content);
 		switch(strtolower($html->charset))
