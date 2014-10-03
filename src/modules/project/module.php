@@ -55,12 +55,13 @@ class ProjectModule extends MultiContentModule
 	//static
 	//useful
 	//ProjectModule::attachSCM
-	static public function attachSCM($engine, $name)
+	static public function attachSCM($engine, $name, &$error = FALSE)
 	{
-		global $config;
+		$error = _('No SCM configured for this project');
 
-		if(strchr($name, '/') !== FALSE)
+		if(strchr($name, '/') !== FALSE || strlen($name) == 0)
 			return FALSE;
+		$error = _('Internal server error');
 		$filename = './modules/project/scm/'.$name.'.php';
 		$res = include_once($filename);
 		if($res === FALSE)
