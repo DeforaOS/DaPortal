@@ -115,7 +115,7 @@ class BugProjectContent extends MultiContent
 
 
 	//BugProjectContent::displayToolbar
-	public function displayToolbar($engine, $request)
+	public function displayToolbar($engine, $request = FALSE)
 	{
 		if($this->project !== FALSE)
 			return $this->project->displayToolbar($engine,

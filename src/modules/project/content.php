@@ -229,7 +229,7 @@ class ProjectContent extends MultiContent
 
 
 	//ProjectContent::displayToolbar
-	public function displayToolbar($engine, $request)
+	public function displayToolbar($engine, $request = FALSE)
 	{
 		$actions = array('bug_list' => _('Bug reports'),
 			'download' => _('Download'),

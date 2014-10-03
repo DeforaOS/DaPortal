@@ -497,7 +497,7 @@ class Content
 
 
 	//Content::displayToolbar
-	public function displayToolbar($engine, $request)
+	public function displayToolbar($engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 

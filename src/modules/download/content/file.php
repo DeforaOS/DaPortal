@@ -116,7 +116,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::displayToolbar
-	public function displayToolbar($engine, $request)
+	public function displayToolbar($engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();

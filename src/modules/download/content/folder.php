@@ -119,7 +119,7 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::displayToolbar
-	public function displayToolbar($engine, $request)
+	public function displayToolbar($engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
