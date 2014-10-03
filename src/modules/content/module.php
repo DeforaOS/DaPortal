@@ -964,8 +964,8 @@ abstract class ContentModule extends Module
 	{
 		//obtain the content
 		$error = _('Unable to fetch content');
-		if(($content = $this->_get($engine, $request->getID()))
-				=== FALSE)
+		if(($content = $this->getContent($engine, $request->getID(),
+				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//check permissions

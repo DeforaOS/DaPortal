@@ -435,8 +435,9 @@ class ProjectModule extends MultiContentModule
 		//XXX unlike ProjectModule::list() here getID() is the project
 		//determine the current project
 		if(($id = $request->getID()) !== FALSE
-				&& ($project = $this->_get($engine, $id,
-					$request->getTitle())) === FALSE)
+				&& ($project = $this->getContent($engine, $id,
+					$request->getTitle(), $request))
+					=== FALSE)
 			$error = _('Unknown project');
 		else if(($name = $request->get('project')) !== FALSE
 				&& strlen($name))
@@ -539,7 +540,7 @@ class ProjectModule extends MultiContentModule
 				$request->getID(), $request->getTitle()))
 				=== FALSE)
 			return $this->callDefault($engine);
-		$project = $this->_get($engine, $bug->get('project_id'));
+		$project = $this->getContent($engine, $bug->get('project_id'));
 		$title = sprintf(_('Reply to #%u/%s: %s'), $bug->get('bug_id'),
 				$project->getTitle(), $bug->getTitle());
 		$page = new Page(array('title' => $title));
@@ -582,8 +583,8 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::callSubmitRelease
 	protected function callSubmitRelease($engine, $request)
 	{
-		$project = $this->_get($engine, $request->getID(),
-				$request->getTitle());
+		$project = $this->getContent($engine, $request->getID(),
+				$request->getTitle(), $request);
 
 		$error = _('Invalid project');
 		if($project === FALSE)
@@ -715,7 +716,7 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::helperDisplayBug
 	protected function helperDisplayBug($engine, $request, $page, $content)
 	{
-		$project = $this->_get($engine, $content['project_id']);
+		$project = $this->getContent($engine, $content['project_id']);
 		$c = $content;
 
 		//title
@@ -812,7 +813,8 @@ class ProjectModule extends MultiContentModule
 	{
 		$bug = $this->getBugByID($engine, $content['bug_id']);
 		$project = ($bug !== FALSE)
-			? $this->_get($engine, $bug['project_id']) : FALSE;
+			? $this->getContent($engine, $bug['project_id'])
+			: FALSE;
 
 		if($bug === FALSE || $project === FALSE)
 		{
