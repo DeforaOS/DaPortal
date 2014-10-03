@@ -42,13 +42,15 @@ class DownloadModule extends MultiContentModule
 	public function call($engine, $request, $internal = 0)
 	{
 		$action = $request->getAction();
+
 		if($internal)
 			switch($action)
 			{
 				case 'get':
-					return $this->_get($engine,
+					return $this->getContent($engine,
 							$request->getID(),
-							$request->getTitle());
+							$request->getTitle(),
+							$request);
 				case 'getRoot':
 					return DownloadContent::getRoot(
 							$this->name);
@@ -77,7 +79,7 @@ class DownloadModule extends MultiContentModule
 	protected function _callInternalSubmit($engine, $request)
 	{
 		//XXX saves files in the root folder
-		if(($filename = $request->getParameter('filename')) === FALSE)
+		if(($filename = $request->get('filename')) === FALSE)
 			return FALSE;
 		$content = FALSE;
 		//FIXME obtain the parent
@@ -170,7 +172,7 @@ class DownloadModule extends MultiContentModule
 	protected function callDefault($engine, $request = FALSE)
 	{
 		$class = 'FolderDownloadContent';
-		$p = ($request !== FALSE) ? $request->getParameter('page') : 0;
+		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 
 		if($request !== FALSE && $request->getID() !== FALSE)
@@ -188,8 +190,8 @@ class DownloadModule extends MultiContentModule
 
 		if(($id = $request->getID()) === FALSE)
 			return $this->callDefault($engine);
-		if(($content = $this->_get($engine, $id, $request->getTitle()))
-				=== FALSE)
+		if(($content = $this->getContent($engine, $id,
+				$request->getTitle())) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($content instanceof FileDownloadContent)
@@ -208,8 +210,7 @@ class DownloadModule extends MultiContentModule
 	protected function _submitProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE
-				|| $request->getParameter('_submit') === FALSE)
+		if($request === FALSE || $request->get('_submit') === FALSE)
 			return TRUE;
 		switch($request->get('type'))
 		{
