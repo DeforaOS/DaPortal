@@ -230,12 +230,18 @@ class DownloadModule extends MultiContentModule
 			if($v != UPLOAD_ERR_OK)
 				return _('An error occurred');
 		//store each file uploaded
+		$errors = array();
 		foreach($_FILES['files']['error'] as $k => $v)
-			$this->_submitProcessFile($engine, $request, $parent,
+		{
+			$res = $this->_submitProcessFile($engine, $request,
+					$parent,
 					$_FILES['files']['tmp_name'][$k],
 					$_FILES['files']['name'][$k], $content,
 					$id);
-		return FALSE;
+			if($res !== TRUE)
+				$errors[] = $res;
+		}
+		return (count($errors)) ? implode("\n", $errors) : FALSE;
 	}
 
 	protected function _submitProcessFile($engine, $request, $parent,
@@ -251,7 +257,7 @@ class DownloadModule extends MultiContentModule
 		$error = _('Internal server error');
 		if($content->save($engine, $request, $error) === FALSE)
 			return $error;
-		return FALSE;
+		return TRUE;
 	}
 
 
