@@ -40,6 +40,17 @@ class ProjectContent extends MultiContent
 
 
 	//accessors
+	//ProjectContent::canBrowse
+	public function canBrowse($engine, $request = FALSE, &$error = FALSE)
+	{
+		$error = _('No SCM configured for this project');
+
+		if(($scm = $this->get('scm')) === FALSE || strlen($scm) == 0)
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//ProjectContent::canUpload
 	public function canUpload($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -76,11 +87,17 @@ class ProjectContent extends MultiContent
 
 	protected function _displayBrowse($engine, $request, $page)
 	{
-		if(($scm = ProjectModule::attachSCM($engine,
-				$this->get('scm'))) === FALSE)
+		$class = get_class($this->getModule());
+		$error = _('Unknown error');
+
+		if($this->canBrowse($engine, $request, $error) === FALSE)
 			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('An error occurred')));
+					'type' => 'error', 'text' => $error));
+		$error = _('Could not browse the project');
+		if(($scm = $class::attachSCM($engine, $this->get('scm')))
+				=== FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		$browse = $scm->browse($engine, $this, $request);
 		if(!($browse instanceof PageElement))
 			//FIXME set the proper filename
@@ -92,13 +109,14 @@ class ProjectContent extends MultiContent
 
 	protected function _displayDownload($engine, $request, $page)
 	{
+		$class = get_class($this->getModule());
 		$db = $engine->getDatabase();
 		$query = $this->project_query_list_downloads;
 
 		$vbox = $page->append('vbox');
 		//source code
-		if(($scm = ProjectModule::attachSCM($engine,
-				$this->get('scm'))) !== FALSE
+		if(($scm = $class::attachSCM($engine, $this->get('scm')))
+				!== FALSE
 				&& ($download = $scm->download($engine,
 				$this, $request)) !== FALSE)
 			$page->append($download);
@@ -191,9 +209,14 @@ class ProjectContent extends MultiContent
 
 	protected function _displayTimeline($engine, $request, $page)
 	{
+		$class = get_class($this->getModule());
+
+		if($this->canBrowse($engine, $request, $error) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		$vbox = $page->append('vbox');
-		if(($scm = ProjectModule::attachSCM($engine,
-				$this->get('scm'))) === FALSE)
+		if(($scm = $class::attachSCM($engine, $this->get('scm')))
+				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('An error occurred')));
@@ -231,6 +254,7 @@ class ProjectContent extends MultiContent
 	//ProjectContent::displayToolbar
 	public function displayToolbar($engine, $request = FALSE)
 	{
+		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
 		$actions = array('bug_list' => _('Bug reports'),
 			'download' => _('Download'),
 			'gallery' => _('Gallery'),
@@ -241,8 +265,13 @@ class ProjectContent extends MultiContent
 		$toolbar = parent::displayToolbar($engine, $request);
 		if($this->getID() === FALSE)
 			return $toolbar;
+		$browse = $this->canBrowse($engine, $request);
 		foreach($actions as $k => $v)
 		{
+			if($k != 'homepage' && $action == $k)
+				continue;
+			if(!$browse && ($k == 'browse' || $k == 'timeline'))
+				continue;
 			$r = ($k == 'homepage') ? $this->getRequest()
 				: $this->getRequest($k);
 			$button = new PageElement('button', array(
