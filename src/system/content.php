@@ -406,11 +406,10 @@ class Content
 	public function display($engine, $request)
 	{
 		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$vbox = new PageElement('vbox');
 
-		$page = new Page(array('title' => $this->getTitle()));
 		if($type === FALSE || $type == 'title')
-			$page->append($this->displayTitle($engine, $request));
-		$vbox = $page->append('vbox');
+			$vbox->append($this->displayTitle($engine, $request));
 		if($type === FALSE || $type == 'toolbar')
 			$vbox->append($this->displayToolbar($engine, $request));
 		if($type === FALSE || $type == 'metadata')
@@ -421,7 +420,7 @@ class Content
 			$vbox->append($this->displayContent($engine, $request));
 		if($type === FALSE || $type == 'buttons')
 			$vbox->append($this->displayButtons($engine, $request));
-		return $page;
+		return $vbox;
 	}
 
 

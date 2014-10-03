@@ -26,18 +26,19 @@ abstract class MultiContentModule extends ContentModule
 	public function getContent($engine, $id, $title = FALSE,
 			$request = FALSE)
 	{
-		if($request !== FALSE)
-		{
-			$this->setContext($engine, $request);
-			return parent::getContent($engine, $id, $title,
-					$request);
-		}
+		//XXX this works only if the ID namespace is not ambiguous
 		foreach($this->content_classes as $class)
 		{
 			$this->content_class = $class;
 			if(($res = parent::getContent($engine, $id, $title,
 					FALSE)) !== FALSE)
 				return $res;
+		}
+		if($request !== FALSE)
+		{
+			$this->setContext($engine, $request);
+			return parent::getContent($engine, $id, $title,
+					$request);
 		}
 		return FALSE;
 	}

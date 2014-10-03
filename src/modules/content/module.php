@@ -569,6 +569,8 @@ abstract class ContentModule extends Module
 	//ContentModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
+		$error = _('Could not display the content');
+
 		//obtain the content
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
