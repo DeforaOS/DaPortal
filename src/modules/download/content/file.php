@@ -46,7 +46,6 @@ class FileDownloadContent extends DownloadContent
 		$parent = $this->get('parent_id');
 
 		$hbox = new PageElement('hbox');
-		$parent = ($parent != NULL) ? $parent : FALSE;
 		//parent folder
 		$r = new Request($module->getName(), FALSE, $parent);
 		$hbox->append('link', array('stock' => $this->stock_back,
@@ -124,7 +123,6 @@ class FileDownloadContent extends DownloadContent
 		$parent = $this->get('parent_id');
 
 		$toolbar = new PageElement('toolbar');
-		$parent = ($parent != NULL) ? $parent : FALSE;
 		//parent folder
 		//XXX would be nicer with the title too
 		$r = new Request($module->getName(), FALSE, $parent);
@@ -221,7 +219,8 @@ class FileDownloadContent extends DownloadContent
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$args = array('content_id' => $this->getID(),
-			'parent' => $parent, 'mode' => 420);
+			'parent' => ($parent !== FALSE) ? $parent : NULL,
+			'mode' => 420);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = _('Could not register the file');

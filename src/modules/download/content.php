@@ -56,6 +56,15 @@ abstract class DownloadContent extends MultiContent
 	//protected
 	//methods
 	//accessors
+	//DownloadContent::get
+	public function get($property)
+	{
+		if($property == 'parent_id' && parent::get($property) === NULL)
+			return FALSE;
+		return parent::get($property);
+	}
+
+
 	//DownloadContent::getIcon
 	protected function getIcon($engine, $size = 16)
 	{

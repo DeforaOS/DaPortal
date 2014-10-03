@@ -48,15 +48,6 @@ class FolderDownloadContent extends DownloadContent
 	}
 
 
-	//FolderDownloadContent::get
-	public function get($property)
-	{
-		if($property == 'parent_id' && parent::get($property) === NULL)
-			return FALSE;
-		return parent::get($property);
-	}
-
-
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
