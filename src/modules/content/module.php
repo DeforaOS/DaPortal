@@ -185,6 +185,16 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::getContent
+	public function getContent($engine, $id, $title = FALSE,
+			$request = FALSE)
+	{
+		$class = $this->content_class;
+
+		return $class::load($engine, $this, $id, $title);
+	}
+
+
 	//protected
 	//properties
 	protected $content_class = 'Content';
@@ -325,11 +335,10 @@ abstract class ContentModule extends Module
 
 	//accessors
 	//ContentModule::_get
-	//XXX obsolete?
+	//XXX obsolete
 	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
 	{
-		$class = $this->content_class;
-		return $class::load($engine, $this, $id, $title);
+		return $this->getContent($engine, $id, $title, $request);
 	}
 
 
@@ -777,7 +786,7 @@ abstract class ContentModule extends Module
 		$error = _('Could not preview content');
 
 		//obtain the content
-		if(($content = $this->_get($engine, $request->getID(),
+		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));

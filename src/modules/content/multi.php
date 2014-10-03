@@ -19,6 +19,30 @@
 //MultiContentModule
 abstract class MultiContentModule extends ContentModule
 {
+	//public
+	//methods
+	//accessors
+	//MultiContentModule::getContent
+	public function getContent($engine, $id, $title = FALSE,
+			$request = FALSE)
+	{
+		if($request !== FALSE)
+		{
+			$this->setContext($engine, $request);
+			return parent::getContent($engine, $id, $title,
+					$request);
+		}
+		foreach($this->content_classes as $class)
+		{
+			$this->content_class = $class;
+			if(($res = parent::getContent($engine, $id, $title,
+					FALSE)) !== FALSE)
+				return $res;
+		}
+		return FALSE;
+	}
+
+
 	//protected
 	//properties
 	protected $content_classes = array();
@@ -41,18 +65,10 @@ abstract class MultiContentModule extends ContentModule
 
 	//accessors
 	//MultiContentModule::_get
-	//XXX obsolete?
+	//XXX obsolete
 	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
 	{
-		foreach($this->content_classes as $class)
-		{
-			$this->content_class = $class;
-			if(($res = parent::_get($engine, $id, $title, $request))
-					!== FALSE)
-				return $res;
-		}
-		$this->setContext($engine, $request);
-		return parent::_get($engine, $id, $title, $request);
+		return $this->getContent($engine, $id, $title, $request);
 	}
 
 
