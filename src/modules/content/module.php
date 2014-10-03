@@ -56,7 +56,6 @@ abstract class ContentModule extends Module
 			default:
 				return $this->callDefault($engine);
 		}
-		return FALSE;
 	}
 
 
