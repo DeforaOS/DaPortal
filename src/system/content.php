@@ -500,6 +500,7 @@ class Content
 	public function displayToolbar($engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
+		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
 
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin($engine))
@@ -509,7 +510,8 @@ class Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($this->module->canSubmit($engine, FALSE, $this))
+		if($action != 'submit' && $this->module->canSubmit($engine,
+				FALSE, $this))
 		{
 			$r = $this->module->getRequest('submit');
 			$toolbar->append('button', array('request' => $r,
@@ -518,8 +520,9 @@ class Content
 		}
 		if($this->getID() !== FALSE)
 		{
-			if(!$this->isPublic() && $this->canPublish($engine,
-					FALSE, $this))
+			if($action != 'publish' && !$this->isPublic()
+					&& $this->canPublish($engine, FALSE,
+						$this))
 			{
 				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
@@ -527,7 +530,8 @@ class Content
 						'stock' => 'publish',
 						'text' => $this->text_publish));
 			}
-			if($this->canUpdate($engine, FALSE, $this))
+			if($action != 'update' && $this->canUpdate($engine,
+					FALSE, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
