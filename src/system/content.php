@@ -861,7 +861,7 @@ class Content
 	//Content::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		return Content::_load($engine, $module, $id, $title, 'Content');
+		return self::_load($engine, $module, $id, $title, 'Content');
 	}
 
 	static protected function _load($engine, $module, $id, $title, $class)

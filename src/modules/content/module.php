@@ -569,16 +569,15 @@ abstract class ContentModule extends Module
 	//ContentModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
-		$error = _('Could not display content');
-
 		//obtain the content
-		if(($id = $request->getID()) === FALSE)
-			return $this->callDefault($engine, $request);
-		if(($content = $this->_get($engine, $id, $request->getTitle(),
-				$request)) === FALSE)
+		if(($content = $this->getContent($engine, $request->getID(),
+				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		return $content->display($engine, $request);
+		//display the content
+		$page = new Page(array('title' => $content->getTitle()));
+		$page->append($content->display($engine, $request));
+		return $page;
 	}
 
 
@@ -790,6 +789,7 @@ abstract class ContentModule extends Module
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
+		//preview the content
 		$page = new Page(array('title' => $content->getTitle()));
 		$page->append($content->preview($engine, $request));
 		return $page;
@@ -802,11 +802,12 @@ abstract class ContentModule extends Module
 		$error = _('Could not preview content');
 
 		//obtain the content
-		if(($content = $this->_get($engine, $request->getID(),
+		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//check permissions
+		$error = _('Permission denied');
 		if($this->canPublish($engine, $request, $content, $error)
 				=== FALSE)
 			return new PageElement('dialog', array(
@@ -815,7 +816,7 @@ abstract class ContentModule extends Module
 		$title = $this->text_content_publish.' '.$content->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
-			'text' => $title));
+				'text' => $title));
 		//toolbar
 		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
