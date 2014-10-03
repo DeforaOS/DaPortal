@@ -34,6 +34,15 @@ abstract class DownloadContent extends MultiContent
 	}
 
 
+	//accessors
+	//DownloadContent::getParent
+	public function getParent($engine, $request = FALSE)
+	{
+		return self::getContent($engine, $this->get('parent_id'),
+				FALSE, $request);
+	}
+
+
 	//static
 	//DownloadContent::getRoot
 	static public function getRoot($name = FALSE)

@@ -78,12 +78,10 @@ class DownloadModule extends MultiContentModule
 
 	protected function _callInternalSubmit($engine, $request)
 	{
-		//XXX saves files in the root folder
 		if(($filename = $request->get('filename')) === FALSE)
 			return FALSE;
-		$content = FALSE;
-		//FIXME obtain the parent
-		$parent = NULL;
+		$parent = $this->getContent($engine, $request->getID(),
+				$request->getTitle(), $request);
 		//FIXME should return $id as $content['download_id']
 		$error = $this->_submitProcessFile($engine, $request, $parent,
 				$filename, $request->getTitle(), $content, $id,
@@ -222,8 +220,9 @@ class DownloadModule extends MultiContentModule
 		}
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
-		//FIXME obtain the parent
-		$parent = NULL;
+		//obtain the parent
+		//FIXME may not be a folder
+		$content->set('download_id', $request->get('parent'));
 		//check known errors
 		if(!isset($_FILES['files']))
 			return TRUE;
@@ -235,7 +234,7 @@ class DownloadModule extends MultiContentModule
 		foreach($_FILES['files']['error'] as $k => $v)
 		{
 			$res = $this->_submitProcessFile($engine, $request,
-					$parent,
+					$content,
 					$_FILES['files']['tmp_name'][$k],
 					$_FILES['files']['name'][$k], $content,
 					$id);
@@ -254,7 +253,9 @@ class DownloadModule extends MultiContentModule
 		$content = new FileDownloadContent($engine, $this, array(
 			'title' => $filename, 'content' => FALSE,
 			'filename' => $pathname,
-			'parent_id' => $parent, 'mode' => 0644));
+			'parent_id' => ($parent !== FALSE)
+				? $parent->get('download_id') : FALSE,
+			'mode' => 0644));
 		$error = _('Internal server error');
 		if($content->save($engine, $request, $error) === FALSE)
 			return $error;
