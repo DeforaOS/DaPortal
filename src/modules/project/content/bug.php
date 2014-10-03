@@ -74,9 +74,10 @@ class BugProjectContent extends MultiContent
 	//BugProjectContent::getTitle
 	public function getTitle()
 	{
-		$title = ($this->project !== FALSE)
-			? $this->project->getTitle().'/' : '';
-		return $title.'#'.$this->get('bug_id').': '.parent::getTitle();
+		$title = '#'.$this->get('bug_id');
+		if($this->project !== FALSE)
+			$title .= '/'.$this->project->getTitle();
+		return $title.': '.parent::getTitle();
 	}
 
 
