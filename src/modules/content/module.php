@@ -332,15 +332,6 @@ abstract class ContentModule extends Module
 	}
 
 
-	//accessors
-	//ContentModule::_get
-	//XXX obsolete
-	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
-	{
-		return $this->getContent($engine, $id, $title, $request);
-	}
-
-
 	//forms
 	//ContentModule::formSubmit
 	protected function formSubmit($engine, $request)

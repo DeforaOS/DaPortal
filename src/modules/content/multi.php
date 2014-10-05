@@ -65,14 +65,6 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//accessors
-	//MultiContentModule::_get
-	//XXX obsolete
-	protected function _get($engine, $id, $title = FALSE, $request = FALSE)
-	{
-		return $this->getContent($engine, $id, $title, $request);
-	}
-
-
 	//MultiContentModule::setContext
 	protected function setContext($engine = FALSE, $request = FALSE,
 			$content = FALSE)
