@@ -786,7 +786,8 @@ class GroupModule extends Module
 		username, fullname
 		FROM daportal_user_group, daportal_user_enabled
 		WHERE daportal_user_group.user_id=daportal_user_enabled.user_id
-		AND daportal_user_group.group_id=:group_id';
+		AND daportal_user_group.group_id=:group_id
+		ORDER BY username ASC';
 	//IN:	group_id
 	//	groupname
 	//FIXME should return an error if the group does not exist
@@ -797,7 +798,8 @@ class GroupModule extends Module
 		WHERE daportal_group_enabled.group_id=daportal_user_group.group_id
 		AND daportal_user_group.user_id=daportal_user_enabled.user_id
 		AND daportal_user_group.group_id=:group_id
-		AND daportal_group_enabled.groupname=:groupname';
+		AND daportal_group_enabled.groupname=:groupname
+		ORDER BY username ASC';
 	//IN:	user_id
 	private $query_list_members = 'SELECT
 		daportal_group_enabled.group_id AS group_id, groupname
