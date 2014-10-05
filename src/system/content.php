@@ -985,16 +985,11 @@ class Content
 	//	user_id
 	//	content_id
 	static protected $query_load = "SELECT content_id AS id, timestamp,
-		daportal_module.module_id AS module_id, name AS module,
-		daportal_user.user_id AS user_id, username,
-		title, content, daportal_content.enabled AS enabled, public
-		FROM daportal_content, daportal_module, daportal_user
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user.user_id
-		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1'
-			OR daportal_content.user_id=:user_id)
+		module_id, module, user_id, username, title, content, enabled,
+		public, group_id, groupname
+		FROM daportal_content_enabled
+		WHERE daportal_content_enabled.module_id=:module_id
+		AND (public='1' OR user_id=:user_id)
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	content_id
