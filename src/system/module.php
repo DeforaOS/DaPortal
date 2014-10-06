@@ -58,7 +58,7 @@ abstract class Module
 	{
 		if($name === FALSE)
 			return FALSE;
-		if(($id = Module::_loadID($engine, $name)) === FALSE)
+		if(($id = self::_loadID($engine, $name)) === FALSE)
 			return FALSE;
 		$module = $name.'Module';
 		if(!class_exists($module))
