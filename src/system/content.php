@@ -100,6 +100,13 @@ class Content
 	}
 
 
+	//Content::canDisplay
+	public function canDisplay($engine, $request = FALSE, &$error = FALSE)
+	{
+		return TRUE;
+	}
+
+
 	//Content::canEnable
 	public function canEnable($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -110,7 +117,7 @@ class Content
 	//Content::canPreview
 	public function canPreview($engine, $request = FALSE, &$error = FALSE)
 	{
-		return TRUE;
+		return $this->canDisplay($engine, $request, $error);
 	}
 
 
