@@ -207,20 +207,16 @@ class BugProjectContent extends MultiContent
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $bug_query_load = "SELECT daportal_bug.content_id AS id,
-		title, content, timestamp,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username, bug_id, project_id,
-		state, type, priority, assigned, public
-		FROM daportal_content_enabled, daportal_bug,
-		daportal_user_enabled
+	static protected $query_load = "SELECT
+		daportal_content_enabled.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, bug_id, project_id, state,
+		type, priority, assigned
+		FROM daportal_content_enabled, daportal_bug
 		WHERE daportal_content_enabled.content_id
 		=daportal_bug.content_id
-		AND daportal_content_enabled.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_enabled.module_id=:module_id
-		AND (daportal_content_enabled.public='1'
-		OR daportal_content_enabled.user_id=:user_id)
+		AND module_id=:module_id
+		AND (public='1' OR user_id=:user_id)
 		AND daportal_content_enabled.content_id=:content_id";
 }
 
