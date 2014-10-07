@@ -501,9 +501,9 @@ class ProjectContent extends MultiContent
 	static protected $query_load = "SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_project
-		WHERE daportal_content_public.content_id=daportal_project.project_id
-		AND daportal_content_public.module_id=:module_id
+		FROM daportal_content_enabled, daportal_project
+		WHERE daportal_content_enabled.content_id=daportal_project.project_id
+		AND daportal_content_enabled.module_id=:module_id
 		AND (public='1' OR user_id=:user_id)
 		AND content_id=:content_id";
 }

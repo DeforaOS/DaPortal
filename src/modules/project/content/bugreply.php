@@ -22,6 +22,21 @@ class BugReplyProjectContent extends MultiContent
 	//protected
 	//properties
 	static protected $class = 'BugReplyProjectContent';
+	//queries
+	//IN:	module_id
+	//	user_id
+	//	content_id
+	static protected $query_load = "SELECT
+		daportal_content_enabled.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public,
+		bug_id, state, type, priority, assigned
+		FROM daportal_content_enabled, daportal_bug_reply
+		WHERE daportal_content_enabled.content_id
+		=daportal_bug_reply.content_id
+		AND module_id=:module_id
+		AND (public='1' OR user_id=:user_id)
+		AND daportal_content_enabled.content_id=:content_id";
 }
 
 ?>
