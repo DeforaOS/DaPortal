@@ -354,8 +354,8 @@ class FolderDownloadContent extends DownloadContent
 		OR daportal_content_enabled.user_id=:user_id)
 		AND (download.mode & 512) = 512
 		AND daportal_content_enabled.content_id=:content_id
-		AND (parent_content IS NULL OR parent_content.enabled='1')
-		AND (parent_content IS NULL OR parent_content.public='1'
+		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
+		AND (parent_content.public IS NULL OR parent_content.public='1'
 		OR parent_content.user_id=:user_id)";
 }
 

@@ -260,7 +260,7 @@ class FileDownloadContent extends DownloadContent
 		daportal_content_enabled.module_id AS module_id, module,
 		daportal_content_enabled.user_id AS user_id, username,
 		daportal_content_enabled.group_id AS group_id,
-		groupname AS group,
+		groupname AS \"group\",
 		daportal_content_enabled.title AS title,
 		daportal_content_enabled.content AS content,
 		daportal_content_enabled.enabled AS enabled,
@@ -280,8 +280,8 @@ class FileDownloadContent extends DownloadContent
 		OR daportal_content_enabled.user_id=:user_id)
 		AND (download.mode & 512) = 0
 		AND daportal_content_enabled.content_id=:content_id
-		AND (parent_content IS NULL OR parent_content.enabled='1')
-		AND (parent_content IS NULL OR parent_content.public='1'
+		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
+		AND (parent_content.public IS NULL OR parent_content.public='1'
 		OR parent_content.user_id=:user_id)";
 }
 
