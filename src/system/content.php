@@ -863,7 +863,6 @@ class Content
 		if(($res = static::_load($engine, $module, $id, $title, $class))
 				=== FALSE)
 			return FALSE;
-		var_dump($res);
 		return new $class($engine, $module, $res);
 	}
 
