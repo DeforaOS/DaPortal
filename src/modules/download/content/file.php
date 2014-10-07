@@ -27,7 +27,6 @@ class FileDownloadContent extends DownloadContent
 	{
 		$this->fields['filename'] = 'Filename';
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		//translations
 		$this->stock_back = 'updir';
 		$this->stock_submit = 'upload';
@@ -63,7 +62,7 @@ class FileDownloadContent extends DownloadContent
 	public function displayContent($engine, $request)
 	{
 		$module = $this->getModule()->getName();
-		$root = DownloadContent::getRoot($module);
+		$root = static::getRoot($module);
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
@@ -242,18 +241,9 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
-	//static
-	//FileDownloadContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		self::$query_load = self::$file_query_load;
-		return parent::_load($engine, $module, $id, $title,
-				get_class());
-	}
-
-
 	//protected
 	//properties
+	static protected $class = 'FileDownloadContent';
 	//queries
 	//IN:	content_id
 	//	parent
@@ -265,37 +255,34 @@ class FileDownloadContent extends DownloadContent
 	//	user_id
 	//	content_id
 	static protected $file_query_load = "SELECT
-		daportal_module.name AS module,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username,
-		daportal_group.group_id AS group_id,
-		daportal_group.groupname AS \"group\",
-		daportal_content.content_id AS id,
-		daportal_content.title AS title,
-		daportal_content.content AS content,
-		daportal_content.timestamp AS timestamp,
-		daportal_content.enabled AS enabled,
-		daportal_content.public AS public,
+		daportal_content_enabled.content_id AS id,
+		daportal_content_enabled.timestamp AS timestamp,
+		daportal_content_enabled.module_id AS module_id, module,
+		daportal_content_enabled.user_id AS user_id, username,
+		daportal_content_enabled.group_id AS group_id,
+		groupname AS group,
+		daportal_content_enabled.title AS title,
+		daportal_content_enabled.content AS content,
+		daportal_content_enabled.enabled AS enabled,
+		daportal_content_enabled.public AS public,
 		download.download_id AS download_id,
 		parent_download.content_id AS parent_id,
 		parent_content.title AS parent_title,
 		download.mode AS mode
-		FROM daportal_content, daportal_module, daportal_user_enabled,
-		daportal_group, daportal_download download
+		FROM daportal_content_enabled, daportal_download download
 		LEFT JOIN daportal_download parent_download
 		ON download.parent=parent_download.download_id
 		LEFT JOIN daportal_content parent_content
 		ON parent_download.content_id=parent_content.content_id
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.group_id=daportal_group.group_id
-		AND daportal_content.content_id=download.content_id
-		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1'
-		OR daportal_content.user_id=:user_id)
+		WHERE daportal_content_enabled.content_id=download.content_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_content_enabled.public='1'
+		OR daportal_content_enabled.user_id=:user_id)
 		AND (download.mode & 512) = 0
-		AND daportal_content.content_id=:content_id";
+		AND daportal_content_enabled.content_id=:content_id
+		AND (parent_content IS NULL OR parent_content.enabled='1')
+		AND (parent_content IS NULL OR parent_content.public='1'
+		OR parent_content.user_id=:user_id)";
 }
 
 ?>

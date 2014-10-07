@@ -26,7 +26,6 @@ class NewsContent extends Content
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		$this->text_content_by = _('News by');
 		$this->text_more_content = _('More news...');
 		$this->text_open = _('Read');
@@ -57,29 +56,9 @@ class NewsContent extends Content
 	}
 
 
-	//static
-	//methods
-	//NewsContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $user = FALSE, $order = FALSE)
-	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'timestamp DESC';
-				break;
-		}
-		return self::_listAll($engine, $module, $limit, $offset, $order,
-				$user, get_class());
-	}
-
-
-	//NewsContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
+	//protected
+	//properties
+	static protected $class = 'NewsContent';
 }
 
 ?>

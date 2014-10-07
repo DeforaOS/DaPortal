@@ -26,7 +26,6 @@ class ArticleContent extends Content
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		$this->text_content_by = _('Article by');
 		$this->text_more_content = _('More articles...');
 		$this->text_open = _('Read');
@@ -50,36 +49,15 @@ class ArticleContent extends Content
 		$length = $this->preview_length;
 
 		$text = ($length <= 0 || strlen($content) < $length)
-			? $content
-			: substr($content, 0, $length).'...';
+			? $content : substr($content, 0, $length).'...';
 		$text = HTML::format($engine, $text);
 		return new PageElement('htmlview', array('text' => $text));
 	}
 
 
-	//static
-	//methods
-	//ArticleContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE, $user = FALSE)
-	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'timestamp DESC';
-				break;
-		}
-		return self::_listAll($engine, $module, $limit, $offset, $order,
-				$user, get_class());
-	}
-
-
-	//ArticleContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
+	//protected
+	//properties
+	static protected $class = 'ArticleContent';
 }
 
 ?>

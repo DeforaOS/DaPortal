@@ -29,7 +29,6 @@ class ProjectContent extends MultiContent
 		$this->fields['scm'] = 'SCM';
 		$this->fields['cvsroot'] = 'CVS root';
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		//translations
 		$this->text_content_by = _('Project from');
 		$this->text_content_list_title = _('Project list');
@@ -357,8 +356,9 @@ class ProjectContent extends MultiContent
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
+		$class = static::$class;
 		$database = $engine->getDatabase();
-		$query = $this->project_query_insert;
+		$query = $class::$project_query_insert;
 
 		$this->set('synopsis', $request->getParameter('synopsis'));
 		$this->set('scm', $request->getParameter('scm'));
@@ -404,67 +404,16 @@ class ProjectContent extends MultiContent
 	}
 
 
-	//static
-	//methods
-	//ProjectContent::countAll
-	static public function countAll($engine, $module, $user = FALSE)
-	{
-		self::$query_list = self::$project_query_list;
-		self::$query_list_user = self::$project_query_list_user;
-
-		return self::_countAll($engine, $module, $user, get_class());
-	}
-
-
-	//ProjectContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $user = FALSE, $order = FALSE)
-	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'title ASC';
-				break;
-		}
-		self::$query_list = self::$project_query_list;
-		self::$query_list_user = self::$project_query_list_user;
-		return self::_listAll($engine, $module, $limit, $offset, $order,
-				$user, get_class());
-	}
-
-
-	//ProjectContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		self::$query_load = self::$project_query_load;
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
-
-
 	//protected
 	//properties
+	static protected $class = 'ProjectContent';
 	//queries
 	//IN:	project_id
 	//	synopsis
 	//	cvsroot
-	protected $project_query_insert = 'INSERT INTO
+	static protected $project_query_insert = 'INSERT INTO
 		daportal_project(project_id, synopsis, scm, cvsroot)
 		VALUES (:project_id, :synopsis, :scm, :cvsroot)';
-	//IN:	module_id
-	static protected $project_query_list = 'SELECT content_id AS id,
-		daportal_content_public.enabled AS enabled, timestamp,
-		name AS module, daportal_user_enabled.user_id AS user_id,
-		username, title, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id';
 	//IN:	project_id
 	protected $project_query_list_downloads = "SELECT
 		daportal_download.content_id AS id, download.title AS title,
@@ -496,41 +445,6 @@ class ProjectContent extends MultiContent
 		AND download.public='1' AND download.enabled='1'
 		AND project_id=:project_id
 		ORDER BY download.timestamp DESC";
-	//IN:	module_id
-	//	user_id
-	static protected $project_query_list_user = 'SELECT content_id AS id,
-		daportal_content_public.enabled AS enabled, timestamp,
-		name AS module, daportal_user_enabled.user_id AS user_id,
-		username, title, synopsis, scm, cvsroot
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled, daportal_project
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.content_id
-		=daportal_project.project_id
-		AND daportal_content_public.user_id=:user_id';
-	//IN:	module_id
-	//	user_id
-	//	content_id
-	static protected $project_query_load = "SELECT project_id AS id,
-		timestamp, title, daportal_module.module_id AS module_id,
-		daportal_module.name AS module,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username, content, synopsis,
-		scm, cvsroot, daportal_content.enabled AS enabled, public
-		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user_enabled
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1'
-		OR daportal_content.user_id=:user_id)
-		AND project_id=:content_id";
 	//IN:	project_id
 	//	synopsis
 	//	scm
@@ -538,6 +452,60 @@ class ProjectContent extends MultiContent
 	protected $project_query_update = 'UPDATE daportal_project
 		SET synopsis=:synopsis, scm=:scm, cvsroot=:cvsroot
 		WHERE project_id=:project_id';
+	//IN:	module_id
+	static protected $query_list = 'SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, synopsis, scm, cvsroot
+		FROM daportal_content_public, daportal_project
+		WHERE daportal_content_public.content_id=daportal_project.project_id
+		AND module_id=:module_id';
+	//IN:	module_id
+	//	group_id
+	static protected $query_list_group = 'SELECT content_id AS id,
+		timestamp, module_id, module,
+		daportal_content_public.user_id AS user_id, username,
+		daportal_content_public.group_id AS group_id,
+		daportal_group_enabled.groupname AS groupname, title, content,
+		daportal_content_public.enabled AS enabled, public, synopsis,
+		scm, cvsroot
+		FROM daportal_content_public, daportal_user_group,
+		daportal_group_enabled, daportal_project
+		WHERE daportal_content_public.content_id=daportal_project.project_id
+		AND module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_content_public.group_id=:group_id)';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, synopsis, scm, cvsroot
+		FROM daportal_content_public, daportal_project
+		WHERE daportal_content_public.content_id=daportal_project.project_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user_private = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public, synopsis,
+		scm, cvsroot
+		FROM daportal_content_enabled, daportal_project
+		WHERE daportal_content_enabled.content_id=daportal_project.project_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	//	content_id
+	static protected $query_load = "SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, synopsis, scm, cvsroot
+		FROM daportal_content_public, daportal_project
+		WHERE daportal_content_public.content_id=daportal_project.project_id
+		AND daportal_content_public.module_id=:module_id
+		AND (public='1' OR user_id=:user_id)
+		AND content_id=:content_id";
 }
 
 ?>

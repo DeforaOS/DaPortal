@@ -178,13 +178,18 @@ CREATE VIEW daportal_content_public AS
 SELECT daportal_content.content_id AS content_id,
 daportal_content.timestamp AS timestamp,
 daportal_content.module_id AS module_id,
-daportal_content.user_id AS user_id, daportal_content.group_id AS group_id,
+daportal_module.name AS module,
+daportal_content.user_id AS user_id,
+daportal_user.username AS username,
+daportal_content.group_id AS group_id,
+daportal_group.groupname AS groupname,
 daportal_content.title AS title, daportal_content.content AS content,
 daportal_content.enabled AS enabled, daportal_content.public AS public
-FROM daportal_content, daportal_module, daportal_user
+FROM daportal_content, daportal_module, daportal_user, daportal_group
 WHERE daportal_content.module_id=daportal_module.module_id
 AND daportal_content.user_id=daportal_user.user_id
 AND daportal_module.enabled='1'
+AND daportal_content.group_id=daportal_group.group_id
 AND daportal_user.enabled='1'
 AND daportal_content.enabled='1'
 AND daportal_content.public='1';

@@ -29,7 +29,6 @@ class FolderDownloadContent extends DownloadContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		//translations
 		$this->stock_submit = 'folder-new';
 		$this->text_content_by = _('Folder from');
@@ -60,10 +59,9 @@ class FolderDownloadContent extends DownloadContent
 	//FolderDownloadContent::set
 	public function set($property, $value)
 	{
-		//XXX can't use $this->class (constructor issues)
 		if($property == 'mode' && $value !== FALSE
 				&& is_numeric($value))
-			$value |= self::$S_IFDIR;
+			$value |= static::$S_IFDIR;
 		return parent::set($property, $value);
 	}
 
@@ -78,10 +76,10 @@ class FolderDownloadContent extends DownloadContent
 		$page->append('title', array('stock' => $this->stock,
 			'text' => $title));
 		$page->append($this->displayToolbar($engine, $request));
-		self::$query_list = self::$folder_query_list;
-		if(($files = self::_listFiles($engine, $this->getModule(),
-				FALSE, FALSE, 'title ASC', FALSE, get_class(),
-				$this)) === FALSE)
+		static::$query_list = static::$folder_query_list; //XXX
+		if(($files = static::_listFiles($engine, $this->getModule(),
+				FALSE, FALSE, 'title ASC', FALSE, $this))
+				=== FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list the files'));
@@ -217,10 +215,10 @@ class FolderDownloadContent extends DownloadContent
 		if($parent === FALSE)
 			$parent = NULL;
 		if($mode !== FALSE)
-			$mode |= self::$S_IFDIR;
+			$mode |= static::$S_IFDIR;
 		else if(($mode = $this->get('mode')) === FALSE)
 		{
-			$mode = 0755 | self::$S_IFDIR;
+			$mode = 0755 | static::$S_IFDIR;
 			$this->set('mode', FALSE);
 		}
 		$error = 'Invalid mode for directory';
@@ -261,26 +259,26 @@ class FolderDownloadContent extends DownloadContent
 				$order = 'title ASC';
 				break;
 		}
-		self::$query_list = self::$folder_query_list;
-		self::$query_list .= ' AND daportal_download.parent IS NULL';
-		return self::_listAll($engine, $module, $limit, $offset,
+		static::$query_list = static::$folder_query_list; //XXX
+		static::$query_list .= ' AND daportal_download.parent IS NULL';
+		return static::_listAll($engine, $module, $limit, $offset,
 				$order, $user, get_class());
 	}
 
 	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $user, $class)
+			$order, $user)
 	{
-		return self::_listFiles($engine, $module, $limit, $offset,
-				$order, $user, $class);
+		return static::_listFiles($engine, $module, $limit, $offset,
+				$order, $user);
 	}
 
 	static protected function _listFiles($engine, $module, $limit, $offset,
-			$order, $user, $class, $parent = FALSE)
+			$order, $user, $parent = FALSE)
 	{
 		$ret = array();
 		$vbox = new PageElement('vbox');
 		$database = $engine->getDatabase();
-		$query = self::$query_list;
+		$query = static::$query_list;
 		$args = array('module_id' => $module->getID());
 
 		if($parent !== FALSE && ($id = $parent->get('download_id'))
@@ -299,42 +297,28 @@ class FolderDownloadContent extends DownloadContent
 			return FALSE;
 		foreach($res as $r)
 		{
-			$classname = ($r['mode'] & self::$S_IFDIR)
+			$class = ($r['mode'] & static::$S_IFDIR)
 				? 'FolderDownloadContent'
 				: 'FileDownloadContent';
-			$ret[] = new $classname($engine, $module, $r);
+			$ret[] = new $class($engine, $module, $r);
 		}
 		return $ret;
 	}
 
 
-	//FolderDownloadContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		self::$query_load = self::$folder_query_load;
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
-
-
 	//protected
+	static protected $class = 'FolderDownloadContent';
 	//properties
 	//queries
 	//IN:	module_id
 	static protected $folder_query_list = 'SELECT
 		daportal_content_public.content_id AS id,
-		daportal_content_public.enabled AS enabled,
-		daportal_content_public.timestamp AS timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		daportal_group.group_id AS group_id, groupname AS "group",
-		daportal_content_public.title AS title, mode
-		FROM daportal_content_public, daportal_user_enabled,
-		daportal_group, daportal_download
-		WHERE daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_content_public.group_id=daportal_group.group_id
-		AND daportal_content_public.content_id
-		=daportal_download.content_id';
+		timestamp, user_id, username, group_id, groupname AS "group",
+		title, enabled, public, mode
+		FROM daportal_content_public, daportal_download
+		WHERE daportal_content_public.content_id
+		=daportal_download.content_id
+		AND module_id=:module_id';
 	//IN:	content_id
 	//	parent
 	//	mode
@@ -344,38 +328,35 @@ class FolderDownloadContent extends DownloadContent
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $folder_query_load = "SELECT
-		daportal_module.name AS module,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username,
-		daportal_group.group_id AS group_id,
-		daportal_group.groupname AS \"group\",
-		daportal_content.content_id AS id,
-		daportal_content.title AS title,
-		daportal_content.content AS content,
-		daportal_content.timestamp AS timestamp,
-		daportal_content.enabled AS enabled,
-		daportal_content.public AS public,
+	static protected $query_load = "SELECT
+		daportal_content_enabled.content_id AS id,
+		daportal_content_enabled.timestamp AS timestamp,
+		daportal_content_enabled.module_id AS module_id, module,
+		daportal_content_enabled.user_id AS user_id, username,
+		daportal_content_enabled.group_id AS group_id,
+		groupname AS \"group\",
+		daportal_content_enabled.title AS title,
+		daportal_content_enabled.content AS content,
+		daportal_content_enabled.enabled AS enabled,
+		daportal_content_enabled.public AS public,
 		download.download_id AS download_id,
 		parent_download.content_id AS parent_id,
 		parent_content.title AS parent_title,
 		download.mode AS mode
-		FROM daportal_content, daportal_module, daportal_user_enabled,
-		daportal_group, daportal_download download
+		FROM daportal_content_enabled, daportal_download download
 		LEFT JOIN daportal_download parent_download
 		ON download.parent=parent_download.download_id
 		LEFT JOIN daportal_content parent_content
 		ON parent_download.content_id=parent_content.content_id
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.group_id=daportal_group.group_id
-		AND daportal_content.content_id=download.content_id
-		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1'
-		OR daportal_content.user_id=:user_id)
+		WHERE daportal_content_enabled.content_id=download.content_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_content_enabled.public='1'
+		OR daportal_content_enabled.user_id=:user_id)
 		AND (download.mode & 512) = 512
-		AND daportal_content.content_id=:content_id";
+		AND daportal_content_enabled.content_id=:content_id
+		AND (parent_content IS NULL OR parent_content.enabled='1')
+		AND (parent_content IS NULL OR parent_content.public='1'
+		OR parent_content.user_id=:user_id)";
 }
 
 ?>

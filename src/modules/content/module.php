@@ -619,7 +619,7 @@ abstract class ContentModule extends Module
 			$offset = $limit * ($p - 1);
 		$error = _('Unable to list the content');
 		if(($res = $class::listAll($engine, $this, $limit, $offset,
-				$group)) === FALSE)
+				FALSE, $group)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class
@@ -732,7 +732,7 @@ abstract class ContentModule extends Module
 				&& is_numeric($p) && $p > 1)
 			$offset = $limit * ($p - 1);
 		if(($res = $class::listAll($engine, $this, $limit, $offset,
-				$user)) === FALSE)
+				FALSE, $user)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class

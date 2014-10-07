@@ -19,6 +19,9 @@
 //BugReplyProjectContent
 class BugReplyProjectContent extends MultiContent
 {
+	//protected
+	//properties
+	static protected $class = 'BugReplyProjectContent';
 }
 
 ?>

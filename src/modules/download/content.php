@@ -63,6 +63,10 @@ abstract class DownloadContent extends MultiContent
 
 
 	//protected
+	//properties
+	static protected $S_IFDIR = 512;
+
+
 	//methods
 	//accessors
 	//DownloadContent::get
@@ -89,7 +93,7 @@ abstract class DownloadContent extends MultiContent
 	{
 		if($mode === FALSE)
 			$mode = $this->get('mode');
-		return Common::getPermissions($mode, self::$S_IFDIR);
+		return Common::getPermissions($mode, static::$S_IFDIR);
 	}
 
 
@@ -98,40 +102,8 @@ abstract class DownloadContent extends MultiContent
 	{
 		if($mode === FALSE)
 			$mode = $this->get('mode');
-		return ($mode & self::$S_IFDIR) ? TRUE : FALSE;
+		return ($mode & static::$S_IFDIR) ? TRUE : FALSE;
 	}
-
-
-	//static
-	//DownloadContent::_load
-	static protected function _load($engine, $module, $id, $title, $class)
-	{
-		$credentials = $engine->getCredentials();
-		$database = $engine->getDatabase();
-		$query = Content::$query_load;
-		$args = array('module_id' => $module->getID(),
-			'user_id' => $credentials->getUserID(),
-			'content_id' => $id);
-		$from = array('-', '\\');
-		$to = array('_', '\\\\');
-
-		if(is_string($title))
-		{
-			$query .= ' AND daportal_content.title '
-				.$database->like(FALSE)
-				.' :title ESCAPE :escape';
-			$args['title'] = str_replace($from, $to, $title);
-			$args['escape'] = '\\';
-		}
-		if(($res = $database->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		return new $class($engine, $module, $res->current());
-	}
-
-
-	//properties
-	static protected $S_IFDIR = 512;
 }
 
 ?>

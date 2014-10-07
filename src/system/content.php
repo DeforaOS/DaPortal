@@ -28,7 +28,6 @@ class Content
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 
-		$this->class = get_class();
 		$this->stock = $module->getName();
 		$this->module = $module;
 		$this->user_id = $credentials->getUserID();
@@ -797,26 +796,8 @@ class Content
 	//Content::countAll
 	static public function countAll($engine, $module, $user = FALSE)
 	{
-		return self::_countAll($engine, $module, $user, get_class());
-	}
-
-	static protected function _countAll($engine, $module, $user, $class)
-	{
-		$database = $engine->getDatabase();
-		$query = self::$query_list;
-		$args = array('module_id' => $module->getID());
-
-		if($user !== FALSE && $user instanceof User)
-		{
-			$query = self::$query_list_user;
-			$args['user_id'] = $user->getUserID();
-		}
-		else if($user !== FALSE && $user instanceof Group)
-		{
-			$query = self::$query_list_group;
-			$args['group_id'] = $user->getGroupID();
-		}
-		if(($res = $database->query($engine, $query, $args)) === FALSE)
+		if(($res = static::_listAll($engine, $module, FALSE, FALSE,
+				FALSE, $user)) === FALSE)
 			return FALSE;
 		return $res->count();
 	}
@@ -826,59 +807,71 @@ class Content
 	static public function listAll($engine, $module, $limit = FALSE,
 			$offset = FALSE, $order = FALSE, $user = FALSE)
 	{
+		$ret = array();
+		$class = static::$class;
+
 		switch($order)
 		{
 			case FALSE:
 			default:
-				$order = self::$list_order;
+				$order = static::$list_order;
 				break;
 		}
-		return self::_listAll($engine, $module, $limit, $offset,
-				$order, $user, get_class());
-	}
-
-	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $user, $class)
-	{
-		$ret = array();
-		$vbox = new PageElement('vbox');
-		$database = $engine->getDatabase();
-		$query = self::$query_list;
-		$args = array('module_id' => $module->getID());
-
-		if($user !== FALSE && $user instanceof User)
-		{
-			$query = self::$query_list_user;
-			$args['user_id'] = $user->getUserID();
-		}
-		else if($user !== FALSE && $user instanceof Group)
-		{
-			$query = self::$query_list_group;
-			$args['group_id'] = $user->getGroupID();
-		}
-		if($order !== FALSE)
-			$query .= ' ORDER BY '.$order;
-		if($limit !== FALSE || $offset !== FALSE)
-			$query .= $database->offset($limit, $offset);
-		if(($res = $database->query($engine, $query, $args)) === FALSE)
+		if(($res = static::_listAll($engine, $module, $limit, $offset,
+				$order, $user)) === FALSE)
 			return FALSE;
 		foreach($res as $r)
 			$ret[] = new $class($engine, $module, $r);
 		return $ret;
 	}
 
+	static protected function _listAll($engine, $module, $limit, $offset,
+			$order, $user)
+	{
+		$credentials = $engine->getCredentials();
+		$vbox = new PageElement('vbox');
+		$database = $engine->getDatabase();
+		$query = static::$query_list;
+		$args = array('module_id' => $module->getID());
+
+		if($user !== FALSE && $user instanceof User)
+		{
+			$query = static::$query_list_user;
+			$args['user_id'] = $user->getUserID();
+			if(($id = $credentials->getUserID()) != 0
+					&& $id == $user->getUserID())
+				$query = static::$query_list_user_private;
+		}
+		else if($user !== FALSE && $user instanceof Group)
+		{
+			$query = static::$query_list_group;
+			$args['group_id'] = $user->getGroupID();
+		}
+		if($order !== FALSE)
+			$query .= ' ORDER BY '.$order;
+		if($limit !== FALSE || $offset !== FALSE)
+			$query .= $database->offset($limit, $offset);
+		return $database->query($engine, $query, $args);
+	}
+
 
 	//Content::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		return self::_load($engine, $module, $id, $title, 'Content');
+		$class = static::$class;
+
+		if(($res = static::_load($engine, $module, $id, $title, $class))
+				=== FALSE)
+			return FALSE;
+		var_dump($res);
+		return new $class($engine, $module, $res);
 	}
 
 	static protected function _load($engine, $module, $id, $title, $class)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
-		$query = self::$query_load;
+		$query = $class::$query_load;
 		$args = array('module_id' => $module->getID(),
 			'user_id' => $credentials->getUserID(),
 			'content_id' => $id);
@@ -887,21 +880,22 @@ class Content
 
 		if(is_string($title))
 		{
-			$query .= ' AND title '.$database->like(FALSE)
+			$query .= ' AND daportal_content_enabled.title '
+				.$database->like(FALSE)
 				.' :title ESCAPE :escape';
 			$args['title'] = str_replace($from, $to, $title);
 			$args['escape'] = '\\';
 		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
+				|| $res->count() != 1)
 			return FALSE;
-		return new $class($engine, $module, $res->current());
+		return $res->current();
 	}
 
 
 	//protected
 	//properties
-	protected $class = FALSE;
+	static protected $class = 'Content';
 	protected $fields = array('title' => 'Title', 'content' => 'Content');
 	static protected $list_order = 'timestamp DESC';
 	protected $preview_length = 150;
@@ -955,32 +949,38 @@ class Content
 			:public, :timestamp)';
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		title, daportal_content_public.enabled AS enabled, public,
-		content
-		FROM daportal_content_public, daportal_user_enabled
-		WHERE daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id';
+		module_id, module, user_id, username, group_id, groupname,
+		title, enabled, public, content
+		FROM daportal_content_public
+		WHERE module_id=:module_id';
 	//IN:	module_id
 	//	group_id
 	static protected $query_list_group = 'SELECT content_id AS id,
-		timestamp, daportal_user_enabled.user_id AS user_id, username,
-		title, daportal_content_enabled.enabled AS enabled, public,
-		content
-		FROM daportal_content_enabled, daportal_user_enabled,
-		daportal_user_group, daportal_group_enabled
-		WHERE daportal_content_enabled.user_id
-		=daportal_user_enabled.user_id
-		AND daportal_user_enabled.user_id=daportal_user_group.user_id
+		timestamp, module_id, module,
+		daportal_content_public.user_id AS user_id, username,
+		daportal_content_public.group_id AS group_id,
+		daportal_group_enabled.groupname AS groupname, title, content,
+		daportal_content_public.enabled AS enabled, public
+		FROM daportal_content_public, daportal_user_group,
+		daportal_group_enabled
+		WHERE module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user_group.user_id
 		AND daportal_user_group.group_id=daportal_group_enabled.group_id
-		AND daportal_content_enabled.module_id=:module_id
 		AND (daportal_user_group.group_id=:group_id
-		OR daportal_user_enabled.group_id=:group_id)';
+		OR daportal_content_public.group_id=:group_id)';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
-		user_id, username, title, enabled AS enabled, public, content
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public
+		FROM daportal_content_public
+		WHERE module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user_private = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public
 		FROM daportal_content_enabled
 		WHERE module_id=:module_id
 		AND user_id=:user_id';
@@ -988,8 +988,8 @@ class Content
 	//	user_id
 	//	content_id
 	static protected $query_load = "SELECT content_id AS id, timestamp,
-		module_id, module, user_id, username, title, content, enabled,
-		public, group_id, groupname
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public
 		FROM daportal_content_enabled
 		WHERE daportal_content_enabled.module_id=:module_id
 		AND (public='1' OR user_id=:user_id)

@@ -31,7 +31,6 @@ class WikiContent extends MultiContent
 		//let wiki pages always be public
 		$this->setPublic(TRUE);
 		parent::__construct($engine, $module, $properties);
-		$this->class = get_class();
 		$this->text_content_by = _('Wiki page by');
 		$this->text_more_content = _('More wiki pages...');
 		$this->text_submit_content = _('Create a page');
@@ -407,30 +406,11 @@ class WikiContent extends MultiContent
 	}
 
 
-	//WikiContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $user = FALSE, $order = FALSE)
-	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'title ASC';
-				break;
-		}
-		return self::_listAll($engine, $module, $limit, $offset, $order,
-				$user, get_class());
-	}
-
-
-	//WikiContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
-
-
 	//protected
+	//properties
+	static protected $class = 'WikiContent';
+
+
 	//methods
 	//accessors
 	//WikiContent::getMarkup

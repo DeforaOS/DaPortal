@@ -39,7 +39,6 @@ class BugProjectContent extends MultiContent
 		if(($project_id = $this->get('project_id')) !== FALSE)
 			$this->project = ProjectContent::load($engine,
 					$module, $project_id);
-		$this->class = get_class();
 		//translations
 		$this->text_content_by = _('Bug report from');
 		$this->text_content_list_title = _('Bug reports');
@@ -157,48 +156,11 @@ class BugProjectContent extends MultiContent
 	}
 
 
-	//static
-	//methods
-	//BugProjectContent::countAll
-	static public function countAll($engine, $module, $user = FALSE)
-	{
-		self::$query_list = self::$bug_query_list;
-		self::$query_list_user = self::$bug_query_list_user;
-
-		return self::_countAll($engine, $module, $user, get_class());
-	}
-
-
-	//BugProjectContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $user = FALSE, $order = FALSE)
-	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'bug_id DESC';
-				break;
-		}
-		self::$query_list = self::$bug_query_list;
-		self::$query_list_user = self::$bug_query_list_user;
-		return self::_listAll($engine, $module, $limit, $offset, $order,
-				$user, get_class());
-	}
-
-
-	//BugProjectContent::load
-	static public function load($engine, $module, $id, $title = FALSE)
-	{
-		self::$query_load = self::$bug_query_load;
-		return self::_load($engine, $module, $id, $title, get_class());
-	}
-
-
 	//protected
 	//properties
 	protected $project = FALSE;
 	//static
+	static protected $class = 'BugProjectContent';
 	static protected $priorities = array('Urgent' => 'Urgent',
 		'High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low');
 	static protected $states = array('New' => 'New',
