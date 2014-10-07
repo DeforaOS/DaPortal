@@ -254,7 +254,7 @@ class FileDownloadContent extends DownloadContent
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $file_query_load = "SELECT
+	static protected $query_load = "SELECT
 		daportal_content_enabled.content_id AS id,
 		daportal_content_enabled.timestamp AS timestamp,
 		daportal_content_enabled.module_id AS module_id, module,
