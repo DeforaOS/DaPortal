@@ -115,6 +115,14 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
+	//MultiContentModule::callHeadline
+	protected function callHeadline($engine, $request = FALSE)
+	{
+		$this->setContext($engine, $request);
+		return parent::callHeadline($engine, $request);
+	}
+
+
 	//MultiContentModule::callList
 	protected function callList($engine, $request = FALSE)
 	{

@@ -262,15 +262,6 @@ abstract class ContentModule extends Module
 		WHERE module_id=:module_id
 		AND content_id=:content_id AND user_id=:user_id";
 	//IN:	module_id
-	protected $query_list = 'SELECT content_id AS id, timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		title, daportal_content_public.enabled AS enabled, public,
-		content
-		FROM daportal_content_public, daportal_user_enabled
-		WHERE daportal_content_public.module_id=:module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id';
-	//IN:	module_id
 	protected $query_list_admin = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname,
@@ -643,10 +634,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callHeadline
 	protected function callHeadline($engine, $request = FALSE)
 	{
-		//FIXME convert to the new Content API
-		$db = $engine->getDatabase();
-		$query = $this->query_list;
-		$args = array('module_id' => $this->id);
+		$class = $this->content_class;
 		$title = $this->text_content_headline_title;
 
 		//view
@@ -657,32 +645,29 @@ abstract class ContentModule extends Module
 		//obtain contents
 		$count = (is_integer($this->content_headline_count))
 			? $this->content_headline_count : 6;
-		$query .= ' ORDER BY timestamp DESC LIMIT '.$count;
 		$error = _('Unable to list contents');
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
+		if(($res = $class::listAll($engine, $this, $count, 0,
+				'timestamp DESC')) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//rows
 		foreach($res as $r)
 		{
-			//FIXME use the $content_class instead
 			$row = $view->append('row');
-			$request = new Request($this->name, FALSE, $r['id'],
-				$r['title']);
+			$request = $r->getRequest();
 			$link = new PageElement('link', array(
 					'request' => $request,
-					'text' => $r['title']));
+					'text' => $r->getTitle()));
 			$row->set('title', $link);
-			$row->set('timestamp', $r['timestamp']);
-			$row->set('date', $db->formatDate($engine,
-					$r['timestamp']));
-			$request = new Request('user', FALSE, $r['user_id'],
-				$r['username']);
+			$row->set('timestamp', $r->get('timestamp'));
+			$row->set('date', $r->getDate($engine));
+			$request = new Request('user', FALSE, $r->getUserID(),
+				$r->getUsername());
 			$link = new PageElement('link', array(
 				'request' => $request, 'stock' => 'user',
-				'text' => $r['username']));
+				'text' => $r->getUsername()));
 			$row->set('username', $link);
-			$content = $r['content'];
+			$content = $r->getContent($engine);
 			if(($len = $this->content_preview_length) > 0
 					&& strlen($content) > $len)
 				$content = substr($content, 0, $len).'...';
