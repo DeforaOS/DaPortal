@@ -982,8 +982,8 @@ class Content
 	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
 		user_id, username, title, enabled AS enabled, public, content
 		FROM daportal_content_enabled
-		WHERE daportal_content_enabled.module_id=:module_id
-		AND daportal_content_enabled.user_id=:user_id';
+		WHERE module_id=:module_id
+		AND user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	//	content_id
