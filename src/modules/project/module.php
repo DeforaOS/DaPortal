@@ -129,21 +129,23 @@ class ProjectModule extends MultiContentModule
 		AND daportal_module.module_id=:module_id
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.content_id=daportal_project.project_id";
-	protected $project_query_list_bugs = "SELECT bug_id,
-		bug.content_id AS id, bug.timestamp AS timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		bug.title AS title, bug.enabled AS enabled, state, type,
-		priority, daportal_project.project_id AS project_id,
+	//IN:	module_id
+	protected $project_query_list_bugs = 'SELECT bug.content_id AS id,
+		bug.timestamp AS timestamp,
+		bug.module_id AS module_id, bug.module AS module,
+		bug.user_id AS user_id, bug.username AS username,
+		bug.group_id AS group_id, bug.groupname AS groupname,
+		bug.title AS title, bug.content AS content,
+		bug.enabled AS enabled, bug.public AS public,
+		bug_id, type, state, priority, assigned,
+		daportal_bug.project_id AS project_id,
 		project.title AS project
-		FROM daportal_content_public bug, daportal_module,
-		daportal_user_enabled, daportal_bug,
+		FROM daportal_content_public bug, daportal_bug,
 		daportal_content_public project, daportal_project
-		WHERE bug.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND bug.user_id=daportal_user_enabled.user_id
-		AND bug.content_id=daportal_bug.content_id
-		AND daportal_bug.project_id=daportal_project.project_id
-		AND project.content_id=daportal_project.project_id";
+		WHERE bug.content_id=daportal_bug.content_id
+		AND project.content_id=daportal_bug.project_id
+		AND daportal_project.project_id=project.content_id
+		AND bug.module_id=:module_id';
 	protected $project_query_members = 'SELECT
 		daportal_user_enabled.user_id AS user_id, username,
 		daportal_project_user.admin AS admin
@@ -429,6 +431,7 @@ class ProjectModule extends MultiContentModule
 		$db = $engine->getDatabase();
 		$title = _('Bug reports');
 		$error = FALSE;
+		//FIXME use BugProjectContent::listAll() instead
 		$query = $this->project_query_list_bugs;
 		$project = FALSE;
 
@@ -452,7 +455,7 @@ class ProjectModule extends MultiContentModule
 		if($project !== FALSE)
 		{
 			$title = _('Bug reports for ').$project->getTitle();
-			$query .= ' AND daportal_project.project_id=:project_id';
+			$query .= ' AND daportal_bug.project_id=:project_id';
 			$args['project_id'] = $id;
 		}
 		$filter = $this->getFilter($engine, $request);
