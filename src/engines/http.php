@@ -291,6 +291,7 @@ class HTTPEngine extends Engine
 				|| strncmp('text/', $type, 5) == 0)
 			? 'inline' : 'attachment';
 		if(($filename = $response->getFilename($this)) !== FALSE)
+			//FIXME escape $filename
 			$disposition .= '; filename="'.$filename.'"';
 		header('Content-Disposition: '.$disposition);
 		//set the length
