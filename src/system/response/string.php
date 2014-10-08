@@ -53,7 +53,7 @@ class StringResponse extends Response
 	public function render($engine)
 	{
 		print($this->getContent());
-		return TRUE;
+		return $this->getCode();
 	}
 }
 
