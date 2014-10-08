@@ -257,6 +257,23 @@ class HTTPEngine extends Engine
 					.' 500 Internal server error');
 			return FALSE;
 		}
+		switch($response->getCode())
+		{
+			case Response::$CODE_EPERM:
+				header($_SERVER['SERVER_PROTOCOL']
+						.' 403 Permission denied');
+				break;
+			case Response::$CODE_ENOENT:
+				header($_SERVER['SERVER_PROTOCOL']
+						.' 404 Resource not found');
+				break;
+			case 0:
+				break;
+			default:
+				header($_SERVER['SERVER_PROTOCOL']
+						.' 500 Internal server error');
+				break;
+		}
 		//XXX escape the headers
 		//obtain the current content's type (and default to HTML)
 		if(($type = $response->getType($this)) == FALSE)
