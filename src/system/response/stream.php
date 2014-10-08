@@ -62,7 +62,7 @@ class StreamResponse extends Response
 		if(($res = fpassthru($fp)) === FALSE)
 			return $engine->log('LOG_ERR',
 				'Could not render the stream');
-		return TRUE;
+		return $this->getCode();
 	}
 
 
