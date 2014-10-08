@@ -90,7 +90,7 @@ abstract class Engine
 	{
 		static $modules = array();
 		$database = $this->getDatabase();
-		$query = $this->query_modules;
+		$query = static::$query_modules;
 
 		if(count($modules) != 0)
 			return $modules;
@@ -293,7 +293,7 @@ abstract class Engine
 	static protected $debug = FALSE;
 	protected $verbose = 1;
 	//queries
-	protected $query_modules = "SELECT module_id AS id, name
+	static protected $query_modules = "SELECT module_id AS id, name
 		FROM daportal_module
 		WHERE enabled='1'
 		ORDER BY name ASC";
