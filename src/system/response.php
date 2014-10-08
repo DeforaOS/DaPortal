@@ -23,7 +23,7 @@ abstract class Response extends Mutator
 	//methods
 	//essential
 	//Response::Response
-	public function __construct($content, $code = 0)
+	public function __construct($content = FALSE, $code = 0)
 	{
 		$this->setContent($content);
 		$this->setCode($code);
