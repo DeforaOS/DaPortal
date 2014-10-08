@@ -156,11 +156,10 @@ class FileDownloadContent extends DownloadContent
 	public function download($engine, $request)
 	{
 		$module = $this->getModule()->getName();
-		$root = DownloadContent::getRoot($module);
+		$root = static::getRoot($module);
 
 		//output the file
 		$filename = $root.'/'.$this->get('download_id');
-		$type = Mime::getType($engine, $this->getTitle());
 		if(($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');
@@ -169,6 +168,7 @@ class FileDownloadContent extends DownloadContent
 		}
 		$ret = new StreamResponse($fp);
 		$ret->setFilename($this->getTitle());
+		$type = Mime::getType($engine, $this->getTitle());
 		$ret->setType($type);
 		return $ret;
 	}
