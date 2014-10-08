@@ -39,13 +39,12 @@ if(($engine = Engine::attachDefault()) !== FALSE)
 		Profile::start($engine);
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
-	if(($ret = $engine->render($response)) === FALSE)
-		$ret = -1;
+	$ret = ($engine->render($response) !== FALSE) ? 0 : 2;
 	if($profile)
 		Profile::stop($engine);
 }
 else
-	$ret = 2;
+	$ret = -1;
 unset($engine);
 exit($ret);
 
