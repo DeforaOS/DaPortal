@@ -52,19 +52,18 @@ class StreamResponse extends Response
 	//StreamResponse::render
 	public function render($engine)
 	{
-		$ret = TRUE;
 		$fp = $this->getContent();
 
 		//FIXME apparently necessary to avoid trouble
 		ob_end_flush();
-		//FIXME really this method should rewind() and not fclose()
-		if(fpassthru($fp) === FALSE)
-			$ret = $engine->log('LOG_ERR',
-					'Could not render the stream');
-		if(fclose($fp) === FALSE && $ret === TRUE)
-			$ret = $engine->log('LOG_ERR',
-					'Could not close the stream');
-		return $ret;
+		if(rewind($fp) === FALSE)
+			return $engine->log('LOG_ERR',
+					'Could not rewind the stream');
+		if(($res = fpassthru($fp)) === FALSE)
+			return $engine->log('LOG_ERR',
+				'Could not render the stream');
+		$engine->log('LOG_WARNING', 'fpassthru() => '.$res);
+		return TRUE;
 	}
 
 
