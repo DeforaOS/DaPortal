@@ -54,8 +54,6 @@ class StreamResponse extends Response
 	{
 		$fp = $this->getContent();
 
-		//FIXME apparently necessary to avoid trouble
-		ob_end_flush();
 		if(rewind($fp) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not rewind the stream');
