@@ -407,6 +407,7 @@ class ProjectContent extends MultiContent
 	//protected
 	//properties
 	static protected $class = 'ProjectContent';
+	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	project_id
 	//	synopsis
