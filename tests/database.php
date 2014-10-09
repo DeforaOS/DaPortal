@@ -34,7 +34,7 @@ if(($res = $database->query($engine, $query, $args)) === FALSE)
 	exit(3);
 
 //check the results
-if(count($res) != 2)
+if(count($res) != 3)
 	exit(4);
 $r = $res->current();
 if($r['user_id'] != 0)

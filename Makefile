@@ -136,6 +136,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/apache/httpd-php5-cgi.conf \
 		$(PACKAGE)-$(VERSION)/doc/apache/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/sql/Makefile \
+		$(PACKAGE)-$(VERSION)/doc/sql/dataset.sql \
 		$(PACKAGE)-$(VERSION)/doc/sql/mysql.sql \
 		$(PACKAGE)-$(VERSION)/doc/sql/postgresql.sql \
 		$(PACKAGE)-$(VERSION)/doc/sql/sqlite.sql \

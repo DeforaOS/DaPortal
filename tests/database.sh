@@ -77,6 +77,8 @@ case "$target" in
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE2 "$target"
 		res=$?
+		echo .read "../doc/sql/dataset.sql" | $DEBUG $SQLITE2 "$target"
+		[ $? -eq 0 ] || res=$?
 		if [ $res -ne 0 ]; then
 			echo "database.sh: $target: Error $res" 1>&2
 			exit 2
@@ -88,6 +90,8 @@ case "$target" in
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target" > "$DEVNULL" 2>&1
 		echo .read "../doc/sql/sqlite.sql" | $DEBUG $SQLITE3 "$target"
 		res=$?
+		echo .read "../doc/sql/dataset.sql" | $DEBUG $SQLITE3 "$target"
+		[ $? -eq 0 ] || res=$?
 		if [ $res -ne 0 ]; then
 			echo "database.sh: $target: Error $res" 1>&2
 			exit 2
