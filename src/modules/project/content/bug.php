@@ -161,6 +161,7 @@ class BugProjectContent extends MultiContent
 	protected $project = FALSE;
 	//static
 	static protected $class = 'BugProjectContent';
+	static protected $list_order = 'bug_id DESC';
 	static protected $priorities = array('Urgent' => 'Urgent',
 		'High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low');
 	static protected $states = array('New' => 'New',
@@ -171,19 +172,18 @@ class BugProjectContent extends MultiContent
 		'Functionality' => 'Functionality', 'Feature' => 'Feature');
 	//queries
 	//IN:	module_id
-	static protected $bug_query_list = "SELECT bug_id,
-		bug.content_id AS id, bug.timestamp AS timestamp,
-		daportal_user_enabled.user_id AS user_id, username,
-		bug.title AS title, bug.enabled AS enabled, state, type,
-		priority, daportal_project.project_id AS project_id,
-		project.title AS project, bug.public AS public
-		FROM daportal_content_public bug, daportal_module,
-		daportal_user_enabled, daportal_bug,
+	static protected $query_list = "SELECT bug.content_id AS id,
+		bug.timestamp AS timestamp, bug.module_id AS module_id, module,
+		bug.user_id AS user_id, bug.username AS username,
+		bug.group_id AS group_id, bug.groupname AS groupname,
+		bug.title AS title, bug.content AS content,
+		bug.enabled AS enabled, bug.public AS public,
+		bug_id, state, type, priority,
+		daportal_project.project_id AS project_id,
+		project.title AS project
+		FROM daportal_content_public bug, daportal_bug,
 		daportal_content_public project, daportal_project
-		WHERE bug.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND bug.user_id=daportal_user_enabled.user_id
-		AND bug.content_id=daportal_bug.content_id
+		WHERE bug.content_id=daportal_bug.content_id
 		AND daportal_bug.project_id=daportal_project.project_id
 		AND project.content_id=daportal_project.project_id";
 	//IN:	module_id
