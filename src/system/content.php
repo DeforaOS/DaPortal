@@ -949,7 +949,7 @@ class Content
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, content
+		title, content, enabled, public
 		FROM daportal_content_public
 		WHERE module_id=:module_id';
 	//IN:	module_id
@@ -958,7 +958,7 @@ class Content
 		timestamp, module_id, module,
 		daportal_content_public.user_id AS user_id, username,
 		daportal_content_public.group_id AS group_id,
-		daportal_group_enabled.groupname AS groupname, title, content,
+		daportal_content_public.groupname AS groupname, title, content,
 		daportal_content_public.enabled AS enabled, public
 		FROM daportal_content_public, daportal_user_group,
 		daportal_group_enabled
