@@ -26,6 +26,10 @@ tests.log: auth.php config.php coverage.php daportal.conf database.php mail.php 
 
 clean:
 	$(RM) -- $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS)
+	./phplint.sh -c -P "$(PREFIX)" -- "phplint.log"
+	./shlint.sh -c -P "$(PREFIX)" -- "shlint.log"
+	./database.sh -c -P "$(PREFIX)" -- "sqlite.db"
+	./database.sh -c -P "$(PREFIX)" -- "sqlite.db3"
 	./tests.sh -c -P "$(PREFIX)" -- "tests.log"
 
 distclean: clean
