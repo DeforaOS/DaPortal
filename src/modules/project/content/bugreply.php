@@ -21,6 +21,15 @@ class BugReplyProjectContent extends MultiContent
 {
 	//public
 	//methods
+	//BugReplyProjectContent::displayContent
+	public function displayContent($engine, $request)
+	{
+		$text = HTML::format($engine, $this->getContent($engine));
+		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
+	//BugReplyProjectContent::listByBugID
 	static public function listByBugID($engine, $module, $bug_id,
 			$limit = FALSE, $offset = FALSE, $order = FALSE)
 	{
