@@ -173,11 +173,12 @@ class SearchModule extends Module
 			'preview' => _('Preview'));
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
-		for($i = 0, $res->seek($offset); $i++ < $limit
-					&& $res->valid()
-					&& ($r = $res->current()) !== FALSE;
-				$res->next())
-			$this->appendResult($engine, $view, $r);
+		$res->seek($offset);
+		for($i = 0; $i++ < $limit && $res->valid(); $res->next())
+			if(($r = $res->current()) === FALSE)
+				break;
+			else
+				$this->appendResult($engine, $view, $r);
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count,
 				$p);
