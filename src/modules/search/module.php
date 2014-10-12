@@ -32,7 +32,8 @@ class SearchModule extends Module
 			switch($action)
 			{
 				case 'actions':
-					return $this->actions($engine, $request);
+					return $this->actions($engine,
+							$request);
 				default:
 					return FALSE;
 			}
