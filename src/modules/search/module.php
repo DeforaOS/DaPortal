@@ -53,15 +53,12 @@ class SearchModule extends Module
 	//protected
 	//properties
 	protected $limit = FALSE;
-	protected $query = 'SELECT content_id AS id, timestamp AS date,
-		name AS module, daportal_content_public.user_id AS user_id,
-		title, content, username
-		FROM daportal_content_public, daportal_module,
-		daportal_user_enabled
-		WHERE daportal_content_public.module_id
-		=daportal_module.module_id
-		AND daportal_content_public.user_id
-		=daportal_user_enabled.user_id';
+	//queries
+	static protected $query = 'SELECT content_id AS id, timestamp AS date,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public
+		FROM daportal_content_public
+		WHERE 1=1';
 
 
 	//methods
@@ -120,12 +117,12 @@ class SearchModule extends Module
 		$row->set('title', $res['title']);
 		$row->set('username', $res['username']);
 		$row->set('date', $res['date']);
-		$r = new Request($res['module'], 'preview', $res['id'],
-				$res['title']);
-		if(($r = $engine->process($r)) === FALSE
-				|| !($r instanceof PageResponse))
+		if(($module = Module::load($engine, $res['module'])) === FALSE)
 			return;
-		$row->set('preview', $r->getContent());
+		if(($content = $module->getContent($engine, $res['id']))
+				=== FALSE)
+			return;
+		$row->set('preview', $content->preview($engine));
 	}
 
 
@@ -385,7 +382,7 @@ class SearchModule extends Module
 	{
 		global $config;
 		$db = $engine->getDatabase();
-		$query = $this->query.' AND (0=1';
+		$query = static::$query.' AND (0=1';
 		$regexp = $this->configGet('regexp');
 		$func = $regexp ? 'regexp' : 'like';
 		$string = str_replace('\\', '\\\\', $string);
