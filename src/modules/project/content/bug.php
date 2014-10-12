@@ -62,6 +62,14 @@ class BugProjectContent extends MultiContent
 
 
 	//accessors
+	//BugProjectContent::getBugReplies
+	public function getBugReplies($engine)
+	{
+		return BugReplyProjectContent::listByBugID($engine,
+				$this->getModule(), $this->get('bug_id'));
+	}
+
+
 	//BugProjectContent::getRequest
 	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
@@ -105,11 +113,44 @@ class BugProjectContent extends MultiContent
 
 
 	//useful
+	//BugProjectContent::display
+	public function display($engine, $request)
+	{
+		$ret = parent::display($engine, $request);
+		//FIXME list the replies above the buttons
+		$ret->append($this->displayReplies($engine, $request));
+		return $ret;
+	}
+
+
 	//BugProjectContent::displayContent
 	public function displayContent($engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
+	}
+
+
+	//BugProjectContent::displayReplies
+	public function displayReplies($engine, $request)
+	{
+		$error = _('Could not list the replies');
+
+		if(($replies = $this->getBugReplies($engine)) === FALSE)
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		$columns = array('title' => _('Title'),
+			'username' => _('Username'), 'date' => _('Date'),
+			'preview' => _('Preview'));
+		$view = new PageElement('treeview', array('view' => 'preview',
+				'columns' => $columns));
+		foreach($replies as $r)
+			$view->append('row', array(
+					'username' => $r->getUsername(),
+					'date' => $r->getDate(),
+					'preview' => $r->displayContent($engine,
+							$request)));
+		return $view;
 	}
 
 

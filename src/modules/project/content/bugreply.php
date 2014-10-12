@@ -19,6 +19,41 @@
 //BugReplyProjectContent
 class BugReplyProjectContent extends MultiContent
 {
+	//public
+	//methods
+	static public function listByBugID($engine, $module, $bug_id,
+			$limit = FALSE, $offset = FALSE, $order = FALSE)
+	{
+		$ret = array();
+		$class = static::$class;
+
+		if(($res = static::_listByBugID($engine, $module, $bug_id,
+				$limit, $offset, $order)) === FALSE)
+			return FALSE;
+		foreach($res as $r)
+			$ret[] = new $class($engine, $module, $r);
+		return $ret;
+	}
+
+	static protected function _listByBugID($engine, $module, $bug_id,
+			$limit, $offset, $order)
+	{
+		$credentials = $engine->getCredentials();
+		$vbox = new PageElement('vbox');
+		$database = $engine->getDatabase();
+		$query = static::$query_list;
+		$args = array('module_id' => $module->getID(),
+			'bug_id' => $bug_id);
+
+		$query .= ' AND bug_id=:bug_id';
+		if($order !== FALSE)
+			$query .= ' ORDER BY '.$order;
+		if($limit !== FALSE || $offset !== FALSE)
+			$query .= $database->offset($limit, $offset);
+		return $database->query($engine, $query, $args);
+	}
+
+
 	//protected
 	//properties
 	static protected $class = 'BugReplyProjectContent';
@@ -37,6 +72,16 @@ class BugReplyProjectContent extends MultiContent
 		AND module_id=:module_id
 		AND (public='1' OR user_id=:user_id)
 		AND daportal_content_enabled.content_id=:content_id";
+	//IN:	module_id
+	static protected $query_list = 'SELECT
+		daportal_content_public.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public,
+		bug_id, state, type, priority, assigned
+		FROM daportal_content_public, daportal_bug_reply
+		WHERE daportal_content_public.content_id
+		=daportal_bug_reply.content_id
+		AND module_id=:module_id';
 }
 
 ?>
