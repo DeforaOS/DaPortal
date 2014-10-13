@@ -505,8 +505,8 @@ abstract class ContentModule extends Module
 			}
 		}
 		$error = _('Could not list the content available');
-		if(($list = $class::listAll($engine, $this, $limit, $offset))
-				=== FALSE)
+		if(($list = $class::listAll($engine, $this, FALSE, $limit,
+				$offset)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		while(($content = array_shift($list)) != NULL)
@@ -609,8 +609,8 @@ abstract class ContentModule extends Module
 				&& is_numeric($p) && $p > 1)
 			$offset = $limit * ($p - 1);
 		$error = _('Unable to list the content');
-		if(($res = $class::listAll($engine, $this, $limit, $offset,
-				FALSE, $group)) === FALSE)
+		if(($res = $class::listAll($engine, $this, FALSE, $limit,
+				$offset, $group)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class
@@ -646,8 +646,8 @@ abstract class ContentModule extends Module
 		$count = (is_integer($this->content_headline_count))
 			? $this->content_headline_count : 6;
 		$error = _('Unable to list contents');
-		if(($res = $class::listAll($engine, $this, $count, 0,
-				'timestamp DESC')) === FALSE)
+		if(($res = $class::listAll($engine, $this, 'timestamp',
+				$count, 0)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//rows
@@ -716,8 +716,8 @@ abstract class ContentModule extends Module
 		if(($pcnt = $class::countAll($engine, $this, $user)) !== FALSE
 				&& is_numeric($p) && $p > 1)
 			$offset = $limit * ($p - 1);
-		if(($res = $class::listAll($engine, $this, $limit, $offset,
-				FALSE, $user)) === FALSE)
+		if(($res = $class::listAll($engine, $this, FALSE, $limit,
+				$offset, $user)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//FIXME some helpers should move to the Content class

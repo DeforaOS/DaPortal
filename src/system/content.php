@@ -455,6 +455,24 @@ class Content
 	}
 
 
+	//Content::displayList
+	static public function displayList($engine, $request = FALSE,
+			$content = FALSE)
+	{
+		$class = static::$class;
+		$columns = $class::getColumns();
+		$view = new PageElement('treeview', array('columns' => $columns,
+				'alternate' => $class::$list_alternate));
+
+		if($content === FALSE)
+			$content = array();
+		foreach($content as $c)
+			$view->append($c->displayRow($engine, $request));
+		return $view;
+
+	}
+
+
 	//Content::displayMetadata
 	public function displayMetadata($engine, $request)
 	{
@@ -804,29 +822,23 @@ class Content
 
 
 	//Content::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE, $user = FALSE)
+	static public function listAll($engine, $module, $order = FALSE,
+			$limit = FALSE, $offset = FALSE, $user = FALSE)
 	{
 		$ret = array();
 		$class = static::$class;
 
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = static::$list_order;
-				break;
-		}
-		if(($res = static::_listAll($engine, $module, $limit, $offset,
-				$order, $user)) === FALSE)
+		$order = static::listOrder($engine, $order);
+		if(($res = static::_listAll($engine, $module, $order, $limit,
+				$offset, $user)) === FALSE)
 			return FALSE;
 		foreach($res as $r)
 			$ret[] = new $class($engine, $module, $r);
 		return $ret;
 	}
 
-	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $user)
+	static protected function _listAll($engine, $module, $order, $limit,
+			$offset, $user)
 	{
 		$credentials = $engine->getCredentials();
 		$vbox = new PageElement('vbox');
@@ -847,11 +859,21 @@ class Content
 			$query = static::$query_list_group;
 			$args['group_id'] = $user->getGroupID();
 		}
-		if($order !== FALSE)
-			$query .= ' ORDER BY '.$order;
-		if($limit !== FALSE || $offset !== FALSE)
-			$query .= $database->offset($limit, $offset);
-		return $database->query($engine, $query, $args);
+		return static::query($engine, $query, $args, $order, $limit,
+				$offset);
+	}
+
+
+	//Content::listOrder
+	static public function listOrder($engine, $order = FALSE)
+	{
+		switch($order)
+		{
+			case 'timestamp':
+				return 'daportal_content_public.timestamp DESC';
+			default:
+				return static::$list_order;
+		}
 	}
 
 
@@ -896,6 +918,7 @@ class Content
 	//properties
 	static protected $class = 'Content';
 	protected $fields = array('title' => 'Title', 'content' => 'Content');
+	static protected $list_alternate = FALSE;
 	static protected $list_order = 'timestamp DESC';
 	protected $preview_length = 150;
 	//stock icons
@@ -1041,6 +1064,20 @@ class Content
 	protected function setID($id)
 	{
 		$this->id = $id;
+	}
+
+
+	//useful
+	//Content::query
+	static protected function query($engine, $query, $args = FALSE,
+			$order = FALSE, $limit = FALSE, $offset = FALSE)
+	{
+		$database = $engine->getDatabase();
+
+		if(($order = static::listOrder($engine, $order)) !== FALSE)
+			$query .= ' ORDER BY '.$order;
+		$query .= $database->limit($limit, $offset);
+		return $database->query($engine, $query, $args);
 	}
 
 

@@ -249,8 +249,8 @@ class FolderDownloadContent extends DownloadContent
 	//static
 	//methods
 	//FolderDownloadContent::listAll
-	static public function listAll($engine, $module, $limit = FALSE,
-			$offset = FALSE, $order = FALSE, $user = FALSE)
+	static public function listAll($engine, $module, $order = FALSE,
+			$limit = FALSE, $offset = FALSE, $user = FALSE)
 	{
 		switch($order)
 		{
@@ -261,19 +261,19 @@ class FolderDownloadContent extends DownloadContent
 		}
 		static::$query_list = static::$folder_query_list; //XXX
 		static::$query_list .= ' AND daportal_download.parent IS NULL';
-		return static::_listAll($engine, $module, $limit, $offset,
-				$order, $user, get_class());
+		return static::_listAll($engine, $module, $order, $limit,
+				$offset, $user, get_class());
 	}
 
-	static protected function _listAll($engine, $module, $limit, $offset,
-			$order, $user)
+	static protected function _listAll($engine, $module, $order, $limit,
+			$offset, $user)
 	{
-		return static::_listFiles($engine, $module, $limit, $offset,
-				$order, $user);
+		return static::_listFiles($engine, $module, $order, $limit,
+				$offset, $order, $user);
 	}
 
-	static protected function _listFiles($engine, $module, $limit, $offset,
-			$order, $user, $parent = FALSE)
+	static protected function _listFiles($engine, $module, $order, $limit,
+			$offset, $user, $parent = FALSE)
 	{
 		$ret = array();
 		$vbox = new PageElement('vbox');
@@ -291,8 +291,7 @@ class FolderDownloadContent extends DownloadContent
 			$query .= ' AND daportal_download.parent IS NULL';
 		if($order !== FALSE)
 			$query .= ' ORDER BY '.$order;
-		if($limit !== FALSE || $offset !== FALSE)
-			$query .= $database->offset($limit, $offset);
+		$query .= $database->limit($limit, $offset);
 		if(($res = $database->query($engine, $query, $args)) === FALSE)
 			return FALSE;
 		foreach($res as $r)

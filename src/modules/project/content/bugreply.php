@@ -37,7 +37,7 @@ class BugReplyProjectContent extends MultiContent
 		$class = static::$class;
 
 		if(($res = static::_listByBugID($engine, $module, $bug_id,
-				$limit, $offset, $order)) === FALSE)
+				$order, $limit, $offset)) === FALSE)
 			return FALSE;
 		foreach($res as $r)
 			$ret[] = new $class($engine, $module, $r);
@@ -47,19 +47,12 @@ class BugReplyProjectContent extends MultiContent
 	static protected function _listByBugID($engine, $module, $bug_id,
 			$limit, $offset, $order)
 	{
-		$credentials = $engine->getCredentials();
-		$vbox = new PageElement('vbox');
-		$database = $engine->getDatabase();
-		$query = static::$query_list;
+		$query = static::$query_list.' AND bug_id=:bug_id';
 		$args = array('module_id' => $module->getID(),
 			'bug_id' => $bug_id);
 
-		$query .= ' AND bug_id=:bug_id';
-		if($order !== FALSE)
-			$query .= ' ORDER BY '.$order;
-		if($limit !== FALSE || $offset !== FALSE)
-			$query .= $database->offset($limit, $offset);
-		return $database->query($engine, $query, $args);
+		return static::query($engine, $query, $args, $order, $limit,
+				$offset);
 	}
 
 
