@@ -277,6 +277,19 @@ class Content
 	}
 
 
+	//Content::getOrder
+	static public function getOrder($engine, $order = FALSE)
+	{
+		switch($order)
+		{
+			case 'timestamp':
+				return 'daportal_content_public.timestamp DESC';
+			default:
+				return static::$list_order;
+		}
+	}
+
+
 	//Content::getProperties
 	public function getProperties()
 	{
@@ -825,15 +838,10 @@ class Content
 	static public function listAll($engine, $module, $order = FALSE,
 			$limit = FALSE, $offset = FALSE, $user = FALSE)
 	{
-		$ret = array();
-
-		$order = static::listOrder($engine, $order);
 		if(($res = static::_listAll($engine, $module, $order, $limit,
 				$offset, $user)) === FALSE)
 			return FALSE;
-		foreach($res as $r)
-			$ret[] = static::loadFromResult($engine, $module, $r);
-		return $ret;
+		return static::listFromResults($engine, $module, $res);
 	}
 
 	static protected function _listAll($engine, $module, $order, $limit,
@@ -858,21 +866,21 @@ class Content
 			$query = static::$query_list_group;
 			$args['group_id'] = $user->getGroupID();
 		}
+		$order = static::getOrder($engine, $order);
 		return static::query($engine, $query, $args, $order, $limit,
 				$offset);
 	}
 
 
-	//Content::listOrder
-	static public function listOrder($engine, $order = FALSE)
+	//Content::listFromResults
+	static public function listFromResults($engine, $module, $results)
 	{
-		switch($order)
-		{
-			case 'timestamp':
-				return 'daportal_content_public.timestamp DESC';
-			default:
-				return static::$list_order;
-		}
+		$ret = array();
+
+		foreach($results as $r)
+			$ret[] = static::loadFromProperties($engine, $module,
+					$r);
+		return $ret;
 	}
 
 
@@ -882,7 +890,7 @@ class Content
 		if(($res = static::_load($engine, $module, $id, $title))
 				=== FALSE)
 			return FALSE;
-		return static::loadFromResult($engine, $module, $res);
+		return static::loadFromProperties($engine, $module, $res);
 	}
 
 	static protected function _load($engine, $module, $id, $title)
@@ -912,12 +920,21 @@ class Content
 	}
 
 
+	//Content::loadFromProperties
+	static public function loadFromProperties($engine, $module, $properties)
+	{
+		$class = static::$class;
+
+		return new $class($engine, $module, $properties);
+	}
+
+
 	//Content::loadFromResult
 	static public function loadFromResult($engine, $module, $result)
 	{
 		$class = static::$class;
 
-		return new $class($engine, $module, $result);
+		return new $class($engine, $module, $result->current());
 	}
 
 
@@ -1081,7 +1098,7 @@ class Content
 	{
 		$database = $engine->getDatabase();
 
-		if(($order = static::listOrder($engine, $order)) !== FALSE)
+		if(($order = static::getOrder($engine, $order)) !== FALSE)
 			$query .= ' ORDER BY '.$order;
 		$query .= $database->limit($limit, $offset);
 		return $database->query($engine, $query, $args);
