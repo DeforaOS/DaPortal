@@ -826,14 +826,13 @@ class Content
 			$limit = FALSE, $offset = FALSE, $user = FALSE)
 	{
 		$ret = array();
-		$class = static::$class;
 
 		$order = static::listOrder($engine, $order);
 		if(($res = static::_listAll($engine, $module, $order, $limit,
 				$offset, $user)) === FALSE)
 			return FALSE;
 		foreach($res as $r)
-			$ret[] = new $class($engine, $module, $r);
+			$ret[] = static::loadFromResult($engine, $module, $r);
 		return $ret;
 	}
 
@@ -880,16 +879,15 @@ class Content
 	//Content::load
 	static public function load($engine, $module, $id, $title = FALSE)
 	{
-		$class = static::$class;
-
-		if(($res = static::_load($engine, $module, $id, $title, $class))
+		if(($res = static::_load($engine, $module, $id, $title))
 				=== FALSE)
 			return FALSE;
-		return new $class($engine, $module, $res);
+		return static::loadFromResult($engine, $module, $res);
 	}
 
-	static protected function _load($engine, $module, $id, $title, $class)
+	static protected function _load($engine, $module, $id, $title)
 	{
+		$class = static::$class;
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 		$query = $class::$query_load;
@@ -911,6 +909,15 @@ class Content
 				|| $res->count() != 1)
 			return FALSE;
 		return $res->current();
+	}
+
+
+	//Content::loadFromResult
+	static public function loadFromResult($engine, $module, $result)
+	{
+		$class = static::$class;
+
+		return new $class($engine, $module, $result);
 	}
 
 
