@@ -197,6 +197,37 @@ class BugProjectContent extends MultiContent
 	}
 
 
+	//BugProjectContent::loadFromBugID
+	static public function loadFromBugID($engine, $module, $bug_id)
+	{
+		//XXX code duplication
+		$database = $engine->getDatabase();
+		$query = static::$query_load_by_bug_id;
+		$args = array('module_id' => $module->getID(),
+			'bug_id' => $bug_id);
+		$from = array('-', '\\');
+		$to = array('_', '\\\\');
+
+		if($engine instanceof HTTPFriendlyEngine)
+		{
+			//XXX friendly links may compress slashes
+			$from[] = '/';
+			$to[] = '%';
+		}
+		if(is_string($title))
+		{
+			$query .= ' AND title '.$database->like(FALSE)
+				.' :title ESCAPE :escape';
+			$args['title'] = str_replace($from, $to, $title);
+			$args['escape'] = '\\';
+		}
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| $res->count() != 1)
+			return FALSE;
+		return static::loadFromResult($engine, $module, $res);
+	}
+
+
 	//protected
 	//properties
 	protected $project = FALSE;
@@ -259,6 +290,17 @@ class BugProjectContent extends MultiContent
 		AND module_id=:module_id
 		AND (public='1' OR user_id=:user_id)
 		AND daportal_content_enabled.content_id=:content_id";
+	//IN:	module_id
+	//	bug_id
+	static protected $query_load_by_bug_id = 'SELECT
+		daportal_content_public.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, bug_id, project_id, state,
+		type, priority, assigned
+		FROM daportal_content_public, daportal_bug
+		WHERE daportal_content_public.content_id=daportal_bug.content_id
+		AND module_id=:module_id
+		AND bug_id=:bug_id';
 }
 
 ?>

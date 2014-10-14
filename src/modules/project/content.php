@@ -348,6 +348,20 @@ class ProjectContent extends MultiContent
 	}
 
 
+	//ProjectContent::loadFromName
+	public function loadFromName($engine, $module, $name)
+	{
+		$query = static::$query_load_by_title;
+		$args = array('module_id' => $module->getID(),
+			'title' => $name);
+
+		if(($res = static::query($engine, $query, $args)) === FALSE
+				|| $res->count() != 1)
+			return FALSE;
+		return static::loadFromResult($engine, $module, $res);
+	}
+
+
 	//ProjectContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -507,6 +521,16 @@ class ProjectContent extends MultiContent
 		AND daportal_content_enabled.module_id=:module_id
 		AND (public='1' OR user_id=:user_id)
 		AND content_id=:content_id";
+	//IN:	module_id
+	//	title
+	static protected $query_load_by_title = 'SELECT content_id AS id,
+		timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, synopsis, scm, cvsroot
+		FROM daportal_content_public, daportal_project
+		WHERE daportal_content_public.content_id=daportal_project.project_id
+		AND daportal_content_public.module_id=:module_id
+		AND title=:title';
 }
 
 ?>

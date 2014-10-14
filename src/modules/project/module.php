@@ -78,15 +78,6 @@ class ProjectModule extends MultiContentModule
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
-	protected $project_query_bug_by_id = "SELECT
-		daportal_bug.content_id AS id,
-		title, content, timestamp, daportal_user.user_id AS user_id,
-		daportal_user.username AS username, bug_id,
-		project_id, state, type, priority, assigned
-		FROM daportal_content_public, daportal_bug, daportal_user
-		WHERE daportal_content_public.content_id=daportal_bug.content_id
-		AND daportal_content_public.user_id=daportal_user.user_id
-		AND daportal_bug.bug_id=:bug_id";
 	protected $project_query_list_admin_bugs = "SELECT
 		daportal_content.content_id AS id, bug_id,
 		daportal_content.enabled AS enabled,
@@ -109,26 +100,6 @@ class ProjectModule extends MultiContentModule
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=daportal_bug.content_id";
-	protected $project_query_list_admin_projects = "SELECT content_id AS id,
-		daportal_content.enabled AS enabled,
-		daportal_content.public AS public,
-		timestamp, name AS module,
-		daportal_user_enabled.user_id AS user_id, username, title,
-		synopsis
-		FROM daportal_content, daportal_module, daportal_user_enabled,
-		daportal_project
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.content_id=daportal_project.project_id";
-	protected $project_query_list_admin_projects_count = "SELECT
-		COUNT(*) AS count
-		FROM daportal_content, daportal_module, daportal_user_enabled,
-		daportal_project
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.content_id=daportal_project.project_id";
 	//IN:	module_id
 	protected $project_query_list_bugs = 'SELECT bug.content_id AS id,
 		bug.timestamp AS timestamp,
@@ -154,68 +125,12 @@ class ProjectModule extends MultiContentModule
 		=daportal_user_enabled.user_id
 		AND project_id=:project_id
 		ORDER BY username ASC';
-	protected $project_query_project = "SELECT
-		daportal_module.name AS module, project_id AS id, title,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username, content, synopsis,
-		scm, cvsroot, daportal_content.enabled AS enabled
-		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user_enabled
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND project_id=:content_id";
-	protected $project_query_project_by_name = "SELECT
-		daportal_module.name AS module, project_id AS id,
-		title, daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username, content, synopsis,
-		scm, cvsroot, daportal_content.enabled AS enabled
-		FROM daportal_content, daportal_module, daportal_project,
-		daportal_user_enabled
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_module.module_id=:module_id
-		AND daportal_content.content_id=daportal_project.project_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.enabled='1'
-		AND daportal_content.public='1'
-		AND daportal_content.title=:title";
 	protected $project_query_project_insert = 'INSERT INTO
 		daportal_project (project_id, synopsis, cvsroot)
 		VALUES (:project_id, :synopsis, :cvsroot)';
 	protected $project_query_project_release_insert = 'INSERT INTO
 		daportal_project_download (project_id, download_id)
 		VALUES (:project_id, :download_id)';
-	protected $project_query_get = "SELECT daportal_module.name AS module,
-		daportal_user_enabled.user_id AS user_id,
-		daportal_user_enabled.username AS username,
-		daportal_content.content_id AS id, title, content, synopsis,
-		scm, cvsroot, timestamp,
-		daportal_bug.bug_id AS bug_id,
-		daportal_bug.project_id AS project_id,
-		daportal_bug.state AS state, daportal_bug.type AS type,
-		daportal_bug.priority AS priority,
-		daportal_bug.assigned AS assigned,
-		bug_reply_id, daportal_bug_reply.bug_id AS bug_reply_bug_id,
-		daportal_bug_reply.state AS bug_reply_state,
-		daportal_bug_reply.type AS bug_reply_type,
-		daportal_bug_reply.priority AS bug_reply_priority,
-		daportal_bug_reply.assigned AS bug_reply_assigned
-		FROM daportal_module, daportal_user_enabled, daportal_content
-		LEFT JOIN daportal_project
-		ON daportal_content.content_id=daportal_project.project_id
-		LEFT JOIN daportal_bug
-		ON daportal_content.content_id=daportal_bug.content_id
-		LEFT JOIN daportal_bug_reply
-		ON daportal_content.content_id=daportal_bug_reply.content_id
-		WHERE daportal_content.module_id=daportal_module.module_id
-		AND daportal_content.module_id=:module_id
-		AND daportal_content.user_id=daportal_user_enabled.user_id
-		AND daportal_content.enabled='1'
-		AND (daportal_content.public='1' OR daportal_content.user_id=:user_id)
-		AND daportal_content.content_id=:content_id";
 
 
 	//methods
@@ -246,16 +161,7 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::getBugByID
 	protected function getBugByID($engine, $id)
 	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_bug_by_id;
-		$args = array('bug_id' => $id);
-
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		$res = $res->current();
-		$res['date'] = $db->formatDate($engine, $res['timestamp']);
-		return $res;
+		return BugProjectContent::loadFromBugID($engine, $this, $id);
 	}
 
 
@@ -309,14 +215,7 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::_getProjectByName
 	protected function _getProjectByName($engine, $name)
 	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_project_by_name;
-		$args = array('module_id' => $this->id, 'title' => $name);
-
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| count($res) != 1)
-			return FALSE;
-		return $res->current();
+		return ProjectContent::loadFromName($engine, $this, $name);
 	}
 
 
@@ -447,7 +346,7 @@ class ProjectModule extends MultiContentModule
 		{
 			if(($project = $this->_getProjectByName($engine,
 					$name)) !== FALSE)
-				$id = $project['id'];
+				$id = $project->getID();
 			else
 				$error = _('Unknown project');
 		}
