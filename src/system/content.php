@@ -853,7 +853,7 @@ class Content
 		$query = static::$query_list;
 		$args = array('module_id' => $module->getID());
 
-		if($user !== FALSE && $user instanceof User)
+		if($user instanceof User)
 		{
 			$query = static::$query_list_user;
 			$args['user_id'] = $user->getUserID();
@@ -861,7 +861,7 @@ class Content
 					&& $id == $user->getUserID())
 				$query = static::$query_list_user_private;
 		}
-		else if($user !== FALSE && $user instanceof Group)
+		else if($user instanceof Group)
 		{
 			$query = static::$query_list_group;
 			$args['group_id'] = $user->getGroupID();
