@@ -895,20 +895,24 @@ class Content
 
 	static protected function _load($engine, $module, $id, $title)
 	{
-		$class = static::$class;
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
-		$query = $class::$query_load;
+		$query = static::$query_load;
 		$args = array('module_id' => $module->getID(),
 			'user_id' => $credentials->getUserID(),
 			'content_id' => $id);
 		$from = array('-', '\\');
 		$to = array('_', '\\\\');
 
+		if($engine instanceof HTTPFriendlyEngine)
+		{
+			//XXX friendly links may compress slashes
+			$from[] = '/';
+			$to[] = '%';
+		}
 		if(is_string($title))
 		{
-			$query .= ' AND daportal_content_enabled.title '
-				.$database->like(FALSE)
+			$query .= ' AND title '.$database->like(FALSE)
 				.' :title ESCAPE :escape';
 			$args['title'] = str_replace($from, $to, $title);
 			$args['escape'] = '\\';
@@ -1025,8 +1029,9 @@ class Content
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user_private = 'SELECT content_id AS id,
-		timestamp, module_id, module, user_id, username,
-		group_id, groupname, title, content, enabled, public
+		timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public
 		FROM daportal_content_enabled
 		WHERE module_id=:module_id
 		AND user_id=:user_id';
@@ -1037,7 +1042,7 @@ class Content
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public
 		FROM daportal_content_enabled
-		WHERE daportal_content_enabled.module_id=:module_id
+		WHERE module_id=:module_id
 		AND (public='1' OR user_id=:user_id)
 		AND content_id=:content_id";
 	//IN:	module_id
