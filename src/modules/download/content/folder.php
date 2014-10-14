@@ -262,14 +262,14 @@ class FolderDownloadContent extends DownloadContent
 		static::$query_list = static::$folder_query_list; //XXX
 		static::$query_list .= ' AND daportal_download.parent IS NULL';
 		return static::_listAll($engine, $module, $order, $limit,
-				$offset, $user, get_class());
+				$offset, $user);
 	}
 
 	static protected function _listAll($engine, $module, $order, $limit,
 			$offset, $user)
 	{
 		return static::_listFiles($engine, $module, $order, $limit,
-				$offset, $order, $user);
+				$offset, $user);
 	}
 
 	static protected function _listFiles($engine, $module, $order, $limit,
