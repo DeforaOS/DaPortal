@@ -244,6 +244,7 @@ class FileDownloadContent extends DownloadContent
 	//protected
 	//properties
 	static protected $class = 'FileDownloadContent';
+	static protected $list_order = 'daportal_content_enabled.title ASC';
 	//queries
 	//IN:	content_id
 	//	parent
