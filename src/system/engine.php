@@ -189,12 +189,7 @@ abstract class Engine
 				break;
 		}
 		if(!is_string($message))
-		{
-			ob_start();
-			var_dump($message); //XXX potentially multi-line
-			$message = ob_get_contents();
-			ob_end_clean();
-		}
+			var_export($message, TRUE); //XXX potentially multi-line
 		$message = $_SERVER['SCRIPT_FILENAME'].": $level: $message";
 		error_log($message, 0);
 		return FALSE;
