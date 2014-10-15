@@ -898,6 +898,7 @@ class Content
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
 		$query = static::$query_load;
+		$column = static::$load_title;
 		$args = array('module_id' => $module->getID(),
 			'user_id' => $credentials->getUserID(),
 			'content_id' => $id);
@@ -912,7 +913,7 @@ class Content
 		}
 		if(is_string($title))
 		{
-			$query .= ' AND title '.$database->like(FALSE)
+			$query .= ' AND '.$column.' '.$database->like(FALSE)
 				.' :title ESCAPE :escape';
 			$args['title'] = str_replace($from, $to, $title);
 			$args['escape'] = '\\';
@@ -948,6 +949,7 @@ class Content
 	protected $fields = array('title' => 'Title', 'content' => 'Content');
 	static protected $list_alternate = FALSE;
 	static protected $list_order = 'timestamp DESC';
+	static protected $load_title = 'title';
 	protected $preview_length = 150;
 	//stock icons
 	protected $stock = FALSE;

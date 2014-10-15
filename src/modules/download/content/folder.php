@@ -307,6 +307,7 @@ class FolderDownloadContent extends DownloadContent
 
 	//protected
 	static protected $class = 'FolderDownloadContent';
+	static protected $load_title = 'daportal_content_enabled.title';
 	//properties
 	//queries
 	//IN:	module_id
