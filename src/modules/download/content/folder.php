@@ -76,10 +76,8 @@ class FolderDownloadContent extends DownloadContent
 		$page->append('title', array('stock' => $this->stock,
 			'text' => $title));
 		$page->append($this->displayToolbar($engine, $request));
-		static::$query_list = static::$folder_query_list; //XXX
 		if(($files = static::_listFiles($engine, $this->getModule(),
-				FALSE, FALSE, 'title ASC', FALSE, $this))
-				=== FALSE)
+				FALSE, FALSE, FALSE, FALSE, $this)) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list the files'));
@@ -89,7 +87,7 @@ class FolderDownloadContent extends DownloadContent
 			'username' => _('Owner'), 'group' => _('Group'),
 			'date' => _('Date'), 'mode' => _('Permissions'));
 		$view = $page->append('treeview', array('columns' => $columns));
-		while(($f = array_shift($files)) !== NULL)
+		foreach($files as $f)
 		{
 			$properties = $f->getProperties();
 			$icon = $f->getIcon($engine);
@@ -252,22 +250,6 @@ class FolderDownloadContent extends DownloadContent
 	static public function listAll($engine, $module, $order = FALSE,
 			$limit = FALSE, $offset = FALSE, $user = FALSE)
 	{
-		switch($order)
-		{
-			case FALSE:
-			default:
-				$order = 'title ASC';
-				break;
-		}
-		static::$query_list = static::$folder_query_list; //XXX
-		static::$query_list .= ' AND daportal_download.parent IS NULL';
-		return static::_listAll($engine, $module, $order, $limit,
-				$offset, $user);
-	}
-
-	static protected function _listAll($engine, $module, $order, $limit,
-			$offset, $user)
-	{
 		return static::_listFiles($engine, $module, $order, $limit,
 				$offset, $user);
 	}
@@ -275,7 +257,6 @@ class FolderDownloadContent extends DownloadContent
 	static protected function _listFiles($engine, $module, $order, $limit,
 			$offset, $user, $parent = FALSE)
 	{
-		$ret = array();
 		$vbox = new PageElement('vbox');
 		$database = $engine->getDatabase();
 		$query = static::$query_list;
@@ -289,19 +270,23 @@ class FolderDownloadContent extends DownloadContent
 		}
 		else
 			$query .= ' AND daportal_download.parent IS NULL';
-		if($order !== FALSE)
-			$query .= ' ORDER BY '.$order;
-		$query .= $database->limit($limit, $offset);
-		if(($res = $database->query($engine, $query, $args)) === FALSE)
+		$order = static::getOrder($engine, $order);
+		if(($res = static::query($engine, $query, $args, $order, $limit,
+				$offset)) === FALSE)
 			return FALSE;
-		foreach($res as $r)
-		{
-			$class = ($r['mode'] & static::$S_IFDIR)
-				? 'FolderDownloadContent'
-				: 'FileDownloadContent';
-			$ret[] = new $class($engine, $module, $r);
-		}
-		return $ret;
+		return static::listFromResults($engine, $module, $res);
+	}
+
+
+	//FolderDownloadContent::loadFromProperties
+	static public function loadFromProperties($engine, $module, $properties)
+	{
+		$class = (isset($properties['mode'])
+				&& ($properties['mode'] & static::$S_IFDIR))
+			? 'FolderDownloadContent'
+			: 'FileDownloadContent';
+
+		return new $class($engine, $module, $properties);
 	}
 
 
@@ -311,7 +296,7 @@ class FolderDownloadContent extends DownloadContent
 	//properties
 	//queries
 	//IN:	module_id
-	static protected $folder_query_list = 'SELECT
+	static protected $query_list = 'SELECT
 		daportal_content_public.content_id AS id,
 		timestamp, user_id, username, group_id, groupname AS "group",
 		title, enabled, public, mode
