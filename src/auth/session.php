@@ -54,6 +54,7 @@ class SessionAuth extends Auth
 				$params['domain'], $params['secure'],
 				$params['httponly']);
 		$this->match_score = @session_start() ? 100 : 0;
+		session_write_close();
 		return $this->match_score;
 	}
 
@@ -103,14 +104,16 @@ class SessionAuth extends Auth
 		global $config;
 
 		//avoid session-fixation attacks
+		session_start();
 		$message = 'Could not regenerate the session';
 		if($config->get('auth::session', 'regenerate') == 1
 				&& session_regenerate_id(TRUE) !== TRUE)
 			$engine->log('LOG_WARNING', $message);
-		$this->setVariable($engine, 'SessionAuth::uid',
+		$this->_setVariable($engine, 'SessionAuth::uid',
 				$credentials->getUserID());
-		$this->setVariable($engine, 'SessionAuth::username',
+		$this->_setVariable($engine, 'SessionAuth::username',
 				$credentials->getUsername());
+		session_write_close();
 		return parent::setCredentials($engine, $credentials);
 	}
 
@@ -145,6 +148,13 @@ class SessionAuth extends Auth
 
 	//SessionAuth::setVariable
 	public function setVariable($engine, $variable, $value)
+	{
+		session_start();
+		$ret = $this->_setVariable($engine, $variable, $value);
+		session_write_close();
+		return $ret;
+	}
+	private function _setVariable($engine, $variable, $value)
 	{
 		$_SESSION[$variable] = $value;
 		return TRUE;
