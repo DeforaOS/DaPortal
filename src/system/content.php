@@ -472,17 +472,15 @@ class Content
 	static public function displayList($engine, $request = FALSE,
 			$content = FALSE)
 	{
-		$class = static::$class;
-		$columns = $class::getColumns();
+		$columns = static::getColumns();
 		$view = new PageElement('treeview', array('columns' => $columns,
-				'alternate' => $class::$list_alternate));
+				'alternate' => static::$list_alternate));
 
 		if($content === FALSE)
 			$content = array();
 		foreach($content as $c)
 			$view->append($c->displayRow($engine, $request));
 		return $view;
-
 	}
 
 
