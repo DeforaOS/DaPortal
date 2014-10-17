@@ -149,7 +149,8 @@ class SessionAuth extends Auth
 	//SessionAuth::setVariable
 	public function setVariable($engine, $variable, $value)
 	{
-		session_start();
+		//XXX errors when output has already started can be ignored
+		@session_start();
 		$ret = $this->_setVariable($engine, $variable, $value);
 		session_write_close();
 		return $ret;
