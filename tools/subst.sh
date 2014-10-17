@@ -26,7 +26,23 @@
 
 #variables
 PREFIX="/usr/local"
+BINDIR=
+DATADIR=
+LIBDIR=
+LIBEXECDIR=
+MANDIR=
+SYSCONFDIR=
 [ -f "../config.sh" ] && . "../config.sh"
+[ -z "$BINDIR" ] && BINDIR="$PREFIX/bin"
+[ -z "$DATADIR" ] && DATADIR="$PREFIX/share"
+[ -z "$LIBDIR" ] && LIBDIR="$PREFIX/lib"
+[ -z "$LIBEXECDIR" ] && LIBEXECDIR="$PREFIX/libexec"
+[ -z "$MANDIR" ] && MANDIR="$DATADIR/man"
+if [ -z "$SYSCONFDIR" ]; then
+	SYSCONFDIR="$PREFIX/etc"
+	[ "$PREFIX" = "/usr" ] && SYSCONFDIR="/etc"
+fi
+#executables
 CHMOD="chmod"
 DEBUG="_debug"
 DEVNULL="/dev/null"
@@ -130,6 +146,12 @@ while [ $# -gt 0 ]; do
 	$DEBUG $SED -e "s,@PACKAGE@,$PACKAGE," \
 		-e "s,@VERSION@,$VERSION," \
 		-e "s,@PREFIX@,$PREFIX," \
+		-e "s,@BINDIR@,$BINDIR," \
+		-e "s,@DATADIR@,$DATADIR," \
+		-e "s,@LIBDIR@,$LIBDIR," \
+		-e "s,@LIBEXECDIR@,$LIBEXECDIR," \
+		-e "s,@MANDIR@,$MANDIR," \
+		-e "s,@SYSCONFDIR@,$SYSCONFDIR," \
 		-e "s,@PWD@,$PWD," \
 		-- "$target.in" > "$target"
 	if [ $? -ne 0 ]; then
