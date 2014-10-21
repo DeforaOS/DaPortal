@@ -101,6 +101,12 @@ function _autoload_filename_default($class)
 		$response = substr($class, 0, $len - 8);
 		return './system/response/'.strtolower($response).'.php';
 	}
+	//Users
+	else if($len > 4 && substr($class, -4) == 'User')
+	{
+		$module = substr($class, 0, $len - 4);
+		return './modules/'.strtolower($module).'/user.php';
+	}
 	//Templates
 	else if($len > 8 && substr($class, -8) == 'Template')
 	{
