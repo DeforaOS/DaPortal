@@ -244,8 +244,7 @@ class FileDownloadContent extends DownloadContent
 	//protected
 	//properties
 	static protected $class = 'FileDownloadContent';
-	static protected $list_order = 'daportal_content_enabled.title ASC';
-	static protected $load_title = 'daportal_content_enabled.title';
+	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	content_id
 	//	parent
@@ -261,8 +260,7 @@ class FileDownloadContent extends DownloadContent
 		daportal_content_enabled.timestamp AS timestamp,
 		daportal_content_enabled.module_id AS module_id, module,
 		daportal_content_enabled.user_id AS user_id, username,
-		daportal_content_enabled.group_id AS group_id,
-		groupname AS \"group\",
+		daportal_content_enabled.group_id AS group_id, groupname,
 		daportal_content_enabled.title AS title,
 		daportal_content_enabled.content AS content,
 		daportal_content_enabled.enabled AS enabled,

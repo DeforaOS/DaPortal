@@ -44,6 +44,7 @@ abstract class DownloadContent extends MultiContent
 
 
 	//static
+	//accessors
 	//DownloadContent::getRoot
 	static public function getRoot($name = FALSE)
 	{
@@ -62,9 +63,105 @@ abstract class DownloadContent extends MultiContent
 	}
 
 
+	//useful
+	//DownloadContent::countAll
+	static public function countAll($engine, $module, $user = FALSE)
+	{
+		if(($res = static::_listFiles($engine, $module, FALSE, FALSE,
+				FALSE, $user)) === FALSE)
+			return FALSE;
+		return $res->count();
+	}
+
+
+	//DownloadContent::listAll
+	static public function listAll($engine, $module, $order = FALSE,
+			$limit = FALSE, $offset = FALSE, $user = FALSE)
+	{
+		return static::listFiles($engine, $module, $order, $limit,
+				$offset, $user);
+	}
+
+
+	//DownloadContent::listFiles
+	static protected function listFiles($engine, $module, $order, $limit,
+			$offset, $user, $mask = FALSE, $parent = FALSE)
+	{
+		if(($res = static::_listFiles($engine, $module, $order, $limit,
+				$offset, $user, $mask, $parent)) === FALSE)
+			return FALSE;
+		return static::listFromResults($engine, $module, $res);
+	}
+
+	static protected function _listFiles($engine, $module, $order, $limit,
+			$offset, $user, $mask = FALSE, $parent = FALSE)
+	{
+		$vbox = new PageElement('vbox');
+		$database = $engine->getDatabase();
+		$query = static::$query_list;
+		$args = array('module_id' => $module->getID());
+
+		if($parent !== FALSE && ($id = $parent->get('download_id'))
+				!== FALSE)
+		{
+			$query .= ' AND daportal_download.parent=:parent_id';
+			$args['parent_id'] = $id;
+		}
+		else
+			$query .= ' AND daportal_download.parent IS NULL';
+		if($mask === FALSE)
+			$mask = static::$S_IFDIR;
+		if($mask != 0)
+		{
+			$query .= ' AND (mode & :mask)=:mode';
+			$args['mask'] = $mask;
+			$args['mode'] = static::$list_mask;
+		}
+		$order = static::getOrder($engine, $order);
+		if(($res = static::query($engine, $query, $args, $order, $limit,
+				$offset)) === FALSE)
+			return FALSE;
+		return $res;
+	}
+
+
 	//protected
 	//properties
 	static protected $S_IFDIR = 512;
+	static protected $list_mask = 0;
+	static protected $load_title = 'daportal_content_enabled.title';
+	//queries
+	//IN:	module_id
+	static protected $query_list = 'SELECT
+		daportal_content_public.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, enabled, public, mode
+		FROM daportal_content_public, daportal_download
+		WHERE daportal_content_public.content_id
+		=daportal_download.content_id
+		AND module_id=:module_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user = 'SELECT
+		daportal_content_public.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, enabled, public, mode
+		FROM daportal_content_public, daportal_download
+		WHERE daportal_content_public.content_id
+		=daportal_download.content_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user_private = 'SELECT
+		daportal_content_enabled.content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, enabled, public, mode
+		FROM daportal_content_enabled, daportal_download
+		WHERE daportal_content_enabled.content_id
+		=daportal_download.content_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
 
 
 	//methods

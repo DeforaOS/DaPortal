@@ -55,6 +55,10 @@ class Content
 				case 'username':
 					$this->$k = $v;
 					break;
+				case 'groupname':
+					//XXX for compatibility
+					$this->group = $v;
+					break;
 				//protected
 				default:
 					$this->set($k, $v);
@@ -283,7 +287,7 @@ class Content
 		switch($order)
 		{
 			case 'timestamp':
-				return 'daportal_content_public.timestamp DESC';
+				return 'timestamp DESC';
 			default:
 				return static::$list_order;
 		}
