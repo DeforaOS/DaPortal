@@ -60,6 +60,49 @@ class ProjectContent extends MultiContent
 	}
 
 
+	//ProjectContent::getMembers
+	public function getMembers($engine, $order = FALSE, $limit = FALSE,
+			$offset = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$project_query_list_members;
+		$args = array('project_id' => $this->getID());
+
+		if(($user = $this->getOwner($engine)) === FALSE)
+			return FALSE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return FALSE;
+		$ret = array($user);
+		foreach($res as $r)
+		{
+			$user = new ProjectUser($engine, $r['user_id'],
+				$r['username']);
+			$user->setProjectAdmin($this, ($db->isTrue($r['admin']))
+					? TRUE : FALSE);
+			$ret[] = $user;
+		}
+		return $ret;
+	}
+
+
+	//ProjectUser::getOwner
+	public function getOwner($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$project_query_get_user;
+		$args = array('project_id' => $this->getID());
+
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->count() != 1)
+			return FALSE;
+		$res = $res->current();
+		$user = new ProjectUser($engine, $res['user_id'],
+				$res['username']);
+		$user->setProjectAdmin($this, TRUE);
+		return $user;
+	}
+
+
 	//useful
 	//ProjectContent::display
 	public function display($engine, $request)
@@ -69,6 +112,7 @@ class ProjectContent extends MultiContent
 			case 'browse':
 			case 'download':
 			case 'gallery':
+			case 'members':
 			case 'timeline':
 				$title = _('Project: ').$this->getTitle();
 				$page = new Page(array('title' => $title));
@@ -206,6 +250,38 @@ class ProjectContent extends MultiContent
 		return $page;
 	}
 
+	protected function _displayMembers($engine, $request, $page)
+	{
+		$vbox = $page->append('vbox');
+		//members
+		$error = _('Could not list members');
+		if(($res = $this->getMembers($engine)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
+		$vbox = $page->append('vbox');
+		$vbox->append('title', array('text' => _('Members')));
+		$columns = array('title' => _('Name'),
+				'admin' => _('Administrator'));
+		$view = $vbox->append('treeview', array('columns' => $columns,
+				'view' => 'details'));
+		$no = new PageElement('image', array('stock' => 'no',
+			'size' => 16, 'title' => _('Disabled')));
+		$yes = new PageElement('image', array('stock' => 'yes',
+			'size' => 16, 'title' => _('Enabled')));
+		foreach($res as $user)
+		{
+			$r = new Request('user', FALSE, $user->getUserID(),
+				$user->getUsername());
+			$link = new PageElement('link', array('request' => $r,
+				'stock' => 'user',
+				'text' => $user->getUsername()));
+			$row = $view->append('row', array('title' => $link));
+			$row->set('admin', $user->isProjectAdmin($engine, $this)
+					? $yes : $no);
+		}
+		return $page;
+	}
+
 	protected function _displayTimeline($engine, $request, $page)
 	{
 		$class = get_class($this->getModule());
@@ -259,6 +335,7 @@ class ProjectContent extends MultiContent
 			'gallery' => _('Gallery'),
 			'timeline' => _('Timeline'),
 			'browse' => _('Browse'),
+			'members' => _('Members'),
 			'homepage' => _('Homepage'));
 
 		$toolbar = parent::displayToolbar($engine, $request);
@@ -424,6 +501,13 @@ class ProjectContent extends MultiContent
 	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	project_id
+	static protected $project_query_get_user = 'SELECT
+		user_id, username
+		FROM daportal_project, daportal_content_enabled
+		WHERE daportal_project.project_id
+		=daportal_content_enabled.content_id
+		AND project_id=:project_id';
+	//IN:	project_id
 	//	synopsis
 	//	cvsroot
 	static protected $project_query_insert = 'INSERT INTO
@@ -447,6 +531,15 @@ class ProjectContent extends MultiContent
 		AND download.public='1' AND download.enabled='1'
 		AND project_id=:project_id
 		ORDER BY download.timestamp DESC";
+	//IN:	project_id
+	static protected $project_query_list_members = 'SELECT
+		daportal_user_enabled.user_id AS user_id, username,
+		daportal_project_user.admin AS admin
+		FROM daportal_project_user, daportal_user_enabled
+		WHERE daportal_project_user.user_id
+		=daportal_user_enabled.user_id
+		AND project_id=:project_id
+		ORDER BY username ASC';
 	//IN:	project_id
 	protected $project_query_list_screenshots = "SELECT
 		daportal_download.content_id AS id, download.title title

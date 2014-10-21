@@ -40,6 +40,7 @@ class ProjectModule extends MultiContentModule
 			case 'browse':
 			case 'download':
 			case 'gallery':
+			case 'members':
 			case 'homepage':
 			case 'timeline':
 				return $this->callDisplay($engine, $request);
@@ -117,14 +118,6 @@ class ProjectModule extends MultiContentModule
 		AND project.content_id=daportal_bug.project_id
 		AND daportal_project.project_id=project.content_id
 		AND bug.module_id=:module_id';
-	protected $project_query_members = 'SELECT
-		daportal_user_enabled.user_id AS user_id, username,
-		daportal_project_user.admin AS admin
-		FROM daportal_project_user, daportal_user_enabled
-		WHERE daportal_project_user.user_id
-		=daportal_user_enabled.user_id
-		AND project_id=:project_id
-		ORDER BY username ASC';
 	protected $project_query_project_insert = 'INSERT INTO
 		daportal_project (project_id, synopsis, cvsroot)
 		VALUES (:project_id, :synopsis, :cvsroot)';
@@ -196,19 +189,7 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::getMembers
 	protected function getMembers($engine, $project)
 	{
-		$db = $engine->getDatabase();
-		$query = $this->project_query_members;
-		$args = array('project_id' => $project->getID());
-
-		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			return FALSE;
-		$ret = array();
-		foreach($res as $r)
-		{
-			$r['admin'] = ($db->isTrue($r['admin'])) ? TRUE : FALSE;
-			$ret[] = $r;
-		}
-		return $ret;
+		return $project->getMembers($engine);
 	}
 
 
@@ -236,13 +217,13 @@ class ProjectModule extends MultiContentModule
 	{
 		$cred = $engine->getCredentials();
 
-		if(($members = $this->getMembers($engine, $project)) === FALSE)
+		if(($members = $project->getMembers($engine)) === FALSE)
 			return FALSE;
 		$uid = $cred->getUserID();
 		if($project->getUserID() == $uid)
 			return TRUE;
 		foreach($members as $m)
-			if($m['user_id'] == $uid)
+			if($m->getUserID() == $uid)
 				return TRUE;
 		return FALSE;
 	}
@@ -730,44 +711,6 @@ class ProjectModule extends MultiContentModule
 				$content, $project);
 		//content
 		$this->helperDisplayText($engine, $request, $page, $content);
-	}
-
-
-	//ProjectModule::helperDisplayMembers
-	protected function helperDisplayMembers($engine, $request, $page,
-			$content)
-	{
-		$user = new User($engine, $content['user_id']);
-
-		if(($members = $this->getMembers($engine, $content)) === FALSE)
-			return;
-		$vbox = $page->append('vbox');
-		$vbox->append('title', array('text' => _('Members')));
-		$columns = array('title' => _('Name'),
-				'admin' => _('Administrator'));
-		$view = $vbox->append('treeview', array('columns' => $columns));
-		$no = new PageElement('image', array('stock' => 'no',
-			'size' => 16, 'title' => _('Disabled')));
-		$yes = new PageElement('image', array('stock' => 'yes',
-			'size' => 16, 'title' => _('Enabled')));
-		//project owner
-		$r = new Request('user', FALSE, $user->getUserID(),
-				$user->getUsername());
-		$link = new PageElement('link', array('request' => $r,
-				'stock' => 'user',
-				'text' => $user->getUsername()));
-		$view->append('row', array('title' => $link, 'admin' => $yes));
-		//project members
-		foreach($members as $m)
-		{
-			$row = $view->append('row');
-			$r = new Request('user', FALSE, $m['user_id'],
-				$m['username']);
-			$link = new PageElement('link', array('request' => $r,
-				'stock' => 'user', 'text' => $m['username']));
-			$row->setProperty('title', $link);
-			$row->setProperty('admin', $m['admin'] ? $yes : $no);
-		}
 	}
 
 
