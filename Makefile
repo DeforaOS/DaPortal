@@ -247,6 +247,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/project/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/user.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/bug.php \
