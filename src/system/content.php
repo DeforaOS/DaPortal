@@ -253,10 +253,13 @@ class Content
 	public function getDate($engine, $format = FALSE)
 	{
 		$database = $engine->getDatabase();
+		$informat = FALSE;
 
 		if(($timestamp = $this->timestamp) === FALSE)
-			$timestamp = strftime('%d/%m/%Y %H:%M:%S', time());
-		return $database->formatDate($engine, $timestamp, $format);
+		{
+			$informat = '%Y-%m-%d %H:%M:%S';
+			$timestamp = strftime($informat, time());
+		}
 		if($format === FALSE)
 			$format = '%d/%m/%Y %H:%M:%S';
 		return $database->formatDate($engine, $timestamp, $format,
