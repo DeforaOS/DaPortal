@@ -484,8 +484,8 @@ class Content
 	static public function displayList($engine, $request = FALSE,
 			$content = FALSE, $limit = FALSE, $offset = 0)
 	{
-		$columns = static::getColumns();
-		$view = new PageElement('treeview', array('columns' => $columns,
+		$view = new PageElement('treeview', array(
+				'columns' => static::getColumns(),
 				'alternate' => static::$list_alternate));
 
 		if($content === FALSE)
@@ -864,7 +864,6 @@ class Content
 			$offset, $user)
 	{
 		$credentials = $engine->getCredentials();
-		$vbox = new PageElement('vbox');
 		$database = $engine->getDatabase();
 		$query = static::$query_list;
 		$args = array('module_id' => $module->getID());
