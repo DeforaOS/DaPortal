@@ -740,7 +740,7 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		//paging
-		$count = $res->count();
+		$count = count($res);
 		$offset = 0;
 		if(($limit = $this->content_list_count) > 0)
 		{
@@ -756,10 +756,10 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
-		for($res->seek($offset), $i = 0; $res->valid() && $i < $limit;
-				$res->next(), $i++)
+		for($i = $offset; $i < $offset + $limit && isset($res[$i]);
+			$i++)
 		{
-			$content = $res->current();
+			$content = $res[$i];
 			$treeview->append($content->displayRow($engine,
 					$request));
 		}
