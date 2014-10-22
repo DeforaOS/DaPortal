@@ -226,43 +226,58 @@ abstract class ContentModule extends Module
 			= 'Update in progress, please wait...';
 
 	//queries
-	protected $query_admin_delete = 'DELETE FROM daportal_content
+	//IN:	module_id
+	//	content_id
+	static protected $query_admin_delete = 'DELETE FROM daportal_content
 		WHERE module_id=:module_id
 		AND content_id=:content_id';
-	protected $query_admin_disable = "UPDATE daportal_content
+	//IN:	module_id
+	//	content_id
+	static protected $query_admin_disable = "UPDATE daportal_content
 		SET enabled='0'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
-	protected $query_admin_enable = "UPDATE daportal_content
+	//IN:	module_id
+	//	content_id
+	static protected $query_admin_enable = "UPDATE daportal_content
 		SET enabled='1'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	content_id
-	protected $query_admin_publish = "UPDATE daportal_content
+	static protected $query_admin_publish = "UPDATE daportal_content
 		SET public='1'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	content_id
-	protected $query_admin_unpublish = "UPDATE daportal_content
+	static protected $query_admin_unpublish = "UPDATE daportal_content
 		SET public='0'
 		WHERE module_id=:module_id
 		AND content_id=:content_id";
-	protected $query_delete = 'DELETE FROM daportal_content
+	//IN:	module_id
+	//	content_id
+	//	user_id
+	static protected $query_delete = 'DELETE FROM daportal_content
 		WHERE module_id=:module_id
 		AND content_id=:content_id
 		AND user_id=:user_id';
-	protected $query_disable = "UPDATE daportal_content
+	//IN:	module_id
+	//	content_id
+	//	user_id
+	static protected $query_disable = "UPDATE daportal_content
 		SET enabled='0'
 		WHERE module_id=:module_id
 		AND content_id=:content_id AND user_id=:user_id";
-	protected $query_enable = "UPDATE daportal_content
+	//IN:	module_id
+	//	content_id
+	//	user_id
+	static protected $query_enable = "UPDATE daportal_content
 		SET enabled='1'
 		WHERE module_id=:module_id
 		AND content_id=:content_id AND user_id=:user_id";
 	//IN:	module_id
-	protected $query_list_admin = 'SELECT content_id AS id, timestamp,
+	static protected $query_list_admin = 'SELECT content_id AS id, timestamp,
 		daportal_user_enabled.user_id AS user_id, username,
 		daportal_group.group_id AS group_id, groupname,
 		title, daportal_content.enabled AS enabled,
@@ -272,7 +287,7 @@ abstract class ContentModule extends Module
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id';
 	//IN:	module_id
-	protected $query_list_admin_count = 'SELECT COUNT(*) AS count
+	static protected $query_list_admin_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content, daportal_user_enabled, daportal_group
 		WHERE daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user_enabled.user_id
@@ -280,7 +295,7 @@ abstract class ContentModule extends Module
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	protected $query_publish = "UPDATE daportal_content
+	static protected $query_publish = "UPDATE daportal_content
 		SET public='1'
 		WHERE module_id=:module_id
 		AND user_id=:user_id
@@ -288,7 +303,7 @@ abstract class ContentModule extends Module
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	protected $query_unpublish = "UPDATE daportal_content
+	static protected $query_unpublish = "UPDATE daportal_content
 		SET public='0'
 		WHERE module_id=:module_id
 		AND user_id=:user_id
@@ -392,7 +407,7 @@ abstract class ContentModule extends Module
 	protected function callAdmin($engine, $request = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_list_admin;
+		$query = static::$query_list_admin;
 		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
@@ -432,7 +447,7 @@ abstract class ContentModule extends Module
 		if(($limit = $this->content_list_admin_count) > 0)
 		{
 			//obtain the total number of records available
-			$q = $this->query_list_admin_count;
+			$q = static::$query_list_admin_count;
 			if(($res = $db->query($engine, $q, $args)) !== FALSE
 					&& count($res) == 1)
 			{
@@ -522,11 +537,11 @@ abstract class ContentModule extends Module
 	//ContentModule::callDelete
 	protected function callDelete($engine, $request)
 	{
-		$query = $this->query_delete;
+		$query = static::$query_delete;
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin())
-			$query = $this->query_admin_delete;
+			$query = static::$query_admin_delete;
 		return $this->helperApply($engine, $request, $query,
 				$request->getAction(),
 				_('Content could be deleted successfully'),
@@ -537,11 +552,11 @@ abstract class ContentModule extends Module
 	//ContentModule::callDisable
 	protected function callDisable($engine, $request)
 	{
-		$query = $this->query_disable;
+		$query = static::$query_disable;
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin())
-			$query = $this->query_admin_disable;
+			$query = static::$query_admin_disable;
 		return $this->helperApply($engine, $request, $query,
 				$request->getAction(),
 				_('Content could be disabled successfully'),
@@ -569,11 +584,11 @@ abstract class ContentModule extends Module
 	//ContentModule::callEnable
 	protected function callEnable($engine, $request)
 	{
-		$query = $this->query_enable;
+		$query = static::$query_enable;
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin())
-			$query = $this->query_admin_enable;
+			$query = static::$query_admin_enable;
 		return $this->helperApply($engine, $request, $query,
 				$request->getAction(),
 				_('Content could be enabled successfully'),
@@ -759,14 +774,14 @@ abstract class ContentModule extends Module
 	//ContentModule::callPost
 	protected function callPost($engine, $request)
 	{
-		$query = $this->query_publish;
+		$query = static::$query_publish;
 		$cred = $engine->getCredentials();
 
 		if(!$this->canPublish($engine, $request, FALSE, $error))
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
-			$query = $this->query_admin_publish;
+			$query = static::$query_admin_publish;
 		return $this->helperApply($engine, $request, $query,
 				$request->getAction(),
 				_('Content could be published successfully'),
@@ -844,7 +859,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$query = $this->query_publish;
+		$query = static::$query_publish;
 		$args = array('module_id' => $this->id,
 			'content_id' => $content->getID(),
 			'user_id' => $cred->getUserID());
@@ -938,14 +953,14 @@ abstract class ContentModule extends Module
 	//ContentModule::callUnpost
 	protected function callUnpost($engine, $request)
 	{
-		$query = $this->query_unpublish;
+		$query = static::$query_unpublish;
 		$cred = $engine->getCredentials();
 
 		if(!$this->canUnpublish($engine, $request, FALSE, $error))
 			return new PageElement('dialog', array('type' => 'error',
 					'text' => $error));
 		if($cred->isAdmin())
-			$query = $this->query_admin_unpublish;
+			$query = static::$query_admin_unpublish;
 		return $this->helperApply($engine, $request, $query,
 				$request->getAction(),
 				_('Content could be unpublished successfully'),

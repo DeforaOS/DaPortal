@@ -72,15 +72,15 @@ class AdminModule extends Module
 	//properties
 	protected $stock_back = 'back';
 	//queries
-	protected $query_admin = "SELECT name FROM daportal_module
+	static protected $query_admin = "SELECT name FROM daportal_module
 		WHERE enabled='1' ORDER BY name ASC";
-	protected $query_admin_modules = "SELECT module_id, name, enabled
+	static protected $query_admin_modules = "SELECT module_id, name, enabled
 		FROM daportal_module
 		ORDER BY name ASC";
-	protected $query_disable = "UPDATE daportal_module
+	static protected $query_disable = "UPDATE daportal_module
 		SET enabled='0'
 		WHERE module_id=:module_id";
-	protected $query_enable = "UPDATE daportal_module
+	static protected $query_enable = "UPDATE daportal_module
 		SET enabled='1'
 		WHERE module_id=:module_id";
 
@@ -109,7 +109,7 @@ class AdminModule extends Module
 	protected function callAdmin($engine, $request = FALSE)
 	{
 		$title = _('Modules administration');
-		$query = $this->query_admin_modules;
+		$query = static::$query_admin_modules;
 		$database = $engine->getDatabase();
 		$actions = array('disable', 'enable');
 
@@ -177,7 +177,7 @@ class AdminModule extends Module
 	{
 		$title = _('Administration');
 		$database = $engine->getDatabase();
-		$query = $this->query_admin;
+		$query = static::$query_admin;
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
@@ -217,7 +217,7 @@ class AdminModule extends Module
 	//AdminModule::callDisable
 	protected function callDisable($engine, $request)
 	{
-		$query = $this->query_disable;
+		$query = static::$query_disable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 				_('Module(s) could be disabled successfully'),
@@ -228,7 +228,7 @@ class AdminModule extends Module
 	//AdminModule::callEnable
 	protected function callEnable($engine, $request)
 	{
-		$query = $this->query_enable;
+		$query = static::$query_enable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 				_('Module(s) could be enabled successfully'),

@@ -207,7 +207,7 @@ class FolderDownloadContent extends DownloadContent
 	protected function _saveInsert($engine, $request, &$error)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->folder_query_insert;
+		$query = static::$folder_query_insert;
 		$parent = $request->get('parent');
 		$mode = $request->get('mode');
 
@@ -268,7 +268,7 @@ class FolderDownloadContent extends DownloadContent
 	//IN:	content_id
 	//	parent
 	//	mode
-	protected $folder_query_insert = 'INSERT INTO daportal_download
+	static protected $folder_query_insert = 'INSERT INTO daportal_download
 		(content_id, parent, mode)
 		VALUES (:content_id, :parent, :mode)';
 	//IN:	module_id

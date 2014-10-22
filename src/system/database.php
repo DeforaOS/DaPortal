@@ -174,7 +174,7 @@ abstract class Database
 	protected $profile = FALSE;
 
 	//queries
-	protected $query_sql_profile = 'INSERT INTO daportal_sql_profile
+	static protected $query_sql_profile = 'INSERT INTO daportal_sql_profile
 		(time, query) VALUES (:time, :query)';
 
 
@@ -237,7 +237,7 @@ abstract class Database
 			$query = substr($query, 0, 252).'...';
 		$args = array('time' => $time, 'query' => $query);
 		$this->profile = TRUE;
-		if($this->query($engine, $this->query_sql_profile, $args)
+		if($this->query($engine, static::$query_sql_profile, $args)
 				=== FALSE)
 			$engine->log('LOG_ERR', $error.' (SQL error)');
 		$this->profile = FALSE;

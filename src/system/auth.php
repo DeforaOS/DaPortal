@@ -35,7 +35,7 @@ abstract class Auth
 	{
 		$credentials = $this->getCredentials($engine);
 		$database = $engine->getDatabase();
-		$query = $this->query_variable_get;
+		$query = static::$query_variable_get;
 		$args = array('user_id' => $credentials->getUserID(),
 			'variable' => $variable);
 
@@ -70,7 +70,7 @@ abstract class Auth
 	{
 		$credentials = $this->getCredentials($engine);
 		$database = $engine->getDatabase();
-		$query = $this->query_variable_set;
+		$query = static::$query_variable_set;
 		$args = array('user_id' => $credentials->getUserID(),
 			'variable' => $variable);
 
@@ -78,11 +78,11 @@ abstract class Auth
 			//variables are only allowed for authenticated users
 			return FALSE;
 		if($value === FALSE)
-			$query = $this->query_variable_remove;
+			$query = static::$query_variable_remove;
 		else if(($v = $this->getVariable($engine, $variable)) === FALSE)
 		{
 			//this variable is not in the database
-			$query = $this->query_variable_add;
+			$query = static::$query_variable_add;
 			$args['value'] = serialize($value);
 		}
 		else if($v != $value)
@@ -142,15 +142,15 @@ abstract class Auth
 	//properties
 	protected $credentials = FALSE;
 	//queries
-	protected $query_variable_add = 'INSERT INTO daportal_auth_variable
+	static protected $query_variable_add = 'INSERT INTO daportal_auth_variable
 		(user_id, variable, value)
 		VALUES (:user_id, :variable, :value)';
-	protected $query_variable_get = 'SELECT value
+	static protected $query_variable_get = 'SELECT value
 		FROM daportal_auth_variable
 		WHERE user_id=:user_id AND variable=:variable';
-	protected $query_variable_remove = 'DELETE FROM daportal_auth_variable
+	static protected $query_variable_remove = 'DELETE FROM daportal_auth_variable
 		WHERE user_id=:user_id AND variable=:variable';
-	protected $query_variable_set = 'UPDATE daportal_auth_variable
+	static protected $query_variable_set = 'UPDATE daportal_auth_variable
 		SET value=:value
 		WHERE user_id=:user_id AND variable=:variable';
 

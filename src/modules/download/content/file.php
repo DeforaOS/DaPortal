@@ -200,7 +200,7 @@ class FileDownloadContent extends DownloadContent
 		$module = $this->getModule()->getName();
 		$root = $this->getRoot($module);
 		$db = $engine->getDatabase();
-		$query = $this->file_query_insert;
+		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
 
 		if(($filename = $request->getParameter('filename')) === FALSE
@@ -249,7 +249,7 @@ class FileDownloadContent extends DownloadContent
 	//IN:	content_id
 	//	parent
 	//	mode
-	protected $file_query_insert = 'INSERT INTO daportal_download
+	static protected $file_query_insert = 'INSERT INTO daportal_download
 		(content_id, parent, mode)
 		VALUES (:content_id, :parent, :mode)';
 	//IN:	module_id

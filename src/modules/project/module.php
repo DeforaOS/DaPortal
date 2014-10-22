@@ -102,7 +102,7 @@ class ProjectModule extends MultiContentModule
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=daportal_bug.content_id";
 	//IN:	module_id
-	protected $project_query_list_bugs = 'SELECT bug.content_id AS id,
+	static protected $project_query_list_bugs = 'SELECT bug.content_id AS id,
 		bug.timestamp AS timestamp,
 		bug.module_id AS module_id, bug.module AS module,
 		bug.user_id AS user_id, bug.username AS username,
@@ -118,10 +118,7 @@ class ProjectModule extends MultiContentModule
 		AND project.content_id=daportal_bug.project_id
 		AND daportal_project.project_id=project.content_id
 		AND bug.module_id=:module_id';
-	protected $project_query_project_insert = 'INSERT INTO
-		daportal_project (project_id, synopsis, cvsroot)
-		VALUES (:project_id, :synopsis, :cvsroot)';
-	protected $project_query_project_release_insert = 'INSERT INTO
+	static protected $project_query_project_release_insert = 'INSERT INTO
 		daportal_project_download (project_id, download_id)
 		VALUES (:project_id, :download_id)';
 
@@ -312,7 +309,7 @@ class ProjectModule extends MultiContentModule
 		$title = _('Bug reports');
 		$error = FALSE;
 		//FIXME use BugProjectContent::listAll() instead
-		$query = $this->project_query_list_bugs;
+		$query = static::$project_query_list_bugs;
 		$project = FALSE;
 
 		//XXX unlike ProjectModule::list() here getID() is the project
@@ -499,7 +496,7 @@ class ProjectModule extends MultiContentModule
 			&$content)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->project_query_project_release_insert;
+		$query = static::$project_query_project_release_insert;
 
 		//verify the request
 		if($request === FALSE || $request->get('submit') === FALSE)

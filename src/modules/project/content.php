@@ -154,7 +154,7 @@ class ProjectContent extends ContentMulti
 	{
 		$class = get_class($this->getModule());
 		$db = $engine->getDatabase();
-		$query = $this->project_query_list_downloads;
+		$query = static::$project_query_list_downloads;
 
 		$vbox = $page->append('vbox');
 		//source code
@@ -221,7 +221,7 @@ class ProjectContent extends ContentMulti
 	protected function _displayGallery($engine, $request, $page)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->project_query_list_screenshots;
+		$query = static::$project_query_list_screenshots;
 
 		$vbox = $page->append('vbox');
 		//screenshots
@@ -447,9 +447,8 @@ class ProjectContent extends ContentMulti
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
-		$class = static::$class;
 		$database = $engine->getDatabase();
-		$query = $class::$project_query_insert;
+		$query = static::$project_query_insert;
 
 		$this->set('synopsis', $request->getParameter('synopsis'));
 		$this->set('scm', $request->getParameter('scm'));
@@ -470,7 +469,7 @@ class ProjectContent extends ContentMulti
 	protected function _saveUpdate($engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->project_query_update;
+		$query = static::$project_query_update;
 		$args = array('project_id' => $this->getID());
 		$fields = array('synopsis', 'scm', 'cvsroot');
 
@@ -514,7 +513,7 @@ class ProjectContent extends ContentMulti
 		daportal_project(project_id, synopsis, scm, cvsroot)
 		VALUES (:project_id, :synopsis, :scm, :cvsroot)';
 	//IN:	project_id
-	protected $project_query_list_downloads = "SELECT
+	static protected $project_query_list_downloads = "SELECT
 		daportal_download.content_id AS id, download.title AS title,
 		download.timestamp AS timestamp,
 		daportal_user_enabled.user_id AS user_id, username, groupname,
@@ -541,7 +540,7 @@ class ProjectContent extends ContentMulti
 		AND project_id=:project_id
 		ORDER BY username ASC';
 	//IN:	project_id
-	protected $project_query_list_screenshots = "SELECT
+	static protected $project_query_list_screenshots = "SELECT
 		daportal_download.content_id AS id, download.title title
 		FROM daportal_project_screenshot, daportal_content project,
 		daportal_download, daportal_content download
@@ -557,7 +556,7 @@ class ProjectContent extends ContentMulti
 	//	synopsis
 	//	scm
 	//	cvsroot
-	protected $project_query_update = 'UPDATE daportal_project
+	static protected $project_query_update = 'UPDATE daportal_project
 		SET synopsis=:synopsis, scm=:scm, cvsroot=:cvsroot
 		WHERE project_id=:project_id';
 	//IN:	module_id
