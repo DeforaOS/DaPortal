@@ -482,7 +482,7 @@ class Content
 
 	//Content::displayList
 	static public function displayList($engine, $request = FALSE,
-			$content = FALSE)
+			$content = FALSE, $limit = FALSE, $offset = 0)
 	{
 		$columns = static::getColumns();
 		$view = new PageElement('treeview', array('columns' => $columns,
@@ -490,8 +490,14 @@ class Content
 
 		if($content === FALSE)
 			$content = array();
-		foreach($content as $c)
+		if($limit === FALSE && ($limit = static::$list_limit) === FALSE)
+			$limit = count($content);
+		for($i = $offset; $i < $offset + $limit && isset($content[$i]);
+			$i++)
+		{
+			$c = $content[$i];
 			$view->append($c->displayRow($engine, $request));
+		}
 		return $view;
 	}
 
@@ -954,6 +960,7 @@ class Content
 	static protected $class = 'Content';
 	protected $fields = array('title' => 'Title', 'content' => 'Content');
 	static protected $list_alternate = FALSE;
+	static protected $list_limit = 20;
 	static protected $list_order = 'timestamp DESC';
 	static protected $load_title = 'title';
 	protected $preview_length = 150;

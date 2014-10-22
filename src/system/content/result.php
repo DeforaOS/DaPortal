@@ -17,7 +17,7 @@
 
 
 //ContentResult
-class ContentResult implements Countable, SeekableIterator
+class ContentResult implements ArrayAccess, Countable, SeekableIterator
 {
 	//ContentResult::ContentResult
 	public function __construct($engine, $module, $class, $result)
@@ -26,6 +26,35 @@ class ContentResult implements Countable, SeekableIterator
 		$this->module = $module;
 		$this->class = $class;
 		$this->result = $result;
+	}
+
+
+	//ArrayAccess
+	//ContentResult::offsetExists
+	public function offsetExists($offset)
+	{
+		$this->result->seek($offset);
+		return $this->result->valid();
+	}
+
+
+	//ContentResult::offsetGet
+	public function offsetGet($offset)
+	{
+		$this->result->seek($offset);
+		return $this->current();
+	}
+
+
+	//ContentResult::offsetSet
+	public function offsetSet($offset, $value)
+	{
+	}
+
+
+	//ContentResult::offsetUnset
+	public function offsetUnset($offset)
+	{
 	}
 
 
