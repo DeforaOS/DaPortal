@@ -101,7 +101,7 @@ class BugProjectContent extends ContentMulti
 					return FALSE;
 				break;
 			case 'bug_type':
-				//XXX workaround for the MultiContent class
+				//XXX workaround for the ContentMulti class
 				$name = 'type';
 			case 'type':
 				if(!array_key_exists($value, self::$types))
