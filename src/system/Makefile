@@ -1,3 +1,4 @@
+SUBDIRS	= content
 PREFIX	= /usr/local
 DESTDIR	=
 MKDIR	= mkdir -m 0755 -p
@@ -5,13 +6,19 @@ INSTALL	= install
 RM	= rm -f
 
 
-all:
+all: subdirs
+
+subdirs:
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
 clean:
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
 
-distclean: clean
+distclean:
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
 
 install:
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 auth.php $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/auth
@@ -28,8 +35,6 @@ install:
 	$(INSTALL) -m 0644 config/section.php $(DESTDIR)$(PREFIX)/daportal/src/system/config/section.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/daportal/src/system/content.php
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/content
-	$(INSTALL) -m 0644 content/multi.php $(DESTDIR)$(PREFIX)/daportal/src/system/content/multi.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 database.php $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/database
@@ -78,6 +83,7 @@ install:
 	$(INSTALL) -m 0644 user.php $(DESTDIR)$(PREFIX)/daportal/src/system/user.php
 
 uninstall:
+	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/auth.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/auth/credentials.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/autoload.php
@@ -86,7 +92,6 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/config.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/config/section.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/content.php
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/content/multi.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/engine.php
@@ -111,4 +116,4 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/template.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/user.php
 
-.PHONY: all clean distclean install uninstall
+.PHONY: all subdirs clean distclean install uninstall

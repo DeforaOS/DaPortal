@@ -17,7 +17,7 @@
 
 
 //BugReplyProjectContent
-class BugReplyProjectContent extends MultiContent
+class BugReplyProjectContent extends ContentMulti
 {
 	//public
 	//methods

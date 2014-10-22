@@ -19,7 +19,7 @@
 
 
 //WikiContent
-class WikiContent extends MultiContent
+class WikiContent extends Content
 {
 	//public
 	//methods

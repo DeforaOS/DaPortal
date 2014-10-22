@@ -486,33 +486,35 @@ abstract class ContentModule extends Module
 	{
 		$class = $this->content_class;
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
-		$pcnt = FALSE;
 
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $this->text_content_title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $this->text_content_title));
-		//paging
-		$offset = FALSE;
-		if(($limit = $this->content_list_count) > 0)
-		{
-			$pcnt = $class::countAll($engine, $this);
-			if($pcnt !== FALSE)
-			{
-				if(is_numeric($p) && $p > 1)
-					$offset = $limit * ($p - 1);
-			}
-		}
 		$error = _('Could not list the content available');
-		if(($list = $class::listAll($engine, $this, FALSE, $limit,
-				$offset)) === FALSE)
+		if(($res = $class::listAll($engine, $this, FALSE)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		while(($content = array_shift($list)) != NULL)
-			$page->append($content->preview($engine, $request));
+		//paging
+		$count = $res->count();
+		$offset = 0;
+		if(($limit = $this->content_list_count) > 0)
+		{
+			if(is_numeric($p) && $p > 1)
+				$offset = $limit * ($p - 1);
+		}
+		else
+			$limit = $count;
+		for($res->seek($offset), $i = 0; $res->valid() && $i < $limit;
+				$res->next(), $i++)
+		{
+			$content = $res->current();
+			$page->append($content->preview($engine,
+					$request));
+		}
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
+		$this->helperPaging($engine, $request, $page, $limit, $count);
 		return $page;
 	}
 
@@ -602,17 +604,21 @@ abstract class ContentModule extends Module
 		if($group === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
-		//obtain the total number of records available
-		$limit = $this->content_list_count;
-		$offset = FALSE;
-		if(($pcnt = $class::countAll($engine, $this, $group)) !== FALSE
-				&& is_numeric($p) && $p > 1)
-			$offset = $limit * ($p - 1);
 		$error = _('Unable to list the content');
-		if(($res = $class::listAll($engine, $this, FALSE, $limit,
-				$offset, $group)) === FALSE)
+		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
+				$group)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
+		//paging
+		$count = $res->count();
+		$offset = 0;
+		if(($limit = $this->content_list_count) > 0)
+		{
+			if(is_numeric($p) && $p > 1)
+				$offset = $limit * ($p - 1);
+		}
+		else
+			$limit = $count;
 		//FIXME some helpers should move to the Content class
 		//view
 		$treeview = $this->helperListView($engine, $request);
@@ -620,11 +626,15 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
-		while(($content = array_shift($res)) != NULL)
+		for($res->seek($offset), $i = 0; $res->valid() && $i < $limit;
+				$res->next(), $i++)
+		{
+			$content = $res->current();
 			$treeview->append($content->displayRow($engine,
 					$request));
+		}
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
+		$this->helperPaging($engine, $request, $page, $limit, $count);
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
 		return $page;
@@ -710,16 +720,20 @@ abstract class ContentModule extends Module
 		//title
 		$page = new Page(array('title' => $title));
 		$this->helperListTitle($engine, $page, $request);
-		//obtain the total number of records available
-		$limit = $this->content_list_count;
-		$offset = FALSE;
-		if(($pcnt = $class::countAll($engine, $this, $user)) !== FALSE
-				&& is_numeric($p) && $p > 1)
-			$offset = $limit * ($p - 1);
-		if(($res = $class::listAll($engine, $this, FALSE, $limit,
-				$offset, $user)) === FALSE)
+		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
+				$user)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
+		//paging
+		$count = $res->count();
+		$offset = 0;
+		if(($limit = $this->content_list_count) > 0)
+		{
+			if(is_numeric($p) && $p > 1)
+				$offset = $limit * ($p - 1);
+		}
+		else
+			$limit = $count;
 		//FIXME some helpers should move to the Content class
 		//view
 		$treeview = $this->helperListView($engine, $request);
@@ -727,11 +741,15 @@ abstract class ContentModule extends Module
 		//toolbar
 		$this->helperListToolbar($engine, $treeview, $request);
 		//rows
-		while(($content = array_shift($res)) != NULL)
+		for($res->seek($offset), $i = 0; $res->valid() && $i < $limit;
+				$res->next(), $i++)
+		{
+			$content = $res->current();
 			$treeview->append($content->displayRow($engine,
 					$request));
+		}
 		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $pcnt);
+		$this->helperPaging($engine, $request, $page, $limit, $count);
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
 		return $page;

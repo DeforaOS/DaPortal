@@ -17,7 +17,7 @@
 
 
 //ProjectContent
-class ProjectContent extends MultiContent
+class ProjectContent extends ContentMulti
 {
 	//public
 	//methods

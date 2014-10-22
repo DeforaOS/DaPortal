@@ -39,8 +39,6 @@ function _autoload_filename($class)
 			return './system/database/result.php';
 		case 'FormatElements':
 			return './system/format/elements.php';
-		case 'MultiContent':
-			return './system/content/multi.php';
 		case 'MultiContentModule':
 			return './modules/content/multi.php';
 		case 'PageElement':
@@ -59,7 +57,7 @@ function _autoload_filename_default($class)
 		$auth = substr($class, 0, $len - 4);
 		return './auth/'.strtolower($auth).'.php';
 	}
-	//Content sub-classes
+	//Content sub-classes (in modules)
 	else if($len > 7 && substr($class, -7) == 'Content')
 	{
 		$module = substr($class, 0, $len - 7);
@@ -114,6 +112,13 @@ function _autoload_filename_default($class)
 		if(realpath('./templates/'.$template.'.php') !== FALSE)
 			return './templates/'.$template.'.php';
 		return './templates/'.strtolower($template).'.php';
+	}
+	//Content sub-classes (in system)
+	//XXX has to be after Modules
+	else if($len > 7 && substr($class, 0, 7) == 'Content')
+	{
+		$content = substr($class, 7);
+		return './system/content/'.strtolower($content).'.php';
 	}
 	return './system/'.strtolower($class).'.php';
 }

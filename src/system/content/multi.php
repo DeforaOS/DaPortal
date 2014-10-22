@@ -16,8 +16,8 @@
 
 
 
-//MultiContent
-class MultiContent extends Content
+//ContentMulti
+class ContentMulti extends Content
 {
 	//public
 	//methods

@@ -279,7 +279,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/config.php \
 		$(PACKAGE)-$(VERSION)/src/system/config/section.php \
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
-		$(PACKAGE)-$(VERSION)/src/system/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/database/result.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
@@ -304,6 +303,10 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/template.php \
 		$(PACKAGE)-$(VERSION)/src/system/user.php \
 		$(PACKAGE)-$(VERSION)/src/system/project.conf \
+		$(PACKAGE)-$(VERSION)/src/system/content/Makefile \
+		$(PACKAGE)-$(VERSION)/src/system/content/multi.php \
+		$(PACKAGE)-$(VERSION)/src/system/content/result.php \
+		$(PACKAGE)-$(VERSION)/src/system/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/templates/Makefile \
 		$(PACKAGE)-$(VERSION)/src/templates/DeforaOS.php \
 		$(PACKAGE)-$(VERSION)/src/templates/EdgeBSD.php \

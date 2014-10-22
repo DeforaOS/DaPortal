@@ -45,6 +45,7 @@ class Content
 				case 'public':
 					//boolean values
 					$v = $database->isTrue($v);
+					//fallback
 				case 'content':
 				case 'group_id':
 				case 'group':
@@ -397,7 +398,7 @@ class Content
 	public function delete($engine)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_delete;
+		$query = static::$query_delete;
 		$args = array('content_id' => $this->id);
 
 		if(!$this->canDelete($engine))
@@ -410,7 +411,7 @@ class Content
 	public function disable($engine)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_disable;
+		$query = static::$query_disable;
 		$args = array('content_id' => $this->id);
 
 		if(!$this->canDisable($engine))
@@ -423,7 +424,7 @@ class Content
 	public function enable($engine)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_enable;
+		$query = static::$query_enable;
 		$args = array('content_id' => $this->id);
 
 		if(!$this->canEnable($engine))
@@ -746,7 +747,7 @@ class Content
 	protected function _saveInsert($engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_insert;
+		$query = static::$query_insert;
 		$args = array('module_id' => $this->module->getID(),
 			'user_id' => $this->user_id,
 			'enabled' => $this->enabled,
@@ -769,7 +770,7 @@ class Content
 				!== FALSE
 				&& $this->canUpdateTimestamp($engine, $request))
 		{
-			$query = $this->query_insert_timestamp;
+			$query = static::$query_insert_timestamp;
 			$args['timestamp'] = $timestamp;
 		}
 		//insert the content
@@ -784,7 +785,7 @@ class Content
 	protected function _saveUpdate($engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_update;
+		$query = static::$query_update;
 		$args = array('module_id' => $this->module->getID(),
 			'content_id' => $this->id,
 			'enabled' => $this->enabled,
@@ -812,7 +813,7 @@ class Content
 				!== FALSE
 				&& $this->canUpdateTimestamp($engine, $request))
 		{
-			$query = $this->query_update_timestamp;
+			$query = static::$query_update_timestamp;
 			$args['timestamp'] = $timestamp;
 		}
 		//update the content
@@ -884,12 +885,8 @@ class Content
 	//Content::listFromResults
 	static public function listFromResults($engine, $module, $results)
 	{
-		$ret = array();
-
-		foreach($results as $r)
-			$ret[] = static::loadFromProperties($engine, $module,
-					$r);
-		return $ret;
+		return new ContentResult($engine, $module, static::$class,
+			$results);
 	}
 
 
@@ -977,14 +974,14 @@ class Content
 	protected $text_update = 'Update';
 	//queries
 	//IN:	content_id
-	protected $query_delete = 'DELETE FROM daportal_content
+	static protected $query_delete = 'DELETE FROM daportal_content
 		WHERE content_id=:content_id';
 	//IN:	content_id
-	protected $query_disable = "UPDATE daportal_content
+	static protected $query_disable = "UPDATE daportal_content
 		SET enabled='0'
 		WHERE content_id=:content_id";
 	//IN:	content_id
-	protected $query_enable = "UPDATE daportal_content
+	static protected $query_enable = "UPDATE daportal_content
 		SET enabled='1'
 		WHERE content_id=:content_id";
 	//IN:	module_id
@@ -993,7 +990,7 @@ class Content
 	//	content
 	//	enabled
 	//	public
-	protected $query_insert = 'INSERT INTO daportal_content
+	static protected $query_insert = 'INSERT INTO daportal_content
 		(module_id, user_id, title, content, enabled, public)
 		VALUES (:module_id, :user_id, :title, :content, :enabled,
 			:public)';
@@ -1004,7 +1001,7 @@ class Content
 	//	enabled
 	//	public
 	//	timestamp
-	protected $query_insert_timestamp = 'INSERT INTO daportal_content
+	static protected $query_insert_timestamp = 'INSERT INTO daportal_content
 		(module_id, user_id, title, content, enabled, public, timestamp)
 		VALUES (:module_id, :user_id, :title, :content, :enabled,
 			:public, :timestamp)';
@@ -1062,7 +1059,7 @@ class Content
 	//	content
 	//	enabled
 	//	public
-	protected $query_update = 'UPDATE daportal_content
+	static protected $query_update = 'UPDATE daportal_content
 		SET title=:title, content=:content, enabled=:enabled,
 		public=:public
 		WHERE module_id=:module_id
@@ -1074,7 +1071,7 @@ class Content
 	//	enabled
 	//	public
 	//	timestamp
-	protected $query_update_timestamp = 'UPDATE daportal_content
+	static protected $query_update_timestamp = 'UPDATE daportal_content
 		SET title=:title, content=:content, enabled=:enabled,
 		public=:public, timestamp=:timestamp
 		WHERE module_id=:module_id

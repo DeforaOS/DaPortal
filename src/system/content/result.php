@@ -16,59 +16,72 @@
 
 
 
-//DatabaseResult
-abstract class DatabaseResult implements Countable, SeekableIterator
+//ContentResult
+class ContentResult implements Countable, SeekableIterator
 {
-	//public
-	//methods
+	//ContentResult::ContentResult
+	public function __construct($engine, $module, $class, $result)
+	{
+		$this->engine = $engine;
+		$this->module = $module;
+		$this->class = $class;
+		$this->result = $result;
+	}
+
+
 	//Countable
-	//DatabaseResult::count
+	//ContentResult::count
 	public function count()
 	{
-		return $this->count;
+		return $this->result->count();
 	}
 
 
 	//SeekableIterator
-	//DatabaseResult::key
+	//ContentResult::current
+	public function current()
+	{
+		$class = $this->class;
+		$res = $this->result->current();
+
+		return $class::loadFromProperties($this->engine, $this->module,
+				$this->result->current());
+	}
+
+
+	//ContentResult::key
 	public function key()
 	{
-		return $this->key;
+		return $this->result->key();
 	}
 
 
-	//DatabaseResult::next
+	//ContentResult::next
 	public function next()
 	{
-		$this->key++;
+		$this->result->next();
 	}
 
 
-	//DatabaseResult::rewind
+	//ContentResult::rewind
 	public function rewind()
 	{
-		$this->key = 0;
+		$this->result->rewind();
 	}
 
 
-	//DatabaseResult::seek
+	//ContentResult::seek
 	public function seek($key)
 	{
-		$this->key = $key;
+		$this->result->seek($key);
 	}
 
 
-	//DatabaseResult::valid
+	//ContentResult::valid
 	public function valid()
 	{
-		return $this->key < $this->count;
+		return $this->result->valid();
 	}
-
-
-	//protected
-	//properties
-	protected $count = 0;
-	protected $key = 0;
 }
 
 ?>

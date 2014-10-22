@@ -17,7 +17,7 @@
 
 
 //DownloadContent
-abstract class DownloadContent extends MultiContent
+abstract class DownloadContent extends ContentMulti
 {
 	//public
 	//methods
@@ -64,16 +64,6 @@ abstract class DownloadContent extends MultiContent
 
 
 	//useful
-	//DownloadContent::countAll
-	static public function countAll($engine, $module, $user = FALSE)
-	{
-		if(($res = static::_listFiles($engine, $module, FALSE, FALSE,
-				FALSE, $user)) === FALSE)
-			return FALSE;
-		return $res->count();
-	}
-
-
 	//DownloadContent::listAll
 	static public function listAll($engine, $module, $order = FALSE,
 			$limit = FALSE, $offset = FALSE, $user = FALSE)
