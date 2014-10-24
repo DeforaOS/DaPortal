@@ -22,6 +22,13 @@ class StreamResponse extends Response
 	//public
 	//methods
 	//accessors
+	//StreamResponse::getCharset
+	public function getCharset()
+	{
+		return FALSE;
+	}
+
+
 	//StreamResponse::getLength
 	public function getLength()
 	{
