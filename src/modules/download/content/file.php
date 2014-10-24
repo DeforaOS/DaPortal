@@ -81,7 +81,7 @@ class FileDownloadContent extends DownloadContent
 					'request' => $request,
 					'text' => $this->getTitle())));
 		$this->_contentField($col1, $col2, _('Type: '),
-				Mime::getType($this->getTitle()));
+				Mime::getType($engine, $this->getTitle()));
 		$request = new Request('user', FALSE, $this->getUserID(),
 			$this->getUsername());
 		$this->_contentField($col1, $col2, _('Owner: '),
