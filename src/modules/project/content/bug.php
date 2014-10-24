@@ -245,7 +245,8 @@ class BugProjectContent extends ContentMulti
 	//queries
 	//IN:	module_id
 	static protected $query_list = "SELECT bug.content_id AS id,
-		bug.timestamp AS timestamp, bug.module_id AS module_id, module,
+		bug.timestamp AS timestamp,
+		bug.module_id AS module_id, bug.module AS module,
 		bug.user_id AS user_id, bug.username AS username,
 		bug.group_id AS group_id, bug.groupname AS groupname,
 		bug.title AS title, bug.content AS content,
