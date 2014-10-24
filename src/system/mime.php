@@ -74,7 +74,13 @@ class Mime
 		foreach(Mime::$types as $g)
 			if(isset($g[1]) && fnmatch($g[1], $filename,
 					FNM_CASEFOLD))
+			{
+				//XXX work-around an issue with *.tar.gz
+				if($g[0] == 'application/x-gzip'
+						|| $g[0] == 'application/gzip')
+					continue;
 				return $g[0];
+			}
 		return $default;
 	}
 
