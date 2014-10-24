@@ -276,7 +276,7 @@ class HTTPEngine extends Engine
 		}
 		//XXX escape the headers
 		//obtain the current content's type (and default to HTML)
-		if(($type = $response->getType($this)) == FALSE)
+		if(($type = $response->getType($this)) === FALSE)
 		{
 			$type = 'text/html';
 			$response->setType($type);
