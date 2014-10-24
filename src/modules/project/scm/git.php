@@ -147,12 +147,12 @@ class GitSCMProject extends SCMProject
 		if(($fp = fopen($path, 'r')) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
+		$filename = basename($file);
+		$type = Mime::getType($engine, $filename);
 		if($request->getParameter('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
-			$filename = basename($file);
 			$ret->setFilename($filename);
-			$type = Mime::getType($engine, $filename);
 			$ret->setType($type);
 			return $ret;
 		}
@@ -164,10 +164,10 @@ class GitSCMProject extends SCMProject
 				'stock' => 'updir', 'text' => 'Browse'));
 		//link to the download
 		$label->append('label', array('text' => ' '));
-		$r = new Request('project', 'browse', $request->getID(),
+		$rdownload = new Request('project', 'browse', $request->getID(),
 			$request->getTitle(), array('file' => $file,
 			'download' => 1));
-		$label->append('link', array('request' => $r,
+		$label->append('link', array('request' => $rdownload,
 					'stock' => 'download',
 					'text' => 'Download file'));
 		//link to this page
@@ -177,13 +177,19 @@ class GitSCMProject extends SCMProject
 		$label->append('link', array('request' => $r,
 					'stock' => 'link',
 					'text' => 'Permalink'));
-		while(($line = fgets($fp)) !== FALSE)
-		{
-			$line = rtrim($line, "\r\n");
-			$vbox->append('label', array(
-					'class' => 'preformatted',
-					'text' => $line));
-		}
+		if(strncmp($type, 'image/', 6) == 0)
+			//attempt to render the image inline
+			$vbox->append('image', array('request' => $rdownload,
+					'text' => $filename));
+		else
+			//render as text
+			while(($line = fgets($fp)) !== FALSE)
+			{
+				$line = rtrim($line, "\r\n");
+				$vbox->append('label', array(
+						'class' => 'preformatted',
+						'text' => $line));
+			}
 		fclose($fp);
 		return $vbox;
 	}
