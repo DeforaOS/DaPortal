@@ -575,9 +575,14 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//display the content
-		$page = new Page(array('title' => $content->getTitle()));
-		$page->append($content->display($engine, $request));
-		return $page;
+		$response = $content->display($engine, $request);
+		if($response instanceof PageElement)
+		{
+			$page = new Page(array('title' => $content->getTitle()));
+			$page->append($response);
+			return $page;
+		}
+		return $response;
 	}
 
 
