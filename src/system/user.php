@@ -27,8 +27,8 @@ class User
 	{
 		$db = $engine->getDatabase();
 		$query = $this->query_get_by_id;
-
 		$args = array('user_id' => $uid);
+
 		if($username !== FALSE)
 		{
 			if($engine instanceof HTTPFriendlyEngine)
