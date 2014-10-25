@@ -61,7 +61,8 @@ class StreamResponse extends Response
 	{
 		$fp = $this->getContent();
 
-		if(rewind($fp) === FALSE)
+		if(($pos = ftell($fp)) !== FALSE && $pos != 0
+				&& rewind($fp) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not rewind the stream');
 		if(($res = fpassthru($fp)) === FALSE)
