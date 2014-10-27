@@ -41,16 +41,22 @@ abstract class Database
 	public function formatDate($engine, $date, $outformat = FALSE,
 			$informat = FALSE)
 	{
-		if($informat === FALSE)
-			$informat = '%Y-%m-%d %H:%M:%S';
-		if(($tm = strptime($date, $informat)) === FALSE)
-			return $date; //XXX better suggestions welcome
-		$timestamp = gmmktime($tm['tm_hour'], $tm['tm_min'],
-			$tm['tm_sec'], $tm['tm_mon'] + 1, $tm['tm_mday'],
-			$tm['tm_year'] + 1900);
-		if($outformat === FALSE)
-			$outformat = '%d/%m/%Y %H:%M:%S';
-		return strftime($outformat, $timestamp);
+		$informats = array('%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S');
+
+		if($informat !== FALSE)
+			$informats = array($informat);
+		foreach($informats as $informat)
+		{
+			if(($tm = strptime($date, $informat)) === FALSE)
+				continue;
+			$timestamp = gmmktime($tm['tm_hour'], $tm['tm_min'],
+				$tm['tm_sec'], $tm['tm_mon'] + 1, $tm['tm_mday'],
+				$tm['tm_year'] + 1900);
+			if($outformat === FALSE)
+				$outformat = '%d/%m/%Y %H:%M:%S';
+			return strftime($outformat, $timestamp);
+		}
+		return $date; //XXX better suggestions welcome
 	}
 
 
