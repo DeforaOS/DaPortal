@@ -204,6 +204,10 @@ CREATE TABLE daportal_content (
 	FOREIGN KEY (user_id) REFERENCES daportal_user (user_id),
 	FOREIGN KEY (group_id) REFERENCES daportal_group (group_id)
 );
+
+CREATE INDEX daportal_content_title_index ON daportal_content (title);
+CREATE INDEX daportal_content_user_id_index ON daportal_content (user_id);
+
 CREATE VIEW daportal_content_enabled AS
 SELECT daportal_content.content_id AS content_id,
 daportal_content.timestamp AS timestamp,

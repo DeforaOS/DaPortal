@@ -154,6 +154,7 @@ CREATE TABLE daportal_content (
 
 CREATE INDEX daportal_content_timestamp_desc_index ON daportal_content (timestamp DESC);
 CREATE INDEX daportal_content_title_index ON daportal_content (title) WHERE enabled='1' AND public='1';
+CREATE INDEX daportal_content_user_id_index ON daportal_content (user_id);
 
 CREATE VIEW daportal_content_enabled AS
 SELECT daportal_content.content_id AS content_id,
