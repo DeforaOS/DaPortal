@@ -236,8 +236,9 @@ class HTMLFormat extends FormatElements
 		$standalone = $this->get('standalone');
 
 		$this->renderTabs();
+		$filename = "themes/$theme.css";
 		if($standalone && ($css = @file_get_contents(
-				"../data/themes/$theme.css")) !== FALSE)
+				'../data/'.$filename)) !== FALSE)
 		{
 			$this->tagOpen('style', FALSE, FALSE, array(
 					'type' => 'text/css',
@@ -247,7 +248,7 @@ class HTMLFormat extends FormatElements
 		}
 		else
 			$this->tag('link', FALSE, FALSE, array('rel' => $rel,
-					'href' => "themes/$theme.css",
+					'href' => $filename,
 					'title' => $theme));
 	}
 
