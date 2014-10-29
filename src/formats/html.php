@@ -727,15 +727,12 @@ class HTMLFormat extends FormatElements
 			//XXX to display the "alt" text only when relevant
 			$attributes['src'] = 'icons/generic/'.$size.'x'.$size
 				.'/stock.png';
-			if($standalone)
-			{
+			$filename = '../data/'.$attributes['src'];
+			if($standalone && ($img = file_get_contents($filename))
+					!== FALSE)
 				//FIXME use the actual icon
-				$filename = '../data/'.$attributes['src'];
-				if(($img = file_get_contents($filename))
-						!== FALSE)
-					$attributes['src'] = 'data:image/png'
-						.';base64,'.base64_encode($img);
-			}
+				$attributes['src'] = 'data:image/png'
+					.';base64,'.base64_encode($img);
 			$attributes['width'] = 0;
 			$attributes['height'] = 0;
 		}
