@@ -715,6 +715,7 @@ class HTMLFormat extends FormatElements
 		$size = 48;
 		$class = FALSE;
 		$attributes = array('alt' => $e->get('text'));
+		$standalone = $this->get('standalone');
 
 		if(($title = $e->get('title')) !== FALSE)
 			$attributes['title'] = $title;
@@ -724,8 +725,17 @@ class HTMLFormat extends FormatElements
 				$size = $s;
 			$class = "stock$size $stock";
 			//XXX to display the "alt" text only when relevant
-			$attributes['src'] = "icons/generic/$size".'x'
-				."$size/stock.png";
+			$attributes['src'] = 'icons/generic/'.$size.'x'.$size
+				.'/stock.png';
+			if($standalone)
+			{
+				//FIXME use the actual icon
+				$filename = '../data/'.$attributes['src'];
+				if(($img = file_get_contents($filename))
+						!== FALSE)
+					$attributes['src'] = 'data:image/png'
+						.';base64,'.base64_encode($img);
+			}
 			$attributes['width'] = 0;
 			$attributes['height'] = 0;
 		}
