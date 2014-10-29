@@ -208,35 +208,23 @@ class HTMLFormat extends FormatElements
 	private function _renderTheme($page)
 	{
 		global $config;
-		$standalone = $this->get('standalone');
 
-		if(($theme = $config->get(FALSE, 'theme')) === FALSE)
-			return;
-		//FIXME emit a (debugging) warning if the theme is not readable?
-		$filename = "themes/$theme.css";
-		if($standalone && ($css = file_get_contents(
-				'../data/'.$filename)) !== FALSE)
-		{
-			$this->renderTabs();
-			$this->tagOpen('style', FALSE, FALSE, array(
-					'type' => 'text/css'));
-			print($this->escapeComment($css.'//'));
-			$this->tagClose('style');
-		}
-		else
+		if(($theme = $config->get(FALSE, 'theme')) !== FALSE)
 			$this->_renderThemeCSS($theme);
-		if(($theme = $this->configGet('alternate_themes')) == 1)
+		if($this->configGet('alternate_themes') == 1)
 			$this->_renderThemeAlternate($page, $theme);
 	}
 
-	private function _renderThemeAlternate($page, $theme)
+	private function _renderThemeAlternate($page, $theme = FALSE)
 	{
 		$themes = dirname($_SERVER['SCRIPT_FILENAME']).'/themes';
 
 		if(($dir = @opendir($themes)) === FALSE)
 			return;
 		while(($de = readdir($dir)) !== FALSE)
-			if(substr($de, -4, 4) == '.css' && $de != "$theme.css")
+			if(substr($de, -4, 4) == '.css'
+					&& ($theme === FALSE
+						|| $de != "$theme.css"))
 				$this->_renderThemeCSS(substr($de, 0, -4),
 						TRUE);
 		closedir($dir);
@@ -245,11 +233,22 @@ class HTMLFormat extends FormatElements
 	private function _renderThemeCSS($theme, $alternate = FALSE)
 	{
 		$rel = $alternate ? 'alternate stylesheet' : 'stylesheet';
+		$standalone = $this->get('standalone');
 
 		$this->renderTabs();
-		$this->tag('link', FALSE, FALSE, array('rel' => $rel,
-				'href' => "themes/$theme.css",
-				'title' => $theme));
+		if($standalone && ($css = @file_get_contents(
+				"../data/themes/$theme.css")) !== FALSE)
+		{
+			$this->tagOpen('style', FALSE, FALSE, array(
+					'type' => 'text/css',
+					'title' => $theme));
+			print($this->escapeComment($css.'//'));
+			$this->tagClose('style');
+		}
+		else
+			$this->tag('link', FALSE, FALSE, array('rel' => $rel,
+					'href' => "themes/$theme.css",
+					'title' => $theme));
 	}
 
 	private function _renderTitle($e)
