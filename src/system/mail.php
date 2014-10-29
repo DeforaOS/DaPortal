@@ -109,6 +109,8 @@ class Mail
 		if(($format = Format::attachDefault($engine, 'text/html'))
 				=== FALSE)
 			return FALSE;
+		$format = clone $format;
+		$format->set('standalone', TRUE);
 		ob_start();
 		$format->render($engine, $page);
 		$str = ob_get_contents();
