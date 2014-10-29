@@ -82,6 +82,16 @@ class HTMLFormat extends FormatElements
 	}
 
 
+	//HTMLFormat::escapeComment
+	protected function escapeComment($text)
+	{
+		$from = '-->';
+		$to = '--&gt;';
+
+		return '<!--'.str_replace($from, $to, $text).'-->';
+	}
+
+
 	//HTMLFormat::escapeText
 	protected function escapeText($text)
 	{
@@ -198,13 +208,25 @@ class HTMLFormat extends FormatElements
 	private function _render_theme($page)
 	{
 		global $config;
+		$standalone = $this->get('standalone');
 
 		if(($theme = $config->get(FALSE, 'theme')) === FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the theme is not readable?
 		$this->renderTabs();
-		$this->tag('link', FALSE, FALSE, array('rel' => 'stylesheet',
-					'href' => "themes/$theme.css",
+		$filename = "themes/$theme.css";
+		if($standalone && ($css = file_get_contents(
+				'../data/'.$filename)) !== FALSE)
+		{
+			$this->tagOpen('style', FALSE, FALSE, array(
+					'type' => 'text/css'));
+			print($this->escapeComment($css));
+			$this->tagClose('style');
+		}
+		else
+			$this->tag('link', FALSE, FALSE, array(
+					'rel' => 'stylesheet',
+					'href' => $filename,
 					'title' => $theme));
 		if(($theme = $this->configGet('alternate_themes')) != 1)
 			return;
