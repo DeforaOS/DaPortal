@@ -125,12 +125,12 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('html');
 		$this->renderTabs();
 		$this->tagOpen('head');
-		$this->_render_title($page);
-		$this->_render_base($page);
-		$this->_render_theme($page);
-		$this->_render_icontheme($page);
-		$this->_render_favicon($page);
-		$this->_render_javascript($page);
+		$this->_renderTitle($page);
+		$this->_renderBase($page);
+		$this->_renderTheme($page);
+		$this->_renderIcontheme($page);
+		$this->_renderFavicon($page);
+		$this->_renderJavascript($page);
 		if(($charset = $config->get('defaults', 'charset')) !== FALSE)
 			$this->renderMeta('Content-Type', 'text/html'
 					.'; charset='.$charset);
@@ -158,7 +158,7 @@ class HTMLFormat extends FormatElements
 		$this->engine = FALSE;
 	}
 
-	private function _render_base($page)
+	private function _renderBase($page)
 	{
 		$request = new Request();
 		$url = dirname($this->engine->getURL($request, TRUE)).'/'; //XXX
@@ -166,7 +166,7 @@ class HTMLFormat extends FormatElements
 		$this->tag('base', FALSE, FALSE, array('href' => $url));
 	}
 
-	private function _render_favicon($page)
+	private function _renderFavicon($page)
 	{
 		if(($favicon = $this->configGet('favicon')) === FALSE)
 			return;
@@ -176,7 +176,7 @@ class HTMLFormat extends FormatElements
 					'href' => $favicon));
 	}
 
-	private function _render_icontheme($page)
+	private function _renderIcontheme($page)
 	{
 		global $config;
 
@@ -188,7 +188,7 @@ class HTMLFormat extends FormatElements
 			"@import url('icons/$icontheme.css');");
 	}
 
-	private function _render_javascript($page)
+	private function _renderJavascript($page)
 	{
 		$tag = 'script';
 		$type = 'text/javascript';
@@ -205,7 +205,7 @@ class HTMLFormat extends FormatElements
 		$this->tagClose($tag);
 	}
 
-	private function _render_theme($page)
+	private function _renderTheme($page)
 	{
 		global $config;
 		$standalone = $this->get('standalone');
@@ -213,47 +213,46 @@ class HTMLFormat extends FormatElements
 		if(($theme = $config->get(FALSE, 'theme')) === FALSE)
 			return;
 		//FIXME emit a (debugging) warning if the theme is not readable?
-		$this->renderTabs();
 		$filename = "themes/$theme.css";
 		if($standalone && ($css = file_get_contents(
 				'../data/'.$filename)) !== FALSE)
 		{
+			$this->renderTabs();
 			$this->tagOpen('style', FALSE, FALSE, array(
 					'type' => 'text/css'));
 			print($this->escapeComment($css.'//'));
 			$this->tagClose('style');
 		}
 		else
-			$this->tag('link', FALSE, FALSE, array(
-					'rel' => 'stylesheet',
-					'href' => $filename,
-					'title' => $theme));
-		if(($theme = $this->configGet('alternate_themes')) != 1)
-			return;
-		$this->_render_theme_alternate($page, $theme);
+			$this->_renderThemeCSS($theme);
+		if(($theme = $this->configGet('alternate_themes')) == 1)
+			$this->_renderThemeAlternate($page, $theme);
 	}
 
-	private function _render_theme_alternate($page, $theme)
+	private function _renderThemeAlternate($page, $theme)
 	{
 		$themes = dirname($_SERVER['SCRIPT_FILENAME']).'/themes';
 
 		if(($dir = @opendir($themes)) === FALSE)
 			return;
 		while(($de = readdir($dir)) !== FALSE)
-		{
-			if(substr($de, -4, 4) != '.css'
-					|| $de == "$theme.css")
-				continue;
-			$this->renderTabs();
-			$this->tag('link', FALSE, FALSE, array(
-					'rel' => 'alternate stylesheet',
-					'href' => "themes/$de",
-					'title' => substr($de, 0, -4)));
-		}
+			if(substr($de, -4, 4) == '.css' && $de != "$theme.css")
+				$this->_renderThemeCSS(substr($de, 0, -4),
+						TRUE);
 		closedir($dir);
 	}
 
-	private function _render_title($e)
+	private function _renderThemeCSS($theme, $alternate = FALSE)
+	{
+		$rel = $alternate ? 'alternate stylesheet' : 'stylesheet';
+
+		$this->renderTabs();
+		$this->tag('link', FALSE, FALSE, array('rel' => $rel,
+				'href' => "themes/$theme.css",
+				'title' => $theme));
+	}
+
+	private function _renderTitle($e)
 	{
 		global $config;
 
