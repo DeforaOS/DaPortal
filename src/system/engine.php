@@ -30,11 +30,12 @@ abstract class Engine
 	//Engine::render
 	public function render($response)
 	{
-		if($this->verbose == 0)
-			//FIXME check for errors nonetheless
-			return FALSE;
 		if($response instanceof Response)
+		{
+			if($this->verbose == 0)
+				return $response->getCode();
 			return $response->render($this);
+		}
 		return $this->log('LOG_ERR', 'Invalid response');
 	}
 
