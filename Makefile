@@ -3,7 +3,7 @@ VERSION	= 1.9.0
 SUBDIRS	= data doc po src tests tools
 RM	= rm -f
 LN	= ln -f
-TAR	= tar -czvf
+TAR	= tar
 
 
 all: subdirs
@@ -20,7 +20,7 @@ distclean:
 dist:
 	$(RM) -r -- $(PACKAGE)-$(VERSION)
 	$(LN) -s -- . $(PACKAGE)-$(VERSION)
-	@$(TAR) $(PACKAGE)-$(VERSION).tar.gz -- \
+	@$(TAR) -czvf $(PACKAGE)-$(VERSION).tar.gz -- \
 		$(PACKAGE)-$(VERSION)/data/Makefile \
 		$(PACKAGE)-$(VERSION)/data/index.php.in \
 		$(PACKAGE)-$(VERSION)/data/project.conf \
@@ -344,10 +344,17 @@ dist:
 		$(PACKAGE)-$(VERSION)/project.conf
 	$(RM) -- $(PACKAGE)-$(VERSION)
 
+distcheck: dist
+	$(TAR) -xzvf $(PACKAGE)-$(VERSION).tar.gz
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE))
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) distclean)
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) dist)
+	$(RM) -r -- $(PACKAGE)-$(VERSION)
+
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 
-.PHONY: all subdirs clean distclean dist install uninstall
+.PHONY: all subdirs clean distclean dist distcheck install uninstall
