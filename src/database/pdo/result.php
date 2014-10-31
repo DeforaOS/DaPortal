@@ -29,6 +29,14 @@ class PDODatabaseResult extends DatabaseResult
 	}
 
 
+	//accessors
+	//PDODatabaseResult::getAffectedCount
+	public function getAffectedCount()
+	{
+		return $this->stmt->rowCount();
+	}
+
+
 	//SeekableIterator
 	//PDODatabaseResult::current
 	public function current()

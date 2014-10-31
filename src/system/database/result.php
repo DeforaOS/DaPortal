@@ -21,6 +21,10 @@ abstract class DatabaseResult implements Countable, SeekableIterator
 {
 	//public
 	//methods
+	//accessors
+	abstract public function getAffectedCount();
+
+
 	//Countable
 	//DatabaseResult::count
 	public function count()

@@ -34,6 +34,15 @@ class SQLite3DatabaseResult extends DatabaseResult
 	}
 
 
+	//accessors
+	//SQLite3DatabaseResult::getAffectedCount
+	public function getAffectedCount()
+	{
+		//XXX apparently not supported
+		return FALSE;
+	}
+
+
 	//SeekableIterator
 	//SQLite3DatabaseResult::current
 	public function current()

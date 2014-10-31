@@ -31,6 +31,14 @@ class SQLite2DatabaseResult extends DatabaseResult
 	}
 
 
+	//accessors
+	//SQLite2DatabaseResult::getAffectedCount
+	public function getAffectedCount()
+	{
+		return sqlite_changes($this->res);
+	}
+
+
 	//SeekableIterator
 	//SQLite2DatabaseResult::current
 	public function current()

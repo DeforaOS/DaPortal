@@ -295,8 +295,16 @@ class PDODatabaseResultCached extends DatabaseResult
 	//PDODatabaseResultCached::PDODatabaseResultCached
 	public function __construct($stmt)
 	{
-		$this->res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		$this->count = count($this->res);
+		$this->stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$this->count = count($this->stmt);
+	}
+
+
+	//accessors
+	//PDODatabaseResultCached::getAffectedCount
+	public function getAffectedCount()
+	{
+		return $this->stmt->rowCount();
 	}
 
 
@@ -304,15 +312,15 @@ class PDODatabaseResultCached extends DatabaseResult
 	//PDODatabaseResultCached::current
 	public function current()
 	{
-		if(!isset($this->res[$this->key]))
+		if(!isset($this->stmt[$this->key]))
 			return FALSE;
-		return $this->res[$this->key];
+		return $this->stmt[$this->key];
 	}
 
 
 	//private
 	//properties
-	private $res;
+	private $stmt;
 }
 
 ?>

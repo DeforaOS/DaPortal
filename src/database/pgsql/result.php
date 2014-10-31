@@ -29,6 +29,14 @@ class PgsqlDatabaseResult extends DatabaseResult
 	}
 
 
+	//accessors
+	//PgsqlDatabaseResult::getAffectedCount
+	public function getAffectedCount()
+	{
+		return pg_affected_rows($this->res);
+	}
+
+
 	//SeekableIterator
 	//PgsqlDatabaseResult::current
 	public function current()
