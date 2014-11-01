@@ -25,7 +25,8 @@ class PageResponse extends Response
 	//Response::Response
 	public function __construct($content = FALSE, $code = 0)
 	{
-		if($content->getType() == 'dialog'
+		if($content instanceof PageElement
+				&& $content->getType() == 'dialog'
 				&& $content->get('type') == 'error'
 				&& ($code = $content->get('code')) == 0)
 			//XXX default to an unknown error instead
