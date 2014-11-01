@@ -21,6 +21,20 @@ class PageResponse extends Response
 {
 	//public
 	//methods
+	//essential
+	//Response::Response
+	public function __construct($content = FALSE, $code = 0)
+	{
+		if($content->getType() == 'dialog'
+				&& $content->get('type') == 'error'
+				&& ($code = $content->get('code')) == 0)
+			//XXX default to an unknown error instead
+			$code = Response::$CODE_EIO;
+		$this->setContent($content);
+		$this->setCode($code);
+	}
+
+
 	//accessors
 	//PageResponse::get
 	public function get($name)
