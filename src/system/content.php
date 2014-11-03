@@ -1049,6 +1049,7 @@ class Content
 		FROM daportal_content_enabled
 		WHERE module_id=:module_id
 		AND user_id=:user_id';
+	//FIXME default to $query_list.' AND ...' ?
 	//IN:	module_id
 	//	user_id
 	//	content_id

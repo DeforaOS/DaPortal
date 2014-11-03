@@ -13,10 +13,10 @@ all: subdirs $(TARGETS)
 subdirs:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
-daportal.1: daportal.xml
+daportal.1: $(OBJDIR)daportal.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.1"
 
-daportal.html: daportal.css.xml daportal.xml manual.css.xml
+daportal.html: daportal.css.xml $(OBJDIR)daportal.xml manual.css.xml
 	./docbook.sh -P "$(PREFIX)" -- "daportal.html"
 
 daportal.conf: daportal.conf.in
@@ -31,7 +31,7 @@ daportal.conf.html: daportal.conf.css.xml daportal.conf.xml manual.css.xml
 daportal.xml: daportal.xml.in
 	../tools/subst.sh -P "$(PREFIX)" -- "daportal.xml"
 
-install.html: install.xml install.xsl
+install.html: $(OBJDIR)install.xml install.xsl
 	./docbook.sh -P "$(PREFIX)" -- "install.html"
 
 install.xml: install.xml.in
