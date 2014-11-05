@@ -20,7 +20,19 @@
 class ContentMulti extends Content
 {
 	//public
+	//accessors
 	//methods
+	//MultiContent::getRequest
+	public function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		if($parameters === FALSE)
+			$parameters = array();
+		//XXX make this static
+		$parameters['type'] = $this->type;
+		return parent::getRequest($action, $parameters);
+	}
+
+
 	//useful
 	//MultiContent::displayToolbar
 	public function displayToolbar($engine, $request = FALSE)
