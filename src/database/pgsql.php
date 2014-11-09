@@ -261,6 +261,8 @@ class PgsqlDatabase extends Database
 		'sslmode' => 'sslmode');
 
 	//queries
+	//IN:	table
+	//	field
 	private $query_enum = 'SELECT
 		pg_catalog.pg_get_constraintdef(r.oid) AS constraint
 		FROM pg_catalog.pg_class c, pg_catalog.pg_constraint r
