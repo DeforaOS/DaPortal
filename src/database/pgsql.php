@@ -141,8 +141,11 @@ class PgsqlDatabase extends Database
 				&& (ctype_alnum($q[$i][$j])
 					|| $q[$i][$j] == '_'); $j++);
 			$k = substr($q[$i], 0, $j);
-			if(!isset($parameters[$k]))
-				$parameters[$k] = NULL;
+			if(!array_key_exists($k, $parameters))
+			{
+				$error = $k.': Missing parameter in query';
+				return $engine->log('LOG_ERR', $error);
+			}
 			$query .= "\$$i ".substr($q[$i], $j);
 			if(is_bool($parameters[$k]))
 				$args[$i] = $parameters[$k] ? '1' : '0';
