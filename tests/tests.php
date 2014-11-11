@@ -24,6 +24,9 @@ global $config;
 $config = new Config;
 if($config->load('../tests/daportal.conf') === FALSE)
 	exit(2);
+//for OBJDIR support
+if(($objdir = getenv('OBJDIR')) !== FALSE)
+	$config->set('database::pdo', 'dsn', "sqlite:$objdir/sqlite.db3");
 
 $engine = Engine::attachDefault();
 
