@@ -411,8 +411,6 @@ abstract class ContentModule extends Module
 		$args = array('module_id' => $this->id);
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
-		$actions = array('delete', 'disable', 'enable', 'post',
-			'unpost');
 		$error = FALSE;
 
 		//check credentials
@@ -429,12 +427,9 @@ abstract class ContentModule extends Module
 		}
 		//perform actions if necessary
 		if($request !== FALSE)
-			foreach($actions as $a)
-				if($request->get($a) !== FALSE)
-				{
-					$a = 'call'.$a;
-					return $this->$a($engine, $request);
-				}
+			if(($r = $this->helperAdminActions($engine, $request))
+					!== FALSE)
+				return $r;
 		//administrative page
 		$page = new Page;
 		$title = $this->text_content_admin;
@@ -1120,6 +1115,22 @@ abstract class ContentModule extends Module
 				!== FALSE)
 			$ret = array_merge($ret, $r);
 		return $ret;
+	}
+
+
+	//ContentModule::helperAdminActions
+	protected function helperAdminActions($engine, $request)
+	{
+		$actions = array('delete', 'disable', 'enable', 'post',
+			'unpost');
+
+		foreach($actions as $a)
+			if($request->get($a) !== FALSE)
+			{
+				$a = 'call'.$a;
+				return $this->$a($engine, $request);
+			}
+		return FALSE;
 	}
 
 
