@@ -30,6 +30,7 @@ CP="cp -f"
 GIT="git"
 MAKE="make"
 MKDIR="mkdir -p"
+MKTEMP="mktemp"
 RM="rm -f"
 SCP="scp -q"
 SSH="ssh"
@@ -47,11 +48,18 @@ _deploy()
 
 	[ "$VERBOSE" -ne 0 ] && TARX="$TAR -xzvf"
 	$DEBUG $MAKE dist					|| return 2
-	$DEBUG $SCP -- "$ARCHIVE" "$REMOTE:$TMPDIR"		|| return 2
+	tmpfile=$($DEBUG $SSH "$REMOTE" "$MKTEMP -p $TMPDIR daportal-deploy.XXXXXX")
+	[ $? -eq 0 ]						|| return 2
+	$DEBUG $SCP -- "$ARCHIVE" "$REMOTE:$tmpfile"
+	if [ $? -ne 0 ]; then
+		#try to delete the remote temporary file
+		$DEBUG $SSH "$REMOTE" "$RM -- '$tmpfile'"
+		return 2
+	fi
 	$DEBUG $SSH "$REMOTE" "sh -c \"$MKDIR -- '$DAPORTALDIR' &&
 		cd '$DAPORTALDIR' &&
-		$TARX '$TMPDIR/$ARCHIVE' &&
-		$RM -- '$TMPDIR/$ARCHIVE' &&
+		$TARX '$tmpfile' &&
+		$RM -- '$tmpfile' &&
 		$CP -R -- '$PACKAGE-$VERSION/AUTHORS' \
 			'$PACKAGE-$VERSION/BUGS' \
 			'$PACKAGE-$VERSION/COPYING' \
