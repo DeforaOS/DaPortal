@@ -76,10 +76,11 @@ if [ $# -ne 1 ]; then
 	exit $?
 fi
 target="$1"
+database="${target#$OBJDIR}"
 
 [ "$clean" -ne 0 ] && exit 0
 
-case "$target" in
+case "$database" in
 	sqlite.db)
 		$RM -- "$target"				|| exit 2
 		#XXX run twice to ensure there are no false positives
@@ -105,5 +106,9 @@ case "$target" in
 			_error "$target: Error $res"
 			exit $?
 		fi
+		;;
+	*)
+		_error "$database: Unknown database target"
+		exit 2
 		;;
 esac
