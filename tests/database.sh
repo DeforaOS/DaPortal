@@ -18,6 +18,7 @@
 #variables
 DEBUG="_debug"
 DEVNULL="/dev/null"
+PROGNAME="database.sh"
 #executables
 RM="rm -f"
 SQLITE2="sqlite"
@@ -37,10 +38,18 @@ _debug()
 }
 
 
+#error
+_error()
+{
+	echo "$PROGNAME: $@" 1>&2
+	return 2
+}
+
+
 #usage
 _usage()
 {
-	echo "Usage: database.sh [-P prefix] target" 1>&2
+	echo "Usage: $PROGNAME [-P prefix] target" 1>&2
 	return 1;
 }
 
@@ -80,8 +89,8 @@ case "$target" in
 		echo .read "../doc/sql/dataset.sql" | $DEBUG $SQLITE2 "$target"
 		[ $? -eq 0 ] || res=$?
 		if [ $res -ne 0 ]; then
-			echo "database.sh: $target: Error $res" 1>&2
-			exit 2
+			_error "$target: Error $res"
+			exit $?
 		fi
 		;;
 	sqlite.db3)
@@ -93,8 +102,8 @@ case "$target" in
 		echo .read "../doc/sql/dataset.sql" | $DEBUG $SQLITE3 "$target"
 		[ $? -eq 0 ] || res=$?
 		if [ $res -ne 0 ]; then
-			echo "database.sh: $target: Error $res" 1>&2
-			exit 2
+			_error "$target: Error $res"
+			exit $?
 		fi
 		;;
 esac
