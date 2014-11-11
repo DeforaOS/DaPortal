@@ -20,6 +20,7 @@ DEBUG=
 DEVNULL="/dev/null"
 FORCE=0
 PACKAGE=
+PROGNAME="deploy.sh"
 VERSION=
 PREFIX="/usr/local"
 VERBOSE=0
@@ -83,10 +84,18 @@ _debug()
 }
 
 
+#error
+_error()
+{
+	echo "$PROGNAME: $@" 1>&2
+	return 2
+}
+
+
 #usage
 _usage()
 {
-	echo "Usage: deploy.sh [-f][-P prefix][-v] hostname" 1>&2
+	echo "Usage: $PROGNAME [-f][-P prefix][-v] hostname" 1>&2
 	echo "  -f    Skip running the tests before deploying" 1>&2
 	echo "  -v    Verbose mode" 1>&2
 	return 1
@@ -95,8 +104,8 @@ _usage()
 
 #main
 if [ -z "$PACKAGE" -o -z "$VERSION" ]; then
-	echo "deploy.sh: PACKAGE and VERSION must be set" 1>&2
-	exit 2
+	_error "PACKAGE and VERSION must be set"
+	exit $?
 fi
 ARCHIVE="$PACKAGE-$VERSION.tar.gz"
 while getopts "fP:v" name; do
@@ -133,8 +142,8 @@ if [ $FORCE -eq 0 ]; then
 		_tests > "$DEVNULL"
 	fi
 	if [ $? -ne 0 ]; then
-		echo "deploy.sh: Could not deploy: Some tests failed" 1>&2
-		exit 2
+		_error "Could not deploy: Some tests failed"
+		exit $?
 	fi
 fi
 _deploy "$DAPORTALDIR" "$REMOTE"
