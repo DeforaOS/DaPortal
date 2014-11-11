@@ -1,4 +1,5 @@
 SUBDIRS	= fpdf
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 MKDIR	= mkdir -m 0755 -p

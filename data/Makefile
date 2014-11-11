@@ -1,5 +1,6 @@
 SUBDIRS	= css fonts icons js themes
-TARGETS	= index.php
+TARGETS	= $(OBJDIR)index.php
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -13,8 +14,8 @@ all: subdirs $(TARGETS)
 subdirs:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
-index.php: index.php.in ../config.sh ../tools/subst.sh
-	../tools/subst.sh -P "$(PREFIX)" -- "index.php"
+$(OBJDIR)index.php: index.php.in ../config.sh ../tools/subst.sh
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
@@ -29,7 +30,7 @@ distclean:
 
 install: $(TARGETS)
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
-	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -i -- "index.php"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -i -- "$(OBJDIR)index.php"
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done

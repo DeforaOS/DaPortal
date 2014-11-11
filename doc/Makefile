@@ -1,5 +1,6 @@
 SUBDIRS	= apache sql
-TARGETS	= daportal.1 daportal.html daportal.conf daportal.conf.5 daportal.conf.html daportal.xml install.html install.xml internals.html internals-print.pdf
+TARGETS	= $(OBJDIR)daportal.1 $(OBJDIR)daportal.html $(OBJDIR)daportal.conf $(OBJDIR)daportal.conf.5 $(OBJDIR)daportal.conf.html $(OBJDIR)daportal.xml $(OBJDIR)install.html $(OBJDIR)install.xml $(OBJDIR)internals.html $(OBJDIR)internals-print.pdf
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -13,35 +14,35 @@ all: subdirs $(TARGETS)
 subdirs:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
-daportal.1: $(OBJDIR)daportal.xml
-	./docbook.sh -P "$(PREFIX)" -- "daportal.1"
+$(OBJDIR)daportal.1: $(OBJDIR)daportal.xml
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.1"
 
-daportal.html: daportal.css.xml $(OBJDIR)daportal.xml manual.css.xml
-	./docbook.sh -P "$(PREFIX)" -- "daportal.html"
+$(OBJDIR)daportal.html: daportal.css.xml $(OBJDIR)daportal.xml manual.css.xml
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.html"
 
-daportal.conf: daportal.conf.in
-	../tools/subst.sh -P "$(PREFIX)" -- "daportal.conf"
+$(OBJDIR)daportal.conf: daportal.conf.in
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf"
 
-daportal.conf.5: daportal.conf.xml
-	./docbook.sh -P "$(PREFIX)" -- "daportal.conf.5"
+$(OBJDIR)daportal.conf.5: daportal.conf.xml
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.5"
 
-daportal.conf.html: daportal.conf.css.xml daportal.conf.xml manual.css.xml
-	./docbook.sh -P "$(PREFIX)" -- "daportal.conf.html"
+$(OBJDIR)daportal.conf.html: daportal.conf.css.xml daportal.conf.xml manual.css.xml
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.html"
 
-daportal.xml: daportal.xml.in
-	../tools/subst.sh -P "$(PREFIX)" -- "daportal.xml"
+$(OBJDIR)daportal.xml: daportal.xml.in
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.xml"
 
-install.html: $(OBJDIR)install.xml install.xsl
-	./docbook.sh -P "$(PREFIX)" -- "install.html"
+$(OBJDIR)install.html: $(OBJDIR)install.xml install.xsl
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)install.html"
 
-install.xml: install.xml.in
-	../tools/subst.sh -P "$(PREFIX)" -- "install.xml"
+$(OBJDIR)install.xml: install.xml.in
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)install.xml"
 
-internals.html: internals.xml internals.xsl
-	./docbook.sh -P "$(PREFIX)" -- "internals.html"
+$(OBJDIR)internals.html: internals.xml internals.xsl
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals.html"
 
-internals-print.pdf: internals-print.xml internals-print.xsl
-	./docbook.sh -P "$(PREFIX)" -- "internals-print.pdf"
+$(OBJDIR)internals-print.pdf: internals-print.xml internals-print.xsl
+	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
@@ -74,13 +75,13 @@ distclean:
 
 install: $(TARGETS)
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.1"
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.html"
-	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -i -- "daportal.conf"
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.conf.5"
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "daportal.conf.html"
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "install.html"
-	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "internals.html"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.1"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.html"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -i -- "$(OBJDIR)daportal.conf"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.conf.5"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.conf.html"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)install.html"
+	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)internals.html"
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done

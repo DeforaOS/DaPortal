@@ -4,6 +4,7 @@ SUBDIRS	= data doc po src tests tools
 RM	= rm -f
 LN	= ln -f
 TAR	= tar
+MKDIR	= mkdir -m 0755 -p
 
 
 all: subdirs
@@ -346,8 +347,12 @@ dist:
 
 distcheck: dist
 	$(TAR) -xzvf $(PACKAGE)-$(VERSION).tar.gz
-	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE))
-	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) distclean)
+	$(MKDIR) -- $(PACKAGE)-$(VERSION)/objdir
+	$(MKDIR) -- $(PACKAGE)-$(VERSION)/destdir
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) OBJDIR="$$PWD/objdir/")
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) OBJDIR="$$PWD/objdir/" DESTDIR="$$PWD/destdir" install)
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) OBJDIR="$$PWD/objdir/" DESTDIR="$$PWD/destdir" uninstall)
+	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) OBJDIR="$$PWD/objdir/" distclean)
 	(cd "$(PACKAGE)-$(VERSION)" && $(MAKE) dist)
 	$(RM) -r -- $(PACKAGE)-$(VERSION)
 

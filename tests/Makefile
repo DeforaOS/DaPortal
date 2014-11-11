@@ -1,4 +1,5 @@
-TARGETS	= phplint.log shlint.log sqlite.db sqlite.db3 tests.log
+TARGETS	= $(OBJDIR)phplint.log $(OBJDIR)shlint.log $(OBJDIR)sqlite.db $(OBJDIR)sqlite.db3 $(OBJDIR)tests.log
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -9,20 +10,20 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-phplint.log: phplint.sh
-	./phplint.sh -P "$(PREFIX)" -- "phplint.log"
+$(OBJDIR)phplint.log: phplint.sh
+	./phplint.sh -P "$(PREFIX)" -- "$(OBJDIR)phplint.log"
 
-shlint.log: shlint.sh
-	./shlint.sh -P "$(PREFIX)" -- "shlint.log"
+$(OBJDIR)shlint.log: shlint.sh
+	./shlint.sh -P "$(PREFIX)" -- "$(OBJDIR)shlint.log"
 
-sqlite.db: ../doc/sql/sqlite.sql database.sh
-	./database.sh -P "$(PREFIX)" -- "sqlite.db"
+$(OBJDIR)sqlite.db: ../doc/sql/sqlite.sql database.sh
+	./database.sh -P "$(PREFIX)" -- "$(OBJDIR)sqlite.db"
 
-sqlite.db3: ../doc/sql/sqlite.sql database.sh
-	./database.sh -P "$(PREFIX)" -- "sqlite.db3"
+$(OBJDIR)sqlite.db3: ../doc/sql/sqlite.sql database.sh
+	./database.sh -P "$(PREFIX)" -- "$(OBJDIR)sqlite.db3"
 
-tests.log: auth.php config.php coverage.php daportal.conf database.php mail.php module.php $(OBJDIR)sqlite.db3 tests.php tests.sh user.php
-	./tests.sh -P "$(PREFIX)" -- "tests.log"
+$(OBJDIR)tests.log: auth.php config.php coverage.php daportal.conf database.php mail.php module.php $(OBJDIR)sqlite.db3 tests.php tests.sh user.php
+	./tests.sh -P "$(PREFIX)" -- "$(OBJDIR)tests.log"
 
 clean:
 	$(RM) -- $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS)

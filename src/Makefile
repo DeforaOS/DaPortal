@@ -1,5 +1,6 @@
 SUBDIRS	= auth database engines formats modules system templates
-TARGETS	= daportal.php
+TARGETS	= $(OBJDIR)daportal.php
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 RM	= rm -f
@@ -13,8 +14,8 @@ all: subdirs $(TARGETS)
 subdirs:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
 
-daportal.php: daportal.php.in ../config.sh ../tools/subst.sh
-	../tools/subst.sh -P "$(PREFIX)" -- "daportal.php"
+$(OBJDIR)daportal.php: daportal.php.in ../config.sh ../tools/subst.sh
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)daportal.php"
 
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
@@ -29,7 +30,7 @@ distclean:
 
 install: $(TARGETS)
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
-	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/src" -i -- "daportal.php"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/src" -i -- "$(OBJDIR)daportal.php"
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
