@@ -23,9 +23,9 @@ PACKAGE=
 PROGNAME="deploy.sh"
 VERSION=
 PREFIX="/usr/local"
+TMPDIR="/tmp"
 VERBOSE=0
-[ -f "./config.sh" ] && . "./config.sh"
-
+#executables
 CP="cp -f"
 MAKE="make"
 MKDIR="mkdir -p"
@@ -33,7 +33,8 @@ RM="rm -f"
 SCP="scp -q"
 SSH="ssh"
 TAR="tar"
-TMPDIR="/tmp"
+
+[ -f "./config.sh" ] && . "./config.sh"
 
 
 #functions
