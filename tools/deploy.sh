@@ -27,6 +27,7 @@ TMPDIR="/tmp"
 VERBOSE=0
 #executables
 CP="cp -f"
+GIT="git"
 MAKE="make"
 MKDIR="mkdir -p"
 RM="rm -f"
@@ -137,6 +138,15 @@ DAPORTALDIR="$PREFIX/daportal"
 REMOTE="$1"
 
 if [ $FORCE -eq 0 ]; then
+	#check for uncommitted changes
+	if [ -d ".git" ]; then
+		$GIT diff --quiet
+		if [ $? -ne 0 ]; then
+			_error "Could not deploy: Uncommitted changes"
+			return $?
+		fi
+	fi
+	#run the tests locally
 	if [ $VERBOSE -ne 0 ]; then
 		_tests
 	else
