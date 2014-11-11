@@ -34,7 +34,11 @@ if($config->get('test3', 'test4') != 'test5')
 $config->reset();
 if($config->get('test3', 'test4') !== FALSE)
 	exit(7);
-if($config->load('../doc/daportal.conf') !== TRUE)
+$filename = '../doc/daportal.conf';
+//for OBJDIR support
+if(($objdir = getenv('OBJDIR')) !== FALSE)
+	$filename = "$objdir/daportal.conf";
+if($config->load($filename) !== TRUE)
 	exit(8);
 if($config->get('defaults', 'charset') != 'utf-8')
 	exit(9);
