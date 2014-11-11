@@ -988,20 +988,18 @@ class HTMLFormat extends FormatElements
 	{
 		$hcnt = count($this->titles);
 		$tcnt = count($this->tags);
+		$level = 1;
 
 		/* XXX this algorithm is a bit ugly but seems to work */
 		if($hcnt == 0) /* no title set */
-		{
-			$cur = 1;
-			$this->titles[$cur - 1] = $tcnt;
-		}
-		else if($this->titles[$hcnt - 1] < $tcnt) /* deeper level */
+			$this->titles[$level - 1] = $tcnt;
+		else if($this->titles[$hcnt - 1] < $tcnt) //deeper level
 		{
 			$this->titles[$hcnt] = $tcnt;
-			$cur = $hcnt;
+			$level = $hcnt;
 		}
-		else if($this->titles[$hcnt - 1] == $tcnt) /* same level */
-			$cur = $hcnt - 1;
+		else if($this->titles[$hcnt - 1] == $tcnt) //same level
+			$level = $hcnt - 1;
 		else
 		{
 			for(; $hcnt > 0; $hcnt = count($this->titles))
@@ -1011,9 +1009,8 @@ class HTMLFormat extends FormatElements
 					break;
 				unset($this->titles[$hcnt - 1]);
 			}
-			$cur = $hcnt - 1;
+			$level = $hcnt - 1;
 		}
-		$level = $cur;
 		$tag = "h$level";
 		if(($class = $e->get('class')) === FALSE)
 			$class = '';
