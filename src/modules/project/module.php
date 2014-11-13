@@ -76,6 +76,9 @@ class ProjectModule extends MultiContentModule
 
 
 	//protected
+	static protected $content_classes = array('project' => 'ProjectContent',
+		'bug' => 'BugProjectContent',
+		'bugreply' => 'BugReplyProjectContent');
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
@@ -129,9 +132,6 @@ class ProjectModule extends MultiContentModule
 	protected function __construct($id, $name, $title = FALSE)
 	{
 		$title = ($title === FALSE) ? _('Projects') : $title;
-		$this->content_classes = array('project' => 'ProjectContent',
-			'bug' => 'BugProjectContent',
-			'bugreply' => 'BugReplyProjectContent');
 		$this->content_list_count = 20;
 		parent::__construct($id, $name, $title);
 	}

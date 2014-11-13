@@ -27,7 +27,7 @@ abstract class MultiContentModule extends ContentModule
 			$request = FALSE)
 	{
 		//XXX this works only if the ID namespace is not ambiguous
-		foreach($this->content_classes as $class)
+		foreach(static::$content_classes as $class)
 		{
 			$this->content_class = $class;
 			if(($res = parent::getContent($engine, $id, $title,
@@ -46,7 +46,7 @@ abstract class MultiContentModule extends ContentModule
 
 	//protected
 	//properties
-	protected $content_classes = array();
+	static protected $content_classes = array();
 
 
 	//methods
@@ -76,13 +76,13 @@ abstract class MultiContentModule extends ContentModule
 			return;
 		}
 		if($request !== FALSE && ($t = $request->getParameter('type'))
-				!== FALSE && isset($this->content_classes[$t]))
+				!== FALSE && isset(static::$content_classes[$t]))
 		{
-			$this->content_class = $this->content_classes[$t];
+			$this->content_class = static::$content_classes[$t];
 			return;
 		}
 		//default to the first content type known
-		foreach($this->content_classes as $t => $c)
+		foreach(static::$content_classes as $t => $c)
 		{
 			$this->content_class = $c;
 			return;
@@ -171,7 +171,7 @@ abstract class MultiContentModule extends ContentModule
 
 		if($request->getParameter('admin') === 0)
 			return $ret;
-		foreach($this->content_classes as $t => $c)
+		foreach(static::$content_classes as $t => $c)
 		{
 			$r = $this->getRequest('admin', array('type' => $t));
 			$this->setContext($engine, $r); /* XXX */
@@ -188,7 +188,7 @@ abstract class MultiContentModule extends ContentModule
 		$ret = array();
 
 		//group's content
-		foreach($this->content_classes as $t => $c)
+		foreach(static::$content_classes as $t => $c)
 		{
 			$r = new Request($this->name, 'group', $group->getGroupID(),
 					$group->getGroupname(), array('type' => $t));
@@ -206,7 +206,7 @@ abstract class MultiContentModule extends ContentModule
 	{
 		$ret = array();
 
-		foreach($this->content_classes as $t => $c)
+		foreach(static::$content_classes as $t => $c)
 		{
 			$r = new Request($this->name, 'list',
 				$user->getUserID(), $user->getUsername(), array(
@@ -225,7 +225,7 @@ abstract class MultiContentModule extends ContentModule
 	{
 		$ret = array();
 
-		foreach($this->content_classes as $t => $c)
+		foreach(static::$content_classes as $t => $c)
 		{
 			$r = $this->getRequest('submit', array('type' => $t));
 			$this->setContext($engine, $r); /* XXX */

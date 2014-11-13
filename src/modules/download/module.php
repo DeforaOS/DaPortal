@@ -96,6 +96,9 @@ class DownloadModule extends MultiContentModule
 	//protected
 	//properties
 	protected $S_IFDIR = 512;
+	static protected $content_classes = array(
+		'folder' => 'FolderDownloadContent',
+		'file' => 'FileDownloadContent');
 
 	//translations
 	protected $file_text_content_list_title = 'File list';
@@ -112,9 +115,6 @@ class DownloadModule extends MultiContentModule
 	protected function __construct($id, $name, $title = FALSE)
 	{
 		$title = ($title === FALSE) ? _('Downloads') : $title;
-		$this->content_classes = array(
-			'folder' => 'FolderDownloadContent',
-			'file' => 'FileDownloadContent');
 		parent::__construct($id, $name, $title);
 		$this->text_content_title = _('Downloads');
 	}
