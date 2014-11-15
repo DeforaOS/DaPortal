@@ -1,0 +1,404 @@
+/* $Id$ */
+/* Copyright (c) 2014 Pierre Pronchery <khorben@defora.org> */
+/* This file is part of DeforaOS Web DaPortal */
+/* This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+
+
+.stock32.about {
+	background-image:	url('DeforaOS/32x32/actions/gtk-about.png');
+}
+
+.stock32.add {
+	background-image:	url('DeforaOS/32x32/actions/gtk-add.png');
+}
+
+.stock32.admin {
+	background-image:	url('DeforaOS/32x32/categories/gtk-preferences.png');
+}
+
+.stock32.article {
+	background-image:	url('DeforaOS/32x32/mimetypes/html.png');
+}
+
+.stock32.back {
+	background-image:	url('DeforaOS/32x32/actions/back.png');
+}
+
+.stock32.blog {
+	background-image:	url('DeforaOS/32x32/mimetypes/stock_calendar.png');
+}
+
+.stock32.bold {
+	background-image:	url('DeforaOS/32x32/actions/gtk-bold.png');
+}
+
+.stock32.bookmark {
+	background-image:	url('DeforaOS/32x32/places/user-bookmarks.png');
+}
+
+.stock32.bottom {
+	background-image:	url('DeforaOS/32x32/actions/bottom.png');
+}
+
+.stock32.browse {
+	background-image:	url('DeforaOS/32x32/places/folder.png');
+}
+
+.stock32.browser {
+	background-image:	url('DeforaOS/32x32/apps/file-manager.png');
+}
+
+.stock32.bug {
+	background-image:	url('DeforaOS/32x32/categories/applications-development.png');
+}
+
+.stock32.bullets {
+	background-image:	url('DeforaOS/32x32/actions/gtk-sort-descending.png');
+}
+
+.stock32.cancel {
+	background-image:	url('DeforaOS/32x32/actions/gtk-cancel.png');
+}
+
+.stock32.close {
+	background-image:	url('DeforaOS/32x32/actions/gtk-close.png');
+}
+
+.stock32.comment {
+	background-image:	url('DeforaOS/32x32/actions/mail-reply-all.png');
+}
+
+.stock32.connect {
+	background-image:	url('DeforaOS/32x32/actions/go-jump.png');
+}
+
+.stock32.content {
+	background-image:	url('DeforaOS/32x32/apps/text-editor.png');
+}
+
+.stock32.copy {
+	background-image:	url('DeforaOS/32x32/actions/gtk-copy.png');
+}
+
+.stock32.cut {
+	background-image:	url('DeforaOS/32x32/actions/gtk-cut.png');
+}
+
+.stock32.delete {
+	background-image:	url('DeforaOS/32x32/actions/gtk-delete.png');
+}
+
+.stock32.development {
+	background-image:	url('DeforaOS/32x32/categories/applications-development.png');
+}
+
+.stock32.disable {
+	background-image:	url('DeforaOS/32x32/actions/gtk-cancel.png');
+}
+
+.stock32.download {
+	background-image:	url('DeforaOS/32x32/places/folder-download.png');
+}
+
+.stock32.edit {
+	background-image:	url('DeforaOS/32x32/apps/text-editor.png');
+}
+
+.stock32.email {
+	background-image:	url('DeforaOS/32x32/actions/mail-send.png');
+}
+
+.stock32.enable {
+	background-image:	url('DeforaOS/32x32/actions/gtk-execute.png');
+}
+
+.stock32.error {
+	background-image:	url('DeforaOS/32x32/status/stock_dialog-error.png');
+}
+
+.stock32.file {
+	background-image:	url('DeforaOS/32x32/mimetypes/gtk-file.png');
+}
+
+.stock32.file-new {
+	background-image:	url('DeforaOS/32x32/actions/filenew.png');
+}
+
+.stock32.folder {
+	background-image:	url('DeforaOS/32x32/places/folder.png');
+}
+
+.stock32.folder-new {
+	background-image:	url('DeforaOS/32x32/actions/folder-new.png');
+}
+
+.stock32.forward {
+	background-image:	url('DeforaOS/32x32/actions/forward.png');
+}
+
+.stock32.gallery {
+	background-image:	url('DeforaOS/32x32/mimetypes/image-x-generic.png');
+}
+
+.stock32.gotofirst {
+	background-image:	url('DeforaOS/32x32/actions/stock_first.png');
+}
+
+.stock32.gotolast {
+	background-image:	url('DeforaOS/32x32/actions/stock_last.png');
+}
+
+.stock32.help {
+	background-image:	url('DeforaOS/32x32/apps/help-browser.png');
+}
+
+.stock32.home {
+	background-image:	url('DeforaOS/32x32/actions/gtk-home.png');
+}
+
+.stock32.homepage {
+	background-image:	url('DeforaOS/32x32/actions/gtk-home.png');
+}
+
+.stock32.indent {
+	background-image:	url('DeforaOS/32x32/actions/gtk-indent-ltr.png');
+}
+
+.stock32.info {
+	background-image:	url('DeforaOS/32x32/status/stock_dialog-info.png');
+}
+
+.stock32.insert-hrule {
+	background-image:	url('DeforaOS/32x32/actions/gtk-remove.png');
+}
+
+.stock32.insert-image {
+	background-image:	url('DeforaOS/32x32/actions/insert-image.png');
+}
+
+.stock32.insert-link {
+	background-image:	url('DeforaOS/32x32/actions/insert-link.png');
+}
+
+.stock32.insert-table {
+	background-image:	url('DeforaOS/32x32/actions/insert-object.png');
+}
+
+.stock32.insert-text {
+	background-image:	url('DeforaOS/32x32/actions/insert-text.png');
+}
+
+.stock32.italic {
+	background-image:	url('DeforaOS/32x32/actions/gtk-italic.png');
+}
+
+.stock32.justify-center {
+	background-image:	url('DeforaOS/32x32/actions/gtk-justify-center.png');
+}
+
+.stock32.justify-fill {
+	background-image:	url('DeforaOS/32x32/actions/gtk-justify-fill.png');
+}
+
+.stock32.justify-left {
+	background-image:	url('DeforaOS/32x32/actions/gtk-justify-left.png');
+}
+
+.stock32.justify-right {
+	background-image:	url('DeforaOS/32x32/actions/gtk-justify-right.png');
+}
+
+.stock32.link {
+	background-image:	url('DeforaOS/32x32/categories/stock_internet.png');
+}
+
+.stock32.login {
+	background-image:	url('DeforaOS/32x32/apps/user-info.png');
+}
+
+.stock32.logout {
+	background-image:	url('DeforaOS/32x32/actions/gnome-logout.png');
+}
+
+.stock32.monitor {
+	background-image:	url('DeforaOS/32x32/apps/gnome-monitor.png');
+}
+
+.stock32.new {
+	background-image:	url('DeforaOS/32x32/actions/gtk-new.png');
+}
+
+.stock32.news {
+	background-image:	url('DeforaOS/32x32/apps/web-browser.png');
+}
+
+.stock32.next {
+	background-image:	url('DeforaOS/32x32/actions/next.png');
+}
+
+.stock32.numbering {
+	background-image:	url('DeforaOS/32x32/actions/gtk-sort-ascending.png');
+}
+
+.stock32.open {
+	background-image:	url('DeforaOS/32x32/actions/gtk-open.png');
+}
+
+.stock32.paste {
+	background-image:	url('DeforaOS/32x32/actions/gtk-paste.png');
+}
+
+.stock32.pki {
+	background-image:	url('DeforaOS/32x32/mimetypes/application-certificate.png');
+}
+
+.stock32.preferences {
+	background-image:	url('DeforaOS/32x32/categories/gtk-preferences.png');
+}
+
+.stock32.preview {
+	background-image:	url('DeforaOS/32x32/actions/gtk-print-preview.png');
+}
+
+.stock32.previous {
+	background-image:	url('DeforaOS/32x32/actions/previous.png');
+}
+
+.stock32.probe {
+	background-image:	url('DeforaOS/32x32/apps/utilities-system-monitor.png');
+}
+
+.stock32.project {
+	background-image:	url('DeforaOS/32x32/categories/applications-development.png');
+}
+
+.stock32.question {
+	background-image:	url('DeforaOS/32x32/status/stock_dialog-question.png');
+}
+
+.stock32.read {
+	background-image:	url('DeforaOS/32x32/actions/gtk-open.png');
+}
+
+.stock32.redo {
+	background-image:	url('DeforaOS/32x32/actions/gtk-redo-ltr.png');
+}
+
+.stock32.refresh {
+	background-image:	url('DeforaOS/32x32/actions/stock_refresh.png');
+}
+
+.stock32.register {
+	background-image:	url('DeforaOS/32x32/apps/user-info.png');
+}
+
+.stock32.remove {
+	background-image:	url('DeforaOS/32x32/actions/gtk-remove.png');
+}
+
+.stock32.remove-format {
+	background-image:	url('DeforaOS/32x32/actions/gtk-clear.png');
+}
+
+.stock32.reply {
+	background-image:	url('DeforaOS/32x32/actions/mail-reply-sender.png');
+}
+
+.stock32.reset {
+	background-image:	url('DeforaOS/32x32/actions/revert.png');
+}
+
+.stock32.save {
+	background-image:	url('DeforaOS/32x32/actions/gtk-save.png');
+}
+
+.stock32.search {
+	background-image:	url('DeforaOS/32x32/actions/gtk-find.png');
+}
+
+.stock32.strikethrough {
+	background-image:	url('DeforaOS/32x32/actions/gtk-strikethrough.png');
+}
+
+.stock32.submit {
+	background-image:	url('DeforaOS/32x32/actions/document-send.png');
+}
+
+.stock32.subscribe {
+	background-image:	url('DeforaOS/32x32/actions/gtk-add.png');
+}
+
+.stock32.subscript {
+	background-image:	url('DeforaOS/32x32/actions/gtk-goto-bottom.png');
+}
+
+.stock32.superscript {
+	background-image:	url('DeforaOS/32x32/actions/gtk-goto-top.png');
+}
+
+.stock32.timeline {
+	background-image:	url('DeforaOS/32x32/mimetypes/stock_calendar.png');
+}
+
+.stock32.top {
+	background-image:	url('DeforaOS/32x32/actions/top.png');
+}
+
+.stock32.translate {
+	background-image:	url('DeforaOS/32x32/apps/config-language.png');
+}
+
+.stock32.underline {
+	background-image:	url('DeforaOS/32x32/actions/gtk-underline.png');
+}
+
+.stock32.undo {
+	background-image:	url('DeforaOS/32x32/actions/gtk-undo-ltr.png');
+}
+
+.stock32.unindent {
+	background-image:	url('DeforaOS/32x32/actions/gtk-unindent-ltr.png');
+}
+
+.stock32.unsubscribe {
+	background-image:	url('DeforaOS/32x32/actions/gtk-remove.png');
+}
+
+.stock32.update {
+	background-image:	url('DeforaOS/32x32/apps/text-editor.png');
+}
+
+.stock32.updir {
+	background-image:	url('DeforaOS/32x32/actions/gtk-go-up.png');
+}
+
+.stock32.upload {
+	background-image:	url('DeforaOS/32x32/actions/gtk-save-as.png');
+}
+
+.stock32.user {
+	background-image:	url('DeforaOS/32x32/apps/user-info.png');
+}
+
+.stock32.warning {
+	background-image:	url('DeforaOS/32x32/status/dialog-warning.png');
+}
+
+.stock32.webmail {
+	background-image:	url('DeforaOS/32x32/actions/mail-send.png');
+}
+
+.stock32.wiki {
+	background-image:	url('DeforaOS/32x32/apps/help-browser.png');
+}

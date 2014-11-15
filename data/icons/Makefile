@@ -1,4 +1,4 @@
-SUBDIRS	= Rodent Tango generic gnome
+SUBDIRS	= DeforaOS Rodent Tango generic gnome
 OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
@@ -21,6 +21,8 @@ distclean:
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
+	$(INSTALL) -m 0644 DeforaOS.css $(DESTDIR)$(PREFIX)/daportal/data/icons/DeforaOS.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
 	$(INSTALL) -m 0644 Rodent.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
 	$(INSTALL) -m 0644 Tango.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
@@ -33,6 +35,7 @@ install:
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/DeforaOS.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic.css

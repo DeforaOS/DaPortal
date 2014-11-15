@@ -47,12 +47,20 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/stylesheet.css \
 		$(PACKAGE)-$(VERSION)/data/fonts/OpenSans-Regular/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS.css \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent.css \
 		$(PACKAGE)-$(VERSION)/data/icons/Tango.css \
 		$(PACKAGE)-$(VERSION)/data/icons/generic.css \
 		$(PACKAGE)-$(VERSION)/data/icons/gnome.css \
 		$(PACKAGE)-$(VERSION)/data/icons/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/16x16.css \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/24x24.css \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/32x32.css \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/48x48.css \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/Makefile \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/48x48.css \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/index.php \
