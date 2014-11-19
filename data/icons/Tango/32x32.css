@@ -51,7 +51,7 @@
 	background-image:	url('Tango/32x32/apps/file-manager.png');
 }
 
-.stock32.bug {
+.stock32.bug, .stock32.bug_list {
 	background-image:	url('Tango/32x32/categories/applications-development.png');
 }
 
