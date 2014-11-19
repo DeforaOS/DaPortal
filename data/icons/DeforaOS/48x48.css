@@ -59,7 +59,7 @@
 	background-image:	url('DeforaOS/48x48/apps/file-manager.png');
 }
 
-.stock48.bug {
+.stock48.bug, .stock48.bug_list {
 	background-image:	url('DeforaOS/48x48/categories/applications-development.png');
 }
 
@@ -229,6 +229,10 @@
 
 .stock48.logout {
 	background-image:	url('DeforaOS/48x48/actions/gnome-logout.png');
+}
+
+.stock48.members {
+	background-image:	url('DeforaOS/48x48/apps/system-users.png');
 }
 
 .stock48.monitor {

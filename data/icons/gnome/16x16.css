@@ -59,7 +59,7 @@
 	background-image:	url('gnome-icon-theme/16x16/apps/file-manager.png');
 }
 
-.stock16.bug {
+.stock16.bug, .stock16.bug_list {
 	background-image:	url('gnome-icon-theme/16x16/categories/applications-development.png');
 }
 
@@ -229,6 +229,10 @@
 
 .stock16.logout {
 	background-image:	url('gnome-icon-theme/16x16/actions/gnome-logout.png');
+}
+
+.stock16.members {
+	background-image:	url('gnome-icon-theme/16x16/apps/system-users.png');
 }
 
 .stock16.monitor {

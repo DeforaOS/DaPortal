@@ -59,7 +59,7 @@
 	background-image:	url('gnome-icon-theme/24x24/apps/file-manager.png');
 }
 
-.stock24.bug {
+.stock24.bug, .stock24.bug_list {
 	background-image:	url('gnome-icon-theme/24x24/categories/applications-development.png');
 }
 
@@ -229,6 +229,10 @@
 
 .stock24.logout {
 	background-image:	url('gnome-icon-theme/24x24/actions/gnome-logout.png');
+}
+
+.stock24.members {
+	background-image:	url('gnome-icon-theme/24x24/apps/system-users.png');
 }
 
 .stock24.monitor {
