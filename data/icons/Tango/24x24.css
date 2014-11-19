@@ -151,6 +151,10 @@
 	background-image:	url('Tango/24x24/actions/gnome-logout.png');
 }
 
+.stock24.members {
+	background-image:	url('Tango/24x24/apps/system-users.png');
+}
+
 .stock24.monitor {
 	background-image:	url('Tango/24x24/apps/utilities-system-monitor.png');
 }

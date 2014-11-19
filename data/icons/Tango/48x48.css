@@ -151,6 +151,10 @@
 	background-image:	url('Tango/scalable/actions/gnome-logout.svg');
 }
 
+.stock48.members {
+	background-image:	url('Tango/scalable/apps/system-users.svg');
+}
+
 .stock48.monitor {
 	background-image:	url('Tango/scalable/apps/utilities-system-monitor.svg');
 }

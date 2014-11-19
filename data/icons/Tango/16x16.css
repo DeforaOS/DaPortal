@@ -151,6 +151,10 @@
 	background-image:	url('Tango/16x16/actions/gnome-logout.png');
 }
 
+.stock16.members {
+	background-image:	url('Tango/16x16/apps/system-users.png');
+}
+
 .stock16.monitor {
 	background-image:	url('Tango/16x16/apps/utilities-system-monitor.png');
 }
