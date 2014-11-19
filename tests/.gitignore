@@ -1,5 +1,5 @@
-phplint.log
-shlint.log
-sqlite.db
-sqlite.db3
-tests.log
+/phplint.log
+/shlint.log
+/sqlite.db
+/sqlite.db3
+/tests.log
