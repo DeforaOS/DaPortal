@@ -48,7 +48,7 @@ _deploy()
 
 	[ "$VERBOSE" -ne 0 ] && TARX="$TAR -xzvf"
 	$DEBUG $MAKE dist					|| return 2
-	tmpfile=$($DEBUG $SSH "$REMOTE" "$MKTEMP -p $TMPDIR daportal-deploy.XXXXXX")
+	tmpfile=$($SSH "$REMOTE" "$MKTEMP -p $TMPDIR daportal-deploy.XXXXXX")
 	[ $? -eq 0 ]						|| return 2
 	$DEBUG $SCP -- "$ARCHIVE" "$REMOTE:$tmpfile"
 	if [ $? -ne 0 ]; then
