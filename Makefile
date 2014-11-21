@@ -95,13 +95,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/spinner.xcf \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/stock.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/project.conf \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/Makefile \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/16x16.css \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/24x24.css \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/32x32.css \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/48x48.css \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/index.php \
-		$(PACKAGE)-$(VERSION)/data/icons/gnome/project.conf \
 		$(PACKAGE)-$(VERSION)/data/js/Makefile \
 		$(PACKAGE)-$(VERSION)/data/js/DaPortal.js \
 		$(PACKAGE)-$(VERSION)/data/js/index.php \

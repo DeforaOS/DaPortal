@@ -129,6 +129,12 @@ _icontheme()
 	size="${size%%x*}"
 	ext=".png"
 
+	#XXX exceptions
+	case "$theme" in
+		"gnome")
+			theme="gnome-icon-theme"
+			;;
+	esac
 	$MKDIR -- "$dirname"					|| return 2
 	($CAT << EOF
 /* \$Id\$ */
