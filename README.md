@@ -5,14 +5,14 @@ About DaPortal 2
 ----------------
 
 DaPortal 2 is a Content Management System (CMS) written in the PHP programming
-language. Although PHP is primarily oriented as a language and environment for
+language. Although PHP is primarily designed as a language and environment for
 web-based applications, it can also be used directly from the command line, or
 while building rich applications on the desktop. DaPortal also supports some of
 these additional possibilities.
 
-Likewise, DaPortal 2 does not depend on a specific database backend in
-particular. It will often require a SQL server though, of which the following
-ones are already supported:
+Likewise, DaPortal 2 does not depend on any specific database backend. It will
+often require a SQL server though, of which the following ones are already
+supported:
 
  * SQLite 2 & 3
  * PostgreSQL
@@ -34,8 +34,8 @@ http://www.defora.org/doc/html/DaPortal/
 Bug reports
 -----------
 
-DaPortal is using its own `project` module to track bug reports, feature
-requests and other improvements. It can be found here:
+Bug reports, feature requests and other improvements can be listed, request and
+tracked at the following address:
 http://www.defora.org/os/project/bug_list/12/DaPortal
 
 
