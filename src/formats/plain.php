@@ -133,6 +133,9 @@ class PlainFormat extends Format
 	{
 		switch($e->getType())
 		{
+			case 'htmlview':
+				//XXX ignore
+				return;
 			case 'dialog':
 			case 'frame':
 			case 'hbox':
