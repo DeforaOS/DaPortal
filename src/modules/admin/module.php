@@ -77,6 +77,10 @@ class AdminModule extends Module
 	static protected $query_admin_modules = "SELECT module_id, name, enabled
 		FROM daportal_module
 		ORDER BY name ASC";
+	static protected $query_check_password = "SELECT username
+		FROM daportal_user
+		WHERE username='admin'
+		AND password='$1$?0p*PI[G\$kbHyE5VE/S32UrV88Unz/1'";
 	static protected $query_module_disable = "UPDATE daportal_module
 		SET enabled='0'
 		WHERE module_id=:module_id";
@@ -144,11 +148,30 @@ class AdminModule extends Module
 	protected function callAdminAudit($engine, $request, $page)
 	{
 		$title = _('Configuration audit');
+		$database = $engine->getDatabase();
+		$query = static::$query_check_password;
 
 		$page->append('title', array('text' => $title));
-		//FIXME really implement
-		$page->append('dialog', array('type' => 'info',
-				'text' => 'No problem found'));
+		//check for the default password
+		if(($res = $database->query($engine, $query)) === FALSE)
+		{
+			$text = _('Could not check for the default password');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $text));
+		}
+		else if(count($res) > 0)
+		{
+			$text = _('The administrative password must be changed');
+			//XXX add a direct link
+			$page->append('dialog', array('type' => 'warning',
+					'text' => $text));
+		}
+		else
+		{
+			$text = _('The default password was changed accordingly');
+			$page->append('dialog', array('type' => 'info',
+					'text' => $text));
+		}
 	}
 
 	protected function callAdminModules($engine, $request, $page)
