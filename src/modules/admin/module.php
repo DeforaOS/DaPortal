@@ -77,10 +77,10 @@ class AdminModule extends Module
 	static protected $query_admin_modules = "SELECT module_id, name, enabled
 		FROM daportal_module
 		ORDER BY name ASC";
-	static protected $query_disable = "UPDATE daportal_module
+	static protected $query_module_disable = "UPDATE daportal_module
 		SET enabled='0'
 		WHERE module_id=:module_id";
-	static protected $query_enable = "UPDATE daportal_module
+	static protected $query_module_enable = "UPDATE daportal_module
 		SET enabled='1'
 		WHERE module_id=:module_id";
 
@@ -91,15 +91,23 @@ class AdminModule extends Module
 	//AdminModule::actions
 	protected function actions($engine, $request)
 	{
-		if($request->getParameter('user') !== FALSE
-				|| $request->getParameter('group') !== FALSE)
+		$admin = array('audit' => _('Configuration audit'),
+			'modules' => _('Modules administration'));
+
+		if($request->get('user') !== FALSE
+				|| $request->get('group') !== FALSE)
 			return FALSE;
-		$r = new Request($this->name, 'admin');
-		$icon = new PageElement('image', array('stock' => 'admin'));
-		$link = new PageElement('link', array('request' => $r,
-				'text' => _('Modules')));
-		$ret[] = new PageElement('row', array('icon' => $icon,
-				'label' => $link));
+		foreach($admin as $k => $v)
+		{
+			$r = new Request($this->name, 'admin', FALSE, FALSE,
+					array('admin' => $k));
+			$icon = new PageElement('image', array(
+					'stock' => 'admin'));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => $v));
+			$ret[] = new PageElement('row', array('icon' => $icon,
+					'label' => $link));
+		}
 		return $ret;
 	}
 
@@ -108,28 +116,69 @@ class AdminModule extends Module
 	//AdminModule::callAdmin
 	protected function callAdmin($engine, $request = FALSE)
 	{
+		$title = _('Administration');
+		$admin = ($request !== FALSE) ? $request->get('admin') : FALSE;
+
+		$page = new Page();
+		switch($admin)
+		{
+			case 'audit':
+				$this->callAdminAudit($engine, $request, $page);
+				break;
+			case 'modules':
+				$this->callAdminModules($engine, $request,
+						$page);
+				break;
+			default:
+				$page->append('title', array('stock' => 'admin',
+						'text' => $title));
+				$this->callAdminAudit($engine, $request, $page);
+				$this->callAdminModules($engine, $request,
+						$page);
+				$page->set('title', $title);
+				break;
+		}
+		return $page;
+	}
+
+	protected function callAdminAudit($engine, $request, $page)
+	{
+		$title = _('Configuration audit');
+
+		$page->append('title', array('text' => $title));
+		//FIXME really implement
+		$page->append('dialog', array('type' => 'info',
+				'text' => 'No problem found'));
+	}
+
+	protected function callAdminModules($engine, $request, $page)
+	{
 		$title = _('Modules administration');
 		$query = static::$query_admin_modules;
 		$database = $engine->getDatabase();
 		$actions = array('disable', 'enable');
+		$dialog = FALSE;
 
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
-				if($request->getParameter($a) !== FALSE)
+				if($request->get($a) !== FALSE)
 				{
-					$a = 'call'.$a;
-					return $this->$a($engine, $request);
+					$a = 'callModule'.$a;
+					$dialog = $this->$a($engine, $request);
+					break;
 				}
 		//list modules
 		if(($res = $database->query($engine, $query)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('Could not list modules')));
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => 'admin',
-			'text' => $title));
-		$r = new Request($this->name, 'admin');
+		$page->set('title', $title);
+		$page->append('title', array('text' => $title));
+		if($dialog !== FALSE)
+			$page->append($dialog);
+		$r = new Request($this->name, 'admin', FALSE, FALSE, array(
+				'admin' => 'modules'));
 		$columns = array('module' => _('Module'),
 				'enabled' => _('Enabled'));
 		$view = $page->append('treeview', array('request' => $r,
@@ -168,7 +217,6 @@ class AdminModule extends Module
 		$page->append('link', array('request' => $request,
 				'stock' => $this->stock_back,
 				'text' => _('Back to the administration')));
-		return $page;
 	}
 
 
@@ -214,23 +262,23 @@ class AdminModule extends Module
 	}
 
 
-	//AdminModule::callDisable
-	protected function callDisable($engine, $request)
+	//AdminModule::callModuleDisable
+	protected function callModuleDisable($engine, $request)
 	{
-		$query = static::$query_disable;
+		$query = static::$query_module_disable;
 
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
 				_('Module(s) could be disabled successfully'),
 				_('Some module(s) could not be disabled'));
 	}
 
 
-	//AdminModule::callEnable
-	protected function callEnable($engine, $request)
+	//AdminModule::callModuleEnable
+	protected function callModuleEnable($engine, $request)
 	{
-		$query = static::$query_enable;
+		$query = static::$query_module_enable;
 
-		return $this->helperApply($engine, $request, $query, 'admin',
+		return $this->helperApply($engine, $request, $query,
 				_('Module(s) could be enabled successfully'),
 				_('Some module(s) could not be enabled'));
 	}
@@ -238,26 +286,23 @@ class AdminModule extends Module
 
 	//helpers
 	//AdminModule::helperApply
-	protected function helperApply($engine, $request, $query, $fallback,
-			$success, $failure)
+	protected function helperApply($engine, $request, $query, $success,
+			$failure)
 	{
-		//XXX copied from ContentModule
+		//FIXME synchronize with ContentModule
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 
 		if(!$cred->isAdmin())
 		{
 			//must be admin
-			$page = $this->callDefault($engine);
 			$error = _('Permission denied');
-			$page->prepend('dialog', array('type' => 'error',
-				'text' => $error));
-			return $page;
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		}
-		$fallback = 'call'.$fallback;
 		if($request->isIdempotent())
 			//must be safe
-			return $this->$fallback($engine);
+			return FALSE;
 		$type = 'info';
 		$message = $success;
 		$parameters = $request->getParameters();
@@ -274,11 +319,8 @@ class AdminModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		$page = $this->$fallback($engine);
-		//FIXME place this under the title
-		$page->prepend('dialog', array('type' => $type,
+		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
-		return $page;
 	}
 }
 
