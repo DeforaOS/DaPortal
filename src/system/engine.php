@@ -242,12 +242,14 @@ abstract class Engine
 	//static
 	//useful
 	//Engine::attachDefault
-	public static function attachDefault()
+	static public function attachDefault($prefix = FALSE)
 	{
 		global $config;
 		$ret = FALSE;
 		$priority = 0;
 
+		//XXX ignore errors
+		static::configLoad($prefix, TRUE);
 		if($config->get(FALSE, 'debug') == '1')
 			Engine::$debug = TRUE;
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
@@ -280,6 +282,28 @@ abstract class Engine
 					.' with priority '.$priority);
 			$ret->attach();
 		}
+		return $ret;
+	}
+
+
+	//Engine::configLoad
+	static public function configLoad($prefix = FALSE, $reset = TRUE)
+	{
+		global $config;
+		$ret = TRUE;
+		$daportalconf = ($prefix !== FALSE)
+			? $prefix.'/etc/daportal.conf' : FALSE;
+
+		if($reset)
+			$config = new Config();
+		if(($d = getenv('DAPORTALCONF')) !== FALSE)
+			$daportalconf = $d;
+		if($daportalconf !== FALSE)
+			if(($ret = $config->load($daportalconf)) === FALSE)
+			{
+				$error = 'Could not load configuration file';
+				error_log($daportalconf.': '.$error);
+			}
 		return $ret;
 	}
 
