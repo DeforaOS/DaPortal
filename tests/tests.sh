@@ -17,6 +17,7 @@
 
 
 #variables
+PROGNAME="tests.sh"
 #executables
 DATE="date"
 DEBUG="_debug"
@@ -76,7 +77,7 @@ _debug()
 #usage
 _usage()
 {
-	echo "Usage: tests.sh [-c][-P prefix] target" 1>&2
+	echo "Usage: $PROGNAME [-c][-P prefix] target" 1>&2
 	return 1
 }
 
