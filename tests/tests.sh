@@ -17,6 +17,7 @@
 
 
 #variables
+DAPORTALCONF='../tests/daportal.conf'
 PROGNAME="tests.sh"
 #executables
 DATE="date"
@@ -34,6 +35,7 @@ _fail()
 	echo -n "$test:" 1>&2
 	(echo
 	echo "Testing: $test" "$@"
+	export DAPORTALCONF="$DAPORTALCONF"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
@@ -53,6 +55,7 @@ _test()
 	echo -n "$test:" 1>&2
 	(echo
 	echo "Testing: $test" "$@"
+	export DAPORTALCONF="$DAPORTALCONF"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
