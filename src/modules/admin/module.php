@@ -142,6 +142,10 @@ class AdminModule extends Module
 				$page->set('title', $title);
 				break;
 		}
+		$request = new Request($this->name);
+		$page->append('link', array('request' => $request,
+				'stock' => $this->stock_back,
+				'text' => _('Back to the administration')));
 		return $page;
 	}
 
@@ -151,7 +155,8 @@ class AdminModule extends Module
 		$database = $engine->getDatabase();
 		$query = static::$query_check_password;
 
-		$page->append('title', array('text' => $title));
+		$page->append('title', array('stock' => 'admin',
+				'text' => $title));
 		//check for the default password
 		if(($res = $database->query($engine, $query)) === FALSE)
 		{
@@ -197,7 +202,8 @@ class AdminModule extends Module
 					'type' => 'error',
 					'text' => _('Could not list modules')));
 		$page->set('title', $title);
-		$page->append('title', array('text' => $title));
+		$page->append('title', array('stock' => 'admin',
+				'text' => $title));
 		if($dialog !== FALSE)
 			$page->append($dialog);
 		$r = new Request($this->name, 'admin', FALSE, FALSE, array(
@@ -236,10 +242,6 @@ class AdminModule extends Module
 			$row->setProperty('enabled', $database->isTrue(
 					$r['enabled']) ? $yes : $no);
 		}
-		$request = new Request($this->name);
-		$page->append('link', array('request' => $request,
-				'stock' => $this->stock_back,
-				'text' => _('Back to the administration')));
 	}
 
 
