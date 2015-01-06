@@ -287,24 +287,38 @@ abstract class Engine
 
 
 	//Engine::configLoad
+	//loads the default configuration file
 	static public function configLoad($prefix = FALSE, $reset = TRUE)
 	{
-		global $config;
-		$ret = TRUE;
 		$daportalconf = ($prefix !== FALSE)
 			? $prefix.'/etc/daportal.conf' : FALSE;
 
-		if($reset)
-			$config = new Config();
 		if(($d = getenv('DAPORTALCONF')) !== FALSE)
 			$daportalconf = $d;
-		if($daportalconf !== FALSE)
-			if(($ret = $config->load($daportalconf)) === FALSE)
-			{
-				$error = 'Could not load configuration file';
-				error_log($daportalconf.': '.$error);
-			}
-		return $ret;
+		if($daportalconf === FALSE)
+		{
+			error_log('Could not load any configuration file');
+			return FALSE;
+		}
+		return static::configLoadFilename($daportalconf, $reset);
+	}
+
+
+	//Engine::configLoadFilename
+	//loads a specific configuration file
+	static public function configLoadFilename($filename, $reset = TRUE)
+	{
+		global $config;
+
+		if($reset)
+			$config = new Config();
+		if($config->load($filename) === FALSE)
+		{
+			$error = 'Could not load configuration file';
+			error_log($filename.': '.$error);
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
