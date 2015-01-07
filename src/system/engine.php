@@ -276,12 +276,16 @@ abstract class Engine
 		}
 		if($ret !== FALSE)
 		{
+			//XXX ignore errors
+			static::configLoadEngine($prefix, $name, FALSE);
 			if($config->get("engine::$name", 'debug') == 1)
 				Engine::$debug = TRUE;
 			$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
 			$ret->attach();
 		}
+		else
+			error_log('Could not load any engine');
 		return $ret;
 	}
 
@@ -300,6 +304,27 @@ abstract class Engine
 			error_log('Could not load any configuration file');
 			return FALSE;
 		}
+		return static::configLoadFilename($daportalconf, $reset);
+	}
+
+
+	//Engine::configLoadEngine
+	//loads the default configuration file for a specific engine
+	static public function configLoadEngine($prefix = FALSE, $name = FALSE,
+			$reset = TRUE)
+	{
+		$daportalconf = ($prefix !== FALSE && $name !== FALSE)
+			? $prefix.'/etc/daportal-'.$name.'.conf' : FALSE;
+
+		if(($d = getenv('DAPORTALCONF')) !== FALSE)
+			return FALSE;
+		if($daportalconf === FALSE)
+		{
+			error_log($name.': Could not load configuration file');
+			return FALSE;
+		}
+		if(!file_exists($daportalconf))
+			return TRUE;
 		return static::configLoadFilename($daportalconf, $reset);
 	}
 
