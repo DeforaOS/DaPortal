@@ -322,19 +322,27 @@ class BrowserModule extends Module
 				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
 		//check known errors
+		$count = 0;
 		foreach($_FILES['files']['error'] as $k => $v)
 		{
-			if($v != UPLOAD_ERR_OK)
+			if($v == UPLOAD_ERR_NO_FILE)
+				continue;
+			else if($v != UPLOAD_ERR_OK)
 				return _('An error occurred');
 			foreach($delimiters as $d)
 				if(strstr($_FILES['files']['name'][$k], $d)
 						!== FALSE)
 					return _('An error occurred');
+			$count++;
 		}
+		if($count == 0)
+			return _('No file uploaded');
 		//store each file uploaded
 		//XXX if $path is a file authorize only one file at a time
 		foreach($_FILES['files']['error'] as $k => $v)
 		{
+			if($_FILES['files']['error'] == UPLOAD_ERR_NO_FILE)
+				continue;
 			$res = $this->_uploadProcessFile($engine, $request,
 					$path, $_FILES['files']['tmp_name'][$k],
 					$_FILES['files']['name'][$k], $content);
