@@ -309,6 +309,8 @@ class BrowserModule extends Module
 	protected function _uploadProcess($engine, $request, $path)
 	{
 		$ret = TRUE;
+		//XXX UNIX supports backward slashes in filenames
+		$delimiters = array('/', '\\');
 
 		//verify the request
 		if($request === FALSE || $request->get('_upload') === FALSE)
@@ -316,17 +318,19 @@ class BrowserModule extends Module
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//upload the file(s)
-		$error = _('Internal server error');
-		//check known errors
-		if(!isset($_FILES['files']))
+		if(!isset($_FILES['files'])
+				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
-		//no files were really uploaded
-		if(count($_FILES['files']['error']) == 1
-				&& $_FILES['files']['error'][0] == 4)
-			return FALSE;
+		//check known errors
 		foreach($_FILES['files']['error'] as $k => $v)
+		{
 			if($v != UPLOAD_ERR_OK)
 				return _('An error occurred');
+			foreach($delimiters as $d)
+				if(strstr($_FILES['files']['name'][$k], $d)
+						!== FALSE)
+					return _('An error occurred');
+		}
 		//store each file uploaded
 		//XXX if $path is a file authorize only one file at a time
 		foreach($_FILES['files']['error'] as $k => $v)
@@ -335,7 +339,7 @@ class BrowserModule extends Module
 					$path, $_FILES['files']['tmp_name'][$k],
 					$_FILES['files']['name'][$k], $content);
 			if($res === FALSE)
-				return $error;
+				return _('Internal server error');
 		}
 		return FALSE;
 	}

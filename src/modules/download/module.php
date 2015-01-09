@@ -207,6 +207,9 @@ class DownloadModule extends MultiContentModule
 
 	protected function _submitProcess($engine, $request, $content)
 	{
+		//XXX UNIX supports backward slashes in filenames
+		$delimiters = array('/', '\\');
+
 		//verify the request
 		if($request === FALSE || $request->get('_submit') === FALSE)
 			return TRUE;
@@ -223,12 +226,19 @@ class DownloadModule extends MultiContentModule
 		//obtain the parent
 		//FIXME may not be a folder
 		$content->set('download_id', $request->get('parent'));
-		//check known errors
-		if(!isset($_FILES['files']))
+		if(!isset($_FILES['files'])
+				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
+		//check known errors
 		foreach($_FILES['files']['error'] as $k => $v)
+		{
 			if($v != UPLOAD_ERR_OK)
 				return _('An error occurred');
+			foreach($delimiters as $d)
+				if(strstr($_FILES['files']['name'][$k], $d)
+						!== FALSE)
+					return _('An error occurred');
+		}
 		//store each file uploaded
 		$errors = array();
 		foreach($_FILES['files']['error'] as $k => $v)
