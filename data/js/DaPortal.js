@@ -191,6 +191,7 @@ $(document).ready(function() {
 
 		if(button.size() == 1)
 		{
+			button.removeClass('hidden');
 			button.on('click', { entry: $(this) },
 				function(event) {
 				entry = event.data.entry;
@@ -227,6 +228,7 @@ $(document).ready(function() {
 
 		if(button.size() == 1)
 		{
+			button.removeClass('hidden');
 			button.on('click', { filechooser: $(this) },
 				function(event) {
 				filechooser = event.data.filechooser;

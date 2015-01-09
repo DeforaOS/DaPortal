@@ -494,7 +494,7 @@ class HTMLFormat extends FormatElements
 		$this->tag('input', $class, $e->get('id'), $attributes);
 		if($this->javascript && is_string($name)
 				&& substr($name, -2) == '[]')
-			$this->tag('input', 'stock16 add', FALSE, array(
+			$this->tag('input', 'stock16 add hidden', FALSE, array(
 					'type' => 'button',
 					'value' => _('More')));
 		$this->tagClose('div');
@@ -535,7 +535,7 @@ class HTMLFormat extends FormatElements
 				array('type' => $type, 'name' => $name));
 		if($this->javascript && is_string($name)
 				&& substr($name, -2) == '[]')
-			$this->tag('input', 'stock16 add', FALSE, array(
+			$this->tag('input', 'stock16 add hidden', FALSE, array(
 					'type' => 'button',
 					'value' => _('More')));
 		$this->tagClose('div');
