@@ -207,6 +207,7 @@ class DownloadModule extends MultiContentModule
 
 	protected function _submitProcess($engine, $request, $content)
 	{
+		$forbidden = array('.', '..');
 		//XXX UNIX supports backward slashes in filenames
 		$delimiters = array('/', '\\');
 
@@ -237,6 +238,9 @@ class DownloadModule extends MultiContentModule
 				continue;
 			else if($v != UPLOAD_ERR_OK)
 				return _('An error occurred');
+			foreach($forbidden as $f)
+				if($_FILES['files']['name'][$k] == $f)
+					return _('Forbidden filename');
 			foreach($delimiters as $d)
 				if(strstr($_FILES['files']['name'][$k], $d)
 						!== FALSE)
