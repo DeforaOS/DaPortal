@@ -306,6 +306,7 @@ class HTTPEngine extends Engine
 		}
 		//disable caching
 		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: Thu,  1 Jan 1970 00:00:00 GMT');
 		//optional extra fields
 		if(($location = $response->get('location')) !== FALSE)
 			header('Location: '.$location);
