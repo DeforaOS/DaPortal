@@ -202,18 +202,31 @@ class HTMLFormat extends FormatElements
 
 	private function _renderJavascript($page)
 	{
-		$tag = 'script';
-		$type = 'text/javascript';
+		$standalone = $this->get('standalone');
 
 		if($this->javascript === FALSE)
 			return;
+		$this->_renderJavascriptScript('js/jquery.js', $standalone);
+		$this->_renderJavascriptScript('js/DaPortal.js', $standalone);
+	}
+
+	private function _renderJavascriptScript($src, $standalone = FALSE)
+	{
+		$tag = 'script';
+		$type = 'text/javascript';
+
 		$this->renderTabs();
-		$this->tagOpen($tag, FALSE, FALSE, array('type' => $type,
-				'src' => 'js/jquery.js'));
-		$this->tagClose($tag);
-		$this->renderTabs();
-		$this->tagOpen($tag, FALSE, FALSE, array('type' => $type,
-				'src' => 'js/DaPortal.js'));
+		//FIXME emit a (debugging) warning if the file is not readable?
+		if($standalone && ($js = @file_get_contents('../data/'.$src))
+				!== FALSE)
+		{
+			$this->tagOpen($tag, FALSE, FALSE, array(
+					'type' => $type));
+			print($this->escapeComment($js.'//'));
+		}
+		else
+			$this->tagOpen($tag, FALSE, FALSE, array(
+					'type' => $type, 'src' => $src));
 		$this->tagClose($tag);
 	}
 
