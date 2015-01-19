@@ -1,4 +1,7 @@
 SUBDIRS	= apache sql
+MKDIR	= mkdir -m 0755 -p
+INSTALL	= install
+RM	= rm -f
 TARGETS	= $(OBJDIR)daportal.1 $(OBJDIR)daportal.html $(OBJDIR)daportal.conf $(OBJDIR)daportal.conf.5 $(OBJDIR)daportal.conf.html $(OBJDIR)daportal.xml $(OBJDIR)install.html $(OBJDIR)install.xml $(OBJDIR)internals.html $(OBJDIR)internals-print.pdf
 OBJDIR	=
 PREFIX	= /usr/local
@@ -82,6 +85,8 @@ install: $(TARGETS)
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.conf.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)install.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)internals.html"
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal
+	$(INSTALL) -m 0644 daportal-http.conf $(DESTDIR)$(PREFIX)/share/doc/DaPortal/daportal-http.conf
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
@@ -92,5 +97,6 @@ uninstall:
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.conf.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "install.html"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "internals.html"
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/doc/DaPortal/daportal-http.conf
 
 .PHONY: all subdirs clean distclean install uninstall
