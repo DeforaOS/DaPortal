@@ -74,6 +74,7 @@ _deploy()
 			'$PACKAGE-$VERSION/src/' \
 			'$PACKAGE-$VERSION/tests/' \
 			'$PACKAGE-$VERSION/tools/' . &&
+			$MAKE &&
 			$RM -r -- $PACKAGE-$VERSION\""		|| return 2
 	$DEBUG $RM -- "$ARCHIVE"
 }
