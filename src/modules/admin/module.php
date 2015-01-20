@@ -70,7 +70,7 @@ class AdminModule extends Module
 
 	//protected
 	//properties
-	protected $stock_back = 'back';
+	static protected $stock_back = 'back';
 	//queries
 	static protected $query_admin = "SELECT name FROM daportal_module
 		WHERE enabled='1' ORDER BY name ASC";
@@ -144,7 +144,7 @@ class AdminModule extends Module
 		}
 		$request = new Request($this->name);
 		$page->append('link', array('request' => $request,
-				'stock' => $this->stock_back,
+				'stock' => static::$stock_back,
 				'text' => _('Back to the administration')));
 		return $page;
 	}
