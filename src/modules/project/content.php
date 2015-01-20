@@ -370,13 +370,13 @@ class ProjectContent extends ContentMulti
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
-				'value' => $request->getParameter('title')));
+				'value' => $request->get('title')));
 		$vbox->append('entry', array('name' => 'synopsis',
 				'text' => _('Synopsis: '),
-				'value' => $request->getParameter('synopsis')));
+				'value' => $request->get('synopsis')));
 		$vbox->append('textview', array('name' => 'content',
 				'text' => _('Description: '),
-				'value' => $request->getParameter('content')));
+				'value' => $request->get('content')));
 		$combobox = $vbox->append('combobox', array('name' => 'scm',
 				'text' => _('SCM: ')));
 		$combobox->append('label', array('value' => '',
@@ -384,7 +384,7 @@ class ProjectContent extends ContentMulti
 		//FIXME list the SCMs available
 		$vbox->append('entry', array('name' => 'cvsroot',
 				'text' => _('SCM root: '),
-				'value' => $request->getParameter('cvsroot')));
+				'value' => $request->get('cvsroot')));
 		return $vbox;
 	}
 
@@ -392,13 +392,13 @@ class ProjectContent extends ContentMulti
 	{
 		$vbox = new PageElement('vbox');
 		//title
-		if(($value = $request->getParameter('title')) === FALSE)
+		if(($value = $request->get('title')) === FALSE)
 			$value = $this->getTitle();
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
 				'value' => $value));
 		//synopsis
-		if(($value = $request->getParameter('synopsis')) === FALSE)
+		if(($value = $request->get('synopsis')) === FALSE)
 			$value = $this->get('synopsis');
 		$vbox->append('entry', array('name' => 'synopsis',
 				'text' => _('Synopsis: '),
@@ -406,17 +406,17 @@ class ProjectContent extends ContentMulti
 		//description
 		$label = $vbox->append('label', array(
 				'text' => _('Description: ')));
-		if(($value = $request->getParameter('content')) === FALSE)
+		if(($value = $request->get('content')) === FALSE)
 			$value = $this->getContent($engine);
 		$label->append('textview', array('name' => 'content',
 				'value' => $value));
 		//SCM
-		if(($value = $request->getParameter('scm')) === FALSE)
+		if(($value = $request->get('scm')) === FALSE)
 			$value = $this->get('scm');
 		$vbox->append('entry', array('name' => 'scm',
 				'text' => _('SCM: '),
 				'value' => $value));
-		if(($value = $request->getParameter('cvsroot')) === FALSE)
+		if(($value = $request->get('cvsroot')) === FALSE)
 			$value = $this->get('cvsroot');
 		$vbox->append('entry', array('name' => 'cvsroot',
 				'text' => _('Repository: '),
@@ -450,9 +450,9 @@ class ProjectContent extends ContentMulti
 		$database = $engine->getDatabase();
 		$query = static::$project_query_insert;
 
-		$this->set('synopsis', $request->getParameter('synopsis'));
-		$this->set('scm', $request->getParameter('scm'));
-		$this->set('cvsroot', $request->getParameter('cvsroot'));
+		$this->set('synopsis', $request->get('synopsis'));
+		$this->set('scm', $request->get('scm'));
+		$this->set('cvsroot', $request->get('cvsroot'));
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not insert the project');
@@ -482,7 +482,7 @@ class ProjectContent extends ContentMulti
 			$args[$f] = $this->get($f);
 			if($request === FALSE)
 				continue;
-			if(($v = $request->getParameter($f)) !== FALSE)
+			if(($v = $request->get($f)) !== FALSE)
 				$args[$f] = $v;
 		}
 		if($database->query($engine, $query, $args)
