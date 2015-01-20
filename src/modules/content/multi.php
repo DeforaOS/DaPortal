@@ -75,8 +75,8 @@ abstract class MultiContentModule extends ContentModule
 			$this->content_class = get_class($content);
 			return;
 		}
-		if($request !== FALSE && ($t = $request->getParameter('type'))
-				!== FALSE && isset(static::$content_classes[$t]))
+		if($request !== FALSE && ($t = $request->get('type')) !== FALSE
+				&& isset(static::$content_classes[$t]))
 		{
 			$this->content_class = static::$content_classes[$t];
 			return;
@@ -169,7 +169,7 @@ abstract class MultiContentModule extends ContentModule
 	{
 		$ret = array();
 
-		if($request->getParameter('admin') === 0)
+		if($request->get('admin') === 0)
 			return $ret;
 		foreach(static::$content_classes as $t => $c)
 		{
@@ -246,8 +246,7 @@ abstract class MultiContentModule extends ContentModule
 		$user = ($request !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
-		$type = ($request !== FALSE) ? $request->getParameter('type')
-			: FALSE;
+		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;
