@@ -502,6 +502,8 @@ class HTMLFormat extends FormatElements
 		$type = ($e->get('hidden') === TRUE) ? 'password' : 'text';
 		$attributes = array('type' => $type, 'name' => $name,
 			'value' => $value);
+		if(($size = $e->get('size')) !== FALSE && is_numeric($size))
+			$attributes['size'] = $size;
 		if(($width = $e->get('width')) !== FALSE && is_numeric($width))
 			$attributes['style'] = 'width: '.$width.'ex';
 		$this->tag('input', $class, $e->get('id'), $attributes);
