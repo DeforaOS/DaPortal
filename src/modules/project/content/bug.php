@@ -182,7 +182,7 @@ class BugProjectContent extends ContentMulti
 		//type
 		$combobox = $vbox->append('combobox', array('name' => 'bug_type',
 				'text' => _('Type: '),
-				'value' => $request->get('type')));
+				'value' => $request->get('bug_type')));
 		foreach(self::$types as $value => $text)
 			$combobox->append('label', array('value' => $value,
 				'text' => $text));
