@@ -461,7 +461,7 @@ INSERT INTO daportal_module (name, enabled) VALUES ('webmail', '0');
 CREATE TABLE daportal_ca (
 	ca_id INTEGER UNIQUE NOT NULL,
 	parent INTEGER DEFAULT NULL,
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -475,7 +475,7 @@ CREATE TABLE daportal_ca (
 CREATE TABLE daportal_caclient (
 	caclient_id INTEGER UNIQUE NOT NULL,
 	parent INTEGER,
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -489,7 +489,7 @@ CREATE TABLE daportal_caclient (
 CREATE TABLE daportal_caserver (
 	caserver_id INTEGER UNIQUE NOT NULL,
 	parent INTEGER,
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -500,7 +500,7 @@ CREATE TABLE daportal_caserver (
 	FOREIGN KEY (parent) REFERENCES daportal_ca (ca_id)
 );
 
-INSERT INTO daportal_module (name, enabled) VALUES ('pki', '0');
+INSERT INTO daportal_module (name, enabled) VALUES ('pki', '1');
 
 
 /* module: browser */

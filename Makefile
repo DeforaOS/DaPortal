@@ -250,6 +250,15 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/news/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/openssl.cnf \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content/ca.php \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content/caclient.php \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content/caserver.php \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content.php \

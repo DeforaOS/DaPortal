@@ -333,7 +333,7 @@ INSERT INTO daportal_module (name, enabled) VALUES ('webmail', '0');
 CREATE TABLE daportal_ca (
 	ca_id INTEGER NOT NULL UNIQUE REFERENCES daportal_content (content_id) ON DELETE CASCADE,
 	parent INTEGER DEFAULT NULL REFERENCES daportal_ca (ca_id),
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -345,7 +345,7 @@ CREATE TABLE daportal_ca (
 CREATE TABLE daportal_caclient (
 	caclient_id INTEGER NOT NULL UNIQUE REFERENCES daportal_content (content_id) ON DELETE CASCADE,
 	parent INTEGER DEFAULT NULL REFERENCES daportal_ca (ca_id),
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -357,7 +357,7 @@ CREATE TABLE daportal_caclient (
 CREATE TABLE daportal_caserver (
 	caserver_id INTEGER NOT NULL UNIQUE REFERENCES daportal_content (content_id) ON DELETE CASCADE,
 	parent INTEGER DEFAULT NULL REFERENCES daportal_ca (ca_id),
-	country VARCHAR(2),
+	country CHAR(2),
 	state VARCHAR(255),
 	locality VARCHAR(255),
 	organization VARCHAR(255),
@@ -366,7 +366,7 @@ CREATE TABLE daportal_caserver (
 	email VARCHAR(255)
 );
 
-INSERT INTO daportal_module (name, enabled) VALUES ('pki', '0');
+INSERT INTO daportal_module (name, enabled) VALUES ('pki', '1');
 
 
 /* module: browser */
