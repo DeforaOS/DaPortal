@@ -54,7 +54,7 @@ BEGIN TRANSACTION;
 CREATE TABLE daportal_module (
 	module_id INTEGER PRIMARY KEY,
 	name VARCHAR(255) UNIQUE,
-	enabled TINYINT(4) NOT NULL DEFAULT '0'
+	enabled BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 INSERT INTO daportal_module (name, enabled) VALUES ('admin', '1');
