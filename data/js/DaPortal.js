@@ -18,6 +18,21 @@
 $(document).ready(function() {
 	$('body').addClass('js-activated');
 
+	//dialogs
+	$('div.dialog').each(function(index) {
+		dialog = $(this);
+
+		$(this).children('button.close').each(function(index) {
+			$(this).on('click', { dialog: dialog },
+				function(event) {
+				dialog = event.data.dialog;
+
+				dialog.addClass('hidden');
+			});
+			$(this).removeClass('hidden');
+		});
+	});
+
 	//editor
 	$('iframe.editor').each(function(index) {
 		editor = $(this);

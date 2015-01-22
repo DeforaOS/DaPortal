@@ -478,7 +478,12 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('div', 'message', FALSE, FALSE, $e->get('text'));
 		$this->tagClose('div');
 		$this->renderTabs();
-		$this->renderChildren($e);
+		if(count($e->getChildren()) > 0)
+			$this->renderChildren($e);
+		else
+			//close button (if there is no child)
+			$this->tag('button', 'stock16 close hidden', FALSE,
+					array('type' => 'button'), _('Close'));
 		$this->tagClose('div');
 	}
 
