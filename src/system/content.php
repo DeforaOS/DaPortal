@@ -436,7 +436,7 @@ class Content
 	//Content::display
 	public function display($engine, $request)
 	{
-		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
 		$vbox = new PageElement('vbox');
 
 		if($type === FALSE || $type == 'title')

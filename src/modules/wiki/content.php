@@ -104,7 +104,7 @@ class WikiContent extends Content
 	//WikiContent::display
 	public function display($engine, $request)
 	{
-		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
 		$types = array('revisions');
 
 		//allow more content types to be explicitly displayed
@@ -117,7 +117,7 @@ class WikiContent extends Content
 	//WikiContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		$type = $request->get('type');
+		$type = $request->get('display');
 		$revision = $request->get('revision');
 		$diff = $request->get('diff');
 
