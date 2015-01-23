@@ -480,7 +480,7 @@ class HTMLFormat extends FormatElements
 		$this->renderTabs();
 		if(count($e->getChildren()) > 0)
 			$this->renderChildren($e);
-		else
+		else if(!$this->get('standalone'))
 			//close button (if there is no child)
 			$this->tag('button', 'stock16 close hidden', FALSE,
 					array('type' => 'button'), _('Close'));
