@@ -181,8 +181,8 @@ class Mail
 		//plain text content
 		$mime->setTXTBody($text);
 		//HTML contents
-		$html = Mail::pageToHTML($engine, $page);
-		static::_renderBodyHtml($engine, $mime, $html);
+		if(($html = Mail::pageToHTML($engine, $page)) !== FALSE)
+			static::_renderBodyHtml($engine, $mime, $html);
 	}
 
 	static protected function _renderBodyHtml($engine, $mime, $html)
