@@ -106,32 +106,47 @@ class Mail
 	//Mail::pageToHTML
 	static protected function pageToHTML($engine, $page)
 	{
-		if(($format = Format::attachDefault($engine, 'text/html'))
-				=== FALSE)
-			return FALSE;
-		$format = clone $format;
-		$format->set('standalone', TRUE);
-		ob_start();
-		$format->render($engine, $page);
-		$str = ob_get_contents();
-		ob_end_clean();
-		return $str;
+		if($page instanceof PageElement)
+		{
+			if(($format = Format::attachDefault($engine,
+					'text/html')) === FALSE)
+				return FALSE;
+			$format = clone $format;
+			$format->set('standalone', TRUE);
+			ob_start();
+			$format->render($engine, $page);
+			$str = ob_get_contents();
+			ob_end_clean();
+			return $str;
+		}
+		else if(is_string($page) && substr($page, 0, 1) == '<')
+			//XXX assumes HTML
+			return $page;
+		return FALSE;
 	}
 
 
 	//Mail::pageToText
 	static protected function pageToText($engine, $page)
 	{
-		if(($format = Format::attachDefault($engine, 'text/plain'))
-				=== FALSE)
-			return FALSE;
-		$format = clone $format;
-		$format->set('wrap', 72);
-		ob_start();
-		$format->render($engine, $page);
-		$str = ob_get_contents();
-		ob_end_clean();
-		return $str;
+		if($page instanceof PageElement)
+		{
+			if(($format = Format::attachDefault($engine,
+					'text/plain')) === FALSE)
+				return FALSE;
+			$format = clone $format;
+			$format->set('wrap', 72);
+			ob_start();
+			$format->render($engine, $page);
+			$str = ob_get_contents();
+			ob_end_clean();
+			return $str;
+		}
+		else if(is_string($page) && substr($page, 0, 1) == '<')
+			//XXX assumes HTML
+			return 'This e-mail message requires an HTML viewer.';
+		else
+			return $page;
 	}
 
 
