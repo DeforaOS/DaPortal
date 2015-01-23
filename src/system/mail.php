@@ -147,11 +147,7 @@ class Mail
 			return $text;
 		}
 		$mime = new Mail_Mime(array('eol' => "\n"));
-		//plain text content
-		$mime->setTXTBody($text);
-		//HTML contents
-		$html = Mail::pageToHTML($engine, $page);
-		$mime->setHTMLBody($html);
+		static::_renderBody($engine, $mime, $text, $page);
 		static::_renderAttachments($engine, $mime, $headers,
 				$attachments);
 		return $mime->get();
@@ -177,6 +173,21 @@ class Mail
 		$hdrs = $mime->headers(array());
 		foreach($hdrs as $h => $v)
 			$headers[$h] = $v;
+	}
+
+	static protected function _renderBody($engine, $mime, $text,
+			$page = FALSE)
+	{
+		//plain text content
+		$mime->setTXTBody($text);
+		//HTML contents
+		$html = Mail::pageToHTML($engine, $page);
+		static::_renderBodyHtml($engine, $mime, $html);
+	}
+
+	static protected function _renderBodyHtml($engine, $mime, $html)
+	{
+		$mime->setHTMLBody($html);
 	}
 }
 
