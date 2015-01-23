@@ -152,6 +152,14 @@ class Mail
 		//HTML contents
 		$html = Mail::pageToHTML($engine, $page);
 		$mime->setHTMLBody($html);
+		static::_renderAttachments($engine, $mime, $headers,
+				$attachments);
+		return $mime->get();
+	}
+
+	static protected function _renderAttachments($engine, $mime, &$headers,
+			$attachments)
+	{
 		//attachments
 		if(!is_array($attachments))
 			$attachments = array();
@@ -169,7 +177,6 @@ class Mail
 		$hdrs = $mime->headers(array());
 		foreach($hdrs as $h => $v)
 			$headers[$h] = $v;
-		return $mime->get();
 	}
 }
 
