@@ -82,7 +82,7 @@ class ProjectModule extends MultiContentModule
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
-	protected $project_query_list_admin_bugs = "SELECT
+	static protected $query_list_admin_bugs = "SELECT
 		daportal_content.content_id AS id, bug_id,
 		daportal_content.enabled AS enabled,
 		daportal_content.public AS public,
@@ -95,7 +95,7 @@ class ProjectModule extends MultiContentModule
 		AND daportal_content.user_id=daportal_user.user_id
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=daportal_bug.content_id";
-	protected $project_query_list_admin_bugs_count = "SELECT
+	static protected $query_list_admin_bugs_count = "SELECT
 		COUNT(*) AS count
 		FROM daportal_content, daportal_module, daportal_user,
 		daportal_bug
@@ -105,7 +105,7 @@ class ProjectModule extends MultiContentModule
 		AND daportal_user.enabled='1'
 		AND daportal_content.content_id=daportal_bug.content_id";
 	//IN:	module_id
-	static protected $project_query_list_bugs = 'SELECT bug.content_id AS id,
+	static protected $query_list_bugs = 'SELECT bug.content_id AS id,
 		bug.timestamp AS timestamp,
 		bug.module_id AS module_id, bug.module AS module,
 		bug.user_id AS user_id, bug.username AS username,
@@ -294,10 +294,9 @@ class ProjectModule extends MultiContentModule
 	{
 		//FIXME also set the columns
 		$this->text_content_admin = _('Bugs administration');
-		$this->query_list_admin
-			= $this->project_query_list_admin_bugs;
+		$this->query_list_admin = static::$query_list_admin_bugs;
 		$this->query_list_admin_count
-			= $this->project_query_list_admin_bugs_count;
+			= static::$query_list_admin_bugs_count;
 		return parent::callAdmin($engine, $request);
 	}
 
@@ -309,7 +308,7 @@ class ProjectModule extends MultiContentModule
 		$title = _('Bug reports');
 		$error = FALSE;
 		//FIXME use BugProjectContent::listAll() instead
-		$query = static::$project_query_list_bugs;
+		$query = static::$query_list_bugs;
 		$project = FALSE;
 
 		//XXX unlike ProjectModule::list() here getID() is the project
