@@ -35,7 +35,7 @@ actions/forward				forward
 actions/gnome-logout			logout
 actions/go-jump				connect
 actions/gtk-about			about
-actions/gtk-add				add subscribe
+actions/gtk-add				add more subscribe
 actions/gtk-bold			bold
 actions/gtk-cancel			cancel disable
 actions/gtk-clear			remove-format
@@ -138,7 +138,7 @@ _icontheme()
 	$MKDIR -- "$dirname"					|| return 2
 	($CAT << EOF
 /* \$Id\$ */
-/* Copyright (c) 2014 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2014-2015 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
