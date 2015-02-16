@@ -1,10 +1,15 @@
 SUBDIRS	= admin article blog browser content download group news project search top user wiki
+MKDIR	= mkdir -m 0755 -p
 
 
 all: subdirs
 
 subdirs:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE)) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		([ -d "$(OBJDIR)$$i" ] || $(MKDIR) -- "$(OBJDIR)$$i") && \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/"; \
+		else $(MAKE); fi) || exit; done
 
 clean:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
