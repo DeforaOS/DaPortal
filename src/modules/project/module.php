@@ -38,7 +38,6 @@ class ProjectModule extends MultiContentModule
 			case 'bug_reply':
 				return $this->callBugReply($engine, $request);
 			case 'browse':
-			case 'download':
 			case 'gallery':
 			case 'members':
 			case 'homepage':
@@ -46,6 +45,7 @@ class ProjectModule extends MultiContentModule
 				return $this->callDisplay($engine, $request);
 			case 'bugList':
 			case 'bugReply':
+			case 'download':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
@@ -121,6 +121,17 @@ class ProjectModule extends MultiContentModule
 		AND project.content_id=daportal_bug.project_id
 		AND daportal_project.project_id=project.content_id
 		AND bug.module_id=:module_id';
+	static protected $query_list_releases = 'SELECT
+		project_download_id AS id, project_id, download_id,
+		download.title AS title, project.title AS project,
+		download.timestamp AS timestamp
+		FROM daportal_project_download, daportal_content project,
+		daportal_content download
+		WHERE daportal_project_download.project_id=project.content_id
+		AND daportal_project_download.download_id=download.content_id
+		ORDER BY download.timestamp DESC';
+	//IN:	project_id
+	//	download_id
 	static protected $project_query_project_release_insert = 'INSERT INTO
 		daportal_project_download (project_id, download_id)
 		VALUES (:project_id, :download_id)';
@@ -456,6 +467,61 @@ class ProjectModule extends MultiContentModule
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		return $this->callList($engine, $request);
+	}
+
+
+	//ProjectModule::callDownload
+	protected function callDownload($engine, $request = FALSE)
+	{
+		$database = $engine->getDatabase();
+		$query = static::$query_list_releases;
+		$title = _('Latest releases');
+
+		if($request->getID() !== FALSE)
+			return $this->callDisplay($engine, $request);
+		//list the latest releases
+		$page = new Page($title);
+		$vbox = $page->append('vbox');
+		$vbox->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$query .= ' '.$database->limit(20);
+		if(($releases = $database->query($engine, $query)) === FALSE)
+		{
+			$error = _('Could not obtain the releases');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = array('title' => _('Filename'),
+			'project' => _('Project'), 'date' => _('Date'));
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		$module = Module::load($engine, 'download');
+		foreach($releases as $r)
+		{
+			if(($download = FileDownloadContent::load($engine,
+					$module, $r['download_id'],
+					$r['title'])) === FALSE)
+				continue;
+			$r['title'] = new PageElement('link', array(
+				'stock' => $module->getName(),
+				'text' => $r['title'],
+				'request' => $download->getRequest()));
+			if(($project = ProjectContent::load($engine, $this,
+					$r['project_id'], $r['project']))
+					=== FALSE)
+				continue;
+			$r['project'] = new PageElement('link', array(
+				'stock' => $this->getName(),
+				'text' => $r['project'],
+				'request' => $project->getRequest()));
+			$r['date'] = $database->formatDate($engine,
+					$r['timestamp']);
+			$view->append('row', $r);
+		}
+		$vbox->append('link', array('stock' => $this->getName(),
+			'text' => _('More projects...'),
+			'request' => $this->getRequest()));
+		return $page;
 	}
 
 
