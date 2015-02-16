@@ -19,7 +19,7 @@
 	background-image:		url('xfce4-icon-theme/48x48/stock/stock.png');
 }
 
-.stock48.add {
+.stock48.add, .stock48.more, .stock48.subscribe {
 	background-image:		url('xfce4-icon-theme/48x48/stock/stock_add.png');
 }
 

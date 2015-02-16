@@ -23,7 +23,7 @@
 	background-image:	url('Tango/24x24/actions/gtk-about.png');
 }
 
-.stock24.add {
+.stock24.add, .stock24.more, .stock24.subscribe {
 	background-image:	url('Tango/24x24/actions/gtk-add.png');
 }
 

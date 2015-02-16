@@ -19,7 +19,9 @@
 	background-image:		url('xfce4-icon-theme/scalable/stock/stock_missing-image.svg');
 }
 
-.stock16.add, .stock24.add, .stock32.add {
+.stock16.add, .stock16.more, .stock16.subscribe,
+.stock24.add, .stock24.more, .stock24.subscribe,
+.stock32.add, .stock32.more, .stock32.subscribe {
 	background-image:		url('xfce4-icon-theme/scalable/stock/stock_add.svg');
 }
 

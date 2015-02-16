@@ -23,7 +23,7 @@
 	background-image:	url('Tango/scalable/actions/gtk-about.svg');
 }
 
-.stock48.add {
+.stock48.add, .stock48.more, .stock48.subscribe {
 	background-image:	url('Tango/scalable/actions/gtk-add.svg');
 }
 
