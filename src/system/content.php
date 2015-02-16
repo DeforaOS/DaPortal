@@ -881,7 +881,6 @@ class Content
 			$query = static::$query_list_group;
 			$args['group_id'] = $user->getGroupID();
 		}
-		$order = static::getOrder($engine, $order);
 		return static::query($engine, $query, $args, $order, $limit,
 				$offset);
 	}
