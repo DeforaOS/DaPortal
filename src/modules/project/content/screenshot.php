@@ -59,6 +59,20 @@ class ScreenshotProjectContent extends DownloadProjectContent
 	static protected $load_title = 'download.title';
 	//queries
 	//IN:	module_id
+	static protected $query_list = 'SELECT project_screenshot_id,
+		download.content_id AS id, download.timestamp AS timestamp,
+		project.module_id AS module_id, project.module AS module,
+		download.user_id AS user_id, download.username AS username,
+		download.group_id AS group_id, download.groupname AS groupname,
+		download.title AS title, download.content AS content,
+		download.enabled AS enabled, download.public AS public,
+		project_id, download_id
+		FROM daportal_project_screenshot, daportal_content_public project,
+		daportal_content_public download
+		WHERE daportal_project_screenshot.project_id=project.content_id
+		AND daportal_project_screenshot.download_id=download.content_id
+		AND project.module_id=:module_id';
+	//IN:	module_id
 	//	user_id
 	//	content_id
 	static protected $query_load = "SELECT project_screenshot_id,
@@ -78,20 +92,6 @@ class ScreenshotProjectContent extends DownloadProjectContent
 		AND (download.public='1' OR download.user_id=:user_id)
 		AND (project.public='1' OR project.user_id=:user_id)
 		AND download.content_id=:content_id";
-	//IN:	module_id
-	static protected $query_list = 'SELECT project_screenshot_id,
-		download.content_id AS id, download.timestamp AS timestamp,
-		project.module_id AS module_id, project.module AS module,
-		download.user_id AS user_id, download.username AS username,
-		download.group_id AS group_id, download.groupname AS groupname,
-		download.title AS title, download.content AS content,
-		download.enabled AS enabled, download.public AS public,
-		project_id, download_id
-		FROM daportal_project_screenshot, daportal_content_public project,
-		daportal_content_public download
-		WHERE daportal_project_screenshot.project_id=project.content_id
-		AND daportal_project_screenshot.download_id=download.content_id
-		AND project.module_id=:module_id';
 }
 
 ?>
