@@ -24,7 +24,7 @@ function autoload($class, $filename = FALSE)
 	if(strchr($class, '/') !== FALSE)
 		return;
 	$res = ($filename = _autoload_filename($class)) !== FALSE
-		? include_once($filename) : FALSE;
+		&& is_readable($filename) ? include_once($filename) : FALSE;
 	if($res === FALSE)
 		error_log($class.': Could not autoload class');
 }
