@@ -16,7 +16,14 @@
 
 
 
-$classes = array();
+$classes = array(
+	'AuthCredentials' => './system/auth/credentials.php',
+	'ConfigSection' => './system/config/section.php',
+	'DatabaseResult' => './system/database/result.php',
+	'FormatElements' => './system/format/elements.php',
+	'MultiContentModule' => './modules/content/multi.php',
+	'PageElement' => './system/page/element.php'
+);
 
 
 //autoload
@@ -36,28 +43,6 @@ function autoload($class)
 }
 
 function _autoload_filename($class)
-{
-	//special cases
-	switch($class)
-	{
-		case 'AuthCredentials':
-			return './system/auth/credentials.php';
-		case 'ConfigSection':
-			return './system/config/section.php';
-		case 'DatabaseResult':
-			return './system/database/result.php';
-		case 'FormatElements':
-			return './system/format/elements.php';
-		case 'MultiContentModule':
-			return './modules/content/multi.php';
-		case 'PageElement':
-			return './system/page/element.php';
-		default:
-			return _autoload_filename_default($class);
-	}
-}
-
-function _autoload_filename_default($class)
 {
 	$len = strlen($class);
 	//Auth sub-classes
