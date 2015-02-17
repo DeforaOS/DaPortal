@@ -54,6 +54,20 @@ abstract class MultiContentModule extends ContentModule
 	//MultiContentModule::MultiContentModule
 	protected function __construct($id, $name, $title)
 	{
+		//autoload sub-classes
+		foreach(static::$content_classes as $class)
+		{
+			$c = strtolower($class);
+			$len = strlen($name) + 7;
+			if(strlen($c) <= $len)
+				continue;
+			if(substr($c, -$len) != strtolower($name).'content')
+				continue;
+			$c = substr($c, 0, strlen($c) - $len);
+			$filename = './modules/'.strtolower($name).'/content/'
+				.$c.'.php';
+			autoload($class, $filename);
+		}
 		//XXX copied from Module::Module()
 		$this->id = $id;
 		$this->name = $name;
