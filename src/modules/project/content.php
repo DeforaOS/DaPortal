@@ -50,11 +50,27 @@ class ProjectContent extends ContentMulti
 	}
 
 
+	//ProjectContent::canDownload
+	public function canDownload($engine, $request = FALSE, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		if(Module::load($engine, 'download') === FALSE)
+		{
+			$error = _('The download module is not available');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//ProjectContent::canUpload
 	public function canUpload($engine, $request = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
+		if($this->canDownload($engine, $request, $error) === FALSE)
+			return FALSE;
 		//FIXME really implement
 		return $credentials->isAdmin();
 	}
@@ -118,9 +134,13 @@ class ProjectContent extends ContentMulti
 	{
 		switch(($action = $request->getAction()))
 		{
-			case 'browse':
 			case 'download':
 			case 'gallery':
+				if($this->canDownload($engine, $request)
+						=== FALSE)
+					return parent::display($engine, $request);
+				//fallback
+			case 'browse':
 			case 'members':
 			case 'timeline':
 				$title = _('Project: ').$this->getTitle();
@@ -340,14 +360,17 @@ class ProjectContent extends ContentMulti
 	public function displayToolbar($engine, $request = FALSE)
 	{
 		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
-		$actions = array('bug_list' => _('Bug reports'),
-			'download' => _('Download'),
-			'gallery' => _('Gallery'),
-			'timeline' => _('Timeline'),
-			'browse' => _('Browse'),
-			'members' => _('Members'),
-			'homepage' => _('Homepage'));
+		$actions = array('bug_list' => _('Bug reports'));
 
+		if($this->canDownload($engine, $request))
+		{
+			$actions['download'] = _('Download');
+			$actions['gallery'] = _('Gallery');
+		}
+		$actions['timeline'] = _('Timeline');
+		$actions['browse'] = _('Browse');
+		$actions['members'] = _('Members');
+		$actions['homepage'] = _('Homepage');
 		$toolbar = parent::displayToolbar($engine, $request);
 		if($this->getID() === FALSE)
 			return $toolbar;

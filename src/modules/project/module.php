@@ -139,13 +139,23 @@ class ProjectModule extends MultiContentModule
 
 
 	//accessors
+	//ProjectModule::canDownload
+	protected function canDownload($engine, $request = FALSE,
+			$content = FALSE)
+	{
+		if($content === FALSE)
+			$content = new ProjectContent($engine, $this);
+		return $content->canDownload($engine, $request);
+	}
+
+
 	//ProjectModule::canUpload
 	protected function canUpload($engine, $request = FALSE,
-			$project = FALSE)
+			$content = FALSE)
 	{
-		if($project == FALSE)
-			$project = new ProjectContent($engine, $this);
-		return $project->canUpload($engine, $request);
+		if($content === FALSE)
+			$content = new ProjectContent($engine, $this);
+		return $content->canUpload($engine, $request);
 	}
 
 
@@ -448,7 +458,9 @@ class ProjectModule extends MultiContentModule
 	protected function callDefault($engine, $request = FALSE)
 	{
 		$title = _('Projects');
-		$latest = array('project', 'download', 'bug', 'screenshot');
+		$latest = $this->canDownload($engine, $request)
+			? array('project', 'download', 'bug', 'screenshot')
+			: array('project', 'bug');
 
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
