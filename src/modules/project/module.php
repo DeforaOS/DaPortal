@@ -510,7 +510,8 @@ class ProjectModule extends MultiContentModule
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		if(($bugs = BugProjectContent::listAll($engine, $this,
-				'timestamp', 20)) === FALSE)
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
 		{
 			$error = _('Could not list bug reports');
 			$page->append('dialog', array('type' => 'error',
@@ -538,7 +539,8 @@ class ProjectModule extends MultiContentModule
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		if(($projects = ProjectContent::listAll($engine, $this,
-				'timestamp', 20)) === FALSE)
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
 		{
 			$error = _('Could not list projects');
 			$page->append('dialog', array('type' => 'error',
@@ -566,7 +568,8 @@ class ProjectModule extends MultiContentModule
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		if(($downloads = DownloadProjectContent::listAll($engine, $this,
-				'timestamp', 20)) === FALSE)
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
 		{
 			$error = _('Could not list downloads');
 			$page->append('dialog', array('type' => 'error',
@@ -594,7 +597,8 @@ class ProjectModule extends MultiContentModule
 				'text' => $title));
 		$vbox = $page->append('vbox');
 		if(($screenshots = ScreenshotProjectContent::listAll($engine,
-				$this, 'timestamp', 20)) === FALSE)
+				$this, 'timestamp', $this->content_headline_count))
+				=== FALSE)
 		{
 			$error = _('Could not list screenshots');
 			$page->append('dialog', array('type' => 'error',
