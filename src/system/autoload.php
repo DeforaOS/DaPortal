@@ -16,14 +16,20 @@
 
 
 
+$classes = array();
+
+
 //autoload
 function autoload($class)
 {
+	global $classes;
 	$res = FALSE;
 
 	if(strchr($class, '/') !== FALSE)
 		return;
-	if(($filename = _autoload_filename($class)) !== FALSE)
+	if(isset($classes[$class]))
+		$res = include_once($classes[$class]);
+	else if(($filename = _autoload_filename($class)) !== FALSE)
 		$res = include_once($filename);
 	if($res === FALSE)
 		error_log($class.': Could not autoload class');
@@ -124,6 +130,15 @@ function _autoload_filename_default($class)
 		return './system/content/'.strtolower($content).'.php';
 	}
 	return './system/'.strtolower($class).'.php';
+}
+
+
+//autoload_register
+function autoload_register($class, $filename)
+{
+	global $classes;
+
+	$classes[$class] = $filename;
 }
 
 spl_autoload_register('autoload');
