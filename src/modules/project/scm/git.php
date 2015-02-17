@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2015 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -102,7 +102,7 @@ class GitSCMProject extends SCMProject
 					16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
@@ -111,10 +111,10 @@ class GitSCMProject extends SCMProject
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));
-			$row->setProperty('title', $link);
+			$row->set('title', $link);
 			//date
 			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
-			$row->setProperty('date', $date);
+			$row->set('date', $date);
 		}
 		foreach($files as $de => $st)
 		{
@@ -122,7 +122,7 @@ class GitSCMProject extends SCMProject
 			$icon = Mime::getIcon($engine, $de, 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
@@ -131,10 +131,10 @@ class GitSCMProject extends SCMProject
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));
-			$row->setProperty('title', $link);
+			$row->set('title', $link);
 			//date
 			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
-			$row->setProperty('date', $date);
+			$row->set('date', $date);
 		}
 		closedir($dir);
 		return $vbox;

@@ -1,5 +1,5 @@
 <?php //$Id$
-//Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
+//Copyright (c) 2012-2015 Pierre Pronchery <khorben@defora.org>
 //This file is part of DeforaOS Web DaPortal
 //
 //This program is free software: you can redistribute it and/or modify
@@ -110,7 +110,7 @@ class CVSSCMProject extends SCMProject
 					16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
@@ -119,10 +119,10 @@ class CVSSCMProject extends SCMProject
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $de));
-			$row->setProperty('title', $link);
+			$row->set('title', $link);
 			//date
 			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
-			$row->setProperty('date', $date);
+			$row->set('date', $date);
 		}
 		foreach($files as $de => $st)
 		{
@@ -130,7 +130,7 @@ class CVSSCMProject extends SCMProject
 			$icon = Mime::getIcon($engine, $de, 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			//title
 			$f = ltrim($file.'/'.$de, '/');
 			$r = new Request($request->getModule(),
@@ -139,10 +139,10 @@ class CVSSCMProject extends SCMProject
 				array('file' => $f));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => substr($de, 0, -2)));
-			$row->setProperty('title', $link);
+			$row->set('title', $link);
 			//date
 			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
-			$row->setProperty('date', $date);
+			$row->set('date', $date);
 			//obtain the revisions
 			$cmd = 'rlog '.escapeshellarg($path.'/'.$de);
 			unset($rcs);
@@ -161,7 +161,7 @@ class CVSSCMProject extends SCMProject
 					'revision' => $revision));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $revision));
-			$row->setProperty('revision', $link);
+			$row->set('revision', $link);
 			//author
 			//XXX code duplication
 			$username = substr($rcs[$revs + 2], 36);
@@ -177,7 +177,7 @@ class CVSSCMProject extends SCMProject
 						'stock' => 'user',
 						'text' => $username));
 			}
-			$row->setProperty('username', $username);
+			$row->set('username', $username);
 			//message
 			//FIXME implement
 		}
@@ -214,8 +214,8 @@ class CVSSCMProject extends SCMProject
 					'revision' => $revision));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $revision));
-			$row->setProperty('title', $link);
-			$row->setProperty('date', substr($rcs[$i + 1], 6, 19));
+			$row->set('title', $link);
+			$row->set('date', substr($rcs[$i + 1], 6, 19));
 			//username
 			$username = substr($rcs[$i + 1], 36);
 			$username = substr($username, 0, strspn($username,
@@ -231,7 +231,7 @@ class CVSSCMProject extends SCMProject
 						'stock' => 'user',
 						'text' => $username));
 			}
-			$row->setProperty('username', $username);
+			$row->set('username', $username);
 			for(; strncmp($rcs[$i + 2], 'branches: ', 10) == 0;
 					$i++);
 			//message
@@ -249,7 +249,7 @@ class CVSSCMProject extends SCMProject
 					$msg = '...';
 				$message .= $msg;
 			}
-			$row->setProperty('message', $message);
+			$row->set('message', $message);
 		}
 		return $vbox;
 	}
@@ -392,20 +392,20 @@ class CVSSCMProject extends SCMProject
 			//icon
 			$icon = new PageElement('image', array(
 					'stock' => $icon, 'size' => 16));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			//title
 			$title = substr($fields[3], $len ? $len + 1 : $len).'/'
 				.$fields[5];
 			$title = ltrim($title, '/');
 			$title = rtrim($title, "\n");
-			$row->setProperty('title', $title);
+			$row->set('title', $title);
 			//date
 			$date = substr($fields[0], 1, 9);
 			$date = base_convert($date, 16, 10);
 			$date = strftime(_('%d/%m/%Y %H:%M:%S'), $date);
-			$row->setProperty('date', $date);
-			$row->setProperty('action', $event);
-			$row->setProperty('revision', $fields[4]);
+			$row->set('date', $date);
+			$row->set('action', $event);
+			$row->set('revision', $fields[4]);
 			//username
 			$username = $fields[1];
 			if(($user = User::lookup($engine, $username)) !== FALSE)
@@ -418,7 +418,7 @@ class CVSSCMProject extends SCMProject
 						'stock' => 'user',
 						'text' => $username));
 			}
-			$row->setProperty('username', $username);
+			$row->set('username', $username);
 		}
 		//cleanup
 		fclose($fp);

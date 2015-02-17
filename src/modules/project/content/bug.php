@@ -70,6 +70,16 @@ class BugProjectContent extends ContentMulti
 	}
 
 
+	//BugProjectContent::getColumns
+	static public function getColumns()
+	{
+		return array('title' => _('Title'),
+			'bug_id' => _('ID'), 'project' => _('Project'),
+			'date' => _('Date'), 'state' => _('State'),
+			'type' => _('Type'), 'priority' => _('Priority'));
+	}
+
+
 	//BugProjectContent::getRequest
 	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
@@ -151,6 +161,33 @@ class BugProjectContent extends ContentMulti
 					'preview' => $r->displayContent($engine,
 							$request)));
 		return $view;
+	}
+
+
+	//BugProjectContent::displayRow
+	public function displayRow($engine, $request)
+	{
+		$project = ProjectContent::load($engine, $this->getModule(),
+			$this->get('project_id'));
+
+		$row = parent::displayRow($engine, $request);
+		$request = $this->getRequest();
+		$link = new PageElement('link', array('request' => $request,
+			'text' => '#'.$this->get('bug_id'),
+			'title' => $this->getTitle()));
+		$row->set('bug_id', $link);
+		$row->set('id', 'bug_id:'.$this->getID());
+		$request = $project->getRequest();
+		$link = new PageElement('link', array(
+			'stock' => $this->getModule()->getName(),
+			'request' => $request,
+			'text' => $project->getTitle(),
+			'title' => $project->get('synopsis')));
+		$row->set('project', $link);
+		$row->set('state', $this->get('state'));
+		$row->set('type', $this->get('type'));
+		$row->set('priority', $this->get('priority'));
+		return $row;
 	}
 
 

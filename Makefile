@@ -253,6 +253,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/bug.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/bugreply.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/download.php \
+		$(PACKAGE)-$(VERSION)/src/modules/project/content/screenshot.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/cvs.php \

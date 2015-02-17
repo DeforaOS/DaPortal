@@ -18,6 +18,8 @@
 
 require_once('./modules/project/content/bug.php');
 require_once('./modules/project/content/bugreply.php');
+require_once('./modules/project/content/download.php');
+require_once('./modules/project/content/screenshot.php');
 
 
 //ProjectModule
@@ -46,6 +48,7 @@ class ProjectModule extends MultiContentModule
 			case 'bugList':
 			case 'bugReply':
 			case 'download':
+			case 'latest':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
@@ -78,7 +81,9 @@ class ProjectModule extends MultiContentModule
 	//protected
 	static protected $content_classes = array('project' => 'ProjectContent',
 		'bug' => 'BugProjectContent',
-		'bugreply' => 'BugReplyProjectContent');
+		'bugreply' => 'BugReplyProjectContent',
+		'download' => 'DownloadProjectContent',
+		'screenshot' => 'ScreenshotProjectContent');
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public
@@ -121,18 +126,9 @@ class ProjectModule extends MultiContentModule
 		AND project.content_id=daportal_bug.project_id
 		AND daportal_project.project_id=project.content_id
 		AND bug.module_id=:module_id';
-	static protected $query_list_releases = 'SELECT
-		project_download_id AS id, project_id, download_id,
-		download.title AS title, project.title AS project,
-		download.timestamp AS timestamp
-		FROM daportal_project_download, daportal_content project,
-		daportal_content download
-		WHERE daportal_project_download.project_id=project.content_id
-		AND daportal_project_download.download_id=download.content_id
-		ORDER BY download.timestamp DESC';
 	//IN:	project_id
 	//	download_id
-	static protected $project_query_project_release_insert = 'INSERT INTO
+	static protected $project_query_project_download_insert = 'INSERT INTO
 		daportal_project_download (project_id, download_id)
 		VALUES (:project_id, :download_id)';
 
@@ -268,6 +264,30 @@ class ProjectModule extends MultiContentModule
 				$this->text_content_submit_content
 					= _('Reply to a bug');
 				break;
+			case 'DownloadProjectContent':
+				$this->text_content_admin
+					= _('Project downloads administration');
+				$this->text_content_list_title
+					= _('Project download list');
+				$this->text_content_list_title_by
+					= _('Project downloads from');
+				$this->text_content_list_title_by_group
+					= _('Project downloads from group');
+				$this->text_content_submit_content
+					= _('New download');
+				break;
+			case 'ScreenshotProjectContent':
+				$this->text_content_admin
+					= _('Project screenshots administration');
+				$this->text_content_list_title
+					= _('Project screenshot list');
+				$this->text_content_list_title_by
+					= _('Project screenshots from');
+				$this->text_content_list_title_by_group
+					= _('Project screenshots from group');
+				$this->text_content_submit_content
+					= _('New screenshot');
+				break;
 			default:
 			case 'ProjectContent':
 				$this->text_content_admin
@@ -330,7 +350,7 @@ class ProjectModule extends MultiContentModule
 					=== FALSE)
 			$error = _('Unknown project');
 		else if(($name = $request->get('project')) !== FALSE
-				&& strlen($name))
+				&& strlen($name) > 0)
 		{
 			if(($project = $this->_getProjectByName($engine,
 					$name)) !== FALSE)
@@ -381,41 +401,10 @@ class ProjectModule extends MultiContentModule
 					'text' => $error));
 		if($filter !== FALSE)
 			$page->append($filter);
-		$treeview = $page->append('treeview');
-		$treeview->setProperty('columns', array('title' => _('Title'),
-			'bug_id' => _('ID'), 'project' => _('Project'),
-			'date' => _('Date'), 'state' => _('State'),
-			'type' => _('Type'), 'priority' => _('Priority')));
+		$view = $page->append('treeview');
+		$view->set('columns', BugProjectContent::getColumns());
 		foreach($res as $r)
-		{
-			$row = $treeview->append('row');
-			$request = new Request($this->name, FALSE, $r['id'],
-				$r['title']);
-			$link = new PageElement('link', array(
-					'request' => $request,
-					'text' => $r['title'],
-					'title' => $r['title']));
-			$row->setProperty('title', $link);
-			$link = new PageElement('link', array(
-					'request' => $request,
-					'text' => '#'.$r['bug_id'],
-					'title' => $r['title']));
-			$row->setProperty('bug_id', $link);
-			$row->setProperty('id', 'bug_id:'.$r['id']);
-			$request = new Request($this->name, FALSE,
-					$r['project_id'],
-					$r['project']);
-			$link = new PageElement('link', array(
-					'request' => $request,
-					'text' => $r['project'],
-					'title' => $r['project']));
-			$row->setProperty('project', $link);
-			$date = $db->formatDate($engine, $r['timestamp']);
-			$row->setProperty('date', $date);
-			$row->setProperty('state', $r['state']);
-			$row->setProperty('type', $r['type']);
-			$row->setProperty('priority', $r['priority']);
-		}
+			$view->append($r->displayRow($engine, $request));
 		return $page;
 	}
 
@@ -464,63 +453,169 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
+		$title = _('Projects');
+		$latest = array('project', 'download', 'bug', 'screenshot');
+
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
-		return $this->callList($engine, $request);
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->getName(),
+			'text' => $title));
+		$hbox = $page->append('hbox');
+		foreach($latest as $l)
+		{
+			$request = $this->getRequest('latest', array(
+				'type' => $l));
+			$hbox->append($this->call($engine, $request));
+		}
+		return $page;
 	}
 
 
 	//ProjectModule::callDownload
 	protected function callDownload($engine, $request = FALSE)
 	{
-		$database = $engine->getDatabase();
-		$query = static::$query_list_releases;
-		$title = _('Latest releases');
-
 		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
-		//list the latest releases
-		$page = new Page($title);
-		$vbox = $page->append('vbox');
-		$vbox->append('title', array('stock' => $this->getName(),
-				'text' => $title));
-		$query .= ' '.$database->limit(20);
-		if(($releases = $database->query($engine, $query)) === FALSE)
+		$request = $this->getRequest('latest', array(
+				'type' => 'download'));
+		return $this->callLatest($engine, $request);
+	}
+
+
+	//ProjectModule::callLatest
+	protected function callLatest($engine, $request = FALSE)
+	{
+		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+
+		switch($type)
 		{
-			$error = _('Could not obtain the releases');
+			case 'bug':
+				return $this->_latestBugReports($engine,
+						$request);
+			case 'download':
+				return $this->_latestDownloads($engine,
+						$request);
+			case 'screenshot':
+				return $this->_latestScreenshots($engine,
+						$request);
+			case 'project':
+			default:
+				return $this->_latestProjects($engine,
+						$request);
+		}
+	}
+
+	private function _latestBugReports($engine, $request)
+	{
+		$title = _('Latest bug reports');
+
+		//list the latest bug reports
+		$page = new Page($title);
+		$page->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($bugs = BugProjectContent::listAll($engine, $this,
+				'timestamp', 20)) === FALSE)
+		{
+			$error = _('Could not list bug reports');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
 			return $page;
 		}
-		$columns = array('title' => _('Filename'),
-			'project' => _('Project'), 'date' => _('Date'));
+		$columns = BugProjectContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
-		$module = Module::load($engine, 'download');
-		foreach($releases as $r)
+		foreach($bugs as $b)
+			$view->append($b->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More bug reports...'),
+			'request' => $this->getRequest('list', array(
+				'type' => 'bug'))));
+		return $page;
+	}
+
+	private function _latestProjects($engine, $request)
+	{
+		$title = _('Latest projects');
+
+		//list the latest projects
+		$page = new Page($title);
+		$page->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($projects = ProjectContent::listAll($engine, $this,
+				'timestamp', 20)) === FALSE)
 		{
-			if(($download = FileDownloadContent::load($engine,
-					$module, $r['download_id'],
-					$r['title'])) === FALSE)
-				continue;
-			$r['title'] = new PageElement('link', array(
-				'stock' => $module->getName(),
-				'text' => $r['title'],
-				'request' => $download->getRequest()));
-			if(($project = ProjectContent::load($engine, $this,
-					$r['project_id'], $r['project']))
-					=== FALSE)
-				continue;
-			$r['project'] = new PageElement('link', array(
-				'stock' => $this->getName(),
-				'text' => $r['project'],
-				'request' => $project->getRequest()));
-			$r['date'] = $database->formatDate($engine,
-					$r['timestamp']);
-			$view->append('row', $r);
+			$error = _('Could not list projects');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
 		}
-		$vbox->append('link', array('stock' => $this->getName(),
+		$columns = ProjectContent::getColumns();
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		foreach($projects as $p)
+			$view->append($p->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
 			'text' => _('More projects...'),
-			'request' => $this->getRequest()));
+			'request' => $this->getRequest('list', array(
+				'type' => 'project'))));
+		return $page;
+	}
+
+	private function _latestDownloads($engine, $request)
+	{
+		$title = _('Latest downloads');
+
+		//list the latest downloads
+		$page = new Page($title);
+		$page->append('title', array('stock' => 'download',
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($downloads = DownloadProjectContent::listAll($engine, $this,
+				'timestamp', 20)) === FALSE)
+		{
+			$error = _('Could not list downloads');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = DownloadProjectContent::getColumns();
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		foreach($downloads as $d)
+			$view->append($d->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More downloads...'),
+			'request' => $this->getRequest('list', array(
+				'type' => 'download'))));
+		return $page;
+	}
+
+	private function _latestScreenshots($engine, $request)
+	{
+		$title = _('Latest screenshots');
+
+		//list the latest screenshots
+		$page = new Page($title);
+		$page->append('title', array('stock' => 'gallery',
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($screenshots = ScreenshotProjectContent::listAll($engine,
+				$this, 'timestamp', 20)) === FALSE)
+		{
+			$error = _('Could not list screenshots');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = ScreenshotProjectContent::getColumns();
+		$view = $vbox->append('treeview', array(
+			'view' => 'thumbnails'));
+		foreach($screenshots as $s)
+			$view->append($s->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More screenshots...'),
+			'request' => $this->getRequest('list', array(
+				'type' => 'screenshot'))));
 		return $page;
 	}
 
@@ -539,7 +634,7 @@ class ProjectModule extends MultiContentModule
 		if(!$this->canUpload($engine, $request, $project))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		$title = _('New release for project ').$project->getTitle();
+		$title = _('New download for project ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
@@ -561,7 +656,7 @@ class ProjectModule extends MultiContentModule
 			&$content)
 	{
 		$db = $engine->getDatabase();
-		$query = static::$project_query_project_release_insert;
+		$query = static::$project_query_project_download_insert;
 
 		//verify the request
 		if($request === FALSE || $request->get('submit') === FALSE)
@@ -639,7 +734,7 @@ class ProjectModule extends MultiContentModule
 	protected function formSubmitRelease($engine, $request, $project)
 	{
 		$r = new Request($this->name, 'submit', $project->getID(),
-			$project->getTitle(), array('type' => 'release'));
+			$project->getTitle(), array('type' => 'download'));
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('filechooser', array('text' => _('File: '),
 				'name' => 'files[]'));
@@ -785,15 +880,11 @@ class ProjectModule extends MultiContentModule
 	//ProjectModule::helperListView
 	protected function helperListView($engine, $request = FALSE)
 	{
-		if($this->content_class == 'BugProjectContent')
-			return parent::helperListView($engine, $request);
 		$view = parent::helperListView($engine, $request);
-		if(($columns = $view->get('columns')) !== FALSE)
+		if($request->get('type') == 'screenshot')
 		{
-			unset($columns['date']);
-			$columns['username'] = _('Manager');
-			$columns['synopsis'] = _('Description');
-			$view->setProperty('columns', $columns);
+			$view->set('columns', FALSE);
+			$view->set('view', 'thumbnails');
 		}
 		return $view;
 	}

@@ -60,6 +60,15 @@ class ProjectContent extends ContentMulti
 	}
 
 
+	//ProjectContent::getColumns
+	static public function getColumns()
+	{
+		return array('icon' => '', 'title' => _('Title'),
+			'username' => _('Manager'), 'date' => _('Date'),
+			'synopsis' => _('Description'));
+	}
+
+
 	//ProjectContent::getMembers
 	public function getMembers($engine, $order = FALSE, $limit = FALSE,
 			$offset = FALSE)
@@ -169,51 +178,52 @@ class ProjectContent extends ContentMulti
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
-		$vbox->append('title', array('text' => _('Releases')));
-		$columns = array('icon' => '', 'filename' => _('Filename'),
-				'owner' => _('Owner'), 'group' => _('Group'),
-				'date' => _('Date'),
-				'permissions' => _('Permissions'));
+		$vbox->append('title', array('text' => _('Downloads')));
+		$columns = DownloadProjectContent::getColumns();
+		unset($columns['project']);
+		$columns['permissions'] = _('Permissions');
 		$view = $vbox->append('treeview', array(
 				'columns' => $columns));
 		if($this->canUpload($engine, $request))
 		{
 			$toolbar = $view->append('toolbar');
 			$req = $this->getRequest('submit', array(
-				'type' => 'release'));
+				'type' => 'download'));
 			$link = $toolbar->append('button', array(
 					'stock' => 'new',
 					'request' => $req,
-					'text' => _('New release')));
+					'text' => _('New download')));
 		}
+		$module = $this->getModule();
 		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$req = new Request('download', FALSE, $r['id'],
+			$req = new Request($module->getName(), FALSE, $r['id'],
 				$r['title']);
 			$icon = Mime::getIcon($engine, $r['title'], 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
-			$row->setProperty('icon', $icon);
+			$row->set('icon', $icon);
 			$filename = new PageElement('link', array(
 					'request' => $req,
 					'text' => $r['title']));
-			$row->setProperty('filename', $filename);
+			$row->set('title', $filename);
 			$req = new Request('user', FALSE, $r['user_id'],
 				$r['username']);
 			$username = new PageElement('link', array(
 					'stock' => 'user',
 					'request' => $req,
 					'text' => $r['username']));
-			$row->setProperty('owner', $username);
-			$row->setProperty('group', $r['groupname']);
+			$row->set('username', $username);
+			$row->set('group', $r['groupname']);
 			$date = $db->formatDate($engine, $r['timestamp']);
-			$row->setProperty('date', $date);
-			$permissions = Common::getPermissions($r['mode'], 512);
+			$row->set('date', $date);
+			$permissions = Common::getPermissions($r['mode'],
+					static::$S_IFDIR);
 			$permissions = new PageElement('label', array(
 					'class' => 'preformatted',
 					'text' => $permissions));
-			$row->setProperty('permissions', $permissions);
+			$row->set('permissions', $permissions);
 		}
 		return $page;
 	}
@@ -241,11 +251,11 @@ class ProjectContent extends ContentMulti
 				$r['title']);
 			$thumbnail = new PageElement('image', array(
 					'request' => $req));
-			$row->setProperty('thumbnail', $thumbnail);
+			$row->set('thumbnail', $thumbnail);
 			$label = new PageElement('link', array(
 					'request' => $req,
 					'text' => $r['title']));
-			$row->setProperty('label', $label);
+			$row->set('label', $label);
 		}
 		return $page;
 	}
@@ -321,7 +331,7 @@ class ProjectContent extends ContentMulti
 	public function displayRow($engine, $request = FALSE)
 	{
 		$ret = parent::displayRow($engine, $request);
-		$ret->setProperty('synopsis', $this->get('synopsis'));
+		$ret->set('synopsis', $this->get('synopsis'));
 		return $ret;
 	}
 
@@ -485,8 +495,7 @@ class ProjectContent extends ContentMulti
 			if(($v = $request->get($f)) !== FALSE)
 				$args[$f] = $v;
 		}
-		if($database->query($engine, $query, $args)
-				=== FALSE)
+		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		foreach($fields as $f)
 			$this->$f = $args[$f];
@@ -496,6 +505,7 @@ class ProjectContent extends ContentMulti
 
 	//protected
 	//properties
+	static protected $S_IFDIR = 01000;
 	static protected $class = 'ProjectContent';
 	static protected $list_order = 'title ASC';
 	//queries

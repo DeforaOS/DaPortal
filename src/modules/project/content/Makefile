@@ -17,9 +17,15 @@ install:
 	$(INSTALL) -m 0644 bug.php $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/bug.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content
 	$(INSTALL) -m 0644 bugreply.php $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/bugreply.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content
+	$(INSTALL) -m 0644 download.php $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/download.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content
+	$(INSTALL) -m 0644 screenshot.php $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/screenshot.php
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/bug.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/bugreply.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/download.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/project/content/screenshot.php
 
 .PHONY: all clean distclean install uninstall
