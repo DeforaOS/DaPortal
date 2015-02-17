@@ -16,19 +16,11 @@
 
 
 
-$classes = array(
-	'AuthCredentials' => './system/auth/credentials.php',
-	'ConfigSection' => './system/config/section.php',
-	'DatabaseResult' => './system/database/result.php',
-	'FormatElements' => './system/format/elements.php',
-	'MultiContentModule' => './modules/content/multi.php',
-	'PageElement' => './system/page/element.php'
-);
-
-
 //autoload
-function autoload($class)
+function autoload($class, $filename = FALSE)
 {
+	if($filename !== FALSE)
+		return _autoload_filename($class, $filename);
 	if(strchr($class, '/') !== FALSE)
 		return;
 	$res = ($filename = _autoload_filename($class)) !== FALSE
@@ -37,10 +29,21 @@ function autoload($class)
 		error_log($class.': Could not autoload class');
 }
 
-function _autoload_filename($class)
+function _autoload_filename($class, $filename = FALSE)
 {
-	global $classes;
+	static $classes = array(
+		'AuthCredentials' => './system/auth/credentials.php',
+		'ConfigSection' => './system/config/section.php',
+		'DatabaseResult' => './system/database/result.php',
+		'FormatElements' => './system/format/elements.php',
+		'MultiContentModule' => './modules/content/multi.php',
+		'PageElement' => './system/page/element.php');
 
+	if($filename !== FALSE)
+	{
+		$classes[$class] = $filename;
+		return;
+	}
 	if(isset($classes[$class]))
 		return $classes[$class];
 	$len = strlen($class);
@@ -114,15 +117,6 @@ function _autoload_filename($class)
 		return './system/content/'.strtolower($content).'.php';
 	}
 	return './system/'.strtolower($class).'.php';
-}
-
-
-//autoload_register
-function autoload_register($class, $filename)
-{
-	global $classes;
-
-	$classes[$class] = $filename;
 }
 
 spl_autoload_register('autoload');
