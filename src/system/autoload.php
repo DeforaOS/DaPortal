@@ -29,21 +29,20 @@ $classes = array(
 //autoload
 function autoload($class)
 {
-	global $classes;
-	$res = FALSE;
-
 	if(strchr($class, '/') !== FALSE)
 		return;
-	if(isset($classes[$class]))
-		$res = include_once($classes[$class]);
-	else if(($filename = _autoload_filename($class)) !== FALSE)
-		$res = include_once($filename);
+	$res = ($filename = _autoload_filename($class)) !== FALSE
+		? include_once($filename) : FALSE;
 	if($res === FALSE)
 		error_log($class.': Could not autoload class');
 }
 
 function _autoload_filename($class)
 {
+	global $classes;
+
+	if(isset($classes[$class]))
+		return $classes[$class];
 	$len = strlen($class);
 	//Auth sub-classes
 	if($len > 4 && substr($class, -4) == 'Auth')
