@@ -68,7 +68,7 @@ class ScreenshotProjectContent extends DownloadProjectContent
 		download.group_id AS group_id, download.groupname AS groupname,
 		download.title AS title, download.content AS content,
 		download.enabled AS enabled, download.public AS public,
-		project_id, download_id,
+		project_id, download_id
 		FROM daportal_project_screenshot,
 		daportal_content_enabled download,
 		daportal_content_enabled project
