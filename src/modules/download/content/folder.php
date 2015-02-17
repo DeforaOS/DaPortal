@@ -16,9 +16,6 @@
 
 
 
-require_once('./modules/download/content/file.php');
-
-
 //FolderDownloadContent
 class FolderDownloadContent extends DownloadContent
 {

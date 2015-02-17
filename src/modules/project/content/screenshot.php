@@ -16,9 +16,6 @@
 
 
 
-require_once('./modules/project/content/download.php');
-
-
 //ScreenshotProjectContent
 class ScreenshotProjectContent extends DownloadProjectContent
 {

@@ -16,12 +16,6 @@
 
 
 
-require_once('./modules/project/content/bug.php');
-require_once('./modules/project/content/bugreply.php');
-require_once('./modules/project/content/download.php');
-require_once('./modules/project/content/screenshot.php');
-
-
 //ProjectModule
 class ProjectModule extends MultiContentModule
 {
