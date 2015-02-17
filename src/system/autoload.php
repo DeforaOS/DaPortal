@@ -19,11 +19,14 @@
 //autoload
 function autoload($class)
 {
+	$res = FALSE;
+
 	if(strchr($class, '/') !== FALSE)
 		return;
-	if(($filename = _autoload_filename($class)) !== FALSE
-			&& file_exists($filename))
-		require_once($filename);
+	if(($filename = _autoload_filename($class)) !== FALSE)
+		$res = include_once($filename);
+	if($res === FALSE)
+		error_log($class.': Could not autoload class');
 }
 
 function _autoload_filename($class)
