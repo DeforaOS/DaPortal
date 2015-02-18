@@ -95,7 +95,7 @@ class CSVFormat extends PlainFormat
 		$sep = '';
 
 		$this->print = TRUE;
-		if(($columns = $e->getProperty('columns')) === FALSE)
+		if(($columns = $e->get('columns')) === FALSE)
 			$columns = array('title' => 'Title');
 		$keys = array_keys($columns);
 		if(count($keys) == 0)
@@ -120,7 +120,7 @@ class CSVFormat extends PlainFormat
 			foreach($keys as $k)
 			{
 				$this->_print($sep);
-				if(($e = $c->getProperty($k)) !== FALSE)
+				if(($e = $c->get($k)) !== FALSE)
 				{
 					if(is_scalar($e))
 						$this->_print($e);
