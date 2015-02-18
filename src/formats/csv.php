@@ -122,7 +122,7 @@ class CSVFormat extends PlainFormat
 				$this->_print($sep);
 				if(($e = $c->getProperty($k)) !== FALSE)
 				{
-					if(is_string($e) || is_integer($e))
+					if(is_scalar($e))
 						$this->_print($e);
 					else
 						$this->renderElement($e);
