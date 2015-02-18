@@ -49,6 +49,8 @@ class XMLFormat extends PlainFormat
 		if(($this->encoding = $config->get('defaults', 'charset'))
 				=== FALSE)
 			$this->encoding = ini_get('default_charset');
+		if($this->encoding == '')
+			$this->encoding = FALSE;
 		//for escaping
 		if(!defined('ENT_HTML401'))
 			define('ENT_HTML401', 0);

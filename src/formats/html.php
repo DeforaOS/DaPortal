@@ -48,6 +48,8 @@ class HTMLFormat extends FormatElements
 		if(($this->encoding = $config->get('defaults', 'charset'))
 				=== FALSE)
 			$this->encoding = ini_get('default_charset');
+		if($this->encoding == '')
+			$this->encoding = FALSE;
 		//configuration
 		$this->javascript = $this->configGet('javascript')
 			? TRUE : FALSE;
