@@ -42,7 +42,7 @@ class HTML5Format extends HTMLFormat
 		$this->doctype = "<!DOCTYPE html>\n";
 		//for escaping
 		if(!defined('ENT_HTML5'))
-			define('ENT_HTML5', 0);
+			define('ENT_HTML5', ENT_HTML401);
 	}
 
 
@@ -50,7 +50,8 @@ class HTML5Format extends HTMLFormat
 	//HTML5Format::escapeAttribute
 	protected function escapeAttribute($text)
 	{
-		return htmlspecialchars($text, ENT_COMPAT | ENT_HTML5);
+		return htmlspecialchars($text, ENT_COMPAT | ENT_HTML5,
+				$this->encoding);
 	}
 
 

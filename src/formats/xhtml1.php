@@ -40,21 +40,18 @@ class XHTML1Format extends HTMLFormat
 	//XHTML1Format::attach
 	protected function attach($engine, $type = FALSE)
 	{
-		global $config;
 		$version = '1.0';
 		$encoding = 'UTF-8';
 		$dtd = '"-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
 
 		parent::attach($engine, $type);
-		if(($charset = $config->get('defaults', 'charset')) !== FALSE)
-			$encoding = $charset;
 		$this->doctype = "<?xml version=\"$version\""
-			." encoding=\"$encoding\"?>\n";
+			." encoding=\"".$this->encoding."\"?>\n";
 		$this->doctype .= "<!DOCTYPE html PUBLIC $dtd>\n";
 		//for escaping
 		if(!defined('ENT_XHTML'))
-			define('ENT_XHTML', 0);
+			define('ENT_XHTML', ENT_HTML401);
 	}
 
 
@@ -62,7 +59,8 @@ class XHTML1Format extends HTMLFormat
 	//XHTML1Format::escapeAttribute
 	protected function escapeAttribute($text)
 	{
-		return htmlspecialchars($text, ENT_COMPAT | ENT_XHTML);
+		return htmlspecialchars($text, ENT_COMPAT | ENT_XHTML,
+				$this->encoding);
 	}
 }
 

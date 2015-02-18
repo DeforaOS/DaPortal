@@ -22,6 +22,7 @@ class HTMLFormat extends FormatElements
 	//protected
 	//properties
 	protected $doctype = FALSE;
+	protected $encoding = FALSE;
 
 
 	//methods
@@ -42,6 +43,11 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::attach
 	protected function attach($engine, $type = FALSE)
 	{
+		global $config;
+
+		if(($this->encoding = $config->get('defaults', 'charset'))
+				=== FALSE)
+			$this->encoding = ini_get('default_charset');
 		//configuration
 		$this->javascript = $this->configGet('javascript')
 			? TRUE : FALSE;
@@ -78,7 +84,8 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::escapeAttribute
 	protected function escapeAttribute($text)
 	{
-		return htmlspecialchars($text, ENT_COMPAT | ENT_HTML401);
+		return htmlspecialchars($text, ENT_COMPAT | ENT_HTML401,
+				$this->encoding);
 	}
 
 
@@ -113,7 +120,6 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::render
 	public function render($engine, $page, $filename = FALSE)
 	{
-		global $config;
 		$this->ids = array();
 		$this->tags = array();
 		$this->titles = array();
@@ -131,9 +137,9 @@ class HTMLFormat extends FormatElements
 		$this->_renderIcontheme($page);
 		$this->_renderFavicon($page);
 		$this->_renderJavascript($page);
-		if(($charset = $config->get('defaults', 'charset')) !== FALSE)
+		if($this->encoding !== FALSE)
 			$this->renderMeta('Content-Type', 'text/html'
-					.'; charset='.$charset);
+					.'; charset='.$this->encoding);
 		if(($location = $page->get('location')) !== FALSE)
 			$this->renderMeta('Location', $location);
 		if(($refresh = $page->get('refresh')) !== FALSE

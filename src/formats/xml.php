@@ -47,8 +47,9 @@ class XMLFormat extends PlainFormat
 	public function render($engine, $page, $filename = FALSE)
 	{
 		global $config;
-		$charset = $config->get('defaults', 'charset');
 
+		if(($charset = $config->get('defaults', 'charset')) === FALSE)
+			$charset = ini_get('default_charset');
 		//FIXME ignore filename for the moment
 		if($page === FALSE)
 			$page = new Page;
