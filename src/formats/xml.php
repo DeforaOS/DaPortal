@@ -21,6 +21,7 @@ class XMLFormat extends PlainFormat
 {
 	//protected
 	//properties
+	protected $encoding = FALSE;
 	protected $print = FALSE;
 
 
@@ -40,24 +41,36 @@ class XMLFormat extends PlainFormat
 	}
 
 
+	//XMLFormat::attach
+	protected function attach($engine, $type = FALSE)
+	{
+		global $config;
+
+		if(($this->encoding = $config->get('defaults', 'charset'))
+				=== FALSE)
+			$this->encoding = ini_get('default_charset');
+		//for escaping
+		if(!defined('ENT_HTML401'))
+			define('ENT_HTML401', 0);
+		if(!defined('ENT_XML'))
+			define('ENT_XML', ENT_HTML401);
+	}
+
+
 	//public
 	//methods
 	//rendering
 	//XMLFormat::render
 	public function render($engine, $page, $filename = FALSE)
 	{
-		global $config;
-
-		if(($charset = $config->get('defaults', 'charset')) === FALSE)
-			$charset = ini_get('default_charset');
 		//FIXME ignore filename for the moment
 		if($page === FALSE)
 			$page = new Page;
 		$this->engine = $engine;
 		print('<?xml version="1.0"');
-		if($charset !== FALSE)
-			//XXX escape
-			print(' encoding="'.$charset.'"');
+		if($this->encoding !== FALSE)
+			print(' encoding="'
+				.$this->escapeAttribute($this->encoding).'"');
 		print("?>\n");
 		print("<root>\n");
 		$this->renderElement($page);
@@ -76,6 +89,14 @@ class XMLFormat extends PlainFormat
 		$to = array('&lt;', '&gt;', '&amp;');
 
 		return str_replace($from, $to, $text);
+	}
+
+
+	//XMLFormat::escapeAttribute
+	protected function escapeAttribute($text)
+	{
+		return htmlspecialchars($text, ENT_COMPAT | ENT_XML,
+				$this->encoding);
 	}
 
 
