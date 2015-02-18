@@ -78,7 +78,7 @@ class HTMLFormat extends FormatElements
 	{
 		return htmlspecialchars($text,
 				ENT_COMPAT | ENT_HTML401 | ENT_NOQUOTES,
-				$this->enoding);
+				$this->encoding);
 	}
 
 
