@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2014, 2015 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2014-2015 Pierre Pronchery <khorben@defora.org>
 #This file is part of DeforaOS Artwork
 #Redistribution and use in source and binary forms, with or without
 #modification, are permitted provided that the following conditions are met:
@@ -75,7 +75,7 @@ actions/insert-object			insert-object
 actions/insert-text			insert-text
 actions/mail-reply-all			comment
 actions/mail-reply-sender		reply
-actions/mail-send			webmail
+actions/mail-send			email webmail
 actions/next				next
 actions/previous			previous
 actions/revert				reset
