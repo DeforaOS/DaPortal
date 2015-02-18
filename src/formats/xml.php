@@ -87,10 +87,9 @@ class XMLFormat extends PlainFormat
 	//XMLFormat::escape
 	protected function escape($text)
 	{
-		$from = array('<', '>', '&');
-		$to = array('&lt;', '&gt;', '&amp;');
-
-		return str_replace($from, $to, $text);
+		return htmlspecialchars($text,
+				ENT_COMPAT | ENT_XML | ENT_NOQUOTES,
+				$this->enoding);
 	}
 
 

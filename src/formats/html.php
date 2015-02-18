@@ -76,10 +76,9 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::escape
 	protected function escape($text)
 	{
-		$from = array('&', '<', '>');
-		$to = array('&amp;', '&lt;', '&gt;');
-
-		return str_replace($from, $to, $text);
+		return htmlspecialchars($text,
+				ENT_COMPAT | ENT_HTML401 | ENT_NOQUOTES,
+				$this->enoding);
 	}
 
 
