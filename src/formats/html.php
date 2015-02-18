@@ -1221,9 +1221,9 @@ class HTMLFormat extends FormatElements
 				if(($v = $c->get($k)) === FALSE)
 					$v = '';
 				$this->tagOpen('span', "detail $k");
-				if(is_object($v))
+				if($v instanceof PageElement)
 					$this->renderElement($v);
-				else
+				else if(is_scalar($v))
 					$this->tag('label', FALSE, FALSE,
 							array('for' => '_check_'
 								.$id), $v);
