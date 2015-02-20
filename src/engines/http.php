@@ -86,9 +86,10 @@ class HTTPEngine extends Engine
 	{
 		global $config;
 
+		$request = $this->_getRequestDo();
 		if(($private = $config->get('engine::http', 'private')) == 1)
-			return $this->_getRequestPrivate();
-		return $this->_getRequestDo();
+			return $this->_getRequestPrivate($request);
+		return $request;
 	}
 
 	protected function _getRequestDebug()
@@ -175,7 +176,7 @@ class HTTPEngine extends Engine
 		return $this->request;
 	}
 
-	protected function _getRequestPrivate()
+	protected function _getRequestPrivate($request)
 	{
 		global $config;
 		$cred = $this->getCredentials();
@@ -188,7 +189,6 @@ class HTTPEngine extends Engine
 		if(($a = $config->get('engine::http',
 		       		'private::actions')) !== FALSE)
 			$actions = explode(',', $a);
-		$request = $this->_getRequestDo();
 		if($cred->getUserID() == 0)
 			if($request->getModule() != $module
 					|| !in_array($request->getAction(),
