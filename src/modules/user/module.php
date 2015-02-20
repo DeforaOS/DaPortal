@@ -135,7 +135,7 @@ class UserModule extends Module
 	//UserModule::formClose
 	protected function formClose($engine)
 	{
-		$r = new Request($this->name, 'close');
+		$r = $this->getRequest('close');
 		$form = new PageElement('form', array('request' => $r));
 		$message = _('Do you really want to close your account?');
 
@@ -144,8 +144,7 @@ class UserModule extends Module
 		$vbox->append('label', array('text' => $message));
 		$form->append('button', array('stock' => 'cancel',
 				'text' => _('Cancel'),
-				'request' => new Request($this->name,
-					'profile')));
+				'request' => $this->getRequest('profile')));
 		$form->append('button', array('stock' => 'close',
 				'type' => 'submit', 'value' => 'submit',
 				'text' => _('Close')));
@@ -156,7 +155,7 @@ class UserModule extends Module
 	//UserModule::formLogin
 	protected function formLogin($engine, $username, $cancel = TRUE)
 	{
-		$r = new Request($this->name, 'login');
+		$r = $this->getRequest('login');
 		$form = new PageElement('form', array('request' => $r));
 		$entry = $form->append('entry', array(
 					'name' => 'username',
@@ -166,7 +165,7 @@ class UserModule extends Module
 					'hidden' => TRUE,
 					'name' => 'password',
 					'text' => _('Password: ')));
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 		if($cancel)
 			$form->append('button', array('text' => _('Cancel'),
 						'stock' => 'cancel',
@@ -181,7 +180,7 @@ class UserModule extends Module
 	//UserModule::formRegister
 	protected function formRegister($engine, $username, $email)
 	{
-		$r = new Request($this->name, 'register');
+		$r = $this->getRequest('register');
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('entry', array('text' => _('Username: '),
 				'name' => 'username', 'value' => $username));
@@ -189,7 +188,7 @@ class UserModule extends Module
 				'name' => 'email', 'value' => $email));
 		$form->append('button', array('stock' => 'cancel',
 				'text' => _('Cancel'),
-				'request' => new Request($this->name)));
+				'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'register',
 				'type' => 'submit', 'text' => _('Register')));
 		return $form;
@@ -199,7 +198,7 @@ class UserModule extends Module
 	//UserModule::formReset
 	protected function formReset($engine, $username, $email)
 	{
-		$r = new Request($this->name, 'reset');
+		$r = $this->getRequest('reset');
 		$form = new PageElement('form', array('request' => $r));
 		$form->append('entry', array('text' => _('Username: '),
 				'name' => 'username', 'value' => $username));
@@ -207,7 +206,7 @@ class UserModule extends Module
 				'name' => 'email', 'value' => $email));
 		$form->append('button', array('stock' => 'cancel',
 				'text' => _('Cancel'),
-				'request' => new Request($this->name)));
+				'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'reset',
 				'type' => 'submit', 'text' => _('Reset')));
 		return $form;
@@ -217,7 +216,7 @@ class UserModule extends Module
 	//UserModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$r = new Request($this->name, 'submit');
+		$r = $this->getRequest('submit');
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');
 		$vbox->append('entry', array('name' => 'username',
@@ -243,7 +242,7 @@ class UserModule extends Module
 					? TRUE : FALSE,
 				'text' => _('Administrator')));
 		//buttons
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		$form->append('button', array('request' => $r,
 				'stock' => 'cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
@@ -297,7 +296,7 @@ class UserModule extends Module
 				'name' => 'password2', 'hidden' => TRUE));
 		//buttons
 		if($cred->isAdmin() && $request->getID() !== FALSE)
-			$r = new Request($this->name, 'admin');
+			$r = $this->getRequest('admin');
 		else
 			$r = new Request($this->name, 'profile',
 					$request->getID(), $request->getID()
@@ -326,7 +325,7 @@ class UserModule extends Module
 					$this->name, $ret);
 		if($list == 1)
 		{
-			$r = new Request($this->name, 'list');
+			$r = $this->getRequest('list');
 			$icon = new PageElement('image', array(
 					'stock' => 'user'));
 			$link = new PageElement('link', array('request' => $r,
@@ -337,7 +336,7 @@ class UserModule extends Module
 		if($cred->getUserID() == 0)
 		{
 			//not logged in yet
-			$r = new Request($this->name, 'login');
+			$r = $this->getRequest('login');
 			$icon = new PageElement('image', array(
 					'stock' => 'login'));
 			$link = new PageElement('link', array('request' => $r,
@@ -347,7 +346,7 @@ class UserModule extends Module
 					'label' => $link));
 			if($this->canReset())
 			{
-				$r = new Request($this->name, 'reset');
+				$r = $this->getRequest('reset');
 				$icon = new PageElement('image', array(
 						'stock' => 'reset'));
 				$link = new PageElement('link', array(
@@ -359,7 +358,7 @@ class UserModule extends Module
 			}
 			if($this->canRegister())
 			{
-				$r = new Request($this->name, 'register');
+				$r = $this->getRequest('register');
 				$icon = new PageElement('image', array(
 						'stock' => 'register'));
 				$link = new PageElement('link', array(
@@ -377,7 +376,7 @@ class UserModule extends Module
 				$this->_actions_admin($engine, $cred,
 						$this->name, $ret);
 			//user's content
-			$r = new Request($this->name, 'display');
+			$r = $this->getRequest('display');
 			$icon = new PageElement('image', array(
 					'stock' => 'user'));
 			$link = new PageElement('link', array('request' => $r,
@@ -385,7 +384,7 @@ class UserModule extends Module
 			$ret[] = new PageElement('row', array('icon' => $icon,
 					'label' => $link));
 			//user's groups
-			$r = new Request($this->name, 'groups');
+			$r = $this->getRequest('groups');
 			$icon = new PageElement('image', array(
 					'stock' => 'user'));
 			$link = new PageElement('link', array('request' => $r,
@@ -393,7 +392,7 @@ class UserModule extends Module
 			$ret[] = new PageElement('row', array('icon' => $icon,
 					'label' => $link));
 			//user's profile
-			$r = new Request($this->name, 'profile');
+			$r = $this->getRequest('profile');
 			$icon = new PageElement('image', array(
 					'stock' => 'user'));
 			$link = new PageElement('link', array('request' => $r,
@@ -401,7 +400,7 @@ class UserModule extends Module
 			$ret[] = new PageElement('row', array('icon' => $icon,
 					'label' => $link));
 			//logout
-			$r = new Request($this->name, 'logout');
+			$r = $this->getRequest('logout');
 			$icon = new PageElement('image', array(
 					'stock' => 'logout'));
 			$link = new PageElement('link', array('request' => $r,
@@ -418,7 +417,7 @@ class UserModule extends Module
 		if(!$cred->isAdmin())
 			return $ret;
 		//user creation
-		$r = new Request($module, 'submit');
+		$r = $this->getRequest('submit');
 		$icon = new PageElement('image', array('stock' => 'new'));
 		$link = new PageElement('link', array('request' => $r,
 				'text' => _('New user')));
@@ -1563,19 +1562,19 @@ class UserModule extends Module
 					$request->getParameter('username'),
 					FALSE);
 		$box = new PageElement('vbox');
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 		$box->append('button', array('stock' => 'home',
 				'request' => $r,
 				'text' => _('My account')));
-		$r = new Request($this->name, 'display');
+		$r = $this->getRequest('display');
 		$box->append('button', array('stock' => 'user',
 				'request' => $r,
 				'text' => _('My content')));
-		$r = new Request($this->name, 'update');
+		$r = $this->getRequest('update');
 		$box->append('button', array('stock' => 'user',
 				'request' => $r,
 				'text' => _('My profile')));
-		$r = new Request($this->name, 'logout');
+		$r = $this->getRequest('logout');
 		$box->append('button', array('stock' => 'logout',
 				'request' => $r,
 				'text' => _('Logout')));
