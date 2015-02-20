@@ -222,24 +222,24 @@ class UserModule extends Module
 		$vbox = $form->append('vbox');
 		$vbox->append('entry', array('name' => 'username',
 				'text' => _('Username: '),
-				'value' => $request->getParameter('username')));
+				'value' => $request->get('username')));
 		$vbox->append('entry', array('name' => 'fullname',
 				'text' => _('Full name: '),
-				'value' => $request->getParameter('fullname')));
+				'value' => $request->get('fullname')));
 		$vbox->append('entry', array('name' => 'password',
 				'hidden' => TRUE,
 				'text' => _('Password: '), 'value' => ''));
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
-				'value' => $request->getParameter('email')));
+				'value' => $request->get('email')));
 		//enabled
 		$vbox->append('checkbox', array('name' => 'enabled',
-				'value' => $request->getParameter('enabled')
+				'value' => $request->get('enabled')
 					? TRUE : FALSE,
 				'text' => _('Enabled')));
 		//administrator
 		$vbox->append('checkbox', array('name' => 'admin',
-				'value' => $request->getParameter('admin')
+				'value' => $request->get('admin')
 					? TRUE : FALSE,
 				'text' => _('Administrator')));
 		//buttons
@@ -275,12 +275,12 @@ class UserModule extends Module
 		$form->append('label', array('text' => _('Username: ')));
 		$form->append('label', array('text' => $user->getUsername()));
 		//full name
-		if(($fullname = $request->getParameter('fullname')) === FALSE)
+		if(($fullname = $request->get('fullname')) === FALSE)
 			$fullname = $user->getFullname();
 		$form->append('entry', array('text' => _('Full name: '),
 				'name' => 'fullname', 'value' => $fullname));
 		//e-mail address
-		if(($email = $request->getParameter('email')) === FALSE)
+		if(($email = $request->get('email')) === FALSE)
 			$email = $user->getEmail();
 		$form->append('entry', array('text' => _('e-mail: '),
 				'name' => 'email', 'value' => $email));
@@ -317,11 +317,11 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$list = $this->configGet('list');
 
-		if($request->getParameter('user') !== FALSE
-				|| $request->getParameter('group') !== FALSE)
+		if($request->get('user') !== FALSE
+				|| $request->get('group') !== FALSE)
 			return FALSE;
 		$ret = array();
-		if($request->getParameter('admin'))
+		if($request->get('admin'))
 			return $this->_actions_admin($engine, $cred,
 					$this->name, $ret);
 		if($list == 1)
@@ -373,7 +373,7 @@ class UserModule extends Module
 		else
 		{
 			//already logged in
-			if($request->getParameter('admin') != 0)
+			if($request->get('admin') != 0)
 				$this->_actions_admin($engine, $cred,
 						$this->name, $ret);
 			//user's content
@@ -454,7 +454,7 @@ class UserModule extends Module
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
-				if($request->getParameter($a) !== FALSE)
+				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
 					return $this->$a($engine, $request);
@@ -584,7 +584,7 @@ class UserModule extends Module
 
 		//verify the request
 		if($request === FALSE
-				|| $request->getParameter('submit') === FALSE)
+				|| $request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -932,10 +932,10 @@ class UserModule extends Module
 		$db = $engine->getDatabase();
 		$log = $this->configGet('log');
 
-		if(($username = $request->getParameter('username')) === FALSE
+		if(($username = $request->get('username')) === FALSE
 				|| strlen($username) == 0
-				|| ($password = $request->getParameter(
-						'password')) === FALSE)
+				|| ($password = $request->get('password'))
+					=== FALSE)
 			//no real login attempt
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
@@ -1137,8 +1137,8 @@ class UserModule extends Module
 		if(is_string($error))
 			$page->append('dialog', array('type' => 'error',
 				'text' => $error));
-		$username = $request->getParameter('username');
-		$email = $request->getParameter('email');
+		$username = $request->get('username');
+		$email = $request->get('email');
 		$form = $this->formRegister($engine, $username, $email);
 		$page->append($form);
 		return $page;
@@ -1148,9 +1148,9 @@ class UserModule extends Module
 	{
 		$ret = '';
 
-		if(($username = $request->getParameter('username')) === FALSE)
+		if(($username = $request->get('username')) === FALSE)
 			$ret .= _("A username is required\n");
-		if(($email = $request->getParameter('email')) === FALSE)
+		if(($email = $request->get('email')) === FALSE)
 			$ret .= _("An e-mail address is required\n");
 		if(strlen($ret) > 0)
 			return $ret;
@@ -1189,8 +1189,7 @@ class UserModule extends Module
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
 		if(($uid = $request->getID()) !== FALSE
-				&& ($token = $request->getParameter('token'))
-				!== FALSE)
+				&& ($token = $request->get('token')) !== FALSE)
 			return $this->_reset_token($engine, $request, $uid,
 					$token);
 		//process reset
@@ -1214,8 +1213,8 @@ class UserModule extends Module
 		if(is_string($error))
 			$page->append('dialog', array('type' => 'error',
 				'text' => $error));
-		$username = $request->getParameter('username');
-		$email = $request->getParameter('email');
+		$username = $request->get('username');
+		$email = $request->get('email');
 		$form = $this->formReset($engine, $username, $email);
 		$page->append($form);
 		return $page;
@@ -1225,9 +1224,9 @@ class UserModule extends Module
 	{
 		$ret = '';
 
-		if(($username = $request->getParameter('username')) === FALSE)
+		if(($username = $request->get('username')) === FALSE)
 			$ret .= _("Your username is required\n");
-		if(($email = $request->getParameter('email')) === FALSE)
+		if(($email = $request->get('email')) === FALSE)
 			$ret .= _("Your e-mail address is required\n");
 		if(strlen($ret) > 0)
 			return $ret;
@@ -1299,10 +1298,9 @@ class UserModule extends Module
 	{
 		$ret = '';
 
-		if(($password = $request->getParameter('password')) === FALSE)
+		if(($password = $request->get('password')) === FALSE)
 			$ret .= _('A new password is required');
-		else if(($password2 = $request->getParameter('password2'))
-					=== FALSE
+		else if(($password2 = $request->get('password2')) === FALSE
 					|| $password !== $password2)
 			$ret .= _('The passwords did not match');
 		if(strlen($ret) > 0)
@@ -1368,20 +1366,20 @@ class UserModule extends Module
 	{
 		//verify the request
 		if($request === FALSE
-				|| $request->getParameter('submit') === FALSE)
+				|| $request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
-		if(($username = $request->getParameter('username')) === FALSE)
+		if(($username = $request->get('username')) === FALSE)
 			return _('Invalid arguments');
-		$enabled = $request->getParameter('enabled') ? TRUE : FALSE;
-		$admin = $request->getParameter('admin') ? TRUE : FALSE;
+		$enabled = $request->get('enabled') ? TRUE : FALSE;
+		$admin = $request->get('admin') ? TRUE : FALSE;
 		//create the user
 		$error = FALSE;
 		$user = User::insert($engine, $username,
-				$request->getParameter('fullname'),
-				$request->getParameter('password'),
-				$request->getParameter('email'),
+				$request->get('fullname'),
+				$request->get('password'),
+				$request->get('email'),
 				$enabled, $admin, $error);
 		if($user === FALSE)
 			return $error;
@@ -1445,9 +1443,9 @@ class UserModule extends Module
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 
-		if(($fullname = $request->getParameter('fullname')) === FALSE)
+		if(($fullname = $request->get('fullname')) === FALSE)
 			$ret .= _("The full name is required\n");
-		if(($email = $request->getParameter('email')) === FALSE)
+		if(($email = $request->get('email')) === FALSE)
 			$ret .= _("The e-mail address is required\n");
 		if(strlen($ret) > 0)
 			return $ret;
@@ -1458,18 +1456,17 @@ class UserModule extends Module
 		if($db->query($engine, $this->query_update, $args) === FALSE)
 			return _('Could not update the profile');
 		//update the password if requested
-		if(($password1 = $request->getParameter('password1')) === FALSE
+		if(($password1 = $request->get('password1')) === FALSE
 				|| strlen($password1) == 0
-				|| ($password2 = $request->getParameter(
-					'password2')) === FALSE
+				|| ($password2 = $request->get('password2'))
+					=== FALSE
 				|| strlen($password2) == 0)
 			return FALSE;
 		//check the current password (if not an admin)
 		if(!$cred->isAdmin())
 		{
 			$error = _('The current password must be specified');
-			if(($password = $request->getParameter('password'))
-					=== FALSE
+			if(($password = $request->get('password')) === FALSE
 					|| strlen($password) == 0)
 				return $error;
 			if($user->authenticate($engine, $password) === FALSE)
@@ -1519,7 +1516,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$error = TRUE;
 		$uid = $request->getID();
-		$token = $request->getParameter('token');
+		$token = $request->get('token');
 
 		if($cred->getUserID() != 0)
 			//already registered and logged in
