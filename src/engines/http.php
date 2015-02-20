@@ -182,6 +182,11 @@ class HTTPEngine extends Engine
 		$cred = $this->getCredentials();
 		$module = 'user';
 		$actions = array('login');
+		//FIXME also get the original parameters
+		$parameters = array('module' => $request->getModule(),
+			'action' => $request->getAction(),
+			'id' => $request->getID(),
+			'title' => $request->getTitle());
 
 		if(($m = $config->get('engine::http',
 				'private::module')) !== FALSE)
@@ -190,10 +195,11 @@ class HTTPEngine extends Engine
 		       		'private::actions')) !== FALSE)
 			$actions = explode(',', $a);
 		if($cred->getUserID() == 0)
-			if($request->getModule() != $module
-					|| !in_array($request->getAction(),
+			if($parameters['module'] != $module
+					|| !in_array($parameters['action'],
 						$actions))
-				return new Request($module, $actions[0]);
+				return new Request($module, $actions[0],
+					FALSE, FALSE, $parameters);
 		return $request;
 	}
 
