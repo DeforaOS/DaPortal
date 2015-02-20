@@ -321,8 +321,7 @@ class UserModule extends Module
 			return FALSE;
 		$ret = array();
 		if($request->get('admin'))
-			return $this->_actions_admin($engine, $cred,
-					$this->name, $ret);
+			return $this->_actions_admin($engine, $cred, $ret);
 		if($list == 1)
 		{
 			$r = $this->getRequest('list');
@@ -373,8 +372,7 @@ class UserModule extends Module
 		{
 			//already logged in
 			if($request->get('admin') != 0)
-				$this->_actions_admin($engine, $cred,
-						$this->name, $ret);
+				$this->_actions_admin($engine, $cred, $ret);
 			//user's content
 			$r = $this->getRequest('display');
 			$icon = new PageElement('image', array(
@@ -412,7 +410,7 @@ class UserModule extends Module
 		return $ret;
 	}
 
-	private function _actions_admin($engine, $cred, $module, &$ret)
+	private function _actions_admin($engine, $cred, &$ret)
 	{
 		if(!$cred->isAdmin())
 			return $ret;
@@ -424,16 +422,13 @@ class UserModule extends Module
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
 		//administration
-		$r = new Request($module, ($module == 'admin')
-			? FALSE : 'admin');
+		$r = $this->getRequest('admin');
 		$icon = new PageElement('image', array('stock' => 'admin'));
 		$link = new PageElement('link', array('request' => $r,
 				'text' => _('Users administration')));
 		$ret[] = new PageElement('row', array('icon' => $icon,
 				'label' => $link));
-		$r = new Request($module, ($module == 'admin')
-			? FALSE : 'admin', FALSE, FALSE,
-			array('type' => 'group'));
+		$r = $this->getRequest('admin', array('type' => 'group'));
 		return $ret;
 	}
 
