@@ -48,7 +48,7 @@ class CVSSCMProject extends SCMProject
 		$vbox = new PageElement('vbox');
 		//browse
 		$path = $this->cvsroot.'/'.$cvsroot;
-		if(($file = $request->getParameter('file')) !== FALSE)
+		if(($file = $request->get('file')) !== FALSE)
 		{
 			$file = $this->helperSanitizePath($file);
 			$path .= "/$file";
@@ -63,7 +63,7 @@ class CVSSCMProject extends SCMProject
 				=== CVSSCMProject::$S_IFDIR)
 			return $this->_browseDir($engine, $request, $vbox,
 					$path, $file);
-		if(($revision = $request->getParameter('revision')) !== FALSE)
+		if(($revision = $request->get('revision')) !== FALSE)
 			return $this->_browseFileRevision($engine, $request,
 					$vbox, $path, $file, $revision);
 		return $this->_browseFile($engine, $request, $vbox, $path,
@@ -265,7 +265,7 @@ class CVSSCMProject extends SCMProject
 					'type' => 'error', 'text' => $error));
 		$filename = basename($file);
 		$type = Mime::getType($engine, $filename);
-		if($request->getParameter('download') !== FALSE)
+		if($request->get('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
 			$ret->setFilename($filename);

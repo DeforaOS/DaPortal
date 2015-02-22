@@ -48,7 +48,7 @@ class GitSCMProject extends SCMProject
 		//browse
 		$url = parse_url($project->get('cvsroot'));
 		$path = $this->gitroot.'/'.basename($url['path']);
-		if(($file = $request->getParameter('file')) !== FALSE)
+		if(($file = $request->get('file')) !== FALSE)
 		{
 			$file = $this->helperSanitizePath($file);
 			$path .= "/$file";
@@ -149,7 +149,7 @@ class GitSCMProject extends SCMProject
 					'type' => 'error', 'text' => $error));
 		$filename = basename($file);
 		$type = Mime::getType($engine, $filename);
-		if($request->getParameter('download') !== FALSE)
+		if($request->get('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
 			$ret->setFilename($filename);
