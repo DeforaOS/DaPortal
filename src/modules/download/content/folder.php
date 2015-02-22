@@ -179,14 +179,14 @@ class FolderDownloadContent extends DownloadContent
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Name: '),
-				'value' => $request->getParameter('title')));
+				'value' => $request->get('title')));
 		return $vbox;
 	}
 
 	protected function _formUpdate($engine, $request)
 	{
 		$vbox = new PageElement('vbox');
-		if(($value = $request->getParameter('title')) === FALSE)
+		if(($value = $request->get('title')) === FALSE)
 			$value = $this->getTitle();
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Name: '),

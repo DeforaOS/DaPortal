@@ -205,7 +205,7 @@ class FileDownloadContent extends DownloadContent
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
 
-		if(($filename = $request->getParameter('filename')) === FALSE
+		if(($filename = $request->get('filename')) === FALSE
 				&& ($filename = $this->get('filename'))
 				=== FALSE)
 		{
