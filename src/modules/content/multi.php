@@ -34,13 +34,8 @@ abstract class MultiContentModule extends ContentModule
 					FALSE)) !== FALSE)
 				return $res;
 		}
-		if($request !== FALSE)
-		{
-			$this->setContext($engine, $request);
-			return parent::getContent($engine, $id, $title,
-					$request);
-		}
-		return FALSE;
+		$this->setContext($engine, $request);
+		return parent::getContent($engine, $id, $title, $request);
 	}
 
 
@@ -54,6 +49,7 @@ abstract class MultiContentModule extends ContentModule
 	//MultiContentModule::MultiContentModule
 	protected function __construct($id, $name, $title)
 	{
+		Module::__construct($id, $name, $title);
 		//autoload sub-classes
 		foreach(static::$content_classes as $class)
 		{
@@ -68,10 +64,6 @@ abstract class MultiContentModule extends ContentModule
 				.$c.'.php';
 			autoload($class, $filename);
 		}
-		//XXX copied from Module::Module()
-		$this->id = $id;
-		$this->name = $name;
-		$this->title = ($title !== FALSE) ? $title : ucfirst($name);
 		//set the context explicitly
 		//XXX $engine should not be optional
 		$this->setContext();
@@ -85,22 +77,18 @@ abstract class MultiContentModule extends ContentModule
 	{
 		//the content type has precedence over the request
 		if($content !== FALSE)
-		{
 			$this->content_class = get_class($content);
-			return;
-		}
-		if($request !== FALSE && ($t = $request->get('type')) !== FALSE
+		else if($request !== FALSE
+				&& ($t = $request->get('type')) !== FALSE
 				&& isset(static::$content_classes[$t]))
-		{
 			$this->content_class = static::$content_classes[$t];
-			return;
-		}
-		//default to the first content type known
-		foreach(static::$content_classes as $t => $c)
-		{
-			$this->content_class = $c;
-			return;
-		}
+		else
+			//default to the first content type known
+			foreach(static::$content_classes as $t => $c)
+			{
+				$this->content_class = $c;
+				break;
+			}
 	}
 
 
