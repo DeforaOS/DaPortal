@@ -89,7 +89,7 @@ class XMLFormat extends PlainFormat
 	{
 		return htmlspecialchars($text,
 				ENT_COMPAT | ENT_XML | ENT_NOQUOTES,
-				$this->enoding);
+				$this->encoding);
 	}
 
 
