@@ -16,11 +16,6 @@
 
 
 
-require_once('./modules/pki/content/ca.php');
-require_once('./modules/pki/content/caclient.php');
-require_once('./modules/pki/content/caserver.php');
-
-
 //PKIModule
 class PKIModule extends MultiContentModule
 {
