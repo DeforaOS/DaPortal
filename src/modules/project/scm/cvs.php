@@ -155,7 +155,8 @@ class CVSSCMProject extends SCMProject
 					break;
 			//revision
 			$revision = substr($rcs[$revs + 1], 9);
-			$r = new Request('project', 'browse', $request->getID(),
+			$r = new Request($request->getModule(),
+				$request->getAction(), $request->getID(),
 				$request->getTitle(), array(
 					'file' => $file.'/'.$de,
 					'revision' => $revision));
@@ -398,14 +399,28 @@ class CVSSCMProject extends SCMProject
 				.$fields[5];
 			$title = ltrim($title, '/');
 			$title = rtrim($title, "\n");
-			$row->set('title', $title);
+			$r = new Request($request->getModule(), 'browse',
+				$request->getID(), $request->getTitle(),
+				array('file' => $title));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => substr($de, 0, -2)));
+			$row->set('title', $link);
 			//date
 			$date = substr($fields[0], 1, 9);
 			$date = base_convert($date, 16, 10);
 			$date = strftime(_('%d/%m/%Y %H:%M:%S'), $date);
 			$row->set('date', $date);
 			$row->set('action', $event);
-			$row->set('revision', $fields[4]);
+			//revision
+			$revision = $fields[4];
+			$r = new Request($request->getModule(),
+				$request->getAction(), $request->getID(),
+				$request->getTitle(), array(
+					'file' => $
+					'revision' => $revision));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => $revision));
+			$row->set('revision', $link);
 			//username
 			$username = $fields[1];
 			if(($user = User::lookup($engine, $username)) !== FALSE)
