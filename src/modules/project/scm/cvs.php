@@ -401,9 +401,9 @@ class CVSSCMProject extends SCMProject
 			$title = rtrim($title, "\n");
 			$r = new Request($request->getModule(), 'browse',
 				$request->getID(), $request->getTitle(),
-				array('file' => $title));
+				array('file' => $title.',v'));
 			$link = new PageElement('link', array('request' => $r,
-					'text' => substr($de, 0, -2)));
+					'text' => $title));
 			$row->set('title', $link);
 			//date
 			$date = substr($fields[0], 1, 9);
@@ -415,7 +415,8 @@ class CVSSCMProject extends SCMProject
 			$revision = $fields[4];
 			$r = new Request($request->getModule(),
 				$request->getAction(), $request->getID(),
-				$request->getTitle(), array('file' => $title,
+				$request->getTitle(), array(
+					'file' => $title.',v',
 					'revision' => $revision));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $revision));
