@@ -29,7 +29,9 @@ class PKIModule extends MultiContentModule
 			return parent::call($engine, $request, $internal);
 		switch(($action = $request->getAction()))
 		{
-			//FIXME implement
+			case 'latest':
+				$action = 'call'.$action;
+				return $this->$action($engine, $request);
 		}
 		return parent::call($engine, $request, $internal);
 	}
@@ -89,13 +91,13 @@ class PKIModule extends MultiContentModule
 				$this->text_content_admin
 					= _('CAs administration');
 				$this->text_content_list_title
-					= _('Certificate Authority list');
+					= _('Certification Authority list');
 				$this->text_content_list_title_by
-					= _('Certificate Authorities from');
+					= _('Certification Authorities from');
 				$this->text_content_list_title_by_group
-					= _('Certificate Authorities from group');
+					= _('Certification Authorities from group');
 				$this->text_content_submit_content
-					= _('New Certificate Authority');
+					= _('New Certification Authority');
 				break;
 		}
 	}
@@ -108,9 +110,131 @@ class PKIModule extends MultiContentModule
 	//PKIModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
+		$title = _('Certification activity');
+		$latest = array('ca', 'caserver', 'caclient');
+
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
-		return $this->callList($engine, $request);
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->getName(),
+			'text' => $title));
+		$hbox = $page->append('hbox');
+		foreach($latest as $l)
+		{
+			$request = $this->getRequest('latest', array(
+				'type' => $l));
+			$hbox->append($this->call($engine, $request));
+		}
+		return $page;
+	}
+
+
+	//PKIModule::callLatest
+	protected function callLatest($engine, $request)
+	{
+		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+
+		//XXX merge these sub-functions together
+		switch($type)
+		{
+			case 'ca':
+				return $this->_latestCAs($engine, $request,
+						$type);
+			case 'caclient':
+				return $this->_latestCAClients($engine,
+						$request, $type);
+			case 'caserver':
+			default:
+				return $this->_latestCAServers($engine,
+						$request, $type);
+		}
+	}
+
+	private function _latestCAs($engine, $request, $type)
+	{
+		$title = _('Latest Certification Authorities');
+
+		//list the latest certification authorities
+		$page = new Page($title);
+		$page->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($bugs = CAPKIContent::listAll($engine, $this,
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
+		{
+			$error = _('Could not list Certification Authorities');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = CAPKIContent::getColumns();
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		foreach($bugs as $b)
+			$view->append($b->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More Certification Authorities...'),
+			'request' => $this->getRequest('list', array(
+				'type' => $type))));
+		return $page;
+	}
+
+	private function _latestCAClients($engine, $request, $type)
+	{
+		$title = _('Latest CA clients');
+
+		//list the latest CA clients
+		$page = new Page($title);
+		$page->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($bugs = CAClientPKIContent::listAll($engine, $this,
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
+		{
+			$error = _('Could not list CA clients');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = CAClientPKIContent::getColumns();
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		foreach($bugs as $b)
+			$view->append($b->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More CA clients...'),
+			'request' => $this->getRequest('list', array(
+				'type' => $type))));
+		return $page;
+	}
+
+	private function _latestCAServers($engine, $request, $type)
+	{
+		$title = _('Latest CA servers');
+
+		//list the latest CA servers
+		$page = new Page($title);
+		$page->append('title', array('stock' => $this->getName(),
+				'text' => $title));
+		$vbox = $page->append('vbox');
+		if(($bugs = CAPKIContent::listAll($engine, $this,
+				'timestamp', $this->content_headline_count))
+				=== FALSE)
+		{
+			$error = _('Could not list CA servers');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return $page;
+		}
+		$columns = CAServerPKIContent::getColumns();
+		$view = $vbox->append('treeview', array('columns' => $columns));
+		foreach($bugs as $b)
+			$view->append($b->displayRow($engine, $request));
+		$vbox->append('link', array('stock' => 'more',
+			'text' => _('More CA servers...'),
+			'request' => $this->getRequest('list', array(
+				'type' => $type))));
+		return $page;
 	}
 }
 
