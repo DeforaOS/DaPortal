@@ -415,8 +415,7 @@ class CVSSCMProject extends SCMProject
 			$revision = $fields[4];
 			$r = new Request($request->getModule(),
 				$request->getAction(), $request->getID(),
-				$request->getTitle(), array(
-					'file' => $
+				$request->getTitle(), array('file' => $title,
 					'revision' => $revision));
 			$link = new PageElement('link', array('request' => $r,
 					'text' => $revision));
