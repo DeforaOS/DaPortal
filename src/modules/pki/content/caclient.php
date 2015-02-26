@@ -38,16 +38,30 @@ class CAClientPKIContent extends PKIContent
 	static protected $class = 'CAClientPKIContent';
 	static protected $list_order = 'title ASC';
 	//queries
-	//FIXME implement
-	//IN:	module_id
-	static protected $caclient_query_list = '';
-	//IN:	module_id
-	//	user_id
-	static protected $caclient_query_list_user = '';
 	//IN:	module_id
 	//	user_id
 	//	content_id
-	static protected $caclient_query_load = '';
+	static protected $query_load = "SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public, parent,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_enabled, daportal_caclient
+		WHERE daportal_content_enabled.content_id
+		=daportal_caclient.caclient_id
+		AND module_id=:module_id
+		AND (public='1' OR user_id=:user_id)
+		AND content_id=:content_id";
+	//IN:	module_id
+	//	title
+	static protected $query_load_by_title = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public, parent,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_public, daportal_caclient
+		WHERE daportal_content_public.content_id
+		=daportal_caclient.caclient_id
+		AND module_id=:module_id
+		AND title=:title';
 }
 
 ?>
