@@ -165,7 +165,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayRow
-	public function displayRow($engine, $request)
+	public function displayRow($engine, $request = FALSE)
 	{
 		$project = ProjectContent::load($engine, $this->getModule(),
 			$this->get('project_id'));
