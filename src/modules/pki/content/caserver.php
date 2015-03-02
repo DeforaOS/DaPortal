@@ -26,6 +26,7 @@ class CAServerPKIContent extends PKIContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
+		$this->fields['parent'] => 'Parent CA';
 		//translations
 		$this->text_content_by = _('CA server from');
 		$this->text_content_list_title = _('CA servers');
