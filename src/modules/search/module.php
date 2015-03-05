@@ -158,6 +158,8 @@ class SearchModule extends Module
 					'text' => $error));
 			return $page;
 		}
+		else if($res === TRUE)
+			return $page;
 		$count = count($res);
 		if(($offset = ($p - 1) * $limit) >= $count)
 		{
@@ -208,6 +210,8 @@ class SearchModule extends Module
 					'text' => $error));
 			return $page;
 		}
+		else if($res === TRUE)
+			return $page;
 		$count = count($res);
 		if(($offset = ($p - 1) * $limit) >= $count)
 		{
@@ -386,9 +390,11 @@ class SearchModule extends Module
 		$query = static::$query.' AND (0=1';
 		$regexp = $this->configGet('regexp');
 		$func = $regexp ? 'regexp' : 'like';
-		$string = str_replace('\\', '\\\\', $string);
 		$wildcard = $regexp ? '' : '%';
 
+		$string = str_replace('\\', '\\\\', trim($string));
+		if($string == '')
+			return TRUE;
 		$q = explode(' ', $string);
 		$args = array();
 		$i = 0;
