@@ -447,7 +447,8 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$actions = array('disable' => _('Disable'),
-			'enable' => _('Enable'), 'delete' => _('Delete'));
+			'enable' => _('Enable'), 'lock' => _('Lock'),
+			'unlock' => _('Unlock'), 'delete' => _('Delete'));
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
@@ -876,6 +877,17 @@ class UserModule extends Module
 		$vbox->append('link', array('request' => $r, 'stock' => 'home',
 				'text' => _('Back to the homepage')));
 		return $page;
+	}
+
+
+	//UserModule::callLock
+	protected function callLock($engine, $request)
+	{
+		$query = static::$query_lock;
+
+		return $this->helperApply($engine, $request, $query, 'admin',
+			_('User(s) could be locked successfully'),
+			_('Some user(s) could not be locked'));
 	}
 
 
@@ -1394,6 +1406,17 @@ class UserModule extends Module
 	}
 
 
+	//UserModule::callUnlock
+	protected function callUnlock($engine, $request)
+	{
+		$query = static::$query_unlock;
+
+		return $this->helperApply($engine, $request, $query, 'admin',
+			_('User(s) could be unlocked successfully'),
+			_('Some user(s) could not be unlocked'));
+	}
+
+
 	//UserModule::callUpdate
 	protected function callUpdate($engine, $request)
 	{
@@ -1684,6 +1707,14 @@ class UserModule extends Module
 	static private $query_list = 'SELECT user_id, username, fullname
 		FROM daportal_user_enabled
 		ORDER BY username ASC';
+	//IN:	user_id
+	static private $query_lock = "UPDATE daportal_user
+		SET password=concat('!', password)
+		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
+	//IN:	user_id
+	static private $query_unlock = "UPDATE daportal_user
+		SET password=substr(password, 2)
+		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
 	//IN:	user_id
 	//	fullname
 	//	email

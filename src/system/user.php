@@ -216,7 +216,7 @@ class User
 	static public function disable($engine, $uid)
 	{
 		$db = $engine->getDatabase();
-		$query = User::$query_disable;
+		$query = static::$query_disable;
 		$args = array('user_id' => $uid);
 
 		return ($db->query($engine, $query, $args) !== FALSE)
@@ -228,7 +228,7 @@ class User
 	static public function enable($engine, $uid)
 	{
 		$db = $engine->getDatabase();
-		$query = User::$query_enable;
+		$query = static::$query_enable;
 		$args = array('user_id' => $uid);
 
 		return ($db->query($engine, $query, $args) !== FALSE)
@@ -242,7 +242,7 @@ class User
 	{
 		//FIXME code duplication with User::register()
 		$db = $engine->getDatabase();
-		$query = User::$query_insert;
+		$query = static::$query_insert;
 		$error = '';
 
 		//FIXME really validate username
@@ -287,7 +287,7 @@ class User
 	static public function lookup($engine, $username, $user_id = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = User::$query_get_by_username;
+		$query = static::$query_get_by_username;
 		$args = array('username' => $username);
 		static $cache = array();
 
@@ -344,7 +344,7 @@ class User
 			$error = _('Could not register the user');
 			return FALSE;
 		}
-		$query = User::$query_register;
+		$query = static::$query_register;
 		$args = array('username' => $username, 'email' => $email,
 			'enabled' => $enabled ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
@@ -365,7 +365,7 @@ class User
 		}
 		if($enabled === FALSE)
 		{
-			$query = User::$query_register_token;
+			$query = static::$query_register_token;
 			//let the user confirm registration
 			if($password === FALSE)
 				//generate a random password
@@ -408,7 +408,7 @@ class User
 		$error = '';
 
 		//verify the username and e-mail address
-		$query = User::$query_reset_validate;
+		$query = static::$query_reset_validate;
 		$args = array('username' => $username, 'email' => $email);
 		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
@@ -418,7 +418,7 @@ class User
 			return FALSE;
 		}
 		$res = $res->current();
-		$query = User::$query_reset_token;
+		$query = static::$query_reset_token;
 		$uid = $res['user_id'];
 		//generate a token
 		$token = sha1(uniqid($uid.$username.$email, TRUE));
@@ -452,8 +452,8 @@ class User
 		if($db->transactionBegin($engine) === FALSE)
 			return FALSE;
 	       	//delete password reset requests older than one day
-		$query = User::$query_reset_cleanup;
-		$timestamp = strftime(User::$timestamp_format, time() - 86400);
+		$query = static::$query_reset_cleanup;
+		$timestamp = strftime(static::$timestamp_format, time() - 86400);
 		$args = array('timestamp' => $timestamp);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
@@ -461,7 +461,7 @@ class User
 			return FALSE;
 		}
 		//lookup the token
-		$query = User::$query_reset_validate_token;
+		$query = static::$query_reset_validate_token;
 		$args = array('user_id' => $uid, 'token' => $token);
 		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
@@ -475,7 +475,7 @@ class User
 			$db->transactionRollback($engine);
 			return FALSE;
 		}
-		$query = User::$query_reset_delete;
+		$query = static::$query_reset_delete;
 		$args = array('user_id' => $uid, 'token' => $token);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
@@ -502,15 +502,15 @@ class User
 		if(strlen($error) > 0)
 			return FALSE;
 		//delete registrations older than one week
-		$query = User::$query_register_cleanup;
-		$timestamp = strftime(User::$timestamp_format, time() - 604800);
+		$query = static::$query_register_cleanup;
+		$timestamp = strftime(static::$timestamp_format, time() - 604800);
 		$args = array('timestamp' => $timestamp);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = _("Could not validate the user\n");
 			return FALSE;
 		}
-		$query = User::$query_register_validate;
+		$query = static::$query_register_validate;
 		$args = array('user_id' => $uid, 'token' => $token);
 		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || count($res) != 1)
@@ -524,7 +524,7 @@ class User
 			$error = _('Could not validate the user');
 			return FALSE;
 		}
-		$query = User::$query_register_delete;
+		$query = static::$query_register_delete;
 		$args = array('user_register_id' => $res['user_register_id']);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
@@ -532,7 +532,7 @@ class User
 			$error = _('Could not validate the user');
 			return FALSE;
 		}
-		$query = User::$query_register_delete;
+		$query = static::$query_register_delete;
 		$args = array('user_register_id' => $res['user_register_id']);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
