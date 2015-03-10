@@ -26,7 +26,7 @@ class User
 	public function __construct($engine, $uid, $username = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_get_by_id;
+		$query = static::$query_get_by_id;
 		$args = array('user_id' => $uid);
 
 		if($username !== FALSE)
@@ -39,7 +39,7 @@ class User
 				$username = str_replace('-', '_', $username);
 			}
 			else
-				$query = $this->query_get_by_id_username;
+				$query = static::$query_get_by_id_username;
 			$args['username'] = $username;
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
@@ -124,7 +124,7 @@ class User
 	public function isMember($engine, $group)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_member;
+		$query = static::$query_member;
 		$args = array('user_id' => $this->user_id,
 			'groupname' => $group);
 
@@ -139,7 +139,7 @@ class User
 	public function setEnabled($engine, $enabled)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_set_enabled;
+		$query = static::$query_set_enabled;
 		$args = array('user_id' => $this->user_id,
 			'enabled' => $enabled ? 1 : 0);
 
@@ -163,7 +163,7 @@ class User
 	public function setPassword($engine, $password)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_set_password;
+		$query = static::$query_set_password;
 
 	       	//XXX seems to default to sh-md5 (should be configurable)
 		$hash = crypt($password);
@@ -177,7 +177,7 @@ class User
 	public function authenticate($engine, $password)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_authenticate;
+		$query = static::$query_authenticate;
 		$args = array('username' => $this->username);
 
 		//obtain the password hash
@@ -579,7 +579,7 @@ class User
 
 	//queries
 	//IN:	username
-	private $query_authenticate = "SELECT user_id, username,
+	static private $query_authenticate = "SELECT user_id, username,
 		daportal_user.group_id AS group_id, groupname, admin, password
 		FROM daportal_user
 		LEFT JOIN daportal_group
@@ -588,7 +588,7 @@ class User
 		AND daportal_user.enabled='1'
 		AND daportal_group.enabled='1'";
 	//IN:	user_id
-	private $query_get_by_id = "SELECT user_id AS id, username,
+	static private $query_get_by_id = "SELECT user_id AS id, username,
 		daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
@@ -599,8 +599,8 @@ class User
 		AND user_id=:user_id";
 	//IN:	user_id
 	//	username
-	private $query_get_by_id_username = "SELECT user_id AS id, username,
-		daportal_user.enabled AS enabled,
+	static private $query_get_by_id_username = "SELECT user_id AS id,
+		username, daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
 		FROM daportal_user
@@ -611,17 +611,17 @@ class User
 		AND username=:username";
 	//IN:	user_id
 	//	groupname
-	private $query_member = "SELECT user_id,
+	static private $query_member = "SELECT user_id,
 		daportal_group.group_id AS group_id
 		FROM daportal_user_group, daportal_group
 		WHERE daportal_user_group.group_id=daportal_group.group_id
 		AND user_id=:user_id
 		AND groupname=:groupname
 		AND enabled='1'";
-	private $query_set_password = 'UPDATE daportal_user
+	static private $query_set_password = 'UPDATE daportal_user
 		SET password=:password
 		WHERE user_id=:user_id';
-	private $query_set_enabled = "UPDATE daportal_user
+	static private $query_set_enabled = "UPDATE daportal_user
 		SET enabled=:enabled
 		WHERE user_id=:user_id";
 	//IN:	user_id
