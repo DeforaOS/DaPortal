@@ -147,6 +147,18 @@ class User
 	}
 
 
+	//User::setLocked
+	public function setLocked($engine, $locked)
+	{
+		$db = $engine->getDatabase();
+		$query = ($locked) ? static::$query_set_locked
+			: static::$query_set_unlocked;
+		$args = array('user_id' => $this->user_id);
+
+		return ($db->query($engine, $query, $args) !== FALSE);
+	}
+
+
 	//User::setPassword
 	public function setPassword($engine, $password)
 	{
@@ -612,6 +624,14 @@ class User
 	private $query_set_enabled = "UPDATE daportal_user
 		SET enabled=:enabled
 		WHERE user_id=:user_id";
+	//IN:	user_id
+	static private $query_set_locked = "UPDATE daportal_user
+		SET password=concat('!', password)
+		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
+	//IN:	user_id
+	static private $query_set_unlocked = "UPDATE daportal_user
+		SET password=substr(password, 2)
+		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
 	//static
 	static private $query_disable = "UPDATE daportal_user
 		SET enabled='0'
