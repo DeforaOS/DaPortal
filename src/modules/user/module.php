@@ -446,7 +446,8 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$actions = array('delete', 'disable', 'enable');
+		$actions = array('disable' => _('Disable'),
+			'enable' => _('Enable'), 'delete' => _('Delete'));
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
@@ -454,7 +455,7 @@ class UserModule extends Module
 					'text' => _('Permission denied')));
 		//perform actions if necessary
 		if($request !== FALSE)
-			foreach($actions as $a)
+			foreach($actions as $a => $t)
 				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
@@ -484,23 +485,14 @@ class UserModule extends Module
 		$toolbar = $view->append('toolbar');
 		$toolbar->append('button', array('stock' => 'new',
 				'text' => _('New user'),
-				'request' => new Request($this->name,
-					'submit')));
+				'request' => $this->getRequest('submit')));
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $r));
-		$toolbar->append('button', array('stock' => 'disable',
-				'text' => _('Disable'),
-				'type' => 'submit', 'name' => 'action',
-				'value' => 'disable'));
-		$toolbar->append('button', array('stock' => 'enable',
-				'text' => _('Enable'),
-				'type' => 'submit', 'name' => 'action',
-				'value' => 'enable'));
-		$toolbar->append('button', array('stock' => 'delete',
-				'text' => _('Delete'),
-				'type' => 'submit', 'name' => 'action',
-				'value' => 'delete'));
+		foreach($actions as $value => $text)
+			$toolbar->append('button', array('stock' => $value,
+					'text' => $text, 'type' => 'submit',
+					'name' => 'action', 'value' => $value));
 		$no = new PageElement('image', array('stock' => 'no',
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
