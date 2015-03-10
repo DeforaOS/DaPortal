@@ -476,6 +476,7 @@ class UserModule extends Module
 		$columns = array('username' => _('Username'),
 				'group' => _('Group'),
 				'enabled' => _('Enabled'),
+				'locked' => _('Locked'),
 				'admin' => _('Administrator'),
 				'email' => _('e-mail'));
 		$r = new Request($this->name, 'admin');
@@ -512,6 +513,7 @@ class UserModule extends Module
 			$row->set('group', $r['groupname']);
 			$row->set('enabled', $db->isTrue($r['enabled'])
 				? $yes : $no);
+			$row->set('locked', ($r['locked'] == '!') ? $yes : $no);
 			$row->set('admin', $db->isTrue($r['admin'])
 				? $yes : $no);
 			$link = new PageElement('link', array(
@@ -1654,7 +1656,8 @@ class UserModule extends Module
 	//queries
 	static private $query_admin = 'SELECT user_id AS id, username, admin,
 		daportal_user.enabled AS enabled, email,
-		daportal_group.group_id AS group_id, groupname
+		daportal_group.group_id AS group_id, groupname,
+		substr(password, 1, 1) AS locked
 		FROM daportal_user
 		LEFT JOIN daportal_group
 		ON daportal_user.group_id=daportal_group.group_id';
