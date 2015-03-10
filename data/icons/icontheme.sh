@@ -37,13 +37,13 @@ actions/go-jump				connect
 actions/gtk-about			about
 actions/gtk-add				add more subscribe
 actions/gtk-bold			bold
-actions/gtk-cancel			cancel disable
+actions/gtk-cancel			cancel disable lock
 actions/gtk-clear			remove-format
 actions/gtk-close			close
 actions/gtk-copy			copy
 actions/gtk-cut				cut
 actions/gtk-delete			delete
-actions/gtk-execute			enable
+actions/gtk-execute			enable unlock
 actions/gtk-find			search
 actions/gtk-go-up			updir
 actions/gtk-goto-bottom			subscript
