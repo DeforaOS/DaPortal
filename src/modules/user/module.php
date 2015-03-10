@@ -465,7 +465,7 @@ class UserModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$query = $this->query_admin;
+		$query = static::$query_admin;
 		//FIXME implement sorting
 		$query .= ' ORDER BY username ASC';
 		if(($res = $db->query($engine, $query)) === FALSE)
@@ -1660,7 +1660,7 @@ class UserModule extends Module
 	//private
 	//properties
 	//queries
-	private $query_admin = 'SELECT user_id AS id, username, admin,
+	static private $query_admin = 'SELECT user_id AS id, username, admin,
 		daportal_user.enabled AS enabled, email,
 		daportal_group.group_id AS group_id, groupname
 		FROM daportal_user
