@@ -613,7 +613,7 @@ class UserModule extends Module
 	protected function callDefault($engine, $request = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_content;
+		$query = static::$query_content;
 		$cred = $engine->getCredentials();
 
 		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
@@ -662,7 +662,7 @@ class UserModule extends Module
 	//UserModule::callDelete
 	protected function callDelete($engine, $request)
 	{
-		$query = $this->query_delete;
+		$query = static::$query_delete;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('User(s) could be deleted successfully'),
@@ -673,7 +673,7 @@ class UserModule extends Module
 	//UserModule::callDisable
 	protected function callDisable($engine, $request)
 	{
-		$query = $this->query_disable;
+		$query = static::$query_disable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('User(s) could be disabled successfully'),
@@ -685,7 +685,7 @@ class UserModule extends Module
 	protected function callDisplay($engine, $request)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_content;
+		$query = static::$query_content;
 		$cred = $engine->getCredentials();
 		$link = FALSE;
 
@@ -751,7 +751,7 @@ class UserModule extends Module
 	//UserModule::callEnable
 	protected function callEnable($engine, $request)
 	{
-		$query = $this->query_enable;
+		$query = static::$query_enable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('User(s) could be enabled successfully'),
@@ -763,7 +763,7 @@ class UserModule extends Module
 	protected function callGroups($engine, $request)
 	{
 		$database = $engine->getDatabase();
-		$query = $this->query_groups_user;
+		$query = static::$query_groups_user;
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
 
@@ -831,7 +831,7 @@ class UserModule extends Module
 	protected function callList($engine, $request)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_list;
+		$query = static::$query_list;
 		$cred = $engine->getCredentials();
 		$title = _('User list');
 		$list = $this->configGet('list');
@@ -1451,7 +1451,7 @@ class UserModule extends Module
 		$error = '';
 		$args = array('user_id' => $user->getUserID(),
 			'fullname' => $fullname, 'email' => $email);
-		if($db->query($engine, $this->query_update, $args) === FALSE)
+		if($db->query($engine, static::$query_update, $args) === FALSE)
 			return _('Could not update the profile');
 		//update the password if requested
 		if(($password1 = $request->get('password1')) === FALSE
@@ -1661,21 +1661,18 @@ class UserModule extends Module
 		FROM daportal_user
 		LEFT JOIN daportal_group
 		ON daportal_user.group_id=daportal_group.group_id';
-	private $query_admin_group = 'SELECT group_id AS id, groupname,
-		daportal_group.enabled AS enabled
-		FROM daportal_group';
-	private $query_content = "SELECT name FROM daportal_module
+	static private $query_content = "SELECT name FROM daportal_module
 		WHERE enabled='1' ORDER BY name ASC";
-	private $query_delete = "DELETE FROM daportal_user
+	static private $query_delete = "DELETE FROM daportal_user
 		WHERE user_id=:user_id";
-	private $query_disable = "UPDATE daportal_user
+	static private $query_disable = "UPDATE daportal_user
 		SET enabled='0'
 		WHERE user_id=:user_id";
-	private $query_enable = "UPDATE daportal_user
+	static private $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
 	//IN:	user_id
-	private $query_groups_user = 'SELECT dug.group_id AS id,
+	static private $query_groups_user = 'SELECT dug.group_id AS id,
 		groupname, COUNT(member.user_id) AS count
 		FROM daportal_user_group dug, daportal_group,
 		daportal_user_group member
@@ -1684,13 +1681,13 @@ class UserModule extends Module
 		AND daportal_group.group_id=member.group_id
 		GROUP BY dug.group_id, groupname
 		ORDER BY groupname ASC';
-	private $query_list = 'SELECT user_id, username, fullname
+	static private $query_list = 'SELECT user_id, username, fullname
 		FROM daportal_user_enabled
 		ORDER BY username ASC';
 	//IN:	user_id
 	//	fullname
 	//	email
-	private $query_update = 'UPDATE daportal_user
+	static private $query_update = 'UPDATE daportal_user
 		SET fullname=:fullname, email=:email
 		WHERE user_id=:user_id';
 }
