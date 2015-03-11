@@ -1578,13 +1578,6 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 
-		$r = $engine->getRequest();
-		//FIXME also keep the original parameters
-		$r = $this->getRequest(FALSE, array(
-			'username' => $request->get('username'),
-			'module' => $r->getModule(),
-			'action' => $r->getAction(),
-			'id' => $r->getID(), 'title' => $r->getTitle()));
 		if($cred->getUserID() == 0)
 			return $this->formLogin($engine, $request, FALSE);
 		$box = new PageElement('vbox');
