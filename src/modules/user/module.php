@@ -1590,20 +1590,16 @@ class UserModule extends Module
 		$box = new PageElement('vbox');
 		$r = $this->getRequest();
 		$box->append('button', array('stock' => 'home',
-				'request' => $r,
-				'text' => _('My account')));
+				'request' => $r, 'text' => _('My account')));
 		$r = $this->getRequest('display');
 		$box->append('button', array('stock' => 'user',
-				'request' => $r,
-				'text' => _('My content')));
+				'request' => $r, 'text' => _('My content')));
 		$r = $this->getRequest('update');
 		$box->append('button', array('stock' => 'user',
-				'request' => $r,
-				'text' => _('My profile')));
+				'request' => $r, 'text' => _('My profile')));
 		$r = $this->getRequest('logout');
 		$box->append('button', array('stock' => 'logout',
-				'request' => $r,
-				'text' => _('Logout')));
+				'request' => $r, 'text' => _('Logout')));
 		return $box;
 	}
 
