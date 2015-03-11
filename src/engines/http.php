@@ -182,12 +182,13 @@ class HTTPEngine extends Engine
 		$cred = $this->getCredentials();
 		$module = 'user';
 		$actions = array('login');
-		//FIXME also get the original parameters
-		$parameters = array('module' => $request->getModule(),
-			'action' => $request->getAction(),
-			'id' => $request->getID(),
-			'title' => $request->getTitle());
 
+		if(($parameters = $request->getParameters()) === FALSE)
+			$parameters = array();
+		$parameters['module'] = $request->getModule();
+		$parameters['action'] = $request->getAction();
+		$parameters['id'] = $request->getID();
+		$parameters['title'] = $request->getTitle();
 		if(($m = $config->get('engine::http',
 				'private::module')) !== FALSE)
 			$module = $m;
