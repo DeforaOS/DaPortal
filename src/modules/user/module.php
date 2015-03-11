@@ -156,12 +156,7 @@ class UserModule extends Module
 	protected function formLogin($engine, $request, $cancel = TRUE)
 	{
 		$username = $request->get('username');
-		//FIXME also import parameters
-		$r = $this->getRequest('login', array(
-			'module' => $request->get('module'),
-			'action' => $request->get('action'),
-			'id' => $request->get('id'),
-			'title' => $request->get('title')));
+		$r = $this->getRequest('login', $request->getParameters());
 
 		$form = new PageElement('form', array('request' => $r));
 		$entry = $form->append('entry', array(
@@ -972,11 +967,30 @@ class UserModule extends Module
 
 	protected function _loginSuccess($engine, $request, $page)
 	{
-		//FIXME also implement parameters
+		$parameters = $request->getParameters();
+		$p = array();
+
+		if(is_array($parameters))
+			//sanitize the parameters
+			foreach($parameters as $n => $v)
+				switch($n)
+				{
+					case 'module':
+					case 'action':
+					case 'id':
+					case 'title':
+					case 'username':
+					case 'password':
+						break;
+					default:
+						if(substr($n, 0, 1) == '_')
+							break;
+						$p[$n] = $v;
+						break;
+				}
 		$r = new Request($request->get('module'),
 			$request->get('action'), $request->get('id'),
-			$request->get('title'));
-
+			$request->get('title'), $p);
 		$page->setProperty('location', $engine->getURL($r));
 		$page->setProperty('refresh', 30);
 		$box = $page->append('vbox');
@@ -1579,7 +1593,8 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 
 		if($cred->getUserID() == 0)
-			return $this->formLogin($engine, $request, FALSE);
+			return $this->formLogin($engine, $engine->getRequest(),
+					FALSE);
 		$box = new PageElement('vbox');
 		$r = $this->getRequest();
 		$box->append('button', array('stock' => 'home',
