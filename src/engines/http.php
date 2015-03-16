@@ -262,7 +262,7 @@ class HTTPEngine extends Engine
 		{
 			header($_SERVER['SERVER_PROTOCOL']
 					.' 500 Internal server error');
-			return FALSE;
+			return $this->log('LOG_ERR', 'Invalid response');
 		}
 		switch($response->getCode())
 		{
