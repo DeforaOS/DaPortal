@@ -261,24 +261,24 @@ class HTTPEngine extends Engine
 		if(!($response instanceof Response))
 		{
 			header($_SERVER['SERVER_PROTOCOL']
-					.' 500 Internal server error');
+					.' 500 Internal Server Error');
 			return $this->log('LOG_ERR', 'Invalid response');
 		}
 		switch($response->getCode())
 		{
 			case Response::$CODE_EPERM:
 				header($_SERVER['SERVER_PROTOCOL']
-						.' 403 Permission denied');
+						.' 403 Forbidden');
 				break;
 			case Response::$CODE_ENOENT:
 				header($_SERVER['SERVER_PROTOCOL']
-						.' 404 Resource not found');
+						.' 404 Resource Not Found');
 				break;
-			case 0:
+			case Response::$CODE_SUCCESS:
 				break;
 			default:
 				header($_SERVER['SERVER_PROTOCOL']
-						.' 500 Internal server error');
+						.' 500 Internal Server Error');
 				break;
 		}
 		//XXX escape the headers
