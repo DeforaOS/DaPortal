@@ -265,27 +265,10 @@ class HTTPEngine extends Engine
 	{
 		if(!($response instanceof Response))
 		{
-			header($_SERVER['SERVER_PROTOCOL']
-					.' 500 Internal Server Error');
+			$this->_renderCode(Response::$CODE_EUNKNOWN);
 			return $this->log('LOG_ERR', 'Invalid response');
 		}
-		switch($response->getCode())
-		{
-			case Response::$CODE_EPERM:
-				header($_SERVER['SERVER_PROTOCOL']
-						.' 403 Forbidden');
-				break;
-			case Response::$CODE_ENOENT:
-				header($_SERVER['SERVER_PROTOCOL']
-						.' 404 Resource Not Found');
-				break;
-			case Response::$CODE_SUCCESS:
-				break;
-			default:
-				header($_SERVER['SERVER_PROTOCOL']
-						.' 500 Internal Server Error');
-				break;
-		}
+		$this->_renderCode($response->getCode());
 		//XXX escape the headers
 		//obtain the current content's type (and default to HTML)
 		if(($type = $response->getType($this)) === FALSE)
@@ -325,6 +308,27 @@ class HTTPEngine extends Engine
 		if($this->getVerbose())
 			return $response->render($this);
 		return $response->getCode();
+	}
+
+	private function _renderCode($code)
+	{
+		$code = 500;
+		$reason = 'Internal Server Error';
+
+		switch($code)
+		{
+			case Response::$CODE_EPERM:
+				$code = 403;
+				$reason = 'Forbidden';
+				break;
+			case Response::$CODE_ENOENT:
+				$code = 404;
+				$reason = 'Resource Not Found';
+				break;
+			case Response::$CODE_SUCCESS:
+				return;
+		}
+		header($_SERVER['SERVER_PROTOCOL'].' '.$code.' '.$reason);
 	}
 
 
