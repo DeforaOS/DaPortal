@@ -183,6 +183,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/atom.php \
 		$(PACKAGE)-$(VERSION)/src/formats/csv.php \
 		$(PACKAGE)-$(VERSION)/src/formats/fpdf.php \
+		$(PACKAGE)-$(VERSION)/src/formats/gtk.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html5.php \
 		$(PACKAGE)-$(VERSION)/src/formats/pdf.php \
