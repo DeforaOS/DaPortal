@@ -40,7 +40,7 @@ class EmailEngine extends CLIEngine
 		{
 			fprintf(STDERR, "%s\n", "daportal: Could not determine"
 					." the e-mail address");
-			return;
+			return FALSE;
 		}
 		$email = $user->getFullname().' <'.$user->getEmail().'>';
 		$template = Template::attachDefault($this);
@@ -54,6 +54,9 @@ class EmailEngine extends CLIEngine
 				$page->getProperty('title'), $page) === FALSE)
 			fprintf(STDERR, "%s\n", "daportal: Could not send"
 					." the message");
+		else
+			return 0;
+		return FALSE;
 	}
 }
 
