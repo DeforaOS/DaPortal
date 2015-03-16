@@ -412,6 +412,7 @@ abstract class ContentModule extends Module
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 		$error = FALSE;
+		$dialog = FALSE;
 
 		//check credentials
 		if(!$this->canAdmin($engine, $request, FALSE, $error))
@@ -427,15 +428,14 @@ abstract class ContentModule extends Module
 		}
 		//perform actions if necessary
 		if($request !== FALSE)
-			if(($r = $this->helperAdminActions($engine, $request))
-					!== FALSE)
-				return $r;
+			$dialog = $this->helperAdminActions($engine, $request);
 		//administrative page
-		$page = new Page;
 		$title = $this->text_content_admin;
-		$page->set('title', $title);
+		$page = new Page(array('title' => $title));
 		$element = $page->append('title', array('stock' => 'admin',
 				'text' => $title));
+		if($dialog !== FALSE)
+			$page->append($dialog);
 		if(is_string(($order = $this->content_list_admin_order)))
 			$query .= ' ORDER BY '.$order;
 		//paging
@@ -712,6 +712,7 @@ abstract class ContentModule extends Module
 					$request->getID()) : FALSE;
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$error = _('Unable to list contents');
+		$dialog = FALSE;
 
 		//perform actions if necessary
 		$actions = array();
@@ -724,7 +725,8 @@ abstract class ContentModule extends Module
 				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
-					return $this->$a($engine, $request);
+					$dialog = $this->$a($engine, $request);
+					break;
 				}
 		if($user !== FALSE && ($uid = $user->getUserID()) == 0)
 			$user = FALSE;
@@ -735,6 +737,8 @@ abstract class ContentModule extends Module
 		//title
 		$page = new Page(array('title' => $title));
 		$this->helperListTitle($engine, $page, $request);
+		if($dialog != FALSE)
+			$page->append($dialog);
 		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
 				$user)) === FALSE)
 			return new PageElement('dialog', array(
@@ -1250,11 +1254,8 @@ abstract class ContentModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		$page = $this->$fallback($engine, $r);
-		//FIXME place this under the title
-		$page->prepend('dialog', array('type' => $type,
+		return new PageElement('dialog', array('type' => $type,
 					'text' => $message));
-		return $page;
 	}
 
 
