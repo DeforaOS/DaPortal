@@ -17,34 +17,36 @@
 
 
 #variables
+PACKAGE="daportal"
+PROGNAME="daportal"
 #executables
 DAPORTALPHP="daportal.php"
 PHP="php"
 
 PREFIX="@PREFIX@"
 ETCDIR="$PREFIX/etc"
-DAPORTALDIR="$PREFIX/daportal"
+DAPORTALDIR="$PREFIX/$PACKAGE"
 
 
 #functions
 #private
 #error
 _error() {
-	echo "daportal: $@" 1>&2
+	echo "$PROGNAME: $@" 1>&2
 	return 2
 }
 
 
 #warning
 _warning() {
-	echo "daportal: $@" 1>&2
+	echo "$PROGNAME: $@" 1>&2
 }
 
 
 #public
 #main
 #load the configuration
-[ -f "$ETCDIR/defaults/daportal" ] && . "$ETCDIR/defaults/daportal"
+[ -f "$ETCDIR/defaults/$PACKAGE" ] && . "$ETCDIR/defaults/$PACKAGE"
 
 #locate the installation directory
 if [ ! -d "$DAPORTALDIR/src" ]; then
