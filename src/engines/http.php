@@ -123,6 +123,11 @@ class HTTPEngine extends Engine
 		$type = FALSE;
 		if($_SERVER['REQUEST_METHOD'] == 'GET')
 			$request = $_GET;
+		else if($_SERVER['REQUEST_METHOD'] == 'HEAD')
+		{
+			$request = $_GET;
+			$this->setVerbose(FALSE);
+		}
 		else if($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			$request = $_POST;
