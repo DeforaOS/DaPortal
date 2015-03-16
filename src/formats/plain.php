@@ -128,6 +128,43 @@ class PlainFormat extends Format
 	}
 
 
+	//PlainFormat::renderDialog
+	protected function renderDialog($e)
+	{
+		$underline = '-';
+
+		if(($type = $e->get('type')) === FALSE)
+			$type = 'message';
+		if(($title = $e->get('title')) === FALSE)
+			switch($type)
+			{
+				case 'error':
+					$title = _('Error');
+					break;
+				case 'question':
+					$title = _('Question');
+					break;
+				case 'warning':
+					$title = _('Warning');
+					break;
+				case 'info':
+				case 'message':
+				default:
+					$title = _('Message');
+					break;
+			}
+		if($this->separator != '')
+			$this->_print("\n\n");
+		$this->_print("$title\n");
+		for($i = 0; $i < strlen($title); $i++)
+			$this->_print($underline);
+		$this->_print("\n\n");
+		$this->separator = '';
+		$this->renderInline($e);
+		$this->_print("\n\n");
+	}
+
+
 	//PlainFormat::renderElement
 	protected function renderElement($e)
 	{
@@ -136,13 +173,14 @@ class PlainFormat extends Format
 			case 'htmlview':
 				//XXX ignore
 				return;
-			case 'dialog':
 			case 'frame':
 			case 'hbox':
 			case 'menubar':
 			case 'statusbar':
 			case 'vbox':
 				return $this->renderBlock($e);
+			case 'dialog':
+				return $this->renderDialog($e);
 			case 'page':
 				return $this->renderBlock($e, '=');
 			case 'link':
