@@ -579,7 +579,7 @@ class User
 
 	//queries
 	//IN:	username
-	static private $query_authenticate = "SELECT user_id, username,
+	static protected $query_authenticate = "SELECT user_id, username,
 		daportal_user.group_id AS group_id, groupname, admin, password
 		FROM daportal_user
 		LEFT JOIN daportal_group
@@ -588,7 +588,7 @@ class User
 		AND daportal_user.enabled='1'
 		AND daportal_group.enabled='1'";
 	//IN:	user_id
-	static private $query_get_by_id = "SELECT user_id AS id, username,
+	static protected $query_get_by_id = "SELECT user_id AS id, username,
 		daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
@@ -599,7 +599,7 @@ class User
 		AND user_id=:user_id";
 	//IN:	user_id
 	//	username
-	static private $query_get_by_id_username = "SELECT user_id AS id,
+	static protected $query_get_by_id_username = "SELECT user_id AS id,
 		username, daportal_user.enabled AS enabled,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
@@ -611,68 +611,67 @@ class User
 		AND username=:username";
 	//IN:	user_id
 	//	groupname
-	static private $query_member = "SELECT user_id,
+	static protected $query_member = "SELECT user_id,
 		daportal_group.group_id AS group_id
 		FROM daportal_user_group, daportal_group
 		WHERE daportal_user_group.group_id=daportal_group.group_id
 		AND user_id=:user_id
 		AND groupname=:groupname
 		AND enabled='1'";
-	static private $query_set_password = 'UPDATE daportal_user
+	static protected $query_set_password = 'UPDATE daportal_user
 		SET password=:password
 		WHERE user_id=:user_id';
-	static private $query_set_enabled = "UPDATE daportal_user
+	static protected $query_set_enabled = "UPDATE daportal_user
 		SET enabled=:enabled
 		WHERE user_id=:user_id";
 	//IN:	user_id
-	static private $query_set_locked = "UPDATE daportal_user
+	static protected $query_set_locked = "UPDATE daportal_user
 		SET password=concat('!', password)
 		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
 	//IN:	user_id
-	static private $query_set_unlocked = "UPDATE daportal_user
+	static protected $query_set_unlocked = "UPDATE daportal_user
 		SET password=substr(password, 2)
 		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
-	//static
-	static private $query_disable = "UPDATE daportal_user
+	static protected $query_disable = "UPDATE daportal_user
 		SET enabled='0'
 		WHERE user_id=:user_id";
-	static private $query_enable = "UPDATE daportal_user
+	static protected $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
 	//IN:	username
-	static private $query_get_by_username = "SELECT user_id AS id
+	static protected $query_get_by_username = "SELECT user_id AS id
 		FROM daportal_user
 		WHERE enabled='1' AND username=:username";
-	static private $query_insert = 'INSERT INTO daportal_user
+	static protected $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,
 		:admin)';
-	static private $query_register = 'INSERT INTO daportal_user
+	static protected $query_register = 'INSERT INTO daportal_user
 		(username, email, enabled)
 		VALUES (:username, :email, :enabled)';
-	static private $query_register_token = 'INSERT INTO daportal_user_register
+	static protected $query_register_token = 'INSERT INTO daportal_user_register
 		(user_id, token)
 		VALUES (:user_id, :token)';
-	static private $query_register_cleanup = 'DELETE FROM daportal_user_register
+	static protected $query_register_cleanup = 'DELETE FROM daportal_user_register
 		WHERE timestamp <= :timestamp';
-	static private $query_register_delete = 'DELETE FROM daportal_user_register
+	static protected $query_register_delete = 'DELETE FROM daportal_user_register
 		WHERE user_register_id=:user_register_id';
-	static private $query_register_validate = 'SELECT user_register_id,
+	static protected $query_register_validate = 'SELECT user_register_id,
 		daportal_user.user_id AS user_id, username
 		FROM daportal_user, daportal_user_register
 		WHERE daportal_user.user_id=daportal_user_register.user_id
 		AND daportal_user.user_id=:user_id AND token=:token';
-	static private $query_reset_cleanup = 'DELETE FROM daportal_user_reset
+	static protected $query_reset_cleanup = 'DELETE FROM daportal_user_reset
 		WHERE timestamp <= :timestamp';
-	static private $query_reset_delete = 'DELETE FROM daportal_user_reset
+	static protected $query_reset_delete = 'DELETE FROM daportal_user_reset
 		WHERE user_id=:user_id AND token=:token';
-	static private $query_reset_token = 'INSERT INTO daportal_user_reset
+	static protected $query_reset_token = 'INSERT INTO daportal_user_reset
 		(user_id, token)
 		VALUES (:user_id, :token)';
-	static private $query_reset_validate = "SELECT user_id
+	static protected $query_reset_validate = "SELECT user_id
 		FROM daportal_user
 		WHERE enabled='1' AND username=:username AND email=:email";
-	static private $query_reset_validate_token = "SELECT
+	static protected $query_reset_validate_token = "SELECT
 		daportal_user.user_id AS user_id, username
 		FROM daportal_user, daportal_user_reset
 		WHERE daportal_user.user_id=daportal_user_reset.user_id
