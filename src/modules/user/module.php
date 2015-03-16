@@ -444,6 +444,7 @@ class UserModule extends Module
 		$actions = array('disable' => _('Disable'),
 			'enable' => _('Enable'), 'lock' => _('Lock'),
 			'unlock' => _('Unlock'), 'delete' => _('Delete'));
+		$dialog = FALSE;
 
 		if(!$cred->isAdmin())
 			return new PageElement('dialog', array(
@@ -455,13 +456,16 @@ class UserModule extends Module
 				if($request->get($a) !== FALSE)
 				{
 					$a = 'call'.$a;
-					return $this->$a($engine, $request);
+					$dialog = $this->$a($engine, $request);
+					break;
 				}
 		//list users
 		$title = _('Users administration');
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
+		if($dialog !== FALSE)
+			$page->append($dialog);
 		$query = static::$query_admin;
 		//FIXME implement sorting
 		$query .= ' ORDER BY username ASC';
@@ -1650,11 +1654,8 @@ class UserModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		$page = $this->$fallback($engine);
-		//FIXME place this under the title
-		$page->prepend('dialog', array('type' => $type,
+		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
-		return $page;
 	}
 
 
