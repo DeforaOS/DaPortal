@@ -31,8 +31,7 @@ class PageResponse extends Response
 				&& ($code = $content->get('code')) == 0)
 			//XXX default to an unknown error instead
 			$code = Response::$CODE_EIO;
-		$this->setContent($content);
-		$this->setCode($code);
+		parent::__construct($content, $code);
 	}
 
 
