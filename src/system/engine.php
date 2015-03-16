@@ -214,8 +214,8 @@ abstract class Engine
 				.(($action !== FALSE) ? ", action $action"
 					: ''));
 		if(($handle = Module::load($this, $module)) === FALSE)
-			//XXX report errors?
-			$ret = new PageResponse(FALSE);
+			$ret = new ErrorResponse($module
+					.': Could not load module');
 		else
 			$ret = $handle->call($this, $request, $internal);
 		if($internal)
@@ -227,6 +227,8 @@ abstract class Engine
 			$ret = new StreamResponse($ret);
 		else if(is_string($ret))
 			$ret = new StringResponse($ret);
+		else if($ret === FALSE || $ret === NULL)
+			$ret = new ErrorResponse(_('Unknown error'));
 		else if(!($ret instanceof Response))
 			return $this->log('LOG_ERR', 'Unknown response type');
 		//check if the request recommends a default type
