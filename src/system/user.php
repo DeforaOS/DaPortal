@@ -49,6 +49,7 @@ class User
 		$this->user_id = $res['id'];
 		$this->username = $res['username'];
 		$this->enabled = $db->isTrue($res['enabled']);
+		$this->locked = ($res['locked'] == '!');
 		$this->admin = $db->isTrue($res['admin']);
 		$this->email = $res['email'];
 		$this->fullname = $res['fullname'];
@@ -120,6 +121,13 @@ class User
 	}
 
 
+	//User::isLocked
+	public function isLocked()
+	{
+		return $this->locked;
+	}
+
+
 	//User::isMember
 	public function isMember($engine, $group)
 	{
@@ -142,18 +150,6 @@ class User
 		$query = static::$query_set_enabled;
 		$args = array('user_id' => $this->user_id,
 			'enabled' => $enabled ? 1 : 0);
-
-		return ($db->query($engine, $query, $args) !== FALSE);
-	}
-
-
-	//User::setLocked
-	public function setLocked($engine, $locked)
-	{
-		$db = $engine->getDatabase();
-		$query = ($locked) ? static::$query_set_locked
-			: static::$query_set_unlocked;
-		$args = array('user_id' => $this->user_id);
 
 		return ($db->query($engine, $query, $args) !== FALSE);
 	}
@@ -219,6 +215,46 @@ class User
 		return new AuthCredentials($res['user_id'], $res['username'],
 				$res['group_id'], $res['groupname'],
 				$db->isTrue($res['admin']));
+	}
+
+
+	//User::lock
+	public function lock($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_lock;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->locked !== FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = $this->username.': Could not lock user';
+			return FALSE;
+		}
+		$this->locked = TRUE;
+		return TRUE;
+	}
+
+
+	//User::unlock
+	public function unlock($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_unlock;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->locked === FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = $this->username.': Could not unlock user';
+			return FALSE;
+		}
+		$this->locked = FALSE;
+		return TRUE;
 	}
 
 
@@ -571,6 +607,7 @@ class User
 	private $group_id = 0;
 	private $groupname = 'nogroup';
 	private $enabled = FALSE;
+	private $locked = TRUE;
 	private $admin = FALSE;
 	private $email = FALSE;
 	private $fullname = FALSE;
@@ -590,6 +627,7 @@ class User
 	//IN:	user_id
 	static protected $query_get_by_id = "SELECT user_id AS id, username,
 		daportal_user.enabled AS enabled,
+		substr(password, 1, 1) AS locked,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
 		FROM daportal_user
@@ -601,6 +639,7 @@ class User
 	//	username
 	static protected $query_get_by_id_username = "SELECT user_id AS id,
 		username, daportal_user.enabled AS enabled,
+		substr(password, 1, 1) AS locked,
 		daportal_user.group_id AS group_id, groupname, admin, email,
 		fullname
 		FROM daportal_user
@@ -624,14 +663,6 @@ class User
 	static protected $query_set_enabled = "UPDATE daportal_user
 		SET enabled=:enabled
 		WHERE user_id=:user_id";
-	//IN:	user_id
-	static protected $query_set_locked = "UPDATE daportal_user
-		SET password=concat('!', password)
-		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
-	//IN:	user_id
-	static protected $query_set_unlocked = "UPDATE daportal_user
-		SET password=substr(password, 2)
-		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
 	static protected $query_disable = "UPDATE daportal_user
 		SET enabled='0'
 		WHERE user_id=:user_id";
@@ -646,6 +677,10 @@ class User
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,
 		:admin)';
+	//IN:	user_id
+	static protected $query_lock = "UPDATE daportal_user
+		SET password=concat('!', password)
+		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
 	static protected $query_register = 'INSERT INTO daportal_user
 		(username, email, enabled)
 		VALUES (:username, :email, :enabled)';
@@ -677,6 +712,10 @@ class User
 		WHERE daportal_user.user_id=daportal_user_reset.user_id
 		AND enabled='1' AND daportal_user.user_id=:user_id
 		AND token=:token";
+	//IN:	user_id
+	static protected $query_unlock = "UPDATE daportal_user
+		SET password=substr(password, 2)
+		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
 }
 
 ?>
