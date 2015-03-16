@@ -32,7 +32,7 @@ if(($engine = Engine::attachDefault('@PREFIX@')) !== FALSE)
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
 	$ret = $engine->render($response);
-	if(!is_integer($ret) || $ret < 0 || $res > 125)
+	if(!is_integer($ret) || $ret < 0 || $ret > 125)
 		$ret = 125;
 	if($profile)
 		Profile::stop($engine);
