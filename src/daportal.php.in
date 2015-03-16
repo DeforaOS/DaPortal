@@ -31,7 +31,9 @@ if(($engine = Engine::attachDefault('@PREFIX@')) !== FALSE)
 		Profile::start($engine);
 	$request = $engine->getRequest();
 	$response = $engine->process($request);
-	$ret = ($engine->render($response) !== FALSE) ? 0 : 2;
+	$ret = $engine->render($response);
+	if(!is_integer($ret))
+		$ret = -1;
 	if($profile)
 		Profile::stop($engine);
 }
