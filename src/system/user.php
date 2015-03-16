@@ -170,6 +170,7 @@ class User
 
 
 	//useful
+	//User::authenticate
 	public function authenticate($engine, $password)
 	{
 		$db = $engine->getDatabase();
