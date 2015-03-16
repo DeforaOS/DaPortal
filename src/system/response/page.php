@@ -70,7 +70,7 @@ class PageResponse extends Response
 					$page = $p;
 				break;
 		}
-		$error = 'Could not determine the proper output format';
+		$error = _('Could not determine the proper output format');
 		if(($output = Format::attachDefault($engine, $type)) !== FALSE)
 			$output->render($engine, $page);
 		else
