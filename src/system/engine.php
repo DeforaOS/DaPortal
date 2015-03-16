@@ -221,8 +221,8 @@ abstract class Engine
 				.(($action !== FALSE) ? ", action $action"
 					: ''));
 		if(($handle = Module::load($this, $module)) === FALSE)
-			$ret = new ErrorResponse($module
-					.': Could not load module');
+			$ret = new PageResponse(FALSE,
+					Response::$CODE_ENOENT);
 		else
 			$ret = $handle->call($this, $request, $internal);
 		if($internal)
