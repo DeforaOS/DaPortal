@@ -79,7 +79,7 @@ class PlainFormat extends Format
 			//XXX it would be more efficient to improve _print()
 			ob_start();
 			$this->renderElement($page);
-			$str = wordwrap(ob_get_contents(), $wrap);;
+			$str = wordwrap(ob_get_contents(), $wrap);
 			ob_end_clean();
 			print($str);
 		}
