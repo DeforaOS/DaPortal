@@ -129,6 +129,13 @@ abstract class Engine
 	}
 
 
+	//Engine::getVerbose
+	public function getVerbose()
+	{
+		return $this->verbose;
+	}
+
+
 	//Engine::setCredentials
 	public function setCredentials($cred)
 	{
