@@ -125,6 +125,7 @@ abstract class Response extends Mutator
 
 
 	//properties
+	static public $CODE_EUNKNOWN = -1;
 	static public $CODE_SUCCESS = 0;
 	static public $CODE_EINVAL = 1;
 	static public $CODE_EIO = 2;
