@@ -75,7 +75,7 @@ abstract class Engine
 	//Engine::getDebug
 	public function getDebug()
 	{
-		return Engine::$debug;
+		return static::$debug;
 	}
 
 
@@ -141,7 +141,7 @@ abstract class Engine
 	//Engine::setDebug
 	public function setDebug($debug)
 	{
-		$this->debug = ($debug !== FALSE) ? TRUE : FALSE;
+		static::$debug = ($debug !== FALSE) ? TRUE : FALSE;
 	}
 
 
@@ -164,7 +164,7 @@ abstract class Engine
 				$level = 'Alert';
 				break;
 			case 'LOG_DEBUG':
-				if(Engine::$debug !== TRUE)
+				if(static::$debug !== TRUE)
 					return FALSE;
 				$level = 'Debug';
 				break;
@@ -179,12 +179,12 @@ abstract class Engine
 				break;
 			case 'LOG_INFO':
 				if($this->verbose < 2
-						&& Engine::$debug !== TRUE)
+						&& static::$debug !== TRUE)
 					return FALSE;
 				$level = 'Info';
 				break;
 			default:
-				if(Engine::$debug !== TRUE)
+				if(static::$debug !== TRUE)
 					return FALSE;
 				$level = 'Unknown';
 				break;
@@ -251,7 +251,7 @@ abstract class Engine
 		//XXX ignore errors
 		static::configLoad($prefix, TRUE);
 		if($config->get(FALSE, 'debug') == '1')
-			Engine::$debug = TRUE;
+			static::$debug = TRUE;
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
 			$class = $name.'Engine';
@@ -279,7 +279,7 @@ abstract class Engine
 			//XXX ignore errors
 			static::configLoadEngine($prefix, $name, FALSE);
 			if($config->get("engine::$name", 'debug') == 1)
-				Engine::$debug = TRUE;
+				static::$debug = TRUE;
 			$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
 			$ret->attach();
