@@ -317,7 +317,7 @@ class HTTPEngine extends Engine
 		//optional extra fields
 		if(($location = $response->get('location')) !== FALSE)
 			header('Location: '.$location);
-		return parent::render($response);
+		return $response->render($this);
 	}
 
 
