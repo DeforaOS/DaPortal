@@ -470,7 +470,6 @@ class HTMLFormat extends FormatElements
 				case 'warning':
 					$title = _('Warning');
 					break;
-					break;
 				case 'info':
 				case 'message':
 					$title = _('Message');
