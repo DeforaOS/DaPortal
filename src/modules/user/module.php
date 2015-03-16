@@ -81,10 +81,6 @@ class UserModule extends Module
 
 
 	//protected
-	//properties
-	protected $module_name = 'User';
-
-
 	//methods
 	//accessors
 	//UserModule::canClose
