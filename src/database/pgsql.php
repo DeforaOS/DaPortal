@@ -152,8 +152,8 @@ class PgsqlDatabase extends Database
 			else
 				$args[$i] = $parameters[$k];
 		}
-		if($config->get('database', 'debug'))
-			$engine->log('LOG_WARNING', $query);
+		if($config->get('database::pgsql', 'debug'))
+			$engine->log('LOG_DEBUG', 'PgsqlDatabase: '.$query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
