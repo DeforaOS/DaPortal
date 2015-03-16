@@ -36,7 +36,7 @@ class GtkEngine extends CLIEngine
 			return FALSE;
 		if(($page = $template->render($this, $page)) === FALSE)
 			return FALSE;
-		$this->format->render($this, $page);
+		return $this->format->render($this, $page);
 	}
 
 
