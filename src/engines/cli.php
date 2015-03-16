@@ -126,13 +126,13 @@ class CLIEngine extends Engine
 	//CLIEngine::usage
 	protected function usage()
 	{
-		fputs(STDERR, $this->usage);
+		fputs(STDERR, static::$usage);
 	}
 
 
 	//protected
 	//properties
-	protected $usage = "Usage: daportal [-Dfqv][-M mime-type][-m module [-a action][-i ID][-t title]]
+	static protected $usage = "Usage: daportal [-Dfqv][-M mime-type][-m module [-a action][-i ID][-t title]]
                 [-o parameter=value...]\n";
 }
 
