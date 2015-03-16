@@ -121,6 +121,8 @@ abstract class Response extends Mutator
 
 	//useful
 	//Response::render
+	//OUT:	0	Success
+	//	integer	Exit value for PHP
 	abstract public function render($engine);
 
 
