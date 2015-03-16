@@ -105,7 +105,7 @@ class PlainFormat extends Format
 	{
 		if($this->separator != '')
 			$this->_print("\n\n");
-		if(($title = $e->getProperty('title')) !== FALSE)
+		if(($title = $e->get('title')) !== FALSE)
 		{
 			$this->_print("$title\n");
 			for($i = 0; $i < strlen($title); $i++)
@@ -157,7 +157,7 @@ class PlainFormat extends Format
 	//PlainFormat::renderInline
 	protected function renderInline($e)
 	{
-		if(($text = $e->getProperty('text')) !== FALSE)
+		if(($text = $e->get('text')) !== FALSE)
 		{
 			$this->_print($this->separator.$text);
 			$this->separator = ' ';
@@ -169,10 +169,10 @@ class PlainFormat extends Format
 	//PlainFormat::renderLink
 	protected function renderLink($e)
 	{
-		if(($url = $e->getProperty('url')) === FALSE
-				&& ($r = $e->getProperty('request')) !== FALSE)
+		if(($url = $e->get('url')) === FALSE
+				&& ($r = $e->get('request')) !== FALSE)
 			$url = $this->engine->getURL($r);
-		if(($text = $e->getProperty('text')) !== FALSE
+		if(($text = $e->get('text')) !== FALSE
 				&& strlen($text) > 0)
 		{
 			$this->_print($this->separator.$text);
