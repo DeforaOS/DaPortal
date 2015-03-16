@@ -322,7 +322,9 @@ class HTTPEngine extends Engine
 		//optional extra fields
 		if(($location = $response->get('location')) !== FALSE)
 			header('Location: '.$location);
-		return $response->render($this);
+		if($this->getVerbose())
+			return $response->render($this);
+		return $response->getCode();
 	}
 
 
