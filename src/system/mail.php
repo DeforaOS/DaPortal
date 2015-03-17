@@ -154,14 +154,15 @@ class Mail
 	static protected function render($engine, $page, &$headers,
 			$attachments = FALSE)
 	{
+		$class = 'Mail_Mime';
+
 		$text = Mail::pageToText($engine, $page);
-		if(!class_exists('Mail_Mime'))
+		if(!class_exists($class))
 		{
-			$engine->log('LOG_WARNING',
-					'Mail_Mime: Class not found');
+			$engine->log('LOG_WARNING', $class.': Class not found');
 			return $text;
 		}
-		$mime = new Mail_Mime(array('eol' => "\n"));
+		$mime = new $class(array('eol' => "\n"));
 		static::_renderBody($engine, $mime, $text, $page);
 		static::_renderAttachments($engine, $mime, $headers,
 				$attachments);
