@@ -370,10 +370,10 @@ class User
 	//User::lookup
 	static public function lookup($engine, $username, $user_id = FALSE)
 	{
+		static $cache = array();
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_username;
 		$args = array('username' => $username);
-		static $cache = array();
 
 		if(isset($cache[$username]))
 		{
