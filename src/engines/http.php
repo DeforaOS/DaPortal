@@ -307,12 +307,11 @@ class HTTPEngine extends Engine
 			header('Location: '.$location);
 		if($this->getVerbose())
 			return $response->render($this);
-		return $response->getCode();
+		return 0;
 	}
 
 	private function _renderCode($code)
 	{
-		$code = 500;
 		$reason = 'Internal Server Error';
 
 		switch($code)
@@ -327,6 +326,9 @@ class HTTPEngine extends Engine
 				break;
 			case Response::$CODE_SUCCESS:
 				return;
+			default:
+				$code = 500;
+				break;
 		}
 		header($_SERVER['SERVER_PROTOCOL'].' '.$code.' '.$reason);
 	}
