@@ -268,6 +268,15 @@ class HTTPEngine extends Engine
 			$this->_renderCode(Response::$CODE_EUNKNOWN);
 			return $this->log('LOG_ERR', 'Invalid response');
 		}
+		if($response instanceof ErrorResponse)
+		{
+			//render ErrorResponse like a PageResponse dialog
+			$page = new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => $response->getContent()));
+			$response = new PageResponse($page,
+				$response->getCode());
+		}
 		$this->_renderCode($response->getCode());
 		//XXX escape the headers
 		//obtain the current content's type (and default to HTML)
