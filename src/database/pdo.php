@@ -189,6 +189,19 @@ class PDODatabase extends Database
 
 
 	//functions
+	//PDODatabase::concat
+	public function _concat($string1, $string2)
+	{
+		if($string1 === NULL && $string2 === NULL)
+			return '';
+		else if($string1 === NULL)
+			return $string2;
+		else if($string2 === NULL)
+			return $string1;
+		return $string1.$string2;
+	}
+
+
 	//PDODatabase::_date_trunc
 	public function _date_trunc($where, $value)
 	{
@@ -238,6 +251,9 @@ class PDODatabase extends Database
 		{
 			case 'sqlite':
 				$this->result_class = 'PDODatabaseResultCached';
+				$func = array($this, '_concat');
+				$this->handle->sqliteCreateFunction('concat',
+						$func, 2);
 				$func = array($this, '_date_trunc');
 				$this->handle->sqliteCreateFunction(
 						'date_trunc', $func);
