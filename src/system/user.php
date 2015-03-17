@@ -180,14 +180,15 @@ class User
 		//obtain the password hash
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
-			return FALSE;
+			return $engine->log('LOG_ERR', $this->username
+					.': Could not obtain the password hash');
 		$res = $res->current();
 		if(strlen($res['password']) > 0 && $res['password'][0] == '$')
 		{
 			//the password is salted
 			$a = explode('$', $res['password']);
-			$cipher = $a[1];
-			switch($cipher)
+			$cypher = $a[1];
+			switch($cypher)
 			{
 				case '1':
 				case '2a':
@@ -197,7 +198,9 @@ class User
 							$res['password']);
 					break;
 				default:
-					return FALSE;
+					$error = $this->username
+						.': Unsupported cypher';
+					return $engine->log('LOG_ERR', $error);
 			}
 		}
 		else if(strlen($res['password']) == 32)
@@ -208,10 +211,15 @@ class User
 			if($res['password'] == $hash)
 				$this->setPassword($engine, $password);
 		}
+		else if(strlen($res['password']) > 0 && $res['password'][0] == '!')
+			return $engine->log('LOG_ERR', $this->username
+					.': User is locked');
 		else
-			return FALSE;
+			return $engine->log('LOG_ERR', $this->username
+					.': Invalid password hash');
 		if($res['password'] != $hash)
-			return FALSE;
+			return $engine->log('LOG_ERR', $this->username
+					.': Could not authenticate user');
 		//the password is correct
 		return new AuthCredentials($res['user_id'], $res['username'],
 				$res['group_id'], $res['groupname'],
