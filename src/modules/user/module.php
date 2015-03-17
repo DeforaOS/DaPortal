@@ -64,12 +64,14 @@ class UserModule extends Module
 			case 'display':
 			case 'groups':
 			case 'list':
+			case 'lock':
 			case 'login':
 			case 'logout':
 			case 'profile':
 			case 'register':
 			case 'reset':
 			case 'submit':
+			case 'unlock':
 			case 'update':
 			case 'validate':
 			case 'widget':
@@ -92,6 +94,20 @@ class UserModule extends Module
 		if($cred->isAdmin())
 			return FALSE;
 		return $config->get('module::user', 'close') == 1;
+	}
+
+
+	//UserModule::canLock
+	protected function canLock($engine, $user = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Locking users is not allowed');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -121,6 +137,20 @@ class UserModule extends Module
 		if(!$cred->isAdmin())
 		{
 			$error = _('Permission denied');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//UserModule::canUnlock
+	protected function canUnlock($engine, $user = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Unlocking users is not allowed');
 			return FALSE;
 		}
 		return TRUE;
@@ -451,7 +481,7 @@ class UserModule extends Module
 			foreach($actions as $a => $t)
 				if($request->get($a) !== FALSE)
 				{
-					$a = 'call'.$a;
+					$a = '_admin'.$a;
 					$dialog = $this->$a($engine, $request);
 					break;
 				}
@@ -532,6 +562,36 @@ class UserModule extends Module
 			'stock' => 'admin',
 			'text' => _('Back to the administration')));
 		return $page;
+	}
+
+	protected function _adminDelete($engine, $request)
+	{
+		return $this->helperApply($engine, $request, 'delete',
+			$this->getRequest('admin'));
+	}
+
+	protected function _adminDisable($engine, $request)
+	{
+		return $this->helperApply($engine, $request, 'disable',
+			$this->getRequest('admin'));
+	}
+
+	protected function _adminEnable($engine, $request)
+	{
+		return $this->helperApply($engine, $request, 'enable',
+			$this->getRequest('admin'));
+	}
+
+	protected function _adminLock($engine, $request)
+	{
+		return $this->helperApply($engine, $request, 'lock',
+			$this->getRequest('admin'));
+	}
+
+	protected function _adminUnlock($engine, $request)
+	{
+		return $this->helperApply($engine, $request, 'unlock',
+			$this->getRequest('admin'));
 	}
 
 
@@ -660,28 +720,6 @@ class UserModule extends Module
 	}
 
 
-	//UserModule::callDelete
-	protected function callDelete($engine, $request)
-	{
-		$query = static::$query_delete;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('User(s) could be deleted successfully'),
-			_('Some user(s) could not be deleted'));
-	}
-
-
-	//UserModule::callDisable
-	protected function callDisable($engine, $request)
-	{
-		$query = static::$query_disable;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('User(s) could be disabled successfully'),
-			_('Some user(s) could not be disabled'));
-	}
-
-
 	//UserModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
@@ -746,17 +784,6 @@ class UserModule extends Module
 					'text' => _('Back to the user list')));
 		}
 		return $page;
-	}
-
-
-	//UserModule::callEnable
-	protected function callEnable($engine, $request)
-	{
-		$query = static::$query_enable;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('User(s) could be enabled successfully'),
-			_('Some user(s) could not be enabled'));
 	}
 
 
@@ -883,11 +910,22 @@ class UserModule extends Module
 	//UserModule::callLock
 	protected function callLock($engine, $request)
 	{
-		$query = static::$query_lock;
+		$error = _('Unknown error');
 
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('User(s) could be locked successfully'),
-			_('Some user(s) could not be locked'));
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_ENOENT);
+		if(($user = User::lookup($engine, $request->getTitle(),
+					$request->getID())) === FALSE)
+			return new ErrorResponse(_('Could not load user'),
+					Response::$CODE_ENOENT);
+		if(!$this->canLock($engine, $user, $error))
+			return new ErrorResponse($user->getUsername()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$user->lock($engine, $error))
+			return new ErrorResponse($error);
+		return new PageElement('dialog', array('type' => 'info',
+				'text' => _('User locked successfully')));
 	}
 
 
@@ -1428,11 +1466,22 @@ class UserModule extends Module
 	//UserModule::callUnlock
 	protected function callUnlock($engine, $request)
 	{
-		$query = static::$query_unlock;
+		$error = _('Unknown error');
 
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('User(s) could be unlocked successfully'),
-			_('Some user(s) could not be unlocked'));
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_ENOENT);
+		if(($user = User::lookup($engine, $request->getTitle(),
+					$request->getID())) === FALSE)
+			return new ErrorResponse(_('Could not load user'),
+					Response::$CODE_ENOENT);
+		if(!$this->canUnlock($engine, $user, $error))
+			return new ErrorResponse($user->getUsername()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$user->unlock($engine, $error))
+			return new ErrorResponse($error);
+		return new PageElement('dialog', array('type' => 'info',
+				'text' => _('User unlocked successfully')));
 	}
 
 
@@ -1619,28 +1668,24 @@ class UserModule extends Module
 
 	//helpers
 	//UserModule::helperApply
-	protected function helperApply($engine, $request, $query, $fallback,
-			$success, $failure)
+	protected function helperApply($engine, $request, $action, $fallback)
 	{
 		//XXX copied from ContentModule
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 
-		if(!$cred->isAdmin())
+		if(!$cred->isAdmin() || $request->isIdempotent())
 		{
 			//must be admin
-			$page = $this->callDefault($engine);
 			$error = _('Permission denied');
-			$page->prepend('dialog', array('type' => 'error',
+			return new PageElement('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
 		}
-		$fallback = 'call'.$fallback;
-		if($request->isIdempotent())
-			//must be safe
-			return $this->$fallback($engine);
-		$type = 'info';
-		$message = $success;
+		$invalid = 0;
+		$errors = 0;
+		$success = 0;
+		$message = '';
+		$sep = '';
 		$parameters = $request->getParameters();
 		foreach($parameters as $k => $v)
 		{
@@ -1648,13 +1693,29 @@ class UserModule extends Module
 			if(count($x) != 2 || $x[0] != 'user_id'
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('user_id' => $x[1]);
-			$res = $db->query($engine, $query, $args);
-			if($res !== FALSE)
-				continue;
-			$type = 'error';
-			$message = $failure;
+			$user = new User($engine, $x[1]);
+			if($user->getUserID() === FALSE) //XXX
+				$invalid++;
+			else if($user->$action($engine) === FALSE)
+				$errors++;
+			else
+				$success++;
 		}
+		$type = $errors ? 'error' : ($invalid ? 'warning' : 'info');
+		if($errors)
+		{
+			$message .= "Could not $action $errors users";
+			$sep = "\n";
+		}
+		if($invalid)
+		{
+			$message .= $sep.$invalid.' '._('invalid users');
+			$sep = "\n";
+		}
+		if($success)
+			$message .= $sep."Could $action $success user(s)";
+		else
+			$message .= $sep."Could not $action any user";
 		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
 	}
@@ -1692,14 +1753,6 @@ class UserModule extends Module
 		ON daportal_user.group_id=daportal_group.group_id';
 	static private $query_content = "SELECT name FROM daportal_module
 		WHERE enabled='1' ORDER BY name ASC";
-	static private $query_delete = "DELETE FROM daportal_user
-		WHERE user_id=:user_id";
-	static private $query_disable = "UPDATE daportal_user
-		SET enabled='0'
-		WHERE user_id=:user_id";
-	static private $query_enable = "UPDATE daportal_user
-		SET enabled='1'
-		WHERE user_id=:user_id";
 	//IN:	user_id
 	static private $query_groups_user = 'SELECT dug.group_id AS id,
 		groupname, COUNT(member.user_id) AS count
@@ -1713,14 +1766,6 @@ class UserModule extends Module
 	static private $query_list = 'SELECT user_id, username, fullname
 		FROM daportal_user_enabled
 		ORDER BY username ASC';
-	//IN:	user_id
-	static private $query_lock = "UPDATE daportal_user
-		SET password=concat('!', password)
-		WHERE user_id=:user_id AND substr(password, 1, 1) != '!'";
-	//IN:	user_id
-	static private $query_unlock = "UPDATE daportal_user
-		SET password=substr(password, 2)
-		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
 	//IN:	user_id
 	//	fullname
 	//	email

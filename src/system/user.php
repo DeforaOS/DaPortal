@@ -219,6 +219,65 @@ class User
 	}
 
 
+	//User::delete
+	public function delete($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_delete;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->user_id === FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+			return FALSE;
+		$this->user_id = FALSE;
+		$this->username = FALSE;
+		$this->group_id = FALSE;
+		$this->groupname = FALSE;
+		$this->enabled = FALSE;
+		$this->locked = FALSE;
+		$this->admin = FALSE;
+		$this->email = FALSE;
+		$this->fullname = FALSE;
+		return TRUE;
+	}
+
+
+	//User::disable
+	public function disable($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_disable;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->enabled === FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+			return FALSE;
+		$this->enabled = FALSE;
+		return TRUE;
+	}
+
+
+	//User::enable
+	public function enable($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_enable;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->enabled !== FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+			return FALSE;
+		$this->enabled = TRUE;
+		return TRUE;
+	}
+
+
 	//User::lock
 	public function lock($engine, &$error = FALSE)
 	{
@@ -261,30 +320,6 @@ class User
 
 	//static
 	//useful
-	//User::disable
-	static public function disable($engine, $uid)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_disable;
-		$args = array('user_id' => $uid);
-
-		return ($db->query($engine, $query, $args) !== FALSE)
-			? TRUE : FALSE;
-	}
-
-
-	//User::enable
-	static public function enable($engine, $uid)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_enable;
-		$args = array('user_id' => $uid);
-
-		return ($db->query($engine, $query, $args) !== FALSE)
-			? TRUE : FALSE;
-	}
-
-
 	//User::insert
 	static public function insert($engine, $username, $fullname, $password,
 		$email, $enabled = FALSE, $admin = FALSE, &$error = FALSE)
@@ -664,9 +699,14 @@ class User
 	static protected $query_set_enabled = "UPDATE daportal_user
 		SET enabled=:enabled
 		WHERE user_id=:user_id";
+	//IN:	user_id
+	static protected $query_delete = 'DELETE FROM daportal_user
+		WHERE user_id=:user_id';
+	//IN:	user_id
 	static protected $query_disable = "UPDATE daportal_user
 		SET enabled='0'
 		WHERE user_id=:user_id";
+	//IN:	user_id
 	static protected $query_enable = "UPDATE daportal_user
 		SET enabled='1'
 		WHERE user_id=:user_id";
