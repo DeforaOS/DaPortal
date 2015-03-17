@@ -137,7 +137,7 @@ abstract class Response extends Mutator
 
 	//protected
 	//properties
-	protected $code = 0;
+	protected $code = -1;
 	protected $content = FALSE;
 	protected $filename = FALSE;
 	protected $type = FALSE;
