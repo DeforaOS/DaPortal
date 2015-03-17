@@ -320,7 +320,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//PDODatabaseResultCached::getAffectedCount
 	public function getAffectedCount()
 	{
-		return $this->stmt->rowCount();
+		return $this->count;
 	}
 
 
