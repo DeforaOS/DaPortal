@@ -1,0 +1,197 @@
+#!/bin/sh
+#$Id$
+#Copyright (c) 2015 Pierre Pronchery <khorben@defora.org>
+#This file is part of DaPortal
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, version 3 of the License.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+#variables
+DEVNULL="/dev/null"
+PROGNAME="daportal-user"
+VERBOSE=0
+#executables
+DAPORTAL="daportal"
+
+
+#functions
+#protected
+#error
+_error()
+{
+	echo "$PROGNAME: $@" 1>&2
+	return 2
+}
+
+
+#info
+_info()
+{
+	[ $VERBOSE -ne 0 ] && echo "$PROGNAME: $@"
+	return 0
+}
+
+
+#usage
+_usage()
+{
+	echo "Usage: $PROGNAME [-qv] -D|-d|-e|-l|-u user..." 1>&2
+	echo "  -D	Delete user(s)" 1>&2
+	echo "  -d	Disable user(s)" 1>&2
+	echo "  -e	Enable user(s)" 1>&2
+	echo "  -l	Lock user(s)" 1>&2
+	echo "  -q	Quiet mode" 1>&2
+	echo "  -u	Unlock user(s)" 1>&2
+	echo "  -v	Verbose mode (default)" 1>&2
+	return 1
+}
+
+
+#user_delete
+_user_delete()
+{
+	ret=0
+
+	for user in "$@"; do
+		$DAPORTAL -f -m user -a delete -t "$user" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$user: User deleted"
+		else
+			_error "$user: Could not delete user"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#user_disable
+_user_disable()
+{
+	ret=0
+
+	for user in "$@"; do
+		$DAPORTAL -f -m user -a disable -t "$user" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$user: User disabled"
+		else
+			_error "$user: Could not disable user"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#user_enable
+_user_enable()
+{
+	ret=0
+
+	for user in "$@"; do
+		$DAPORTAL -f -m user -a enable -t "$user" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$user: User enabled"
+		else
+			_error "$user: Could not enable user"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#user_lock
+_user_lock()
+{
+	ret=0
+
+	for user in "$@"; do
+		$DAPORTAL -f -m user -a lock -t "$user" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$user: User locked"
+		else
+			_error "$user: Could not lock user"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#user_unlock
+_user_unlock()
+{
+	ret=0
+
+	for user in "$@"; do
+		$DAPORTAL -f -m user -a unlock -t "$user" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$user: User unlocked"
+		else
+			_error "$user: Could not unlock user"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#public
+#main
+action=
+while getopts "Ddelquv" name; do
+	case "$name" in
+		D)
+			action="delete"
+			;;
+		d)
+			action="disable"
+			;;
+		e)
+			action="enable"
+			;;
+		l)
+			action="lock"
+			;;
+		q)
+			VERBOSE=0
+			;;
+		u)
+			action="unlock"
+			;;
+		v)
+			VERBOSE=1
+			;;
+		*)
+			_usage
+			exit $?
+			;;
+	esac
+done
+shift $((OPTIND - 1))
+if [ $# -le 0 ]; then
+	_usage
+	exit $?
+fi
+
+case "$action" in
+	"add"|"delete"|"disable"|"enable"|"lock"|"unlock")
+		"_user_$action" "$@"
+		exit $?
+		;;
+	*)
+		_error "$action: Unknown action"
+		exit $?
+		;;
+esac

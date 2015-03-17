@@ -336,6 +336,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
 		$(PACKAGE)-$(VERSION)/tools/Makefile \
 		$(PACKAGE)-$(VERSION)/tools/daportal.in \
+		$(PACKAGE)-$(VERSION)/tools/daportal-user \
 		$(PACKAGE)-$(VERSION)/tools/deploy.sh \
 		$(PACKAGE)-$(VERSION)/tools/subst.sh \
 		$(PACKAGE)-$(VERSION)/tools/project.conf \
