@@ -21,17 +21,6 @@ require_once('./tests.php');
 
 class AuthTest extends Auth
 {
-	public function getCredentials($engine)
-	{
-		if($this->credentials === FALSE)
-		{
-			$user = new User($engine, 1, 'admin');
-			$this->credentials = $user->authenticate($engine,
-					'password');
-		}
-		return $this->credentials;
-	}
-
 	protected function attach($engine)
 	{
 	}
@@ -44,6 +33,10 @@ class AuthTest extends Auth
 
 //functions
 $auth = new AuthTest;
+$user = new User($engine, 1, 'admin');
+$credentials = $user->authenticate($engine, 'password');
+//may as well have failed
+$auth->setCredentials($engine, $credentials);
 if($auth->setVariable($engine, 'test1', 'test2') === FALSE)
 	exit(3);
 if($auth->getVariable($engine, 'test1') != 'test2')
