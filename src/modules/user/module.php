@@ -494,6 +494,10 @@ class UserModule extends Module
 				'size' => 16, 'title' => _('Disabled')));
 		$yes = new PageElement('image', array('stock' => 'yes',
 				'size' => 16, 'title' => _('Enabled')));
+		$locked = new PageElement('image', array('stock' => 'no',
+				'size' => 16, 'title' => _('Locked')));
+		$unlocked = new PageElement('image', array('stock' => 'yes',
+				'size' => 16, 'title' => _('Unlocked')));
 		foreach($res as $r)
 		{
 			$row = $view->append('row');
@@ -509,7 +513,8 @@ class UserModule extends Module
 			$row->set('group', $r['groupname']);
 			$row->set('enabled', $db->isTrue($r['enabled'])
 				? $yes : $no);
-			$row->set('locked', ($r['locked'] == '!') ? $yes : $no);
+			$row->set('locked', ($r['locked'] == '!')
+				? $locked : $unlocked);
 			$row->set('admin', $db->isTrue($r['admin'])
 				? $yes : $no);
 			$link = new PageElement('link', array(
