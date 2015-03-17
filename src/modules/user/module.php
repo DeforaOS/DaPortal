@@ -97,6 +97,48 @@ class UserModule extends Module
 	}
 
 
+	//UserModule::canDelete
+	protected function canDelete($engine, $user = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Deleting users is not allowed');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//UserModule::canDisable
+	protected function canDisable($engine, $user = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Disabling users is not allowed');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//UserModule::canEnable
+	protected function canEnable($engine, $user = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Enabling users is not allowed');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//UserModule::canLock
 	protected function canLock($engine, $user = FALSE, &$error = FALSE)
 	{
@@ -1669,10 +1711,10 @@ class UserModule extends Module
 	//UserModule::helperApply
 	protected function helperApply($engine, $request, $action, $fallback)
 	{
-		//XXX copied from ContentModule
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 
+		//FIXME use $this->can$action() instead
 		if(!$cred->isAdmin() || $request->isIdempotent())
 		{
 			//must be admin
