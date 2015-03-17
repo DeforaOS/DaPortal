@@ -61,7 +61,9 @@ class UserModule extends Module
 			case 'admin':
 			case 'close':
 			case 'default':
+			case 'disable':
 			case 'display':
+			case 'enable':
 			case 'groups':
 			case 'list':
 			case 'lock':
@@ -762,6 +764,28 @@ class UserModule extends Module
 	}
 
 
+	//UserModule::callDisable
+	protected function callDisable($engine, $request)
+	{
+		$error = _('Unknown error');
+
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_ENOENT);
+		if(($user = User::lookup($engine, $request->getTitle(),
+					$request->getID())) === FALSE)
+			return new ErrorResponse(_('Could not load user'),
+					Response::$CODE_ENOENT);
+		if(!$this->canDisable($engine, $user, $error))
+			return new ErrorResponse($user->getUsername()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$user->disable($engine, $error))
+			return new ErrorResponse($error);
+		return new PageElement('dialog', array('type' => 'info',
+				'text' => _('User disabled successfully')));
+	}
+
+
 	//UserModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
@@ -826,6 +850,29 @@ class UserModule extends Module
 					'text' => _('Back to the user list')));
 		}
 		return $page;
+	}
+
+
+	//UserModule::callEnable
+	protected function callEnable($engine, $request)
+	{
+		$error = _('Unknown error');
+
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_ENOENT);
+		//FIXME User::lookup() only obtains enabled users
+		if(($user = User::lookup($engine, $request->getTitle(),
+					$request->getID())) === FALSE)
+			return new ErrorResponse(_('Could not load user'),
+					Response::$CODE_ENOENT);
+		if(!$this->canEnable($engine, $user, $error))
+			return new ErrorResponse($user->getUsername()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$user->enable($engine, $error))
+			return new ErrorResponse($error);
+		return new PageElement('dialog', array('type' => 'info',
+				'text' => _('User enabled successfully')));
 	}
 
 
