@@ -60,6 +60,12 @@ abstract class Auth
 	//Auth::setCredentials
 	public function setCredentials($engine, $credentials)
 	{
+		if($credentials !== FALSE
+				&& !($credentials instanceof AuthCredentials))
+		{
+			$this->credentials = FALSE;
+			return FALSE;
+		}
 		$this->credentials = $credentials;
 		return TRUE;
 	}
