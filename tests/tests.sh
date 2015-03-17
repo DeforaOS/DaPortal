@@ -20,6 +20,7 @@
 DAPORTALCONF='../tests/daportal.conf'
 PROGNAME="tests.sh"
 #executables
+CP="cp -f"
 DATE="date"
 DEBUG="_debug"
 PHP="/usr/bin/env php"
@@ -36,6 +37,7 @@ _fail()
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
+	$CP -- "sqlite.db3" "sqlite-tests.db3"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
@@ -56,6 +58,7 @@ _test()
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
+	$CP -- "sqlite.db3" "sqlite-tests.db3"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
