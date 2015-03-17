@@ -771,7 +771,7 @@ class UserModule extends Module
 
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
-					Response::$CODE_ENOENT);
+					Response::$CODE_EPERM);
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID())) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
@@ -860,7 +860,7 @@ class UserModule extends Module
 
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
-					Response::$CODE_ENOENT);
+					Response::$CODE_EPERM);
 		//FIXME User::lookup() only obtains enabled users
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID())) === FALSE)
@@ -1003,7 +1003,7 @@ class UserModule extends Module
 
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
-					Response::$CODE_ENOENT);
+					Response::$CODE_EPERM);
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID())) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
@@ -1558,7 +1558,7 @@ class UserModule extends Module
 
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
-					Response::$CODE_ENOENT);
+					Response::$CODE_EPERM);
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID())) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
