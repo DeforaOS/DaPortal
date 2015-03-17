@@ -186,7 +186,7 @@ if [ $# -le 0 ]; then
 fi
 
 case "$action" in
-	"add"|"delete"|"disable"|"enable"|"lock"|"unlock")
+	"delete"|"disable"|"enable"|"lock"|"unlock")
 		"_user_$action" "$@"
 		exit $?
 		;;
