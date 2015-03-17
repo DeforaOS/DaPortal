@@ -505,7 +505,7 @@ class UserModule extends Module
 				'locked' => _('Locked'),
 				'admin' => _('Administrator'),
 				'email' => _('e-mail'));
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		$view = $page->append('treeview', array('request' => $r,
 				'view' => 'details', 'columns' => $columns));
 		//toolbar
@@ -553,7 +553,7 @@ class UserModule extends Module
 			$row->set('email', $link);
 		}
 		$vbox = $page->append('vbox');
-		$request = new Request($this->name);
+		$request = $this->getRequest();
 		$vbox->append('link', array('request' => $request,
 			'stock' => 'user',
 			'text' => _('Back to my account')));
@@ -744,7 +744,7 @@ class UserModule extends Module
 			$user = User::lookup($engine, $cred->getUsername(),
 					$uid);
 			$title = _('My content');
-			$r = new Request($this->name);
+			$r = $this->getRequest();
 			$link = new PageElement('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
@@ -846,7 +846,7 @@ class UserModule extends Module
 		}
 		if($id === FALSE)
 		{
-			$r = new Request($this->name);
+			$r = $this->getRequest();
 			$vbox->append('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
@@ -895,7 +895,7 @@ class UserModule extends Module
 			$view->append('row', $r);
 		}
 		//buttons
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 		$text = $cred->getUserID() ? _('Back to my account')
 			: _('Back to the site menu');
 		$vbox->append('link', array('request' => $r, 'stock' => 'user',
@@ -956,14 +956,14 @@ class UserModule extends Module
 		$page->append($form);
 		if($this->canReset())
 		{
-			$r = new Request($this->name, 'reset');
+			$r = $this->getRequest('reset');
 			$page->append('link', array('request' => $r,
 					'stock' => 'reset',
 					'text' => $forgot));
 		}
 		if($this->canRegister())
 		{
-			$r = new Request($this->name, 'register');
+			$r = $this->getRequest('register');
 			$page->append('link', array('request' => $r,
 					'stock' => 'register',
 					'text' => $register));
@@ -1068,7 +1068,7 @@ class UserModule extends Module
 					'text' => _('Back to the homepage')));
 			return $page;
 		}
-		$r = new Request($this->name, 'logout');
+		$r = $this->getRequest('logout');
 		if($request->isIdempotent())
 		{
 			//FIXME make it a question dialog
@@ -1077,7 +1077,7 @@ class UserModule extends Module
 			$vbox = $form->append('vbox');
 			$vbox->append('label', array(
 				'text' => _('Do you really want to logout?')));
-			$r = new Request($this->name);
+			$r = $this->getRequest();
 			$form->append('button', array('text' => _('Cancel'),
 						'stock' => 'cancel',
 						'request' => $r));
@@ -1159,13 +1159,13 @@ class UserModule extends Module
 			$vbox->append($button);
 		if($id === FALSE)
 		{
-			$r = new Request($this->name);
+			$r = $this->getRequest();
 			$vbox->append('link', array('stock' => 'user',
 					'request' => $r,
 					'text' => _('Back to my account')));
 			if($this->canClose($engine))
 			{
-				$r = new Request($this->name, 'close');
+				$r = $this->getRequest('close');
 				$vbox->append('link', array('stock' => 'close',
 						'request' => $r,
 						'text' => _('Close my account')));
@@ -1355,7 +1355,7 @@ class UserModule extends Module
 			'name' => 'password2', 'hidden' => TRUE));
 		$form->append('button', array('stock' => 'cancel',
 			'text' => _('Cancel'),
-			'request' => new Request($this->name)));
+			'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'reset',
 			'type' => 'submit', 'text' => _('Reset')));
 		return $page;
@@ -1393,8 +1393,7 @@ class UserModule extends Module
 				'request' => new Request()));
 		$page->append('link', array('stock' => 'login',
 				'text' => _('Proceed to login page'),
-				'request' => new Request($this->name,
-					'login')));
+				'request' => $this->getRequest('login')));
 		return $page;
 	}
 
@@ -1583,7 +1582,7 @@ class UserModule extends Module
 				'text' => $info));
 		if($id)
 		{
-			$r = new Request($this->name, 'admin');
+			$r = $this->getRequest('admin');
 			$dialog->append('button', array('stock' => 'admin',
 					'request' => $r,
 					'text' => _('User administration')));
@@ -1628,8 +1627,8 @@ class UserModule extends Module
 		{
 			$box->append('dialog', array('type' => 'info',
 					'title' => _('Congratulations!'),
-					'text' => _("Your account is now enabled.")));
-			$r = new Request($this->name);
+					'text' => _('Your account is now enabled.')));
+			$r = $this->getRequest();
 			$box->append('link', array('stock' => 'login',
 					'request' => $r,
 					'text' => _('Login')));
