@@ -244,9 +244,9 @@ class Mail
 	static protected function _renderBodyHtmlImage($mime, $img, $type,
 			$data)
 	{
-		$cid = uniqid();
-		if($mime->addHTMLImage($data, 'image/jpeg', '', FALSE, $cid))
-			$img->setAttribute('src', 'cid:'.$cid);
+		$filename = uniqid();
+		if($mime->addHTMLImage($data, 'image/jpeg', $filename, FALSE))
+			$img->setAttribute('src', $filename);
 	}
 }
 
