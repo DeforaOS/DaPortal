@@ -203,7 +203,48 @@ class Mail
 
 	static protected function _renderBodyHtml($engine, $mime, $html)
 	{
+		$jpeg = 'image/jpeg;base64,';
+		$png = 'image/png;base64,';
+
+		$xml = new DOMDocument;
+		if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET) !== FALSE)
+		{
+			//convert in-line images for compatibility
+			$images = $xml->getElementsByTagName('img');
+			foreach($images as $img)
+			{
+				if(($a = $img->getAttribute('src')) === FALSE)
+					continue;
+				if(strncmp($a, 'data:', 5) != 0)
+					continue;
+				$a = substr($a, 5);
+				if(strncmp($a, $jpeg, strlen($jpeg)) == 0)
+				{
+					$a = substr($a, strlen($jpeg));
+					$a = base64_decode($a);
+					static::_renderBodyHtmlImage($mime,
+							$img, 'image/jpeg', $a);
+				}
+				else if(strncmp($a, $png, strlen($png)) == 0)
+				{
+					$a = substr($a, strlen($png));
+					$a = base64_decode($a);
+					static::_renderBodyHtmlImage($mime,
+							$img, 'image/png', $a);
+				}
+			}
+			if(($h = $xml->saveHTML()) !== FALSE)
+				$html = $h;
+		}
 		$mime->setHTMLBody($html);
+	}
+
+	static protected function _renderBodyHtmlImage($mime, $img, $type,
+			$data)
+	{
+		$cid = uniqid();
+		$img->setAttribute('src', 'cid:'.$cid);
+		$mime->addHTMLImage($data, 'image/jpeg', '', FALSE, $cid);
 	}
 }
 
