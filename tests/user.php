@@ -23,10 +23,21 @@ require_once('./tests.php');
 $user = new User($engine, 1, 'admin');
 if(($res = $user->authenticate($engine, 'password')) === FALSE)
 	exit(2);
-if($res instanceof AuthCredentials
-		&& $res->getUserID() == $user->getUserID()
-		&& $res->getUsername() == $user->getUsername())
-	exit(0);
-exit(2);
+if(!($res instanceof AuthCredentials)
+		|| $res->getUserID() != $user->getUserID()
+		|| $res->getUsername() != $user->getUsername())
+	exit(2);
+$error = 'Unknown error';
+if($user->lock($engine, $error) === FALSE)
+{
+	print("$error\n");
+	exit(3);
+}
+if($user->unlock($engine, $error) === FALSE)
+{
+	print("$error\n");
+	exit(4);
+}
+exit(0);
 
 ?>
