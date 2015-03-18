@@ -243,12 +243,15 @@ class HTML
 
 
 	//HTML::validate
-	static public function validate($engine, $content)
+	static public function validate($engine, $content, $whitelist = FALSE,
+			$form = FALSE)
 	{
-		$html = new HTML;
+		$html = new HTML(FALSE, $form);
 		$start = array($html, '_validateElementStart');
 		$end = array($html, '_validateElementEnd');
 
+		if($whitelist !== FALSE)
+			$html->whitelist = $whitelist;
 		if(xml_set_element_handler($html->parser, $start, $end)
 				!== TRUE)
 			return FALSE;
