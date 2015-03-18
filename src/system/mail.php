@@ -162,7 +162,9 @@ class Mail
 			$engine->log('LOG_WARNING', $class.': Class not found');
 			return $text;
 		}
-		$mime = new $class(array('eol' => "\n"));
+		$mime = new $class(array('eol' => "\n",
+			'text_charset' => 'UTF-8',
+			'html_charset' => 'UTF-8'));
 		static::_renderBody($engine, $mime, $text, $page);
 		static::_renderAttachments($engine, $mime, $headers,
 				$attachments);
@@ -206,7 +208,7 @@ class Mail
 		$jpeg = 'image/jpeg;base64,';
 		$png = 'image/png;base64,';
 
-		$xml = new DOMDocument;
+		$xml = new DOMDocument('1.0', 'UTF-8');
 		if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET) !== FALSE)
 		{
 			//convert in-line images for compatibility
