@@ -243,8 +243,8 @@ class Mail
 			$data)
 	{
 		$cid = uniqid();
-		$img->setAttribute('src', 'cid:'.$cid);
-		$mime->addHTMLImage($data, 'image/jpeg', '', FALSE, $cid);
+		if($mime->addHTMLImage($data, 'image/jpeg', '', FALSE, $cid))
+			$img->setAttribute('src', 'cid:'.$cid);
 	}
 }
 
