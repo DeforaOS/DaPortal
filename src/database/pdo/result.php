@@ -33,7 +33,7 @@ class PDODatabaseResult extends DatabaseResult
 	//PDODatabaseResult::getAffectedCount
 	public function getAffectedCount()
 	{
-		return $this->count;
+		return $this->stmt->rowCount();
 	}
 
 

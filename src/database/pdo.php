@@ -313,6 +313,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	{
 		$this->stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$this->count = count($this->stmt);
+		$this->affected = $stmt->rowCount();
 	}
 
 
@@ -320,7 +321,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//PDODatabaseResultCached::getAffectedCount
 	public function getAffectedCount()
 	{
-		return $this->count;
+		return $this->affected;
 	}
 
 
@@ -337,6 +338,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//private
 	//properties
 	private $stmt;
+	private $affected;
 }
 
 ?>
