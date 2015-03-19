@@ -55,6 +55,18 @@ class PKIModule extends MultiContentModule
 
 
 	//accessors
+	//PKIModule::canSubmit
+	public function canSubmit($engine, $request = FALSE, $content = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		if(!$credentials->isAdmin())
+			return FALSE;
+		return parent::canSubmit($engine, $request, $content, $error);
+	}
+
+
 	//PKIModule::setContext
 	protected function setContext($engine = FALSE, $request = FALSE,
 			$content = FALSE)
