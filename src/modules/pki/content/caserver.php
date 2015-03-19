@@ -36,6 +36,14 @@ class CAServerPKIContent extends PKIContent
 
 
 	//useful
+	//CAServerPKIContent::loadFromName
+	static function loadFromName($engine, $module, $name, $parent = FALSE)
+	{
+		//FIXME really implement
+		return FALSE;
+	}
+
+
 	//CAServerPKIContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{

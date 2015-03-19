@@ -41,6 +41,8 @@ abstract class PKIContent extends ContentMulti
 	//PKIContent::canSubmit
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
+		$class = static::$class;
+
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
 		if($request !== FALSE)
@@ -57,6 +59,12 @@ abstract class PKIContent extends ContentMulti
 							$parent) === FALSE)
 			{
 				$error = _('Invalid parent');
+				return FALSE;
+			}
+			if($class::loadFromName($engine, $title, $parent)
+					!== FALSE)
+			{
+				$error = _('Duplicate name');
 				return FALSE;
 			}
 		}
@@ -124,6 +132,11 @@ abstract class PKIContent extends ContentMulti
 		//FIXME really implement
 		return parent::_formUpdate($engine, $request);
 	}
+
+
+	//abstract
+	abstract static function loadFromName($engine, $module, $name,
+			$parent = FALSE);
 }
 
 ?>

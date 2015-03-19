@@ -35,6 +35,14 @@ class CAPKIContent extends PKIContent
 
 
 	//useful
+	//CAPKIContent::loadFromName
+	static function loadFromName($engine, $module, $name, $parent = FALSE)
+	{
+		//FIXME really implement
+		return FALSE;
+	}
+
+
 	//CAPKIContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
