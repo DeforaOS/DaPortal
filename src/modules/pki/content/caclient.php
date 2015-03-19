@@ -35,10 +35,54 @@ class CAClientPKIContent extends PKIContent
 	}
 
 
+	//useful
+	//CAClientPKIContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		return parent::save($engine, $request, $error);
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = static::$caclient_query_insert;
+
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
+			return FALSE;
+		$error = _('Could not insert the CA client');
+		$args = array('caclient_id' => $this->getID(),
+			'parent' => $this->get('parent') ?: NULL,
+			'country' => $this->get('country'),
+			'state' => $this->get('state'),
+			'locality' => $this->get('locality'),
+			'organization' => $this->get('organization'),
+			'section' => $this->get('section'),
+			'cn' => $this->get('cn'),
+			'email' => $this->get('email'));
+		if($database->query($engine, $query, $args)
+				=== FALSE)
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//protected
 	static protected $class = 'CAClientPKIContent';
 	static protected $list_order = 'title ASC';
 	//queries
+	//IN:	caclient_id
+	//	parent
+	//	country
+	//	state
+	//	locality
+	//	organization
+	//	section
+	//	cn
+	//	email
+	static protected $caclient_query_insert = 'INSERT INTO daportal_caclient
+		(caclient_id, parent, country, state, locality, organization,
+		section, cn, email) VALUES (:caclient_id, :parent, :country,
+		:state, :locality, :organization, :section, :cn, :email)';
 	//IN:	module_id
 	//	user_id
 	//	content_id

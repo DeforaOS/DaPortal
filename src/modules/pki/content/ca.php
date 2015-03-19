@@ -34,11 +34,55 @@ class CAPKIContent extends PKIContent
 	}
 
 
+	//useful
+	//CAPKIContent::save
+	public function save($engine, $request = FALSE, &$error = FALSE)
+	{
+		return parent::save($engine, $request, $error);
+	}
+
+	protected function _saveInsert($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = static::$ca_query_insert;
+
+		if(parent::_saveInsert($engine, $request, $error) === FALSE)
+			return FALSE;
+		$error = _('Could not insert the CA');
+		$args = array('ca_id' => $this->getID(),
+			'parent' => $this->get('parent') ?: NULL,
+			'country' => $this->get('country'),
+			'state' => $this->get('state'),
+			'locality' => $this->get('locality'),
+			'organization' => $this->get('organization'),
+			'section' => $this->get('section'),
+			'cn' => $this->get('cn'),
+			'email' => $this->get('email'));
+		if($database->query($engine, $query, $args)
+				=== FALSE)
+			return FALSE;
+		return TRUE;
+	}
+
+
 	//protected
 	//properties
 	static protected $class = 'CAPKIContent';
 	static protected $list_order = 'title ASC';
 	//queries
+	//IN:	ca_id
+	//	parent
+	//	country
+	//	state
+	//	locality
+	//	organization
+	//	section
+	//	cn
+	//	email
+	static protected $ca_query_insert = 'INSERT INTO daportal_ca (
+		ca_id, parent, country, state, locality, organization, section,
+		cn, email) VALUES (:ca_id, :parent, :country, :state,
+		:locality, :organization, :section, :cn, :email)';
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
