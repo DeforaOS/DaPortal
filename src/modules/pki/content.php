@@ -63,8 +63,8 @@ abstract class PKIContent extends ContentMulti
 				$error = _('Invalid parent');
 				return FALSE;
 			}
-			if($class::loadFromName($engine, $title, $parent)
-					!== FALSE)
+			if($class::loadFromName($engine, $this->getModule(),
+					$title, $parent) !== FALSE)
 			{
 				$error = _('Duplicate name');
 				return FALSE;
@@ -136,9 +136,34 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
-	//abstract
-	abstract static function loadFromName($engine, $module, $name,
-			$parent = FALSE);
+	//PKIContent::loadFromName
+	static function loadFromName($engine, $module, $name, $parent = FALSE)
+	{
+		if(($res = static::_loadFromName($engine, $module, $name,
+				$parent)) === FALSE)
+			return FALSE;
+		return static::loadFromProperties($engine, $module, $res);
+	}
+
+	static protected function _loadFromName($engine, $module, $name,
+			$parent)
+	{
+		$database = $engine->getDatabase();
+		$query = ($parent !== FALSE)
+			? static::$query_load_by_title_parent
+			: static::$query_load_by_title_parent_null;
+		$args = array('module_id' => $module->getID(),
+			'title' => $name);
+
+		if($parent !== FALSE)
+			$args['parent'] = $parent->getID();
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| count($res) != 1)
+			return FALSE;
+		return $res->current();
+	}
+
+
 }
 
 ?>

@@ -36,14 +36,6 @@ class CAClientPKIContent extends PKIContent
 
 
 	//useful
-	//CAClientPKIContent::loadFromName
-	static function loadFromName($engine, $module, $name, $parent = FALSE)
-	{
-		//FIXME really implement
-		return FALSE;
-	}
-
-
 	//CAClientPKIContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -106,15 +98,25 @@ class CAClientPKIContent extends PKIContent
 		AND content_id=:content_id";
 	//IN:	module_id
 	//	title
-	static protected $query_load_by_title = 'SELECT content_id AS id,
+	//	parent
+	static protected $query_load_by_title_parent = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public, parent,
 		country, state, locality, organization, section, cn, email
 		FROM daportal_content_public, daportal_caclient
 		WHERE daportal_content_public.content_id
 		=daportal_caclient.caclient_id
-		AND module_id=:module_id
-		AND title=:title';
+		AND module_id=:module_id AND title=:title AND parent=:parent';
+	//IN:	module_id
+	//	title
+	static protected $query_load_by_title_parent_null = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public, parent,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_public, daportal_caclient
+		WHERE daportal_content_public.content_id
+		=daportal_caclient.caclient_id
+		AND module_id=:module_id AND title=:title AND parent IS NULL';
 }
 
 ?>
