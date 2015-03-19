@@ -57,6 +57,23 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::getRoot
+	protected function getRoot($engine)
+	{
+		global $config;
+		static $root = FALSE;
+
+		if($root !== FALSE)
+			return $root;
+		$module = $this->getModule();
+		$section = 'module::'.$module->getName(); //XXX
+		if(($root = $config->get($section, 'root')) === FALSE)
+			return $engine->log('LOG_ERR', 'The PKI root folder is'
+					.' not configured');
+		return $root;
+	}
+
+
 	//useful
 	//PKIContent::form
 	public function form($engine, $request = FALSE)

@@ -46,6 +46,14 @@ class CAPKIContent extends PKIContent
 		$database = $engine->getDatabase();
 		$query = static::$ca_query_insert;
 
+		//configuration
+		if(($root = $this->getRoot($engine)) === FALSE)
+		{
+			$error = _('Internal error');
+			return FALSE;
+		}
+
+		//database transaction
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not insert the CA');
