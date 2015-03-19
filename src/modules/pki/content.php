@@ -19,6 +19,9 @@
 //PKIContent
 abstract class PKIContent extends ContentMulti
 {
+	//public
+	//methods
+	//essential
 	//PKIContent::PKIContent
 	public function __construct($engine, $module, $properties = FALSE)
 	{
@@ -34,6 +37,27 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//accessors
+	//PKIContent::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		if($request !== FALSE)
+		{
+			if(($title = $request->getTitle()) === FALSE
+					|| strchr($title, '/') !== FALSE
+					|| $title == '..')
+			{
+				$error = _('Invalid name');
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+
+	//useful
 	//PKIContent::form
 	public function form($engine, $request = FALSE)
 	{
