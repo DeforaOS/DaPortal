@@ -468,6 +468,7 @@ CREATE TABLE daportal_ca (
 	section VARCHAR(255),
 	cn VARCHAR(255),
 	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (ca_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_ca (ca_id)
 );
@@ -482,6 +483,7 @@ CREATE TABLE daportal_caclient (
 	section VARCHAR(255),
 	cn VARCHAR(255),
 	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (caclient_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_ca (ca_id)
 );
@@ -496,6 +498,7 @@ CREATE TABLE daportal_caserver (
 	section VARCHAR(255),
 	cn VARCHAR(255),
 	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (caserver_id) REFERENCES daportal_content (content_id),
 	FOREIGN KEY (parent) REFERENCES daportal_ca (ca_id)
 );

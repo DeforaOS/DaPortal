@@ -339,7 +339,8 @@ CREATE TABLE daportal_ca (
 	organization VARCHAR(255),
 	section VARCHAR(255),
 	cn VARCHAR(255),
-	email VARCHAR(255)
+	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE daportal_caclient (
@@ -351,7 +352,8 @@ CREATE TABLE daportal_caclient (
 	organization VARCHAR(255),
 	section VARCHAR(255),
 	cn VARCHAR(255),
-	email VARCHAR(255)
+	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE daportal_caserver (
@@ -363,7 +365,8 @@ CREATE TABLE daportal_caserver (
 	organization VARCHAR(255),
 	section VARCHAR(255),
 	cn VARCHAR(255),
-	email VARCHAR(255)
+	email VARCHAR(255),
+	signed BOOLEAN DEFAULT FALSE
 );
 
 INSERT INTO daportal_module (name, enabled) VALUES ('pki', '1');
