@@ -251,6 +251,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/openssl.cnf \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/project.conf \
