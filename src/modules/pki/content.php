@@ -47,7 +47,7 @@ abstract class PKIContent extends ContentMulti
 			return FALSE;
 		if($request !== FALSE)
 		{
-			if(($title = $request->getTitle()) === FALSE
+			if(($title = $request->get('title')) === FALSE
 					|| strchr($title, '/') !== FALSE
 					|| $title == '..')
 			{
