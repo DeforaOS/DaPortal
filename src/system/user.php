@@ -187,8 +187,8 @@ class User
 		{
 			//the password is salted
 			$a = explode('$', $res['password']);
-			$cypher = $a[1];
-			switch($cypher)
+			$cipher = $a[1];
+			switch($cipher)
 			{
 				case '1':
 				case '2a':
@@ -199,7 +199,7 @@ class User
 					break;
 				default:
 					$error = $this->username
-						.': Unsupported cypher';
+						.': Unsupported cipher';
 					return $engine->log('LOG_ERR', $error);
 			}
 		}
