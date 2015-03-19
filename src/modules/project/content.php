@@ -459,7 +459,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::loadFromName
-	public function loadFromName($engine, $module, $name)
+	static public function loadFromName($engine, $module, $name)
 	{
 		$query = static::$query_load_by_title;
 		$args = array('module_id' => $module->getID(),
