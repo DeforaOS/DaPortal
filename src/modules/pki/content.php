@@ -52,6 +52,13 @@ abstract class PKIContent extends ContentMulti
 				$error = _('Invalid name');
 				return FALSE;
 			}
+			if(($parent = $request->get('parent')) !== FALSE
+					&& CAPKIContent::load($engine, $module,
+							$parent) === FALSE)
+			{
+				$error = _('Invalid parent');
+				return FALSE;
+			}
 		}
 		return TRUE;
 	}
