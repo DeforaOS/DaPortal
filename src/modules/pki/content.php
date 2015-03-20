@@ -74,39 +74,6 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
-	//PKIContent::getRoot
-	protected function getRoot($engine)
-	{
-		global $config;
-		static $root = FALSE;
-
-		if($root !== FALSE)
-			return $root;
-		$module = $this->getModule();
-		$section = 'module::'.$module->getName(); //XXX
-		if(($r = $config->get($section, 'root')) === FALSE)
-			return $engine->log('LOG_ERR', 'The PKI root folder is'
-					.' not configured');
-		//create directories as required
-		$dirs = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
-		foreach($dirs as $d)
-			if($this->_rootDirectory($engine, $r.'/'.$d) === FALSE)
-				return FALSE;
-		$root = $r;
-		return $root;
-	}
-
-	protected function _rootDirectory($engine, $directory)
-	{
-		if(is_dir($directory) && is_readable($directory))
-			return TRUE;
-		if(mkdir($directory, 0700, TRUE) !== FALSE)
-			return TRUE;
-		return $engine->log('LOG_ERR', $directory.': Could not'
-				.' create directory');
-	}
-
-
 	//useful
 	//PKIContent::form
 	public function form($engine, $request = FALSE)

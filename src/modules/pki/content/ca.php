@@ -34,7 +34,77 @@ class CAPKIContent extends PKIContent
 	}
 
 
+	//accessors
+	//CAPKIContent::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		if($request !== FALSE)
+		{
+			$title = $request->get('title');
+
+			//check for duplicates
+			if(($root = $this->getRoot($engine)) === FALSE)
+			{
+				$error = _('Internal error');
+				return FALSE;
+			}
+			if(file_exists($root))
+			{
+				$error = _('Duplicate CA');
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+
+	//CAPKIContent::getRoot
+	protected function getRoot($engine)
+	{
+		global $config;
+
+		if($this->root !== FALSE)
+			return $this->root;
+		$module = $this->getModule();
+		$section = 'module::'.$module->getName(); //XXX
+		if(($root = $config->get($section, 'root')) === FALSE)
+			return $engine->log('LOG_ERR', 'The PKI root folder is'
+					.' not configured');
+		$this->root = $root.'/'.$this->getTitle();
+		return $this->root;
+	}
+
+
 	//useful
+	//CAPKIContent::createRoot
+	protected function createRoot($engine)
+	{
+		if(($root = $this->getRoot($engine)) === FALSE)
+			return FALSE;
+		//create directories as required
+		$dirs = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
+		foreach($dirs as $d)
+		{
+			$directory = $root.'/'.$d;
+			if($this->_rootDirectory($engine, $directory) === FALSE)
+				return FALSE;
+		}
+		return TRUE;
+	}
+
+	protected function _rootDirectory($engine, $directory)
+	{
+		if(is_dir($directory) && is_readable($directory))
+			return TRUE;
+		if(mkdir($directory, 0700, TRUE) !== FALSE)
+			return TRUE;
+		return $engine->log('LOG_ERR', $directory.': Could not'
+				.' create directory');
+	}
+
+
 	//CAPKIContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
@@ -66,9 +136,68 @@ class CAPKIContent extends PKIContent
 			'section' => $this->get('section'),
 			'cn' => $this->get('cn'),
 			'email' => $this->get('email'));
-		if($database->query($engine, $query, $args)
-				=== FALSE)
+		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
+
+		//directories
+		if($this->createRoot($engine) === FALSE)
+			return FALSE;
+
+		//files
+		if($this->_insertIndex($engine) === FALSE
+				|| $this->_insertConfig($engine) === FALSE
+				|| $this->_insertSerial($engine) === FALSE)
+			return FALSE;
+
+		return TRUE;
+	}
+
+	protected function _insertConfig($engine)
+	{
+		$from = array("\\", "\"", "$");
+		$to = array("\\\\", "\\\"", "\\$");
+		$root = $this->getRoot($engine);
+		$filename = $root.'/openssl.cnf';
+		$module = $this->getModule()->getName();
+		$template = 'modules/'.$module.'/openssl.cnf.in';
+
+		if(($fp = fopen($filename, 'w')) === FALSE)
+			return FALSE;
+		ob_start();
+		$home = str_replace($from, $to, $root);
+		$title = str_replace($from, $to, $this->getTitle());
+		$res = include($template);
+		if($res !== FALSE)
+			$res = fwrite($fp, ob_get_contents());
+		ob_end_clean();
+		if(fclose($fp) === FALSE || $res === FALSE)
+		{
+			unlink($filename);
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	protected function _insertIndex($engine)
+	{
+		$root = $this->getRoot($engine);
+
+		return touch($root.'/index.txt');
+	}
+
+	protected function _insertSerial($engine)
+	{
+		$root = $this->getRoot($engine);
+		$filename = $root.'/serial';
+
+		if(($fp = fopen($filename, 'w')) === FALSE)
+			return FALSE;
+		$res = fwrite($fp, "01\n");
+		if(fclose($fp) === FALSE || $res === FALSE)
+		{
+			unlink($filename);
+			return FALSE;
+		}
 		return TRUE;
 	}
 
@@ -163,6 +292,11 @@ class CAPKIContent extends PKIContent
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id AND title=:title AND parent IS NULL';
+
+
+	//private
+	//properties
+	private $root = FALSE;
 }
 
 ?>
