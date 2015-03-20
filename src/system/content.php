@@ -990,6 +990,7 @@ class Content
 	protected $stock_open = 'open';
 	protected $stock_submit = 'new';
 	//strings
+	static protected $text_content = 'Content';
 	protected $text_content_by = 'Content by';
 	protected $text_link = 'Permalink';
 	protected $text_more_content = 'More content...';
