@@ -27,6 +27,7 @@ class CAClientPKIContent extends PKIContent
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
+		static::$text_content = _('CA client');
 		$this->text_content_by = _('CA client from');
 		$this->text_content_list_title = _('CA clients');
 		$this->text_more_content = _('More CA clients...');

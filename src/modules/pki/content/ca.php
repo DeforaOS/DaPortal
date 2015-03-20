@@ -27,6 +27,7 @@ class CAPKIContent extends PKIContent
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
+		static::$text_content = _('Certificate Authority');
 		$this->text_content_by = _('Certificate Authority from');
 		$this->text_content_list_title = _('Certificate Authorities');
 		$this->text_more_content = _('More Certificate Authorities...');
