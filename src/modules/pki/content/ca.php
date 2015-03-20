@@ -129,13 +129,13 @@ class CAPKIContent extends PKIContent
 		$error = _('Could not insert the CA');
 		$args = array('ca_id' => $this->getID(),
 			'parent' => $this->get('parent') ?: NULL,
-			'country' => $this->get('country'),
-			'state' => $this->get('state'),
-			'locality' => $this->get('locality'),
-			'organization' => $this->get('organization'),
-			'section' => $this->get('section'),
-			'cn' => $this->get('cn'),
-			'email' => $this->get('email'));
+			'country' => $this->get('country') ?: '',
+			'state' => $this->get('state') ?: '',
+			'locality' => $this->get('locality') ?: '',
+			'organization' => $this->get('organization') ?: '',
+			'section' => $this->get('section') ?: '',
+			'cn' => $this->get('cn') ?: '',
+			'email' => $this->get('email') ?: '');
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 
