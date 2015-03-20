@@ -245,6 +245,27 @@ class PKIModule extends MultiContentModule
 				'type' => $type))));
 		return $page;
 	}
+
+
+	//PKIModule::formSubmit
+	protected function formSubmit($engine, $request)
+	{
+		$parent = CAPKIContent::load($engine, $this, $request->getID(),
+				$request->getTitle());
+
+		if($parent !== FALSE)
+			$r = $parent->getRequest('submit', array(
+				'type' => $request->get('type')));
+		else
+			$r = $this->getRequest('submit', array(
+					'type' => $request->get('type')));
+		$form = new PageElement('form', array('request' => $r));
+		//content
+		$this->helperSubmitContent($engine, $request, $form);
+		//buttons
+		$this->helperSubmitButtons($engine, $request, $form);
+		return $form;
+	}
 }
 
 ?>
