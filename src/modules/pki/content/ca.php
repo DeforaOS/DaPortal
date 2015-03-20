@@ -113,6 +113,9 @@ class CAPKIContent extends PKIContent
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
+		$parent = ($this->get('parent') !== FALSE)
+			? static::load($engine, $this->getModule(),
+				$this->get('parent')) : FALSE;
 		$database = $engine->getDatabase();
 		$query = static::$ca_query_insert;
 
@@ -149,7 +152,40 @@ class CAPKIContent extends PKIContent
 				|| $this->_insertSerial($engine) === FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE);
 
+		//certificate
+		if($this->_insertCertificate($engine, $request, $parent)
+				=== FALSE)
+			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
+
 		return TRUE;
+	}
+
+	protected function _insertCertificate($engine, $request, $parent)
+	{
+		$root = $this->getRoot($engine);
+		$x509 = ($parent !== FALSE) ? '' : ' -x509';
+		$opensslcnf = $root.'/openssl.cnf';
+		$days = $request->get('days');
+		$key = $request->get('keysize');
+		$keyout = $root.'/private/cacert.key';
+		$out = ($parent !== FALSE) ? $root.'/cacert.csr'
+			: $root.'/cacert.crt';
+		$subject = $this->getSubject($request);
+
+		$days = is_numeric($days)
+			? ' -days '.escapeshellarg($days) : '';
+		$key = is_numeric($key)
+			? ' -newkey rsa:'.escapeshellarg($key) : '';
+		$cmd = 'openssl req -batch -nodes -new'.$x509.$days.$key
+			.' -config '.escapeshellarg($opensslcnf)
+			.' -keyout '.escapeshellarg($keyout)
+			.' -out '.escapeshellarg($out)
+			.' -subj '.escapeshellarg($subject)
+			.' 2>&1'; //XXX avoid garbage on the standard error
+		$res = -1;
+		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		exec($cmd, $output, $res);
+		return ($res == 0) ? TRUE : FALSE;
 	}
 
 	protected function _insertCleanup($engine, $directories = FALSE,
