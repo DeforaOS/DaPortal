@@ -64,7 +64,8 @@ class CAClientPKIContent extends PKIContent
 			'organization' => $request->get('organization') ?: '',
 			'section' => $request->get('section') ?: '',
 			'cn' => $request->get('cn') ?: '',
-			'email' => $request->get('email') ?: '');
+			'email' => $request->get('email') ?: '',
+			'signed' => FALSE);
 		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		return TRUE;
@@ -84,10 +85,12 @@ class CAClientPKIContent extends PKIContent
 	//	section
 	//	cn
 	//	email
+	//	signed
 	static protected $caclient_query_insert = 'INSERT INTO daportal_caclient
 		(caclient_id, parent, country, state, locality, organization,
-		section, cn, email) VALUES (:caclient_id, :parent, :country,
-		:state, :locality, :organization, :section, :cn, :email)';
+		section, cn, email, signed) VALUES (:caclient_id, :parent,
+		:country, :state, :locality, :organization, :section, :cn,
+		:email, :signed)';
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
@@ -139,7 +142,8 @@ class CAClientPKIContent extends PKIContent
 	static protected $query_load = "SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public, parent,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_enabled, daportal_caclient
 		WHERE daportal_content_enabled.content_id
 		=daportal_caclient.caclient_id
@@ -152,7 +156,8 @@ class CAClientPKIContent extends PKIContent
 	static protected $query_load_by_title_parent = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public, parent,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_public, daportal_caclient
 		WHERE daportal_content_public.content_id
 		=daportal_caclient.caclient_id
@@ -162,7 +167,8 @@ class CAClientPKIContent extends PKIContent
 	static protected $query_load_by_title_parent_null = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public, parent,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_public, daportal_caclient
 		WHERE daportal_content_public.content_id
 		=daportal_caclient.caclient_id

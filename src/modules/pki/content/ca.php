@@ -142,7 +142,8 @@ class CAPKIContent extends PKIContent
 			'organization' => $request->get('organization') ?: '',
 			'section' => $request->get('section') ?: '',
 			'cn' => $request->get('cn') ?: '',
-			'email' => $request->get('email') ?: '');
+			'email' => $request->get('email') ?: '',
+			'signed' => FALSE);
 		if($database->query($engine, $query, $args) === FALSE)
 			return $this->_insertCleanup($engine);
 
@@ -303,10 +304,11 @@ class CAPKIContent extends PKIContent
 	//	section
 	//	cn
 	//	email
+	//	signed
 	static protected $ca_query_insert = 'INSERT INTO daportal_ca (
 		ca_id, parent, country, state, locality, organization, section,
-		cn, email) VALUES (:ca_id, :parent, :country, :state,
-		:locality, :organization, :section, :cn, :email)';
+		cn, email, signed) VALUES (:ca_id, :parent, :country, :state,
+		:locality, :organization, :section, :cn, :email, :signed)';
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
@@ -354,7 +356,8 @@ class CAPKIContent extends PKIContent
 	static protected $query_load = "SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_enabled, daportal_ca
 		WHERE daportal_content_enabled.content_id=daportal_ca.ca_id
 		AND module_id=:module_id
@@ -366,7 +369,8 @@ class CAPKIContent extends PKIContent
 	static protected $query_load_by_title_parent = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id AND title=:title AND parent=:parent';
@@ -375,7 +379,8 @@ class CAPKIContent extends PKIContent
 	static protected $query_load_by_title_parent_null = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, cn, email,
+		signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id AND title=:title AND parent IS NULL';
