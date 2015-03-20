@@ -251,6 +251,19 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
+	protected function _saveUpdate($engine, $request, &$error)
+	{
+		$database = $engine->getDatabase();
+		$query = static::$ca_query_update;
+		$args = array('ca_id' => $this->getID(),
+			'signed' => $this->get('signed') ? TRUE : FALSE);
+
+		if(parent::_saveUpdate($engine, $request, $error) === FALSE)
+			return FALSE;
+		return ($database->query($engine, $query, $args) !== FALSE)
+			? TRUE : FALSE;
+	}
+
 
 	//CAPKIContent::sign
 	protected function sign($engine, $content, &$error = FALSE)
@@ -286,6 +299,8 @@ class CAPKIContent extends PKIContent
 			$error = _('Could not sign CA');
 			return FALSE;
 		}
+		$ca->set('signed', TRUE);
+		$ca->save($engine);
 		return TRUE;
 	}
 
@@ -309,6 +324,10 @@ class CAPKIContent extends PKIContent
 		ca_id, parent, country, state, locality, organization, section,
 		cn, email, signed) VALUES (:ca_id, :parent, :country, :state,
 		:locality, :organization, :section, :cn, :email, :signed)';
+	//IN:	ca_id
+	//	signed
+	static protected $ca_query_update = 'UPDATE daportal_ca
+		SET signed=:signed WHERE ca_id=:ca_id';
 	//IN:	module_id
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
