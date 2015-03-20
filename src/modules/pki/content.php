@@ -136,6 +136,14 @@ abstract class PKIContent extends ContentMulti
 
 	protected function _formSubmit($engine, $request)
 	{
+		$keysizes = array('' => 'Default', 1024 => 1024, 2048 => 2048,
+			4096 => 4096);
+		$days = array('' => 'Default', 365 => '1 year',
+			730 => '2 years', 1095 => '3 years',
+			1460 => '4 years', 2825 => '5 years',
+			2190 => '6 years', 2555 => '7 years',
+			2920 => '8 years', 3285 => '9 years',
+			3650 => '10 years');
 		$vbox = new PageElement('vbox');
 
 		$vbox->append('entry', array('name' => 'title',
@@ -162,6 +170,20 @@ abstract class PKIContent extends ContentMulti
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
 				'value' => $request->get('email')));
+		//key size
+		$keysize = $vbox->append('combobox', array('name' => 'keysize',
+				'text' => _('Key size: '),
+				'value' => $request->get('keysize')));
+		foreach($keysizes as $value => $text)
+			$keysize->append('label', array('text' => $text,
+					'value' => $value));
+		//expiration
+		$expiration = $vbox->append('combobox', array('name' => 'days',
+				'text' => _('Expiration: '),
+				'value' => $request->get('days')));
+		foreach($days as $value => $text)
+			$expiration->append('label', array('text' => $text,
+					'value' => $value));
 		return $vbox;
 	}
 
