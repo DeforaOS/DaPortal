@@ -118,6 +118,7 @@ abstract class PKIContent extends ContentMulti
 	//PKIContent::displayContent
 	public function displayContent($engine, $request)
 	{
+		$parent = $this->getParent($engine);
 		$columns = array('title' => '', 'value' => '');
 		$fields = array('country' => _('Country: '),
 			'state' => _('State: '), 'locality' => _('Locality: '),
@@ -125,8 +126,20 @@ abstract class PKIContent extends ContentMulti
 			'section' => _('Section: '), 'cn' => _('Common Name: '),
 			'email' => _('e-mail: '));
 
-		$view = new PageElement('treeview', array(
-			'columns' => $columns));
+		$vbox = new PageElement('vbox');
+		if($parent !== FALSE)
+		{
+			$expander = $vbox->append('expander', array(
+				'title' => _('Parent CA')));
+			$expander->append($parent->displayContent($engine,
+				FALSE));
+		}
+		if($this->get('signed') === FALSE)
+			$vbox->append('dialog', array('type' => 'warning',
+					'text' => _('This ')
+					.static::$text_content
+					._(' is not signed')));
+		$view = $vbox->append('treeview', array('columns' => $columns));
 		foreach($fields as $k => $v)
 		{
 			if(($value = $this->get($k)) === FALSE
@@ -135,7 +148,7 @@ abstract class PKIContent extends ContentMulti
 			$view->append('row', array('title' => $v,
 					'value' => $value));
 		}
-		return $view;
+		return $vbox;
 	}
 
 
