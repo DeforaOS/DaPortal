@@ -104,6 +104,30 @@ abstract class PKIContent extends ContentMulti
 
 
 	//useful
+	//PKIContent::displayContent
+	public function displayContent($engine, $request)
+	{
+		$columns = array('title' => '', 'value' => '');
+		$fields = array('country' => _('Country: '),
+			'state' => _('State: '), 'locality' => _('Locality: '),
+			'organization' => _('Organization: '),
+			'section' => _('Section: '), 'cn' => _('Common Name: '),
+			'email' => _('e-mail: '));
+
+		$view = new PageElement('treeview', array(
+			'columns' => $columns));
+		foreach($fields as $k => $v)
+		{
+			if(($value = $this->get($k)) === FALSE
+					|| strlen($value) == 0)
+				continue;
+			$view->append('row', array('title' => $v,
+					'value' => $value));
+		}
+		return $view;
+	}
+
+
 	//PKIContent::form
 	public function form($engine, $request = FALSE)
 	{
