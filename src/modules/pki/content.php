@@ -82,7 +82,16 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
-	//getSubject
+	//PKIContent::getParent
+	public function getParent($engine)
+	{
+		if(($parent = $this->get('parent')) === FALSE)
+			return FALSE;
+		return CAPKIContent::load($engine, $this->getModule(), $parent);
+	}
+
+
+	//PKIContent::getSubject
 	public function getSubject($request = FALSE)
 	{
 		$ret = '';
