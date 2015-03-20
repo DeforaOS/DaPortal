@@ -84,6 +84,51 @@ class CAServerPKIContent extends PKIContent
 		section, cn, email) VALUES (:caserver_id, :parent, :country,
 		:state, :locality, :organization, :section, :cn, :email)';
 	//IN:	module_id
+	static protected $query_list = 'SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_public, daportal_caserver
+		WHERE daportal_content_public.content_id
+		=daportal_caserver.caserver_id
+		AND module_id=:module_id';
+	//IN:	module_id
+	//	group_id
+	static protected $query_list_group = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_public, daportal_caserver
+		WHERE daportal_content_public.content_id
+		=daportal_caserver.caserver_id
+		AND module_id=:module_id
+		AND daportal_content_public.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_content_public.group_id=:group_id)';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
+		module_id, module, user_id, username, group_id, groupname,
+		title, content, enabled, public,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_public, daportal_caserver
+		WHERE daportal_content_public.content_id
+		=daportal_caserver.caserver_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
+	//	user_id
+	static protected $query_list_user_private = 'SELECT content_id AS id,
+		timestamp, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public,
+		country, state, locality, organization, section, cn, email
+		FROM daportal_content_enabled, daportal_caserver
+		WHERE daportal_content_enabled.content_id
+		=daportal_caserver.caserver_id
+		AND module_id=:module_id
+		AND user_id=:user_id';
+	//IN:	module_id
 	//	user_id
 	//	content_id
 	static protected $query_load = "SELECT content_id AS id, timestamp,
