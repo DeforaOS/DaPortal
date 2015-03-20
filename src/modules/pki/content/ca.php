@@ -156,6 +156,8 @@ class CAPKIContent extends PKIContent
 		if($this->_insertCertificate($engine, $request, $parent)
 				=== FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
+		if($parent !== FALSE && $parent->sign($engine, $this) === FALSE)
+			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
 
 		return TRUE;
 	}
@@ -239,6 +241,44 @@ class CAPKIContent extends PKIContent
 		if(fclose($fp) === FALSE || $res === FALSE)
 		{
 			unlink($filename);
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//CAPKIContent::sign
+	protected function sign($engine, $content, &$error = FALSE)
+	{
+		if($content instanceof CAPKIContent)
+			return $this->_signCA($engine, $content);
+		$error = _('Unsupported operation');
+		return FALSE;
+	}
+
+	private function _signCA($engine, $ca, &$error)
+	{
+		$root = $this->getRoot($engine);
+		$opensslcnf = $root.'/openssl.cnf';
+		$caroot = $ca->getRoot($engine);
+
+		if($root === FALSE || $caroot === FALSE)
+		{
+			$error = _('Internal error');
+			return FALSE;
+		}
+		$cmd = 'openssl ca -batch'
+			.' -config '.escapeshellarg($opensslcnf)
+			.' -extensions v3_ca'
+			.' -policy policy_anything'
+			.' -out '.escapeshellarg($caroot.'/cacert.crt')
+			.' -infiles '.escapeshellarg($caroot.'/cacert.csr');
+		$res = -1;
+		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		exec($cmd, $output, $res);
+		if($res != 0)
+		{
+			$error = _('Could not sign CA');
 			return FALSE;
 		}
 		return TRUE;
