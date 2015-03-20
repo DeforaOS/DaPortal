@@ -137,19 +137,26 @@ class CAPKIContent extends PKIContent
 			'cn' => $this->get('cn') ?: '',
 			'email' => $this->get('email') ?: '');
 		if($database->query($engine, $query, $args) === FALSE)
-			return FALSE;
+			return $this->_insertCleanup($engine);
 
 		//directories
 		if($this->createRoot($engine) === FALSE)
-			return FALSE;
+			return $this->_insertCleanup($engine, TRUE);
 
 		//files
 		if($this->_insertIndex($engine) === FALSE
 				|| $this->_insertConfig($engine) === FALSE
 				|| $this->_insertSerial($engine) === FALSE)
-			return FALSE;
+			return $this->_insertCleanup($engine, TRUE, TRUE);
 
 		return TRUE;
+	}
+
+	protected function _insertCleanup($engine, $directories = FALSE,
+			$files = FALSE, $certificates = FALSE)
+	{
+		//FIXME really implement
+		return FALSE;
 	}
 
 	protected function _insertConfig($engine)
