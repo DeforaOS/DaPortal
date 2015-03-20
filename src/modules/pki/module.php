@@ -229,7 +229,7 @@ class PKIModule extends MultiContentModule
 		$page->append('title', array('stock' => $this->getName(),
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		if(($bugs = CAPKIContent::listAll($engine, $this,
+		if(($bugs = CAServerPKIContent::listAll($engine, $this,
 				'timestamp', $this->content_headline_count))
 				=== FALSE)
 		{
