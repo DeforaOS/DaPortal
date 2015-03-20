@@ -44,23 +44,28 @@ class CAClientPKIContent extends PKIContent
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
+		$parent = ($request->getID() !== FALSE)
+			? CAPKIContent::load($engine, $this->getModule(),
+				$request->getID(), $request->getTitle())
+				: FALSE;
 		$database = $engine->getDatabase();
 		$query = static::$caclient_query_insert;
 
+		//database transaction
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not insert the CA client');
 		$args = array('caclient_id' => $this->getID(),
-			'parent' => $this->get('parent') ?: NULL,
-			'country' => $this->get('country'),
-			'state' => $this->get('state'),
-			'locality' => $this->get('locality'),
-			'organization' => $this->get('organization'),
-			'section' => $this->get('section'),
-			'cn' => $this->get('cn'),
-			'email' => $this->get('email'));
-		if($database->query($engine, $query, $args)
-				=== FALSE)
+			'parent' => ($parent !== FALSE) ? $parent->getID()
+				: NULL,
+			'country' => $request->get('country') ?: '',
+			'state' => $request->get('state') ?: '',
+			'locality' => $request->get('locality') ?: '',
+			'organization' => $request->get('organization') ?: '',
+			'section' => $request->get('section') ?: '',
+			'cn' => $request->get('cn') ?: '',
+			'email' => $request->get('email') ?: '');
+		if($database->query($engine, $query, $args) === FALSE)
 			return FALSE;
 		return TRUE;
 	}
