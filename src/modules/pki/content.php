@@ -50,10 +50,16 @@ abstract class PKIContent extends ContentMulti
 		if($request !== FALSE)
 		{
 			if(($title = $request->get('title')) === FALSE
+					|| strlen($title) == 0
 					|| strchr($title, '/') !== FALSE
 					|| $title == '..')
 			{
 				$error = _('Invalid name');
+				return FALSE;
+			}
+			if($this->getSubject($request) === FALSE)
+			{
+				$error = _('Invalid subject');
 				return FALSE;
 			}
 			if(($parent = $request->get('parent')) !== FALSE
@@ -71,6 +77,29 @@ abstract class PKIContent extends ContentMulti
 			}
 		}
 		return TRUE;
+	}
+
+
+	//getSubject
+	public function getSubject($request = FALSE)
+	{
+		$ret = '';
+		$fields = array('country' => 'C', 'state' => 'ST',
+			'locality' => 'L', 'organization' => 'O',
+			'section' => 'OU', 'cn' => 'CN',
+			'email' => 'emailAddress');
+		$s = ($request !== FALSE) ? $request : $this;
+
+		foreach($fields as $field => $key)
+			if(($value = $s->get($field)) !== FALSE
+					&& strlen($value) > 0)
+			{
+				if(strchr($value, '/') !== FALSE)
+					//XXX escape slashes instead?
+					return FALSE;
+				$ret.='/'.$key.'='.$value;
+			}
+		return (strlen($ret) > 0) ? $ret : FALSE;
 	}
 
 
