@@ -253,7 +253,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/pki/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/module.php \
-		$(PACKAGE)-$(VERSION)/src/modules/pki/openssl.cnf \
+		$(PACKAGE)-$(VERSION)/src/modules/pki/openssl.cnf.in \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content/ca.php \

@@ -28,13 +28,13 @@ install:
 	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/content.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/pki
 	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/module.php
-	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal
-	$(INSTALL) -m 0644 openssl.cnf $(DESTDIR)$(PREFIX)/share/doc/DaPortal/openssl.cnf
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/pki
+	$(INSTALL) -m 0644 openssl.cnf.in $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/openssl.cnf.in
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/content.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/module.php
-	$(RM) -- $(DESTDIR)$(PREFIX)/share/doc/DaPortal/openssl.cnf
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/openssl.cnf.in
 
 .PHONY: all subdirs clean distclean install uninstall
