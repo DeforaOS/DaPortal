@@ -28,7 +28,8 @@ class ContentMulti extends Content
 		if($parameters === FALSE)
 			$parameters = array();
 		//XXX make this static
-		$parameters['type'] = $this->type;
+		if(!isset($parameters['type']) || $parameters['type'] === FALSE)
+			$parameters['type'] = $this->type;
 		return parent::getRequest($action, $parameters);
 	}
 
