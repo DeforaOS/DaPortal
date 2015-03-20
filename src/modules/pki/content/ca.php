@@ -107,6 +107,63 @@ class CAPKIContent extends PKIContent
 	}
 
 
+	//CAPKIContent::displayToolbar
+	public function displayToolbar($engine, $request = FALSE)
+	{
+		//XXX copied from Content
+		$credentials = $engine->getCredentials();
+		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
+
+		$toolbar = new PageElement('toolbar');
+		if($credentials->isAdmin($engine))
+		{
+			$r = $this->getModule()->getRequest('admin');
+			$toolbar->append('button', array('request' => $r,
+					'stock' => 'admin',
+					'text' => _('Administration')));
+		}
+		if($action != 'submit' && $this->getModule()->canSubmit($engine,
+				FALSE, $this))
+		{
+			$types = array('ca' => $this->text_submit_content,
+				'caserver' => _('New CA server'),
+				'caclient' => _('New CA client'));
+			foreach($types as $type => $text)
+			{
+				$r = $this->getRequest('submit',
+						array('type' => $type));
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => $this->stock_submit,
+						'text' => $text));
+			}
+		}
+		if($this->getID() !== FALSE)
+		{
+			if($action != 'publish' && !$this->isPublic()
+					&& $this->canPublish($engine, FALSE,
+						$this))
+			{
+				$r = $this->getRequest('publish');
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'publish',
+						'text' => $this->text_publish));
+			}
+			if($action != 'update' && $this->canUpdate($engine,
+					FALSE, $this))
+			{
+				$r = $this->getRequest('update');
+				$toolbar->append('button', array(
+						'request' => $r,
+						'stock' => 'update',
+						'text' => $this->text_update));
+			}
+		}
+		return $toolbar;
+	}
+
+
 	//CAPKIContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
