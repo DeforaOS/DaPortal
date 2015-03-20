@@ -31,6 +31,7 @@ class CAPKIContent extends PKIContent
 		$this->text_content_list_title = _('Certificate Authorities');
 		$this->text_more_content = _('More Certificate Authorities...');
 		$this->text_submit = _('New Certificate Authority...');
+		$this->text_submit_content = _('New Certificate Authority');
 	}
 
 
