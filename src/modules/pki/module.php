@@ -116,9 +116,6 @@ class PKIModule extends MultiContentModule
 
 
 	//calls
-	//FIXME implement
-
-
 	//PKIModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
