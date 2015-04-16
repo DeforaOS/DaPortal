@@ -118,7 +118,7 @@ class CLIEngine extends Engine
 	//CLIEngine::attach
 	public function attach()
 	{
-		Locale::init($this);
+		DaPortal\Locale::init($this);
 	}
 
 

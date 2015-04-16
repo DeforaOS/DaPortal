@@ -19,6 +19,9 @@
 //autoload
 function autoload($class, $filename = FALSE)
 {
+	//strip out our own namespace
+	if(strncmp($class, 'DaPortal\\', 9) == 0)
+		$class = substr($class, 9);
 	if($filename !== FALSE)
 		return _autoload_filename($class, $filename);
 	if(strchr($class, '/') !== FALSE)

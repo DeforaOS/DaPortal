@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Locale
 class Locale
 {

@@ -50,7 +50,7 @@ class HTTPEngine extends Engine
 		$request = $this->getRequest();
 		$url = $this->getURL($request);
 
-		Locale::init($this);
+		DaPortal\Locale::init($this);
 		if($this->getDebug())
 			$this->log('LOG_DEBUG', 'URL is '.$url);
 		if(isset($_SERVER['SCRIPT_NAME'])
