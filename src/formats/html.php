@@ -340,6 +340,8 @@ class HTMLFormat extends FormatElements
 		$id = $e->get('id');
 		$text = $e->get('text');
 		$tooltip = $e->get('tooltip');
+		$cancel = 'if(history.length > 1) { history.go(-1);'
+			.' return false; }';
 
 		if(($r = $e->get('request')) !== FALSE)
 			$url = $this->engine->getURL($r, FALSE);
@@ -370,6 +372,10 @@ class HTMLFormat extends FormatElements
 				$this->tag($tag, $class, $id, $args);
 				break;
 			case 'button':
+			case FALSE:
+				if($this->javascript && $e->get('target')
+						== '_cancel')
+					$args['onclick'] = $cancel;
 			default:
 				$type = 'button';
 				if($s === FALSE && $c === FALSE)
