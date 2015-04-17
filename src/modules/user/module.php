@@ -213,6 +213,7 @@ class UserModule extends Module
 		$vbox = $form->append('vbox');
 		$vbox->append('label', array('text' => $message));
 		$form->append('button', array('stock' => 'cancel',
+				'target' => '_cancel',
 				'text' => _('Cancel'),
 				'request' => $this->getRequest('profile')));
 		$form->append('button', array('stock' => 'close',
@@ -241,6 +242,7 @@ class UserModule extends Module
 		if($cancel)
 			$form->append('button', array('text' => _('Cancel'),
 						'stock' => 'cancel',
+						'target' => '_cancel',
 						'request' => $r));
 		$button = $form->append('button', array('type' => 'submit',
 					'stock' => 'login',
@@ -260,6 +262,7 @@ class UserModule extends Module
 				'name' => 'email', 'value' => $email));
 		$form->append('button', array('stock' => 'cancel',
 				'text' => _('Cancel'),
+				'target' => '_cancel',
 				'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'register',
 				'type' => 'submit', 'text' => _('Register')));
@@ -278,6 +281,7 @@ class UserModule extends Module
 				'name' => 'email', 'value' => $email));
 		$form->append('button', array('stock' => 'cancel',
 				'text' => _('Cancel'),
+				'target' => '_cancel',
 				'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'reset',
 				'type' => 'submit', 'text' => _('Reset')));
@@ -316,7 +320,9 @@ class UserModule extends Module
 		//buttons
 		$r = $this->getRequest('admin');
 		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel',
+				'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'stock' => 'new', 'name' => 'action',
 				'value' => 'submit', 'text' => _('Create')));
@@ -374,7 +380,8 @@ class UserModule extends Module
 					$request->getID(), $request->getID()
 					? $user->getUsername() : FALSE);
 		$form->append('button', array('stock' => 'cancel',
-				'request' => $r, 'text' => _('Cancel')));
+				'request' => $r, 'target' => '_cancel',
+				'text' => _('Cancel')));
 		$form->append('button', array('stock' => 'update',
 				'type' => 'submit', 'text' => _('Update')));
 		return $page;
@@ -1169,6 +1176,7 @@ class UserModule extends Module
 			$r = $this->getRequest();
 			$form->append('button', array('text' => _('Cancel'),
 						'stock' => 'cancel',
+						'target' => '_cancel',
 						'request' => $r));
 			$form->append('button', array('text' => _('Logout'),
 						'stock' => 'logout',
