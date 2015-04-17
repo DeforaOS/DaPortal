@@ -852,7 +852,8 @@ abstract class ContentModule extends Module
 		//buttons
 		$r = $content->getRequest();
 		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'name' => 'action', 'value' => 'publish',
 				'text' => $this->text_content_publish));
@@ -1424,7 +1425,8 @@ abstract class ContentModule extends Module
 
 		$hbox = $page->append('hbox');
 		$hbox->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		if($this->canPreview($engine, $request))
 			$hbox->append('button', array('type' => 'submit',
 					'stock' => 'preview',
@@ -1501,7 +1503,8 @@ abstract class ContentModule extends Module
 		$r = new Request($this->name, FALSE, $request->getID(),
 				$content->getTitle());
 		$hbox->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$hbox->append('button', array('type' => 'reset',
 				'stock' => 'reset', 'text' => _('Reset')));
 		if($this->canPreview($engine, $request))
