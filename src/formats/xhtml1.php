@@ -56,6 +56,15 @@ class XHTML1Format extends HTMLFormat
 
 
 	//escaping
+	//XHTML1Format::escape
+	protected function escape($text)
+	{
+		return htmlspecialchars($text,
+				ENT_COMPAT | ENT_XHTML | ENT_NOQUOTES,
+				$this->encoding);
+	}
+
+
 	//XHTML1Format::escapeAttribute
 	protected function escapeAttribute($text)
 	{
