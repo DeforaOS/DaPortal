@@ -731,7 +731,8 @@ class ProjectModule extends MultiContentModule
 		$r = $bug->getRequest();
 		$box = $vbox->append('buttonbox');
 		$box->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$box->append('button', array('type' => 'submit',
 				'stock' => 'preview', 'name' => 'action',
 				'value' => 'preview', 'text' => _('Preview')));
@@ -754,7 +755,8 @@ class ProjectModule extends MultiContentModule
 		$r = new Request($this->name, 'download', $project->getID(),
 			$project->getTitle());
 		$form->append('button', array('stock' => 'cancel',
-				'request' => $r, 'text' => _('Cancel')));
+				'request' => $r,
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'text' => _('Submit'),
 				'name' => 'submit', 'value' => 'submit'));
