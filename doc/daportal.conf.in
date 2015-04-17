@@ -98,7 +98,9 @@ regenerate=1
 
 [engine::httpfriendly]
 #debug=1
-#kicker=
+#kicker=daportal
+#or without multiviews matching:
+#kicker=daportal.php
 #lowercase=0
 
 [format]
