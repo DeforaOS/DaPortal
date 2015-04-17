@@ -98,7 +98,8 @@ class GroupModule extends Module
 		$r = new Request($this->name, 'admin', FALSE, FALSE,
 			array('type' => 'group'));
 		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'stock' => 'new', 'name' => 'action',
 				'value' => '_submit', 'text' => _('Create')));
@@ -128,7 +129,8 @@ class GroupModule extends Module
 		//buttons
 		$r = new Request($this->name, 'admin');
 		$form->append('button', array('stock' => 'cancel',
-				'request' => $r, 'text' => _('Cancel')));
+				'request' => $r,
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'stock' => 'update', 'name' => 'action',
 				'value' => '_submit', 'text' => _('Update')));
