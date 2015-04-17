@@ -97,15 +97,13 @@ class Mime
 	//Mime::init
 	static private function init($engine)
 	{
-		$ret = TRUE;
-
 		if(!defined(FNM_CASEFOLD))
 			define(FNM_CASEFOLD, 0);
 		if(Mime::$types === FALSE)
-			$ret = Mime::_init_types($engine);
+			Mime::_init_types($engine);
 		if(Mime::$iconpath === FALSE)
 			Mime::_init_iconpath($engine);
-		return $ret;
+		return TRUE;
 	}
 
 	static private function _init_iconpath($engine)
@@ -125,6 +123,7 @@ class Mime
 				Mime::$default = 'mimetypes/gtk-file.png';
 				break;
 		}
+		return TRUE;
 	}
 
 	static private function _init_types($engine)
