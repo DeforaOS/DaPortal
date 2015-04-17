@@ -1,4 +1,7 @@
 SUBDIRS	= css fonts icons js themes
+MKDIR	= mkdir -m 0755 -p
+INSTALL	= install
+RM	= rm -f
 TARGETS	= $(OBJDIR)index.php
 OBJDIR	=
 PREFIX	= /usr/local
@@ -35,9 +38,12 @@ distclean:
 install: $(TARGETS)
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -i -- "$(OBJDIR)index.php"
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data
+	$(INSTALL) -m 0644 daportal.php $(DESTDIR)$(PREFIX)/daportal/data/daportal.php
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -u -- "index.php"
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/daportal.php
 
 .PHONY: all subdirs clean distclean install uninstall
