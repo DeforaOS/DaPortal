@@ -299,7 +299,8 @@ class BrowserModule extends Module
 		$form->append('filechooser', array('name' => 'files[]'));
 		$r = new Request($this->name, FALSE, FALSE, ltrim($path, '/'));
 		$form->append('button', array('request' => $r,
-				'stock' => 'cancel', 'text' => _('Cancel')));
+				'stock' => 'cancel',
+				'target' => '_cancel', 'text' => _('Cancel')));
 		$form->append('button', array('type' => 'submit',
 				'name' => 'action', 'value' => '_upload',
 				'text' => _('Upload')));
