@@ -36,7 +36,7 @@ function test($engine, $request, $internal = FALSE)
 	{
 		if($internal && $action == 'actions' && !is_array($res))
 			return FALSE;
-		if($res instanceof PageElement)
+		if($res instanceof PageResponse)
 			$engine->render($res);
 	}
 	return TRUE;
