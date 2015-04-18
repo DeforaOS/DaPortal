@@ -132,15 +132,15 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('html');
 		$this->renderTabs();
 		$this->tagOpen('head');
+		if($this->encoding !== FALSE)
+			$this->renderMeta('Content-Type', 'text/html'
+					.'; charset='.$this->encoding);
 		$this->_renderTitle($page);
 		$this->_renderBase($page);
 		$this->_renderTheme($page);
 		$this->_renderIcontheme($page);
 		$this->_renderFavicon($page);
 		$this->_renderJavascript($page);
-		if($this->encoding !== FALSE)
-			$this->renderMeta('Content-Type', 'text/html'
-					.'; charset='.$this->encoding);
 		if(($location = $page->get('location')) !== FALSE)
 			$this->renderMeta('Location', $location);
 		if(($refresh = $page->get('refresh')) !== FALSE
