@@ -301,11 +301,11 @@ class FPDFFormat extends FormatElements
 			foreach($columns as $d => $e)
 			{
 				$f = $c->getProperty($d);
-				if(is_string($f) || is_integer($f))
+				if($f instanceof PageElement)
+					$this->renderElement($f);
+				else if(is_scalar($f))
 					$this->pdf->Cell($width, $height, $f,
 							1);
-				else
-					$this->renderElement($f);
 			}
 			$this->pdf->Ln();
 		}
