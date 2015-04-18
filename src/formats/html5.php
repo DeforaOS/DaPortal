@@ -65,6 +65,14 @@ class HTML5Format extends HTMLFormat
 
 
 	//rendering
+	//HTML5Format::renderMetaCharset
+	protected function renderMetaCharset($charset)
+	{
+		$this->renderTabs();
+		$this->tag('meta', FALSE, FALSE, array('charset' => $charset));
+	}
+
+
 	//HTML5Format::renderProgress
 	protected function renderProgress($e)
 	{
