@@ -133,8 +133,7 @@ class HTMLFormat extends FormatElements
 		$this->renderTabs();
 		$this->tagOpen('head');
 		if($this->encoding !== FALSE)
-			$this->renderMeta('Content-Type', 'text/html'
-					.'; charset='.$this->encoding);
+			$this->renderMetaCharset($this->encoding);
 		$this->_renderTitle($page);
 		$this->_renderBase($page);
 		$this->_renderTheme($page);
@@ -931,6 +930,13 @@ class HTMLFormat extends FormatElements
 		$this->renderTabs();
 		$this->tag('meta', FALSE, FALSE, array('http-equiv' => $header,
 					'content' => $value));
+	}
+
+
+	protected function renderMetaCharset($charset)
+	{
+		$this->renderMeta('Content-Type', 'text/html; charset='
+				.$charset);
 	}
 
 
