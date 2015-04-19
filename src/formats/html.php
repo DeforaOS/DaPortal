@@ -192,18 +192,13 @@ class HTMLFormat extends FormatElements
 		//FIXME emit a (debugging) warning if the theme is not readable?
 		$this->renderTabs();
 		$filename = "icons/$icontheme.css";
-		if($standalone && ($css = @file_get_contents(
-				'../data/'.$filename)) !== FALSE)
-		{
-			$this->tagOpen('style', FALSE, FALSE, array(
-					'type' => 'text/css'));
-			print($this->escapeComment($css.'//'));
-			$this->tagClose('style');
-		}
-		else
-			$this->tag('style', FALSE, FALSE, array(
-						'type' => 'text/css'),
-					"@import url('$filename');");
+		if(!$standalone || ($css = @file_get_contents(
+				'../data/'.$filename)) === FALSE)
+			$css = " @import url('$filename'); ";
+		$this->tagOpen('style', FALSE, FALSE, array(
+				'type' => 'text/css'));
+		print($this->escapeComment($css.'//'));
+		$this->tagClose('style');
 	}
 
 	private function _renderJavascript($page)
