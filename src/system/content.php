@@ -489,13 +489,16 @@ class Content
 				'alternate' => static::$list_alternate));
 
 		if($content === FALSE)
-			$content = array();
+			$content = new ArrayIterator();
+		else if(is_array($content))
+			$content = new ArrayIterator($content);
 		if($limit === FALSE && ($limit = static::$list_limit) === FALSE)
-			$limit = count($content);
-		for($i = $offset; $i < $offset + $limit && isset($content[$i]);
-			$i++)
+			$limit = $content->count();
+		for($i = 0, $content->seek($offset);
+			$i < $limit && $content->valid();
+			$i++, $content->next())
 		{
-			$c = $content[$i];
+			$c = $content->current();
 			$view->append($c->displayRow($engine, $request));
 		}
 		return $view;
