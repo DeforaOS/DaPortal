@@ -657,20 +657,8 @@ class User
 	}
 
 
-	//private
+	//protected
 	//properties
-	private $user_id = 0;
-	private $username = 'username';
-	private $group_id = 0;
-	private $groupname = 'nogroup';
-	private $enabled = FALSE;
-	private $locked = TRUE;
-	private $admin = FALSE;
-	private $email = FALSE;
-	private $fullname = FALSE;
-
-	static private $timestamp_format = '%Y-%m-%d %H:%M:%S';
-
 	//queries
 	//IN:	username
 	static protected $query_authenticate = "SELECT user_id, username,
@@ -778,6 +766,21 @@ class User
 	static protected $query_unlock = "UPDATE daportal_user
 		SET password=substr(password, 2)
 		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
+
+
+	//private
+	//properties
+	private $user_id = 0;
+	private $username = 'username';
+	private $group_id = 0;
+	private $groupname = 'nogroup';
+	private $enabled = FALSE;
+	private $locked = TRUE;
+	private $admin = FALSE;
+	private $email = FALSE;
+	private $fullname = FALSE;
+
+	static private $timestamp_format = '%Y-%m-%d %H:%M:%S';
 }
 
 ?>
