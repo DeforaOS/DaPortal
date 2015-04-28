@@ -537,7 +537,12 @@ class User
 		$text .= $engine->getURL($r)."\n";
 		$text .= _("Please note that this link will expire in 24 hours.\n");
 		$content = new PageElement('label', array('text' => $text));
-		Mail::send($engine, FALSE, $email, $subject, $content);
+		if(Mail::send($engine, FALSE, $email, $subject, $content)
+				=== FALSE)
+		{
+			$error = _('Could not send the confirmation e-mail');
+			return FALSE;
+		}
 		return TRUE;
 	}
 
