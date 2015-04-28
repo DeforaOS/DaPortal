@@ -498,15 +498,8 @@ class User
 	{
 		$db = $engine->getDatabase();
 
-		//delete password reset requests older than one day
-		$query = static::$query_reset_cleanup;
-		$timestamp = strftime(static::$timestamp_format, time() - 86400);
-		$args = array('timestamp' => $timestamp);
-		if($db->query($engine, $query, $args) === FALSE)
-		{
-			$error = _('Could not reset the password');
-			return FALSE;
-		}
+		//we can ignore errors
+		static::resetCleanup($engine);
 		//verify the username and e-mail address
 		$query = static::$query_reset_validate;
 		$args = array('username' => $username, 'email' => $email);
@@ -557,10 +550,7 @@ class User
 		if($db->transactionBegin($engine) === FALSE)
 			return FALSE;
 	       	//delete password reset requests older than one day
-		$query = static::$query_reset_cleanup;
-		$timestamp = strftime(static::$timestamp_format, time() - 86400);
-		$args = array('timestamp' => $timestamp);
-		if($db->query($engine, $query, $args) === FALSE)
+		if(static::resetCleanup($engine) === FALSE)
 		{
 			$db->transactionRollback($engine);
 			return FALSE;
@@ -766,6 +756,24 @@ class User
 	static protected $query_unlock = "UPDATE daportal_user
 		SET password=substr(password, 2)
 		WHERE user_id=:user_id AND substr(password, 1, 1) = '!'";
+
+
+	//methods
+	//useful
+	//User::resetCleanup
+	static protected function resetCleanup($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_reset_cleanup;
+		$timestamp = strftime(static::$timestamp_format, time() - 86400);
+		$args = array('timestamp' => $timestamp);
+		$error = 'Could not clean the password reset database up';
+
+		//delete password reset requests older than one day
+		if($db->query($engine, $query, $args) === FALSE)
+			return $engine->log('LOG_ERR', $error);
+		return TRUE;
+	}
 
 
 	//private
