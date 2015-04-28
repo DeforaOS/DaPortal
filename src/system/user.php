@@ -498,6 +498,15 @@ class User
 	{
 		$db = $engine->getDatabase();
 
+		//delete password reset requests older than one day
+		$query = static::$query_reset_cleanup;
+		$timestamp = strftime(static::$timestamp_format, time() - 86400);
+		$args = array('timestamp' => $timestamp);
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = _('Could not reset the password');
+			return FALSE;
+		}
 		//verify the username and e-mail address
 		$query = static::$query_reset_validate;
 		$args = array('username' => $username, 'email' => $email);
