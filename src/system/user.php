@@ -497,7 +497,6 @@ class User
 			&$error = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$error = '';
 
 		//verify the username and e-mail address
 		$query = static::$query_reset_validate;
