@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PKIContent
 abstract class PKIContent extends ContentMulti
 {

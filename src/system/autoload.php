@@ -54,9 +54,6 @@ function _autoload_filename($class, $filename = FALSE)
 	//validate the class name
 	if(strpos($class, '/') !== FALSE)
 		return FALSE;
-	//caching has precedence
-	if(isset($classes[$class]))
-		return $classes[$class];
 	if($filename !== FALSE)
 	{
 		$classes[$class] = $filename;

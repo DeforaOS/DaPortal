@@ -16,6 +16,9 @@
 
 
 
+namespace 'DaPortal';
+
+
 //CAServerPKIContent
 class CAServerPKIContent extends PKIContent
 {
@@ -97,7 +100,7 @@ class CAServerPKIContent extends PKIContent
 
 
 	//protected
-	static protected $class = 'CAServerPKIContent';
+	static protected $class = 'DaPortal\\CAServerPKIContent';
 	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	caserver_id

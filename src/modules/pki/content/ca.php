@@ -16,6 +16,9 @@
 
 
 
+namespace 'DaPortal';
+
+
 //CAPKIContent
 class CAPKIContent extends PKIContent
 {
@@ -362,7 +365,7 @@ class CAPKIContent extends PKIContent
 
 	//protected
 	//properties
-	static protected $class = 'CAPKIContent';
+	static protected $class = 'DaPortal\\CAPKIContent';
 	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	ca_id

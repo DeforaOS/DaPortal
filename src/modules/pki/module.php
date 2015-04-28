@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PKIModule
 class PKIModule extends MultiContentModule
 {
@@ -39,9 +42,10 @@ class PKIModule extends MultiContentModule
 
 	//protected
 	//properties
-	static protected $content_classes = array('ca' => 'CAPKIContent',
-		'caclient' => 'CAClientPKIContent',
-		'caserver' => 'CAServerPKIContent');
+	static protected $content_classes = array(
+		'ca' => 'DaPortal\\CAPKIContent',
+		'caclient' => 'DaPortal\\CAClientPKIContent',
+		'caserver' => 'DaPortal\\CAServerPKIContent');
 
 
 	//methods
