@@ -18,6 +18,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DownloadModule
 class DownloadModule extends MultiContentModule
 {
@@ -109,8 +112,8 @@ class DownloadModule extends MultiContentModule
 	//properties
 	static protected $S_IFDIR = 512;
 	static protected $content_classes = array(
-		'folder' => 'FolderDownloadContent',
-		'file' => 'FileDownloadContent');
+		'folder' => 'DaPortal\\FolderDownloadContent',
+		'file' => 'DaPortal\\FileDownloadContent');
 
 	//queries
 	//IN:	module_id

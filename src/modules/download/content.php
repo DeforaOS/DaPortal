@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DownloadContent
 abstract class DownloadContent extends ContentMulti
 {

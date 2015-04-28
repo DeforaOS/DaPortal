@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //CLIEngine
 class CLIEngine extends Engine
 {
@@ -118,7 +121,7 @@ class CLIEngine extends Engine
 	//CLIEngine::attach
 	public function attach()
 	{
-		DaPortal\Locale::init($this);
+		Locale::init($this);
 	}
 
 

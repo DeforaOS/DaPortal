@@ -18,12 +18,11 @@
 
 namespace DaPortal;
 
-
 require_once('./tests.php');
 
 
 //functions
-$page = new \Page();
+$page = new Page();
 if(Mail::send($engine, 'test', array(), 'Test subject', $page)
 		=== FALSE)
 	exit(2);

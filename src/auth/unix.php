@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //UnixAuth
 class UnixAuth extends Auth
 {

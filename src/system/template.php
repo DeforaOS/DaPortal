@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Template
 abstract class Template
 {
@@ -34,7 +37,7 @@ abstract class Template
 			$res = require_once('./templates/'.$name.'.php');
 			if($res === FALSE)
 				return FALSE;
-			$class = $name.'Template';
+			$class = 'DaPortal\\'.$name.'Template';
 			$ret = new $class();
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
@@ -50,7 +53,7 @@ abstract class Template
 				continue;
 			require_once('./templates/'.$de);
 			$name = substr($de, 0, strlen($de) - 4);
-			$class = $name.'Template';
+			$class = 'DaPortal\\'.$name.'Template';
 			$template = new $class();
 			if(($p = $template->match($engine)) <= $priority)
 				continue;

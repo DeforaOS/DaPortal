@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DummyEngine
 class DummyEngine extends Engine
 {
@@ -40,7 +43,7 @@ class DummyEngine extends Engine
 	//DummyEngine::attach
 	public function attach()
 	{
-		DaPortal\Locale::init($this);
+		Locale::init($this);
 	}
 }
 

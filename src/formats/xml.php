@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //XMLFormat
 class XMLFormat extends PlainFormat
 {

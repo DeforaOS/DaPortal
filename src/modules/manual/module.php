@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ManualModule
 class ManualModule extends Module
 {
@@ -116,7 +119,7 @@ class ManualModule extends Module
 
 	private function _pagesOpen($filename)
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 
 		//we can hide errors
 		if(@$xml->loadHTMLfile($filename, LIBXML_NOENT) !== TRUE)
@@ -461,7 +464,7 @@ class ManualModule extends Module
 				|| strpos($name, '/') !== FALSE)
 			return FALSE;
 		$path = explode(',', $path);
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		foreach($path as $p)
 		{
 			$filename = $p.'/html'.$section.'/'.$name.'.html';

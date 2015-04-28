@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //GtkEngine
 class GtkEngine extends CLIEngine
 {

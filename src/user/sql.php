@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //SQLUserBackend
 class SQLUserBackend extends UserBackend
 {
@@ -563,7 +566,7 @@ class SQLUserBackend extends UserBackend
 			$text = _("Please note that this link will expire in 7 days.\n");
 			$content->append('label', array('text' => $text));
 			//FIXME send only if the transaction succeeds
-			if(DaPortal\Mail::send($engine, FALSE, $email, $subject,
+			if(Mail::send($engine, FALSE, $email, $subject,
 					$content) === FALSE)
 			{
 				$db->transactionRollback($engine);
@@ -637,7 +640,7 @@ class SQLUserBackend extends UserBackend
 		$content->append('label', array('text' => "\n"));
 		$content->append('label', array(
 			'text' => _("Please note that this link will expire in 24 hours.")));
-		if(DaPortal\Mail::send($engine, FALSE, $email, $subject,
+		if(Mail::send($engine, FALSE, $email, $subject,
 				$content) === FALSE)
 		{
 			$error = _('Could not send the confirmation e-mail');

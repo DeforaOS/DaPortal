@@ -16,11 +16,14 @@
 
 
 
+namespace DaPortal;
+
 //auto-loader
 require_once('./system/autoload.php');
 
 //essential compatibility fixes
 require_once('./system/compat.php');
+
 
 if(($engine = Engine::attachDefault('@PREFIX@')) !== FALSE)
 {

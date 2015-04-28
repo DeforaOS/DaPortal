@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 abstract class Engine
 {
 	abstract public function match();

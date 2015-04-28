@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //AdminModule
 class AdminModule extends Module
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 if(chdir('../src') === FALSE)
 	exit(2);
 

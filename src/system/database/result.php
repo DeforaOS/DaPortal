@@ -16,8 +16,11 @@
 
 
 
+namespace DaPortal;
+
+
 //DatabaseResult
-abstract class DatabaseResult implements Countable, SeekableIterator
+abstract class DatabaseResult implements \Countable, \SeekableIterator
 {
 	//public
 	//methods

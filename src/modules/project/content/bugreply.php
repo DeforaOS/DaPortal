@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //BugReplyProjectContent
 class BugReplyProjectContent extends ContentMulti
 {
@@ -58,7 +61,7 @@ class BugReplyProjectContent extends ContentMulti
 
 	//protected
 	//properties
-	static protected $class = 'BugReplyProjectContent';
+	static protected $class = 'DaPortal\\BugReplyProjectContent';
 	//queries
 	//IN:	module_id
 	//	user_id

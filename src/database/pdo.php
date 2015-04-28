@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PDODatabase
 class PDODatabase extends Database
 {
@@ -240,11 +243,11 @@ class PDODatabase extends Database
 		$username = $this->configGet('username');
 		$password = $this->configGet('password');
 		$args = $this->configGet('persistent')
-			? array(PDO::ATTR_PERSISTENT => true) : array();
+			? array(\PDO::ATTR_PERSISTENT => true) : array();
 		try {
-			$this->handle = new PDO($dsn, $username, $password,
+			$this->handle = new \PDO($dsn, $username, $password,
 				$args);
-		} catch(PDOException $e) {
+		} catch(\PDOException $e) {
 			$message = 'Could not open database: '.$e->getMessage();
 			return $engine->log('LOG_ERR', $message);
 		}
@@ -262,7 +265,7 @@ class PDODatabase extends Database
 
 	private function _attachSqlite($engine)
 	{
-		$this->result_class = 'PDODatabaseResultCached';
+		$this->result_class = 'DaPortal\\PDODatabaseResultCached';
 		$func = array($this, '_concat');
 		$this->handle->sqliteCreateFunction('concat', $func, 2);
 		$func = array($this, '_date_trunc');
@@ -312,7 +315,7 @@ class PDODatabase extends Database
 	//properties
 	private $backend = FALSE;
 	private $handle = FALSE;
-	private $result_class = 'PDODatabaseResult';
+	private $result_class = 'DaPortal\\PDODatabaseResult';
 	private $case;
 	//functions
 	private $func_regexp = FALSE;
@@ -328,7 +331,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//PDODatabaseResultCached::PDODatabaseResultCached
 	public function __construct($stmt)
 	{
-		$this->stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$this->stmt = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		$this->count = count($this->stmt);
 		$this->affected = $stmt->rowCount();
 		$stmt->closeCursor();

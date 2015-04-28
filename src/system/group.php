@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Group
 class Group
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ProjectModule
 class ProjectModule extends MultiContentModule
 {
@@ -75,11 +78,12 @@ class ProjectModule extends MultiContentModule
 
 
 	//protected
-	static protected $content_classes = array('project' => 'ProjectContent',
-		'bug' => 'BugProjectContent',
-		'bugreply' => 'BugReplyProjectContent',
-		'download' => 'DownloadProjectContent',
-		'screenshot' => 'ScreenshotProjectContent');
+	static protected $content_classes = array(
+		'project' => 'DaPortal\\ProjectContent',
+		'bug' => 'DaPortal\\BugProjectContent',
+		'bugreply' => 'DaPortal\\BugReplyProjectContent',
+		'download' => 'DaPortal\\DownloadProjectContent',
+		'screenshot' => 'DaPortal\\ScreenshotProjectContent');
 	//properties
 	//queries
 	//FIXME use daportal_user_enabled and daportal_content_public

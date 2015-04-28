@@ -19,15 +19,26 @@
 //autoload
 function autoload($class, $filename = FALSE)
 {
-	//strip out our own namespace
-	if(strncmp($class, 'DaPortal\\', 9) == 0)
-		$class = substr($class, 9);
+	//filter on our own namespace
+	if(strncmp($class, 'DaPortal\\', 9) != 0)
+		return FALSE;
+	$class = substr($class, 9);
 	if($filename !== FALSE)
+		//register the class
 		return _autoload_filename($class, $filename);
-	$res = ($filename = _autoload_filename($class)) !== FALSE
-		&& is_readable($filename) ? include_once($filename) : FALSE;
+	if(($filename = _autoload_filename($class)) === FALSE
+			|| !file_exists($filename))
+	{
+		error_log($class.': Could not locate class');
+		return FALSE;
+	}
+	$res = @include_once($filename);
 	if($res === FALSE)
+	{
 		error_log($class.': Could not autoload class');
+		return FALSE;
+	}
+	return $filename;
 }
 
 function _autoload_filename($class, $filename = FALSE)
@@ -47,6 +58,7 @@ function _autoload_filename($class, $filename = FALSE)
 		$classes[$class] = $filename;
 		return $filename;
 	}
+	//caching has precedence
 	if(isset($classes[$class]))
 		return $classes[$class];
 	$len = strlen($class);

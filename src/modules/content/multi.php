@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //MultiContentModule
 abstract class MultiContentModule extends ContentModule
 {
@@ -60,17 +63,22 @@ abstract class MultiContentModule extends ContentModule
 	{
 		Module::__construct($id, $name, $title);
 		//autoload sub-classes
+		$name = strtolower($name);
 		foreach(static::$content_classes as $class)
 		{
-			$c = strtolower($class);
+			//obtain the class name (without the namespace)
+			if(($c = strrchr($class, '\\')) !== FALSE)
+				$c = substr($c, 1);
+			else
+				$c = $class;
 			$len = strlen($name) + 7;
 			if(strlen($c) <= $len)
 				continue;
-			if(substr($c, -$len) != strtolower($name).'content')
+			$c = strtolower($c);
+			if(substr($c, -$len) != $name.'content')
 				continue;
 			$c = substr($c, 0, strlen($c) - $len);
-			$filename = './modules/'.strtolower($name).'/content/'
-				.$c.'.php';
+			$filename = "./modules/$name/content/$c.php";
 			autoload($class, $filename);
 		}
 		//set the context explicitly

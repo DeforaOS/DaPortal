@@ -16,8 +16,11 @@
 
 
 
+namespace DaPortal;
+
+
 //ContentResult
-class ContentResult implements ArrayAccess, Countable, SeekableIterator
+class ContentResult implements \ArrayAccess, \Countable, \SeekableIterator
 {
 	//ContentResult::ContentResult
 	public function __construct($engine, $module, $class, $result)

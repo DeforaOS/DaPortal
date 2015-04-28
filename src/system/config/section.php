@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ConfigSection
 class ConfigSection extends Mutator
 {

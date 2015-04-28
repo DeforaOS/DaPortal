@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Page
 class Page extends PageElement
 {

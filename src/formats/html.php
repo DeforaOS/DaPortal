@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //HTMLFormat
 class HTMLFormat extends FormatElements
 {

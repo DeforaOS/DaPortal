@@ -17,6 +17,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DaPortalEngine
 //XXX this engine is only useful while migrating to the newer framework.
 class DaPortalEngine extends HTTPEngine

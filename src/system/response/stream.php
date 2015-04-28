@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //StreamResponse
 class StreamResponse extends Response
 {

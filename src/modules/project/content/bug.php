@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //BugProjectContent
 class BugProjectContent extends ContentMulti
 {
@@ -272,7 +275,7 @@ class BugProjectContent extends ContentMulti
 	//properties
 	protected $project = FALSE;
 	//static
-	static protected $class = 'BugProjectContent';
+	static protected $class = 'DaPortal\\BugProjectContent';
 	static protected $list_order = 'bug_id DESC';
 	static protected $priorities = array('Urgent' => 'Urgent',
 		'High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low');

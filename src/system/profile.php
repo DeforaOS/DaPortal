@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Profile
 class Profile
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Request
 class Request extends Mutator
 {

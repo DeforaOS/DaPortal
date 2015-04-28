@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Engine
 abstract class Engine
 {
@@ -244,7 +247,7 @@ abstract class Engine
 		static::configLoad($prefix, TRUE);
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
-			$class = $name.'Engine';
+			$class = 'DaPortal\\'.$name.'Engine';
 			$ret = new $class();
 		}
 		else if(($dir = opendir('engines')) !== FALSE)
@@ -254,7 +257,7 @@ abstract class Engine
 				if(substr($de, -4) != '.php')
 					continue;
 				$n = substr($de, 0, strlen($de) - 4);
-				$class = $n.'Engine';
+				$class = 'DaPortal\\'.$n.'Engine';
 				$engine = new $class();
 				if(($p = $engine->match()) <= $priority)
 					continue;

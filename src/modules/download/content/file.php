@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //FileDownloadContent
 class FileDownloadContent extends DownloadContent
 {
@@ -249,7 +252,7 @@ class FileDownloadContent extends DownloadContent
 
 	//protected
 	//properties
-	static protected $class = 'FileDownloadContent';
+	static protected $class = 'DaPortal\\FileDownloadContent';
 
 	static protected $download_table = 'daportal_download';
 	static protected $download_table_id = 'download_id';

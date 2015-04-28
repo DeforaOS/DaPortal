@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //StringResponse
 class StringResponse extends Response
 {

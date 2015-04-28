@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Observer
 interface Observer
 {

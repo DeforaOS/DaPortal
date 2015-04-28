@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //CSVFormat
 class CSVFormat extends PlainFormat
 {

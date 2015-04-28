@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //XHTML11Format
 class XHTML11Format extends HTMLFormat
 {

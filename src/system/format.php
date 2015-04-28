@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Format
 abstract class Format extends Mutator
 {
@@ -36,7 +39,7 @@ abstract class Format extends Mutator
 			$name = $config->get('format', 'backend');
 		if($name !== FALSE)
 		{
-			$class = $name.'Format';
+			$class = 'DaPortal\\'.$name.'Format';
 			$ret = new $class($name);
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
@@ -50,7 +53,7 @@ abstract class Format extends Mutator
 			if(substr($de, -4) != '.php')
 				continue;
 			$name = substr($de, 0, strlen($de) - 4);
-			$class = $name.'Format';
+			$class = 'DaPortal\\'.$name.'Format';
 			$format = new $class($name);
 			if(($p = $format->match($engine, $type)) <= $priority)
 				continue;

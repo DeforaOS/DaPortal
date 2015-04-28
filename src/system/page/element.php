@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PageElement
 class PageElement extends Mutator
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //CLIHTTPEngine
 class CLIHTTPEngine extends CLIEngine
 {

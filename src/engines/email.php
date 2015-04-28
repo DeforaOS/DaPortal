@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //EmailEngine
 class EmailEngine extends CLIEngine
 {

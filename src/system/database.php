@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Database
 abstract class Database
 {
@@ -189,7 +192,7 @@ abstract class Database
 
 		if(($name = $config->get('database', 'backend')) !== FALSE)
 		{
-			$class = $name.'Database';
+			$class = 'DaPortal\\'.$name.'Database';
 			$ret = new $class($name);
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
@@ -204,7 +207,7 @@ abstract class Database
 			if(substr($de, -4) != '.php')
 				continue;
 			$name = substr($de, 0, strlen($de) - 4);
-			$class = $name.'Database';
+			$class = 'DaPortal\\'.$name.'Database';
 			$db = new $class($name);
 			if(($p = $db->match($engine)) <= $priority)
 				continue;

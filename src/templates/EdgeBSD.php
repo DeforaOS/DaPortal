@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //EdgeBSDTemplate
 class EdgeBSDTemplate extends DeforaOSTemplate
 {

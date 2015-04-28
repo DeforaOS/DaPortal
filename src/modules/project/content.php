@@ -16,6 +16,8 @@
 
 
 
+namespace DaPortal;
+
 require_once('./modules/project/scm.php');
 
 
@@ -546,7 +548,7 @@ class ProjectContent extends ContentMulti
 	//protected
 	//properties
 	static protected $S_IFDIR = 01000;
-	static protected $class = 'ProjectContent';
+	static protected $class = 'DaPortal\\ProjectContent';
 	static protected $list_order = 'title ASC';
 	//queries
 	//IN:	project_id

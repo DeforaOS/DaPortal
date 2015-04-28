@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //TopModule
 class TopModule extends Module
 {

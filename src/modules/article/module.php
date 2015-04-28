@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ArticleModule
 class ArticleModule extends ContentModule
 {
@@ -27,7 +30,7 @@ class ArticleModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('Articles') : $title;
 		parent::__construct($id, $name, $title);
-		$this->content_class = 'ArticleContent';
+		$this->content_class = 'DaPortal\\ArticleContent';
 		//translations
 		$this->text_content_admin = _('Articles administration');
 		$this->text_content_list_title = _('Article list');

@@ -18,6 +18,9 @@
 
 
 
+namespace DaPortal;
+
+
 //GroupModule
 class GroupModule extends Module
 {

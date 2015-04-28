@@ -18,6 +18,9 @@
 
 
 
+namespace DaPortal;
+
+
 //WikiContent
 class WikiContent extends Content
 {
@@ -408,7 +411,7 @@ class WikiContent extends Content
 
 	//protected
 	//properties
-	static protected $class = 'WikiContent';
+	static protected $class = 'DaPortal\\WikiContent';
 
 
 	//methods

@@ -19,6 +19,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ContentModule
 abstract class ContentModule extends Module
 {
@@ -204,7 +207,7 @@ abstract class ContentModule extends Module
 
 	//protected
 	//properties
-	protected $content_class = 'Content';
+	protected $content_class = 'DaPortal\\Content';
 	protected $content_headline_count = 6;
 	protected $content_list_count = 10;
 	protected $content_list_admin_count = 20;

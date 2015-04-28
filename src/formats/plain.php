@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PlainFormat
 class PlainFormat extends Format
 {

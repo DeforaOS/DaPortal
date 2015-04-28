@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //KhorbenTemplate
 class KhorbenTemplate extends BasicTemplate
 {

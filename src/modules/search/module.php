@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //SearchModule
 class SearchModule extends Module
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Mime
 class Mime
 {

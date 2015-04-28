@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //FolderDownloadContent
 class FolderDownloadContent extends DownloadContent
 {
@@ -290,8 +293,8 @@ class FolderDownloadContent extends DownloadContent
 
 	//protected
 	//properties
-	static protected $class = 'FolderDownloadContent';
-	static protected $class_file = 'FileDownloadContent';
+	static protected $class = 'DaPortal\\FolderDownloadContent';
+	static protected $class_file = 'DaPortal\\FileDownloadContent';
 	static protected $list_mask = 512;
 
 	static protected $download_table = 'daportal_download';

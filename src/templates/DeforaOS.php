@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DeforaOSTemplate
 class DeforaOSTemplate extends BasicTemplate
 {

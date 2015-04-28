@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //UserModule
 class UserModule extends Module
 {

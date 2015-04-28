@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Auth
 abstract class Auth
 {
@@ -112,7 +115,7 @@ abstract class Auth
 
 		if(($name = $config->get('auth', 'backend')) !== FALSE)
 		{
-			$name .= 'Auth';
+			$name = 'DaPortal\\'.$name.'Auth';
 			$ret = new $name();
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
@@ -126,7 +129,7 @@ abstract class Auth
 			if(substr($de, -4) != '.php')
 				continue;
 			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Auth';
+			$name = 'DaPortal\\'.$name.'Auth';
 			$auth = new $name();
 			if(($p = $auth->match($engine)) <= $priority)
 				continue;

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Common
 class Common
 {

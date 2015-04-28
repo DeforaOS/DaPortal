@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //UserBackend
 abstract class UserBackend
 {

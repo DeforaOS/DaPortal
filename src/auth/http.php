@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //HTTPAuth
 class HTTPAuth extends Auth
 {

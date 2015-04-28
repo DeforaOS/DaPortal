@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ErrorResponse
 class ErrorResponse extends Response
 {

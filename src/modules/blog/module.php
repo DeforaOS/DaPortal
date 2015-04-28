@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //BlogModule
 class BlogModule extends ContentModule
 {

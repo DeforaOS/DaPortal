@@ -18,6 +18,9 @@
 
 
 
+namespace DaPortal;
+
+
 //XHTML1Format
 class XHTML1Format extends HTMLFormat
 {

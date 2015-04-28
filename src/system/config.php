@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Config
 class Config
 {

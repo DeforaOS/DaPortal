@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //EnvAuth
 class EnvAuth extends UnixAuth
 {

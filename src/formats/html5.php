@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //HTML5Format
 class HTML5Format extends HTMLFormat
 {

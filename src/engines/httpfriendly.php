@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //HTTPFriendlyEngine
 class HTTPFriendlyEngine extends HTTPEngine
 {

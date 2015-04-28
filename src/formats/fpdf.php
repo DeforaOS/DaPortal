@@ -16,6 +16,8 @@
 
 
 
+namespace DaPortal;
+
 require('./formats/fpdf/fpdf.php');
 
 
@@ -54,7 +56,7 @@ class FPDFFormat extends FormatElements
 		$author = $user->getUsername();
 		$title = $page->getProperty('title');
 
-		$this->pdf = new FPDF();
+		$this->pdf = new \FPDF();
 		$this->pdf->addPage();
 		$this->pdf->SetFont('Arial', '', 12);
 		$this->pdf->SetCreator('DaPortal');

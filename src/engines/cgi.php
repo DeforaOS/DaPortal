@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //CGIEngine
 class CGIEngine extends HTTPEngine
 {

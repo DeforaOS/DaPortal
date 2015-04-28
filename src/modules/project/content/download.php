@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DownloadProjectContent
 class DownloadProjectContent extends ContentMulti
 {
@@ -104,7 +107,7 @@ class DownloadProjectContent extends ContentMulti
 
 	//protected
 	//properties
-	static protected $class = 'DownloadProjectContent';
+	static protected $class = 'DaPortal\\DownloadProjectContent';
 	static protected $load_title = 'download.title';
 	//queries
 	//IN:	module_id

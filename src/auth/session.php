@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //SessionAuth
 class SessionAuth extends Auth
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PageResponse
 class PageResponse extends Response
 {

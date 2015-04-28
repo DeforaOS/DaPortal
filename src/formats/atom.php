@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //AtomFormat
 class AtomFormat extends Format
 {

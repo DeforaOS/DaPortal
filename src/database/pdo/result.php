@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PDODatabaseResult
 class PDODatabaseResult extends DatabaseResult
 {
@@ -41,8 +44,8 @@ class PDODatabaseResult extends DatabaseResult
 	//PDODatabaseResult::current
 	public function current()
 	{
-		return $this->stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS,
-				$this->key);
+		return $this->stmt->fetch(\PDO::FETCH_ASSOC,
+				\PDO::FETCH_ORI_ABS, $this->key);
 	}
 
 

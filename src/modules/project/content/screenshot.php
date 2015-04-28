@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ScreenshotProjectContent
 class ScreenshotProjectContent extends DownloadProjectContent
 {
@@ -55,7 +58,7 @@ class ScreenshotProjectContent extends DownloadProjectContent
 
 	//protected
 	//properties
-	static protected $class = 'ScreenshotProjectContent';
+	static protected $class = 'DaPortal\\ScreenshotProjectContent';
 	static protected $load_title = 'download.title';
 	//queries
 	//IN:	module_id

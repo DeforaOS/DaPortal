@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Content
 class Content
 {
@@ -987,7 +990,7 @@ class Content
 
 	//protected
 	//properties
-	static protected $class = 'Content';
+	static protected $class = 'DaPortal\\Content';
 	protected $fields = array('title' => 'Title', 'content' => 'Content');
 	static protected $list_alternate = FALSE;
 	static protected $list_limit = 20;

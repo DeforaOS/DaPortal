@@ -20,7 +20,7 @@ require_once('./tests.php');
 
 
 //functions
-if(($module = Module::load($engine, 'admin')) === FALSE)
+if(($module = DaPortal\Module::load($engine, 'admin')) === FALSE)
 	exit(2);
 if($module->getID() != '1'
 		|| $module->getName() != 'admin')

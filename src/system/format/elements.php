@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //FormatElements
 abstract class FormatElements extends Format
 {

@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Module
 abstract class Module
 {
@@ -60,7 +63,7 @@ abstract class Module
 			return FALSE;
 		if(($id = self::_loadID($engine, $name)) === FALSE)
 			return FALSE;
-		$module = $name.'Module';
+		$module = 'DaPortal\\'.$name.'Module';
 		if(($ret = new $module($id, $name)) == NULL)
 			return $engine->log('LOG_ERR',
 					$name.': Could not load module');

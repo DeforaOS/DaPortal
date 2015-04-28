@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //PDFFormat
 class PDFFormat extends FormatElements
 {

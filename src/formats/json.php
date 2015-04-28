@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //JSONFormat
 class JSONFormat extends PlainFormat
 {

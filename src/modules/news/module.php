@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //NewsModule
 class NewsModule extends ContentModule
 {
@@ -27,7 +30,7 @@ class NewsModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('News') : FALSE;
 		parent::__construct($id, $name, $title);
-		$this->content_class = 'NewsContent';
+		$this->content_class = 'DaPortal\\NewsContent';
 		//translations
 		$this->text_content_admin = _('News administration');
 		$this->text_content_list_title = _('News list');

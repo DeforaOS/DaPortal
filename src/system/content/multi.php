@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ContentMulti
 class ContentMulti extends Content
 {

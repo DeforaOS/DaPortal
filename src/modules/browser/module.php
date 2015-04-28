@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //BrowserModule
 class BrowserModule extends Module
 {

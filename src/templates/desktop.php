@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //DesktopTemplate
 class DesktopTemplate extends Template
 {

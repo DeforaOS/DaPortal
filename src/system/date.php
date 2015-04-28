@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Date
 class Date
 {

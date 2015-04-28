@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //CLILogEngine
 class CLILogEngine extends CLIEngine
 {

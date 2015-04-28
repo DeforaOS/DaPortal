@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //Response
 abstract class Response extends Mutator
 {

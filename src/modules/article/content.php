@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //ArticleContent
 class ArticleContent extends Content
 {
@@ -57,7 +60,7 @@ class ArticleContent extends Content
 
 	//protected
 	//properties
-	static protected $class = 'ArticleContent';
+	static protected $class = 'DaPortal\\ArticleContent';
 }
 
 ?>

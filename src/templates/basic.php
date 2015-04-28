@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //BasicTemplate
 class BasicTemplate extends Template
 {

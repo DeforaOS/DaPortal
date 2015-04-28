@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 //AuthCredentials
 class AuthCredentials
 {
