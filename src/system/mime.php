@@ -25,12 +25,12 @@ class Mime
 	//Mime::getIcon
 	static public function getIcon($engine, $filename, $size = 48)
 	{
-		if(Mime::init($engine) === FALSE)
-			return 'icons/generic/'.$size.'x'.$size.'/'.Mime::$default;
-		if(($type = Mime::getType($engine, $filename, FALSE)) !== FALSE)
-			return Mime::getIconByType($engine, $type, $size);
-		return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
-			.Mime::$default;
+		if(static::init($engine) === FALSE)
+			return 'icons/generic/'.$size.'x'.$size.'/'.static::$default;
+		if(($type = static::getType($engine, $filename, FALSE)) !== FALSE)
+			return static::getIconByType($engine, $type, $size);
+		return 'icons/'.static::$iconpath.'/'.$size.'x'.$size.'/'
+			.static::$default;
 	}
 
 
@@ -43,8 +43,8 @@ class Mime
 			'video-');
 		$icons = array('inode/directory' => 'places/folder');
 
-		if(Mime::init($engine) === FALSE)
-			return 'icons/generic/'.$size.'x'.$size.'/'.Mime::$default;
+		if(static::init($engine) === FALSE)
+			return 'icons/generic/'.$size.'x'.$size.'/'.static::$default;
 		//well-known
 		if(isset($icons[$type]))
 			$icon = $icons[$type];
@@ -55,11 +55,11 @@ class Mime
 			$icon = str_replace($from, $to, $type);
 			$icon = 'mimetypes/gnome-mime-'.$icon;
 		}
-		$icon = 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size.'/'
+		$icon = 'icons/'.static::$iconpath.'/'.$size.'x'.$size.'/'
 			.$icon.'.png';
 		if(!is_readable('../data/'.$icon))
-			return 'icons/'.Mime::$iconpath.'/'.$size.'x'.$size
-				.'/'.Mime::$default;
+			return 'icons/'.static::$iconpath.'/'.$size.'x'.$size
+				.'/'.static::$default;
 		return $icon;
 	}
 
@@ -68,10 +68,10 @@ class Mime
 	static public function getType($engine, $filename,
 			$default = 'application/octet-stream')
 	{
-		if(Mime::init($engine) === FALSE)
+		if(static::init($engine) === FALSE)
 			return $default;
 		//FIXME use lstat() if the filename is absolute or relative
-		foreach(Mime::$types as $g)
+		foreach(static::$types as $g)
 			if(isset($g[1]) && fnmatch($g[1], $filename,
 					FNM_CASEFOLD))
 			{
@@ -99,10 +99,10 @@ class Mime
 	{
 		if(!defined(FNM_CASEFOLD))
 			define(FNM_CASEFOLD, 0);
-		if(Mime::$types === FALSE)
-			Mime::_init_types($engine);
-		if(Mime::$iconpath === FALSE)
-			Mime::_init_iconpath($engine);
+		if(static::$types === FALSE)
+			static::_init_types($engine);
+		if(static::$iconpath === FALSE)
+			static::_init_iconpath($engine);
 		return TRUE;
 	}
 
@@ -114,13 +114,13 @@ class Mime
 		switch($theme)
 		{
 			case 'Tango':
-				Mime::$iconpath = 'Tango/Tango';
-				Mime::$default = 'mimetypes/unknown.png';
+				static::$iconpath = 'Tango/Tango';
+				static::$default = 'mimetypes/unknown.png';
 				break;
 			case 'gnome':
 			default:
-				Mime::$iconpath = 'gnome/gnome-icon-theme';
-				Mime::$default = 'mimetypes/gtk-file.png';
+				static::$iconpath = 'gnome/gnome-icon-theme';
+				static::$default = 'mimetypes/gtk-file.png';
 				break;
 		}
 		return TRUE;
@@ -130,7 +130,7 @@ class Mime
 	{
 		global $config;
 
-		Mime::$types = array();
+		static::$types = array();
 		if(($globs = $config->get('mime', 'globs')) === FALSE)
 		{
 			$engine->log('LOG_WARNING',
@@ -149,7 +149,7 @@ class Mime
 			if(strlen($line) >= 1 && $line[0] == '#')
 				continue;
 			else
-				Mime::$types[] = explode(':', $line);
+				static::$types[] = explode(':', $line);
 		}
 		return TRUE;
 	}
