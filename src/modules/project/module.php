@@ -329,8 +329,8 @@ class ProjectModule extends MultiContentModule
 	{
 		//FIXME also set the columns
 		$this->text_content_admin = _('Bugs administration');
-		$this->query_list_admin = static::$query_list_admin_bugs;
-		$this->query_list_admin_count
+		static::$query_list_admin = static::$query_list_admin_bugs;
+		static::$query_list_admin_count
 			= static::$query_list_admin_bugs_count;
 		return parent::callAdmin($engine, $request);
 	}
