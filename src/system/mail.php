@@ -209,36 +209,37 @@ class Mail
 		$png = 'image/png;base64,';
 
 		$xml = new DOMDocument('1.0', 'UTF-8');
-		if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET) !== FALSE)
+		if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET) === FALSE)
+			return $engine->log('LOG_ERR',
+					'Could not set the HTML body');
+		//convert in-line images for compatibility
+		$images = $xml->getElementsByTagName('img');
+		foreach($images as $img)
 		{
-			//convert in-line images for compatibility
-			$images = $xml->getElementsByTagName('img');
-			foreach($images as $img)
+			if(($a = $img->getAttribute('src')) === FALSE)
+				continue;
+			if(strncmp($a, 'data:', 5) != 0)
+				continue;
+			$a = substr($a, 5);
+			if(strncmp($a, $jpeg, strlen($jpeg)) == 0)
 			{
-				if(($a = $img->getAttribute('src')) === FALSE)
-					continue;
-				if(strncmp($a, 'data:', 5) != 0)
-					continue;
-				$a = substr($a, 5);
-				if(strncmp($a, $jpeg, strlen($jpeg)) == 0)
-				{
-					$a = substr($a, strlen($jpeg));
-					$a = base64_decode($a);
-					static::_renderBodyHtmlImage($mime,
-							$img, 'image/jpeg', $a);
-				}
-				else if(strncmp($a, $png, strlen($png)) == 0)
-				{
-					$a = substr($a, strlen($png));
-					$a = base64_decode($a);
-					static::_renderBodyHtmlImage($mime,
-							$img, 'image/png', $a);
-				}
+				$a = substr($a, strlen($jpeg));
+				$a = base64_decode($a);
+				static::_renderBodyHtmlImage($mime,
+						$img, 'image/jpeg', $a);
 			}
-			if(($h = $xml->saveHTML()) !== FALSE)
-				$html = $h;
+			else if(strncmp($a, $png, strlen($png)) == 0)
+			{
+				$a = substr($a, strlen($png));
+				$a = base64_decode($a);
+				static::_renderBodyHtmlImage($mime,
+						$img, 'image/png', $a);
+			}
 		}
+		if(($h = $xml->saveHTML()) !== FALSE)
+			$html = $h;
 		$mime->setHTMLBody($html);
+		return TRUE;
 	}
 
 	static protected function _renderBodyHtmlImage($mime, $img, $type,
