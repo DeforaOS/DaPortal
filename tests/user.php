@@ -38,6 +38,13 @@ if($user->unlock($engine, $error) === FALSE)
 	print("$error\n");
 	exit(4);
 }
+$module = Module::load($engine, 'user');
+if(User::reset($engine, $module, $user->getUsername(), $user->getEmail(),
+		$error) === FALSE)
+{
+	print("$error\n");
+	exit(5);
+}
 exit(0);
 
 ?>
