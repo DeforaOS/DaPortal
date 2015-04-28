@@ -36,7 +36,6 @@ function _autoload_filename($class, $filename = FALSE)
 {
 	static $classes = array(
 		'AuthCredentials' => './system/auth/credentials.php',
-		'ConfigSection' => './system/config/section.php',
 		'DatabaseResult' => './system/database/result.php',
 		'FormatElements' => './system/format/elements.php',
 		'MultiContentModule' => './modules/content/multi.php',
@@ -55,6 +54,12 @@ function _autoload_filename($class, $filename = FALSE)
 	{
 		$auth = substr($class, 0, $len - 4);
 		return './auth/'.strtolower($auth).'.php';
+	}
+	//Configuration sub-classes
+	else if($len > 6 && substr($class, 0, 6) == 'Config')
+	{
+		$config = substr($class, 6);
+		return './system/config/'.strtolower($config).'.php';
 	}
 	//Content sub-classes (in modules)
 	else if($len > 7 && substr($class, -7) == 'Content')
