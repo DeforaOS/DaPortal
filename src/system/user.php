@@ -511,10 +511,24 @@ class User
 			return FALSE;
 		}
 		$res = $res->current();
-		$query = static::$query_reset_token;
 		$uid = $res['user_id'];
+		//check for existing tokens
+		$query = static::$query_reset_token_check;
+		$args = array('user_id' => $uid);
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+		{
+			$error = _('Could not reset the password');
+			return FALSE;
+		}
+		if(count($res) != 0)
+		{
+			$error = _('A password request was issued less than 24 hours ago already.');
+			return FALSE;
+		}
 		//generate a token
 		$token = sha1(uniqid($uid.$username.$email, TRUE));
+		//insert the token in the database
+		$query = static::$query_reset_token;
 		$args = array('user_id' => $uid, 'token' => $token);
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 		{
@@ -743,6 +757,9 @@ class User
 	static protected $query_reset_token = 'INSERT INTO daportal_user_reset
 		(user_id, token)
 		VALUES (:user_id, :token)';
+	static protected $query_reset_token_check = 'SELECT user_id
+		FROM daportal_user_reset
+		WHERE user_id=:user_id';
 	static protected $query_reset_validate = "SELECT user_id
 		FROM daportal_user
 		WHERE enabled='1' AND username=:username AND email=:email";
