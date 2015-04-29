@@ -1276,14 +1276,14 @@ class UserModule extends Module
 		if(!$this->canRegister())
 			$error = _('Registering is not allowed');
 		else if(!$request->isIdempotent())
-			$error = $this->_register_process($engine, $request);
+			$error = $this->_registerProcess($engine, $request);
 		if($error === FALSE)
 			//registration was successful
-			return $this->_register_success($engine, $request);
-		return $this->_register_form($engine, $request, $error);
+			return $this->_registerSuccess($engine, $request);
+		return $this->_registerForm($engine, $request, $error);
 	}
 
-	private function _register_form($engine, $request, $error)
+	private function _registerForm($engine, $request, $error)
 	{
 		$title = _('User registration');
 		$page = new Page(array('title' => $title));
@@ -1299,7 +1299,7 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _register_process($engine, $request)
+	private function _registerProcess($engine, $request)
 	{
 		$ret = '';
 
@@ -1317,7 +1317,7 @@ class UserModule extends Module
 		return strlen($ret) ? $ret : FALSE;
 	}
 
-	private function _register_success($engine, $request)
+	private function _registerSuccess($engine, $request)
 	{
 		$title = _('User registration');
 		$text = _("You should receive an e-mail shortly with your password, along with a confirmation key.\n
@@ -1345,20 +1345,20 @@ class UserModule extends Module
 			return $this->callDisplay($engine, new Request);
 		if(($uid = $request->getID()) !== FALSE
 				&& ($token = $request->get('token')) !== FALSE)
-			return $this->_reset_token($engine, $request, $uid,
+			return $this->_resetToken($engine, $request, $uid,
 					$token);
 		//process reset
 		if(!$this->canReset())
 			$error = _('Password resets are not allowed');
 		else if(!$request->isIdempotent())
-			$error = $this->_reset_process($engine, $request);
+			$error = $this->_resetProcess($engine, $request);
 		if($error === FALSE)
 			//reset was successful
-			return $this->_reset_success($engine, $request);
-		return $this->_reset_form($engine, $request, $error);
+			return $this->_resetSuccess($engine, $request);
+		return $this->_resetForm($engine, $request, $error);
 	}
 
-	private function _reset_form($engine, $request, $error)
+	private function _resetForm($engine, $request, $error)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1375,7 +1375,7 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _reset_process($engine, $request)
+	private function _resetProcess($engine, $request)
 	{
 		$ret = '';
 
@@ -1393,7 +1393,7 @@ class UserModule extends Module
 		return strlen($ret) ? $ret : FALSE;
 	}
 
-	private function _reset_success($engine, $request)
+	private function _resetSuccess($engine, $request)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1407,7 +1407,7 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _reset_token($engine, $request, $uid, $token)
+	private function _resetToken($engine, $request, $uid, $token)
 	{
 		$error = TRUE;
 
@@ -1415,16 +1415,16 @@ class UserModule extends Module
 		if(!$this->canReset())
 			$error = _('Password resets are not allowed');
 		else if(!$request->isIdempotent())
-			$error = $this->_reset_token_process($engine, $request,
+			$error = $this->_resetTokenProcess($engine, $request,
 					$uid, $token);
 		if($error === FALSE)
 			//reset was successful
-			return $this->_reset_token_success($engine, $request);
-		return $this->_reset_token_form($engine, $request, $uid, $token,
+			return $this->_resetTokenSuccess($engine, $request);
+		return $this->_resetTokenForm($engine, $request, $uid, $token,
 				$error);
 	}
 
-	private function _reset_token_form($engine, $request, $uid, $token,
+	private function _resetTokenForm($engine, $request, $uid, $token,
 			$error)
 	{
 		$title = _('Password reset');
@@ -1449,7 +1449,7 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _reset_token_process($engine, $request, $uid, $token)
+	private function _resetTokenProcess($engine, $request, $uid, $token)
 	{
 		$ret = '';
 
@@ -1468,7 +1468,7 @@ class UserModule extends Module
 		return strlen($ret) ? $ret : FALSE;
 	}
 
-	private function _reset_token_success($engine, $request)
+	private function _resetTokenSuccess($engine, $request)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
