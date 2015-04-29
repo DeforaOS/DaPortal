@@ -947,11 +947,11 @@ class UserModule extends Module
 	//UserModule::callList
 	protected function callList($engine, $request)
 	{
+		$list = $this->configGet('list');
 		$db = $engine->getDatabase();
 		$query = static::$query_list;
 		$cred = $engine->getCredentials();
 		$title = _('User list');
-		$list = $this->configGet('list');
 
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'login',
