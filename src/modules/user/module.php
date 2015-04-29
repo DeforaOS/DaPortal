@@ -695,7 +695,8 @@ class UserModule extends Module
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
 		//disable the user
-		if(User::disable($engine, $uid, $username) !== TRUE)
+		if(($user = User::lookup($engine, $username, $uid)) === FALSE
+				|| $user->disable($engine) !== TRUE)
 			return _('The account could not be closed');
 		//log the user out
 		$engine->setCredentials(new AuthCredentials);
