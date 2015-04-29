@@ -1185,10 +1185,9 @@ class UserModule extends Module
 		$text = _('Logging out, please wait...');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
-		$text = 'If you are not redirected within 30 seconds,'
-			.' please ';
+		$text = _('If you are not redirected within 30 seconds, please ');
 		$box->append('label', array('text' => $text));
-		$box->append('link', array('text' => 'click here',
+		$box->append('link', array('text' => _('click here'),
 					'request' => $r));
 		$box->append('label', array('text' => '.'));
 		$engine->setCredentials(new AuthCredentials);
