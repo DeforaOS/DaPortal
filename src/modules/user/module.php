@@ -1142,11 +1142,12 @@ class UserModule extends Module
 	//UserModule::callLogout
 	protected function callLogout($engine, $request)
 	{
+		$title = _('User logout');
 		$cred = $engine->getCredentials();
 
-		$page = new Page;
+		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'logout',
-				'text' => _('User logout')));
+				'text' => $title));
 		if($cred->getUserID() == 0)
 		{
 			$text = _('You were logged out successfully');
