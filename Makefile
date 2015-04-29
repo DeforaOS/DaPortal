@@ -331,6 +331,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/mail.php \
 		$(PACKAGE)-$(VERSION)/tests/module.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
+		$(PACKAGE)-$(VERSION)/tests/search.php \
 		$(PACKAGE)-$(VERSION)/tests/shlint.sh \
 		$(PACKAGE)-$(VERSION)/tests/tests.php \
 		$(PACKAGE)-$(VERSION)/tests/tests.sh \

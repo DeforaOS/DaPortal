@@ -123,6 +123,7 @@ _test "daportal"
 _test "database"
 _test "mail"
 _test "module"
+_test "search"
 _test "user"
 #echo "Expected failures:" 1>&2
 #_fail "test"
