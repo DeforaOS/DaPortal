@@ -376,9 +376,9 @@ class UserModule extends Module
 		if($cred->isAdmin() && $request->getID() !== FALSE)
 			$r = $this->getRequest('admin');
 		else
-			$r = new Request($this->name, 'profile',
-					$request->getID(), $request->getID()
-					? $user->getUsername() : FALSE);
+			$r = ($request->getID() !== FALSE)
+				? $user->getRequest($this->name, 'profile')
+				: $this->getRequest('profile');
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r, 'target' => '_cancel',
 				'text' => _('Cancel')));
@@ -1233,8 +1233,7 @@ class UserModule extends Module
 				'text' => _('e-mail: ')));
 		$col2->append('label', array('text' => $user->getEmail()));
 		//link to profile update
-		$r = new Request($this->name, 'update', $request->getID(),
-			$request->getID() ? $user->getUsername() : FALSE);
+		$r = $user->getRequest($this->name, 'update');
 		$button = FALSE;
 		if($request->getID() !== FALSE && $cred->isAdmin())
 			$button = new PageElement('button', array(
@@ -1544,8 +1543,7 @@ class UserModule extends Module
 
 	protected function _submitSuccess($engine, $request, $page, $user)
 	{
-		$r = new Request($this->name, FALSE, $user->getUserID(),
-			$user->getUsername());
+		$r = $user->getRequest($this->name);
 		$this->helperRedirect($engine, $r, $page);
 		return new PageResponse($page);
 	}
