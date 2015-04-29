@@ -1127,7 +1127,7 @@ class UserModule extends Module
 		$page->set('location', $engine->getURL($r));
 		$page->set('refresh', 30);
 		$box = $page->append('vbox');
-		$text = _('Logging in progress, please wait...');
+		$text = _('Authentication in progress, please wait...');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
 		$text = _('If you are not redirected within 30 seconds, please ');
