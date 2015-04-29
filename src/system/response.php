@@ -127,12 +127,13 @@ abstract class Response extends Mutator
 
 
 	//properties
-	static public $CODE_EUNKNOWN = -1;
-	static public $CODE_SUCCESS = 0;
-	static public $CODE_EINVAL = 1;
-	static public $CODE_EIO = 2;
-	static public $CODE_ENOENT = 3;
-	static public $CODE_EPERM = 4;
+	static public $CODE_EUNKNOWN = -1;	//unknown error
+	static public $CODE_SUCCESS = 0;	//successful operation
+	static public $CODE_EINVAL = 1;		//invalid argument
+	static public $CODE_EIO = 2;		//file operation error
+	static public $CODE_ENOENT = 3;		//could not load an object
+	static public $CODE_EPERM = 4;		//permission denied
+	static public $CODE_EROFS = 5;		//idempotence contract breach
 
 
 	//protected
