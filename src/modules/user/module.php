@@ -863,9 +863,8 @@ class UserModule extends Module
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
-		//FIXME User::lookup() only obtains enabled users
 		if(($user = User::lookup($engine, $request->getTitle(),
-					$request->getID())) === FALSE)
+					$request->getID(), FALSE)) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
 					Response::$CODE_ENOENT);
 		if(!$this->canEnable($engine, $user, $error))

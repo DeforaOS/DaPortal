@@ -376,12 +376,13 @@ class User
 
 
 	//User::lookup
-	static public function lookup($engine, $username, $user_id = FALSE)
+	static public function lookup($engine, $username, $user_id = FALSE,
+			$enabled = TRUE)
 	{
 		static $cache = array();
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_username;
-		$args = array('username' => $username);
+		$args = array('username' => $username, 'enabled' => $enabled);
 
 		if(isset($cache[$username]))
 		{
@@ -724,9 +725,11 @@ class User
 		SET enabled='1'
 		WHERE user_id=:user_id";
 	//IN:	username
-	static protected $query_get_by_username = "SELECT user_id AS id
+	//	enabled
+	static protected $query_get_by_username = 'SELECT user_id AS id
 		FROM daportal_user
-		WHERE enabled='1' AND username=:username";
+		WHERE username=:username
+		AND enabled=:enabled';
 	static protected $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,
