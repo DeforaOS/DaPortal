@@ -325,6 +325,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/config.php \
 		$(PACKAGE)-$(VERSION)/tests/coverage.php \
 		$(PACKAGE)-$(VERSION)/tests/daportal.conf \
+		$(PACKAGE)-$(VERSION)/tests/daportal.php \
 		$(PACKAGE)-$(VERSION)/tests/database.php \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
 		$(PACKAGE)-$(VERSION)/tests/mail.php \

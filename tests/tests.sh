@@ -119,6 +119,7 @@ echo "Performing tests:" 1>&2
 _test "auth"
 _test "config"
 _test "coverage"
+_test "daportal"
 _test "database"
 _test "mail"
 _test "module"
