@@ -119,7 +119,7 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::setIdempotent
-	public function setIdempotent($engine, $request, $idempotent)
+	public function setIdempotent($engine, &$request, $idempotent)
 	{
 		if($idempotent === TRUE)
 		{
@@ -128,8 +128,16 @@ class SessionAuth extends Auth
 		}
 		//prevent CSRF attacks
 		$idempotent = TRUE;
-		if(($token = $request->getParameter('_token')) === FALSE
-				|| !isset($_SESSION['tokens'])
+		if(($token = $request->get('_token')) === FALSE)
+			return TRUE;
+		//remove token from the request
+		$parameters = $request->getParameters();
+		unset($parameters['_token']);
+		$request = new Request($request->getModule(),
+			$request->getAction(), $request->getID(),
+			$request->getTitle(), $parameters);
+		//check for the availability of tokens
+		if(!isset($_SESSION['tokens'])
 				|| !is_array($_SESSION['tokens']))
 			return TRUE;
 		//delete old tokens
