@@ -19,6 +19,17 @@
 require_once('./tests.php');
 
 
+class Mail
+{
+	static public function send($engine, $from, $to, $subject, $page,
+			$headers = FALSE, $attachments = FALSE)
+	{
+		//do not really send any e-mail
+		return TRUE;
+	}
+}
+
+
 //functions
 $user = new User($engine, 1, 'admin');
 if(($res = $user->authenticate($engine, 'password')) === FALSE)
