@@ -1730,6 +1730,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 
 		if($cred->getUserID() == 0)
+			//XXX not a Response
 			return $this->formLogin($engine, $engine->getRequest(),
 					FALSE);
 		$box = new PageElement('vbox');
