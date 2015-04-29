@@ -1200,14 +1200,14 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
+		$title = $request->getTitle();
 
 		//determine whose profile to view
 		if($id === FALSE)
 			$user = User::lookup($engine, $cred->getUsername(),
 					$cred->getUserID());
 		else
-			$user = User::lookup($engine, $request->getTitle(),
-					$id);
+			$user = User::lookup($engine, $title, $id);
 		if($user === FALSE || ($id = $user->getUserID()) == 0)
 			//the anonymous user has no profile
 			return new ErrorResponse(
@@ -1576,6 +1576,7 @@ class UserModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
+		$title = $request->getTitle();
 		$error = TRUE;
 
 		//determine whose profile to update
@@ -1583,8 +1584,7 @@ class UserModule extends Module
 			$user = User::lookup($engine, $cred->getUsername(),
 					$cred->getUserID());
 		else
-			$user = User::lookup($engine, $request->getTitle(),
-					$id);
+			$user = User::lookup($engine, $title, $id);
 		if($user === FALSE || ($id = $user->getUserID()) == 0)
 		{
 			//the anonymous user has no profile
@@ -1655,6 +1655,7 @@ class UserModule extends Module
 	private function _updateSuccess($engine, $request)
 	{
 		$id = $request->getID();
+		$title = $request->getTitle();
 
 		$title = _('Profile update');
 		$page = new Page(array('title' => $title));
@@ -1674,8 +1675,7 @@ class UserModule extends Module
 		}
 		else
 			$text = _('My profile');
-		$r = new Request($this->name, 'profile', $id,
-			$request->getTitle());
+		$r = new Request($this->name, 'profile', $id, $title);
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
 		return new PageResponse($page);
