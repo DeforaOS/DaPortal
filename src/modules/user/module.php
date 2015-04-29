@@ -1124,8 +1124,8 @@ class UserModule extends Module
 		$r = new Request($request->get('module'),
 			$request->get('action'), $request->get('id'),
 			$request->get('title'), $p);
-		$page->setProperty('location', $engine->getURL($r));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($r));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$text = _('Logging in progress, please wait...');
 		$box->append('label', array('text' => $text));
@@ -1178,8 +1178,8 @@ class UserModule extends Module
 			return new PageResponse($page);
 		}
 		//process logout
-		$page->setProperty('location', $engine->getURL($r));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($r));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$text = _('Logging out, please wait...');
 		$box->append('label', array('text' => $text));
@@ -1812,8 +1812,8 @@ class UserModule extends Module
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');
-		$page->setProperty('location', $engine->getURL($request));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($request));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
