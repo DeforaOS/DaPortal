@@ -79,19 +79,19 @@ class HTTPFriendlyEngine extends HTTPEngine
 		$query = explode('&', $_SERVER['QUERY_STRING']);
 		foreach($query as $q)
 		{
+			$q = explode('=', $q);
+			if(count($q) < 2)
+				continue;
 			if($args === FALSE)
 				$args = array();
-			$q = explode('=', $q);
-			if(count($q) != 2)
-				continue;
-			$q[0] = urldecode($q[0]);
-			$q[1] = urldecode($q[1]);
-			if($title === FALSE && $q[0] == '_title')
-				$title = $q[1];
-			else if($q[0] == '_type')
-				$type = $q[1];
+			$q0 = urldecode(array_shift($q));
+			$q1 = urldecode(implode('=', $q));
+			if($title === FALSE && $q0 == '_title')
+				$title = $q1;
+			else if($q0 == '_type')
+				$type = $q1;
 			else
-				$args[$q[0]] = $q[1];
+				$args[$q0] = $q1;
 		}
 		$this->request = new Request($module, $action, $id, $title,
 			$args);
