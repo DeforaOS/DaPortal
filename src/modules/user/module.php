@@ -524,9 +524,8 @@ class UserModule extends Module
 		$dialog = FALSE;
 
 		if(!$cred->isAdmin())
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_EPERM);
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a => $t)
@@ -547,9 +546,7 @@ class UserModule extends Module
 		//FIXME implement sorting
 		$query .= ' ORDER BY username ASC';
 		if(($res = $db->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Could not list users')));
+			return new ErrorResponse(_('Could not list users'));
 		$columns = array('username' => _('Username'),
 				'group' => _('Group'),
 				'enabled' => _('Enabled'),
@@ -656,11 +653,9 @@ class UserModule extends Module
 			//must be logged in
 			return $this->callDefault($engine, $request);
 		if(!$this->canClose($engine))
-		{
-			$error = _('Closing accounts is not allowed');
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
-		}
+			return new ErrorResponse(
+				_('Closing accounts is not allowed'),
+				Response::$CODE_EPERM);
 		//process the request
 		if(($error = $this->_closeProcess($engine, $request)) === FALSE)
 			//closing was successful
@@ -672,15 +667,19 @@ class UserModule extends Module
 	{
 		$title = _('Close your account');
 		$page = new Page(array('title' => $title));
+		$code = Response::$CODE_SUCCESS;
 
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		if(is_string($error))
+		{
 			$page->append('dialog', array('type' => 'error',
-				'text' => $error));
+					'text' => $error));
+			$code = Response::$CODE_EUNKNOWN;
+		}
 		$form = $this->formClose($engine);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page, $code);
 	}
 
 	private function _closeProcess($engine, $request)
@@ -738,9 +737,7 @@ class UserModule extends Module
 				'text' => $title));
 		//obtain the list of modules
 		if(($res = $db->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => 'Could not list modules'));
+			return new ErrorResponse(_('Could not list modules'));
 		$vbox = $page->append('vbox');
 		$vbox->append('title'); //XXX to reduce the next level of titles
 		$vbox = $vbox->append('vbox');
@@ -803,9 +800,7 @@ class UserModule extends Module
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => 'Could not list modules'));
+			return new ErrorResponse(_('Could not list modules'));
 		if(($uid = $request->getID()) !== FALSE)
 		{
 			$user = User::lookup($engine, $request->getTitle(),
@@ -899,12 +894,10 @@ class UserModule extends Module
 			$user = User::lookup($engine, $request->getTitle(),
 					$id);
 		if($user === FALSE || ($id = $user->getUserID()) == 0)
-		{
 			//the anonymous user has no memberships
-			$error = _('There are no groups for this user');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
-		}
+			return new ErrorResponse(
+				_('There are no groups for this user'),
+				Response::$CODE_ENOENT);
 		if($id === $cred->getUserID())
 			//viewing own profile
 			$id = FALSE;
@@ -921,7 +914,8 @@ class UserModule extends Module
 			$error = _('Could not list the groups');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		$columns = array('title' => _('Group'),
 			'count' => _('Members'));
@@ -947,7 +941,7 @@ class UserModule extends Module
 					'request' => $r,
 					'text' => _('Back to my account')));
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -964,19 +958,20 @@ class UserModule extends Module
 		$page->append('title', array('stock' => 'login',
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		$error = _('Permission denied');
 		if($list != 1)
 		{
+			$error = _('Permission denied');
 			$vbox->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page, Response::$CODE_EPERM);
 		}
-		$error = _('Could not list the users');
 		if(($res = $db->query($engine, $query)) === FALSE)
 		{
+			$error = _('Could not list the users');
 			$vbox->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		$columns = array('title' => 'Username',
 			'fullname' => 'Full name');
@@ -999,7 +994,7 @@ class UserModule extends Module
 		$r = new Request();
 		$vbox->append('link', array('request' => $r, 'stock' => 'home',
 				'text' => _('Back to the homepage')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1064,7 +1059,7 @@ class UserModule extends Module
 					'stock' => 'register',
 					'text' => $register));
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _loginProcess($engine, $request)
@@ -1141,7 +1136,7 @@ class UserModule extends Module
 		$box->append('link', array('text' => _('click here'),
 			'request' => $r));
 		$box->append('label', array('text' => '.'));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1162,7 +1157,7 @@ class UserModule extends Module
 			$page->append('link', array('stock' => 'home',
 					'request' => $r,
 					'text' => _('Back to the homepage')));
-			return $page;
+			return new PageResponse($page);
 		}
 		$r = $this->getRequest('logout');
 		if($request->isIdempotent())
@@ -1181,7 +1176,7 @@ class UserModule extends Module
 			$form->append('button', array('text' => _('Logout'),
 						'stock' => 'logout',
 						'type' => 'submit'));
-			return $page;
+			return new PageResponse($page);
 		}
 		//process logout
 		$page->setProperty('location', $engine->getURL($r));
@@ -1197,7 +1192,7 @@ class UserModule extends Module
 					'request' => $r));
 		$box->append('label', array('text' => '.'));
 		$engine->setCredentials(new AuthCredentials);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1215,12 +1210,10 @@ class UserModule extends Module
 			$user = User::lookup($engine, $request->getTitle(),
 					$id);
 		if($user === FALSE || ($id = $user->getUserID()) == 0)
-		{
 			//the anonymous user has no profile
-			$error = _('There is no profile for this user');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
-		}
+			return new ErrorResponse(
+				_('There is no profile for this user'),
+				Response::$CODE_ENOENT);
 		if($id === $cred->getUserID())
 			//viewing own profile
 			$id = FALSE;
@@ -1268,7 +1261,7 @@ class UserModule extends Module
 						'text' => _('Close my account')));
 			}
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1305,7 +1298,7 @@ class UserModule extends Module
 		$email = $request->get('email');
 		$form = $this->formRegister($engine, $username, $email);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _register_process($engine, $request)
@@ -1339,7 +1332,7 @@ class UserModule extends Module
 		$page->append('link', array('stock' => 'home',
 				'text' => _('Back to the homepage'),
 				'request' => new Request()));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1381,7 +1374,7 @@ class UserModule extends Module
 		$email = $request->get('email');
 		$form = $this->formReset($engine, $username, $email);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _reset_process($engine, $request)
@@ -1413,7 +1406,7 @@ class UserModule extends Module
 		$page->append('link', array('stock' => 'home',
 				'text' => _('Back to the homepage'),
 				'request' => new Request()));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _reset_token($engine, $request, $uid, $token)
@@ -1455,7 +1448,7 @@ class UserModule extends Module
 			'request' => $this->getRequest()));
 		$form->append('button', array('stock' => 'reset',
 			'type' => 'submit', 'text' => _('Reset')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _reset_token_process($engine, $request, $uid, $token)
@@ -1491,7 +1484,7 @@ class UserModule extends Module
 		$page->append('link', array('stock' => 'login',
 				'text' => _('Proceed to login page'),
 				'request' => $this->getRequest('login')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1522,7 +1515,7 @@ class UserModule extends Module
 		//form
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _submitProcess($engine, $request, &$user)
@@ -1555,7 +1548,7 @@ class UserModule extends Module
 		$r = new Request($this->name, FALSE, $user->getUserID(),
 			$user->getUsername());
 		$this->helperRedirect($engine, $r, $page);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1606,11 +1599,8 @@ class UserModule extends Module
 			//viewing own profile
 			$id = FALSE;
 		if($id !== FALSE && !$cred->isAdmin())
-		{
-			$error = _('Permission denied');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
-		}
+			return new ErrorResponse(_('Permission denied'),
+				Response::$CODE_EPERM);
 		//process update
 		if(!$request->isIdempotent())
 			$error = $this->_updateProcess($engine, $request,
@@ -1691,7 +1681,7 @@ class UserModule extends Module
 			$request->getTitle());
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1713,7 +1703,7 @@ class UserModule extends Module
 		{
 			$page->append('dialog', array('type' => 'error',
 				'text' => _('Registering is not allowed')));
-			return $page;
+			return new PageResponse($page, Response::$CODE_EPERM);
 		}
 		$box = $page->append('vbox');
 		if(($user = User::validate($engine, $uid, $token, $error))
@@ -1733,7 +1723,7 @@ class UserModule extends Module
 		$r = new Request();
 		$box->append('link', array('stock' => 'home', 'request' => $r,
 			'text' => _('Back to the homepage')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -1758,7 +1748,7 @@ class UserModule extends Module
 		$r = $this->getRequest('logout');
 		$box->append('button', array('stock' => 'logout',
 				'request' => $r, 'text' => _('Logout')));
-		return $box;
+		return new PageResponse($box);
 	}
 
 
