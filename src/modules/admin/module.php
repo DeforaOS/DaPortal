@@ -181,10 +181,10 @@ class AdminModule extends Module
 
 	protected function callAdminModules($engine, $request, $page)
 	{
-		$title = _('Modules administration');
-		$query = static::$query_admin_modules;
-		$database = $engine->getDatabase();
 		$actions = array('disable', 'enable');
+		$database = $engine->getDatabase();
+		$query = static::$query_admin_modules;
+		$title = _('Modules administration');
 		$dialog = FALSE;
 
 		//perform actions if necessary
