@@ -418,7 +418,7 @@ class User
 
 	//User::register
 	static public function register($engine, $module, $username, $password,
-		$email, $enabled = FALSE, &$error = FALSE)
+			$email, $enabled = FALSE, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$error = '';
@@ -449,7 +449,7 @@ class User
 			$error = _('Could not register the user');
 			return FALSE;
 		}
-		$user = User::lookup($engine, $username, $uid);
+		$user = User::lookup($engine, $username, $uid, FALSE);
 		if($user === FALSE || $user->getUserID() == 0)
 		{
 			$db->transactionRollback($engine);
