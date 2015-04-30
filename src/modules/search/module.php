@@ -404,8 +404,9 @@ class SearchModule extends Module
 		if($intitle && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR title '.$db->$func($case)
-					." :arg$i";
+				$query .= $case ? ' OR LOWER(title) '
+						.$db->$func()." LOWER(:arg$i)"
+					: ' OR title '.$db->$func()." :arg$i";
 				if($func == 'like')
 				{
 					$query .= ' ESCAPE :escape';
@@ -416,8 +417,9 @@ class SearchModule extends Module
 		if($incontent && count($q))
 			foreach($q as $r)
 			{
-				$query .= ' OR content '.$db->$func($case)
-					." :arg$i";
+				$query .= $case ? ' OR LOWER(content) '
+						.$db->$func()." LOWER(:arg$i)"
+				       : ' OR content '.$db->$func()." :arg$i";
 				if($func == 'like')
 				{
 					$query .= ' ESCAPE :escape';
