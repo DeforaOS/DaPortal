@@ -153,8 +153,12 @@ CREATE TABLE daportal_content (
 );
 
 CREATE INDEX daportal_content_timestamp_desc_index ON daportal_content (timestamp DESC);
-CREATE INDEX daportal_content_title_index ON daportal_content (title) WHERE enabled='1' AND public='1';
+CREATE INDEX daportal_content_module_id_index ON daportal_content (module_id);
 CREATE INDEX daportal_content_user_id_index ON daportal_content (user_id);
+CREATE INDEX daportal_content_title_index ON daportal_content (title) WHERE enabled='1' AND public='1';
+CREATE INDEX daportal_content_title_lower_index ON daportal_content (LOWER(title)) WHERE enabled='1' AND public='1';
+CREATE INDEX daportal_content_content_index ON daportal_content (content) WHERE enabled='1' AND public='1';
+CREATE INDEX daportal_content_content_lower_index ON daportal_content (LOWER(content)) WHERE enabled='1' AND public='1';
 
 CREATE VIEW daportal_content_enabled AS
 SELECT daportal_content.content_id AS content_id,
