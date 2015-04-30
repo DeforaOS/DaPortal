@@ -133,7 +133,8 @@ class SearchModule extends Module
 		$cred = $engine->getCredentials();
 
 		if(!$cred->isAdmin())
-			return $engine->log('LOG_ERR', 'Permission denied');
+			return new ErrorResponse(_('Permission denied'),
+				Response::$CODE_EPERM);
 		$title = _('Search administration');
 		//FIXME implement settings
 		return FALSE;
@@ -149,17 +150,18 @@ class SearchModule extends Module
 
 		$page = $this->pageSearch($engine, $request, FALSE, $limit);
 		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
-			return $page;
+			return new PageResponse($page);
 		if(($res = $this->query($engine, $q, $case, TRUE, TRUE))
 				=== FALSE)
 		{
 			$error = _('Unable to search');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		else if($res === TRUE)
-			return $page;
+			return new PageResponse($page);
 		$count = count($res);
 		if(($offset = ($p - 1) * $limit) >= $count)
 		{
@@ -184,7 +186,7 @@ class SearchModule extends Module
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count,
 				$p);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -197,7 +199,7 @@ class SearchModule extends Module
 
 		$page = $this->pageSearch($engine, $request, TRUE, $limit);
 		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
-			return $page;
+			return new PageResponse($page);
 		$intitle = $request->get('intitle');
 		$incontent = $request->get('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
@@ -208,10 +210,11 @@ class SearchModule extends Module
 			$error = _('Unable to search');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		else if($res === TRUE)
-			return $page;
+			return new PageResponse($page);
 		$count = count($res);
 		if(($offset = ($p - 1) * $limit) >= $count)
 		{
@@ -234,7 +237,7 @@ class SearchModule extends Module
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count,
 				$p);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -252,7 +255,7 @@ class SearchModule extends Module
 					'type' => 'submit',
 					'text' => _('Search'),
 					'autohide' => TRUE));
-		return $form;
+		return new PageResponse($form);
 	}
 
 

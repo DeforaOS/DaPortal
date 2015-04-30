@@ -24,8 +24,7 @@ if(($module = Module::load($engine, 'search')) === FALSE)
 	exit(2);
 $request = new Request('search', FALSE, FALSE, FALSE, array('q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
-		//XXX should be PageResult
-		|| !$result instanceof Page)
+		|| !$result instanceof PageResponse)
 	exit(3);
 exit(0);
 
