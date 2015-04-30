@@ -220,11 +220,11 @@ abstract class Engine
 				." request: module $module"
 				.(($action !== FALSE) ? ", action $action"
 					: ''));
-		if(($handle = Module::load($this, $module)) === FALSE)
-			$ret = new PageResponse(FALSE,
+		if(($module = Module::load($this, $module)) === FALSE)
+			$ret = new ErrorResponse(_('Could not load the module'),
 					Response::$CODE_ENOENT);
 		else
-			$ret = $handle->call($this, $request, $internal);
+			$ret = $module->call($this, $request, $internal);
 		if($internal)
 			return $ret;
 		//XXX every call should return a response directly instead
