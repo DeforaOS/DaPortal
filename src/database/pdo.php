@@ -269,13 +269,16 @@ class PDODatabase extends Database
 	{
 		global $config;
 
-		if(($backend = $config->get('database::pdo', 'dsn'))
-				=== FALSE)
-			return FALSE;
-		$backend = explode(':', $backend);
-		if(is_array($backend))
-			return $backend[0];
-		return $backend;
+		if($this->backend !== FALSE)
+			return $this->backend;
+		if(($this->backend = $config->get('database::pdo', 'dsn'))
+				!== FALSE)
+		{
+			$this->backend = explode(':', $this->backend);
+			if(is_array($this->backend))
+				$this->backend = $this->backend[0];
+		}
+		return $this->backend;
 	}
 
 
@@ -293,6 +296,7 @@ class PDODatabase extends Database
 
 	//private
 	//properties
+	private $backend = FALSE;
 	private $handle = FALSE;
 	private $result_class = 'PDODatabaseResult';
 	private $transaction = 0;
