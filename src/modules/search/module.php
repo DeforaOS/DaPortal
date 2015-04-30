@@ -145,7 +145,6 @@ class SearchModule extends Module
 	protected function callDefault($engine, $request)
 	{
 		$case = FALSE;
-		$p = $this->getPage($engine, $request);
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, FALSE, $limit);
@@ -162,31 +161,8 @@ class SearchModule extends Module
 		}
 		else if($res === TRUE)
 			return new PageResponse($page);
-		$count = count($res);
-		if(($offset = ($p - 1) * $limit) >= $count)
-		{
-			$p = 1;
-			$offset = 0;
-		}
-		$results = $page->append('vbox');
-		$results->set('id', 'search_results');
-		$label = $results->append('label');
-		$label->set('text', $count.' result(s)');
-		$columns = array('title' => _('Title'),
-			'username' => _('Username'), 'date' => _('Date'),
-			'preview' => _('Preview'));
-		$view = $page->append('treeview', array('view' => 'preview',
-					'columns' => $columns));
-		$res->seek($offset);
-		for($i = 0; $i++ < $limit && $res->valid(); $res->next())
-			if(($r = $res->current()) === FALSE)
-				break;
-			else
-				$this->appendResult($engine, $view, $r);
-		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $count,
-				$p);
-		return new PageResponse($page);
+		return $this->helperResults($engine, $request, $page, $res,
+				$limit);
 	}
 
 
@@ -194,7 +170,6 @@ class SearchModule extends Module
 	protected function callAdvanced($engine, $request)
 	{
 		$case = $request->get('case') ? '1' : '0';
-		$p = $this->getPage($engine, $request);
 		$limit = $this->getLimit($engine, $request);
 
 		$page = $this->pageSearch($engine, $request, TRUE, $limit);
@@ -215,29 +190,8 @@ class SearchModule extends Module
 		}
 		else if($res === TRUE)
 			return new PageResponse($page);
-		$count = count($res);
-		if(($offset = ($p - 1) * $limit) >= $count)
-		{
-			$p = 1;
-			$offset = 0;
-		}
-		$results = $page->append('vbox');
-		$results->set('id', 'search_results');
-		$label = $results->append('label');
-		$label->set('text', $count.' result(s)');
-		$columns = array('title' => _('Title'),
-			'username' => _('Username'), 'date' => _('Date'),
-			'preview' => _('Preview'));
-		$view = $page->append('treeview', array('view' => 'preview',
-					'columns' => $columns));
-		for($i = 0, $res->seek($offset); $i++ < $limit
-					&& ($r = $res->current()) !== FALSE;
-				$res->next())
-			$this->appendResult($engine, $view, $r);
-		//output paging information
-		$this->helperPaging($engine, $request, $page, $limit, $count,
-				$p);
-		return new PageResponse($page);
+		return $this->helperResults($engine, $request, $page, $res,
+				$limit);
 	}
 
 
@@ -307,6 +261,39 @@ class SearchModule extends Module
 		$r = $this->getRequest($request->getAction(), $args);
 		$hbox->append('link', array('stock' => 'gotolast',
 				'request' => $r, 'text' => ''));
+	}
+
+
+	//SearchModule::helperResults
+	protected function helperResults($engine, $request, $page, $res, $limit)
+	{
+		$p = $this->getPage($engine, $request);
+		$count = count($res);
+		$columns = array('title' => _('Title'),
+			'username' => _('Username'), 'date' => _('Date'),
+			'preview' => _('Preview'));
+
+		if(($offset = ($p - 1) * $limit) >= $count)
+		{
+			$p = 1;
+			$offset = 0;
+		}
+		$results = $page->append('vbox');
+		$results->set('id', 'search_results');
+		$label = $results->append('label');
+		$label->set('text', $count.' result(s)');
+		$view = $page->append('treeview', array('view' => 'preview',
+					'columns' => $columns));
+		$res->seek($offset);
+		for($i = 0; $i++ < $limit && $res->valid(); $res->next())
+			if(($r = $res->current()) === FALSE)
+				break;
+			else
+				$this->appendResult($engine, $view, $r);
+		//output paging information
+		$this->helperPaging($engine, $request, $page, $limit, $count,
+				$p);
+		return new PageResponse($page);
 	}
 
 
