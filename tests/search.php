@@ -20,12 +20,36 @@ require_once('./tests.php');
 
 
 //search
+global $config;
+
 if(($module = Module::load($engine, 'search')) === FALSE)
 	exit(2);
+
+//simple search
 $request = new Request('search', FALSE, FALSE, FALSE, array('q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
 	exit(3);
+
+//advanced search
+$request = new Request('search', 'advanced', FALSE, FALSE, array(
+		'q' => 'test'));
+if(($result = $module->call($engine, $request)) === FALSE
+		|| !$result instanceof PageResponse)
+	exit(3);
+$how = array(0, 1);
+$case = array(0, 1);
+foreach($how as $h)
+	foreach($case as $c)
+	{
+		$config->set('module::search', 'regexp', $h);
+		$args = array('q' => 'test', 'case' => $c);
+		$request = new Request('search', 'advanced', FALSE, FALSE,
+			$args);
+		if(($result = $module->call($engine, $request)) === FALSE
+				|| !$result instanceof PageResponse)
+			exit(4);
+	}
 exit(0);
 
 ?>
