@@ -257,6 +257,9 @@ class PDODatabase extends Database
 				$func = array($this, '_date_trunc');
 				$this->handle->sqliteCreateFunction(
 						'date_trunc', $func);
+				//default the LIKE keyword to case-sensitive
+				$query = 'PRAGMA case_sensitive_like=1';
+				$this->query($engine, $query);
 				break;
 		}
 		return TRUE;

@@ -147,6 +147,9 @@ class SQLite3Database extends Database
 		$this->handle->createFunction('concat', $func, 2);
 		$func = array($this, '_date_trunc');
 		$this->handle->createFunction('date_trunc', $func);
+		//default the LIKE keyword to case-sensitive
+		$query = 'PRAGMA case_sensitive_like=1';
+		$this->query($engine, $query);
 		return TRUE;
 	}
 

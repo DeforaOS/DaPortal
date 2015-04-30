@@ -118,6 +118,9 @@ class SQLite2Database extends Database
 					'Could not open database: '.$error);
 		$func = array($this, '_date_trunc');
 		sqlite_create_function($this->handle, 'date_trunc', $func);
+		//default the LIKE keyword to case-sensitive
+		$query = 'PRAGMA case_sensitive_like=1';
+		$this->query($engine, $query);
 		return TRUE;
 	}
 
