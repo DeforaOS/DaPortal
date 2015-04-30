@@ -33,8 +33,12 @@ class ConfigSection extends Mutator
 	//ConfigSection::set
 	public function set($name, $value)
 	{
-		//values must be strings as well
-		if($value !== FALSE && !is_string($value))
+		if(is_bool($value))
+		{
+			if($value !== FALSE)
+				return FALSE;
+		}
+		else if(!is_scalar($value))
 			return FALSE;
 		return parent::set($name, $value);
 	}
