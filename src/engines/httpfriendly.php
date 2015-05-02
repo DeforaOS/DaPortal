@@ -121,8 +121,11 @@ class HTTPFriendlyEngine extends HTTPEngine
 		{
 			$url = array('scheme' => isset($_SERVER['HTTPS'])
 					? 'https' : 'http',
-				'host' => $_SERVER['SERVER_NAME'],
-				'port' => $_SERVER['SERVER_PORT'],
+				'host' => isset($_SERVER['SERVER_NAME'])
+					? $_SERVER['SERVER_NAME']
+					: gethostname(),
+				'port' => isset($_SERVER['SERVER_PORT'])
+					? $_SERVER['SERVER_PORT']: 80,
 				'path' => $name);
 			if(($url = http_build_url($url)) === FALSE)
 				//fallback to a relative address

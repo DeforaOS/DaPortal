@@ -113,7 +113,6 @@ class HTTPEngine extends Engine
 		//XXX hack to avoid testing twice for idempotence
 		if($this->request !== FALSE)
 			return $this->request;
-		$request = array();
 		$idempotent = TRUE;
 		$module = FALSE;
 		$action = FALSE;
@@ -121,7 +120,9 @@ class HTTPEngine extends Engine
 		$title = FALSE;
 		$parameters = FALSE;
 		$type = FALSE;
-		if($_SERVER['REQUEST_METHOD'] == 'GET')
+		if(!isset($_SERVER['REQUEST_METHOD']))
+			$request = array();
+		else if($_SERVER['REQUEST_METHOD'] == 'GET')
 			$request = $_GET;
 		else if($_SERVER['REQUEST_METHOD'] == 'HEAD')
 		{
@@ -133,6 +134,8 @@ class HTTPEngine extends Engine
 			$request = $_POST;
 			$idempotent = FALSE;
 		}
+		else
+			$request = array();
 		//collect the parameters
 		foreach($request as $key => $value)
 		{
@@ -222,8 +225,11 @@ class HTTPEngine extends Engine
 		{
 			$url = array('scheme' => isset($_SERVER['HTTPS'])
 					? 'https' : 'http',
-				'host' => $_SERVER['SERVER_NAME'],
-				'port' => $_SERVER['SERVER_PORT'],
+				'host' => isset($_SERVER['SERVER_NAME'])
+					? $_SERVER['SERVER_NAME']
+					: gethostname(),
+				'port' => isset($_SERVER['SERVER_PORT'])
+					? $_SERVER['SERVER_PORT']: 80,
 				'path' => $name);
 			if(($url = http_build_url($url)) === FALSE)
 				//fallback to a relative address
