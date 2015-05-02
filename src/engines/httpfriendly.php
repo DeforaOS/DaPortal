@@ -111,11 +111,12 @@ class HTTPFriendlyEngine extends HTTPEngine
 		//FIXME do not include parameters for a POST request
 		if($request === FALSE)
 			return FALSE;
-		$name = $_SERVER['SCRIPT_NAME'];
-		//use the kicker instead if defined
+		//use the kicker if defined
 		if(($kicker = $config->get($this->section, 'kicker'))
 				!== FALSE)
 			$name = dirname($name).'/'.$kicker;
+		else
+			$name = $_SERVER['SCRIPT_NAME'];
 		$name = ltrim($name, '/');
 		if($absolute)
 		{
