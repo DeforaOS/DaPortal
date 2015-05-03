@@ -170,6 +170,9 @@ globs=@PREFIX@/share/mime/globs
 [module::download]
 #root=/tmp/download
 
+[module::pki]
+#root=/tmp/pki
+
 [module::project]
 #SCM backend: CVS
 #scm::backend::cvs::cvsroot=/tmp/cvs
