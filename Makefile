@@ -328,6 +328,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/daportal.php \
 		$(PACKAGE)-$(VERSION)/tests/database.php \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
+		$(PACKAGE)-$(VERSION)/tests/http.php \
 		$(PACKAGE)-$(VERSION)/tests/mail.php \
 		$(PACKAGE)-$(VERSION)/tests/module.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
