@@ -16,6 +16,8 @@
 
 
 
+namespace DaPortal;
+
 require_once('./tests.php');
 
 
