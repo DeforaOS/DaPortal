@@ -32,6 +32,7 @@ class CAClientPKIContent extends PKIContent
 		$this->text_content_list_title = _('CA clients');
 		$this->text_more_content = _('More CA clients...');
 		$this->text_submit = _('New CA client...');
+		$this->text_submit_content = _('New CA client');
 	}
 
 

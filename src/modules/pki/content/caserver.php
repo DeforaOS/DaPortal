@@ -32,6 +32,7 @@ class CAServerPKIContent extends PKIContent
 		$this->text_content_list_title = _('CA servers');
 		$this->text_more_content = _('More CA servers...');
 		$this->text_submit = _('New CA servers...');
+		$this->text_submit_content = _('New CA server');
 	}
 
 
