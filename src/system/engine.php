@@ -283,18 +283,15 @@ abstract class Engine
 			}
 			closedir($dir);
 		}
-		if($ret !== FALSE)
-		{
-			//XXX ignore errors
-			static::configLoadEngine($prefix, $name, FALSE);
-			if($config->get("engine::$name", 'debug') == 1)
-				static::$debug = TRUE;
-			$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
-					.' with priority '.$priority);
-			$ret->attach();
-		}
-		else
-			error_log('Could not load any engine');
+		if($ret === FALSE)
+			return error_log('Could not load any engine');
+		//XXX ignore errors
+		static::configLoadEngine($prefix, $name, FALSE);
+		if($config->get("engine::$name", 'debug') == 1)
+			static::$debug = TRUE;
+		$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+				.' with priority '.$priority);
+		$ret->attach();
 		return $ret;
 	}
 
