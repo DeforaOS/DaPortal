@@ -16,9 +16,12 @@
 
 
 
-class Engine
+abstract class Engine
 {
-	static public function attachDefault()
+	abstract public function match();
+	abstract public function attach();
+
+	static public function attachDefault($prefix = FALSE)
 	{
 		global $config;
 
