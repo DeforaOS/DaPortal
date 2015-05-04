@@ -31,6 +31,12 @@ abstract class Engine
 		return $ret;
 	}
 
+	public function log($priority, $message)
+	{
+		error_log($message, 0);
+		return FALSE;
+	}
+
 	public function process($request, $internal = FALSE)
 	{
 		return new StringResponse();
