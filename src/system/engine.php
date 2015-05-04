@@ -292,7 +292,25 @@ abstract class Engine
 		$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 				.' with priority '.$priority);
 		$ret->attach();
+		static::_defaultBootstrap();
 		return $ret;
+	}
+
+	static protected function _defaultBootstrap()
+	{
+		$dirname = 'bootstrap';
+
+		if(!is_dir($dirname))
+			return TRUE;
+		if(!is_readable($dirname))
+			return FALSE;
+		if(($dir = opendir($dirname)) === FALSE)
+			return FALSE;
+		while(($de = readdir($dir)) !== FALSE)
+			if(substr($de, -4) == '.php')
+				require("$dirname/$de");
+		closedir($dir);
+		return TRUE;
 	}
 
 
