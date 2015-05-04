@@ -16,12 +16,44 @@
 
 
 
+//bindtextdomain
+if(!function_exists('bindtextdomain'))
+{
+	function bindtextdomain($domain, $directory)
+	{
+		//XXX should not fail and return a string instead
+		return NULL;
+	}
+}
+
+
 //gettext
 if(!function_exists('gettext'))
 {
 	function gettext($text)
 	{
 		return $text;
+	}
+}
+
+
+//setlocale
+if(!function_exists('setlocale'))
+{
+	function setlocale($category, $locale)
+	{
+		return FALSE;
+	}
+}
+
+
+//textdomain
+if(!function_exists('textdomain'))
+{
+	function textdomain($domain)
+	{
+		//XXX should not fail and return a string instead
+		return NULL;
 	}
 }
 
