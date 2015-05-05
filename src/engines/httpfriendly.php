@@ -114,7 +114,7 @@ class HTTPFriendlyEngine extends HTTPEngine
 		//use the kicker if defined
 		if(($kicker = $config->get($this->section, 'kicker'))
 				!== FALSE)
-			$name = dirname($name).'/'.$kicker;
+			$name = dirname($_SERVER['SCRIPT_NAME']).'/'.$kicker;
 		else
 			$name = $_SERVER['SCRIPT_NAME'];
 		$name = ltrim($name, '/');
