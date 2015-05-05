@@ -79,7 +79,7 @@ class SessionAuth extends Auth
 		if($uid === FALSE || $uid == 0 || $username === FALSE)
 			return parent::getCredentials($engine);
 		$user = User::lookup($engine, $username, $uid);
-		if($user === FALSE)
+		if($user === FALSE || $user->isLocked())
 			return parent::getCredentials($engine);
 		$cred = new AuthCredentials($user->getUserID(),
 				$user->getUsername(), $user->getGroupID(),
