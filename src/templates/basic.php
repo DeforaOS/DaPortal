@@ -206,7 +206,8 @@ class BasicTemplate extends Template
 				$this->id);
 			//XXX
 			$page = $engine->process($request);
-			$page = $page->getContent();
+			$page = ($page instanceof PageResponse)
+				? $page->getContent() : FALSE;
 		}
 		if($page !== FALSE)
 		{
