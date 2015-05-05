@@ -84,6 +84,13 @@ abstract class Template
 	}
 
 
+	//Template::getName
+	protected function getName()
+	{
+		return $this->name;
+	}
+
+
 	//virtual
 	abstract protected function match($engine);
 	abstract protected function attach($engine);
