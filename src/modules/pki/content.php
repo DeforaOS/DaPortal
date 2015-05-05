@@ -136,9 +136,9 @@ abstract class PKIContent extends ContentMulti
 		}
 		if($this->get('signed') === FALSE)
 			$vbox->append('dialog', array('type' => 'warning',
-					'text' => _('This ')
-					.static::$text_content
-					._(' is not signed')));
+					'text' => sprintf(
+						_('This %s is not signed'),
+						static::$text_content)));
 		$view = $vbox->append('treeview', array('columns' => $columns));
 		foreach($fields as $k => $v)
 		{
