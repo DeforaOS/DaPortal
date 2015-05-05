@@ -125,6 +125,7 @@ _test "http"
 _test "mail"
 _test "module"
 _test "search"
+_test "template"
 _test "user"
 #echo "Expected failures:" 1>&2
 #_fail "test"
