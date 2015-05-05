@@ -23,6 +23,7 @@ require_once('./tests.php');
 if(($dir = opendir('../src/templates')) === FALSE)
 	exit(2);
 $ret = 0;
+$page = new Page;
 while(($de = readdir($dir)) !== FALSE)
 {
 	if(substr($de, -4) != '.php')
@@ -35,6 +36,8 @@ while(($de = readdir($dir)) !== FALSE)
 				$template.': Could not attach template');
 		$ret = 3;
 	}
+	else
+		$template->render($engine, $page);
 }
 closedir($dir);
 exit($ret);
