@@ -209,7 +209,15 @@ class Mail
 		$png = 'image/png;base64,';
 
 		$xml = new DOMDocument('1.0', 'UTF-8');
-		if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET) === FALSE)
+		if(version_compare(PHP_VERSION, '5.4.0') < 0)
+		{
+			//XXX for PHP < 5.4
+			if($xml->loadHTML($html) === FALSE)
+				return $engine->log('LOG_ERR',
+						'Could not set the HTML body');
+		}
+		else if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET)
+				=== FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not set the HTML body');
 		//convert in-line images for compatibility
