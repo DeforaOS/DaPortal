@@ -47,12 +47,12 @@ class CAPKIContent extends PKIContent
 			$title = $request->get('title');
 
 			//check for duplicates
-			if(($root = $this->getRoot($engine)) === FALSE)
+			if(($rootca = $this->getRootCA($engine)) === FALSE)
 			{
 				$error = _('Internal error');
 				return FALSE;
 			}
-			if(file_exists($root))
+			if(file_exists($rootca))
 			{
 				$error = _('Duplicate CA');
 				return FALSE;
@@ -62,20 +62,12 @@ class CAPKIContent extends PKIContent
 	}
 
 
-	//CAPKIContent::getRoot
-	protected function getRoot($engine)
+	//CAPKIContent::getRootCA
+	protected function getRootCA($engine)
 	{
-		global $config;
-
-		if($this->root !== FALSE)
-			return $this->root;
-		$module = $this->getModule();
-		$section = 'module::'.$module->getName(); //XXX
-		if(($root = $config->get($section, 'root')) === FALSE)
-			return $engine->log('LOG_ERR', 'The PKI root folder is'
-					.' not configured');
-		$this->root = $root.'/'.$this->getTitle();
-		return $this->root;
+		if(($root = $this->getRoot($engine)) === FALSE)
+			return FALSE;
+		return $root.'/'.$this->getTitle();
 	}
 
 
@@ -83,9 +75,12 @@ class CAPKIContent extends PKIContent
 	//CAPKIContent::createRoot
 	protected function createRoot($engine)
 	{
-		if(($root = $this->getRoot($engine)) === FALSE)
+		if(($root = $this->getRootCA($engine)) === FALSE)
 			return FALSE;
-		//create directories as required
+		//create the CA directory
+		if(is_dir($root) || mkdir($root, 0700, TRUE) !== TRUE)
+			return FALSE;
+		//create sub-directories as required
 		$dirs = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
 		foreach($dirs as $d)
 		{
@@ -98,12 +93,12 @@ class CAPKIContent extends PKIContent
 
 	protected function _rootDirectory($engine, $directory)
 	{
-		if(is_dir($directory) && is_readable($directory))
-			return TRUE;
-		if(mkdir($directory, 0700, TRUE) !== FALSE)
-			return TRUE;
-		return $engine->log('LOG_ERR', $directory.': Could not'
-				.' create directory');
+		if(is_dir($directory) || is_readable($directory))
+			return FALSE;
+		if(mkdir($directory, 0700, TRUE) === FALSE)
+			return $engine->log('LOG_ERR', $directory.': Could not'
+					.' create directory');
+		return TRUE;
 	}
 
 
@@ -180,16 +175,16 @@ class CAPKIContent extends PKIContent
 		$query = static::$ca_query_insert;
 
 		//configuration
-		if(($root = $this->getRoot($engine)) === FALSE)
+		if(($root = $this->getRootCA($engine)) === FALSE)
 		{
 			$error = _('Internal error');
 			return FALSE;
 		}
 
 		//database transaction
+		$error = _('Could not insert the CA');
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
-		$error = _('Could not insert the CA');
 		$args = array('ca_id' => $this->getID(),
 			'parent' => ($parent !== FALSE) ? $parent->getID()
 				: NULL,
@@ -198,7 +193,6 @@ class CAPKIContent extends PKIContent
 			'locality' => $request->get('locality') ?: '',
 			'organization' => $request->get('organization') ?: '',
 			'section' => $request->get('section') ?: '',
-			'cn' => $request->get('cn') ?: '',
 			'email' => $request->get('email') ?: '',
 			'signed' => FALSE);
 		if($database->query($engine, $query, $args) === FALSE)
@@ -215,7 +209,7 @@ class CAPKIContent extends PKIContent
 			return $this->_insertCleanup($engine, TRUE, TRUE);
 
 		//certificate
-		if($this->_insertCertificate($engine, $request, $parent)
+		if($this->_insertCertificate($engine, $request, $parent, $error)
 				=== FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
 		if($parent !== FALSE && $parent->sign($engine, $this) === FALSE)
@@ -224,32 +218,12 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _insertCertificate($engine, $request, $parent)
+	protected function _insertCertificate($engine, $request, $parent,
+			$error = FALSE)
 	{
-		$root = $this->getRoot($engine);
-		$x509 = ($parent !== FALSE) ? '' : ' -x509';
-		$opensslcnf = $root.'/openssl.cnf';
-		$days = $request->get('days');
-		$key = $request->get('keysize');
-		$keyout = $root.'/private/cacert.key';
-		$out = ($parent !== FALSE) ? $root.'/cacert.csr'
-			: $root.'/cacert.crt';
-		$subject = $this->getSubject($request);
-
-		$days = is_numeric($days)
-			? ' -days '.escapeshellarg($days) : '';
-		$key = is_numeric($key)
-			? ' -newkey rsa:'.escapeshellarg($key) : '';
-		$cmd = 'openssl req -batch -nodes -new'.$x509.$days.$key
-			.' -config '.escapeshellarg($opensslcnf)
-			.' -keyout '.escapeshellarg($keyout)
-			.' -out '.escapeshellarg($out)
-			.' -subj '.escapeshellarg($subject)
-			.' 2>&1'; //XXX avoid garbage on the standard error
-		$res = -1;
-		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
-		exec($cmd, $output, $res);
-		return ($res == 0) ? TRUE : FALSE;
+		return $this->createCertificate($engine, $request, $parent,
+				$request->get('days'),
+				$request->get('keysize'), $error);
 	}
 
 	protected function _insertCleanup($engine, $directories = FALSE,
@@ -263,7 +237,7 @@ class CAPKIContent extends PKIContent
 	{
 		$from = array("\\", "\"", "$");
 		$to = array("\\\\", "\\\"", "\\$");
-		$root = $this->getRoot($engine);
+		$root = $this->getRootCA($engine);
 		$filename = $root.'/openssl.cnf';
 		$module = $this->getModule()->getName();
 		$template = 'modules/'.$module.'/openssl.cnf.in';
@@ -287,14 +261,14 @@ class CAPKIContent extends PKIContent
 
 	protected function _insertIndex($engine)
 	{
-		$root = $this->getRoot($engine);
+		$root = $this->getRootCA($engine);
 
 		return touch($root.'/index.txt');
 	}
 
 	protected function _insertSerial($engine)
 	{
-		$root = $this->getRoot($engine);
+		$root = $this->getRootCA($engine);
 		$filename = $root.'/serial';
 
 		if(($fp = fopen($filename, 'w')) === FALSE)
@@ -326,16 +300,16 @@ class CAPKIContent extends PKIContent
 	protected function sign($engine, $content, &$error = FALSE)
 	{
 		if($content instanceof CAPKIContent)
-			return $this->_signCA($engine, $content);
+			return $this->_signCA($engine, $content, $error);
 		$error = _('Unsupported operation');
 		return FALSE;
 	}
 
 	private function _signCA($engine, $ca, &$error)
 	{
-		$root = $this->getRoot($engine);
+		$root = $this->getRootCA($engine);
 		$opensslcnf = $root.'/openssl.cnf';
-		$caroot = $ca->getRoot($engine);
+		$caroot = $ca->getRootCA($engine);
 
 		if($root === FALSE || $caroot === FALSE)
 		{
@@ -346,7 +320,7 @@ class CAPKIContent extends PKIContent
 			.' -config '.escapeshellarg($opensslcnf)
 			.' -extensions v3_ca'
 			.' -policy policy_anything'
-			.' -out '.escapeshellarg($caroot.'/cacert.crt')
+			.' -out '.escapeshellarg($caroot.'/cacert.pem')
 			.' -infiles '.escapeshellarg($caroot.'/cacert.csr');
 		$res = -1;
 		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
@@ -374,13 +348,12 @@ class CAPKIContent extends PKIContent
 	//	locality
 	//	organization
 	//	section
-	//	cn
 	//	email
 	//	signed
 	static protected $ca_query_insert = 'INSERT INTO daportal_ca (
 		ca_id, parent, country, state, locality, organization, section,
-		cn, email, signed) VALUES (:ca_id, :parent, :country, :state,
-		:locality, :organization, :section, :cn, :email, :signed)';
+		email, signed) VALUES (:ca_id, :parent, :country, :state,
+		:locality, :organization, :section, :email, :signed)';
 	//IN:	ca_id
 	//	signed
 	static protected $ca_query_update = 'UPDATE daportal_ca
@@ -389,7 +362,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_list = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id';
@@ -398,7 +371,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_list_group = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id
@@ -411,7 +384,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_list_user = 'SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id
@@ -421,7 +394,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_list_user_private = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_enabled, daportal_ca
 		WHERE daportal_content_enabled.content_id=daportal_ca.ca_id
 		AND module_id=:module_id
@@ -432,8 +405,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_load = "SELECT content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
 		title, content, enabled, public,
-		country, state, locality, organization, section, cn, email,
-		signed
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_enabled, daportal_ca
 		WHERE daportal_content_enabled.content_id=daportal_ca.ca_id
 		AND module_id=:module_id
@@ -445,8 +417,7 @@ class CAPKIContent extends PKIContent
 	static protected $query_load_by_title_parent = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email,
-		signed
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id AND title=:title AND parent=:parent';
@@ -455,16 +426,10 @@ class CAPKIContent extends PKIContent
 	static protected $query_load_by_title_parent_null = 'SELECT content_id AS id,
 		timestamp, module_id, module, user_id, username,
 		group_id, groupname, title, content, enabled, public,
-		country, state, locality, organization, section, cn, email,
-		signed
+		country, state, locality, organization, section, email, signed
 		FROM daportal_content_public, daportal_ca
 		WHERE daportal_content_public.content_id=daportal_ca.ca_id
 		AND module_id=:module_id AND title=:title AND parent IS NULL';
-
-
-	//private
-	//properties
-	private $root = FALSE;
 }
 
 ?>

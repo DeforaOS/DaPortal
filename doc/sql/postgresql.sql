@@ -338,7 +338,6 @@ CREATE TABLE daportal_ca (
 	locality VARCHAR(255),
 	organization VARCHAR(255),
 	section VARCHAR(255),
-	cn VARCHAR(255),
 	email VARCHAR(255),
 	signed BOOLEAN DEFAULT FALSE
 );
@@ -351,7 +350,6 @@ CREATE TABLE daportal_caclient (
 	locality VARCHAR(255),
 	organization VARCHAR(255),
 	section VARCHAR(255),
-	cn VARCHAR(255),
 	email VARCHAR(255),
 	signed BOOLEAN DEFAULT FALSE
 );
@@ -364,7 +362,6 @@ CREATE TABLE daportal_caserver (
 	locality VARCHAR(255),
 	organization VARCHAR(255),
 	section VARCHAR(255),
-	cn VARCHAR(255),
 	email VARCHAR(255),
 	signed BOOLEAN DEFAULT FALSE
 );

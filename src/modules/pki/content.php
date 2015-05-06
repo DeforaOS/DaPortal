@@ -31,7 +31,6 @@ abstract class PKIContent extends ContentMulti
 		$this->fields['locality'] = 'Locality';
 		$this->fields['organization'] = 'Organization';
 		$this->fields['section'] = 'Section';
-		$this->fields['cn'] = 'Common Name';
 		$this->fields['email'] = 'e-mail';
 		$this->fields['parent'] = 'Parent CA';
 		//let PKI content be public by default
@@ -53,7 +52,7 @@ abstract class PKIContent extends ContentMulti
 		{
 			if(($title = $request->get('title')) === FALSE
 					|| strlen($title) == 0
-					|| strchr($title, '/') !== FALSE
+					|| strpos($title, '/') !== FALSE
 					|| $title == '..')
 			{
 				$error = _('Invalid name');
@@ -102,14 +101,17 @@ abstract class PKIContent extends ContentMulti
 		$s = ($request !== FALSE) ? $request : $this;
 
 		foreach($fields as $field => $key)
-			if(($value = $s->get($field)) !== FALSE
-					&& strlen($value) > 0)
+		{
+			$value = ($field == 'cn') ? $s->getTitle()
+				: $s->get($field);
+			if($value !== FALSE && strlen($value) > 0)
 			{
 				if(strchr($value, '/') !== FALSE)
 					//XXX escape slashes instead?
 					return FALSE;
 				$ret.='/'.$key.'='.$value;
 			}
+		}
 		return (strlen($ret) > 0) ? $ret : FALSE;
 	}
 
@@ -123,7 +125,7 @@ abstract class PKIContent extends ContentMulti
 		$fields = array('country' => _('Country: '),
 			'state' => _('State: '), 'locality' => _('Locality: '),
 			'organization' => _('Organization: '),
-			'section' => _('Section: '), 'cn' => _('Common Name: '),
+			'section' => _('Section: '),
 			'email' => _('e-mail: '));
 
 		$vbox = new PageElement('vbox');
@@ -188,9 +190,6 @@ abstract class PKIContent extends ContentMulti
 		$vbox->append('entry', array('name' => 'section',
 				'text' => _('Section: '),
 				'value' => $request->get('section')));
-		$vbox->append('entry', array('name' => 'cn',
-				'text' => _('Common Name: '),
-				'value' => $request->get('cn')));
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
 				'value' => $request->get('email')));
@@ -246,6 +245,107 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//protected
+	//methods
+	//accessors
+	//PKIContent::getRoot
+	protected function getRoot($engine)
+	{
+		global $config;
+
+		if($this->root !== FALSE)
+			return $this->root;
+		$module = $this->getModule();
+		$section = 'module::'.$module->getName(); //XXX
+		if(($this->root = $config->get($section, 'root')) === FALSE)
+			return $engine->log('LOG_ERR', 'The PKI root folder is'
+					.' not configured');
+		return $this->root;
+	}
+
+
+	//CAPKIContent::getRootCA
+	protected function getRootCA($engine)
+	{
+		if(($parent = $this->getParent($engine)) === FALSE)
+			//FIXME add support for self-signed certificates
+			return FALSE;
+		return $parent->getRootCA($engine);
+	}
+
+
+	//useful
+	//PKIContent::createCertificate
+	protected function createCertificate($engine, $request = FALSE,
+			$parent = FALSE, $days = FALSE, $keysize = FALSE,
+			&$error = FALSE)
+	{
+		$root = $this->getRootCA($engine);
+		$subject = $this->getSubject($request);
+
+		//enforce reasonable defaults
+		if($days === FALSE)
+			$days = 365;
+		if($keysize === FALSE)
+			$keysize = 4096;
+		//check parameters
+		if($root === FALSE || $subject === FALSE || !is_numeric($days)
+				|| !is_numeric($keysize))
+		{
+			$error = _('Invalid arguments to create certificate');
+			return FALSE;
+		}
+		switch(static::$class)
+		{
+			case 'CAPKIContent':
+				$extensions = '';
+				$keyout = $root.'/private/cakey.pem';
+				$out = ($parent !== FALSE) ? $root.'/cacert.csr'
+					: $root.'/cacert.pem';
+				break;
+			case 'CAClientPKIContent':
+				$extensions = ' -extensions usr_cert';
+				//$keyout = $root.'/private/'.$this->getTitle().'.key';
+				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
+					: $root.'/newcerts/'.$this->getTitle().'.crt';
+				break;
+			case 'CAServerPKIContent':
+				$extensions = ' -extensions srv_cert';
+				//$keyout = $root.'/private/'.$this->getTitle().'.key';
+				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
+					: $root.'/newcerts/'.$this->getTitle().'.crt';
+				break;
+			default:
+				$error = _('Invalid class to create certificate');
+				return FALSE;
+		}
+		$x509 = ($parent !== FALSE) ? '' : ' -x509';
+		$opensslcnf = $root.'/openssl.cnf';
+
+		$days = ' -days '.escapeshellarg($days);
+		$keysize = ' -newkey rsa:'.escapeshellarg($keysize);
+		$cmd = 'openssl req -batch -nodes -new '.$x509.$days.$keysize
+			.' -config '.escapeshellarg($opensslcnf).$extensions
+			.' -keyout '.escapeshellarg($keyout)
+			.' -out '.escapeshellarg($out)
+			.' -subj '.escapeshellarg($subject)
+			.' 2>&1'; //XXX avoid garbage on the standard error
+		$res = -1;
+		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		exec($cmd, $output, $res);
+		if($res != 0)
+		{
+			$error = _('Could not generate the certificate');
+			return $engine->log('LOG_ERR',
+					'Could not generate the certificate');
+		}
+		return TRUE;
+	}
+
+
+	//private
+	//properties
+	private $root = FALSE;
 }
 
 ?>
