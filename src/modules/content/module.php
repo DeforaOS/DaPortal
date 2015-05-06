@@ -899,12 +899,13 @@ abstract class ContentModule extends Module
 		$user = User::lookup($engine, $cred->getUsername(),
 				$cred->getUserID());
 		$title = $this->text_content_submit_content;
+		$code = 0;
 		$error = _('Could not submit content');
 
 		//check permissions
 		if($this->canSubmit($engine, $request, FALSE, $error) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+				Response::$CODE_EUNKNOWN);
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -925,14 +926,17 @@ abstract class ContentModule extends Module
 			return $this->_submitSuccess($engine, $request,
 					$content, $page);
 		else if(is_string($error))
+		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
+			$code = Response::$CODE_EUNKNOWN;
+		}
 		//preview
 		$this->helperSubmitPreview($engine, $request, $content, $page);
 		//form
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page, $code);
 	}
 
 	protected function _submitProcess($engine, $request, $content)
@@ -954,7 +958,7 @@ abstract class ContentModule extends Module
 		$r = $content->getRequest();
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_submit_progress);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
