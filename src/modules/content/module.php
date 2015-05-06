@@ -942,7 +942,7 @@ abstract class ContentModule extends Module
 	protected function _submitProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE || $request->get('_submit') === FALSE)
+		if($request === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -1020,7 +1020,7 @@ abstract class ContentModule extends Module
 	protected function _updateProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE || $request->get('_submit') === FALSE)
+		if($request === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
