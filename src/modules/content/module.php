@@ -137,11 +137,14 @@ abstract class ContentModule extends Module
 			$content = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
+		$anonymous = _('Anonymous submissions are not allowed');
 
-		$error = _('Anonymous submissions are not allowed');
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
+			{
+				$error = $anonymous;
 				return FALSE;
+			}
 		if($content === FALSE)
 			return TRUE;
 		return $content->canSubmit($engine, FALSE, $error);
