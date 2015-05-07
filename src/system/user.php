@@ -540,11 +540,13 @@ class User
 		$r = new Request($module, 'reset', $uid, FALSE,
 			array('token' => $token));
 		$subject = _('Password reset'); //XXX add site title
-		$text = _("Someone, hopefully you, has requested a password reset on your account.\n");
-		$text .= _("\nPlease click on the following link to reset your password:\n");
-		$text .= $engine->getURL($r)."\n";
-		$text .= _("Please note that this link will expire in 24 hours.\n");
+		$text = _("Someone (hopefully you) has requested a password reset on your account.\n");
+		$text .= _("Please click on the following link to reset your password:\n");
 		$content = new PageElement('label', array('text' => $text));
+		$content->append('link', array('request' => $r));
+		$content->append('label', array('text' => "\n"));
+		$content->append('label', array(
+			'text' => _("Please note that this link will expire in 24 hours.")));
 		if(Mail::send($engine, FALSE, $email, $subject, $content)
 				=== FALSE)
 		{
