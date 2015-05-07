@@ -24,6 +24,10 @@ class Mail
 	static public function send($engine, $from, $to, $subject, $page,
 			$headers = FALSE, $attachments = FALSE)
 	{
+		//output the page
+		if($engine->render(new PageResponse($page)) === FALSE)
+			return FALSE;
+
 		//do not really send any e-mail
 		return TRUE;
 	}
