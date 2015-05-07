@@ -833,10 +833,9 @@ class HTMLFormat extends FormatElements
 			$tag = 'label';
 			$attributes['for'] = $for;
 		}
-		$this->tagOpen($tag, $class, $e->get('id'), $attributes,
+		$this->tag($tag, $class, $e->get('id'), $attributes,
 				$e->get('text'));
 		$this->renderChildren($e);
-		$this->tagClose($tag);
 	}
 
 
