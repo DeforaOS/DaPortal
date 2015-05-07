@@ -156,11 +156,21 @@ class UserModule extends Module
 
 
 	//UserModule::canRegister
-	protected function canRegister()
+	protected function canRegister($request = FALSE, &$error = FALSE)
 	{
 		global $config;
 
-		return $config->get('module::user', 'register') == 1;
+		if($config->get('module::user', 'register') != 1)
+		{
+			$error = _('Registering is not allowed');
+			return FALSE;
+		}
+		if($request !== FALSE && $request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -1284,10 +1294,10 @@ class UserModule extends Module
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request);
 		//process registration
-		if(!$this->canRegister())
-			$error = _('Registering is not allowed');
-		else if(!$request->isIdempotent())
-			$error = $this->_registerProcess($engine, $request);
+		if($this->canRegister($request, $error)
+				&& $this->_registerProcess($engine, $request,
+					$error))
+			$error = FALSE;
 		if($error === FALSE)
 			//registration was successful
 			return $this->_registerSuccess($engine, $request);
