@@ -195,10 +195,14 @@ class PlainFormat extends Format
 	//PlainFormat::renderInline
 	protected function renderInline($e)
 	{
-		if(($text = $e->get('text')) !== FALSE)
+		if(($text = $e->get('text')) !== FALSE && is_scalar($text)
+				&& strlen($text) > 0)
 		{
+			$this->separator = (substr($text, 0, 1) == "\n")
+				? '' : $this->separator;
 			$this->_print($this->separator.$text);
-			$this->separator = ' ';
+			$this->separator = (substr($text, -1) == "\n")
+				? '' : ' ';
 		}
 		$this->renderChildren($e);
 	}
