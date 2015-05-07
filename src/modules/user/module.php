@@ -165,11 +165,21 @@ class UserModule extends Module
 
 
 	//UserModule::canReset
-	protected function canReset()
+	protected function canReset($request = FALSE, &$error = FALSE)
 	{
 		global $config;
 
-		return $config->get('module::user', 'reset') == 1;
+		if($config->get('module::user', 'reset') != 1)
+		{
+			$error = _('Password resets are not allowed');
+			return FALSE;
+		}
+		if($request !== FALSE && $request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -1349,10 +1359,10 @@ class UserModule extends Module
 			return $this->_resetToken($engine, $request, $uid,
 					$token);
 		//process reset
-		if(!$this->canReset())
-			$error = _('Password resets are not allowed');
-		else if(!$request->isIdempotent())
-			$error = $this->_resetProcess($engine, $request);
+		if($this->canReset($request, $error)
+				&& $this->_resetProcess($engine, $request,
+					$error))
+			$error = FALSE;
 		if($error === FALSE)
 			//reset was successful
 			return $this->_resetSuccess($engine, $request);
@@ -1376,22 +1386,21 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _resetProcess($engine, $request)
+	private function _resetProcess($engine, $request, &$error)
 	{
-		$ret = '';
+		$error = '';
 
 		if(($username = $request->get('username')) === FALSE)
-			$ret .= _("Your username is required\n");
+			$error .= _("Your username is required\n");
 		if(($email = $request->get('email')) === FALSE)
-			$ret .= _("Your e-mail address is required\n");
-		if(strlen($ret) > 0)
-			return $ret;
+			$error .= _("Your e-mail address is required\n");
+		if(strlen($error) > 0)
+			return FALSE;
 		//send a reset token to the user
-		$error = '';
 		if(($user = User::reset($engine, $this->name, $username, $email,
 				$error)) === FALSE)
-			$ret .= $error;
-		return strlen($ret) ? $ret : FALSE;
+			return FALSE;
+		return TRUE;
 	}
 
 	private function _resetSuccess($engine, $request)
