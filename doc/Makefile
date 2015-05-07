@@ -1,4 +1,4 @@
-SUBDIRS	= apache sql
+SUBDIRS	= apache php sql
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
