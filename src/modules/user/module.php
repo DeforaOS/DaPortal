@@ -1320,22 +1320,21 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _registerProcess($engine, $request)
+	private function _registerProcess($engine, $request, &$error)
 	{
-		$ret = '';
+		$error = '';
 
 		if(($username = $request->get('username')) === FALSE)
-			$ret .= _("A username is required\n");
+			$error .= _("A username is required\n");
 		if(($email = $request->get('email')) === FALSE)
-			$ret .= _("An e-mail address is required\n");
-		if(strlen($ret) > 0)
+			$error .= _("An e-mail address is required\n");
+		if(strlen($error) > 0)
 			return $ret;
 		//register the user
-		$error = '';
 		if(($user = User::register($engine, $this->name, $username,
 				FALSE, $email, FALSE, $error)) === FALSE)
-			$ret .= $error;
-		return strlen($ret) ? $ret : FALSE;
+			return FALSE;
+		return TRUE;
 	}
 
 	private function _registerSuccess($engine, $request)
