@@ -842,6 +842,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderLink($e)
 	{
+		$standalone = $this->get('standalone');
 		$url = FALSE;
 
 		$attributes = array();
@@ -849,7 +850,7 @@ class HTMLFormat extends FormatElements
 			$attributes['name'] = $a;
 		if(($r = $e->get('request')) !== FALSE)
 		{
-			$url = $this->engine->getURL($r, FALSE);
+			$url = $this->engine->getURL($r, $standalone);
 			$attributes['href'] = $url;
 		}
 		else if(($url = $e->get('url')) !== FALSE)
