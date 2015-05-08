@@ -22,6 +22,7 @@ function autoload($class, $filename = FALSE)
 	//filter on our own namespace
 	if(strncmp($class, 'DaPortal\\', 9) != 0)
 		return FALSE;
+	$namespace = substr($class, 0, 9);
 	$class = substr($class, 9);
 	if($filename !== FALSE)
 		//register the class
@@ -29,13 +30,13 @@ function autoload($class, $filename = FALSE)
 	if(($filename = _autoload_filename($class)) === FALSE
 			|| !file_exists($filename))
 	{
-		error_log($class.': Could not locate class');
+		error_log($namespace.$class.': Could not locate class');
 		return FALSE;
 	}
 	$res = @include_once($filename);
 	if($res === FALSE)
 	{
-		error_log($class.': Could not autoload class');
+		error_log($namespace.$class.': Could not autoload class');
 		return FALSE;
 	}
 	return $filename;
