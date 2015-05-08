@@ -86,7 +86,8 @@ class User
 
 
 	//User::getRequest
-	public function getRequest($module, $action = FALSE, $properties = FALSE)
+	public function getRequest($module, $action = FALSE,
+			$properties = FALSE)
 	{
 		return new Request($module, $action, $this->getUserID(),
 			$this->getUsername(), $properties);
