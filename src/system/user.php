@@ -614,13 +614,9 @@ class User
 			$error .= _("The token must be specified\n");
 		if(strlen($error) > 0)
 			return FALSE;
-		//delete registrations older than one week
-		$query = static::$query_register_cleanup;
-		$timestamp = strftime(static::$timestamp_format, time() - 604800);
-		$args = array('timestamp' => $timestamp);
-		if($db->query($engine, $query, $args) === FALSE)
+		if(static::registerCleanup($engine) === FALSE)
 		{
-			$error = _("Could not validate the user\n");
+			$error = _("Could not validate the user");
 			return FALSE;
 		}
 		$query = static::$query_register_validate;
@@ -783,16 +779,34 @@ class User
 
 	//methods
 	//useful
+	//User::registerCleanup
+	//delete registrations older than one week
+	static protected function registerCleanup($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_register_cleanup;
+		$timestamp = strftime(static::$timestamp_format, time()
+			- 604800);
+		$args = array('timestamp' => $timestamp);
+		$error = 'Could not clean the registration database up';
+
+		if($db->query($engine, $query, $args) === FALSE)
+			return $engine->log('LOG_ERR', $error);
+		return TRUE;
+	}
+
+
 	//User::resetCleanup
+	//delete password reset requests older than one day
 	static protected function resetCleanup($engine)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_reset_cleanup;
-		$timestamp = strftime(static::$timestamp_format, time() - 86400);
+		$timestamp = strftime(static::$timestamp_format, time()
+			- 86400);
 		$args = array('timestamp' => $timestamp);
 		$error = 'Could not clean the password reset database up';
 
-		//delete password reset requests older than one day
 		if($db->query($engine, $query, $args) === FALSE)
 			return $engine->log('LOG_ERR', $error);
 		return TRUE;
