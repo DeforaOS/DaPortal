@@ -24,8 +24,6 @@ function autoload($class, $filename = FALSE)
 		$class = substr($class, 9);
 	if($filename !== FALSE)
 		return _autoload_filename($class, $filename);
-	if(strchr($class, '/') !== FALSE)
-		return;
 	$res = ($filename = _autoload_filename($class)) !== FALSE
 		&& is_readable($filename) ? include_once($filename) : FALSE;
 	if($res === FALSE)
@@ -41,6 +39,8 @@ function _autoload_filename($class, $filename = FALSE)
 		'MultiContentModule' => './modules/content/multi.php',
 		'PageElement' => './system/page/element.php');
 
+	if(strpos($class, '/') !== FALSE)
+		return FALSE;
 	if($filename !== FALSE)
 	{
 		$classes[$class] = $filename;
