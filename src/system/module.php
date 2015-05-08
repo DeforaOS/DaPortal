@@ -64,9 +64,9 @@ abstract class Module
 		if(!class_exists($module))
 		{
 			$engine->log('LOG_DEBUG', 'Loading module '.$name);
-			if(strchr($name, '_') !== FALSE
-					|| strchr($name, '.') !== FALSE
-					|| strchr($name, '/') !== FALSE)
+			if(strpos($name, '_') !== FALSE
+					|| strpos($name, '.') !== FALSE
+					|| strpos($name, '/') !== FALSE)
 				return $engine->log('LOG_DEBUG',
 						'Invalid module '.$name);
 			$path = './modules/'.$name.'/module.php';

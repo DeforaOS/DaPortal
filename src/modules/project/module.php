@@ -57,7 +57,7 @@ class ProjectModule extends MultiContentModule
 	{
 		$error = _('No SCM configured for this project');
 
-		if(strchr($name, '/') !== FALSE || strlen($name) == 0)
+		if(strpos($name, '/') !== FALSE || strlen($name) == 0)
 			return FALSE;
 		$error = _('Internal server error');
 		$filename = './modules/project/scm/'.$name.'.php';

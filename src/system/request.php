@@ -125,8 +125,8 @@ class Request extends Mutator
 			return TRUE;
 		}
 		if(!is_string($module)
-				|| strchr($module, '.') !== FALSE
-				|| strchr($module, '/') !== FALSE)
+				|| strpos($module, '.') !== FALSE
+				|| strpos($module, '/') !== FALSE)
 			return $this->reset();
 		$this->module = $module;
 		return TRUE;
@@ -142,8 +142,8 @@ class Request extends Mutator
 			return TRUE;
 		}
 		if(!is_string($action)
-				|| strchr($action, '.') !== FALSE
-				|| strchr($action, '/') !== FALSE)
+				|| strpos($action, '.') !== FALSE
+				|| strpos($action, '/') !== FALSE)
 			return $this->reset();
 		$this->action = basename($action);
 		return TRUE;

@@ -343,7 +343,7 @@ class User
 		if($fullname === FALSE)
 			$fullname = '';
 		//FIXME really validate e-mail
-		if(strchr($email, '@') === FALSE)
+		if(strpos($email, '@') === FALSE)
 			$error .= _("The e-mail address is not valid\n");
 		//FIXME verify that the username and e-mail are both unique
 		if(strlen($error) > 0)
@@ -427,7 +427,7 @@ class User
 		if(!is_string($username) || strlen($username) == 0)
 			$error .= _("The username is not valid\n");
 		//FIXME really validate e-mail
-		if(strchr($email, '@') === FALSE)
+		if(strpos($email, '@') === FALSE)
 			$error .= _("The e-mail address is not valid\n");
 		//FIXME verify that the username and e-mail are both unique
 		if(strlen($error) > 0)
