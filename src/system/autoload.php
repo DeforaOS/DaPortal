@@ -39,6 +39,7 @@ function _autoload_filename($class, $filename = FALSE)
 		'MultiContentModule' => './modules/content/multi.php',
 		'PageElement' => './system/page/element.php');
 
+	//validate the class name
 	if(strpos($class, '/') !== FALSE)
 		return FALSE;
 	if($filename !== FALSE)
