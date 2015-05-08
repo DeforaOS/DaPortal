@@ -60,6 +60,14 @@ if(User::reset($engine, $module, $user->getUsername(), $user->getEmail(),
 	print("$error\n");
 	exit(5);
 }
+
+if(User::register($engine, $module, 'test', FALSE, 'root@localhost', FALSE,
+	$error) === FALSE)
+{
+	print("$error\n");
+	exit(6);
+}
+
 exit(0);
 
 ?>
