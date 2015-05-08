@@ -475,17 +475,18 @@ class User
 				return FALSE;
 			}
 			//send an e-mail for confirmation
-			$r = new Request($module, 'validate', $uid, FALSE,
-				array('token' => $token));
+			$r = $user->getRequest('validate', array(
+					'token' => $token));
 			$subject = _('User registration'); //XXX add site title
 			$text = _("Thank you for registering on this site.\n");
 			//FIXME do not send the password if already known
 			$text .= _("\nYour password is: ").$password."\n";
 			$text .= _("\nPlease click on the following link to enable your account:\n");
-			$text .= $engine->getURL($r)."\n";
-			$text .= _("Please note that this link will expire in 7 days.\n");
-			$content = new PageElement('label', array(
-				'text' => $text));
+			$content = new PageElement('label',
+				array('text' => $text));
+			$content->append('link', array('request' => $r));
+			$text = _("Please note that this link will expire in 7 days.\n");
+			$content->append('label', array('text' => $text));
 			Mail::send($engine, FALSE, $email, $subject, $content);
 		}
 		$db->transactionCommit($engine);
