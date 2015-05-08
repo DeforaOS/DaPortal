@@ -44,7 +44,7 @@ function _autoload_filename($class, $filename = FALSE)
 	if($filename !== FALSE)
 	{
 		$classes[$class] = $filename;
-		return;
+		return FALSE;
 	}
 	if(isset($classes[$class]))
 		return $classes[$class];
