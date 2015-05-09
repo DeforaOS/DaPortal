@@ -130,8 +130,12 @@ class Content
 	{
 		if($request === FALSE)
 			return TRUE;
-		$error = _('The request expired or is invalid');
-		return !$request->isIdempotent();
+		if($request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -139,17 +143,18 @@ class Content
 	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
-		$sep = '';
+		$properties = $this->properties;
 
 		if($request === FALSE)
 			return TRUE;
-		$error = _('The request expired or is invalid');
 		if($request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
 			return FALSE;
+		}
 		//verify that the fields are set
-		$error = '';
+		$fields = array();
 		foreach($this->fields as $k => $v)
-			//XXX not so elegant
 			switch($k)
 			{
 				case 'enabled':
@@ -164,17 +169,18 @@ class Content
 				case 'username':
 					break;
 				default:
-					if(array_key_exists($k, $this->properties))
+					if(array_key_exists($k, $properties))
 						break;
 					else if($request->get($k) === FALSE)
-					{
-						$error .= $sep.$v.' must be set';
-						$sep = "\n";
-					}
+						$fields[] = $v;
 					break;
 			}
-		if(strlen($error) > 0)
+		if(count($fields) > 0)
+		{
+			$error = implode($fields, _(' must be set')."\n")
+				._(' must be set');
 			return FALSE;
+		}
 		return TRUE;
 	}
 
@@ -184,8 +190,12 @@ class Content
 	{
 		if($request === FALSE)
 			return TRUE;
-		$error = _('The request expired or is invalid');
-		return !$request->isIdempotent();
+		if($request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -194,14 +204,18 @@ class Content
 	{
 		$credentials = $engine->getCredentials();
 
-		$error = _('Only administrators can update content');
 		if(!$credentials->isAdmin())
+		{
+			$error = _('Only administrators can update content');
 			return FALSE;
+		}
 		if($request === FALSE)
 			return TRUE;
-		$error = _('The request expired or is invalid');
 		if($request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
 			return FALSE;
+		}
 		return TRUE;
 	}
 
@@ -212,14 +226,18 @@ class Content
 	{
 		$credentials = $engine->getCredentials();
 
-		$error = _('Only administrators can update timestamps');
 		if(!$credentials->isAdmin())
+		{
+			$error = _('Only administrators can update timestamps');
 			return FALSE;
+		}
 		if($request === FALSE)
 			return TRUE;
-		$error = _('The request expired or is invalid');
 		if($request->isIdempotent())
+		{
+			$error = _('The request expired or is invalid');
 			return FALSE;
+		}
 		return TRUE;
 	}
 
