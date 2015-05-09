@@ -709,11 +709,8 @@ class UserModule extends Module
 		$username = $cred->getUsername();
 
 		//verify the request
-		if($request === FALSE
-				|| $request->get('submit') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//disable the user
 		if(($user = User::lookup($engine, $username, $uid)) === FALSE
 				|| $user->disable($engine) !== TRUE)
@@ -1087,14 +1084,14 @@ class UserModule extends Module
 		$db = $engine->getDatabase();
 		$log = $this->configGet('log');
 
+		if($request === FALSE || $request->isIdempotent())
+			//no real login attempt
+			return TRUE;
 		if(($username = $request->get('username')) === FALSE
 				|| strlen($username) == 0
 				|| ($password = $request->get('password'))
 					=== FALSE)
-			//no real login attempt
-			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
+			return _('The username and password must be set');
 		if(($user = User::lookup($engine, $username)) === FALSE
 				|| ($cred = $user->authenticate($engine,
 					$password)) === FALSE)
