@@ -265,9 +265,11 @@ abstract class PKIContent extends ContentMulti
 
 
 	//CAPKIContent::getRootCA
-	protected function getRootCA($engine)
+	protected function getRootCA($engine, $parent = FALSE)
 	{
-		if(($parent = $this->getParent($engine)) === FALSE)
+		if($parent === FALSE)
+			$parent = $this->getParent($engine);
+		if($parent === FALSE)
 			//FIXME add support for self-signed certificates
 			return FALSE;
 		return $parent->getRootCA($engine);
@@ -280,7 +282,7 @@ abstract class PKIContent extends ContentMulti
 			$parent = FALSE, $days = FALSE, $keysize = FALSE,
 			&$error = FALSE)
 	{
-		$root = $this->getRootCA($engine);
+		$root = $this->getRootCA($engine, $parent);
 		$subject = $this->getSubject($request);
 
 		//enforce reasonable defaults
