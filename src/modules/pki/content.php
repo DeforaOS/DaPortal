@@ -310,15 +310,13 @@ abstract class PKIContent extends ContentMulti
 				$x509 = ' -x509';
 				$extensions = ' -extensions usr_cert';
 				$keyout = $root.'/private/'.$this->getTitle().'.key';
-				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
-					: $root.'/newcerts/'.$this->getTitle().'.crt';
+				$out = $root.'/newcerts/'.$this->getTitle().'.pem';
 				break;
 			case 'CAServerPKIContent':
 				$x509 = ' -x509';
 				$extensions = ' -extensions srv_cert';
 				$keyout = $root.'/private/'.$this->getTitle().'.key';
-				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
-					: $root.'/newcerts/'.$this->getTitle().'.crt';
+				$out = $root.'/newcerts/'.$this->getTitle().'.pem';
 				break;
 			default:
 				$error = _('Invalid class to create certificate');

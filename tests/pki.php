@@ -122,8 +122,8 @@ function pki_cleanup()
 	$files = array('cacert.csr', 'cacert.pem', 'index.txt',
 		'index.txt.attr', 'index.txt.old',
 		'newcerts/01.pem', //XXX rename like the title
-		'newreqs/client.csr',
-		'newreqs/server.ca.csr', 'newreqs/server.child.ca.csr',
+		'newcerts/client.pem',
+		'newcerts/server.ca.pem', 'newcerts/server.child.ca.pem',
 		'openssl.cnf',
 		'private/cakey.pem', 'private/client.key',
 		'private/server.ca.key', 'private/server.child.ca.key',
