@@ -351,6 +351,56 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::createSigningRequest
+	protected function createSigningRequest($engine, $parent = FALSE,
+			&$error = FALSE)
+	{
+		$root = $this->getRootCA($engine, $parent);
+
+		//check parameters
+		if($root === FALSE)
+		{
+			$error = _('Invalid arguments to signing request');
+			return FALSE;
+		}
+		switch(static::$class)
+		{
+			case 'CAClientPKIContent':
+			case 'CAServerPKIContent':
+				$in = $root.'/newcerts/'.$this->getTitle().'.pem';
+				$out = $root.'/newreqs/'.$this->getTitle().'.csr';
+				$signkey = $root.'/private/'.$this->getTitle().'.key';
+				break;
+			default:
+				$error = _('Invalid class to signing request');
+				return FALSE;
+		}
+		$opensslcnf = $root.'/openssl.cnf';
+
+		if(file_exists($out))
+		{
+			$error = _('Could not generate the signing request');
+			return $engine->log('LOG_ERR',
+					'Could not generate the signing request');
+		}
+		$cmd = 'openssl x509 -x509toreq'
+			.' -in '.escapeshellarg($in)
+			.' -out '.escapeshellarg($out)
+			.' -signkey '.escapeshellarg($signkey)
+			.' 2>&1'; //XXX avoid garbage on the standard error
+		$res = -1;
+		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		exec($cmd, $output, $res);
+		if($res != 0)
+		{
+			$error = _('Could not generate the signing request');
+			return $engine->log('LOG_ERR',
+					'Could not generate the signing request');
+		}
+		return TRUE;
+	}
+
+
 	//private
 	//properties
 	private $root = FALSE;

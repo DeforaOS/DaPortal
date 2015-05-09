@@ -124,6 +124,7 @@ function pki_cleanup()
 		'newcerts/01.pem', //XXX rename like the title
 		'newcerts/client.pem',
 		'newcerts/server.ca.pem', 'newcerts/server.child.ca.pem',
+		'newreqs/server.ca.csr', 'newreqs/server.child.ca.csr',
 		'openssl.cnf',
 		'private/cakey.pem', 'private/client.key',
 		'private/server.ca.key', 'private/server.child.ca.key',

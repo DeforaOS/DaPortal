@@ -70,19 +70,17 @@ class CAServerPKIContent extends PKIContent
 			return FALSE;
 
 		//create certificate request
-		if($this->_insertCertificate($engine, $request, $parent, $error)
+		if($this->createCertificate($engine, $request, $parent,
+				$request->get('days'),
+				$request->get('keysize'), $error) === FALSE)
+			return $this->_insertCleanup($engine);
+
+		//create signing request
+		if($this->createSigningRequest($engine, $parent, $error)
 				=== FALSE)
 			return $this->_insertCleanup($engine);
 
 		return TRUE;
-	}
-
-	protected function _insertCertificate($engine, $request, $parent,
-			&$error = FALSE)
-	{
-		return $this->createCertificate($engine, $request, $parent,
-				$request->get('days'),
-				$request->get('keysize'), $error);
 	}
 
 	protected function _insertCleanup($engine)
