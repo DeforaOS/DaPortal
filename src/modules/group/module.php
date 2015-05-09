@@ -583,10 +583,8 @@ class GroupModule extends Module
 	protected function _submitProcess($engine, $request, &$group)
 	{
 		//verify the request
-		if($request === FALSE || $request->get('_submit') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		if(($groupname = $request->get('groupname')) === FALSE)
 			return _('Invalid arguments');
 		$enabled = $request->get('enabled') ? TRUE : FALSE;
@@ -650,10 +648,8 @@ class GroupModule extends Module
 		$cred = $engine->getCredentials();
 
 		//verify the request
-		if($request === FALSE || $request->get('_submit') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		if(($groupname = $request->get('groupname')) === FALSE)
 			$ret .= _("The group name is required\n");
 		if(strlen($ret) > 0)
