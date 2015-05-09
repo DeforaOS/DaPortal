@@ -1749,11 +1749,7 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 
 		if($cred->getUserID() == 0)
-		{
-			$widget = $this->formLogin($engine,
-					$engine->getRequest(), FALSE);
-			return new PageResponse($widget);
-		}
+			return $this->_widgetLogin($engine, $request);
 		$box = new PageElement('vbox');
 		$r = $this->getRequest();
 		$box->append('button', array('stock' => 'home',
@@ -1768,6 +1764,22 @@ class UserModule extends Module
 		$box->append('button', array('stock' => 'logout',
 				'request' => $r, 'text' => _('Logout')));
 		return new PageResponse($box);
+	}
+
+	protected function _widgetLogin($engine, $request)
+	{
+		$parameters = $request->getParameters();
+		$request = $engine->getRequest();
+
+		$parameters['module'] = $request->getModule();
+		$parameters['action'] = $request->getAction();
+		$parameters['id'] = $request->getID();
+		$parameters['title'] = $request->getTitle();
+		$parameters = array_merge($parameters,
+				$request->getParameters());
+		$request = $this->getRequest('login', $parameters);
+		$widget = $this->formLogin($engine, $request, FALSE);
+		return new PageResponse($widget);
 	}
 
 
