@@ -669,10 +669,8 @@ class ProjectModule extends MultiContentModule
 		$query = static::$project_query_project_download_insert;
 
 		//verify the request
-		if($request === FALSE || $request->get('submit') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//FIXME obtain the download path
 		//XXX this assumes the file was just being uploaded
 		$r = new Request('download', 'submit', FALSE, FALSE,
