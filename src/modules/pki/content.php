@@ -300,20 +300,23 @@ abstract class PKIContent extends ContentMulti
 		switch(static::$class)
 		{
 			case 'CAPKIContent':
+				$x509 = ($parent !== FALSE) ? '' : ' -x509';
 				$extensions = '';
 				$keyout = $root.'/private/cakey.pem';
 				$out = ($parent !== FALSE) ? $root.'/cacert.csr'
 					: $root.'/cacert.pem';
 				break;
 			case 'CAClientPKIContent':
+				$x509 = ' -x509';
 				$extensions = ' -extensions usr_cert';
-				//$keyout = $root.'/private/'.$this->getTitle().'.key';
+				$keyout = $root.'/private/'.$this->getTitle().'.key';
 				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
 					: $root.'/newcerts/'.$this->getTitle().'.crt';
 				break;
 			case 'CAServerPKIContent':
+				$x509 = ' -x509';
 				$extensions = ' -extensions srv_cert';
-				//$keyout = $root.'/private/'.$this->getTitle().'.key';
+				$keyout = $root.'/private/'.$this->getTitle().'.key';
 				$out = ($parent !== FALSE) ? $root.'/newreqs/'.$this->getTitle().'.csr'
 					: $root.'/newcerts/'.$this->getTitle().'.crt';
 				break;
@@ -321,12 +324,11 @@ abstract class PKIContent extends ContentMulti
 				$error = _('Invalid class to create certificate');
 				return FALSE;
 		}
-		$x509 = ($parent !== FALSE) ? '' : ' -x509';
 		$opensslcnf = $root.'/openssl.cnf';
 
 		$days = ' -days '.escapeshellarg($days);
 		$keysize = ' -newkey rsa:'.escapeshellarg($keysize);
-		$cmd = 'openssl req -batch -nodes -new '.$x509.$days.$keysize
+		$cmd = 'openssl req -batch -nodes -new'.$x509.$days.$keysize
 			.' -config '.escapeshellarg($opensslcnf).$extensions
 			.' -keyout '.escapeshellarg($keyout)
 			.' -out '.escapeshellarg($out)
