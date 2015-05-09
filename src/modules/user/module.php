@@ -1040,6 +1040,7 @@ class UserModule extends Module
 		$already = _('You are already logged in');
 		$forgot = _('I forgot my password...');
 		$register = _('Register an account...');
+		$code = Response::$CODE_SUCCESS;
 
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'login',
@@ -1050,8 +1051,11 @@ class UserModule extends Module
 		if($error === FALSE)
 			return $this->_loginSuccess($engine, $request, $page);
 		else if(is_string($error))
+		{
 			$page->append('dialog', array('type' => 'error',
 						'text' => $error));
+			$code = Response::$CODE_EPERM;
+		}
 		else if($cred->getUserID() != 0)
 			$page->append('dialog', array('type' => 'info',
 						'text' => $already));
@@ -1071,7 +1075,7 @@ class UserModule extends Module
 					'stock' => 'register',
 					'text' => $register));
 		}
-		return new PageResponse($page);
+		return new PageResponse($page, $code);
 	}
 
 	protected function _loginProcess($engine, $request)
