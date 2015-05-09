@@ -208,7 +208,7 @@ class DownloadModule extends MultiContentModule
 		$delimiters = array('/', '\\');
 
 		//verify the request
-		if($request === FALSE || $request->get('_submit') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
 		switch($request->get('type'))
 		{
@@ -218,8 +218,6 @@ class DownloadModule extends MultiContentModule
 				return parent::_submitProcess($engine, $request,
 						$content);
 		}
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//obtain the parent
 		//FIXME may not be a folder
 		$content->set('download_id', $request->get('parent'));
