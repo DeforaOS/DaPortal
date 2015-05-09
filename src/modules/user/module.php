@@ -90,12 +90,11 @@ class UserModule extends Module
 	//UserModule::canClose
 	protected function canClose($engine)
 	{
-		global $config;
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin())
 			return FALSE;
-		return $config->get('module::user', 'close') == 1;
+		return $this->configGet('close') == 1;
 	}
 
 
@@ -158,9 +157,7 @@ class UserModule extends Module
 	//UserModule::canRegister
 	protected function canRegister($request = FALSE, &$error = FALSE)
 	{
-		global $config;
-
-		if($config->get('module::user', 'register') != 1)
+		if($this->configGet('register') != 1)
 		{
 			$error = _('Registering is not allowed');
 			return FALSE;
@@ -177,9 +174,7 @@ class UserModule extends Module
 	//UserModule::canReset
 	protected function canReset($request = FALSE, &$error = FALSE)
 	{
-		global $config;
-
-		if($config->get('module::user', 'reset') != 1)
+		if($this->configGet('reset') != 1)
 		{
 			$error = _('Password resets are not allowed');
 			return FALSE;
@@ -716,7 +711,7 @@ class UserModule extends Module
 				|| $user->disable($engine) !== TRUE)
 			return _('The account could not be closed');
 		//log the user out
-		$engine->setCredentials(new AuthCredentials);
+		$this->helperLogout($engine, $username, TRUE);
 		//no error
 		return FALSE;
 	}
@@ -1082,7 +1077,6 @@ class UserModule extends Module
 	protected function _loginProcess($engine, $request)
 	{
 		$db = $engine->getDatabase();
-		$log = $this->configGet('log');
 
 		if($request === FALSE || $request->isIdempotent())
 			//no real login attempt
@@ -1092,27 +1086,8 @@ class UserModule extends Module
 				|| ($password = $request->get('password'))
 					=== FALSE)
 			return _('The username and password must be set');
-		if(($user = User::lookup($engine, $username)) === FALSE
-				|| ($cred = $user->authenticate($engine,
-					$password)) === FALSE)
-		{
-			if($log)
-				$engine->log('LOG_NOTICE',
-						'Invalid login attempt for user'
-						.' "'.$username.'"');
+		if($this->helperLogin($engine, $username, $password) === FALSE)
 			return _('Invalid username or password');
-		}
-		if($engine->setCredentials($cred) !== TRUE)
-		{
-			if($log)
-				$engine->log('LOG_NOTICE',
-						'Unable to login user "'
-						.$username.'"');
-			return _('An error occurred while authenticating');
-		}
-		if($log)
-			$engine->log('LOG_NOTICE',
-					'User "'.$username.'" logged in');
 		return FALSE;
 	}
 
@@ -1208,7 +1183,7 @@ class UserModule extends Module
 		$box->append('link', array('text' => _('click here'),
 					'request' => $r));
 		$box->append('label', array('text' => '.'));
-		$engine->setCredentials(new AuthCredentials);
+		$this->helperLogout($engine, $cred->getUsername());
 		return new PageResponse($page);
 	}
 
@@ -1832,6 +1807,44 @@ class UserModule extends Module
 			$message .= $sep."Could not $action any user";
 		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
+	}
+
+
+	//UserModule::helperLogin
+	protected function helperLogin($engine, $username, $password)
+	{
+		$log = $this->configGet('log');
+
+		if(($user = User::lookup($engine, $username)) === FALSE
+				|| ($credentials = $user->authenticate($engine,
+						$password)) === FALSE)
+			return $engine->log('LOG_NOTICE', $username
+					.': Invalid login attempt');
+		if($engine->setCredentials($credentials) !== TRUE)
+			return $engine->log('LOG_NOTICE', $username
+					.': Unable to log user in');
+		if($log)
+			$engine->log('LOG_NOTICE',
+					$username.': User logged in');
+		return TRUE;
+	}
+
+
+	//UserModule::helperLogout
+	protected function helperLogout($engine, $username, $closed = FALSE)
+	{
+		$log = $this->configGet('log');
+
+		if($engine->setCredentials(new AuthCredentials()) === FALSE)
+			return $engine->log('LOG_NOTICE', $username
+					.': Unable to log user out');
+		if($log)
+			$engine->log('LOG_NOTICE', $username
+					.': User logged out');
+		if($log && $closed)
+			$engine->log('LOG_NOTICE',
+					$username.': User account closed');
+		return TRUE;
 	}
 
 
