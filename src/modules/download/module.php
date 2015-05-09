@@ -112,6 +112,7 @@ class DownloadModule extends MultiContentModule
 	{
 		$title = ($title === FALSE) ? _('Downloads') : $title;
 		parent::__construct($id, $name, $title);
+		$this->text_content_admin = _('Downloads administration');
 		$this->text_content_title = _('Downloads');
 	}
 
