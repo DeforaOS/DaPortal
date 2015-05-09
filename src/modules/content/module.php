@@ -873,10 +873,8 @@ abstract class ContentModule extends Module
 			'user_id' => $cred->getUserID());
 
 		//verify the request
-		if($request->get('publish') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//publish the content
 		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
@@ -942,10 +940,8 @@ abstract class ContentModule extends Module
 	protected function _submitProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//store the content uploaded
 		$error = _('Internal server error');
 		if($content->save($engine, $request, $error) === FALSE)
@@ -1020,10 +1016,8 @@ abstract class ContentModule extends Module
 	protected function _updateProcess($engine, $request, $content)
 	{
 		//verify the request
-		if($request === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//update the content
 		$error = _('Internal server error');
 		if($content->save($engine, $request, $error) === FALSE)
