@@ -10,7 +10,7 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-$(OBJDIR)phplint.log: phplint.sh
+$(OBJDIR)phplint.log: phplint.sh $(OBJDIR)../src/daportal.php
 	./phplint.sh -P "$(PREFIX)" -- "$(OBJDIR)phplint.log"
 
 $(OBJDIR)shlint.log: shlint.sh
