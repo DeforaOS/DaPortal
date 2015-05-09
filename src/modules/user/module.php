@@ -1749,9 +1749,11 @@ class UserModule extends Module
 		$cred = $engine->getCredentials();
 
 		if($cred->getUserID() == 0)
-			//XXX not a Response
-			return $this->formLogin($engine, $engine->getRequest(),
-					FALSE);
+		{
+			$widget = $this->formLogin($engine,
+					$engine->getRequest(), FALSE);
+			return new PageResponse($widget);
+		}
 		$box = new PageElement('vbox');
 		$r = $this->getRequest();
 		$box->append('button', array('stock' => 'home',
