@@ -60,6 +60,34 @@ function pki($engine, $module)
 	$engine->render($response);
 	if($response->getCode() != 0)
 		return 6;
+	//XXX guessing the content ID
+	if(($childca = CAPKIContent::load($engine, $module, 5, 'Test child CA'))
+			=== FALSE)
+		return 7;
+
+	//create a server (self-signed CA)
+	$args = array('title' => 'server.ca', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'root@localhost',
+		'days' => 365, 'keysize' => 512, 'type' => 'caserver');
+	$request = $ca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 8;
+
+	//create a server (child CA)
+	$args = array('title' => 'server.child.ca', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'root@localhost',
+		'days' => 365, 'keysize' => 512, 'type' => 'caserver');
+	$request = $childca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 9;
 
 	return 0;
 }
@@ -70,7 +98,10 @@ function pki_cleanup()
 	$files = array('cacert.csr', 'cacert.pem', 'index.txt',
 		'index.txt.attr', 'index.txt.old',
 		'newcerts/01.pem', //XXX rename like the title
-		'openssl.cnf', 'private/cakey.pem', 'serial', 'serial.old');
+		'newreqs/server.ca.csr', 'newreqs/server.child.ca.csr',
+		'openssl.cnf', 'private/cakey.pem',
+		'private/server.ca.key', 'private/server.child.ca.key',
+		'serial', 'serial.old');
 	$directories = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
 
 	foreach($files as $f)
