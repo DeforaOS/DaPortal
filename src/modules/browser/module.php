@@ -70,7 +70,7 @@ class BrowserModule extends Module
 			return TRUE;
 		//check for idempotence
 		$error = _('The request expired or is invalid');
-		if($request !== FALSE && $request->isIdempotent())
+		if($request === FALSE || $request->isIdempotent())
 			return FALSE;
 		//check for write permissions
 		$error = _('Could not lookup the path');
@@ -315,10 +315,8 @@ class BrowserModule extends Module
 		$delimiters = array('/', '\\');
 
 		//verify the request
-		if($request === FALSE || $request->get('_upload') === FALSE)
+		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
-		if($request->isIdempotent() !== FALSE)
-			return _('The request expired or is invalid');
 		//upload the file(s)
 		if(!isset($_FILES['files'])
 				|| count($_FILES['files']['error']) == 0)
