@@ -89,6 +89,30 @@ function pki($engine, $module)
 	if($response->getCode() != 0)
 		return 9;
 
+	//create a client (self-signed CA)
+	$args = array('title' => 'client', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'client@server.ca',
+		'days' => 365, 'keysize' => 512, 'type' => 'caclient');
+	$request = $ca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 10;
+
+	//create a client (child CA)
+	$args = array('title' => 'client', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'client@server.child.ca',
+		'days' => 365, 'keysize' => 512, 'type' => 'caclient');
+	$request = $childca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 11;
+
 	return 0;
 }
 
@@ -98,8 +122,10 @@ function pki_cleanup()
 	$files = array('cacert.csr', 'cacert.pem', 'index.txt',
 		'index.txt.attr', 'index.txt.old',
 		'newcerts/01.pem', //XXX rename like the title
+		'newreqs/client.csr',
 		'newreqs/server.ca.csr', 'newreqs/server.child.ca.csr',
-		'openssl.cnf', 'private/cakey.pem',
+		'openssl.cnf',
+		'private/cakey.pem', 'private/client.key',
 		'private/server.ca.key', 'private/server.child.ca.key',
 		'serial', 'serial.old');
 	$directories = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
