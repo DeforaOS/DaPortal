@@ -61,29 +61,9 @@ abstract class Module
 		if(($id = self::_loadID($engine, $name)) === FALSE)
 			return FALSE;
 		$module = $name.'Module';
-		if(!class_exists($module))
-		{
-			$engine->log('LOG_DEBUG', 'Loading module '.$name);
-			if(strpos($name, '_') !== FALSE
-					|| strpos($name, '.') !== FALSE
-					|| strpos($name, '/') !== FALSE)
-				return $engine->log('LOG_DEBUG',
-						'Invalid module '.$name);
-			$path = './modules/'.$name.'/module.php';
-			if(!is_readable($path))
-				return $engine->log('LOG_ERR',
-						'Unreadable module '.$name);
-			$res = include_once($path);
-			if($res === FALSE)
-				return $engine->log('LOG_DEBUG',
-						'Unknown module '.$name);
-			if(!class_exists($module))
-				return $engine->log('LOG_ERR',
-						'Undefined module '.$name);
-		}
 		if(($ret = new $module($id, $name)) == NULL)
 			return $engine->log('LOG_ERR',
-					'Uninstanciable module '.$name);
+					$name.': Could not load module');
 		return $ret;
 	}
 
@@ -96,8 +76,8 @@ abstract class Module
 		if($modules === FALSE)
 			$modules = $engine->getModules();
 		if(($ret = array_search($name, $modules)) === FALSE)
-			return $engine->log('LOG_DEBUG', 'Module '.$name
-					.' is not available');
+			return $engine->log('LOG_DEBUG',
+					$name.': Module not available');
 		return $ret;
 	}
 
