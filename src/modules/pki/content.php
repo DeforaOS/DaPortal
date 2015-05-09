@@ -324,6 +324,12 @@ abstract class PKIContent extends ContentMulti
 		}
 		$opensslcnf = $root.'/openssl.cnf';
 
+		if(file_exists($keyout) || file_exists($out))
+		{
+			$error = _('Could not generate the certificate');
+			return $engine->log('LOG_ERR',
+					'Could not generate the certificate');
+		}
 		$days = ' -days '.escapeshellarg($days);
 		$keysize = ' -newkey rsa:'.escapeshellarg($keysize);
 		$cmd = 'openssl req -batch -nodes -new'.$x509.$days.$keysize
