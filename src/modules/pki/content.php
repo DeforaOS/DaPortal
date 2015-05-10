@@ -207,6 +207,12 @@ abstract class PKIContent extends ContentMulti
 		foreach($days as $value => $text)
 			$expiration->append('label', array('text' => $text,
 					'value' => $value));
+		//signing
+		if($request->getID() !== FALSE)
+			$vbox->append('checkbox', array('name' => 'sign',
+					'value' => $request->get('sign')
+						? TRUE : FALSE,
+					'text' => _('Sign')));
 		return $vbox;
 	}
 
