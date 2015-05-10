@@ -37,7 +37,7 @@ function pki($engine, $module)
 	//create a CA
 	$args = array('title' => 'Test CA', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
-		'section' => '', 'email' => 'root@localhost',
+		'section' => '', 'email' => 'ca@localhost',
 		'days' => 3650, 'keysize' => 1024);
 	$request = new Request('pki', 'submit', FALSE, FALSE, $args);
 	$request->setIdempotent(FALSE);
@@ -52,7 +52,7 @@ function pki($engine, $module)
 	//create a child CA
 	$args = array('title' => 'Test child CA', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
-		'section' => '', 'email' => 'root@localhost',
+		'section' => '', 'email' => 'childca@localhost',
 		'days' => 365, 'keysize' => 512);
 	$request = $ca->getRequest('submit', $args);
 	$request->setIdempotent(FALSE);
@@ -68,7 +68,7 @@ function pki($engine, $module)
 	//create a server (self-signed CA)
 	$args = array('title' => 'server.ca', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
-		'section' => '', 'email' => 'root@localhost',
+		'section' => '', 'email' => 'server@localhost',
 		'days' => 365, 'keysize' => 512, 'type' => 'caserver');
 	$request = $ca->getRequest('submit', $args);
 	$request->setIdempotent(FALSE);
@@ -80,7 +80,7 @@ function pki($engine, $module)
 	//create a server (child CA)
 	$args = array('title' => 'server.child.ca', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
-		'section' => '', 'email' => 'root@localhost',
+		'section' => '', 'email' => 'server@localhost',
 		'days' => 365, 'keysize' => 512, 'type' => 'caserver');
 	$request = $childca->getRequest('submit', $args);
 	$request->setIdempotent(FALSE);

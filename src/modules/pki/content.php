@@ -102,7 +102,7 @@ abstract class PKIContent extends ContentMulti
 
 		foreach($fields as $field => $key)
 		{
-			$value = ($field == 'cn') ? $s->getTitle()
+			$value = ($field == 'cn') ? $this->getTitle() //XXX
 				: $s->get($field);
 			if($value !== FALSE && strlen($value) > 0)
 			{
