@@ -1344,7 +1344,8 @@ class UserModule extends Module
 			return $this->_resetToken($engine, $request, $uid,
 					$token);
 		//process reset
-		if($this->canReset($request, $error)
+		if(!$request->isIdempotent()
+				&& $this->canReset($request, $error)
 				&& $this->_resetProcess($engine, $request,
 					$error))
 			$error = FALSE;
