@@ -103,6 +103,26 @@ class CVSSCMProject extends SCMProject
 		}
 		ksort($folders);
 		ksort($files);
+		if(($file = $request->get('file')) !== FALSE
+				&& ($dirname = dirname($file)) !== $file
+				&& ($st = lstat($path.'/'.$dirname)) !== FALSE)
+		{
+			$row = $view->append('row');
+			$icon = new PageElement('image', array(
+				'stock' => 'updir', 'size' => 16));
+			$row->set('icon', $icon);
+			//title
+			$r = new Request($request->getModule(),
+				$request->getAction(),
+				$request->getID(), $request->getTitle(),
+				array('file' => $dirname));
+			$link = new PageElement('link', array('request' => $r,
+					'text' => _('Parent directory')));
+			$row->set('title', $link);
+			//date
+			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$row->set('date', $date);
+		}
 		foreach($folders as $de => $st)
 		{
 			$row = $view->append('row');
