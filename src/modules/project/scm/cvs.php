@@ -49,14 +49,11 @@ class CVSSCMProject extends SCMProject
 		//browse
 		$path = $this->cvsroot.'/'.$cvsroot;
 		if(($file = $request->get('file')) !== FALSE)
-		{
 			$file = $this->helperSanitizePath($file);
-			$path .= "/$file";
-		}
 		else
-			$file = '/';
+			$file = '';
 		$error = _('No such file or directory');
-		if(($st = @lstat($path)) === FALSE)
+		if(($st = @lstat($path.'/'.$file)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if(($st['mode'] & CVSSCMProject::$S_IFDIR)
@@ -75,7 +72,7 @@ class CVSSCMProject extends SCMProject
 		$error = _('Could not open directory');
 
 		$vbox->append('title', array('text' => _('Browse source')));
-		if(($dir = opendir($path)) === FALSE)
+		if(($dir = opendir($path.'/'.$file)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		//view
@@ -91,7 +88,7 @@ class CVSSCMProject extends SCMProject
 		{
 			if($de == '.' || $de == '..')
 				continue;
-			if(($st = lstat($path.'/'.$de)) === FALSE)
+			if(($st = lstat($path.'/'.$file.'/'.$de)) === FALSE)
 				continue;
 			if(($st['mode'] & CVSSCMProject::$S_IFDIR)
 					== CVSSCMProject::$S_IFDIR)
@@ -103,9 +100,10 @@ class CVSSCMProject extends SCMProject
 		}
 		ksort($folders);
 		ksort($files);
-		if(($file = $request->get('file')) !== FALSE
-				&& ($dirname = dirname($file)) !== $file
-				&& ($st = lstat($path.'/'.$dirname)) !== FALSE)
+		if($file != '' && ($dirname = dirname($file)) !== FALSE
+				&& ($st = lstat($path.'/'.$dirname)) !== FALSE
+				&& $st['mode'] & CVSSCMProject::$S_IFDIR
+					== CVSSCMProject::$S_IFDIR)
 		{
 			if($dirname == '.' || $dirname == '/')
 				$dirname = FALSE;
@@ -213,7 +211,7 @@ class CVSSCMProject extends SCMProject
 		$error = _('Could not list revisions');
 
 		//obtain the revisions
-		$cmd = 'rlog '.escapeshellarg($path);
+		$cmd = 'rlog '.escapeshellarg($path.'/'.$file);
 		exec($cmd, $rcs, $res);
 		if($res != 0 || count($rcs) == 0)
 			return new PageElement('dialog', array(
@@ -283,7 +281,7 @@ class CVSSCMProject extends SCMProject
 		$error = 'Internal server error';
 
 		$cmd = 'co -p'.escapeshellarg($revision)
-			.' '.escapeshellarg($path);
+			.' '.escapeshellarg($path.'/'.$file);
 		if(($fp = popen($cmd, 'r')) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
@@ -469,12 +467,12 @@ class CVSSCMProject extends SCMProject
 	//CVSSCMProject::helperSanitizePath
 	protected function helperSanitizePath($path)
 	{
-		$path = '/'.ltrim($path, '/');
+		$path = '/'.trim($path, '/').'/';
 		$path = str_replace('/./', '/', $path);
 		//FIXME really implement '..'
-		if(strcmp($path, '/..') == 0 || strpos($path, '/../') !== FALSE)
-			return '/';
-		return $path;
+		if(strpos($path, '/../') !== FALSE)
+			return '';
+		return trim($path, '/');
 	}
 
 
