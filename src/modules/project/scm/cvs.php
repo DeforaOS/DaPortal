@@ -164,7 +164,7 @@ class CVSSCMProject extends SCMProject
 			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
 			$row->set('date', $date);
 			//obtain the revisions
-			$cmd = 'rlog '.escapeshellarg($path.'/'.$de);
+			$cmd = 'rlog '.escapeshellarg($path.'/'.$file.'/'.$de);
 			unset($rcs);
 			exec($cmd, $rcs, $res);
 			if(($cnt = count($rcs)) == 0)
