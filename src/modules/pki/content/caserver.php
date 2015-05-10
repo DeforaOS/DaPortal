@@ -80,6 +80,12 @@ class CAServerPKIContent extends PKIContent
 				=== FALSE)
 			return $this->_insertCleanup($engine);
 
+		//sign directly if requested
+		if($parent !== FALSE && $request->get('sign')
+				&& $parent->sign($engine, $this, $error)
+					=== FALSE)
+			return FALSE;
+
 		return TRUE;
 	}
 

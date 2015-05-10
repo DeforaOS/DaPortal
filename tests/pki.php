@@ -89,6 +89,32 @@ function pki($engine, $module)
 	if($response->getCode() != 0)
 		return 9;
 
+	//create a signed server (self-signed CA)
+	$args = array('title' => 'server2.ca', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'server2@localhost',
+		'days' => 365, 'keysize' => 512, 'type' => 'caserver',
+		'sign' => TRUE);
+	$request = $ca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 10;
+
+	//create a signed server (child CA)
+	$args = array('title' => 'server2.child.ca', 'country' => 'CO',
+		'state' => 'State', 'locality' => '', 'organization' => '',
+		'section' => '', 'email' => 'server2@localhost',
+		'days' => 365, 'keysize' => 512, 'type' => 'caserver',
+		'sign' => TRUE);
+	$request = $childca->getRequest('submit', $args);
+	$request->setIdempotent(FALSE);
+	$response = $engine->process($request);
+	$engine->render($response);
+	if($response->getCode() != 0)
+		return 11;
+
 	//create a client (self-signed CA)
 	$args = array('title' => 'client', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
@@ -99,7 +125,7 @@ function pki($engine, $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 10;
+		return 12;
 
 	//create a client (child CA)
 	$args = array('title' => 'client', 'country' => 'CO',
@@ -111,7 +137,7 @@ function pki($engine, $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 11;
+		return 13;
 
 	return 0;
 }
@@ -120,14 +146,19 @@ function pki($engine, $module)
 function pki_cleanup()
 {
 	$files = array('cacert.csr', 'cacert.pem', 'index.txt',
-		'index.txt.attr', 'index.txt.old',
-		'newcerts/01.pem', //XXX rename like the title
+		'index.txt.attr', 'index.txt.attr.old', 'index.txt.old',
+		'certs/server2.ca.pem', 'certs/server2.child.ca.pem',
+		'newcerts/01.pem', 'newcerts/02.pem',
 		'newcerts/client.pem',
 		'newcerts/server.ca.pem', 'newcerts/server.child.ca.pem',
+		'newcerts/server2.ca.pem', 'newcerts/server2.child.ca.pem',
+		'newreqs/client.csr',
 		'newreqs/server.ca.csr', 'newreqs/server.child.ca.csr',
+		'newreqs/server2.ca.csr', 'newreqs/server2.child.ca.csr',
 		'openssl.cnf',
 		'private/cakey.pem', 'private/client.key',
 		'private/server.ca.key', 'private/server.child.ca.key',
+		'private/server2.ca.key', 'private/server2.child.ca.key',
 		'serial', 'serial.old');
 	$directories = array('certs', 'crl', 'newcerts', 'newreqs', 'private');
 
