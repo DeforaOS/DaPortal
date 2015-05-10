@@ -402,6 +402,20 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::sign
+	protected function sign($engine, $content = FALSE, &$error = FALSE)
+	{
+		$parent = $this->getParent($engine);
+
+		if($content !== FALSE || $parent === FALSE)
+		{
+			$error = _('Unsupported operation');
+			return FALSE;
+		}
+		return $parent->sign($engine, $this, $error);
+	}
+
+
 	//private
 	//properties
 	private $root = FALSE;

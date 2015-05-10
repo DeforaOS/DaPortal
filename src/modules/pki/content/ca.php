@@ -297,41 +297,68 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::sign
-	protected function sign($engine, $content, &$error = FALSE)
-	{
-		if($content instanceof CAPKIContent)
-			return $this->_signCA($engine, $content, $error);
-		$error = _('Unsupported operation');
-		return FALSE;
-	}
-
-	private function _signCA($engine, $ca, &$error)
+	protected function sign($engine, $content = FALSE, &$error = FALSE)
 	{
 		$root = $this->getRootCA($engine);
-		$opensslcnf = $root.'/openssl.cnf';
-		$caroot = $ca->getRootCA($engine);
 
-		if($root === FALSE || $caroot === FALSE)
+		if($content === FALSE)
+			return parent::sign($engine, FALSE, $error);
+		if($root === FALSE)
 		{
 			$error = _('Internal error');
 			return FALSE;
 		}
+		$opensslcnf = $root.'/openssl.cnf';
+		switch(get_class($content))
+		{
+			case 'CAPKIContent':
+				if(($root = $content->getRootCA($engine))
+						=== FALSE)
+				{
+					$error = _('Internal error');
+					return FALSE;
+				}
+				$extensions = 'v3_ca';
+				$in = $root.'/cacert.csr';
+				$out = $root.'/cacert.pem';
+				break;
+			case 'CAClientPKIContent':
+				$extensions = 'usr_cert';
+				$in = $root.'/newreqs/'.$content->getTitle().'.csr';
+				$out = $root.'/certs/'.$content->getTitle().'.pem';
+				break;
+			case 'CAServerPKIContent':
+				$extensions = 'srv_cert';
+				$in = $root.'/newreqs/'.$content->getTitle().'.csr';
+				$out = $root.'/certs/'.$content->getTitle().'.pem';
+				break;
+			default:
+				$error = _('Invalid class to sign');
+				return FALSE;
+		}
+
+		if(!file_exists($in) || file_exists($out))
+		{
+			$error = _('Could not generate the signed certificate');
+			return $engine->log('LOG_ERR',
+					'Could not generate the signed certificate');
+		}
 		$cmd = 'openssl ca -batch'
 			.' -config '.escapeshellarg($opensslcnf)
-			.' -extensions v3_ca'
+			.' -extensions '.escapeshellarg($extensions)
 			.' -policy policy_anything'
-			.' -out '.escapeshellarg($caroot.'/cacert.pem')
-			.' -infiles '.escapeshellarg($caroot.'/cacert.csr');
+			.' -out '.escapeshellarg($out)
+			.' -infiles '.escapeshellarg($in);
 		$res = -1;
 		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
 		exec($cmd, $output, $res);
 		if($res != 0)
 		{
-			$error = _('Could not sign CA');
+			$error = _('Could not sign the certificate request');
 			return FALSE;
 		}
-		$ca->set('signed', TRUE);
-		$ca->save($engine);
+		$content->set('signed', TRUE);
+		$content->save($engine);
 		return TRUE;
 	}
 
