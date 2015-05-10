@@ -377,7 +377,8 @@ abstract class PKIContent extends ContentMulti
 		}
 		$opensslcnf = $root.'/openssl.cnf';
 
-		if(file_exists($out))
+		if(!file_exists($in) || file_exists($out)
+				|| !file_exists($signkey))
 		{
 			$error = _('Could not generate the signing request');
 			return $engine->log('LOG_ERR',
