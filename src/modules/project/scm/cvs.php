@@ -107,6 +107,8 @@ class CVSSCMProject extends SCMProject
 				&& ($dirname = dirname($file)) !== $file
 				&& ($st = lstat($path.'/'.$dirname)) !== FALSE)
 		{
+			if($dirname == '.' || $dirname == '/')
+				$dirname = FALSE;
 			$row = $view->append('row');
 			$icon = new PageElement('image', array(
 				'stock' => 'updir', 'size' => 16));
