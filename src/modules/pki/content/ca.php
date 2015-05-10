@@ -208,22 +208,19 @@ class CAPKIContent extends PKIContent
 				|| $this->_insertSerial($engine) === FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE);
 
-		//certificate
-		if($this->_insertCertificate($engine, $request, $parent, $error)
-				=== FALSE)
+		//create certificate request
+		if($this->createCertificate($engine, $request, $parent,
+				$request->get('days'),
+				$request->get('keysize'), $error) === FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
-		if($parent !== FALSE && $parent->sign($engine, $this) === FALSE)
+
+		//sign directly if requested
+		if($parent !== FALSE && $request->get('sign')
+				&& $parent->sign($engine, $this, $error)
+					=== FALSE)
 			return $this->_insertCleanup($engine, TRUE, TRUE, TRUE);
 
 		return TRUE;
-	}
-
-	protected function _insertCertificate($engine, $request, $parent,
-			$error = FALSE)
-	{
-		return $this->createCertificate($engine, $request, $parent,
-				$request->get('days'),
-				$request->get('keysize'), $error);
 	}
 
 	protected function _insertCleanup($engine, $directories = FALSE,

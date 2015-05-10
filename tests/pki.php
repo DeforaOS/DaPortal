@@ -53,7 +53,8 @@ function pki($engine, $module)
 	$args = array('title' => 'Test child CA', 'country' => 'CO',
 		'state' => 'State', 'locality' => '', 'organization' => '',
 		'section' => '', 'email' => 'childca@localhost',
-		'days' => 365, 'keysize' => 512);
+		'days' => 365, 'keysize' => 512,
+		'sign' => TRUE);
 	$request = $ca->getRequest('submit', $args);
 	$request->setIdempotent(FALSE);
 	$response = $engine->process($request);
