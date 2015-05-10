@@ -177,13 +177,16 @@ class BugProjectContent extends ContentMulti
 			'title' => $this->getTitle()));
 		$row->set('bug_id', $link);
 		$row->set('id', 'bug_id:'.$this->getID());
-		$request = $project->getRequest();
-		$link = new PageElement('link', array(
-			'stock' => $this->getModule()->getName(),
-			'request' => $request,
-			'text' => $project->getTitle(),
-			'title' => $project->get('synopsis')));
-		$row->set('project', $link);
+		if($project !== FALSE)
+		{
+			$request = $project->getRequest();
+			$link = new PageElement('link', array(
+				'stock' => $this->getModule()->getName(),
+				'request' => $request,
+				'text' => $project->getTitle(),
+				'title' => $project->get('synopsis')));
+			$row->set('project', $link);
+		}
 		$row->set('state', $this->get('state'));
 		$row->set('type', $this->get('type'));
 		$row->set('priority', $this->get('priority'));
