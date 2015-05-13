@@ -791,7 +791,7 @@ class User
 		$args = array('timestamp' => $timestamp);
 		$error = 'Could not clean the registration database up';
 
-		if($db->query($engine, $query, $args) === FALSE)
+		if($db->query($engine, $query, $args, TRUE) === FALSE)
 			return $engine->log('LOG_ERR', $error);
 		return TRUE;
 	}
@@ -808,7 +808,7 @@ class User
 		$args = array('timestamp' => $timestamp);
 		$error = 'Could not clean the password reset database up';
 
-		if($db->query($engine, $query, $args) === FALSE)
+		if($db->query($engine, $query, $args, TRUE) === FALSE)
 			return $engine->log('LOG_ERR', $error);
 		return TRUE;
 	}
