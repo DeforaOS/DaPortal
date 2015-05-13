@@ -121,7 +121,8 @@ class PgsqlDatabase extends Database
 
 
 	//PgsqlDatabase::query
-	public function query($engine, $query, &$parameters = FALSE)
+	public function query($engine, $query, &$parameters = FALSE,
+			$async = FALSE)
 	{
 		global $config;
 
@@ -159,14 +160,19 @@ class PgsqlDatabase extends Database
 			return FALSE;
 		//execute the query
 		$this->profileStart($engine);
-		if(($res = pg_execute($this->handle, $q, $args)) === FALSE)
+		if($async)
+			$res = pg_send_execute($this->handle, $q, $args);
+		else
+			$res = pg_execute($this->handle, $q, $args);
+		$this->profileStop($engine, $query);
+		if($res === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
 				$engine->log('LOG_DEBUG', $error);
-			$this->profileStop($engine, $query);
 			return FALSE;
 		}
-		$this->profileStop($engine, $query);
+		if($async)
+			return TRUE;
 		if(pg_num_rows($res) == -1)
 			return FALSE;
 		return new PgsqlDatabaseResult($res);

@@ -171,7 +171,8 @@ abstract class Database
 	abstract public function getLastID($engine, $table, $field);
 
 	abstract public function enum($engine, $table, $field);
-	abstract public function query($engine, $query, &$parameters = FALSE);
+	abstract public function query($engine, $query, &$parameters = FALSE,
+			$async = FALSE);
 
 
 	//protected
