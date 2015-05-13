@@ -50,8 +50,8 @@ abstract class Database
 			if(($tm = strptime($date, $informat)) === FALSE)
 				continue;
 			$timestamp = gmmktime($tm['tm_hour'], $tm['tm_min'],
-				$tm['tm_sec'], $tm['tm_mon'] + 1, $tm['tm_mday'],
-				$tm['tm_year'] + 1900);
+					$tm['tm_sec'], $tm['tm_mon'] + 1,
+					$tm['tm_mday'], $tm['tm_year'] + 1900);
 			if($outformat === FALSE)
 				$outformat = '%d/%m/%Y %H:%M:%S';
 			return strftime($outformat, $timestamp);
