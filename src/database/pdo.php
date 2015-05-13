@@ -321,6 +321,7 @@ class PDODatabaseResultCached extends DatabaseResult
 		$this->stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$this->count = count($this->stmt);
 		$this->affected = $stmt->rowCount();
+		$stmt->closeCursor();
 	}
 
 
