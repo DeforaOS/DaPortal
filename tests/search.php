@@ -36,7 +36,7 @@ $request = new Request('search', 'advanced', FALSE, FALSE, array(
 		'q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
-	exit(3);
+	exit(4);
 $how = array(0, 1);
 $case = array(0, 1);
 foreach($how as $h)
@@ -48,7 +48,7 @@ foreach($how as $h)
 			$args);
 		if(($result = $module->call($engine, $request)) === FALSE
 				|| !$result instanceof PageResponse)
-			exit(4);
+			exit(5);
 	}
 exit(0);
 
