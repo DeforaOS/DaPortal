@@ -180,7 +180,7 @@ class GroupModule extends Module
 	{
 		$ret = array();
 		$db = $engine->getDatabase();
-		$query = $this->query_list_members;
+		$query = static::$query_list_members;
 		$args = array('user_id' => $user->getUserID());
 
 		if($user->getUserID() == 0)
@@ -228,7 +228,7 @@ class GroupModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$query = $this->query_admin;
+		$query = static::$query_admin;
 		//FIXME implement sorting
 		$query .= ' ORDER BY groupname ASC';
 		if(($res = $db->query($engine, $query)) === FALSE)
@@ -354,7 +354,7 @@ class GroupModule extends Module
 	//GroupModule::callDelete
 	protected function callDelete($engine, $request)
 	{
-		$query = $this->query_delete;
+		$query = static::$query_delete;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('Group(s) could be deleted successfully'),
@@ -365,7 +365,7 @@ class GroupModule extends Module
 	//GroupModule::callDisable
 	protected function callDisable($engine, $request)
 	{
-		$query = $this->query_disable;
+		$query = static::$query_disable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('Group(s) could be disabled successfully'),
@@ -378,7 +378,7 @@ class GroupModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$database = $engine->getDatabase();
-		$query = $this->query_content;
+		$query = static::$query_content;
 		$title = FALSE;
 		$stock = $this->name;
 		$link = FALSE;
@@ -451,7 +451,7 @@ class GroupModule extends Module
 	//GroupModule::callEnable
 	protected function callEnable($engine, $request)
 	{
-		$query = $this->query_enable;
+		$query = static::$query_enable;
 
 		return $this->helperApply($engine, $request, $query, 'admin',
 			_('Group(s) could be enabled successfully'),
@@ -463,7 +463,7 @@ class GroupModule extends Module
 	protected function callList($engine, $request)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_list;
+		$query = static::$query_list;
 
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->_listGroup($engine, $request);
@@ -508,8 +508,9 @@ class GroupModule extends Module
 		$db = $engine->getDatabase();
 		$id = $request->getID();
 		$group = $request->getTitle();
-		$query = ($group !== FALSE) ? $this->query_list_group_groupname
-			: $this->query_list_group;
+		$query = ($group !== FALSE)
+			? static::$query_list_group_groupname
+			: static::$query_list_group;
 		$args = ($group !== FALSE) ? array('group_id' => $id,
 			'groupname' => $group) : array('group_id' => $id);
 
@@ -658,7 +659,7 @@ class GroupModule extends Module
 		$error = '';
 		$args = array('group_id' => $group->getGroupID(),
 			'groupname' => $groupname);
-		if($db->query($engine, $this->query_update, $args) === FALSE)
+		if($db->query($engine, static::$query_update, $args) === FALSE)
 			return _('Could not update the group');
 		return FALSE;
 	}
@@ -755,33 +756,34 @@ class GroupModule extends Module
 	//private
 	//properties
 	//queries
-	private $query_admin = 'SELECT daportal_group.group_id AS id, groupname,
-		COUNT(user_id) AS count, daportal_group.enabled AS enabled
+	static private $query_admin = 'SELECT daportal_group.group_id AS id,
+		groupname, COUNT(user_id) AS count,
+		daportal_group.enabled AS enabled
 		FROM daportal_group
 		LEFT JOIN daportal_user_group
 		ON daportal_group.group_id=daportal_user_group.group_id
 		GROUP BY daportal_group.group_id';
-	private $query_content = "SELECT name
+	static private $query_content = "SELECT name
 	       	FROM daportal_module
 		WHERE enabled='1'
 	       	ORDER BY name ASC";
 	//IN:	group_id
-	private $query_delete = "DELETE FROM daportal_group
+	static private $query_delete = "DELETE FROM daportal_group
 		WHERE group_id=:group_id";
 	//IN:	group_id
-	private $query_disable = "UPDATE daportal_group
+	static private $query_disable = "UPDATE daportal_group
 		SET enabled='0'
 		WHERE group_id=:group_id";
 	//IN:	group_id
-	private $query_enable = "UPDATE daportal_group
+	static private $query_enable = "UPDATE daportal_group
 		SET enabled='1'
 		WHERE group_id=:group_id";
-	private $query_list = "SELECT group_id AS id, groupname
+	static private $query_list = "SELECT group_id AS id, groupname
 		FROM daportal_group_enabled
 		WHERE group_id <> '0'";
 	//IN:	group_id
-	private $query_list_group = 'SELECT daportal_user_enabled.user_id AS id,
-		username, fullname
+	static private $query_list_group = 'SELECT
+		daportal_user_enabled.user_id AS id, username, fullname
 		FROM daportal_user_group, daportal_user_enabled
 		WHERE daportal_user_group.user_id=daportal_user_enabled.user_id
 		AND daportal_user_group.group_id=:group_id
@@ -789,7 +791,7 @@ class GroupModule extends Module
 	//IN:	group_id
 	//	groupname
 	//FIXME should return an error if the group does not exist
-	private $query_list_group_groupname = 'SELECT
+	static private $query_list_group_groupname = 'SELECT
 		daportal_user_enabled.user_id AS id, username, fullname
 		FROM daportal_group_enabled, daportal_user_group,
 		daportal_user_enabled
@@ -799,7 +801,7 @@ class GroupModule extends Module
 		AND daportal_group_enabled.groupname=:groupname
 		ORDER BY username ASC';
 	//IN:	user_id
-	private $query_list_members = 'SELECT
+	static private $query_list_members = 'SELECT
 		daportal_group_enabled.group_id AS group_id, groupname
 		FROM daportal_user_group, daportal_group_enabled
 		WHERE daportal_user_group.group_id
@@ -807,7 +809,7 @@ class GroupModule extends Module
 		AND user_id=:user_id';
 	//IN:	group_id
 	//	groupname
-	private $query_update = 'UPDATE daportal_group
+	static private $query_update = 'UPDATE daportal_group
 		SET groupname=:groupname
 		WHERE group_id=:group_id';
 }
