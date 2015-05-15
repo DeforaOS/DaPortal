@@ -58,6 +58,12 @@ class SearchModule extends Module
 		title, content, enabled, public
 		FROM daportal_content_public
 		WHERE 1=1';
+	//IN:	module_id
+	static protected $query_module = 'SELECT content_id AS id,
+		timestamp AS date, module_id, module, user_id, username,
+		group_id, groupname, title, content, enabled, public
+		FROM daportal_content_public
+		WHERE module_id=:module_id';
 
 
 	//methods
@@ -178,8 +184,9 @@ class SearchModule extends Module
 		$incontent = $request->get('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
+		$module = $request->get('module');
 		if(($res = $this->query($engine, $q, $case, $intitle,
-				$incontent)) === FALSE)
+				$incontent, FALSE, $module)) === FALSE)
 		{
 			$error = _('Unable to search');
 			$page->append('dialog', array('type' => 'error',
@@ -376,7 +383,10 @@ class SearchModule extends Module
 	{
 		global $config;
 		$db = $engine->getDatabase();
-		$query = static::$query.' AND (0=1';
+		$module = ($module !== FALSE) ? Module::load($engine, $module)
+			: FALSE;
+		$query = ($module !== FALSE) ? static::$query_module.' AND (0=1'
+			: static::$query.' AND (0=1';
 		$regexp = $this->configGet('regexp');
 		$func = $regexp ? 'regexp' : 'like';
 		$wildcard = $regexp ? '' : '%';
@@ -385,7 +395,8 @@ class SearchModule extends Module
 		if($string == '')
 			return TRUE;
 		$q = explode(' ', $string);
-		$args = array();
+		$args = ($module !== FALSE)
+			? array('module_id' => $module->getID()) : array();
 		$i = 0;
 		if($intitle && count($q))
 			foreach($q as $r)
