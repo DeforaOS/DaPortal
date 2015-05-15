@@ -336,6 +336,31 @@ class SearchModule extends Module
 			$checkbox->set('name', 'incontent');
 			$checkbox->set('text', _('content'));
 			$checkbox->set('value', $request->get('incontent'));
+			//modules
+			$list = $engine->getModules();
+			$modules = array();
+			foreach($list as $m)
+			{
+				$module = Module::load($engine, $m);
+				if($module instanceof ContentModule)
+					$modules[] = $m;
+			}
+			if(count($modules))
+			{
+				$hbox->append('label', array(
+						'text' => _('module: ')));
+				$value = $request->get('module');
+				$combobox = $hbox->append('combobox', array(
+						'name' => 'module',
+						'value' => $value));
+				$combobox->append('label', array(
+						'text' => _('Any')));
+				asort($modules);
+				foreach($modules as $m)
+					$combobox->append('label', array(
+							'text' => ucfirst($m),
+							'value' => $m));
+			}
 			$hbox = $form->append('hbox');
 			$radio = $hbox->append('radiobutton', array(
 					'name' => 'case', 'value' => $case));
