@@ -25,25 +25,31 @@ global $config;
 if(($module = Module::load($engine, 'search')) === FALSE)
 	exit(2);
 
+//widget
+$request = $module->getRequest('widget');
+if(($result = $module->call($engine, $request)) === FALSE
+		|| !$result instanceof PageResponse)
+	exit(3);
+
 //simple search
 $request = new Request('search', FALSE, FALSE, FALSE, array('q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
-	exit(3);
+	exit(4);
 
 //advanced search
 $request = new Request('search', 'advanced', FALSE, FALSE, array(
 		'q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
-	exit(4);
+	exit(5);
 
 //advanced search (module)
 $request = new Request('search', 'advanced', FALSE, FALSE, array(
 		'q' => 'test', 'module' => 'news'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
-	exit(5);
+	exit(6);
 
 $how = array(0, 1);
 $case = array(0, 1);
@@ -56,7 +62,7 @@ foreach($how as $h)
 			$args);
 		if(($result = $module->call($engine, $request)) === FALSE
 				|| !$result instanceof PageResponse)
-			exit(6);
+			exit(7);
 	}
 exit(0);
 
