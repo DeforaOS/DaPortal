@@ -32,21 +32,20 @@ if(($result = $module->call($engine, $request)) === FALSE
 	exit(3);
 
 //simple search
-$request = new Request('search', FALSE, FALSE, FALSE, array('q' => 'test'));
+$request = $module->getRequest(FALSE, array('q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
 	exit(4);
 
 //advanced search
-$request = new Request('search', 'advanced', FALSE, FALSE, array(
-		'q' => 'test'));
+$request = $module->getRequest('advanced', array('q' => 'test'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
 	exit(5);
 
 //advanced search (module)
-$request = new Request('search', 'advanced', FALSE, FALSE, array(
-		'q' => 'test', 'module' => 'news'));
+$request = $module->getRequest('advanced', array('q' => 'test',
+		'module' => 'news'));
 if(($result = $module->call($engine, $request)) === FALSE
 		|| !$result instanceof PageResponse)
 	exit(6);
@@ -58,8 +57,7 @@ foreach($how as $h)
 	{
 		$config->set('module::search', 'regexp', $h);
 		$args = array('q' => 'test', 'case' => $c);
-		$request = new Request('search', 'advanced', FALSE, FALSE,
-			$args);
+		$request = $module->getRequest('advanced', $args);
 		if(($result = $module->call($engine, $request)) === FALSE
 				|| !$result instanceof PageResponse)
 			exit(7);
