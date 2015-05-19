@@ -202,10 +202,19 @@ abstract class Engine
 	//Engine::process
 	public function process($request, $internal = FALSE)
 	{
+		$namespace = 'DaPortal';
+
 		//return an empty page if no valid request is provided
 		if($request === FALSE
 				|| ($module = $request->getModule()) === FALSE)
 			return new PageResponse(FALSE);
+		//obtain the namespace
+		if(strpos($module, '\\') !== FALSE)
+		{
+			$namespace = explode('\\', $module);
+			$module = array_pop($namespace);
+			$namespace = implode('\\', $namespace);
+		}
 		//preserve the type
 		$type = $request->getType();
 		//obtain the response
@@ -215,7 +224,8 @@ abstract class Engine
 				." request: module $module"
 				.(($action !== FALSE) ? ", action $action"
 					: ''));
-		if(($module = Module::load($this, $module)) === FALSE)
+		if(($module = Module::load($this, $module, $namespace))
+				=== FALSE)
 			$ret = new ErrorResponse(_('Could not load the module'),
 					Response::$CODE_ENOENT);
 		else
