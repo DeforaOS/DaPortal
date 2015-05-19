@@ -202,19 +202,14 @@ abstract class Engine
 	//Engine::process
 	public function process($request, $internal = FALSE)
 	{
-		$namespace = 'DaPortal';
-
 		//return an empty page if no valid request is provided
 		if($request === FALSE
 				|| ($module = $request->getModule()) === FALSE)
 			return new PageResponse(FALSE);
 		//obtain the namespace
-		if(strpos($module, '\\') !== FALSE)
-		{
-			$namespace = explode('\\', $module);
-			$module = array_pop($namespace);
-			$namespace = implode('\\', $namespace);
-		}
+		if(($namespace = $request->getNamespace()) === FALSE)
+			//assume the default namespace
+			$namespace = 'DaPortal';
 		//preserve the type
 		$type = $request->getType();
 		//obtain the response

@@ -57,12 +57,15 @@ abstract class Module
 	//static
 	//useful
 	//Module::load
-	static public function load($engine, $name, $namespace = 'DaPortal')
+	static public function load($engine, $name, $namespace = FALSE)
 	{
 		if($name === FALSE)
 			return FALSE;
 		if(($id = self::_loadID($engine, $name)) === FALSE)
 			return FALSE;
+		if($namespace === FALSE)
+			//assume the default namespace
+			$namespace = 'DaPortal';
 		$module = $namespace.'\\'.$name.'Module';
 		if(($ret = new $module($id, $name)) == NULL)
 			return $engine->log('LOG_ERR',

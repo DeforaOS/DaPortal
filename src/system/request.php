@@ -26,14 +26,15 @@ class Request extends Mutator
 	//methods
 	//Request::Request
 	function __construct($module = FALSE, $action = FALSE, $id = FALSE,
-			$title = FALSE, $parameters = FALSE)
+			$title = FALSE, $parameters = FALSE, $namespace = FALSE)
 	{
 		if($module === FALSE
 				|| $this->setModule($module) === FALSE
 				|| $this->setAction($action) === FALSE
 				|| $this->setID($id) === FALSE
 				|| $this->setTitle($title) === FALSE
-				|| $this->setParameters($parameters) === FALSE)
+				|| $this->setParameters($parameters) === FALSE
+				|| $this->setNamespace($namespace) === FALSE)
 			return;
 	}
 
@@ -57,6 +58,13 @@ class Request extends Mutator
 	public function getModule()
 	{
 		return $this->module;
+	}
+
+
+	//Request::getNamespace
+	public function getNamespace()
+	{
+		return $this->namespace;
 	}
 
 
@@ -129,7 +137,8 @@ class Request extends Mutator
 		}
 		if(!is_string($module)
 				|| strpos($module, '.') !== FALSE
-				|| strpos($module, '/') !== FALSE)
+				|| strpos($module, '/') !== FALSE
+				|| strpos($module, '\\') !== FALSE)
 			return $this->reset();
 		$this->module = $module;
 		return TRUE;
@@ -159,6 +168,14 @@ class Request extends Mutator
 		if($id !== FALSE && !is_numeric($id))
 			return $this->reset();
 		$this->id = $id;
+		return TRUE;
+	}
+
+
+	//Request::setNamespace
+	private function setNamespace($namespace)
+	{
+		$this->namespace = $namespace;
 		return TRUE;
 	}
 
@@ -210,6 +227,7 @@ class Request extends Mutator
 	private $action = FALSE;
 	private $id = FALSE;
 	private $title = FALSE;
+	private $namespace = FALSE;
 	private $type = FALSE;
 }
 
