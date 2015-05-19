@@ -586,20 +586,20 @@ abstract class PKIContent extends ContentMulti
 		}
 		switch(static::$class)
 		{
-			case 'CAPKIContent':
+			case 'DaPortal\\CAPKIContent':
 				$x509 = ($parent !== FALSE) ? '' : ' -x509';
 				$extensions = '';
 				$keyout = $root.'/private/cakey.pem';
 				$out = ($parent !== FALSE) ? $root.'/cacert.csr'
 					: $root.'/cacert.pem';
 				break;
-			case 'CAClientPKIContent':
+			case 'DaPortal\\CAClientPKIContent':
 				$x509 = ' -x509';
 				$extensions = ' -extensions usr_cert';
 				$keyout = $root.'/private/'.$this->getTitle().'.key';
 				$out = $root.'/newcerts/'.$this->getTitle().'.pem';
 				break;
-			case 'CAServerPKIContent':
+			case 'DaPortal\\CAServerPKIContent':
 				$x509 = ' -x509';
 				$extensions = ' -extensions srv_cert';
 				$keyout = $root.'/private/'.$this->getTitle().'.key';
@@ -652,8 +652,8 @@ abstract class PKIContent extends ContentMulti
 		}
 		switch(static::$class)
 		{
-			case 'CAClientPKIContent':
-			case 'CAServerPKIContent':
+			case 'DaPortal\\CAClientPKIContent':
+			case 'DaPortal\\CAServerPKIContent':
 				$in = $root.'/newcerts/'.$this->getTitle().'.pem';
 				$out = $root.'/newreqs/'.$this->getTitle().'.csr';
 				$signkey = $root.'/private/'.$this->getTitle().'.key';

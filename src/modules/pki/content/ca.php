@@ -16,7 +16,7 @@
 
 
 
-namespace 'DaPortal';
+namespace DaPortal;
 
 
 //CAPKIContent
@@ -311,7 +311,7 @@ class CAPKIContent extends PKIContent
 		$opensslcnf = $root.'/openssl.cnf';
 		switch(get_class($content))
 		{
-			case 'CAPKIContent':
+			case 'DaPortal\\CAPKIContent':
 				if(($root = $content->getRootCA($engine))
 						=== FALSE)
 				{
@@ -322,12 +322,12 @@ class CAPKIContent extends PKIContent
 				$in = $root.'/cacert.csr';
 				$out = $root.'/cacert.pem';
 				break;
-			case 'CAClientPKIContent':
+			case 'DaPortal\\CAClientPKIContent':
 				$extensions = 'usr_cert';
 				$in = $root.'/newreqs/'.$content->getTitle().'.csr';
 				$out = $root.'/certs/'.$content->getTitle().'.pem';
 				break;
-			case 'CAServerPKIContent':
+			case 'DaPortal\\CAServerPKIContent':
 				$extensions = 'srv_cert';
 				$in = $root.'/newreqs/'.$content->getTitle().'.csr';
 				$out = $root.'/certs/'.$content->getTitle().'.pem';

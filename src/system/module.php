@@ -57,13 +57,13 @@ abstract class Module
 	//static
 	//useful
 	//Module::load
-	static public function load($engine, $name)
+	static public function load($engine, $name, $namespace = 'DaPortal')
 	{
 		if($name === FALSE)
 			return FALSE;
 		if(($id = self::_loadID($engine, $name)) === FALSE)
 			return FALSE;
-		$module = 'DaPortal\\'.$name.'Module';
+		$module = $namespace.'\\'.$name.'Module';
 		if(($ret = new $module($id, $name)) == NULL)
 			return $engine->log('LOG_ERR',
 					$name.': Could not load module');
