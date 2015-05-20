@@ -35,7 +35,7 @@ class CLIEngine extends Engine
 	//CLIEngine::getRequest
 	public function getRequest()
 	{
-		if(($options = getopt('DM:fm:a:i:O:o:qt:v')) === FALSE)
+		if(($options = getopt('DM:fm:a:i:O:o:qt:vn:')) === FALSE)
 			return parent::getRequest();
 		$idempotent = TRUE;
 		$module = FALSE;
@@ -43,6 +43,7 @@ class CLIEngine extends Engine
 		$id = FALSE;
 		$title = FALSE;
 		$parameters = array();
+		$namespace = FALSE;
 		$type = 'text/plain';
 		foreach($options as $key => $value)
 			switch($key)
@@ -96,11 +97,15 @@ class CLIEngine extends Engine
 				case 't':
 					$title = $options['t'];
 					break;
+				case 'n':
+					$namespace = $options['n'];
+					break;
 				case 'v':
 					$this->verbose++;
 					break;
 			}
-		$ret = new Request($module, $action, $id, $title, $parameters);
+		$ret = new Request($module, $action, $id, $title, $parameters,
+			$namespace);
 		$ret->setIdempotent($idempotent);
 		if($ret->getType() === FALSE)
 			$ret->setType($type);
