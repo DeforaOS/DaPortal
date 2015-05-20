@@ -27,6 +27,7 @@
 			<year>2012</year>
 			<year>2013</year>
 			<year>2014</year>
+			<year>2015</year>
 			<holder>&firstname; &surname; &lt;&email;&gt;</holder>
 		</copyright>
 		<legalnotice>
@@ -56,6 +57,7 @@
 			<arg choice="opt"><option>-i</option> <replaceable>ID</replaceable></arg>
 			<arg choice="opt"><option>-q</option></arg>
 			<arg choice="opt"><option>-t</option> <replaceable>title</replaceable></arg>
+			<arg choice="opt"><option>-n</option> <replaceable>namespace</replaceable></arg>
 			<arg choice="opt"><option>-v</option></arg>
 			<arg choice="opt" rep="repeat"><option>-o</option> <replaceable>variable=value</replaceable></arg>
 		</cmdsynopsis>
@@ -122,6 +124,12 @@
 					<para>Sets additional parameter values.</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term><option>-n</option></term>
+				<listitem>
+					<para>Sets the namespace for the request.</para>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 	</refsect1>
 	<refsect1 id="requests">
@@ -145,6 +153,8 @@
 			privileged, and require a special flag to work.</para>
 		<para>Requests are also sent and received internally by &package;; they are
 			however denied from external tools like <command>&name;</command>.</para>
+		<para>Additionally, requests can be placed in a particular namespace. This may
+			be necessary for third-party extensions to the &package; project.</para>
 	</refsect1>
 	<refsect1 id="files">
 		<title>Files</title>
