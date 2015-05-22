@@ -93,7 +93,7 @@ class HTML5Format extends HTMLFormat
 		if(($width = $e->get('width')) !== FALSE && is_numeric($width))
 			$attributes['style'] = 'width: '.$width.'ex';
 		$this->tag('input', $class, $e->get('id'), $attributes);
-		if($this->javascript && is_string($name)
+		if($this->getJavascript() && is_string($name)
 				&& substr($name, -2) == '[]')
 			$this->tag('input', 'stock16 add hidden', FALSE, array(
 					'type' => 'button',

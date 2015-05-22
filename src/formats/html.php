@@ -71,6 +71,13 @@ class HTMLFormat extends FormatElements
 	}
 
 
+	//HTMLFormat::getJavascript
+	protected function getJavascript()
+	{
+		return $this->javascript;
+	}
+
+
 	//useful
 	//escaping
 	//HTMLFormat::escape
