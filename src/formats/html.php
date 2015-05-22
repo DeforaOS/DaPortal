@@ -60,7 +60,7 @@ class HTMLFormat extends FormatElements
 
 
 	//accessors
-	//HTMLFormat::configget
+	//HTMLFormat::configGet
 	protected function configGet($variable)
 	{
 		global $config;
