@@ -313,7 +313,11 @@ class HTMLFormat extends FormatElements
 	protected function renderBox($e, $type = 'vbox')
 	{
 		$this->renderTabs();
-		$this->tagOpen('div', $type, $e->get('id'));
+		if(($class = $e->get('class')) !== FALSE)
+			$class = $type.' '.$class;
+		else
+			$class = $type;
+		$this->tagOpen('div', $class, $e->get('id'));
 		$children = $e->getChildren();
 		foreach($children as $c)
 		{
