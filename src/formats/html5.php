@@ -65,6 +65,43 @@ class HTML5Format extends HTMLFormat
 
 
 	//rendering
+	//HTML5Format::renderEntry
+	protected function renderEntry($e)
+	{
+		//XXX code duplicated from HTMLFormat::renderEntry
+		$class = ($e->get('class') !== FALSE)
+			? 'entry '.$e->get('class') : 'entry';
+
+		$this->renderTabs();
+		$this->tagOpen('div', $e->getType());
+		if(($text = $e->get('text')) !== FALSE)
+		{
+			$l = new PageElement('label', array(
+					'class' => $e->get('class')));
+			$l->setProperty('text', $text);
+			$this->renderElement($l);
+		}
+		$name = $e->get('name');
+		$value = $e->get('value');
+		$type = ($e->get('hidden') === TRUE) ? 'password' : 'text';
+		$attributes = array('type' => $type, 'name' => $name,
+			'value' => $value);
+		if(($size = $e->get('size')) !== FALSE && is_numeric($size))
+			$attributes['size'] = $size;
+		if(($placeholder = $e->get('placeholder')) !== FALSE)
+			$attributes['placeholder'] = $placeholder;
+		if(($width = $e->get('width')) !== FALSE && is_numeric($width))
+			$attributes['style'] = 'width: '.$width.'ex';
+		$this->tag('input', $class, $e->get('id'), $attributes);
+		if($this->javascript && is_string($name)
+				&& substr($name, -2) == '[]')
+			$this->tag('input', 'stock16 add hidden', FALSE, array(
+					'type' => 'button',
+					'value' => _('More')));
+		$this->tagClose('div');
+	}
+
+
 	//HTML5Format::renderMetaCharset
 	protected function renderMetaCharset($charset)
 	{
