@@ -512,7 +512,10 @@ class HTMLFormat extends FormatElements
 
 		$this->renderTabs();
 		$this->tagOpen('div', $e->getType());
-		if(($text = $e->get('text')) !== FALSE)
+		if(($text = $e->get('text')) === FALSE)
+			//default to the placeholder text
+			$text = $e->get('placeholder');
+		if($text !== FALSE)
 		{
 			$l = new PageElement('label', array(
 					'class' => $e->get('class')));
