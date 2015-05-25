@@ -208,9 +208,8 @@ class SearchModule extends Module
 
 		$form->set('request', $this->getRequest());
 		$hbox = $form->append('hbox');
-		$entry = $hbox->append('entry');
-		$entry->set('name', 'q');
-		$entry->set('value', _('Search...'));
+		$entry = $hbox->append('entry', array('name' => 'q',
+				'text' => '', 'placeholder' => _('Search...')));
 		$button = $hbox->append('button', array('stock' => 'search',
 					'type' => 'submit',
 					'text' => _('Search'),
