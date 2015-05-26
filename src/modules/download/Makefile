@@ -17,20 +17,32 @@ subdirs:
 		else $(MAKE); fi) || exit; done
 
 clean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
+		else $(MAKE) clean; fi) || exit; done
 
 distclean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
+		else $(MAKE) distclean; fi) || exit; done
 
 install:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
+		else $(MAKE) install; fi) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/download
 	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/daportal/src/modules/download/content.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/download
 	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/download/module.php
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
+		else $(MAKE) uninstall; fi) || exit; done
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/download/content.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/download/module.php
 

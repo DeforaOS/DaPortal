@@ -46,7 +46,10 @@ $(OBJDIR)gnome/48x48.css: icontheme.sh
 	./icontheme.sh -P "$(PREFIX)" -- "$(OBJDIR)gnome/48x48.css"
 
 clean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
+		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(DeforaOS/16x16.css_OBJS) $(DeforaOS/24x24.css_OBJS) $(DeforaOS/32x32.css_OBJS) $(DeforaOS/48x48.css_OBJS) $(gnome/16x16.css_OBJS) $(gnome/24x24.css_OBJS) $(gnome/32x32.css_OBJS) $(gnome/48x48.css_OBJS)
 	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/16x16.css"
 	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/24x24.css"
@@ -58,7 +61,10 @@ clean:
 	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/48x48.css"
 
 distclean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
+		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(DeforaOS/16x16.css_OBJS) $(DeforaOS/24x24.css_OBJS) $(DeforaOS/32x32.css_OBJS) $(DeforaOS/48x48.css_OBJS) $(gnome/16x16.css_OBJS) $(gnome/24x24.css_OBJS) $(gnome/32x32.css_OBJS) $(gnome/48x48.css_OBJS)
 	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/16x16.css"
 	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/24x24.css"
@@ -71,7 +77,10 @@ distclean:
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
+		else $(MAKE) install; fi) || exit; done
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/16x16.css"
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/24x24.css"
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/32x32.css"
@@ -94,7 +103,10 @@ install: $(TARGETS)
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/index.php
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
+		else $(MAKE) uninstall; fi) || exit; done
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/16x16.css"
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/24x24.css"
 	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/32x32.css"

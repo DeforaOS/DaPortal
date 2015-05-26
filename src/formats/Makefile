@@ -17,13 +17,22 @@ subdirs:
 		else $(MAKE); fi) || exit; done
 
 clean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
+		else $(MAKE) clean; fi) || exit; done
 
 distclean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
+		else $(MAKE) distclean; fi) || exit; done
 
 install:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
+		else $(MAKE) install; fi) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 atom.php $(DESTDIR)$(PREFIX)/daportal/src/formats/atom.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
@@ -48,7 +57,10 @@ install:
 	$(INSTALL) -m 0644 xml.php $(DESTDIR)$(PREFIX)/daportal/src/formats/xml.php
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
+		else $(MAKE) uninstall; fi) || exit; done
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/atom.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/csv.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/fpdf.php

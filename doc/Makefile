@@ -52,7 +52,10 @@ $(OBJDIR)internals-print.pdf: internals-print.xml internals-print.xsl
 	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 
 clean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
+		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
@@ -66,7 +69,10 @@ clean:
 	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
 
 distclean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
+		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
@@ -81,7 +87,10 @@ distclean:
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
+		else $(MAKE) install; fi) || exit; done
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.1"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)daportal.html"
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -i -- "$(OBJDIR)daportal.conf"
@@ -93,7 +102,10 @@ install: $(TARGETS)
 	$(INSTALL) -m 0644 daportal-http.conf $(DESTDIR)$(PREFIX)/share/doc/DaPortal/daportal-http.conf
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
+		else $(MAKE) uninstall; fi) || exit; done
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.1"
 	./docbook.sh -P "$(DESTDIR)$(PREFIX)" -u -- "daportal.html"
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/doc/DaPortal" -u -- "daportal.conf"

@@ -25,24 +25,36 @@ $(OBJDIR)index.php: index.php.in ../config.sh ../tools/subst.sh
 	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 
 clean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) clean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
+		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(index.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
 
 distclean:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) distclean) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
+		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(index.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
+		else $(MAKE) install; fi) || exit; done
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -i -- "$(OBJDIR)index.php"
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data
 	$(INSTALL) -m 0644 daportal.php $(DESTDIR)$(PREFIX)/daportal/data/daportal.php
 
 uninstall:
-	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
+	@for i in $(SUBDIRS); do (cd "$$i" && \
+		if [ -n "$(OBJDIR)" ]; then \
+		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
+		else $(MAKE) uninstall; fi) || exit; done
 	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/data" -u -- "index.php"
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/daportal.php
 
