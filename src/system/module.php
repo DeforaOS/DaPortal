@@ -43,7 +43,7 @@ abstract class Module
 	public function getRequest($action = FALSE, $parameters = FALSE)
 	{
 		return new Request($this->name, $action, FALSE, FALSE,
-				$parameters);
+				$parameters, static::$namespace);
 	}
 
 
@@ -65,7 +65,7 @@ abstract class Module
 			return FALSE;
 		if($namespace === FALSE)
 			//assume the default namespace
-			$namespace = 'DaPortal';
+			$namespace = static::$namespace;
 		$module = $namespace.'\\'.$name.'Module';
 		if(($ret = new $module($id, $name)) == NULL)
 			return $engine->log('LOG_ERR',
@@ -97,6 +97,7 @@ abstract class Module
 	protected $id = FALSE;
 	protected $name = FALSE;
 	protected $title = FALSE;
+	static protected $namespace = 'DaPortal';
 
 
 	//methods
