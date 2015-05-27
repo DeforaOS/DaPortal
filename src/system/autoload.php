@@ -19,14 +19,19 @@
 //autoload
 function autoload($class, $filename = FALSE)
 {
-	//filter on our own namespace
-	if(strncmp($class, 'DaPortal\\', 9) != 0)
-		return FALSE;
-	$namespace = substr($class, 0, 9);
-	$class = substr($class, 9);
+	$namespace = 'DaPortal';
+
+	if(($pos = strrpos($class, '\\')) !== FALSE)
+	{
+		$namespace = substr($class, 0, $pos);
+		$class = substr($class, $pos + 1);
+	}
 	if($filename !== FALSE)
 		//register the class
 		return _autoload_filename($class, $filename);
+	//filter on our own namespace
+	if($namespace != 'DaPortal')
+		return FALSE;
 	if(($filename = _autoload_filename($class)) === FALSE
 			|| !file_exists($filename))
 	{
@@ -42,26 +47,30 @@ function autoload($class, $filename = FALSE)
 	return $filename;
 }
 
-function _autoload_filename($class, $filename = FALSE)
+function _autoload_filename($class, $filename = FALSE, $namespace = 'DaPortal')
 {
 	static $classes = array(
-		'AuthCredentials' => './system/auth/credentials.php',
-		'DatabaseResult' => './system/database/result.php',
-		'FormatElements' => './system/format/elements.php',
-		'MultiContentModule' => './modules/content/multi.php',
-		'PageElement' => './system/page/element.php');
+		'DaPortal' => array(
+			'AuthCredentials' => './system/auth/credentials.php',
+			'DatabaseResult' => './system/database/result.php',
+			'FormatElements' => './system/format/elements.php',
+			'MultiContentModule' => './modules/content/multi.php',
+			'PageElement' => './system/page/element.php')
+		);
 
 	//validate the class name
 	if(strpos($class, '/') !== FALSE)
 		return FALSE;
+	if(!isset($classes[$namespace]))
+		$classes[$namespace] = array();
 	if($filename !== FALSE)
 	{
-		$classes[$class] = $filename;
+		$classes[$namespace][$class] = $filename;
 		return $filename;
 	}
 	//caching has precedence
-	if(isset($classes[$class]))
-		return $classes[$class];
+	if(isset($classes[$namespace][$class]))
+		return $classes[$namespace][$class];
 	$len = strlen($class);
 	//Auth sub-classes
 	if($len > 4 && substr($class, -4) == 'Auth')
