@@ -174,24 +174,31 @@ abstract class PKIContent extends ContentMulti
 
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Name: '),
+				'placeholder' => _('Name'),
 				'value' => $request->get('title')));
 		$vbox->append('entry', array('name' => 'country',
 				'text' => _('Country: '), 'size' => 2,
+				'placeholder' => _('Country'),
 				'value' => $request->get('country')));
 		$vbox->append('entry', array('name' => 'state',
 				'text' => _('State: '),
+				'placeholder' => _('State'),
 				'value' => $request->get('state')));
 		$vbox->append('entry', array('name' => 'locality',
 				'text' => _('Locality: '),
+				'placeholder' => _('Locality'),
 				'value' => $request->get('locality')));
 		$vbox->append('entry', array('name' => 'organization',
 				'text' => _('Organization: '),
+				'placeholder' => _('Organization'),
 				'value' => $request->get('organization')));
 		$vbox->append('entry', array('name' => 'section',
 				'text' => _('Section: '),
+				'placeholder' => _('Section'),
 				'value' => $request->get('section')));
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
+				'placeholder' => _('e-mail'),
 				'value' => $request->get('email')));
 		//key size
 		$keysize = $vbox->append('combobox', array('name' => 'keysize',
