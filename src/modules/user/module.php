@@ -248,10 +248,12 @@ class UserModule extends Module
 		$entry = $form->append('entry', array(
 					'name' => 'username',
 					'text' => _('Username: '),
+					'placeholder' => _('Username'),
 					'value' => $username));
 		$entry = $form->append('entry', array(
 					'hidden' => TRUE,
 					'name' => 'password',
+					'placeholder' => _('Password'),
 					'text' => _('Password: ')));
 		$r = $this->getRequest();
 		if($cancel)
