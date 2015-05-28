@@ -87,7 +87,8 @@ class GroupModule extends Module
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');
 		$vbox->append('entry', array('name' => 'groupname',
-				'text' => _('Name: '),
+				'text' => _('Group name: '),
+				'placeholder' => _('Group name'),
 				'value' => $request->get('groupname')));
 		//enabled
 		$vbox->append('checkbox', array('name' => 'enabled',
@@ -123,8 +124,9 @@ class GroupModule extends Module
 		$form = $page->append('form', array('request' => $r));
 		//fields
 		//groupname
-		$form->append('entry', array('text' => _('Group name: '),
-				'name' => 'groupname',
+		$form->append('entry', array('name' => 'groupname',
+				'text' => _('Group name: '),
+				'placeholder' => _('Group name'),
 				'value' => $group->getGroupname()));
 		//buttons
 		$r = new Request($this->name, 'admin');
