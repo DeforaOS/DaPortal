@@ -641,6 +641,7 @@ class Content
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
+				'placeholder' => _('Title'),
 				'value' => $request->get('title')));
 		$vbox->append('textview', array('name' => 'content',
 				'text' => _('Content: '),
@@ -655,6 +656,7 @@ class Content
 			$value = $this->getTitle();
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Title: '),
+				'placeholder' => _('Title'),
 				'value' => $value));
 		$label = $vbox->append('label', array(
 				'text' => _('Content: ')));
