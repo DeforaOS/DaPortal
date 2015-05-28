@@ -179,6 +179,7 @@ class FolderDownloadContent extends DownloadContent
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Name: '),
+				'placeholder' => _('Name'),
 				'value' => $request->get('title')));
 		return $vbox;
 	}
@@ -190,6 +191,7 @@ class FolderDownloadContent extends DownloadContent
 			$value = $this->getTitle();
 		$vbox->append('entry', array('name' => 'title',
 				'text' => _('Name: '),
+				'placeholder' => _('Name'),
 				'value' => $value));
 		return $vbox;
 	}
