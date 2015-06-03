@@ -201,8 +201,7 @@ class PgsqlDatabase extends Database
 		if(!function_exists('pg_connect'))
 			return 0;
 		foreach($variables as $k => $v)
-			if($config->get('database::pgsql', $k)
-					!== FALSE)
+			if($config->get('database::pgsql', $k) !== FALSE)
 				return 100;
 		return 1;
 	}
