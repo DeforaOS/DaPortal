@@ -22,6 +22,13 @@ abstract class Database
 	//public
 	//methods
 	//accessors
+	//Database::inTransaction
+	public function inTransaction()
+	{
+		return $this->transaction > 0;
+	}
+
+
 	//Database::isFalse
 	public function isFalse($value)
 	{
@@ -105,12 +112,44 @@ abstract class Database
 	//Database::transactionBegin
 	public function transactionBegin($engine)
 	{
-		return $this->query($engine, 'BEGIN');
+		if($this->inTransaction())
+		{
+			$this->transaction++;
+			return TRUE;
+		}
+		$this->rollback = FALSE;
+		if($this->_beginTransaction($engine) === FALSE)
+			return FALSE;
+		$this->transaction = 1;
+		return TRUE;
+	}
+
+	protected function _beginTransaction($engine)
+	{
+		return $this->query($engine, 'START TRANSACTION');
 	}
 
 
 	//Database::transactionCommit
 	public function transactionCommit($engine)
+	{
+		if(!$this->inTransaction())
+			return FALSE;
+		if($this->transaction != 1)
+		{
+			$this->transaction--;
+			return TRUE;
+		}
+		if($this->rollback)
+		{
+			$this->transactionRollback($engine);
+			return FALSE;
+		}
+		$this->transaction--;
+		return $this->_commitTransaction($engine);
+	}
+
+	protected function _commitTransaction($engine)
 	{
 		return $this->query($engine, 'COMMIT');
 	}
@@ -118,6 +157,16 @@ abstract class Database
 
 	//Database::transactionRollback
 	public function transactionRollback($engine)
+	{
+		if(!$this->inTransaction())
+			return FALSE;
+		if($this->transaction-- == 1)
+			return $this->_rollbackTransaction($engine);
+		$this->rollback = TRUE;
+		return TRUE;
+	}
+
+	protected function _rollbackTransaction($engine)
 	{
 		return $this->query($engine, 'ROLLBACK');
 	}
@@ -179,6 +228,9 @@ abstract class Database
 	//properties
 	//profiling
 	protected $profile = FALSE;
+	//transactions
+	protected $transaction = 0;
+	protected $rollback = FALSE;
 
 	//queries
 	static protected $query_sql_profile = 'INSERT INTO daportal_sql_profile

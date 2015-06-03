@@ -135,6 +135,8 @@ class SQLite2Database extends Database
 	}
 
 
+	//public
+	//useful
 	//SQLite2Database::regexp
 	public function regexp($case = TRUE, $pattern = FALSE)
 	{
@@ -155,6 +157,18 @@ class SQLite2Database extends Database
 		//XXX the delimiter character may be used within the pattern
 		$pattern = $this->case ? ",$pattern," : ",$pattern,i";
 		return (preg_match($pattern, $subject) === 1) ? TRUE : FALSE;
+	}
+
+
+	//SQLite2Database::transactionBegin
+	public function transactionBegin($engine)
+	{
+		return parent::transactionBegin($engine);
+	}
+
+	protected function _beginTransaction($engine)
+	{
+		return $this->query($engine, 'BEGIN');
 	}
 
 

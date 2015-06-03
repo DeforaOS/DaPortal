@@ -152,43 +152,6 @@ class PDODatabase extends Database
 	}
 
 
-	//PDODatabase::transactionBegin
-	public function transactionBegin($engine)
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		if($this->transaction++ == 0)
-			return $this->handle->beginTransaction();
-		return TRUE;
-	}
-
-
-	//PDODatabase::transactionCommit
-	public function transactionCommit($engine)
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		if($this->transaction == 0)
-			return FALSE;
-		if($this->transaction-- == 1)
-			return $this->handle->commit();
-		return TRUE;
-	}
-
-
-	//PDODatabase::transactionRollback
-	public function transactionRollback($engine)
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		if($this->transaction == 0)
-			return FALSE;
-		if($this->transaction-- == 1)
-			return $this->handle->rollback();
-		return TRUE;
-	}
-
-
 	//functions
 	//PDODatabase::concat
 	public function _concat($string1, $string2)
@@ -210,6 +173,48 @@ class PDODatabase extends Database
 			return substr($value, 0, 8).'01';
 		//FIXME really implement
 		return $value;
+	}
+
+
+	//PDODatabase::transactionBegin
+	public function transactionBegin($engine)
+	{
+		return parent::transactionBegin($engine);
+	}
+
+	protected function _beginTransaction($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->beginTransaction();
+	}
+
+
+	//PDODatabase::transactionCommit
+	public function transactionCommit($engine)
+	{
+		return parent::transactionCommit($engine);
+	}
+
+	protected function _commitTransaction($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->commit();
+	}
+
+
+	//PDODatabase::transactionRollback
+	public function transactionRollback($engine)
+	{
+		return parent::transactionRollback($engine);
+	}
+
+	protected function _rollbackTransaction($engine)
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->rollback();
 	}
 
 
@@ -303,7 +308,6 @@ class PDODatabase extends Database
 	private $backend = FALSE;
 	private $handle = FALSE;
 	private $result_class = 'PDODatabaseResult';
-	private $transaction = 0;
 	private $case;
 	//functions
 	private $func_regexp = FALSE;

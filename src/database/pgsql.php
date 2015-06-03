@@ -190,6 +190,18 @@ class PgsqlDatabase extends Database
 	}
 
 
+	//PgsqlDatabase::transactionBegin
+	public function transactionBegin($engine)
+	{
+		return parent::transactionBegin($engine);
+	}
+
+	protected function _beginTransaction($engine)
+	{
+		return $this->query($engine, 'BEGIN');
+	}
+
+
 	//protected
 	//methods
 	//PgsqlDatabase::match
