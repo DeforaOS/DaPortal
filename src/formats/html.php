@@ -600,17 +600,17 @@ class HTMLFormat extends FormatElements
 				$tokens = array();
 			$tokens[$token] = time() + 3600;
 			$auth->setVariable($this->engine, 'tokens', $tokens);
-			$this->_renderFormHidden('_token', $token);
+			$this->_formHidden('_token', $token);
 		}
 		if(($r = $e->get('request')) !== FALSE)
 		{
-			$this->_renderFormHidden('_module', $r->getModule());
-			$this->_renderFormHidden('_action', $r->getAction());
-			$this->_renderFormHidden('_id', $r->getID());
-			$this->_renderFormHidden('_title', $r->getTitle());
+			$this->_formHidden('_module', $r->getModule());
+			$this->_formHidden('_action', $r->getAction());
+			$this->_formHidden('_id', $r->getID());
+			$this->_formHidden('_title', $r->getTitle());
 			if(($args = $r->getParameters()) !== FALSE)
 				foreach($args as $k => $v)
-					$this->_renderFormHidden($k, $v);
+					$this->_formHidden($k, $v);
 		}
 		$this->renderChildren($e);
 		$this->renderTabs();
@@ -628,7 +628,7 @@ class HTMLFormat extends FormatElements
 		return FALSE;
 	}
 
-	private function _renderFormHidden($name, $value = FALSE)
+	private function _formHidden($name, $value = FALSE)
 	{
 		if($value === FALSE)
 			return;
@@ -1194,7 +1194,7 @@ class HTMLFormat extends FormatElements
 
 	private function _renderTreeviewHidden($name, $value = FALSE)
 	{
-		//FIXME copied from _renderFormHidden()
+		//FIXME copied from _formHidden()
 		if($value === FALSE)
 			return;
 		$this->renderTabs();
