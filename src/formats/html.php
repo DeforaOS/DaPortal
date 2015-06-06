@@ -447,7 +447,8 @@ class HTMLFormat extends FormatElements
 		{
 			$list = uniqid();
 			$this->tag('input', FALSE, FALSE, array(
-					'list' => $list, 'name' => $name));
+					'type' => 'text', 'list' => $list,
+					'name' => $name));
 			$tag = 'datalist';
 		}
 		$this->tagOpen($tag, FALSE, $list, array('name' => $name));
