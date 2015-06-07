@@ -230,7 +230,7 @@ abstract class PKIContent extends ContentMulti
 			'CD' => _('Congo (Kinshasa)'),
 			'CK' => _('Cook Islands'),
 			'CR' => _('Costa Rica'),
-			'CI' => _('Côte d'Ivoire'),
+			'CI' => _('Côte d\'Ivoire'),
 			'HR' => _('Croatia'),
 			'CU' => _('Cuba'),
 			'CW' => _('Curaçao'),
