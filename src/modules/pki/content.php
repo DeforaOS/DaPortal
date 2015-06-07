@@ -33,9 +33,11 @@ abstract class PKIContent extends ContentMulti
 		$this->fields['section'] = 'Section';
 		$this->fields['email'] = 'e-mail';
 		$this->fields['parent'] = 'Parent CA';
+		$this->fields['signed'] = 'Signed';
 		//let PKI content be public by default
 		$this->setPublic(TRUE);
 		$this->set('parent', FALSE);
+		$this->set('signed', FALSE);
 		parent::__construct($engine, $module, $properties);
 	}
 
