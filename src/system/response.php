@@ -132,8 +132,9 @@ abstract class Response extends Mutator
 	static public $CODE_EINVAL = 1;		//invalid argument
 	static public $CODE_EIO = 2;		//file operation error
 	static public $CODE_ENOENT = 3;		//could not load an object
-	static public $CODE_EPERM = 4;		//permission denied
-	static public $CODE_EROFS = 5;		//idempotence contract breach
+	static public $CODE_ENOSYS = 4;		//operation not implemented
+	static public $CODE_EPERM = 5;		//permission denied
+	static public $CODE_EROFS = 6;		//idempotence contract breach
 
 
 	//protected
