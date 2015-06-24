@@ -427,7 +427,7 @@ abstract class ContentModule extends Module
 			$dialog->append('button', array('stock' => 'login',
 						'text' => _('Login'),
 						'request' => $r));
-			return $dialog;
+			return new PageResponse($dialog, Response::$CODE_EPERM);
 		}
 		//perform actions if necessary
 		if($request !== FALSE)
@@ -490,7 +490,7 @@ abstract class ContentModule extends Module
 		//buttons
 		$vbox = $page->append('vbox');
 		$this->helperAdminButtons($engine, $vbox, $request);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -774,7 +774,7 @@ abstract class ContentModule extends Module
 		$this->helperPaging($engine, $request, $page, $limit, $count);
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -785,8 +785,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 
 		if(!$this->canPublish($engine, $request, FALSE, $error))
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		if($cred->isAdmin())
 			$query = static::$query_admin_publish;
 		return $this->helperApply($engine, $request, $query,
@@ -1220,14 +1219,8 @@ abstract class ContentModule extends Module
 		$db = $engine->getDatabase();
 
 		if(($uid = $cred->getUserID()) == 0)
-		{
 			//must be logged in
-			$page = $this->callDefault($engine);
-			$error = _('Must be logged in');
-			$page->prepend('dialog', array('type' => 'error',
-						'text' => $error));
-			return $page;
-		}
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//prepare the fallback request
 		//FIXME let fallback be a request directly
 		$fallback = 'call'.$fallback;
@@ -1256,8 +1249,9 @@ abstract class ContentModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		return new PageElement('dialog', array('type' => $type,
+		$message = new PageElement('dialog', array('type' => $type,
 					'text' => $message));
+		return new PageResponse($message);
 	}
 
 
