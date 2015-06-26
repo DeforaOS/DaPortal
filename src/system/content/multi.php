@@ -88,15 +88,13 @@ class ContentMulti extends Content
 	//MultiContent::save
 	public function save($engine, $request = FALSE, &$error = FALSE)
 	{
-		$database = $engine->getDatabase();
+		return $engine->getDatabase()->withTransaction($engine,
+			function() use ($engine, $request, &$error)
+			{
+				return parent::save($engine, $request, $error);
+			}
+		);
 
-		if($database->transactionBegin($engine) === FALSE)
-			return FALSE;
-		if(($ret = parent::save($engine, $request, $error)) === FALSE)
-			$database->transactionRollback($engine);
-		else if($database->transactionCommit($engine) === FALSE)
-			return FALSE;
-		return $ret;
 	}
 
 
