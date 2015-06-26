@@ -172,6 +172,21 @@ abstract class Database
 	}
 
 
+	//Database::withTransaction
+	public function withTransaction($engine, $callback)
+	{
+		if($this->inTransaction($engine))
+			return $callback();
+		if($this->transactionBegin($engine) === FALSE)
+			return FALSE;
+		if(($ret = $callback()) === FALSE)
+			$this->transactionRollback($engine);
+		else if($this->transactionCommit($engine) === FALSE)
+			return FALSE;
+		return $ret;
+	}
+
+
 	//static
 	//Database::attachDefault
 	public static function attachDefault($engine)
