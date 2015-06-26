@@ -949,6 +949,9 @@ class Content
 			$query .= ' AND '.$column.' '.$database->like(FALSE)
 				.' :title ESCAPE :escape';
 			$args['title'] = str_replace($from, $to, $title);
+			//require 32 correct characters in the title
+			if(strlen($title) >= 32)
+				$args['title'] .= '%';
 			$args['escape'] = '\\';
 		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
