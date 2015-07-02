@@ -604,8 +604,7 @@ class GroupModule extends Module
 	{
 		$r = new Request($this->name, FALSE, $group->getGroupID(),
 			$group->getGroupname());
-		$this->helperRedirect($engine, $r, $page);
-		return $page;
+		return $this->helperRedirect($engine, $r, $page);
 	}
 
 
@@ -751,7 +750,7 @@ class GroupModule extends Module
 		$box->append('link', array('text' => _('click here'),
 				'request' => $request));
 		$box->append('label', array('text' => '.'));
-		return $page;
+		return new PageResponse($page);
 	}
 
 

@@ -1542,8 +1542,7 @@ class UserModule extends Module
 	protected function _submitSuccess($engine, $request, $page, $user)
 	{
 		$r = $user->getRequest($this->name);
-		$this->helperRedirect($engine, $r, $page);
-		return new PageResponse($page);
+		return $this->helperRedirect($engine, $r, $page);
 	}
 
 
@@ -1871,7 +1870,7 @@ class UserModule extends Module
 		$box->append('link', array('text' => _('click here'),
 				'request' => $request));
 		$box->append('label', array('text' => '.'));
-		return $page;
+		return new PageResponse($page);
 	}
 
 

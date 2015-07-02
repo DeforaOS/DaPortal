@@ -705,9 +705,8 @@ class ProjectModule extends MultiContentModule
 	{
 		$r = new Request($this->name, 'download', $content->getID(),
 			$content->getTitle());
-		$this->helperRedirect($engine, $r, $page,
+		return $this->helperRedirect($engine, $r, $page,
 				$this->text_content_submit_progress); //XXX
-		return $page;
 	}
 
 

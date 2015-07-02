@@ -877,9 +877,8 @@ abstract class ContentModule extends Module
 	protected function _publishSuccess($engine, $request, $content, $page)
 	{
 		$r = $content->getRequest();
-		$this->helperRedirect($engine, $r, $page,
+		return $this->helperRedirect($engine, $r, $page,
 				$this->text_content_publish_progress);
-		return new PageResponse($page);
 	}
 
 
@@ -945,9 +944,8 @@ abstract class ContentModule extends Module
 	protected function _submitSuccess($engine, $request, $content, $page)
 	{
 		$r = $content->getRequest();
-		$this->helperRedirect($engine, $r, $page,
+		return $this->helperRedirect($engine, $r, $page,
 				$this->text_content_submit_progress);
-		return new PageResponse($page);
 	}
 
 
@@ -1019,9 +1017,8 @@ abstract class ContentModule extends Module
 	protected function _updateSuccess($engine, $request, $content, $page)
 	{
 		$r = $content->getRequest();
-		$this->helperRedirect($engine, $r, $page,
+		return $this->helperRedirect($engine, $r, $page,
 				$this->text_content_update_progress);
-		return new PageResponse($page);
 	}
 
 
@@ -1401,7 +1398,7 @@ abstract class ContentModule extends Module
 		$box->append('link', array('text' => _('click here'),
 				'request' => $request));
 		$box->append('label', array('text' => '.'));
-		return $page;
+		return new PageResponse($page);
 	}
 
 

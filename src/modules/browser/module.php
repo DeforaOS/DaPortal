@@ -372,9 +372,8 @@ class BrowserModule extends Module
 	{
 		$r = new Request($this->name, FALSE, FALSE, ltrim($path, '/'));
 
-		$this->helperRedirect($engine, $r, $page,
+		return $this->helperRedirect($engine, $r, $page,
 				$this->text_upload_progress);
-		return $page;
 	}
 
 
@@ -529,7 +528,7 @@ class BrowserModule extends Module
 		$box->append('link', array('text' => _('click here'),
 				'request' => $request));
 		$box->append('label', array('text' => '.'));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
