@@ -227,16 +227,7 @@ abstract class Engine
 			$ret = $module->call($this, $request, $internal);
 		if($internal)
 			return $ret;
-		//XXX every call should return a response directly instead
-		if($ret instanceof PageElement)
-			$ret = new PageResponse($ret);
-		else if(is_resource($ret))
-			$ret = new StreamResponse($ret);
-		else if(is_string($ret))
-			$ret = new StringResponse($ret);
-		else if($ret === FALSE || $ret === NULL)
-			$ret = new ErrorResponse(_('Unknown error'));
-		else if(!($ret instanceof Response))
+		if(!($ret instanceof Response))
 			return $this->log('LOG_ERR', 'Unknown response type');
 		//check if the request recommends a default type
 		if($type === FALSE)
