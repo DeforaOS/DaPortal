@@ -466,8 +466,7 @@ abstract class ContentModule extends Module
 		}
 		$error = _('Unable to list contents');
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		$r = $this->getRequest('admin');
 		if($request !== FALSE
 				&& ($type = $request->get('type')) !== FALSE)
@@ -507,8 +506,7 @@ abstract class ContentModule extends Module
 				'text' => $this->text_content_title));
 		$error = _('Could not list the content available');
 		if(($res = $class::listAll($engine, $this, FALSE)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		//paging
 		$count = $res->count();
 		$offset = 0;
@@ -528,7 +526,7 @@ abstract class ContentModule extends Module
 		}
 		//output paging information
 		$this->helperPaging($engine, $request, $page, $limit, $count);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -570,15 +568,15 @@ abstract class ContentModule extends Module
 		//obtain the content
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		//display the content
 		$response = $content->display($engine, $request);
 		if($response instanceof PageElement)
 		{
 			$page = new Page(array('title' => $content->getTitle()));
 			$page->append($response);
-			return $page;
+			return new PageResponse($page);
 		}
 		return $response;
 	}
@@ -620,13 +618,12 @@ abstract class ContentModule extends Module
 		$this->helperListTitle($engine, $page, $request);
 		$error = _('Unable to lookup the group');
 		if($group === FALSE)
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		$error = _('Unable to list the content');
 		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
 				$group)) === FALSE)
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		//paging
 		$count = $res->count();
 		$offset = 0;
@@ -655,7 +652,7 @@ abstract class ContentModule extends Module
 		$this->helperPaging($engine, $request, $page, $limit, $count);
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -676,8 +673,7 @@ abstract class ContentModule extends Module
 		$error = _('Unable to list contents');
 		if(($res = $class::listAll($engine, $this, 'timestamp',
 				$count, 0)) === FALSE)
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		//rows
 		foreach($res as $r)
 		{
@@ -744,8 +740,7 @@ abstract class ContentModule extends Module
 			$page->append($dialog);
 		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
 				$user)) === FALSE)
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		//paging
 		$count = count($res);
 		$offset = 0;
@@ -803,12 +798,12 @@ abstract class ContentModule extends Module
 		//obtain the content
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		//preview the content
 		$page = new Page(array('title' => $content->getTitle()));
 		$page->append($content->preview($engine, $request));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -820,14 +815,13 @@ abstract class ContentModule extends Module
 		//obtain the content
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		//check permissions
 		$error = _('Permission denied');
 		if($this->canPublish($engine, $request, $content, $error)
 				=== FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//create the page
 		$title = $this->text_content_publish.' '.$content->getTitle();
 		$page = new Page(array('title' => $title));
@@ -859,7 +853,7 @@ abstract class ContentModule extends Module
 		$form->append('button', array('type' => 'submit',
 				'name' => 'action', 'value' => 'publish',
 				'text' => $this->text_content_publish));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _publishProcess($engine, $request, $content)
@@ -885,7 +879,7 @@ abstract class ContentModule extends Module
 		$r = $content->getRequest();
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_publish_progress);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -964,8 +958,7 @@ abstract class ContentModule extends Module
 		$cred = $engine->getCredentials();
 
 		if(!$this->canUnpublish($engine, $request, FALSE, $error))
-			return new PageElement('dialog', array('type' => 'error',
-					'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		if($cred->isAdmin())
 			$query = static::$query_admin_unpublish;
 		return $this->helperApply($engine, $request, $query,
@@ -982,14 +975,13 @@ abstract class ContentModule extends Module
 		$error = _('Unable to fetch content');
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		//check permissions
 		$error = _('Could not update content');
 		if($this->canUpdate($engine, $request, FALSE, $error)
 				=== FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//create the page
 		$title = _('Update ').$content->getTitle();
 		$page = new Page(array('title' => $title));
@@ -1009,7 +1001,7 @@ abstract class ContentModule extends Module
 		$this->helperUpdatePreview($engine, $request, $content, $page);
 		$form = $this->formUpdate($engine, $request, $content);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _updateProcess($engine, $request, $content)
@@ -1029,7 +1021,7 @@ abstract class ContentModule extends Module
 		$r = $content->getRequest();
 		$this->helperRedirect($engine, $r, $page,
 				$this->text_content_update_progress);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
