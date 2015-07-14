@@ -530,36 +530,6 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callDelete
-	protected function callDelete($engine, $request)
-	{
-		$query = static::$query_delete;
-		$cred = $engine->getCredentials();
-
-		if($cred->isAdmin())
-			$query = static::$query_admin_delete;
-		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
-				_('Content could be deleted successfully'),
-				_('Some content could not be deleted'));
-	}
-
-
-	//ContentModule::callDisable
-	protected function callDisable($engine, $request)
-	{
-		$query = static::$query_disable;
-		$cred = $engine->getCredentials();
-
-		if($cred->isAdmin())
-			$query = static::$query_admin_disable;
-		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
-				_('Content could be disabled successfully'),
-				_('Some content could not be disabled'));
-	}
-
-
 	//ContentModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
@@ -579,21 +549,6 @@ abstract class ContentModule extends Module
 			return new PageResponse($page);
 		}
 		return $response;
-	}
-
-
-	//ContentModule::callEnable
-	protected function callEnable($engine, $request)
-	{
-		$query = static::$query_enable;
-		$cred = $engine->getCredentials();
-
-		if($cred->isAdmin())
-			$query = static::$query_admin_enable;
-		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
-				_('Content could be enabled successfully'),
-				_('Some content could not be enabled'));
 	}
 
 
@@ -723,7 +678,7 @@ abstract class ContentModule extends Module
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
-					$a = 'call'.$a;
+					$a = 'helper'.$a;
 					$dialog = $this->$a($engine, $request);
 					break;
 				}
@@ -770,23 +725,6 @@ abstract class ContentModule extends Module
 		//buttons
 		$this->helperListButtons($engine, $page, $request);
 		return new PageResponse($page);
-	}
-
-
-	//ContentModule::callPost
-	protected function callPost($engine, $request)
-	{
-		$query = static::$query_publish;
-		$cred = $engine->getCredentials();
-
-		if(!$this->canPublish($engine, $request, FALSE, $error))
-			return new ErrorResponse($error, Response::$CODE_EPERM);
-		if($cred->isAdmin())
-			$query = static::$query_admin_publish;
-		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
-				_('Content could be published successfully'),
-				_('Some content could not be published'));
 	}
 
 
@@ -949,23 +887,6 @@ abstract class ContentModule extends Module
 	}
 
 
-	//ContentModule::callUnpost
-	protected function callUnpost($engine, $request)
-	{
-		$query = static::$query_unpublish;
-		$cred = $engine->getCredentials();
-
-		if(!$this->canUnpublish($engine, $request, FALSE, $error))
-			return new ErrorResponse($error, Response::$CODE_EPERM);
-		if($cred->isAdmin())
-			$query = static::$query_admin_unpublish;
-		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
-				_('Content could be unpublished successfully'),
-				_('Some content could not be unpublished'));
-	}
-
-
 	//ContentModule::callUpdate
 	protected function callUpdate($engine, $request)
 	{
@@ -1121,7 +1042,7 @@ abstract class ContentModule extends Module
 		foreach($actions as $a)
 			if($request->get($a) !== FALSE)
 			{
-				$a = 'call'.$a;
+				$a = 'helper'.$a;
 				return $this->$a($engine, $request);
 			}
 		return FALSE;
@@ -1242,6 +1163,51 @@ abstract class ContentModule extends Module
 		}
 		return new PageElement('dialog', array('type' => $type,
 					'text' => $message));
+	}
+
+
+	//ContentModule::helperDelete
+	protected function helperDelete($engine, $request)
+	{
+		$query = static::$query_delete;
+		$cred = $engine->getCredentials();
+
+		if($cred->isAdmin())
+			$query = static::$query_admin_delete;
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
+				_('Content could be deleted successfully'),
+				_('Some content could not be deleted'));
+	}
+
+
+	//ContentModule::helperDisable
+	protected function helperDisable($engine, $request)
+	{
+		$query = static::$query_disable;
+		$cred = $engine->getCredentials();
+
+		if($cred->isAdmin())
+			$query = static::$query_admin_disable;
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
+				_('Content could be disabled successfully'),
+				_('Some content could not be disabled'));
+	}
+
+
+	//ContentModule::helperEnable
+	protected function helperEnable($engine, $request)
+	{
+		$query = static::$query_enable;
+		$cred = $engine->getCredentials();
+
+		if($cred->isAdmin())
+			$query = static::$query_admin_enable;
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
+				_('Content could be enabled successfully'),
+				_('Some content could not be enabled'));
 	}
 
 
@@ -1383,6 +1349,23 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::helperPost
+	protected function helperPost($engine, $request)
+	{
+		$query = static::$query_publish;
+		$cred = $engine->getCredentials();
+
+		if(!$this->canPublish($engine, $request, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
+		if($cred->isAdmin())
+			$query = static::$query_admin_publish;
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
+				_('Content could be published successfully'),
+				_('Some content could not be published'));
+	}
+
+
 	//ContentModule::helperRedirect
 	protected function helperRedirect($engine, $request, $page,
 			$text = FALSE)
@@ -1457,6 +1440,23 @@ abstract class ContentModule extends Module
 			$content = new $class($engine, $this);
 		return $page->append($content->displayToolbar($engine,
 				$request));
+	}
+
+
+	//ContentModule::helperUnpost
+	protected function helperUnpost($engine, $request)
+	{
+		$query = static::$query_unpublish;
+		$cred = $engine->getCredentials();
+
+		if(!$this->canUnpublish($engine, $request, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
+		if($cred->isAdmin())
+			$query = static::$query_admin_unpublish;
+		return $this->helperApply($engine, $request, $query,
+				$request->getAction(),
+				_('Content could be unpublished successfully'),
+				_('Some content could not be unpublished'));
 	}
 
 
