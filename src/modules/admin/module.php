@@ -330,9 +330,13 @@ class AdminModule extends Module
 	{
 		$query = static::$query_module_disable;
 
-		return $this->helperApply($engine, $request, $query,
+		$ret = $this->helperApply($engine, $request, $query,
 				_('Module(s) could be disabled successfully'),
 				_('Some module(s) could not be disabled'));
+		//XXX ugly hack
+		if($ret !== FALSE)
+			$engine->getModules(TRUE);
+		return $ret;
 	}
 
 
