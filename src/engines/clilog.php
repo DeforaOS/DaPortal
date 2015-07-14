@@ -41,6 +41,18 @@ class CLILogEngine extends CLIEngine
 			'LOG_INFO' => LOG_INFO,
 			'LOG_NOTICE' => LOG_NOTICE);
 
+		switch($priority)
+		{
+			case 'LOG_DEBUG':
+				if(static::$debug !== TRUE)
+					return FALSE;
+				break;
+			case 'LOG_INFO':
+				if($this->verbose < 2
+						&& static::$debug !== TRUE)
+					return FALSE;
+				break;
+		}
 		if(isset($priorities[$priority]))
 			$priority = $priorities[$priority];
 		else
