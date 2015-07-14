@@ -74,9 +74,6 @@ class AdminModule extends Module
 	//queries
 	static protected $query_admin = "SELECT name FROM daportal_module
 		WHERE enabled='1' ORDER BY name ASC";
-	static protected $query_admin_modules = "SELECT module_id, name, enabled
-		FROM daportal_module
-		ORDER BY name ASC";
 	static protected $query_check_password = "SELECT username
 		FROM daportal_user
 		WHERE username='admin'
@@ -87,6 +84,9 @@ class AdminModule extends Module
 	static protected $query_module_enable = "UPDATE daportal_module
 		SET enabled='1'
 		WHERE module_id=:module_id";
+	static protected $query_module_list = "SELECT module_id, name, enabled
+		FROM daportal_module
+		ORDER BY name ASC";
 
 
 	//methods
@@ -146,7 +146,7 @@ class AdminModule extends Module
 		$page->append('link', array('request' => $request,
 				'stock' => static::$stock_back,
 				'text' => _('Back to the administration')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function callAdminAudit($engine, $request, $page)
@@ -183,7 +183,7 @@ class AdminModule extends Module
 	{
 		$actions = array('disable', 'enable');
 		$database = $engine->getDatabase();
-		$query = static::$query_admin_modules;
+		$query = static::$query_module_list;
 		$title = _('Modules administration');
 		$dialog = FALSE;
 
@@ -192,15 +192,13 @@ class AdminModule extends Module
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
-					$a = 'callModule'.$a;
+					$a = 'helperModule'.$a;
 					$dialog = $this->$a($engine, $request);
 					break;
 				}
 		//list modules
 		if(($res = $database->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Could not list modules')));
+			return new ErrorResponse(_('Could not list modules'));
 		$page->set('title', $title);
 		$page->append('title', array('stock' => 'admin',
 				'text' => $title));
@@ -254,9 +252,7 @@ class AdminModule extends Module
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Could not list modules')));
+			return new ErrorResponse(_('Could not list modules'));
 		$page = new Page(array('title' => $title));
 		//title
 		$page->append('title', array('stock' => $this->name,
@@ -283,29 +279,7 @@ class AdminModule extends Module
 			foreach($rows as $row)
 				$view->append($row);
 		}
-		return $page;
-	}
-
-
-	//AdminModule::callModuleDisable
-	protected function callModuleDisable($engine, $request)
-	{
-		$query = static::$query_module_disable;
-
-		return $this->helperApply($engine, $request, $query,
-				_('Module(s) could be disabled successfully'),
-				_('Some module(s) could not be disabled'));
-	}
-
-
-	//AdminModule::callModuleEnable
-	protected function callModuleEnable($engine, $request)
-	{
-		$query = static::$query_module_enable;
-
-		return $this->helperApply($engine, $request, $query,
-				_('Module(s) could be enabled successfully'),
-				_('Some module(s) could not be enabled'));
+		return new PageResponse($page);
 	}
 
 
@@ -346,6 +320,28 @@ class AdminModule extends Module
 		}
 		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
+	}
+
+
+	//AdminModule::helperModuleDisable
+	protected function helperModuleDisable($engine, $request)
+	{
+		$query = static::$query_module_disable;
+
+		return $this->helperApply($engine, $request, $query,
+				_('Module(s) could be disabled successfully'),
+				_('Some module(s) could not be disabled'));
+	}
+
+
+	//AdminModule::helperModuleEnable
+	protected function helperModuleEnable($engine, $request)
+	{
+		$query = static::$query_module_enable;
+
+		return $this->helperApply($engine, $request, $query,
+				_('Module(s) could be enabled successfully'),
+				_('Some module(s) could not be enabled'));
 	}
 }
 
