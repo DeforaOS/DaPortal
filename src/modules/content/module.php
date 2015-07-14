@@ -1127,6 +1127,7 @@ abstract class ContentModule extends Module
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
+		$affected = 0;
 
 		if(($uid = $cred->getUserID()) == 0)
 			//must be logged in
@@ -1156,13 +1157,17 @@ abstract class ContentModule extends Module
 			$args[$key] = $x[1];
 			if(!$cred->isAdmin())
 				$args['user_id'] = $uid;
-			if($db->query($engine, $query, $args) !== FALSE)
+			if(($res = $db->query($engine, $query, $args))
+					!== FALSE)
+			{
+				$affected += $res->getAffectedCount();
 				continue;
+			}
 			$type = 'error';
 			$message = $failure;
 		}
-		return new PageElement('dialog', array('type' => $type,
-					'text' => $message));
+		return ($affected > 0) ? new PageElement('dialog', array(
+				'type' => $type, 'text' => $message)) : FALSE;
 	}
 
 
