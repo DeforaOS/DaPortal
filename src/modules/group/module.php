@@ -237,15 +237,14 @@ class GroupModule extends Module
 		$columns = array('groupname' => _('Group'),
 				'enabled' => _('Enabled'),
 				'members' => _('Members'));
-		$request = new Request($this->name, 'admin');
+		$request = $this->getRequest('admin');
 		$view = $page->append('treeview', array('request' => $request,
 				'view' => 'details', 'columns' => $columns));
 		//toolbar
 		$toolbar = $view->append('toolbar');
 		$toolbar->append('button', array('stock' => 'new',
 				'text' => _('New group'),
-				'request' => new Request($this->name,
-					'submit', FALSE, FALSE,
+				'request' => $this->getRequest('submit',
 					array('type' => 'group'))));
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
