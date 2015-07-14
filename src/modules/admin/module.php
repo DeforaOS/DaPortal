@@ -286,19 +286,18 @@ class AdminModule extends Module
 	//helpers
 	//AdminModule::helperApply
 	protected function helperApply($engine, $request, $query, $success,
-			$failure)
+			$failure, $key = 'module_id')
 	{
 		//FIXME synchronize with ContentModule
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
+		$affected = 0;
 
 		if(!$cred->isAdmin())
-		{
 			//must be admin
-			$error = _('Permission denied');
 			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
-		}
+					'type' => 'error',
+					'text' => _('Permission denied')));
 		if($request->isIdempotent())
 			//must be safe
 			return FALSE;
@@ -308,18 +307,21 @@ class AdminModule extends Module
 		foreach($parameters as $k => $v)
 		{
 			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != 'module_id'
+			if(count($x) != 2 || $x[0] != $key
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('module_id' => $x[1]);
-			$res = $db->query($engine, $query, $args);
-			if($res !== FALSE)
+			$args = array($key => $x[1]);
+			if(($res = $db->query($engine, $query, $args))
+					!== FALSE)
+			{
+				$affected += $res->getAffectedCount();
 				continue;
+			}
 			$type = 'error';
 			$message = $failure;
 		}
-		return new PageElement('dialog', array('type' => $type,
-				'text' => $message));
+		return ($affected > 0) ? new PageElement('dialog', array(
+				'type' => $type, 'text' => $message)) : FALSE;
 	}
 
 
