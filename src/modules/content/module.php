@@ -1123,12 +1123,15 @@ abstract class ContentModule extends Module
 
 	//ContentModule::helperApply
 	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = 'content_id')
+			$failure, $key = FALSE)
 	{
+		//XXX re-use Module::helperApply() if possible
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$affected = 0;
 
+		if($key === FALSE)
+			$key = 'content_id';
 		if(($uid = $cred->getUserID()) == 0)
 			//must be logged in
 			return new PageElement('dialog', array(

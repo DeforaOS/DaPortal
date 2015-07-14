@@ -650,42 +650,12 @@ class GroupModule extends Module
 	//helpers
 	//GroupModule::helperApply
 	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = 'group_id')
+			$failure, $key = FALSE)
 	{
-		//XXX copied from ContentModule
-		$cred = $engine->getCredentials();
-		$db = $engine->getDatabase();
-		$affected = 0;
-
-		if(!$cred->isAdmin())
-			//must be admin
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
-		if($request->isIdempotent())
-			//must be safe
-			return FALSE;
-		$type = 'info';
-		$message = $success;
-		$parameters = $request->getParameters();
-		foreach($parameters as $k => $v)
-		{
-			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != $key
-					|| !is_numeric($x[1]))
-				continue;
-			$args = array($key => $x[1]);
-			if(($res = $db->query($engine, $query, $args))
-					!== FALSE)
-			{
-				$affected += $res->getAffectedCount();
-				continue;
-			}
-			$type = 'error';
-			$message = $failure;
-		}
-		return ($affected > 0) ? new PageElement('dialog', array(
-				'type' => $type, 'text' => $message)) : FALSE;
+		if($key === FALSE)
+			$key = 'group_id';
+		return parent::helperApply($engine, $request, $query, $success,
+				$failure, $key);
 	}
 
 

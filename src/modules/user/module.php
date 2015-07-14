@@ -631,31 +631,31 @@ class UserModule extends Module
 
 	protected function _adminDelete($engine, $request)
 	{
-		return $this->helperApply($engine, $request, 'delete',
+		return $this->helperApplyUser($engine, $request, 'delete',
 			$this->getRequest('admin'));
 	}
 
 	protected function _adminDisable($engine, $request)
 	{
-		return $this->helperApply($engine, $request, 'disable',
+		return $this->helperApplyUser($engine, $request, 'disable',
 			$this->getRequest('admin'));
 	}
 
 	protected function _adminEnable($engine, $request)
 	{
-		return $this->helperApply($engine, $request, 'enable',
+		return $this->helperApplyUser($engine, $request, 'enable',
 			$this->getRequest('admin'));
 	}
 
 	protected function _adminLock($engine, $request)
 	{
-		return $this->helperApply($engine, $request, 'lock',
+		return $this->helperApplyUser($engine, $request, 'lock',
 			$this->getRequest('admin'));
 	}
 
 	protected function _adminUnlock($engine, $request)
 	{
-		return $this->helperApply($engine, $request, 'unlock',
+		return $this->helperApplyUser($engine, $request, 'unlock',
 			$this->getRequest('admin'));
 	}
 
@@ -1762,9 +1762,9 @@ class UserModule extends Module
 
 
 	//helpers
-	//UserModule::helperApply
-	protected function helperApply($engine, $request, $action, $fallback,
-			$key = 'user_id')
+	//UserModule::helperApplyUser
+	protected function helperApplyUser($engine, $request, $action,
+			$fallback, $key = 'user_id')
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();

@@ -286,42 +286,12 @@ class AdminModule extends Module
 	//helpers
 	//AdminModule::helperApply
 	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = 'module_id')
+			$failure, $key = FALSE)
 	{
-		//FIXME synchronize with ContentModule
-		$cred = $engine->getCredentials();
-		$db = $engine->getDatabase();
-		$affected = 0;
-
-		if(!$cred->isAdmin())
-			//must be admin
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
-		if($request->isIdempotent())
-			//must be safe
-			return FALSE;
-		$type = 'info';
-		$message = $success;
-		$parameters = $request->getParameters();
-		foreach($parameters as $k => $v)
-		{
-			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != $key
-					|| !is_numeric($x[1]))
-				continue;
-			$args = array($key => $x[1]);
-			if(($res = $db->query($engine, $query, $args))
-					!== FALSE)
-			{
-				$affected += $res->getAffectedCount();
-				continue;
-			}
-			$type = 'error';
-			$message = $failure;
-		}
-		return ($affected > 0) ? new PageElement('dialog', array(
-				'type' => $type, 'text' => $message)) : FALSE;
+		if($key === FALSE)
+			$key = 'module_id';
+		return parent::helperApply($engine, $request, $query, $success,
+				$failure, $key);
 	}
 
 
