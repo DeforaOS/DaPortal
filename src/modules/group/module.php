@@ -212,6 +212,8 @@ class GroupModule extends Module
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$actions = array('delete', 'disable', 'enable');
+		$title = _('Groups administration');
+		$dialog = FALSE;
 
 		if(!$cred->isAdmin())
 			return new ErrorResponse(_('Permission denied'),
@@ -221,19 +223,22 @@ class GroupModule extends Module
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
-					$a = 'call'.$a;
-					return $this->$a($engine, $request);
+					$a = 'helperGroup'.$a;
+					$dialog = $this->$a($engine, $request);
+					break;
 				}
 		//list groups
-		$title = _('Groups administration');
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-		$query = static::$query_admin;
 		//FIXME implement sorting
+		$query = static::$query_admin;
 		$query .= ' ORDER BY groupname ASC';
 		if(($res = $db->query($engine, $query)) === FALSE)
 			return new ErrorResponse(_('Could not list groups'));
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		if($dialog !== FALSE)
+			$page->append($dialog);
+		//group list
 		$columns = array('groupname' => _('Group'),
 				'enabled' => _('Enabled'),
 				'members' => _('Members'));
@@ -349,28 +354,6 @@ class GroupModule extends Module
 	}
 
 
-	//GroupModule::callDelete
-	protected function callDelete($engine, $request)
-	{
-		$query = static::$query_delete;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('Group(s) could be deleted successfully'),
-			_('Some group(s) could not be deleted'));
-	}
-
-
-	//GroupModule::callDisable
-	protected function callDisable($engine, $request)
-	{
-		$query = static::$query_disable;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('Group(s) could be disabled successfully'),
-			_('Some group(s) could not be disabled'));
-	}
-
-
 	//GroupModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
@@ -443,17 +426,6 @@ class GroupModule extends Module
 				'stock' => 'back',
 				'text' => _('Back to the group menu')));
 		return new PageResponse($page);
-	}
-
-
-	//GroupModule::callEnable
-	protected function callEnable($engine, $request)
-	{
-		$query = static::$query_enable;
-
-		return $this->helperApply($engine, $request, $query, 'admin',
-			_('Group(s) could be enabled successfully'),
-			_('Some group(s) could not be enabled'));
 	}
 
 
@@ -677,8 +649,8 @@ class GroupModule extends Module
 
 	//helpers
 	//GroupModule::helperApply
-	protected function helperApply($engine, $request, $query, $fallback,
-			$success, $failure)
+	protected function helperApply($engine, $request, $query, $success,
+			$failure)
 	{
 		//XXX copied from ContentModule
 		$cred = $engine->getCredentials();
@@ -689,14 +661,12 @@ class GroupModule extends Module
 			//must be admin
 			$page = $this->callDefault($engine);
 			$error = _('Permission denied');
-			$page->prepend('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		}
-		$fallback = 'call'.$fallback;
 		if($request->isIdempotent())
 			//must be safe
-			return $this->$fallback($engine);
+			return FALSE;
 		$type = 'info';
 		$message = $success;
 		$parameters = $request->getParameters();
@@ -713,11 +683,41 @@ class GroupModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		$page = $this->$fallback($engine);
-		//FIXME place this under the title
-		$page->prepend('dialog', array('type' => $type,
+		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
-		return $page;
+	}
+
+
+	//GroupModule::helperGroupDelete
+	protected function helperGroupDelete($engine, $request)
+	{
+		$query = static::$query_delete;
+
+		return $this->helperApply($engine, $request, $query,
+			_('Group(s) could be deleted successfully'),
+			_('Some group(s) could not be deleted'));
+	}
+
+
+	//GroupModule::helperGroupDisable
+	protected function helperGroupDisable($engine, $request)
+	{
+		$query = static::$query_disable;
+
+		return $this->helperApply($engine, $request, $query,
+			_('Group(s) could be disabled successfully'),
+			_('Some group(s) could not be disabled'));
+	}
+
+
+	//GroupModule::helperGroupEnable
+	protected function helperGroupEnable($engine, $request)
+	{
+		$query = static::$query_enable;
+
+		return $this->helperApply($engine, $request, $query,
+			_('Group(s) could be enabled successfully'),
+			_('Some group(s) could not be enabled'));
 	}
 
 
