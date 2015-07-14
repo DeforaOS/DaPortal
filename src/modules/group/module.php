@@ -214,9 +214,8 @@ class GroupModule extends Module
 		$actions = array('delete', 'disable', 'enable');
 
 		if(!$cred->isAdmin())
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_EPERM);
 		//perform actions if necessary
 		if($request !== FALSE)
 			foreach($actions as $a)
@@ -234,9 +233,7 @@ class GroupModule extends Module
 		//FIXME implement sorting
 		$query .= ' ORDER BY groupname ASC';
 		if(($res = $db->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Could not list groups')));
+			return new ErrorResponse(_('Could not list groups'));
 		$columns = array('groupname' => _('Group'),
 				'enabled' => _('Enabled'),
 				'members' => _('Members'));
@@ -304,7 +301,7 @@ class GroupModule extends Module
 		$vbox->append('link', array('request' => $request,
 			'stock' => 'admin',
 			'text' => _('Back to the administration')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -349,7 +346,7 @@ class GroupModule extends Module
 		$page->append('link', array('stock' => 'back',
 				'request' => $request,
 				'text' => _('Back to the site')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -446,7 +443,7 @@ class GroupModule extends Module
 		$vbox->append('link', array('request' => $request,
 				'stock' => 'back',
 				'text' => _('Back to the group menu')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -476,11 +473,7 @@ class GroupModule extends Module
 		//obtain the list of groups
 		$error = _('Could not list the groups');
 		if(($res = $db->query($engine, $query)) === FALSE)
-		{
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
-		}
+			return new ErrorResponse($error);
 		$columns = array('title' => _('Group'),
 			'members' => _('Members'));
 		$view = $page->append('treeview', array('columns' => $columns));
@@ -502,7 +495,7 @@ class GroupModule extends Module
 		$r = new Request($this->name);
 		$page->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => _('Back to the group menu')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _listGroup($engine, $request)
@@ -524,11 +517,7 @@ class GroupModule extends Module
 		//obtain the list of groups
 		$error = _('Could not list the members for this group');
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
-		{
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
-		}
+			return new ErrorResponse($error);
 		$columns = array('title' => _('Username'),
 			'fullname' => _('Full name'));
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -549,7 +538,7 @@ class GroupModule extends Module
 		$r = new Request($this->name, 'list');
 		$vbox->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => _('Back to the group list')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -580,7 +569,7 @@ class GroupModule extends Module
 		//form
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _submitProcess($engine, $request, &$group)
@@ -623,14 +612,13 @@ class GroupModule extends Module
 		if($group === FALSE || ($id = $group->getGroupID()) == 0)
 		{
 			$error = _('Could not find the group to update');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+					Response::$CODE_ENOENT);
 		}
 		if(!$cred->isAdmin())
 		{
 			$error = _('Permission denied');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		}
 		//process update
 		if(!$request->isIdempotent())
@@ -684,7 +672,7 @@ class GroupModule extends Module
 		$r = new Request($this->name, FALSE);
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
