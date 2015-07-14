@@ -66,14 +66,14 @@ class HTTPEngine extends Engine
 
 	//accessors
 	//HTTPEngine::getModules
-	public function getModules()
+	public function getModules($reset = FALSE)
 	{
 		global $config;
 		$credentials = $this->getCredentials();
 
 		if(!$config->get('engine::http', 'private')
 				|| $credentials->getUserID() != 0)
-			return parent::getModules();
+			return parent::getModules($reset);
 		if(($module = $config->get('engine::http', 'private::module'))
 				=== FALSE)
 			return array();

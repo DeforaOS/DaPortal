@@ -87,13 +87,15 @@ abstract class Engine
 
 
 	//Engine::getModules
-	public function getModules()
+	public function getModules($reset = FALSE)
 	{
 		static $modules = array();
 		$database = $this->getDatabase();
 		$query = static::$query_modules;
 
-		if(count($modules) != 0)
+		if($reset !== FALSE)
+			$modules = array();
+		else if(count($modules) != 0)
 			return $modules;
 		if(($res = $database->query($this, $query)) === FALSE)
 			return $modules;
