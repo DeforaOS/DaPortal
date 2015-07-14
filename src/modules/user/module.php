@@ -626,7 +626,7 @@ class UserModule extends Module
 		$vbox->append('link', array('request' => $request,
 			'stock' => 'admin',
 			'text' => _('Back to the administration')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _adminDelete($engine, $request)
@@ -731,7 +731,7 @@ class UserModule extends Module
 		$vbox->append('link', array('stock' => 'home',
 				'text' => _('Back to the homepage'),
 				'request' => new Request()));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -779,7 +779,7 @@ class UserModule extends Module
 		$page->append('link', array('stock' => 'home',
 				'request' => $request,
 				'text' => _('Back to the homepage')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -866,7 +866,7 @@ class UserModule extends Module
 					'stock' => 'back',
 					'text' => _('Back to the user list')));
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 
