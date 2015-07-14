@@ -1209,7 +1209,9 @@ abstract class ContentModule extends Module
 
 		if(($uid = $cred->getUserID()) == 0)
 			//must be logged in
-			return new ErrorResponse($error, Response::$CODE_EPERM);
+			return new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => _('Permission denied')));
 		//prepare the fallback request
 		//FIXME let fallback be a request directly
 		$fallback = 'call'.$fallback;
@@ -1238,9 +1240,8 @@ abstract class ContentModule extends Module
 			$type = 'error';
 			$message = $failure;
 		}
-		$message = new PageElement('dialog', array('type' => $type,
+		return new PageElement('dialog', array('type' => $type,
 					'text' => $message));
-		return new PageResponse($message);
 	}
 
 
