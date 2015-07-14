@@ -142,7 +142,7 @@ class AdminModule extends Module
 				$page->set('title', $title);
 				break;
 		}
-		$request = new Request($this->name);
+		$request = $this->getRequest();
 		$page->append('link', array('request' => $request,
 				'stock' => static::$stock_back,
 				'text' => _('Back to the administration')));
