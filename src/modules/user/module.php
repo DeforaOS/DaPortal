@@ -1763,19 +1763,21 @@ class UserModule extends Module
 
 	//helpers
 	//UserModule::helperApply
-	protected function helperApply($engine, $request, $action, $fallback)
+	protected function helperApply($engine, $request, $action, $fallback,
+			$key = 'user_id')
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 
 		//FIXME use $this->can$action() instead
-		if(!$cred->isAdmin() || $request->isIdempotent())
-		{
+		if(!$cred->isAdmin())
 			//must be admin
-			$error = _('Permission denied');
-			return new PageElement('dialog', array('type' => 'error',
-					'text' => $error));
-		}
+			return new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => _('Permission denied')));
+		if($request->isIdempotent())
+			//must be safe
+			return FALSE;
 		$invalid = 0;
 		$errors = 0;
 		$success = 0;
@@ -1785,7 +1787,7 @@ class UserModule extends Module
 		foreach($parameters as $k => $v)
 		{
 			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != 'user_id'
+			if(count($x) != 2 || $x[0] != $key
 					|| !is_numeric($x[1]))
 				continue;
 			$user = new User($engine, $x[1]);
@@ -1809,8 +1811,8 @@ class UserModule extends Module
 		}
 		if($success)
 			$message .= $sep."Could $action $success user(s)";
-		else
-			$message .= $sep."Could not $action any user";
+		if($message == '')
+			return FALSE;
 		return new PageElement('dialog', array('type' => $type,
 				'text' => $message));
 	}
