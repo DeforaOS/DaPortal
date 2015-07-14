@@ -147,6 +147,10 @@ class WikiModule extends ContentModule
 			$text = " $avail / $total MB ($value)";
 			$label->append('label', array('text' => $text));
 		}
+		$request = $this->getRequest('admin');
+		$page->append('link', array('request' => $request,
+				'stock' => 'admin',
+				'text' => _('Wiki administration')));
 		return new PageResponse($page);
 	}
 
