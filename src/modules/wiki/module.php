@@ -102,7 +102,7 @@ class WikiModule extends ContentModule
 		$vbox->append('link', array('request' => $r,
 				'stock' => $this->name,
 				'text' => _('List all pages')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -113,8 +113,7 @@ class WikiModule extends ContentModule
 
 		$error = _('Permission denied');
 		if(!$this->canAdmin($engine, FALSE, FALSE, $error))
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('class' => $this->name,
 				'stock' => 'monitor', 'text' => $title));
@@ -137,7 +136,7 @@ class WikiModule extends ContentModule
 		$avail = round($avail / (1024 * 1024));
 		$text = " $avail / $total MB ($value)";
 		$label->append('label', array('text' => $text));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
