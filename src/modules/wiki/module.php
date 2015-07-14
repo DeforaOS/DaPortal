@@ -120,22 +120,33 @@ class WikiModule extends ContentModule
 		$vbox = $page->append('vbox');
 		//disk usage
 		$vbox->append('title', array('text' => _('Disk usage')));
-		$text = 'Disk usage for '.$this->root.': ';
-		$label = $vbox->append('label', array('text' => $text));
-		$free = disk_free_space($this->root);
-		$total = disk_total_space($this->root);
-		$avail = $total - $free;
-		$value = ($avail * 100) / $total;
-		$value = sprintf('%.1lf%%', $value);
-		$label->append('progress', array('min' => 0, 'max' => $total,
-				'low' => round($total * 0.10),
-				'high' => round($total * 0.75),
-				'value' => $total - $free, 'text' => $value));
-		$total = round($total / (1024 * 1024));
-		$free = round($free / (1024 * 1024));
-		$avail = round($avail / (1024 * 1024));
-		$text = " $avail / $total MB ($value)";
-		$label->append('label', array('text' => $text));
+		if($this->root === FALSE)
+		{
+			$error = _('The root folder is not configured');
+			$vbox->append('dialog', array('type' => 'warning',
+					'text' => $error));
+		}
+		else
+		{
+			$text = 'Disk usage for '.$this->root.': ';
+			$label = $vbox->append('label', array('text' => $text));
+			$free = disk_free_space($this->root);
+			$total = disk_total_space($this->root);
+			$avail = $total - $free;
+			$value = ($avail * 100) / $total;
+			$value = sprintf('%.1lf%%', $value);
+			$label->append('progress', array('min' => 0,
+					'max' => $total,
+					'low' => round($total * 0.10),
+					'high' => round($total * 0.75),
+					'value' => $total - $free,
+					'text' => $value));
+			$total = round($total / (1024 * 1024));
+			$free = round($free / (1024 * 1024));
+			$avail = round($avail / (1024 * 1024));
+			$text = " $avail / $total MB ($value)";
+			$label->append('label', array('text' => $text));
+		}
 		return new PageResponse($page);
 	}
 
