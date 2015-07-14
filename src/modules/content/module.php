@@ -1122,8 +1122,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperApply
-	protected function helperApply($engine, $request, $query, $fallback,
-			$success, $failure, $key = 'content_id')
+	protected function helperApply($engine, $request, $query, $success,
+			$failure, $key = 'content_id')
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -1134,16 +1134,9 @@ abstract class ContentModule extends Module
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('Permission denied')));
-		//prepare the fallback request
-		//FIXME let fallback be a request directly
-		$fallback = 'call'.$fallback;
-		$r = new Request($request->getModule(), $request->getAction(),
-			$request->getID(), $request->getTitle());
-		if(($type = $request->get('type')) !== FALSE)
-			$r->set('type', $type);
-		//verify the request
 		if($request->isIdempotent())
-			return $this->$fallback($engine, $r);
+			//must be safe
+			return FALSE;
 		$type = 'info';
 		$message = $success;
 		$parameters = $request->getParameters();
@@ -1180,7 +1173,6 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 			$query = static::$query_admin_delete;
 		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
 				_('Content could be deleted successfully'),
 				_('Some content could not be deleted'));
 	}
@@ -1195,7 +1187,6 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 			$query = static::$query_admin_disable;
 		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
 				_('Content could be disabled successfully'),
 				_('Some content could not be disabled'));
 	}
@@ -1210,7 +1201,6 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 			$query = static::$query_admin_enable;
 		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
 				_('Content could be enabled successfully'),
 				_('Some content could not be enabled'));
 	}
@@ -1365,7 +1355,6 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 			$query = static::$query_admin_publish;
 		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
 				_('Content could be published successfully'),
 				_('Some content could not be published'));
 	}
@@ -1459,7 +1448,6 @@ abstract class ContentModule extends Module
 		if($cred->isAdmin())
 			$query = static::$query_admin_unpublish;
 		return $this->helperApply($engine, $request, $query,
-				$request->getAction(),
 				_('Content could be unpublished successfully'),
 				_('Some content could not be unpublished'));
 	}

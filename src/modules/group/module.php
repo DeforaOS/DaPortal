@@ -655,6 +655,7 @@ class GroupModule extends Module
 		//XXX copied from ContentModule
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
+		$affected = 0;
 
 		if(!$cred->isAdmin())
 		{
@@ -677,14 +678,17 @@ class GroupModule extends Module
 					|| !is_numeric($x[1]))
 				continue;
 			$args = array('group_id' => $x[1]);
-			$res = $db->query($engine, $query, $args);
-			if($res !== FALSE)
+			if(($res = $db->query($engine, $query, $args))
+					!== FALSE)
+			{
+				$affected += $res->getAffectedCount();
 				continue;
+			}
 			$type = 'error';
 			$message = $failure;
 		}
-		return new PageElement('dialog', array('type' => $type,
-				'text' => $message));
+		return ($affected > 0) ? new PageElement('dialog', array(
+				'type' => $type, 'text' => $message)) : FALSE;
 	}
 
 
