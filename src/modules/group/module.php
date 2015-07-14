@@ -650,7 +650,7 @@ class GroupModule extends Module
 	//helpers
 	//GroupModule::helperApply
 	protected function helperApply($engine, $request, $query, $success,
-			$failure)
+			$failure, $key = 'group_id')
 	{
 		//XXX copied from ContentModule
 		$cred = $engine->getCredentials();
@@ -658,13 +658,10 @@ class GroupModule extends Module
 		$affected = 0;
 
 		if(!$cred->isAdmin())
-		{
 			//must be admin
-			$page = $this->callDefault($engine);
-			$error = _('Permission denied');
 			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
-		}
+					'type' => 'error',
+					'text' => _('Permission denied')));
 		if($request->isIdempotent())
 			//must be safe
 			return FALSE;
@@ -674,10 +671,10 @@ class GroupModule extends Module
 		foreach($parameters as $k => $v)
 		{
 			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != 'group_id'
+			if(count($x) != 2 || $x[0] != $key
 					|| !is_numeric($x[1]))
 				continue;
-			$args = array('group_id' => $x[1]);
+			$args = array($key => $x[1]);
 			if(($res = $db->query($engine, $query, $args))
 					!== FALSE)
 			{
