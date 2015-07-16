@@ -173,6 +173,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/database/pdo/result.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql/result.php \
+		$(PACKAGE)-$(VERSION)/src/database/pgsqlpool.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite2.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite2/result.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite3.php \
