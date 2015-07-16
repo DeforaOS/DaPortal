@@ -223,22 +223,27 @@ class PgsqlDatabase extends Database
 	protected function attach($engine)
 	{
 		global $config;
+
+		if($this->_attachConfig($config) === FALSE)
+			return $engine->log('LOG_ERR',
+					'Could not open database');
+		return TRUE;
+	}
+
+	protected function _attachConfig($config, $section = 'database::pgsql')
+	{
 		$str = '';
 		$sep = '';
 
 		foreach($this->variables as $k => $v)
-			if(($p = $config->get('database::pgsql', $k))
-					!== FALSE)
+			if(($p = $config->get($section, $k)) !== FALSE)
 			{
 				$str .= $sep.$v."='$p'"; //XXX escape?
 				$sep = ' ';
 			}
-		$this->handle = $config->get('database::pgsql',
-			'persistent') ? pg_pconnect($str) : pg_connect($str);
-		if($this->handle === FALSE)
-			return $engine->log('LOG_ERR',
-					'Could not open database');
-		return TRUE;
+		$this->handle = $config->get($section, 'persistent')
+			? pg_pconnect($str) : pg_connect($str);
+		return ($this->handle !== FALSE) ? TRUE : FALSE;
 	}
 
 

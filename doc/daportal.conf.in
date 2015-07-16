@@ -72,6 +72,17 @@ regenerate=1
 #service=
 #sslmode=
 
+[database::pgsqlpool]
+#optional master node (defaults to [database::pgsql])
+#master=master
+#slaves=slave,slave2
+
+#[database::pgsqlpool::master]
+#same parameters as in [database::pgsql]
+
+#[database::pgsqlpool::slave]
+#same parameters as in [database::pgsql]
+
 [database::sqlite2]
 #filename=/var/www/sqlite/daportal.db
 
