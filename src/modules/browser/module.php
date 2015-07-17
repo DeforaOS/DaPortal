@@ -43,6 +43,9 @@ class BrowserModule extends Module
 			case 'upload':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
+			default:
+				$request = $this->getRequest();
+				return $this->callDefault($engine, $request);
 		}
 		return FALSE;
 	}
