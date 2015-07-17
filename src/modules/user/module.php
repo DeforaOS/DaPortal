@@ -1653,9 +1653,8 @@ class UserModule extends Module
 	private function _updateSuccess($engine, $request)
 	{
 		$id = $request->getID();
-		$title = $request->getTitle();
-
 		$title = _('Profile update');
+
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
@@ -1673,7 +1672,8 @@ class UserModule extends Module
 		}
 		else
 			$text = _('My profile');
-		$r = new Request($this->name, 'profile', $id, $title);
+		$r = new Request($this->name, 'profile', $id,
+			$request->getTitle());
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
 		return new PageResponse($page);
