@@ -1586,8 +1586,8 @@ class UserModule extends Module
 		{
 			//the anonymous user has no profile
 			$error = _('There is no profile for this user');
-			return new PageElement('dialog', array(
-				'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+				Response::$CODE_ENOENT);
 		}
 		if($id === $cred->getUserID())
 			//viewing own profile
@@ -1602,8 +1602,9 @@ class UserModule extends Module
 		if($error === FALSE)
 			//update was successful
 			return $this->_updateSuccess($engine, $request);
-		return $this->formUpdate($engine, $request, $user, $id,
+		$page = $this->formUpdate($engine, $request, $user, $id,
 				$error);
+		return new PageResponse($page);
 	}
 
 	private function _updateProcess($engine, $request, $user)
