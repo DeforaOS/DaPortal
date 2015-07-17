@@ -230,10 +230,12 @@ class PgsqlDatabase extends Database
 		return TRUE;
 	}
 
-	protected function _attachConfig($config, $section = 'database::pgsql')
+	protected function _attachConfig($config, $section = 'database::pgsql',
+			$new = FALSE)
 	{
 		$str = '';
 		$sep = '';
+		$flags = $new ? PGSQL_CONNECT_FORCE_NEW : 0;
 
 		foreach($this->variables as $k => $v)
 			if(($p = $config->get($section, $k)) !== FALSE)
@@ -242,7 +244,7 @@ class PgsqlDatabase extends Database
 				$sep = ' ';
 			}
 		$this->handle = $config->get($section, 'persistent')
-			? pg_pconnect($str) : pg_connect($str);
+			? pg_pconnect($str, $flags) : pg_connect($str, $flags);
 		return ($this->handle !== FALSE) ? TRUE : FALSE;
 	}
 

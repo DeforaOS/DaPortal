@@ -87,7 +87,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		foreach($slaves as $s)
 		{
 			$slave = new PgSQLDatabase();
-			if($slave->_attachConfig($config, "$section::$s"))
+			if($slave->_attachConfig($config, "$section::$s", TRUE))
 				$this->slaves->append($slave);
 			else
 				$engine->log('LOG_WARNING', $s.": Could not"
