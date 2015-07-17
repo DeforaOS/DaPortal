@@ -100,7 +100,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 				$this->slaves->append($slave);
 			else
 				$engine->log('LOG_WARNING', $s.": Could not"
-						.'open database slave');
+						.' open database slave');
 		}
 		return ($this->slaves->count() > 0) ? TRUE : FALSE;
 	}
