@@ -21,6 +21,15 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 {
 	//public
 	//accessors
+	//PgSQLPoolDatabase::getLastID
+	public function getLastID($engine, $table, $field)
+	{
+		//force the master to perform this query
+		return parent::getLastID($engine, $table, $field);
+	}
+
+
+	//useful
 	//PgSQLPoolDatabase::query
 	public function query($engine, $query, &$parameters = FALSE,
 			$async = FALSE)
