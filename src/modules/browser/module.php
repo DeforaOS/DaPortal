@@ -222,7 +222,7 @@ class BrowserModule extends Module
 				'text' => $title));
 		//view
 		$this->helperDisplay($engine, $page, $path);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -248,7 +248,7 @@ class BrowserModule extends Module
 				'text' => $title));
 		$page->append('dialog', array('type' => 'error',
 				'text' => $error));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -260,8 +260,7 @@ class BrowserModule extends Module
 		//check permissions
 		$error = _('Unknown error');
 		if($this->canUpload($engine, $request, FALSE, $error) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//obtain the path requested
 		$path = $this->getPath($engine, $request);
 		//create the page
@@ -274,11 +273,7 @@ class BrowserModule extends Module
 		//FIXME let stat() vs lstat() be configurable
 		$error = _('Could not open the file or directory requested');
 		if(($st = @stat($root.'/'.$path)) === FALSE)
-		{
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
-			return $page;
-		}
+			return new ErrorResponse($error);
 		if(($st['mode'] & Common::$S_IFDIR) == Common::$S_IFDIR)
 			$toolbar = $this->getToolbar($engine, $path, TRUE);
 		else
@@ -304,7 +299,7 @@ class BrowserModule extends Module
 		$form->append('button', array('type' => 'submit',
 				'name' => 'action', 'value' => '_upload',
 				'text' => _('Upload')));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _uploadProcess($engine, $request, $path)
