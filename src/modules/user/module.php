@@ -722,7 +722,7 @@ class UserModule extends Module
 			return TRUE;
 		//disable the user
 		if(($user = User::lookup($engine, $username, $uid)) === FALSE
-				|| $user->disable($engine) !== TRUE)
+				|| $user->setEnabled($engine, FALSE) !== TRUE)
 			return _('The account could not be closed');
 		//log the user out
 		$this->helperLogout($engine, $username, TRUE);
@@ -812,7 +812,7 @@ class UserModule extends Module
 		if(!$this->canDisable($engine, $user, $error))
 			return new ErrorResponse($user->getUsername()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$user->disable($engine, $error))
+		if(!$user->setEnabled($engine, FALSE))
 			return new ErrorResponse($error);
 		return new StringResponse(_('User disabled successfully'));
 	}
@@ -900,7 +900,7 @@ class UserModule extends Module
 		if(!$this->canEnable($engine, $user, $error))
 			return new ErrorResponse($user->getUsername()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$user->enable($engine, $error))
+		if(!$user->setEnabled($engine, TRUE))
 			return new ErrorResponse($error);
 		return new StringResponse(_('User enabled successfully'));
 	}

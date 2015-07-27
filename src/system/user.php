@@ -256,40 +256,6 @@ class User
 	}
 
 
-	//User::disable
-	public function disable($engine)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_disable;
-		$args = array('user_id' => $this->user_id);
-
-		if($this->enabled === FALSE)
-			return TRUE;
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| $res->getAffectedCount() != 1)
-			return FALSE;
-		$this->enabled = FALSE;
-		return TRUE;
-	}
-
-
-	//User::enable
-	public function enable($engine)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_enable;
-		$args = array('user_id' => $this->user_id);
-
-		if($this->enabled !== FALSE)
-			return TRUE;
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| $res->getAffectedCount() != 1)
-			return FALSE;
-		$this->enabled = TRUE;
-		return TRUE;
-	}
-
-
 	//User::lock
 	public function lock($engine, &$error = FALSE)
 	{
@@ -332,6 +298,40 @@ class User
 
 	//static
 	//useful
+	//User::disable
+	static public function disable($engine, $uid, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_disable;
+		$args = array('user_id' => $uid);
+
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = 'Could not disable user';
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//User::enable
+	static public function enable($engine, $uid, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_enable;
+		$args = array('user_id' => $uid);
+
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = 'Could not enable user';
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//User::insert
 	static public function insert($engine, $username, $fullname, $password,
 		$email, $enabled = FALSE, $admin = FALSE, &$error = FALSE)
@@ -731,8 +731,7 @@ class User
 	//	enabled
 	static protected $query_get_by_username = 'SELECT user_id AS id
 		FROM daportal_user
-		WHERE username=:username
-		AND enabled=:enabled';
+		WHERE username=:username AND enabled=:enabled';
 	static protected $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,
