@@ -404,8 +404,8 @@ class User
 	}
 
 
-	//User::password_new
-	static public function password_new()
+	//User::passwordGenerate
+	static public function passwordGenerate()
 	{
 		$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 			.'0123456789';
@@ -463,7 +463,7 @@ class User
 			//let the user confirm registration
 			if($password === FALSE)
 				//generate a random password
-				$password = User::password_new();
+				$password = User::passwordGenerate();
 			//generate a token
 			$token = sha1(uniqid($password, TRUE));
 			$args = array('user_id' => $uid, 'token' => $token);
