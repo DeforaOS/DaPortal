@@ -82,8 +82,7 @@ class GroupModule extends Module
 	//GroupModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$r = new Request($this->name, 'submit', FALSE, FALSE,
-			array('type' => 'group'));
+		$r = $this->getRequest('submit', array('type' => 'group'));
 		$form = new PageElement('form', array('request' => $r));
 		$vbox = $form->append('vbox');
 		$vbox->append('entry', array('name' => 'groupname',
@@ -96,8 +95,7 @@ class GroupModule extends Module
 					? TRUE : FALSE,
 				'text' => _('Enabled')));
 		//buttons
-		$r = new Request($this->name, 'admin', FALSE, FALSE,
-			array('type' => 'group'));
+		$r = $this->getRequest('admin', array('type' => 'group'));
 		$form->append('button', array('request' => $r,
 				'stock' => 'cancel',
 				'target' => '_cancel', 'text' => _('Cancel')));
@@ -129,7 +127,7 @@ class GroupModule extends Module
 				'placeholder' => _('Group name'),
 				'value' => $group->getGroupname()));
 		//buttons
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		$form->append('button', array('stock' => 'cancel',
 				'request' => $r,
 				'target' => '_cancel', 'text' => _('Cancel')));
@@ -298,7 +296,7 @@ class GroupModule extends Module
 				? $yes : $no);
 		}
 		$vbox = $page->append('vbox');
-		$request = new Request($this->name);
+		$request = $this->getRequest();
 		$vbox->append('link', array('request' => $request,
 			'stock' => 'back', 'text' => _('Back to my account')));
 		$request = new Request('admin');
@@ -339,7 +337,7 @@ class GroupModule extends Module
 		{
 			$icon = new PageElement('image', array(
 				'stock' => $a['stock']));
-			$request = new Request($this->name, $a['action']);
+			$request = $this->getRequest($a['action']);
 			$link = new PageElement('link', array(
 					'request' => $request,
 					'text' => $a['title']));
@@ -384,7 +382,7 @@ class GroupModule extends Module
 			$group = Group::lookup($engine, $cred->getUsername(),
 					$gid);
 			$title = _('My content');
-			$request = new Request($this->name);
+			$request = $this->getRequest();
 			$link = new PageElement('link', array('stock' => 'back',
 					'request' => $request,
 					'text' => _('Back to my account')));
@@ -421,7 +419,7 @@ class GroupModule extends Module
 			'stock' => 'user',
 			'text' => _('Members of group')
 				.' '.$group->getGroupname()));
-		$request = new Request($this->name);
+		$request = $this->getRequest();
 		$vbox->append('link', array('request' => $request,
 				'stock' => 'back',
 				'text' => _('Back to the group menu')));
@@ -463,7 +461,7 @@ class GroupModule extends Module
 					.' '.$r['groupname']));
 			$view->append('row', $r);
 		}
-		$r = new Request($this->name);
+		$r = $this->getRequest();
 		$page->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => _('Back to the group menu')));
 		return new PageResponse($page);
@@ -506,7 +504,7 @@ class GroupModule extends Module
 		$vbox->append('link', array('stock' => 'content',
 				'request' => $r,
 				'text' => _('Content from group').' '.$group));
-		$r = new Request($this->name, 'list');
+		$r = $this->getRequest('list');
 		$vbox->append('link', array('stock' => 'back', 'request' => $r,
 				'text' => _('Back to the group list')));
 		return new PageResponse($page);
@@ -635,12 +633,12 @@ class GroupModule extends Module
 		$info = _('The group was updated successfully');
 		$dialog = $page->append('dialog', array('type' => 'info',
 				'text' => $info));
-		$r = new Request($this->name, 'admin');
+		$r = $this->getRequest('admin');
 		$dialog->append('button', array('stock' => 'admin',
 				'request' => $r,
 				'text' => _('Groups administration')));
 		$text = _('Group menu');
-		$r = new Request($this->name, FALSE);
+		$r = $this->getRequest();
 		$dialog->append('button', array('stock' => 'user',
 				'request' => $r, 'text' => $text));
 		return new PageResponse($page);
