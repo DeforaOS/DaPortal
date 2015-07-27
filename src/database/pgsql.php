@@ -37,9 +37,9 @@ class PgsqlDatabase extends Database
 		if($this->handle === FALSE)
 			return FALSE;
 		$sequence = $table.'_'.$field.'_seq';
-		$query = 'SELECT currval('.$this->escape($sequence).')'
-			.' AS currval';
-		if(($res = $this->query($engine, $query)) === FALSE
+		$query = $this->query_currval;
+		$args = array('sequence' => $sequence);
+		if(($res = parent::query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res->current();
@@ -203,6 +203,19 @@ class PgsqlDatabase extends Database
 
 
 	//protected
+	//properties
+	//queries
+	//IN:	sequence
+	protected $query_currval = 'SELECT currval(:sequence) AS currval';
+	//IN:	table
+	//	field
+	protected $query_enum = 'SELECT
+		pg_catalog.pg_get_constraintdef(r.oid) AS constraint
+		FROM pg_catalog.pg_class c, pg_catalog.pg_constraint r
+		WHERE c.oid=r.conrelid AND c.relname=:table
+		AND conname=:field';
+
+
 	//methods
 	//PgsqlDatabase::match
 	protected function match($engine)
@@ -286,15 +299,6 @@ class PgsqlDatabase extends Database
 		'timeout' => 'connect_timeout',
 		'service' => 'service',
 		'sslmode' => 'sslmode');
-
-	//queries
-	//IN:	table
-	//	field
-	private $query_enum = 'SELECT
-		pg_catalog.pg_get_constraintdef(r.oid) AS constraint
-		FROM pg_catalog.pg_class c, pg_catalog.pg_constraint r
-		WHERE c.oid=r.conrelid AND c.relname=:table
-		AND conname=:field';
 }
 
 ?>
