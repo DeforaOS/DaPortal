@@ -656,7 +656,7 @@ abstract class ContentModule extends Module
 				$content = substr($content, 0, $len).'...';
 			$row->set('content', $content);
 		}
-		return $view;
+		return new PageResponse($view);
 	}
 
 
