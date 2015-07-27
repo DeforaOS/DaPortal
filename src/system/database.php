@@ -268,6 +268,16 @@ abstract class Database
 	abstract protected function escape($string);
 
 
+	//accessors
+	//Database::configGet
+	protected function configGet($variable)
+	{
+		global $config;
+
+		return $config->get('database::'.$this->name, $variable);
+	}
+
+
 	//useful
 	//Database::prepare
 	protected function prepare($query, &$parameters = FALSE)
