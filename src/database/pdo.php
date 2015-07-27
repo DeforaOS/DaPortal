@@ -227,7 +227,7 @@ class PDODatabase extends Database
 
 		if(!class_exists('PDO'))
 			return 0;
-		if($config->get('database::pdo', 'dsn') !== FALSE)
+		if($this->configGet('dsn') !== FALSE)
 			return 100;
 		return 0;
 	}
@@ -238,12 +238,12 @@ class PDODatabase extends Database
 	{
 		global $config;
 
-		if(($dsn = $config->get('database::pdo', 'dsn')) === FALSE)
+		if(($dsn = $this->configGet('dsn')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
-		$username = $config->get('database::pdo', 'username');
-		$password = $config->get('database::pdo', 'password');
-		$args = $config->get('database::pdo', 'persistent')
+		$username = $this->configGet('username');
+		$password = $this->configGet('password');
+		$args = $this->configGet('persistent')
 			? array(PDO::ATTR_PERSISTENT => true) : array();
 		try {
 			$this->handle = new PDO($dsn, $username, $password,
@@ -280,8 +280,7 @@ class PDODatabase extends Database
 
 		if($this->backend !== FALSE)
 			return $this->backend;
-		if(($this->backend = $config->get('database::pdo', 'dsn'))
-				!== FALSE)
+		if(($this->backend = $this->configGet('dsn')) !== FALSE)
 		{
 			$this->backend = explode(':', $this->backend);
 			if(is_array($this->backend))
