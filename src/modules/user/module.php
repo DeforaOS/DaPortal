@@ -88,13 +88,21 @@ class UserModule extends Module
 	//methods
 	//accessors
 	//UserModule::canClose
-	protected function canClose($engine)
+	protected function canClose($engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
 		if($cred->isAdmin())
+		{
+			$error = _('Administrators cannot close themselves');
 			return FALSE;
-		return $this->configGet('close') == 1;
+		}
+		if($this->configGet('close') != 1)
+		{
+			$error = _('Closing accounts is not allowed');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -669,10 +677,9 @@ class UserModule extends Module
 		if($cred->getUserID() == 0)
 			//must be logged in
 			return $this->callDefault($engine, $request);
-		if(!$this->canClose($engine))
-			return new ErrorResponse(
-				_('Closing accounts is not allowed'),
-				Response::$CODE_EPERM);
+		$error = _('Unknown error');
+		if(!$this->canClose($engine, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//process the request
 		if(($error = $this->_closeProcess($engine, $request)) === FALSE)
 			//closing was successful
