@@ -27,7 +27,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		//force the master to perform this query
 		if($this->handle === FALSE)
 			return FALSE;
-		$sequence = $table.'_'.$field.'_seq';
+		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
 		if(($res = parent::query($engine, $query, $args)) === FALSE

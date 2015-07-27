@@ -36,7 +36,7 @@ class PgSQLDatabase extends Database
 	{
 		if($this->handle === FALSE)
 			return FALSE;
-		$sequence = $table.'_'.$field.'_seq';
+		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
 		if(($res = parent::query($engine, $query, $args)) === FALSE
@@ -285,6 +285,14 @@ class PgSQLDatabase extends Database
 		$statements[$query] = (pg_prepare($this->handle, $id, $query)
 			!== FALSE) ? $id : FALSE;
 		return $statements[$query];
+	}
+
+
+	//accessors
+	//PgSQLDatabase::getSequence
+	protected function getSequence($table, $field)
+	{
+		return $table.'_'.$field.'_seq';
 	}
 
 
