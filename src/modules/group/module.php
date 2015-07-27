@@ -726,11 +726,13 @@ class GroupModule extends Module
 	       	ORDER BY name ASC";
 	//IN:	group_id
 	static private $query_delete = "DELETE FROM daportal_group
-		WHERE group_id=:group_id";
+		WHERE group_id=:group_id
+		AND group_id <> '0'";
 	//IN:	group_id
 	static private $query_disable = "UPDATE daportal_group
 		SET enabled='0'
-		WHERE group_id=:group_id";
+		WHERE group_id=:group_id
+		AND group_id <> '0'";
 	//IN:	group_id
 	static private $query_enable = "UPDATE daportal_group
 		SET enabled='1'
