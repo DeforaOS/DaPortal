@@ -364,9 +364,7 @@ class GroupModule extends Module
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => 'Could not list modules'));
+			return new ErrorResponse('Could not list modules');
 		if(($gid = $request->getID()) !== FALSE)
 		{
 			$group = Group::lookup($engine, $request->getTitle(),
@@ -520,8 +518,7 @@ class GroupModule extends Module
 
 		//check permissions
 		if($this->canSubmit($engine, $error) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
