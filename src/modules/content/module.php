@@ -118,14 +118,18 @@ abstract class ContentModule extends Module
 	{
 		$credentials = $engine->getCredentials();
 
-		$error = _('You need to be logged in to publish content');
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
+			{
+				$error = _('You need to be logged in to publish content');
 				return FALSE;
-		$error = _('Only moderators can publish content');
+			}
 		if(!$credentials->isAdmin())
 			if($this->configGet('moderate'))
+			{
+				$error = _('Only moderators can publish content');
 				return FALSE;
+			}
 		if($content === FALSE)
 			return TRUE;
 		return $content->canPublish($engine, FALSE, $error);
