@@ -97,8 +97,7 @@ class SQLite2Database extends Database
 	{
 		global $config;
 
-		if($config->get('database::sqlite2', 'filename')
-				!== FALSE)
+		if($this->configGet('filename') !== FALSE)
 			return 100;
 		return 0;
 	}
@@ -109,8 +108,7 @@ class SQLite2Database extends Database
 	{
 		global $config;
 
-		if(($filename = $config->get('database::sqlite2',
-						'filename')) === FALSE)
+		if(($filename = $this->configGet('filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');
 		if(($this->handle = sqlite_open($filename, 0666, $error))
