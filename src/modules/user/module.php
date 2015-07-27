@@ -814,8 +814,7 @@ class UserModule extends Module
 					.': '.$error, Response::$CODE_EPERM);
 		if(!$user->disable($engine, $error))
 			return new ErrorResponse($error);
-		return new PageElement('dialog', array('type' => 'info',
-				'text' => _('User disabled successfully')));
+		return new StringResponse(_('User disabled successfully'));
 	}
 
 
@@ -903,8 +902,7 @@ class UserModule extends Module
 					.': '.$error, Response::$CODE_EPERM);
 		if(!$user->enable($engine, $error))
 			return new ErrorResponse($error);
-		return new PageElement('dialog', array('type' => 'info',
-				'text' => _('User enabled successfully')));
+		return new StringResponse(_('User enabled successfully'));
 	}
 
 
@@ -1045,8 +1043,7 @@ class UserModule extends Module
 					.': '.$error, Response::$CODE_EPERM);
 		if(!$user->lock($engine, $error))
 			return new ErrorResponse($error);
-		return new PageElement('dialog', array('type' => 'info',
-				'text' => _('User locked successfully')));
+		return new StringResponse(_('User locked successfully'));
 	}
 
 
@@ -1509,8 +1506,7 @@ class UserModule extends Module
 		//check permissions
 		$error = _('Permission denied');
 		if($this->canSubmit($engine, $error) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new PageResponse($error, Response::$CODE_EPERM);
 		//create the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -1579,8 +1575,7 @@ class UserModule extends Module
 					.': '.$error, Response::$CODE_EPERM);
 		if(!$user->unlock($engine, $error))
 			return new ErrorResponse($error);
-		return new PageElement('dialog', array('type' => 'info',
-				'text' => _('User unlocked successfully')));
+		return new StringResponse(_('User unlocked successfully'));
 	}
 
 
