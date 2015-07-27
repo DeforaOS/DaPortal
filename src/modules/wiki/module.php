@@ -100,8 +100,8 @@ class WikiModule extends ContentModule
 		if($headlines instanceof PageResponse)
 			$vbox->append($headlines->getContent());
 		//page list
-		$r = new Request($this->name, 'list');
-		$vbox->append('link', array('request' => $r,
+		$vbox->append('link', array(
+				'request' => $this->getRequest('list'),
 				'stock' => $this->name,
 				'text' => _('List all pages')));
 		return new PageResponse($page);
