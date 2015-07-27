@@ -32,12 +32,20 @@ function test($engine, $request, $internal = FALSE)
 	if($internal !== FALSE)
 		print(" (internal)");
 	print("\n");
-	if(($res = $engine->process($request, $internal)) !== FALSE)
+	if(($res = $engine->process($request, $internal)) === FALSE)
+		return FALSE;
+	else if($internal)
 	{
-		if($internal && $action == 'actions' && !is_array($res))
+		if($action == 'actions' && !is_array($res))
 			return FALSE;
-		if($res instanceof PageResponse)
-			$engine->render($res);
+	}
+	else if($res instanceof PageResponse)
+		$engine->render($res);
+	else if(!($res instanceof Response))
+	{
+		var_dump($request);
+		var_dump($res);
+		return FALSE;
 	}
 	return TRUE;
 }
@@ -45,6 +53,7 @@ function test($engine, $request, $internal = FALSE)
 function tests($engine, $format = FALSE)
 {
 	global $config;
+	$ret = 0;
 
 	if($format !== FALSE)
 		$config->set('format', 'backend', $format);
@@ -54,19 +63,17 @@ function tests($engine, $format = FALSE)
 	//content modules
 	$modules = array('article', 'blog', 'download', 'news', 'wiki');
 	$internal = array('actions');
-	$actions = array('admin', 'default', 'headline', 'list', 'preview',
-		'publish', 'submit', 'update');
+	$actions = array(FALSE, 'admin', 'default', 'headline', 'list',
+		'preview', 'publish', 'submit', 'update');
 	foreach($modules as $module)
 	{
-		if(test($engine, new Request($module)) === FALSE)
-			exit(2);
 		foreach($internal as $a)
 			if(test($engine, new Request($module, $a), TRUE)
 					=== FALSE)
-				exit(3);
+				$ret |= 2;
 		foreach($actions as $a)
 			if(test($engine, new Request($module, $a)) === FALSE)
-				exit(4);
+				$ret |= 4;
 	}
 	//multi-content modules
 	$modules = array(
@@ -74,46 +81,48 @@ function tests($engine, $format = FALSE)
 	foreach($modules as $module => $types)
 		foreach($types as $t)
 		{
-			if(test($engine, new Request($module, FALSE, FALSE,
-					FALSE, array('type' => $t))) === FALSE)
-				exit(5);
 			foreach($internal as $a)
 				if(test($engine, new Request($module, $a), TRUE)
 						=== FALSE)
-					exit(6);
+					$ret |= 8;
 			foreach($actions as $a)
 				if(test($engine, new Request($module, $a, FALSE,
 						FALSE, array('type' => $t)))
 						=== FALSE)
-					exit(7);
+					$ret |= 16;
 		}
+	return $ret;
 }
 
+$ret = 0;
+
 //default formatting backend
-tests($engine);
+$ret |= tests($engine);
 
 //AtomFormat
-tests($engine, 'atom');
+$ret |= tests($engine, 'atom');
 
 //CSVFormat
-tests($engine, 'csv');
+$ret |= tests($engine, 'csv');
 
 //HTMLFormat
-tests($engine, 'html');
+$ret |= tests($engine, 'html');
 
 //HTML5Format
-tests($engine, 'html5');
+$ret |= tests($engine, 'html5');
 
 //FPDFFormat
-tests($engine, 'fpdf');
+$ret |= tests($engine, 'fpdf');
 
 //XHTML1Format
-tests($engine, 'xhtml1');
+$ret |= tests($engine, 'xhtml1');
 
 //XHTML11Format
-tests($engine, 'xhtml11');
+$ret |= tests($engine, 'xhtml11');
 
 //XMLFormat
-tests($engine, 'xml');
+$ret |= tests($engine, 'xml');
+
+exit($ret);
 
 ?>
