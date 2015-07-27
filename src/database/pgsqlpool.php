@@ -104,7 +104,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		$slaves = explode(',', $slaves);
 		foreach($slaves as $s)
 		{
-			$slave = new PgSQLDatabase();
+			$slave = new PgSQLDatabase('pgsql');
 			if($slave->_attachConfig($config, "$section::$s", TRUE))
 				$this->slaves->append($slave);
 			else
