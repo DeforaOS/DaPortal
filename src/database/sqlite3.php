@@ -118,8 +118,7 @@ class SQLite3Database extends Database
 
 		if(!class_exists('SQLite3'))
 			return 0;
-		if($config->get('database::sqlite3', 'filename')
-				!== FALSE)
+		if($this->configGet('filename') !== FALSE)
 			return 100;
 		return 0;
 	}
@@ -130,8 +129,7 @@ class SQLite3Database extends Database
 	{
 		global $config;
 
-		if(($filename = $config->get('database::sqlite3', 'filename'))
-				=== FALSE)
+		if(($filename = $this->configGet('filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');
 		try
