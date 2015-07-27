@@ -96,7 +96,9 @@ class WikiModule extends ContentModule
 		$vbox->append('title', array('text' => _('Recent changes'),
 				'stock' => 'help'));
 		//recent changes
-		$vbox->append($this->callHeadline($engine, FALSE));
+		$headlines = $this->callHeadline($engine, FALSE);
+		if($headlines instanceof PageResponse)
+			$vbox->append($headlines->getContent());
 		//page list
 		$r = new Request($this->name, 'list');
 		$vbox->append('link', array('request' => $r,
