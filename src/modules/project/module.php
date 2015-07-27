@@ -450,7 +450,7 @@ class ProjectModule extends MultiContentModule
 		//form
 		$form = $this->formBugReply($engine, $request, $bug, $project);
 		$vbox->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -474,7 +474,7 @@ class ProjectModule extends MultiContentModule
 				'type' => $l));
 			$hbox->append($this->call($engine, $request));
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -526,9 +526,7 @@ class ProjectModule extends MultiContentModule
 				=== FALSE)
 		{
 			$error = _('Could not list bug reports');
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
+			return new ErrorResponse($error);
 		}
 		$columns = BugProjectContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -538,7 +536,7 @@ class ProjectModule extends MultiContentModule
 			'text' => _('More bug reports...'),
 			'request' => $this->getRequest('list', array(
 				'type' => 'bug'))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _latestProjects($engine, $request)
@@ -555,9 +553,7 @@ class ProjectModule extends MultiContentModule
 				=== FALSE)
 		{
 			$error = _('Could not list projects');
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
+			return new ErrorResponse($error);
 		}
 		$columns = ProjectContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -567,7 +563,7 @@ class ProjectModule extends MultiContentModule
 			'text' => _('More projects...'),
 			'request' => $this->getRequest('list', array(
 				'type' => 'project'))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _latestDownloads($engine, $request)
@@ -584,9 +580,7 @@ class ProjectModule extends MultiContentModule
 				=== FALSE)
 		{
 			$error = _('Could not list downloads');
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
+			return new ErrorResponse($error);
 		}
 		$columns = DownloadProjectContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -596,7 +590,7 @@ class ProjectModule extends MultiContentModule
 			'text' => _('More downloads...'),
 			'request' => $this->getRequest('list', array(
 				'type' => 'download'))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _latestScreenshots($engine, $request)
@@ -613,9 +607,7 @@ class ProjectModule extends MultiContentModule
 				=== FALSE)
 		{
 			$error = _('Could not list screenshots');
-			$page->append('dialog', array('type' => 'error',
-					'text' => $error));
-			return $page;
+			return new ErrorResponse($error);
 		}
 		$columns = ScreenshotProjectContent::getColumns();
 		$view = $vbox->append('treeview', array(
@@ -626,7 +618,7 @@ class ProjectModule extends MultiContentModule
 			'text' => _('More screenshots...'),
 			'request' => $this->getRequest('list', array(
 				'type' => 'screenshot'))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -638,12 +630,11 @@ class ProjectModule extends MultiContentModule
 
 		$error = _('Invalid project');
 		if($project === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+				Response::$CODE_ENOENT);
 		$error = _('Permission denied');
 		if(!$this->canUpload($engine, $request, $project))
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		$title = _('New download for project ').$project->getTitle();
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -659,7 +650,7 @@ class ProjectModule extends MultiContentModule
 		//form
 		$form = $this->formSubmitRelease($engine, $request, $project);
 		$page->append($form);
-		return $page;
+		return new PageResponse($page);
 	}
 
 	protected function _submitProcessRelease($engine, $request, $project,
