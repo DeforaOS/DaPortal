@@ -142,6 +142,7 @@ class SQLite3Database extends Database
 			return $engine->log('LOG_ERR',
 				'Could not open database');
 		}
+		$this->engine = $engine;
 		$func = array($this, '_concat');
 		$this->handle->createFunction('concat', $func, 2);
 		$func = array($this, '_date_trunc');

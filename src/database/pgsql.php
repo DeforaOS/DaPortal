@@ -240,6 +240,7 @@ class PgSQLDatabase extends Database
 		if($this->_attachConfig($config) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not open database');
+		$this->engine = $engine;
 		return TRUE;
 	}
 

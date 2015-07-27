@@ -252,6 +252,7 @@ class PDODatabase extends Database
 			$message = 'Could not open database: '.$e->getMessage();
 			return $engine->log('LOG_ERR', $message);
 		}
+		$this->engine = $engine;
 		//database-specific hacks
 		switch($this->getBackend())
 		{

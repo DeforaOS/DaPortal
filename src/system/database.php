@@ -249,6 +249,7 @@ abstract class Database
 	//protected
 	//properties
 	protected $name;
+	protected $engine = FALSE;
 	//profiling
 	protected $profile = FALSE;
 	//transactions

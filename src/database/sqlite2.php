@@ -115,6 +115,7 @@ class SQLite2Database extends Database
 				=== FALSE)
 			return $engine->log('LOG_ERR',
 					'Could not open database: '.$error);
+		$this->engine = $engine;
 		$func = array($this, '_date_trunc');
 		sqlite_create_function($this->handle, 'date_trunc', $func);
 		//default the LIKE keyword to case-sensitive

@@ -62,6 +62,7 @@ class DummyDatabase extends Database
 	//DummyDatabase::attach
 	protected function attach($engine)
 	{
+		$this->engine = $engine;
 		//always succeed
 		return TRUE;
 	}
