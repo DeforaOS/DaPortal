@@ -803,6 +803,8 @@ class UserModule extends Module
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
+		if(!$this->canDisable($engine, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID())) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
@@ -890,6 +892,8 @@ class UserModule extends Module
 		if($request->isIdempotent())
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
+		if(!$this->canEnable($engine, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
 		if(($user = User::lookup($engine, $request->getTitle(),
 					$request->getID(), FALSE)) === FALSE)
 			return new ErrorResponse(_('Could not load user'),
