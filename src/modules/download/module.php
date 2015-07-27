@@ -173,7 +173,7 @@ class DownloadModule extends MultiContentModule
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$root = new $class($engine, $this);
-		return $root->display($engine, $request);
+		return new PageResponse($root->display($engine, $request));
 	}
 
 
@@ -187,12 +187,11 @@ class DownloadModule extends MultiContentModule
 			return $this->callDefault($engine);
 		if(($content = $this->getContent($engine, $id,
 				$request->getTitle())) === FALSE)
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error,
+				Response::$CODE_ENOENT);
 		if($content instanceof FileDownloadContent)
 			return $content->download($engine, $request);
-		return new PageElement('dialog', array('type' => 'error',
-				'text' => $error));
+		return new ErrorResponse($error);
 	}
 
 

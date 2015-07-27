@@ -165,8 +165,7 @@ class FileDownloadContent extends DownloadContent
 		if(($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');
-			return new PageElement('dialog', array(
-					'type' => 'error', 'text' => $error));
+			return new ErrorResponse($error);
 		}
 		$ret = new StreamResponse($fp);
 		$ret->setFilename($this->getTitle());
