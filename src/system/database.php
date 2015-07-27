@@ -21,6 +21,13 @@ abstract class Database
 {
 	//public
 	//methods
+	//essential
+	public function __construct($name)
+	{
+		$this->name = $name;
+	}
+
+
 	//accessors
 	//Database::inTransaction
 	public function inTransaction()
@@ -197,8 +204,8 @@ abstract class Database
 
 		if(($name = $config->get('database', 'backend')) !== FALSE)
 		{
-			$name .= 'Database';
-			$ret = new $name();
+			$class = $name.'Database';
+			$ret = new $class($name);
 			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 					.' (default)');
 			if($ret->attach($engine) === FALSE)
@@ -212,8 +219,8 @@ abstract class Database
 			if(substr($de, -4) != '.php')
 				continue;
 			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Database';
-			$db = new $name();
+			$class = $name.'Database';
+			$db = new $class($name);
 			if(($p = $db->match($engine)) <= $priority)
 				continue;
 			$ret = $db;
@@ -241,6 +248,7 @@ abstract class Database
 
 	//protected
 	//properties
+	protected $name;
 	//profiling
 	protected $profile = FALSE;
 	//transactions

@@ -66,7 +66,7 @@ abstract class Engine
 		if(($this->database = Database::attachDefault($this))
 				!== FALSE)
 			return $this->database;
-		$this->database = new DummyDatabase;
+		$this->database = new DummyDatabase('dummy');
 		$this->ret = 2;
 		return $this->database;
 	}
