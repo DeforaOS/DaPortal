@@ -130,6 +130,11 @@ class UserModule extends Module
 			$error = _('Disabling users is not allowed');
 			return FALSE;
 		}
+		if($user !== FALSE && $user->getUserID() == $cred->getUserID())
+		{
+			$error = _('Disabling oneself is not allowed');
+			return FALSE;
+		}
 		return TRUE;
 	}
 
