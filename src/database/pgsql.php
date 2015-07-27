@@ -16,10 +16,10 @@
 
 
 
-//PgsqlDatabase
-class PgsqlDatabase extends Database
+//PgSQLDatabase
+class PgSQLDatabase extends Database
 {
-	//PgsqlDatabase::~PgsqlDatabase
+	//PgSQLDatabase::~PgSQLDatabase
 	function __destruct()
 	{
 		if($this->handle === FALSE)
@@ -31,7 +31,7 @@ class PgsqlDatabase extends Database
 	//public
 	//methods
 	//accessors
-	//PgsqlDatabase::getLastID
+	//PgSQLDatabase::getLastID
 	public function getLastID($engine, $table, $field)
 	{
 		if($this->handle === FALSE)
@@ -47,14 +47,14 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::isFalse
+	//PgSQLDatabase::isFalse
 	public function isFalse($value)
 	{
 		return $value == 'f';
 	}
 
 
-	//PgsqlDatabase::isTrue
+	//PgSQLDatabase::isTrue
 	public function isTrue($value)
 	{
 		return $value == 't';
@@ -62,7 +62,7 @@ class PgsqlDatabase extends Database
 
 
 	//useful
-	//PgsqlDatabase::enum
+	//PgSQLDatabase::enum
 	public function enum($engine, $table, $field)
 	{
 		$query = $this->query_enum;
@@ -81,7 +81,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::formatDate
+	//PgSQLDatabase::formatDate
 	public function formatDate($engine, $date, $outformat = FALSE,
 			$informat = FALSE)
 	{
@@ -96,7 +96,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::like
+	//PgSQLDatabase::like
 	public function like($case = TRUE, $pattern = FALSE)
 	{
 		$ret = $case ? 'LIKE' : 'ILIKE';
@@ -107,7 +107,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::limit
+	//PgSQLDatabase::limit
 	public function limit($limit = FALSE, $offset = FALSE)
 	{
 		if($limit === FALSE && $offset === FALSE)
@@ -120,7 +120,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::query
+	//PgSQLDatabase::query
 	public function query($engine, $query, &$parameters = FALSE,
 			$async = FALSE)
 	{
@@ -154,7 +154,7 @@ class PgsqlDatabase extends Database
 				$args[$i] = $parameters[$k];
 		}
 		if($config->get('database::pgsql', 'debug'))
-			$engine->log('LOG_DEBUG', 'PgsqlDatabase: '.$query);
+			$engine->log('LOG_DEBUG', 'PgSQLDatabase: '.$query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
@@ -175,11 +175,11 @@ class PgsqlDatabase extends Database
 			return TRUE;
 		if(pg_num_rows($res) == -1)
 			return FALSE;
-		return new PgsqlDatabaseResult($res);
+		return new PgSQLDatabaseResult($res);
 	}
 
 
-	//PgsqlDatabase::regexp
+	//PgSQLDatabase::regexp
 	public function regexp($case = TRUE, $pattern = FALSE)
 	{
 		$ret = $case ? '~' : '~*';
@@ -190,7 +190,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::transactionBegin
+	//PgSQLDatabase::transactionBegin
 	public function transactionBegin($engine)
 	{
 		return parent::transactionBegin($engine);
@@ -217,7 +217,7 @@ class PgsqlDatabase extends Database
 
 
 	//methods
-	//PgsqlDatabase::match
+	//PgSQLDatabase::match
 	protected function match($engine)
 	{
 		global $config;
@@ -232,7 +232,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::attach
+	//PgSQLDatabase::attach
 	protected function attach($engine)
 	{
 		global $config;
@@ -262,7 +262,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::escape
+	//PgSQLDatabase::escape
 	protected function escape($string)
 	{
 		if(is_bool($string))
@@ -273,7 +273,7 @@ class PgsqlDatabase extends Database
 	}
 
 
-	//PgsqlDatabase::prepare
+	//PgSQLDatabase::prepare
 	protected function prepare($query, &$parameters = FALSE)
 	{
 		//FIXME use a class property instead
