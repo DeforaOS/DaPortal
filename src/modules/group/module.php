@@ -51,7 +51,9 @@ class GroupModule extends Module
 		{
 			case 'admin':
 			case 'default':
+			case 'disable':
 			case 'display':
+			case 'enable':
 			case 'list':
 			case 'submit':
 			case 'update':
@@ -64,6 +66,40 @@ class GroupModule extends Module
 
 	//methods
 	//accessors
+	//GroupModule::canDisable
+	protected function canDisable($engine, $group = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Disabling groups is not allowed');
+			return FALSE;
+		}
+		if($group !== FALSE
+				&& $group->getGroupID() == $cred->getGroupID())
+		{
+			$error = _('Disabling oneself is not allowed');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//GroupModule::canEnable
+	protected function canEnable($engine, $group = FALSE, &$error = FALSE)
+	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+		{
+			$error = _('Enabling groups is not allowed');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//GroupModule::canSubmit
 	protected function canSubmit($engine, &$error = FALSE)
 	{
@@ -352,6 +388,29 @@ class GroupModule extends Module
 	}
 
 
+	//GroupModule::callDisable
+	protected function callDisable($engine, $request)
+	{
+		$error = _('Unknown error');
+
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_EPERM);
+		if(!$this->canDisable($engine, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
+		if(($group = Group::lookup($engine, $request->getTitle(),
+					$request->getID(), TRUE)) === FALSE)
+			return new ErrorResponse(_('Could not find group'),
+					Response::$CODE_ENOENT);
+		if(!$this->canDisable($engine, $group, $error))
+			return new ErrorResponse($group->getGroupname()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$group->setEnabled($engine, FALSE))
+			return new ErrorResponse($error);
+		return new StringResponse(_('Group disabled successfully'));
+	}
+
+
 	//GroupModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
@@ -422,6 +481,29 @@ class GroupModule extends Module
 				'stock' => 'back',
 				'text' => _('Back to the group menu')));
 		return new PageResponse($page);
+	}
+
+
+	//GroupModule::callEnable
+	protected function callEnable($engine, $request)
+	{
+		$error = _('Unknown error');
+
+		if($request->isIdempotent())
+			return new ErrorResponse(_('Permission denied'),
+					Response::$CODE_EPERM);
+		if(!$this->canEnable($engine, FALSE, $error))
+			return new ErrorResponse($error, Response::$CODE_EPERM);
+		if(($group = Group::lookup($engine, $request->getTitle(),
+					$request->getID(), FALSE)) === FALSE)
+			return new ErrorResponse(_('Could not find group'),
+					Response::$CODE_ENOENT);
+		if(!$this->canEnable($engine, $group, $error))
+			return new ErrorResponse($group->getGroupname()
+					.': '.$error, Response::$CODE_EPERM);
+		if(!$group->setEnabled($engine, TRUE))
+			return new ErrorResponse($error);
+		return new StringResponse(_('Group enabled successfully'));
 	}
 
 

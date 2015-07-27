@@ -148,11 +148,12 @@ class Group
 
 
 	//Group::lookup
-	static public function lookup($engine, $groupname, $group_id = FALSE)
+	static public function lookup($engine, $groupname, $group_id = FALSE,
+			$enabled = TRUE)
 	{
 		$db = $engine->getDatabase();
 		$query = Group::$query_get_by_groupname;
-		$args = array('groupname' => $groupname);
+		$args = array('groupname' => $groupname, 'enabled' => $enabled);
 		static $cache = array();
 
 		if(isset($cache[$groupname]))
@@ -210,9 +211,10 @@ class Group
 		SET enabled='1'
 		WHERE group_id=:group_id";
 	//IN:	groupname
+	//	enabled
 	static private $query_get_by_groupname = "SELECT group_id AS id
 		FROM daportal_group
-		WHERE enabled='1' AND groupname=:groupname";
+		WHERE groupname=:groupname AND enabled=:enabled";
 	//IN:	groupname
 	//	enabled
 	static private $query_insert = 'INSERT INTO daportal_group
