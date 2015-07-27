@@ -1,0 +1,153 @@
+#!/bin/sh
+#$Id$
+#Copyright (c) 2015 Pierre Pronchery <khorben@defora.org>
+#This file is part of DaPortal
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, version 3 of the License.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+#variables
+DEVNULL="/dev/null"
+PROGNAME="daportal-group"
+VERBOSE=0
+#executables
+DAPORTAL="daportal"
+
+
+#functions
+#protected
+#error
+_error()
+{
+	echo "$PROGNAME: $@" 1>&2
+	return 2
+}
+
+
+#info
+_info()
+{
+	[ $VERBOSE -ne 0 ] && echo "$PROGNAME: $@"
+	return 0
+}
+
+
+#usage
+_usage()
+{
+	echo "Usage: $PROGNAME [-qv] -D|-d|-e group..." 1>&2
+	echo "  -D	Delete group(s)" 1>&2
+	echo "  -d	Disable group(s)" 1>&2
+	echo "  -e	Enable group(s)" 1>&2
+	echo "  -q	Quiet mode" 1>&2
+	echo "  -v	Verbose mode (default)" 1>&2
+	return 1
+}
+
+
+#group_delete
+_group_delete()
+{
+	ret=0
+
+	for group in "$@"; do
+		$DAPORTAL -f -m group -a delete -t "$group" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$group: Group deleted"
+		else
+			_error "$group: Could not delete group"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#group_disable
+_group_disable()
+{
+	ret=0
+
+	for group in "$@"; do
+		$DAPORTAL -f -m group -a disable -t "$group" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$group: Group disabled"
+		else
+			_error "$group: Could not disable group"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#group_enable
+_group_enable()
+{
+	ret=0
+
+	for group in "$@"; do
+		$DAPORTAL -f -m group -a enable -t "$group" > "$DEVNULL"
+		if [ $? -eq 0 ]; then
+			_info "$group: Group enabled"
+		else
+			_error "$group: Could not enable group"
+			ret=$?
+		fi
+	done
+	return $ret
+}
+
+
+#public
+#main
+action=
+while getopts "Ddeqv" name; do
+	case "$name" in
+		D)
+			action="delete"
+			;;
+		d)
+			action="disable"
+			;;
+		e)
+			action="enable"
+			;;
+		q)
+			VERBOSE=0
+			;;
+		v)
+			VERBOSE=1
+			;;
+		*)
+			_usage
+			exit $?
+			;;
+	esac
+done
+shift $((OPTIND - 1))
+if [ $# -le 0 ]; then
+	_usage
+	exit $?
+fi
+
+case "$action" in
+	"delete"|"disable"|"enable")
+		"_group_$action" "$@"
+		exit $?
+		;;
+	*)
+		_error "$action: Unknown action"
+		exit $?
+		;;
+esac

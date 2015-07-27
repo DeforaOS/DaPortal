@@ -26,10 +26,13 @@ distclean: clean
 install: $(TARGETS)
 	./subst.sh -P "$(DESTDIR)$(PREFIX)/bin" -i -- "$(OBJDIR)daportal"
 	$(MKDIR) $(DESTDIR)$(PREFIX)/bin
+	$(INSTALL) -m 0755 daportal-group $(DESTDIR)$(PREFIX)/bin/daportal-group
+	$(MKDIR) $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL) -m 0755 daportal-user $(DESTDIR)$(PREFIX)/bin/daportal-user
 
 uninstall:
 	./subst.sh -P "$(DESTDIR)$(PREFIX)/bin" -u -- "daportal"
+	$(RM) -- $(DESTDIR)$(PREFIX)/bin/daportal-group
 	$(RM) -- $(DESTDIR)$(PREFIX)/bin/daportal-user
 
 .PHONY: all clean distclean install uninstall
