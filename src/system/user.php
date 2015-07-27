@@ -181,8 +181,11 @@ class User
 		//obtain the password hash
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
-			return $engine->log('LOG_ERR', $this->username
-					.': Could not obtain the password hash');
+		{
+			$error = $this->username
+				.': Could not obtain the password hash';
+			return $engine->log('LOG_ERR', $error);
+		}
 		$res = $res->current();
 		if(strlen($res['password']) > 0 && $res['password'][0] == '$')
 		{
