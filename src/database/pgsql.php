@@ -154,7 +154,7 @@ class PgSQLDatabase extends Database
 				$args[$i] = $parameters[$k];
 		}
 		if($config->get('database::pgsql', 'debug'))
-			$engine->log('LOG_DEBUG', 'PgSQLDatabase: '.$query);
+			$engine->log('LOG_DEBUG', get_class().': '.$query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
