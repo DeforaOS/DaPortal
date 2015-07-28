@@ -34,8 +34,6 @@ class PgSQLDatabase extends Database
 	//PgSQLDatabase::getLastID
 	public function getLastID($engine, $table, $field)
 	{
-		if($this->handle === FALSE)
-			return FALSE;
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);

@@ -25,8 +25,6 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 	public function getLastID($engine, $table, $field)
 	{
 		//force the master to perform this query
-		if($this->handle === FALSE)
-			return FALSE;
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
