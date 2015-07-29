@@ -62,7 +62,7 @@ class FileDownloadContent extends DownloadContent
 	public function displayContent($engine, $request)
 	{
 		$module = $this->getModule()->getName();
-		$root = static::getRoot($module);
+		$root = static::getRoot($engine, $module);
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
@@ -158,7 +158,7 @@ class FileDownloadContent extends DownloadContent
 	public function download($engine, $request)
 	{
 		$module = $this->getModule()->getName();
-		$root = static::getRoot($module);
+		$root = static::getRoot($engine, $module);
 
 		//output the file
 		$filename = $root.'/'.$this->get('download_id');
@@ -199,7 +199,7 @@ class FileDownloadContent extends DownloadContent
 	protected function _saveInsert($engine, $request, &$error)
 	{
 		$module = $this->getModule()->getName();
-		$root = $this->getRoot($module);
+		$root = static::getRoot($engine, $module);
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');

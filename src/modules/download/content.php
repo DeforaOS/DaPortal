@@ -46,7 +46,7 @@ abstract class DownloadContent extends ContentMulti
 	//static
 	//accessors
 	//DownloadContent::getRoot
-	static public function getRoot($name = FALSE)
+	static public function getRoot($engine, $name = FALSE)
 	{
 		global $config;
 		$error = 'The download repository is not configured';
