@@ -251,8 +251,7 @@ class FolderDownloadContent extends DownloadContent
 	{
 		$class = (isset($properties['mode'])
 				&& ($properties['mode'] & static::$S_IFDIR))
-			? 'FolderDownloadContent'
-			: 'FileDownloadContent';
+			? static::$class : static::$class_file;
 
 		return new $class($engine, $module, $properties);
 	}
@@ -260,6 +259,7 @@ class FolderDownloadContent extends DownloadContent
 
 	//protected
 	static protected $class = 'FolderDownloadContent';
+	static protected $class_file = 'FileDownloadContent';
 	static protected $list_mask = 512;
 	static protected $list_order = 'title ASC';
 	//properties
