@@ -133,7 +133,7 @@ class DownloadModule extends MultiContentModule
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
 		{
-			case 'FileDownloadContent':
+			case static::$content_classes['file']:
 				$this->stock_content_submit = 'upload';
 				$this->text_content_list_title
 					= $this->file_text_content_list_title;
@@ -145,7 +145,7 @@ class DownloadModule extends MultiContentModule
 				$this->text_content_submit_content
 					= _('Upload file');
 				break;
-			case 'FolderDownloadContent':
+			case static::$content_classes['folder']:
 				$this->stock_content_submit = 'folder-new';
 				$this->text_content_list_title
 					= $this->folder_text_content_list_title;
@@ -166,7 +166,7 @@ class DownloadModule extends MultiContentModule
 	//DownloadModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
 	{
-		$class = 'FolderDownloadContent';
+		$class = static::$content_classes['folder'];
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 
@@ -263,10 +263,12 @@ class DownloadModule extends MultiContentModule
 	protected function _submitProcessFile($engine, $request, $parent,
 			$pathname, $filename, &$content, &$id)
 	{
+		$class = static::$content_classes['file'];
+
 		if($filename === FALSE)
 			$filename = basename($pathname);
 		//FIXME check for filename unicity in the current folder
-		$content = new FileDownloadContent($engine, $this, array(
+		$content = new $class($engine, $this, array(
 			'title' => $filename, 'content' => FALSE,
 			'filename' => $pathname,
 			'parent_id' => ($parent !== FALSE)
