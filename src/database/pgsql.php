@@ -22,9 +22,8 @@ class PgSQLDatabase extends Database
 	//PgSQLDatabase::~PgSQLDatabase
 	function __destruct()
 	{
-		if($this->handle === FALSE)
-			return;
-		pg_close($this->handle);
+		if($this->handle !== FALSE)
+			pg_close($this->handle);
 	}
 
 
