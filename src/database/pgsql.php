@@ -36,7 +36,7 @@ class PgSQLDatabase extends Database
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
-		if(($res = parent::query($engine, $query, $args)) === FALSE
+		if(($res = $this->query($engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res->current();
