@@ -187,7 +187,7 @@ class SearchModule extends Module
 		$incontent = $request->get('incontent');
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
-		$module = $request->get('module');
+		$module = $request->get('inmodule');
 		if(($res = $this->query($engine, $q, $case, $intitle,
 				$incontent, FALSE, $module)) === FALSE)
 		{
@@ -373,9 +373,10 @@ class SearchModule extends Module
 		if(count($modules))
 		{
 			$hbox->append('label', array('text' => _('module: ')));
-			$value = $request->get('module');
+			$value = $request->get('inmodule');
 			$combobox = $hbox->append('combobox', array(
-					'name' => 'module', 'value' => $value));
+					'name' => 'inmodule',
+					'value' => $value));
 			$combobox->append('label', array('text' => _('Any')));
 			asort($modules);
 			foreach($modules as $m)
