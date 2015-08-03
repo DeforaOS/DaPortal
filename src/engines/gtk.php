@@ -28,10 +28,14 @@ class GtkEngine extends CLIEngine
 	//methods
 	//useful
 	//GtkEngine::render
-	public function render($page)
+	public function render($response)
 	{
 		global $config;
 
+		if($response instanceof PageResponse)
+			$page = $response->getContent();
+		else
+			return FALSE;
 		if(($template = Template::attachDefault($this)) === FALSE)
 			return FALSE;
 		if(($page = $template->render($this, $page)) === FALSE)

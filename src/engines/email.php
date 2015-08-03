@@ -30,12 +30,16 @@ class EmailEngine extends CLIEngine
 
 	//useful
 	//EmailEngine::render
-	public function render($page)
+	public function render($response)
 	{
 		$cred = $this->getCredentials();
 		$user = User::lookup($this, $cred->getUsername(),
 				$cred->getUserID());
 
+		if($response instanceof PageResponse)
+			$page = $response->getContent();
+		else
+			return FALSE;
 		if($user === FALSE || $user->getUserID() == 0)
 		{
 			fprintf(STDERR, "%s\n", "daportal: Could not determine"

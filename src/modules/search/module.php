@@ -45,7 +45,8 @@ class SearchModule extends Module
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 		}
-		return FALSE;
+		return new ErrorResponse(_('No such page'),
+				Response::$CODE_ENOENT);
 	}
 
 
