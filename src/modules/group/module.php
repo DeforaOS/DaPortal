@@ -59,8 +59,10 @@ class GroupModule extends Module
 			case 'update':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
+			default:
+				return new ErrorResponse(_('Invalid action'),
+					Response::$CODE_ENOENT);
 		}
-		return FALSE;
 	}
 
 

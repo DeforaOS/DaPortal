@@ -48,7 +48,6 @@ class SearchModule extends Module
 				return new ErrorResponse(_('Invalid action'),
 					Response::$CODE_ENOENT);
 		}
-		return FALSE;
 	}
 
 

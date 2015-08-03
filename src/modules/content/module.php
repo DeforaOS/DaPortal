@@ -54,7 +54,8 @@ abstract class ContentModule extends Module
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
-				return $this->callDefault($engine);
+				return new ErrorResponse(_('Invalid action'),
+					Response::$CODE_ENOENT);
 		}
 	}
 

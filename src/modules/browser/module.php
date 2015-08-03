@@ -44,10 +44,9 @@ class BrowserModule extends Module
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
-				$request = $this->getRequest();
-				return $this->callDefault($engine, $request);
+				return new ErrorResponse(_('Invalid action'),
+					Response::$CODE_ENOENT);
 		}
-		return FALSE;
 	}
 
 
