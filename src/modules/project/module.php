@@ -472,7 +472,9 @@ class ProjectModule extends MultiContentModule
 		{
 			$request = $this->getRequest('latest', array(
 				'type' => $l));
-			$hbox->append($this->call($engine, $request));
+			$response = $this->call($engine, $request);
+			if($response instanceof PageResponse)
+				$hbox->append($response->getContent());
 		}
 		return new PageResponse($page);
 	}
