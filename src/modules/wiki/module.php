@@ -166,7 +166,7 @@ class WikiModule extends ContentModule
 		$ret = parent::helperActionsAdmin($engine, $request);
 		if($admin === 0)
 			return $ret;
-		$r = new Request($this->name, 'monitor');
+		$r = $this->getRequest('monitor');
 		$ret[] = $this->helperAction($engine, 'monitor', $r,
 				_('Wiki monitoring'));
 		return $ret;
