@@ -30,6 +30,8 @@ abstract class Engine
 	//Engine::render
 	public function render($response)
 	{
+		if($response === FALSE)
+			$response = new ErrorResponse();
 		if($response instanceof Response)
 		{
 			if($this->verbose == 0)

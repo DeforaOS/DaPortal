@@ -269,6 +269,8 @@ class HTTPEngine extends Engine
 	//HTTPEngine::render
 	public function render($response)
 	{
+		if($response === FALSE)
+			$response = new ErrorResponse();
 		if(!($response instanceof Response))
 		{
 			$this->_renderCode(Response::$CODE_EUNKNOWN);
