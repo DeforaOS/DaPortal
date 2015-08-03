@@ -307,14 +307,13 @@ class SearchModule extends Module
 			$limit = FALSE)
 	{
 		$q = $request->get('q');
+		$title = $q ? _('Search results') : _('Search');
 		$args = $q ? array('q' => $q) : FALSE;
 		$case = $request->get('case') ? '1' : '0';
 
-		$page = new Page;
-		$page->set('title', _('Search'));
-		$title = $page->append('title', array('stock' => 'search'));
-		$title->set('text', $q ? _('Search results')
-				: _('Search'));
+		$page = new Page(array('title' => $title));;
+		$page->append('title', array('stock' => 'search',
+				'text' => $title));
 		$form = $page->append('form');
 		$r = $this->getRequest($advanced ? 'advanced' : FALSE);
 		$form->set('request', $r);
