@@ -72,13 +72,13 @@ class WikiModule extends ContentModule
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title,
-				'stock' => $this->name));
+				'stock' => $this->getName()));
 		$vbox = $page->append('vbox');
 		//search
 		$vbox->append('title', array('text' => _('Search the wiki'),
 				'stock' => 'search'));
 		$r = new Request('search', 'advanced', FALSE, FALSE,
-			array('inmodule' => $this->name, 'intitle' => 1));
+			array('inmodule' => $this->getName(), 'intitle' => 1));
 		$form = $vbox->append('form', array('request' => $r));
 		$hbox = $form->append('hbox');
 		$hbox->append('entry', array('name' => 'q',
@@ -86,7 +86,8 @@ class WikiModule extends ContentModule
 		$hbox->append('button', array('type' => 'submit',
 				'stock' => 'search', 'text' => _('Search')));
 		$r = new Request('search', 'advanced', FALSE, FALSE,
-			array('inmodule' => $this->name, 'incontent' => 1));
+			array('inmodule' => $this->getName(),
+				'incontent' => 1));
 		$form = $vbox->append('form', array('request' => $r));
 		$hbox = $form->append('hbox');
 		$hbox->append('entry', array('name' => 'q',
@@ -102,7 +103,7 @@ class WikiModule extends ContentModule
 		//page list
 		$vbox->append('link', array(
 				'request' => $this->getRequest('list'),
-				'stock' => $this->name,
+				'stock' => $this->getName(),
 				'text' => _('List all pages')));
 		return new PageResponse($page);
 	}
@@ -117,7 +118,7 @@ class WikiModule extends ContentModule
 		if(!$this->canAdmin($engine, FALSE, FALSE, $error))
 			return new ErrorResponse($error, Response::$CODE_EPERM);
 		$page = new Page(array('title' => $title));
-		$page->append('title', array('class' => $this->name,
+		$page->append('title', array('class' => $this->getName(),
 				'stock' => 'monitor', 'text' => $title));
 		$vbox = $page->append('vbox');
 		//disk usage
