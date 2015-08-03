@@ -322,63 +322,8 @@ class SearchModule extends Module
 		$entry->set('name', 'q');
 		$entry->set('value', $request->get('q'));
 		if($advanced)
-		{
-			$hbox = $form->append('hbox');
-			$label = $hbox->append('label');
-			$label->set('text', _('Search in: '));
-			$checkbox = $hbox->append('checkbox');
-			$checkbox->set('name', 'intitle');
-			$checkbox->set('text', _('titles'));
-			$checkbox->set('value', $request->get('intitle'));
-			$checkbox = $hbox->append('checkbox');
-			$checkbox->set('name', 'incontent');
-			$checkbox->set('text', _('content'));
-			$checkbox->set('value', $request->get('incontent'));
-			//modules
-			$list = $engine->getModules();
-			$modules = array();
-			foreach($list as $m)
-			{
-				$module = Module::load($engine, $m);
-				if($module instanceof ContentModule)
-					$modules[] = $m;
-			}
-			if(count($modules))
-			{
-				$hbox->append('label', array(
-						'text' => _('module: ')));
-				$value = $request->get('module');
-				$combobox = $hbox->append('combobox', array(
-						'name' => 'module',
-						'value' => $value));
-				$combobox->append('label', array(
-						'text' => _('Any')));
-				asort($modules);
-				foreach($modules as $m)
-					$combobox->append('label', array(
-							'text' => ucfirst($m),
-							'value' => $m));
-			}
-			$hbox = $form->append('hbox');
-			$radio = $hbox->append('radiobutton', array(
-					'name' => 'case', 'value' => $case));
-			$radio->append('label', array(
-					'text' => _('Case-insensitive'),
-					'value' => '0'));
-			$radio->append('label', array(
-					'text' => _('Case-sensitive'),
-					'value' => '1'));
-			$hbox = $form->append('hbox');
-			$combobox = $hbox->append('combobox', array(
-					'name' => 'limit', 'value' => $limit,
-					'text' => _('Results per page:')));
-			foreach(array(10, 20, 50, 100) as $i)
-				$combobox->append('label', array('text' => $i,
-						'value' => $i));
-			$button = $form->append('button', array(
-						'type' => 'reset',
-						'text' => _('Reset')));
-		}
+			$this->_pageSearchAdvanced($engine, $request, $form,
+					$limit, $case);
 		$button = $form->append('button', array('stock' => 'search',
 					'type' => 'submit',
 					'text' => _('Search')));
@@ -397,6 +342,60 @@ class SearchModule extends Module
 					$args));
 		}
 		return $page;
+	}
+
+	private function _pageSearchAdvanced($engine, $request, $form, $limit,
+			$case)
+	{
+		$hbox = $form->append('hbox');
+		$label = $hbox->append('label');
+		$label->set('text', _('Search in: '));
+		$checkbox = $hbox->append('checkbox');
+		$checkbox->set('name', 'intitle');
+		$checkbox->set('text', _('titles'));
+		$checkbox->set('value', $request->get('intitle'));
+		$checkbox = $hbox->append('checkbox');
+		$checkbox->set('name', 'incontent');
+		$checkbox->set('text', _('content'));
+		$checkbox->set('value', $request->get('incontent'));
+		//modules
+		$list = $engine->getModules();
+		$modules = array();
+		foreach($list as $m)
+		{
+			$module = Module::load($engine, $m);
+			if($module instanceof ContentModule)
+				$modules[] = $m;
+		}
+		if(count($modules))
+		{
+			$hbox->append('label', array('text' => _('module: ')));
+			$value = $request->get('module');
+			$combobox = $hbox->append('combobox', array(
+					'name' => 'module', 'value' => $value));
+			$combobox->append('label', array('text' => _('Any')));
+			asort($modules);
+			foreach($modules as $m)
+				$combobox->append('label', array(
+						'text' => ucfirst($m),
+						'value' => $m));
+		}
+		$hbox = $form->append('hbox');
+		$radio = $hbox->append('radiobutton', array('name' => 'case',
+				'value' => $case));
+		$radio->append('label', array('text' => _('Case-insensitive'),
+				'value' => '0'));
+		$radio->append('label', array('text' => _('Case-sensitive'),
+				'value' => '1'));
+		$hbox = $form->append('hbox');
+		$combobox = $hbox->append('combobox', array(
+				'name' => 'limit', 'value' => $limit,
+				'text' => _('Results per page:')));
+		foreach(array(10, 20, 50, 100) as $i)
+			$combobox->append('label', array('text' => $i,
+					'value' => $i));
+		$button = $form->append('button', array('type' => 'reset',
+				'text' => _('Reset')));
 	}
 
 
