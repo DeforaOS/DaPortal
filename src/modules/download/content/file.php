@@ -61,13 +61,11 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::displayContent
 	public function displayContent($engine, $request)
 	{
-		$module = $this->getModule()->getName();
-		$root = static::getRoot($engine, $module);
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
 		//output the file details
-		$filename = $root.'/'.$this->get('download_id');
+		$filename = $this->getFilename($engine);
 		$error = _('Could not obtain details for this file');
 		if(($st = stat($filename)) === FALSE)
 			return new PageElement('dialog', array(
@@ -157,11 +155,8 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::download
 	public function download($engine, $request)
 	{
-		$module = $this->getModule()->getName();
-		$root = static::getRoot($engine, $module);
-
 		//output the file
-		$filename = $root.'/'.$this->get('download_id');
+		$filename = $this->getFilename($engine);
 		if(($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');
@@ -233,7 +228,7 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		$this->set('download_id', $did);
 		//copy (or move) the file
-		$dst = $root.'/'.$did;
+		$dst = $this->getFilename($engine);
 		$error = _('Could not copy the file');
 		if(is_uploaded_file($filename))
 			return move_uploaded_file($filename, $dst);
@@ -284,6 +279,18 @@ class FileDownloadContent extends DownloadContent
 		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
 		AND (parent_content.public IS NULL OR parent_content.public='1'
 		OR parent_content.user_id=:user_id)";
+
+
+	//methods
+	//accessors
+	//FileDownloadContent::getFilename
+	protected function getFilename($engine)
+	{
+		$module = $this->getModule()->getName();
+		$root = static::getRoot($engine, $module);
+
+		return $root.'/'.$this->get('download_id');
+	}
 }
 
 ?>
