@@ -143,7 +143,7 @@ class FileDownloadContent extends DownloadContent
 		//administration
 		if($credentials->isAdmin($engine))
 		{
-			$r = new Request($module->getName(), 'admin');
+			$r = $module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,
 					'stock' => 'admin',
 					'text' => _('Administration')));
