@@ -201,7 +201,7 @@ class FileDownloadContent extends DownloadContent
 
 		if(($filename = $request->get('filename')) === FALSE
 				&& ($filename = $this->get('filename'))
-				=== FALSE)
+					=== FALSE)
 		{
 			$error = _('The filename must be specified');
 			$engine->log('LOG_ERR', $error);
