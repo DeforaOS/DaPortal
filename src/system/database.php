@@ -182,7 +182,7 @@ abstract class Database
 	//Database::withTransaction
 	public function withTransaction($engine, $callback)
 	{
-		if($this->inTransaction($engine))
+		if($this->inTransaction())
 			return $callback();
 		if($this->transactionBegin($engine) === FALSE)
 			return FALSE;
