@@ -223,8 +223,8 @@ class FileDownloadContent extends DownloadContent
 		}
 		//store the file
 		$error = _('Internal server error');
-		if(($did = $db->getLastID($engine, 'daportal_download',
-				'download_id')) === FALSE)
+		if(($did = $db->getLastID($engine, static::$download_table,
+				static::$download_table_id)) === FALSE)
 			return FALSE;
 		$this->set('download_id', $did);
 		//copy (or move) the file
@@ -241,6 +241,9 @@ class FileDownloadContent extends DownloadContent
 	//properties
 	static protected $class = 'FileDownloadContent';
 	static protected $list_order = 'title ASC';
+
+	static protected $download_table = 'daportal_download';
+	static protected $download_table_id = 'download_id';
 	//queries
 	//IN:	content_id
 	//	parent
