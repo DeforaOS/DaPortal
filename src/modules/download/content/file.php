@@ -193,8 +193,6 @@ class FileDownloadContent extends DownloadContent
 
 	protected function _saveInsert($engine, $request, &$error)
 	{
-		$module = $this->getModule()->getName();
-		$root = static::getRoot($engine, $module);
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
