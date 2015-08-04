@@ -33,6 +33,24 @@ class DownloadModule extends MultiContentModule
 	}
 
 
+	//DownloadModule::canPublish
+	public function canPublish($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$error = 'Publishing is always disabled';
+		return FALSE;
+	}
+
+
+	//DownloadModule::canUnpublish
+	public function canUnpublish($engine, $request = FALSE,
+			$content = FALSE, &$error = FALSE)
+	{
+		$error = 'Unpublishing is always disabled';
+		return FALSE;
+	}
+
+
 	//useful
 	//DownloadModule::call
 	public function call($engine, $request, $internal = 0)
