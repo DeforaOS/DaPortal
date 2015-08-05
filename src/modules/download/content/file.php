@@ -37,6 +37,25 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
+	//accessors
+	//FileDownloadContent::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		if($request === FALSE)
+			return TRUE;
+		if(($filename = $request->get('filename')) === FALSE
+				&& ($filename = $this->get('filename'))
+					=== FALSE)
+		{
+			$error = _('The filename must be specified');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//useful
 	//FileDownloadContent::displayButtons
 	public function displayButtons($engine, $request)
@@ -197,6 +216,7 @@ class FileDownloadContent extends DownloadContent
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
 
+		//XXX duplicated with canSubmit() (we need the filename anyway)
 		if(($filename = $request->get('filename')) === FALSE
 				&& ($filename = $this->get('filename'))
 					=== FALSE)

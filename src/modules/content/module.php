@@ -479,7 +479,7 @@ abstract class ContentModule extends Module
 		$columns = array('icon' => '', 'title' => _('Title'),
 			'enabled' => _('Enabled'), 'public' => _('Public'),
 			'username' => _('Username'), 'date' => _('Date'));
-		if(!$this->canPublish())
+		if(!$this->canPublish($engine))
 			unset($columns['public']);
 		$treeview = $page->append('treeview', array('request' => $r,
 				'columns' => $columns, 'alternate' => TRUE));
