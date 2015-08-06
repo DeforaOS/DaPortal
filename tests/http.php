@@ -25,7 +25,8 @@ global $_SERVER;
 $hostname = gethostname();
 $url = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
-	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5");
+	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
+	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on");
 $res = array();
 
 $_SERVER['SCRIPT_NAME'] = '/dir1/dir2/dir3/index.php';
@@ -41,6 +42,12 @@ $res[] = $engine->getURL($engine->getRequest());
 $_SERVER['PATH_INFO'] = '/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title';
 $_SERVER['QUERY_STRING'] = 'arg1=test1&arg2=test2&arg3=test3=test4&arg5=test5';
 $_SERVER['SERVER_NAME'] = 'localhost';
+$engine = new HTTPFriendlyEngine();
+$engine->attach();
+$res[] = $engine->getURL($engine->getRequest());
+
+//arrays
+$_SERVER['QUERY_STRING'] = 'ids[123]=on&ids[125]=on';
 $engine = new HTTPFriendlyEngine();
 $engine->attach();
 $res[] = $engine->getURL($engine->getRequest());
