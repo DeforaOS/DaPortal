@@ -247,16 +247,16 @@ class HTTPEngine extends Engine
 			$url = basename($name);
 		if(($module = $request->getModule()) !== FALSE)
 		{
-			$url .= '?_module='.urlencode($module);
+			$url .= '?_module='.rawurlencode($module);
 			if(($action = $request->getAction()) !== FALSE)
-				$url .= '&_action='.urlencode($action);
+				$url .= '&_action='.rawurlencode($action);
 			if(($id = $request->getID()) !== FALSE)
-				$url .= '&_id='.urlencode($id);
+				$url .= '&_id='.rawurlencode($id);
 			if(($title = $request->getTitle()) !== FALSE)
 			{
 				$title = str_replace(array(' ', '?', '#'), '-',
 						$title);
-				$url .= '&_title='.urlencode($title);
+				$url .= '&_title='.rawurlencode($title);
 			}
 			if($request->isIdempotent()
 					&& ($args = $request->getParameters())
@@ -285,7 +285,7 @@ class HTTPEngine extends Engine
 			}
 		else if(is_scalar($value))
 		{
-			$ret = $sep.urlencode($key).'='.urlencode($value);
+			$ret = $sep.rawurlencode($key).'='.rawurlencode($value);
 			$sep = '&';
 		}
 		return $ret;

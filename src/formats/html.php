@@ -120,7 +120,7 @@ class HTMLFormat extends FormatElements
 	//HTMLFormat::escapeURI
 	protected function escapeURI($text)
 	{
-		return urlencode($text);
+		return rawurlencode($text);
 	}
 
 
