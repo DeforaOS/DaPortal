@@ -90,6 +90,17 @@ class HTTPFriendlyEngine extends HTTPEngine
 				$title = $q1;
 			else if($q0 == '_type')
 				$type = $q1;
+			else if(($pos = strpos($q0, '[')) !== FALSE
+					&& $pos > 0 && substr($q0, -1) == ']')
+			{
+				//convert to an array as really expected
+				$key = substr($q0, 0, $pos);
+				$value = substr($q0, $pos + 1, -1);
+				if(!isset($args[$key]))
+					$args[$key] = array($value);
+				else
+					$args[$key][] = $value;
+			}
 			else
 				$args[$q0] = $q1;
 		}
@@ -161,13 +172,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 		{
 			$sep = '?';
 			foreach($args as $key => $value)
-			{
-				if($value === FALSE)
-					continue;
-				$url .= $sep.urlencode($key)
-					.'='.urlencode($value);
-				$sep = '&';
-			}
+				$url .= $this->_getURLParameter($key, $value,
+						$sep);
 		}
 		return $url;
 	}

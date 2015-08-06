@@ -118,7 +118,7 @@ class HTTPEngine extends Engine
 		$action = FALSE;
 		$id = FALSE;
 		$title = FALSE;
-		$parameters = FALSE;
+		$args = FALSE;
 		$type = FALSE;
 		if(!isset($_SERVER['REQUEST_METHOD']))
 			$request = array();
@@ -161,9 +161,17 @@ class HTTPEngine extends Engine
 					$type = $request[$key];
 					break;
 				default:
-					if($parameters === FALSE)
-						$parameters = array();
-					$parameters[$k] = $v;
+					if($args === FALSE)
+						$args = array();
+					//convert to an array as really expected
+					if(is_array($v))
+					{
+						$args[$k] = array();
+						foreach($v as $k2 => $v2)
+							$args[$k][] = $k2;
+					}
+					else
+						$args[$k] = $v;
 					break;
 			}
 		}
@@ -172,7 +180,7 @@ class HTTPEngine extends Engine
 		else
 		{
 			$this->request = new Request($module, $action, $id,
-				$title, $parameters);
+				$title, $args);
 			$auth = $this->getAuth();
 			$auth->setIdempotent($this, $this->request,
 					$idempotent);
@@ -254,14 +262,33 @@ class HTTPEngine extends Engine
 					&& ($args = $request->getParameters())
 					!== FALSE)
 				foreach($args as $key => $value)
-				{
-					if($value === FALSE)
-						continue;
-					$url .= '&'.urlencode($key)
-						.'='.urlencode($value);
-				}
+					$url .= $this->_getURLParameter($key,
+							$value, '&');
 		}
 		return $url;
+	}
+
+	protected function _getURLParameter($key, $value, &$sep)
+	{
+		$ret = '';
+
+		if($value === FALSE)
+			return '';
+		else if($value === TRUE)
+			$value = 1;
+		if(is_array($value))
+			foreach($value as $v)
+			{
+				$ret .= $this->_getURLParameter($key."[$v]",
+						'on', $sep);
+				$sep = '&';
+			}
+		else if(is_scalar($value))
+		{
+			$ret = $sep.urlencode($key).'='.urlencode($value);
+			$sep = '&';
+		}
+		return $ret;
 	}
 
 
