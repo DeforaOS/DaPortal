@@ -232,7 +232,7 @@ class AdminModule extends Module
 		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->setProperty('id', 'module_id:'.$r['module_id']);
+			$row->setProperty('id', 'ids['.$r['module_id'].']');
 			$request = new Request($r['name'], 'admin');
 			$text = ucfirst($r['name']);
 			$link = new PageElement('link', array(
@@ -287,13 +287,13 @@ class AdminModule extends Module
 
 	//helpers
 	//AdminModule::helperApply
-	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = FALSE)
+	protected function helperApply($engine, $request, $query, $args,
+			$success, $failure, $key = FALSE)
 	{
 		if($key === FALSE)
 			$key = 'module_id';
-		return parent::helperApply($engine, $request, $query, $success,
-				$failure, $key);
+		return parent::helperApply($engine, $request, $query, $args,
+				$success, $failure, $key);
 	}
 
 
@@ -302,7 +302,7 @@ class AdminModule extends Module
 	{
 		$query = static::$query_module_disable;
 
-		$ret = $this->helperApply($engine, $request, $query,
+		$ret = $this->helperApply($engine, $request, $query, FALSE,
 				_('Module(s) could be disabled successfully'),
 				_('Some module(s) could not be disabled'));
 		//XXX ugly hack
@@ -317,7 +317,7 @@ class AdminModule extends Module
 	{
 		$query = static::$query_module_enable;
 
-		return $this->helperApply($engine, $request, $query,
+		return $this->helperApply($engine, $request, $query, FALSE,
 				_('Module(s) could be enabled successfully'),
 				_('Some module(s) could not be enabled'));
 	}

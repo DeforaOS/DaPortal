@@ -210,7 +210,6 @@ abstract class ContentModule extends Module
 	protected $content_list_admin_count = 20;
 	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_preview_length = 150;
-	protected $helper_apply_args;
 	protected $stock_back = 'back';
 	protected $stock_content_new = 'new';
 	protected $stock_content_submit = 'submit';
@@ -325,7 +324,6 @@ abstract class ContentModule extends Module
 	{
 		parent::__construct($id, $name, $title);
 		//variables
-		$this->helper_apply_args = array('module_id' => $id);
 		//translations
 		$this->text_content_admin = _('Content administration');
 		$this->text_content_headline_title = _('Content headlines');
@@ -1078,7 +1076,7 @@ abstract class ContentModule extends Module
 		$yes = new PageElement('image', array('stock' => 'yes',
 				'size' => 16, 'title' => _('Enabled')));
 
-		$row->set('id', 'content_id:'.$res['id']);
+		$row->set('id', 'ids['.$res['id'].']');
 		$row->set('icon', '');
 		$r = new Request($this->name, 'update', $res['id'],
 			$res['title']);
@@ -1129,48 +1127,13 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperApply
-	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = FALSE)
+	protected function helperApply($engine, $request, $query, $args,
+			$success, $failure, $key = FALSE)
 	{
-		//XXX re-use Module::helperApply() if possible
-		$cred = $engine->getCredentials();
-		$db = $engine->getDatabase();
-		$affected = 0;
-
 		if($key === FALSE)
 			$key = 'content_id';
-		if(($uid = $cred->getUserID()) == 0)
-			//must be logged in
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
-		if($request->isIdempotent())
-			//must be safe
-			return FALSE;
-		$type = 'info';
-		$message = $success;
-		$parameters = $request->getParameters();
-		foreach($parameters as $k => $v)
-		{
-			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != $key
-					|| !is_numeric($x[1]))
-				continue;
-			$args = $this->helper_apply_args;
-			$args[$key] = $x[1];
-			if(!$cred->isAdmin())
-				$args['user_id'] = $uid;
-			if(($res = $db->query($engine, $query, $args))
-					!== FALSE)
-			{
-				$affected += $res->getAffectedCount();
-				continue;
-			}
-			$type = 'error';
-			$message = $failure;
-		}
-		return ($affected > 0) ? new PageElement('dialog', array(
-				'type' => $type, 'text' => $message)) : FALSE;
+		return parent::helperApply($engine, $request, $query, $args,
+				$success, $failure, $key);
 	}
 
 
@@ -1178,11 +1141,18 @@ abstract class ContentModule extends Module
 	protected function helperDelete($engine, $request)
 	{
 		$query = static::$query_delete;
+		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
+		if(!$this->canDelete($engine, $request, FALSE, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = static::$query_admin_delete;
-		return $this->helperApply($engine, $request, $query,
+		else
+			$args['user_id'] = $cred->getUserID();
+		return $this->helperApply($engine, $request, $query, $args,
 				_('Content could be deleted successfully'),
 				_('Some content could not be deleted'));
 	}
@@ -1192,11 +1162,18 @@ abstract class ContentModule extends Module
 	protected function helperDisable($engine, $request)
 	{
 		$query = static::$query_disable;
+		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
+		if(!$this->canDisable($engine, $request, FALSE, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = static::$query_admin_disable;
-		return $this->helperApply($engine, $request, $query,
+		else
+			$args['user_id'] = $cred->getUserID();
+		return $this->helperApply($engine, $request, $query, $args,
 				_('Content could be disabled successfully'),
 				_('Some content could not be disabled'));
 	}
@@ -1206,11 +1183,18 @@ abstract class ContentModule extends Module
 	protected function helperEnable($engine, $request)
 	{
 		$query = static::$query_enable;
+		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
+		if(!$this->canEnable($engine, $request, FALSE, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = static::$query_admin_enable;
-		return $this->helperApply($engine, $request, $query,
+		else
+			$args['user_id'] = $cred->getUserID();
+		return $this->helperApply($engine, $request, $query, $args,
 				_('Content could be enabled successfully'),
 				_('Some content could not be enabled'));
 	}
@@ -1358,13 +1342,18 @@ abstract class ContentModule extends Module
 	protected function helperPost($engine, $request)
 	{
 		$query = static::$query_publish;
+		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
 		if(!$this->canPublish($engine, $request, FALSE, $error))
-			return new ErrorResponse($error, Response::$CODE_EPERM);
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = static::$query_admin_publish;
-		return $this->helperApply($engine, $request, $query,
+		else
+			$args['user_id'] = $cred->getUserID();
+		return $this->helperApply($engine, $request, $query, $args,
 				_('Content could be published successfully'),
 				_('Some content could not be published'));
 	}
@@ -1451,13 +1440,18 @@ abstract class ContentModule extends Module
 	protected function helperUnpost($engine, $request)
 	{
 		$query = static::$query_unpublish;
+		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
+		$error = _('Permission denied');
 		if(!$this->canUnpublish($engine, $request, FALSE, $error))
-			return new ErrorResponse($error, Response::$CODE_EPERM);
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
 			$query = static::$query_admin_unpublish;
-		return $this->helperApply($engine, $request, $query,
+		else
+			$args['user_id'] = $cred->getUserID();
+		return $this->helperApply($engine, $request, $query, $args,
 				_('Content could be unpublished successfully'),
 				_('Some content could not be unpublished'));
 	}

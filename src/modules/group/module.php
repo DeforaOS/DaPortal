@@ -309,7 +309,7 @@ class GroupModule extends Module
 		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->set('id', 'group_id:'.$r['id']);
+			$row->set('id', 'ids['.$r['id'].']');
 			//members
 			$row->set('members', $r['count']);
 			$request = new Request($this->name, 'list', $r['id'],
@@ -728,13 +728,19 @@ class GroupModule extends Module
 
 	//helpers
 	//GroupModule::helperApply
-	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = FALSE)
+	protected function helperApply($engine, $request, $query, $args,
+			$success, $failure, $key = FALSE)
 	{
+		$cred = $engine->getCredentials();
+
+		if(!$cred->isAdmin())
+			return new PageElement('dialog', array(
+					'type' => 'error',
+					'text' => _('Permission denied')));
 		if($key === FALSE)
 			$key = 'group_id';
-		return parent::helperApply($engine, $request, $query, $success,
-				$failure, $key);
+		return parent::helperApply($engine, $request, $query, $args,
+				$success, $failure, $key);
 	}
 
 
@@ -743,7 +749,7 @@ class GroupModule extends Module
 	{
 		$query = static::$query_delete;
 
-		return $this->helperApply($engine, $request, $query,
+		return $this->helperApply($engine, $request, $query, FALSE,
 			_('Group(s) could be deleted successfully'),
 			_('Some group(s) could not be deleted'));
 	}
@@ -754,7 +760,7 @@ class GroupModule extends Module
 	{
 		$query = static::$query_disable;
 
-		return $this->helperApply($engine, $request, $query,
+		return $this->helperApply($engine, $request, $query, FALSE,
 			_('Group(s) could be disabled successfully'),
 			_('Some group(s) could not be disabled'));
 	}
@@ -765,7 +771,7 @@ class GroupModule extends Module
 	{
 		$query = static::$query_enable;
 
-		return $this->helperApply($engine, $request, $query,
+		return $this->helperApply($engine, $request, $query, FALSE,
 			_('Group(s) could be enabled successfully'),
 			_('Some group(s) could not be enabled'));
 	}

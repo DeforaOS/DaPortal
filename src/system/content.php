@@ -1005,17 +1005,20 @@ class Content
 	protected $text_submit_content = 'Submit content';
 	protected $text_update = 'Update';
 	//queries
-	//IN:	content_id
+	//IN:	module_id
+	//	content_id
 	static protected $query_delete = 'DELETE FROM daportal_content
-		WHERE content_id=:content_id';
-	//IN:	content_id
+		WHERE module_id=:module_id AND content_id=:content_id';
+	//IN:	module_id
+	//	content_id
 	static protected $query_disable = "UPDATE daportal_content
 		SET enabled='0'
-		WHERE content_id=:content_id";
-	//IN:	content_id
+		WHERE module_id=:module_id AND content_id=:content_id";
+	//IN:	module_id
+	//	content_id
 	static protected $query_enable = "UPDATE daportal_content
 		SET enabled='1'
-		WHERE content_id=:content_id";
+		WHERE module_id=:module_id AND content_id=:content_id";
 	//IN:	module_id
 	//	user_id
 	//	title

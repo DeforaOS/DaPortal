@@ -117,36 +117,30 @@ abstract class Module
 	//useful
 	//helpers
 	//Module::helperApply
-	protected function helperApply($engine, $request, $query, $success,
-			$failure, $key = FALSE)
+	protected function helperApply($engine, $request, $query, $args,
+			$success, $failure, $key = FALSE)
 	{
-		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$affected = 0;
 
+		//check the parameters
+		if($args === FALSE)
+			$args = array();
 		if($key === FALSE)
 			//must be specified
 			return FALSE;
-		if(!$cred->isAdmin())
-			//must be admin
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
 		if($request->isIdempotent())
 			//must be safe
 			return FALSE;
 		$type = 'info';
 		$message = $success;
-		$parameters = $request->getParameters();
-		foreach($parameters as $k => $v)
+		if(($ids = $request->get('ids')) === FALSE || !is_array($ids))
+			$ids = array();
+		foreach($ids as $id)
 		{
-			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != $key
-					|| !is_numeric($x[1]))
-				continue;
-			$args = array($key => $x[1]);
-			if(($res = $db->query($engine, $query, $args))
-					!== FALSE)
+			$a = $args;
+			$a[$key] = $id;
+			if(($res = $db->query($engine, $query, $a)) !== FALSE)
 			{
 				$affected += $res->getAffectedCount();
 				continue;

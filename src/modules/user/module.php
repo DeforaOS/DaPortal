@@ -611,7 +611,7 @@ class UserModule extends Module
 		foreach($res as $r)
 		{
 			$row = $view->append('row');
-			$row->set('id', 'user_id:'.$r['id']);
+			$row->set('id', 'ids['.$r['id'].']');
 			$row->set('username', $r['username']);
 			$request = new Request($this->name, 'update', $r['id'],
 				$r['username']);
@@ -1797,16 +1797,14 @@ class UserModule extends Module
 		$success = 0;
 		$message = '';
 		$sep = '';
-		$parameters = $request->getParameters();
-		foreach($parameters as $k => $v)
+		if(($ids = $request->get('ids')) === FALSE || !is_array($ids))
+			$ids = array();
+		foreach($ids as $id)
 		{
-			$x = explode(':', $k);
-			if(count($x) != 2 || $x[0] != $key
-					|| !is_numeric($x[1]))
-				continue;
-			$user = new User($engine, $x[1]);
+			$user = new User($engine, $id);
 			if($user->getUserID() === FALSE) //XXX
 				$invalid++;
+			//FIXME this is broken for enable/disable (static)
 			else if($user->$action($engine) === FALSE)
 				$errors++;
 			else
