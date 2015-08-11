@@ -307,6 +307,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/database/result.php \
+		$(PACKAGE)-$(VERSION)/src/system/date.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
 		$(PACKAGE)-$(VERSION)/src/system/format.php \
 		$(PACKAGE)-$(VERSION)/src/system/format/elements.php \
