@@ -79,17 +79,13 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::formatDate
-	public function formatDate($engine, $date, $outformat = FALSE,
-			$informat = FALSE)
+	public function formatDate($date, $outformat = FALSE, $informat = FALSE)
 	{
 		if($informat !== FALSE
 				|| ($timestamp = strtotime($date)) === FALSE
 				|| $timestamp == -1)
-			return parent::formatDate($engine, $date, $outformat,
-					$informat);
-		if($outformat === FALSE)
-			$outformat = '%d/%m/%Y %H:%M:%S';
-		return strftime($outformat, $timestamp);
+			return parent::formatDate($date, $outformat, $informat);
+		return Date::formatTimestamp($timestamp, $outformat);
 	}
 
 

@@ -50,10 +50,13 @@ class Content
 				case 'group_id':
 				case 'group':
 				case 'id':
-				case 'timestamp':
 				case 'title':
 				case 'user_id':
 				case 'username':
+					$this->$k = $v;
+					break;
+				case 'timestamp':
+					$v = $database->formatDate($v);
 					$this->$k = $v;
 					break;
 				case 'groupname':
@@ -269,20 +272,16 @@ class Content
 
 
 	//Content::getDate
-	public function getDate($engine, $format = FALSE)
+	public function getDate($format = FALSE)
 	{
-		$database = $engine->getDatabase();
 		$informat = FALSE;
 
 		if(($timestamp = $this->timestamp) === FALSE)
 		{
 			$informat = '%Y-%m-%d %H:%M:%S';
-			$timestamp = strftime($informat, time());
+			$timestamp = Date::formatTimestamp(time(), $informat);
 		}
-		if($format === FALSE)
-			$format = '%d/%m/%Y %H:%M:%S';
-		return $database->formatDate($engine, $timestamp, $format,
-				$informat);
+		return Date::format($timestamp, $format, $informat);
 	}
 
 
@@ -533,7 +532,7 @@ class Content
 				'text' => $this->text_content_by.' '));
 		$link = $meta->append('link', array('request' => $r,
 				'text' => $this->getUsername()));
-		$date = $this->getDate($engine);
+		$date = $this->getDate();
 		$meta->append('label', array(
 				'text' => ' '.$this->text_on.' '.$date));
 		return $meta;
@@ -563,7 +562,7 @@ class Content
 			'stock' => 'user', 'text' => $this->getUsername()));
 		$r['username'] = $link;
 		//date
-		$r['date'] = $this->getDate($engine);
+		$r['date'] = $this->getDate();
 		//id
 		$r['id'] = 'content_id:'.$this->getID();
 		return new PageElement('row', $r);

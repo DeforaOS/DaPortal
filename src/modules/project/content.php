@@ -236,7 +236,7 @@ class ProjectContent extends ContentMulti
 					'text' => $r['username']));
 			$row->set('username', $username);
 			$row->set('group', $r['groupname']);
-			$date = $db->formatDate($engine, $r['timestamp']);
+			$date = $db->formatDate($r['timestamp']);
 			$row->set('date', $date);
 			$permissions = Common::getPermissions($r['mode'],
 					static::$S_IFDIR);

@@ -157,7 +157,7 @@ class BugProjectContent extends ContentMulti
 		foreach($replies as $r)
 			$view->append('row', array(
 					'username' => $r->getUsername(),
-					'date' => $r->getDate($engine),
+					'date' => $r->getDate(),
 					'preview' => $r->displayContent($engine,
 							$request)));
 		return $view;

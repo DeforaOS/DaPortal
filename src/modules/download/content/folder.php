@@ -104,7 +104,7 @@ class FolderDownloadContent extends DownloadContent
 				$properties['username'] = $link;
 			}
 			$properties['group'] = $f->getGroup();
-			$properties['date'] = $f->getDate($engine);
+			$properties['date'] = $f->getDate();
 			$properties['mode'] = $f->getPermissions();
 			$view->append('row', $properties);
 		}

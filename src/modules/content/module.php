@@ -1092,7 +1092,7 @@ abstract class ContentModule extends Module
 				'stock' => 'user',
 				'text' => $res['username']));
 		$row->set('username', $link);
-		$date = $db->formatDate($engine, $res['timestamp']);
+		$date = $db->formatDate($res['timestamp']);
 		$row->set('date', $date);
 	}
 

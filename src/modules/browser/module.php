@@ -86,7 +86,9 @@ class BrowserModule extends Module
 	//BrowserModule::getDate
 	protected function getDate($time)
 	{
-		return strftime(_('%Y/%m/%d %H:%M:%S'), $time);
+		$format = _('%d/%m/%Y %H:%M:%S');
+
+		return Date::formatTimestamp($time, $format);
 	}
 
 
