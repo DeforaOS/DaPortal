@@ -44,7 +44,7 @@ class Date
 
 
 	//Date::formatTimestamp
-	public function formatTimestamp($timestamp, $format = FALSE)
+	static public function formatTimestamp($timestamp, $format = FALSE)
 	{
 		if($format === FALSE)
 			$format = '%d/%m/%Y %H:%M:%S';
