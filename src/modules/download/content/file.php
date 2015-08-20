@@ -226,7 +226,7 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		//FIXME check for filename unicity in the current folder
-		$name = basename($filename);
+		$name = $this->getTitle();
 		//set missing parameters
 		$this->set('download_id', FALSE);
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
