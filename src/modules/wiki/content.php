@@ -432,15 +432,8 @@ class WikiContent extends Content
 		}
 		if($this->markup !== FALSE)
 			return $this->markup;
-		if(($root = static::getRoot($module)) === FALSE
-				|| strpos($title, '/') !== FALSE)
+		if(($rcs = $this->getMarkupRevision($engine)) === FALSE)
 			return FALSE;
-		$cmd = 'co -p -q';
-		$cmd .= ' '.escapeshellarg($root.'/'.$title);
-		exec($cmd, $rcs, $res);
-		if($res != 0)
-			return FALSE;
-		$rcs = implode("\n", $rcs);
 		$this->setContent($engine, $rcs);
 		return $rcs;
 	}
@@ -470,7 +463,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::getMarkupRevision
-	protected function getMarkupRevision($engine, $revision)
+	protected function getMarkupRevision($engine, $revision = FALSE)
 	{
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
@@ -478,7 +471,9 @@ class WikiContent extends Content
 		if(($root = static::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return FALSE;
-		$cmd = 'co -p -q -r'.escapeshellarg($revision);
+		$cmd = 'co -p -q';
+		if($revision !== FALSE)
+			$cmd .= ' -r'.escapeshellarg($revision);
 		$cmd .= ' '.escapeshellarg($root.'/'.$title);
 		exec($cmd, $rcs, $res);
 		if($res != 0)
