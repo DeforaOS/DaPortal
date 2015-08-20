@@ -478,8 +478,7 @@ class WikiContent extends Content
 		exec($cmd, $rcs, $res);
 		if($res != 0)
 			return FALSE;
-		$rcs = implode("\n", $rcs);
-		return $rcs;
+		return implode("\n", $rcs);
 	}
 
 
