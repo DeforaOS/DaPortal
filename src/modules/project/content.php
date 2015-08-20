@@ -30,7 +30,7 @@ class ProjectContent extends ContentMulti
 	{
 		$this->fields['synopsis'] = 'Synopsis';
 		$this->fields['scm'] = 'SCM';
-		$this->fields['cvsroot'] = 'CVS root';
+		$this->fields['cvsroot'] = 'Repository';
 		parent::__construct($engine, $module, $properties);
 		//translations
 		$this->text_content_by = _('Project from');
