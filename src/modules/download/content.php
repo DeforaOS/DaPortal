@@ -74,8 +74,9 @@ abstract class DownloadContent extends ContentMulti
 
 
 	//DownloadContent::listFiles
-	static protected function listFiles($engine, $module, $order, $limit,
-			$offset, $user, $mask = FALSE, $parent = FALSE)
+	static protected function listFiles($engine, $module, $order = FALSE,
+			$limit = FALSE, $offset = FALSE, $user = FALSE,
+			$mask = FALSE, $parent = FALSE)
 	{
 		if(($res = static::_listFiles($engine, $module, $order, $limit,
 				$offset, $user, $mask, $parent)) === FALSE)
