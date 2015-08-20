@@ -16,6 +16,9 @@
 
 
 
+require_once('./modules/project/scm.php');
+
+
 //ProjectContent
 class ProjectContent extends ContentMulti
 {
@@ -410,13 +413,20 @@ class ProjectContent extends ContentMulti
 		$vbox->append('textview', array('name' => 'content',
 				'text' => _('Description: '),
 				'value' => $request->get('content')));
+		//SCM
 		$combobox = $vbox->append('combobox', array('name' => 'scm',
-				'text' => _('SCM: ')));
+				'text' => _('SCM: '),
+				'value' => $request->get('scm')));
 		$combobox->append('label', array('value' => '',
 				'text' => _('(none)')));
-		//FIXME list the SCMs available
+		if(($scms = SCMProject::listAll($engine, $this->getModule()))
+				!== FALSE)
+			foreach($scms as $scm)
+				$combobox->append('label', array(
+						'value' => $scm,
+						'text' => $scm));
 		$vbox->append('entry', array('name' => 'cvsroot',
-				'text' => _('SCM root: '),
+				'text' => _('Repository: '),
 				'value' => $request->get('cvsroot')));
 		return $vbox;
 	}
@@ -446,9 +456,16 @@ class ProjectContent extends ContentMulti
 		//SCM
 		if(($value = $request->get('scm')) === FALSE)
 			$value = $this->get('scm');
-		$vbox->append('entry', array('name' => 'scm',
-				'text' => _('SCM: '),
-				'value' => $value));
+		$combobox = $vbox->append('combobox', array('name' => 'scm',
+				'text' => _('SCM: '), 'value' => $value));
+		$combobox->append('label', array('value' => '',
+				'text' => _('(none)')));
+		if(($scms = SCMProject::listAll($engine, $this->getModule()))
+				!== FALSE)
+			foreach($scms as $scm)
+				$combobox->append('label', array(
+						'value' => $scm,
+						'text' => $scm));
 		if(($value = $request->get('cvsroot')) === FALSE)
 			$value = $this->get('cvsroot');
 		$vbox->append('entry', array('name' => 'cvsroot',

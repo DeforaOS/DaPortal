@@ -20,13 +20,33 @@
 abstract class SCMProject
 {
 	//public
+	//essential
 	//SCMProject::attach
 	abstract public function attach($engine);
+
 
 	//actions
 	abstract public function browse($engine, $project, $request);
 	abstract public function download($engine, $project, $request);
 	abstract public function timeline($engine, $project, $request);
+
+
+	//useful
+	//SCMProject::listAll
+	static public function listAll($engine, $module)
+	{
+		$name = $module->getName();
+		$folder = 'modules/'.$name.'/scm';
+
+		if(($dir = opendir($folder)) === FALSE)
+			return FALSE;
+		$ret = array();
+		while(($de = readdir($dir)) !== FALSE)
+			if(strlen($de) > 4 && substr($de, -4) == '.php')
+				$ret[] = substr($de, 0, -4);
+		closedir($dir);
+		return $ret;
+	}
 }
 
 ?>
