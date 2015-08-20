@@ -156,7 +156,7 @@ class WikiContent extends Content
 		$title = $this->getTitle();
 		$error = _('Could not list revisions');
 
-		if(($root = WikiContent::getRoot($module)) === FALSE
+		if(($root = static::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
@@ -309,7 +309,7 @@ class WikiContent extends Content
 		$content = $request->get('content');
 
 		$error = _('Could not find the wiki repository');
-		if(($root = WikiContent::getRoot($module)) === FALSE)
+		if(($root = static::getRoot($module)) === FALSE)
 			return FALSE;
 		//XXX check first if this title already exists for this module
 		$file = $root.'/'.$this->getTitle();
@@ -355,7 +355,7 @@ class WikiContent extends Content
 		$module = $this->getModule()->getName();
 
 		$error = _('Could not find the wiki repository');
-		if(($root = WikiContent::getRoot($module)) === FALSE)
+		if(($root = static::getRoot($module)) === FALSE)
 			return FALSE;
 		$file = $root.'/'.$this->getTitle();
 		$error = _('No wiki page was found with this name');
@@ -432,7 +432,7 @@ class WikiContent extends Content
 		}
 		if($this->markup !== FALSE)
 			return $this->markup;
-		if(($root = WikiContent::getRoot($module)) === FALSE
+		if(($root = static::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'co -p -q';
@@ -454,7 +454,7 @@ class WikiContent extends Content
 
 		if($r1 === FALSE || $r2 === FALSE)
 			return FALSE;
-		if(($root = WikiContent::getRoot($module)) === FALSE
+		if(($root = static::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'rcsdiff -q -r'.escapeshellarg($r1)
@@ -475,7 +475,7 @@ class WikiContent extends Content
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
 
-		if(($root = WikiContent::getRoot($module)) === FALSE
+		if(($root = static::getRoot($module)) === FALSE
 				|| strpos($title, '/') !== FALSE)
 			return FALSE;
 		$cmd = 'co -p -q -r'.escapeshellarg($revision);
