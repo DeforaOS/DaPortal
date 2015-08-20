@@ -280,7 +280,7 @@ class CVSSCMProject extends SCMProject
 	{
 		$error = 'Internal server error';
 
-		$cmd = 'co -p'.escapeshellarg($revision)
+		$cmd = 'co -p -q -r'.escapeshellarg($revision)
 			.' '.escapeshellarg($path.'/'.$file);
 		if(($fp = popen($cmd, 'r')) === FALSE)
 			return new PageElement('dialog', array(
