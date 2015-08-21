@@ -409,7 +409,7 @@ class ProjectModule extends MultiContentModule
 		$view->set('columns', BugProjectContent::getColumns());
 		foreach($res as $r)
 			$view->append($r->displayRow($engine, $request));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
