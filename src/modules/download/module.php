@@ -109,10 +109,33 @@ class DownloadModule extends MultiContentModule
 
 	//protected
 	//properties
-	protected $S_IFDIR = 512;
+	static protected $S_IFDIR = 512;
 	static protected $content_classes = array(
 		'folder' => 'FolderDownloadContent',
 		'file' => 'FileDownloadContent');
+
+	//queries
+	//IN:	module_id
+	static protected $query_list_admin = 'SELECT
+		daportal_content.content_id AS id, timestamp,
+		daportal_user_enabled.user_id AS user_id, username,
+		daportal_group.group_id AS group_id, groupname,
+		title, daportal_content.enabled AS enabled,
+		daportal_content.public AS public, download_id, mode
+		FROM daportal_content, daportal_download, daportal_user_enabled,
+		daportal_group
+		WHERE daportal_content.content_id=daportal_download.content_id
+		AND daportal_content.module_id=:module_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
+		AND daportal_content.group_id=daportal_group.group_id';
+	//IN:	module_id
+	static protected $query_list_admin_count = 'SELECT COUNT(*) AS count
+		FROM daportal_content, daportal_download, daportal_user_enabled,
+		daportal_group
+		WHERE daportal_content.download_id=daportal_download.content_id
+		AND daportal_content.module_id=:module_id
+		AND daportal_content.user_id=daportal_user_enabled.user_id
+		AND daportal_content.group_id=daportal_group.group_id';
 
 	//translations
 	protected $file_text_content_list_title = 'File list';
@@ -313,6 +336,24 @@ class DownloadModule extends MultiContentModule
 		//buttons
 		$this->helperSubmitButtons($engine, $request, $form);
 		return $form;
+	}
+
+
+	//helpers
+	//DownloadModule::helperAdminRow
+	protected function helperAdminRow($engine, $row, $res)
+	{
+		$class = ($res['mode'] & static::$S_IFDIR)
+			? static::$content_classes['folder']
+			: static::$content_classes['file'];
+
+		$content = $class::loadFromProperties($engine, $this, $res);
+		$r = $content->displayRow($engine);
+		//XXX rework ContentModule::callAdmin() to avoid this
+		$columns = array('icon', 'title', 'enabled', 'public',
+			'username', 'date');
+		foreach($columns as $c)
+			$row->set($c, $r->get($c));
 	}
 }
 
