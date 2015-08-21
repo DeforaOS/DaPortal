@@ -354,6 +354,9 @@ class DownloadModule extends MultiContentModule
 			'username', 'date');
 		foreach($columns as $c)
 			$row->set($c, $r->get($c));
+		$stock = ($res['mode'] & static::$S_IFDIR) ? 'folder' : 'file';
+		$row->set('icon', new PageElement('image', array('size' => 16,
+				'stock' => $stock)));
 	}
 }
 
