@@ -124,33 +124,50 @@ abstract class DownloadContent extends ContentMulti
 	//queries
 	//IN:	module_id
 	static protected $query_list = 'SELECT
-		daportal_content_public.content_id AS id, timestamp,
+		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, mode
-		FROM daportal_content_public, daportal_download
-		WHERE daportal_content_public.content_id
-		=daportal_download.content_id
+		title, enabled, public, download_id, mode
+		FROM daportal_content_public AS daportal_content,
+		daportal_download
+		WHERE daportal_content.content_id=daportal_download.content_id
 		AND module_id=:module_id';
+	//IN:	module_id
+	//	group_id
+	static protected $query_list_group = 'SELECT content_id AS id,
+		timestamp, module_id, module,
+		daportal_content.user_id AS user_id, username,
+		daportal_content.group_id AS group_id,
+		daportal_content.groupname AS groupname, title, content,
+		daportal_content.enabled AS enabled, public,
+		download_id, mode
+		FROM daportal_content_public AS daportal_content,
+		daportal_download, daportal_user_group, daportal_group_enabled
+		WHERE daportal_content.content_id=daportal_download.content_id
+		AND module_id=:module_id
+		AND daportal_content.user_id=daportal_user_group.user_id
+		AND daportal_user_group.group_id=daportal_group_enabled.group_id
+		AND (daportal_user_group.group_id=:group_id
+		OR daportal_content.group_id=:group_id)';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user = 'SELECT
-		daportal_content_public.content_id AS id, timestamp,
+		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, mode
-		FROM daportal_content_public, daportal_download
-		WHERE daportal_content_public.content_id
-		=daportal_download.content_id
+		title, enabled, public, download_id, mode
+		FROM daportal_content_public AS daportal_content,
+		daportal_download
+		WHERE daportal_content.content_id=daportal_download.content_id
 		AND module_id=:module_id
 		AND user_id=:user_id';
 	//IN:	module_id
 	//	user_id
 	static protected $query_list_user_private = 'SELECT
-		daportal_content_enabled.content_id AS id, timestamp,
+		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, mode
-		FROM daportal_content_enabled, daportal_download
-		WHERE daportal_content_enabled.content_id
-		=daportal_download.content_id
+		title, enabled, public, download_id, mode
+		FROM daportal_content_enabled AS daportal_content,
+		daportal_download
+		WHERE daportal_content.content_id=daportal_download.content_id
 		AND module_id=:module_id
 		AND user_id=:user_id';
 
