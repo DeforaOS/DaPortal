@@ -234,8 +234,8 @@ class FolderDownloadContent extends DownloadContent
 			$error = _('Could not create the directory');
 			return FALSE;
 		}
-		if(($did = $db->getLastID($engine, 'daportal_download',
-				'download_id')) === FALSE)
+		if(($did = $db->getLastID($engine, static::$download_table,
+				static::$download_id)) === FALSE)
 			return FALSE;
 		//reflect the new properties
 		$this->set('download_id', $did);
@@ -262,6 +262,9 @@ class FolderDownloadContent extends DownloadContent
 	static protected $class_file = 'FileDownloadContent';
 	static protected $list_mask = 512;
 	static protected $list_order = 'title ASC';
+
+	static protected $download_table = 'daportal_download';
+	static protected $download_table_id = 'download_id';
 	//properties
 	//queries
 	//IN:	content_id
