@@ -340,6 +340,20 @@ class DownloadModule extends MultiContentModule
 
 
 	//helpers
+	//DownloadModule::helperActionsAdmin
+	protected function helperActionsAdmin($engine, $request)
+	{
+		//XXX duplicated from ContentModule::helperActionsAdmin
+		if($request->get('admin') === 0)
+			return FALSE;
+		$ret = array();
+		$r = $this->getRequest('admin');
+		$ret[] = $this->helperAction($engine, 'admin', $r,
+				$this->text_content_admin);
+		return $ret;
+	}
+
+
 	//DownloadModule::helperAdminRow
 	protected function helperAdminRow($engine, $row, $res)
 	{
