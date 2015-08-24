@@ -235,7 +235,7 @@ class FolderDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		if(($did = $db->getLastID($engine, static::$download_table,
-				static::$download_id)) === FALSE)
+				static::$download_table_id)) === FALSE)
 			return FALSE;
 		//reflect the new properties
 		$this->set('download_id', $did);
