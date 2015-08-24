@@ -258,7 +258,6 @@ class FileDownloadContent extends DownloadContent
 	//protected
 	//properties
 	static protected $class = 'FileDownloadContent';
-	static protected $list_order = 'title ASC';
 
 	static protected $download_table = 'daportal_download';
 	static protected $download_table_id = 'download_id';

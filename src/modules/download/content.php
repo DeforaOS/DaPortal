@@ -118,6 +118,8 @@ abstract class DownloadContent extends ContentMulti
 
 	//protected
 	//properties
+	static protected $list_order = 'title ASC';
+
 	static protected $S_IFDIR = 512;
 	static protected $list_mask = 0;
 	static protected $load_title = 'daportal_content_enabled.title';
