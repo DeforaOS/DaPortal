@@ -118,7 +118,7 @@ abstract class DownloadContent extends ContentMulti
 
 	//protected
 	//properties
-	static protected $list_order = 'title ASC';
+	static protected $list_order = 'isdir DESC, title ASC';
 
 	static protected $S_IFDIR = 512;
 	static protected $list_mask = 0;
@@ -128,7 +128,7 @@ abstract class DownloadContent extends ContentMulti
 	static protected $query_list = 'SELECT
 		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, download_id, mode
+		title, enabled, public, download_id, mode, mode & 512 AS isdir
 		FROM daportal_content_public AS daportal_content,
 		daportal_download
 		WHERE daportal_content.content_id=daportal_download.content_id
@@ -141,7 +141,7 @@ abstract class DownloadContent extends ContentMulti
 		daportal_content.group_id AS group_id,
 		daportal_content.groupname AS groupname, title, content,
 		daportal_content.enabled AS enabled, public,
-		download_id, mode
+		download_id, mode, mode & 512 AS isdir
 		FROM daportal_content_public AS daportal_content,
 		daportal_download, daportal_user_group, daportal_group_enabled
 		WHERE daportal_content.content_id=daportal_download.content_id
@@ -155,7 +155,7 @@ abstract class DownloadContent extends ContentMulti
 	static protected $query_list_user = 'SELECT
 		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, download_id, mode
+		title, enabled, public, download_id, mode, mode & 512 AS isdir
 		FROM daportal_content_public AS daportal_content,
 		daportal_download
 		WHERE daportal_content.content_id=daportal_download.content_id
@@ -166,7 +166,7 @@ abstract class DownloadContent extends ContentMulti
 	static protected $query_list_user_private = 'SELECT
 		daportal_content.content_id AS id, timestamp,
 		module_id, module, user_id, username, group_id, groupname,
-		title, enabled, public, download_id, mode
+		title, enabled, public, download_id, mode, mode & 512 AS isdir
 		FROM daportal_content_enabled AS daportal_content,
 		daportal_download
 		WHERE daportal_content.content_id=daportal_download.content_id
