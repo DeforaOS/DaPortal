@@ -104,9 +104,8 @@ abstract class DownloadContent extends ContentMulti
 			$mask = static::$S_IFDIR;
 		if($mask != 0)
 		{
-			$query .= ' AND (mode & :mask)=:mode';
+			$query .= ' AND (mode & :mask) > 0';
 			$args['mask'] = $mask;
-			$args['mode'] = static::$list_mask;
 		}
 		$order = static::getOrder($engine, $order);
 		if(($res = static::query($engine, $query, $args, $order, $limit,
