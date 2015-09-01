@@ -198,6 +198,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/formats/gtk.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html.php \
 		$(PACKAGE)-$(VERSION)/src/formats/html5.php \
+		$(PACKAGE)-$(VERSION)/src/formats/json.php \
 		$(PACKAGE)-$(VERSION)/src/formats/pdf.php \
 		$(PACKAGE)-$(VERSION)/src/formats/plain.php \
 		$(PACKAGE)-$(VERSION)/src/formats/xhtml1.php \

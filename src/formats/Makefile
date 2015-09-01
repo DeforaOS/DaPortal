@@ -46,6 +46,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 html5.php $(DESTDIR)$(PREFIX)/daportal/src/formats/html5.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
+	$(INSTALL) -m 0644 json.php $(DESTDIR)$(PREFIX)/daportal/src/formats/json.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 pdf.php $(DESTDIR)$(PREFIX)/daportal/src/formats/pdf.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats
 	$(INSTALL) -m 0644 plain.php $(DESTDIR)$(PREFIX)/daportal/src/formats/plain.php
@@ -67,6 +69,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/gtk.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/html.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/html5.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/json.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/pdf.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/plain.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/xhtml1.php
