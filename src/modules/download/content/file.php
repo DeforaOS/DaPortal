@@ -45,9 +45,10 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		if($request === FALSE)
 			return TRUE;
-		if(($filename = $request->get('filename')) === FALSE
-				&& ($filename = $this->get('filename'))
-					=== FALSE)
+		//forbid empty filenames
+		if(($filename = $request->get('filename')) === FALSE)
+			$filename = $this->get('filename');
+		if(!is_string($filename) || strlen($filename) == 0)
 		{
 			$error = _('The filename must be specified');
 			return FALSE;
