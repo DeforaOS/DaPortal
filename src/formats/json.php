@@ -68,18 +68,21 @@ class JSONFormat extends PlainFormat
 	//protected
 	//methods
 	//printing
-	//JSONFormat::escapeString
-	protected function escapeString($string)
-	{
-		return str_replace('"', '\"', $string);
-	}
-
-
 	//JSONFormat::print
 	protected function _print($string, $force = FALSE)
 	{
 		if($force || $this->print)
 			print($string);
+	}
+
+
+	//JSONFormat::printScalar
+	protected function printScalar($variable, $force = FALSE)
+	{
+		if($force || $this->print)
+			//FIXME report errors
+			if(($res = json_encode($variable)) !== FALSE)
+				print($res);
 	}
 
 
@@ -106,7 +109,8 @@ class JSONFormat extends PlainFormat
 		$keys = array_keys($columns);
 		if(count($keys) == 0)
 			return;
-		$this->_print('"rows'.$this->id++.'":[');
+		$this->printScalar('rows'.$this->id++);
+		$this->_print(':[');
 		$sep1 = '';
 		$children = $e->getChildren($e);
 		foreach($children as $c)
@@ -119,20 +123,17 @@ class JSONFormat extends PlainFormat
 			$sep2 = '';
 			foreach($keys as $k)
 			{
-				$this->_print("$sep2\n\t\t\""
-					.$this->escapeString($k)
-					."\":\"");
+				$this->_print("$sep2\n\t\t");
+				$this->printScalar($k);
+				$this->_print(':');
 				$sep2 = ',';
 				if(($e = $c->get($k)) !== FALSE)
 				{
 					if(is_scalar($e))
-						$this->_print(
-							$this->escapeString($e)
-						);
+						$this->printScalar($e);
 					else
 						$this->renderElement($e);
 				}
-				$this->_print('"');
 			}
 			$this->_print("\n\t}");
 		}
