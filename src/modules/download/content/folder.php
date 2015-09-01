@@ -44,6 +44,24 @@ class FolderDownloadContent extends DownloadContent
 	}
 
 
+	//FolderDownloadContent::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		if($request === FALSE)
+			return TRUE;
+		//forbid empty filenames
+		if(!is_string(($title = parent::getTitle()))
+				|| strlen($title) == 0)
+		{
+			$error = _('Folders must have a name');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
