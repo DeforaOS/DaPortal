@@ -73,48 +73,6 @@ abstract class DownloadContent extends ContentMulti
 	}
 
 
-	//DownloadContent::listFiles
-	static protected function listFiles($engine, $module, $order = FALSE,
-			$limit = FALSE, $offset = FALSE, $user = FALSE,
-			$mask = FALSE, $parent = FALSE)
-	{
-		if(($res = static::_listFiles($engine, $module, $order, $limit,
-				$offset, $user, $mask, $parent)) === FALSE)
-			return FALSE;
-		return static::listFromResults($engine, $module, $res);
-	}
-
-	static protected function _listFiles($engine, $module, $order, $limit,
-			$offset, $user, $mask = FALSE, $parent = FALSE)
-	{
-		$vbox = new PageElement('vbox');
-		$database = $engine->getDatabase();
-		$query = static::$query_list;
-		$args = array('module_id' => $module->getID());
-
-		if($parent !== FALSE && ($id = $parent->get('download_id'))
-				!== FALSE)
-		{
-			$query .= ' AND daportal_download.parent=:parent_id';
-			$args['parent_id'] = $id;
-		}
-		else
-			$query .= ' AND daportal_download.parent IS NULL';
-		if($mask === FALSE)
-			$mask = static::$S_IFDIR;
-		if($mask != 0)
-		{
-			$query .= ' AND (mode & :mask) > 0';
-			$args['mask'] = $mask;
-		}
-		$order = static::getOrder($engine, $order);
-		if(($res = static::query($engine, $query, $args, $order, $limit,
-				$offset)) === FALSE)
-			return FALSE;
-		return $res;
-	}
-
-
 	//protected
 	//properties
 	static protected $list_order = 'isdir DESC, title ASC';
@@ -209,6 +167,49 @@ abstract class DownloadContent extends ContentMulti
 		if($mode === FALSE)
 			$mode = $this->get('mode');
 		return ($mode & static::$S_IFDIR) ? TRUE : FALSE;
+	}
+
+
+	//static
+	//DownloadContent::listFiles
+	static protected function listFiles($engine, $module, $order = FALSE,
+			$limit = FALSE, $offset = FALSE, $user = FALSE,
+			$mask = FALSE, $parent = FALSE)
+	{
+		if(($res = static::_listFiles($engine, $module, $order, $limit,
+				$offset, $user, $mask, $parent)) === FALSE)
+			return FALSE;
+		return static::listFromResults($engine, $module, $res);
+	}
+
+	static protected function _listFiles($engine, $module, $order, $limit,
+			$offset, $user, $mask = FALSE, $parent = FALSE)
+	{
+		$vbox = new PageElement('vbox');
+		$database = $engine->getDatabase();
+		$query = static::$query_list;
+		$args = array('module_id' => $module->getID());
+
+		if($parent !== FALSE && ($id = $parent->get('download_id'))
+				!== FALSE)
+		{
+			$query .= ' AND daportal_download.parent=:parent_id';
+			$args['parent_id'] = $id;
+		}
+		else
+			$query .= ' AND daportal_download.parent IS NULL';
+		if($mask === FALSE)
+			$mask = static::$S_IFDIR;
+		if($mask != 0)
+		{
+			$query .= ' AND (mode & :mask) > 0';
+			$args['mask'] = $mask;
+		}
+		$order = static::getOrder($engine, $order);
+		if(($res = static::query($engine, $query, $args, $order, $limit,
+				$offset)) === FALSE)
+			return FALSE;
+		return $res;
 	}
 }
 
