@@ -96,10 +96,8 @@ class DownloadModule extends MultiContentModule
 			return FALSE;
 		$parent = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request);
-		//FIXME should return $id as $content['download_id']
-		$error = $this->_submitProcessFile($engine, $request, $parent,
-				$filename, $request->getTitle(), $content, $id,
-				TRUE);
+		$error = $this->_submitProcessFileDo($engine, $request, $parent,
+				$filename, $request->getTitle(), $content);
 		if($error !== FALSE)
 			//XXX report the error to the user instead
 			return $engine->log('LOG_ERR', $error);
@@ -244,24 +242,29 @@ class DownloadModule extends MultiContentModule
 
 	protected function _submitProcess($engine, $request, $content)
 	{
-		$forbidden = array('.', '..');
-		//XXX UNIX supports backward slashes in filenames
-		$delimiters = array('/', '\\');
-
 		//verify the request
 		if($request === FALSE || $request->isIdempotent())
 			return TRUE;
 		switch($request->get('type'))
 		{
 			case 'file':
-				break;
+				return $this->_submitProcessFile($engine,
+						$request, $content);
 			default:
 				return parent::_submitProcess($engine, $request,
 						$content);
 		}
+	}
+
+	protected function _submitProcessFile($engine, $request, $parent)
+	{
+		$forbidden = array('.', '..');
+		//XXX UNIX supports backward slashes in filenames
+		$delimiters = array('/', '\\');
+
 		//obtain the parent
 		//FIXME may not be a folder
-		$content->set('download_id', $request->get('parent'));
+		$parent->set('download_id', $request->get('parent'));
 		if(!isset($_FILES['files'])
 				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
@@ -290,19 +293,18 @@ class DownloadModule extends MultiContentModule
 		{
 			if($_FILES['files']['error'] == UPLOAD_ERR_NO_FILE)
 				continue;
-			$res = $this->_submitProcessFile($engine, $request,
-					$content,
+			$res = $this->_submitProcessFileDo($engine, $request,
+					$parent,
 					$_FILES['files']['tmp_name'][$k],
-					$_FILES['files']['name'][$k], $content,
-					$id);
+					$_FILES['files']['name'][$k], $content);
 			if($res !== TRUE)
 				$errors[] = $res;
 		}
 		return (count($errors)) ? implode("\n", $errors) : FALSE;
 	}
 
-	protected function _submitProcessFile($engine, $request, $parent,
-			$pathname, $filename, &$content, &$id)
+	protected function _submitProcessFileDo($engine, $request, $parent,
+			$pathname, $filename, &$content)
 	{
 		$class = static::$content_classes['file'];
 
