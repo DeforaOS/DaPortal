@@ -264,6 +264,24 @@ class FolderDownloadContent extends DownloadContent
 
 	//static
 	//methods
+	//FolderDownloadContent::loadByDownloadID
+	static public function loadByDownloadID($engine, $module, $download_id)
+	{
+		$credentials = $engine->getCredentials();
+		$database = $engine->getDatabase();
+		$query = static::$query_load_by_download_id;
+		$column = static::$load_title;
+		$args = array('module_id' => $module->getID(),
+			'user_id' => $credentials->getUserID(),
+			'download_id' => $download_id);
+
+		if(($res = $database->query($engine, $query, $args)) === FALSE
+				|| $res->count() != 1)
+			return FALSE;
+		return static::loadFromResult($engine, $module, $res);
+	}
+
+
 	//FolderDownloadContent::loadFromProperties
 	static public function loadFromProperties($engine, $module, $properties)
 	{
@@ -272,6 +290,16 @@ class FolderDownloadContent extends DownloadContent
 			? static::$class : static::$class_file;
 
 		return new $class($engine, $module, $properties);
+	}
+
+
+	//FolderDownloadContent::loadRoot
+	static public function loadRoot($engine, $module)
+	{
+		$class = static::$class;
+
+		return new $class($engine, $module, array(
+				'mode' => static::$S_IFDIR));
 	}
 
 
@@ -318,6 +346,37 @@ class FolderDownloadContent extends DownloadContent
 		OR daportal_content_enabled.user_id=:user_id)
 		AND (download.mode & 512) = 512
 		AND daportal_content_enabled.content_id=:content_id
+		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
+		AND (parent_content.public IS NULL OR parent_content.public='1'
+		OR parent_content.user_id=:user_id)";
+	//IN:	module_id
+	//	user_id
+	//	download_id
+	static protected $query_load_by_download_id = "SELECT
+		daportal_content_enabled.content_id AS id,
+		daportal_content_enabled.timestamp AS timestamp,
+		daportal_content_enabled.module_id AS module_id, module,
+		daportal_content_enabled.user_id AS user_id, username,
+		daportal_content_enabled.group_id AS group_id, groupname,
+		daportal_content_enabled.title AS title,
+		daportal_content_enabled.content AS content,
+		daportal_content_enabled.enabled AS enabled,
+		daportal_content_enabled.public AS public,
+		download.download_id AS download_id,
+		parent_download.content_id AS parent_id,
+		parent_content.title AS parent_title,
+		download.mode AS mode
+		FROM daportal_content_enabled, daportal_download download
+		LEFT JOIN daportal_download parent_download
+		ON download.parent=parent_download.download_id
+		LEFT JOIN daportal_content parent_content
+		ON parent_download.content_id=parent_content.content_id
+		WHERE daportal_content_enabled.content_id=download.content_id
+		AND daportal_content_enabled.module_id=:module_id
+		AND (daportal_content_enabled.public='1'
+		OR daportal_content_enabled.user_id=:user_id)
+		AND (download.mode & 512) = 512
+		AND download.download_id=:download_id
 		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
 		AND (parent_content.public IS NULL OR parent_content.public='1'
 		OR parent_content.user_id=:user_id)";

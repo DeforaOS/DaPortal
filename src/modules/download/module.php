@@ -256,15 +256,19 @@ class DownloadModule extends MultiContentModule
 		}
 	}
 
-	protected function _submitProcessFile($engine, $request, $parent)
+	protected function _submitProcessFile($engine, $request, &$content)
 	{
+		$class = static::$content_classes['folder'];
 		$forbidden = array('.', '..');
 		//XXX UNIX supports backward slashes in filenames
 		$delimiters = array('/', '\\');
 
 		//obtain the parent
-		//FIXME may not be a folder
-		$parent->set('download_id', $request->get('parent'));
+		if(($parent = $request->get('parent')) === FALSE)
+			$parent = $class::loadRoot($engine, $this);
+		else if(($parent = $class::loadByDownloadID($engine, $this,
+				$parent)) === FALSE)
+			return _('Could not obtain the parent');
 		if(!isset($_FILES['files'])
 				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
