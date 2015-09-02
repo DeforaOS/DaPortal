@@ -828,9 +828,6 @@ abstract class ContentModule extends Module
 	//ContentModule::callSubmit
 	protected function callSubmit($engine, $request = FALSE)
 	{
-		$cred = $engine->getCredentials();
-		$user = User::lookup($engine, $cred->getUsername(),
-				$cred->getUserID());
 		$title = $this->text_content_submit_content;
 		$code = 0;
 		$error = _('Could not submit content');
@@ -843,15 +840,9 @@ abstract class ContentModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
+		//obtain the new content
+		$content = $this->_submitContent($engine, $request);
 		//toolbar
-		$class = $this->content_class;
-		$content = array('user_id' => $cred->getUserID(),
-			'username' => $cred->getUsername(),
-			'title' => $request->get('title'),
-			'content' => $request->get('content'));
-		if(($public = $request->get('public')) !== FALSE)
-			$content['public'] = $public ? TRUE : FALSE;
-		$content = new $class($engine, $this, $content);
 		$this->helperToolbar($engine, $request, $content, $page);
 		//process the request
 		if(($error = $this->_submitProcess($engine, $request, $content))
@@ -870,6 +861,20 @@ abstract class ContentModule extends Module
 		$form = $this->formSubmit($engine, $request);
 		$page->append($form);
 		return new PageResponse($page, $code);
+	}
+
+	protected function _submitContent($engine, $request)
+	{
+		$class = $this->content_class;
+		$cred = $engine->getCredentials();
+		$content = array('user_id' => $cred->getUserID(),
+			'username' => $cred->getUsername(),
+			'title' => $request->get('title'),
+			'content' => $request->get('content'));
+
+		if(($public = $request->get('public')) !== FALSE)
+			$content['public'] = $public ? TRUE : FALSE;
+		return new $class($engine, $this, $content);
 	}
 
 	protected function _submitProcess($engine, $request, $content)
