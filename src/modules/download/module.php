@@ -240,6 +240,18 @@ class DownloadModule extends MultiContentModule
 		return parent::callSubmit($engine, $request);
 	}
 
+	protected function _submitContent($engine, $request)
+	{
+		$class = static::$content_classes['folder'];
+
+		if($request !== FALSE
+				&& $request->get('type') == 'file'
+				&& ($parent = $request->get('parent')) !== FALSE)
+			return $class::loadByDownloadID($engine, $this,
+					$parent);
+		return parent::_submitContent($engine, $request);
+	}
+
 	protected function _submitProcess($engine, $request, $content)
 	{
 		//verify the request
@@ -256,19 +268,12 @@ class DownloadModule extends MultiContentModule
 		}
 	}
 
-	protected function _submitProcessFile($engine, $request, &$content)
+	protected function _submitProcessFile($engine, $request, $parent)
 	{
-		$class = static::$content_classes['folder'];
 		$forbidden = array('.', '..');
 		//XXX UNIX supports backward slashes in filenames
 		$delimiters = array('/', '\\');
 
-		//obtain the parent
-		if(($parent = $request->get('parent')) === FALSE)
-			$parent = $class::loadRoot($engine, $this);
-		else if(($parent = $class::loadByDownloadID($engine, $this,
-				$parent)) === FALSE)
-			return _('Could not obtain the parent');
 		if(!isset($_FILES['files'])
 				|| count($_FILES['files']['error']) == 0)
 			return TRUE;
@@ -300,7 +305,7 @@ class DownloadModule extends MultiContentModule
 			$res = $this->_submitProcessFileDo($engine, $request,
 					$parent,
 					$_FILES['files']['tmp_name'][$k],
-					$_FILES['files']['name'][$k], $content);
+					$_FILES['files']['name'][$k]);
 			if($res !== TRUE)
 				$errors[] = $res;
 		}
@@ -308,7 +313,7 @@ class DownloadModule extends MultiContentModule
 	}
 
 	protected function _submitProcessFileDo($engine, $request, $parent,
-			$pathname, $filename, &$content)
+			$pathname, $filename, &$content = FALSE)
 	{
 		$class = static::$content_classes['file'];
 
