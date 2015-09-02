@@ -130,7 +130,7 @@ class DownloadModule extends MultiContentModule
 	static protected $query_list_admin_count = 'SELECT COUNT(*) AS count
 		FROM daportal_content, daportal_download, daportal_user_enabled,
 		daportal_group
-		WHERE daportal_content.download_id=daportal_download.content_id
+		WHERE daportal_content.content_id=daportal_download.content_id
 		AND daportal_content.module_id=:module_id
 		AND daportal_content.user_id=daportal_user_enabled.user_id
 		AND daportal_content.group_id=daportal_group.group_id';
