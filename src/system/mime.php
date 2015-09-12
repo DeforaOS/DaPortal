@@ -71,10 +71,10 @@ class Mime
 		if(static::init($engine) === FALSE)
 			return $default;
 		//FIXME use lstat() if the filename is absolute or relative
-		$filename = rtrim($filename, "\0");
+		$filename = strtolower(rtrim($filename, "\0"));
 		foreach(static::$types as $g)
 			if(isset($g[1]) && fnmatch(strtolower($g[1]),
-						strtolower($filename)))
+						$filename))
 			{
 				//XXX work-around an issue with *.tar.gz
 				if($g[0] == 'application/x-gzip'
