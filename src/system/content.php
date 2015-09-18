@@ -307,7 +307,7 @@ class Content
 
 
 	//Content::getModule
-	protected function getModule()
+	public function getModule()
 	{
 		return $this->module;
 	}
