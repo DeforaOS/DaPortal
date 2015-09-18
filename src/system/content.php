@@ -306,6 +306,13 @@ class Content
 	}
 
 
+	//Content::getModule
+	protected function getModule()
+	{
+		return $this->module;
+	}
+
+
 	//Content::getOrder
 	static public function getOrder($engine, $order = FALSE)
 	{
@@ -1122,13 +1129,6 @@ class Content
 		$name = $this->getModule()->getName();
 
 		return $config->get('module::'.$name, $variable);
-	}
-
-
-	//Content::getModule
-	protected function getModule()
-	{
-		return $this->module;
 	}
 
 
