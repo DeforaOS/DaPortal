@@ -50,6 +50,7 @@ class User
 		$this->username = $res['username'];
 		$this->enabled = $db->isTrue($res['enabled']);
 		$this->locked = ($res['locked'] == '!');
+		$this->group_id = $res['group_id'];
 		$this->admin = $db->isTrue($res['admin']);
 		$this->email = $res['email'];
 		$this->fullname = $res['fullname'];
