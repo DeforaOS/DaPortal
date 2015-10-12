@@ -254,6 +254,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/group/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/group/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/group/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/manual/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/manual/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/manual/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/news/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/news/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
