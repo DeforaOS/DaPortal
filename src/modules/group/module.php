@@ -259,7 +259,7 @@ class GroupModule extends Module
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
-					$a = 'helperGroup'.$a;
+					$a = '_admin'.$a;
 					$dialog = $this->$a($engine, $request);
 					break;
 				}
@@ -344,6 +344,24 @@ class GroupModule extends Module
 		return new PageResponse($page);
 	}
 
+	protected function _adminDelete($engine, $request)
+	{
+		return $this->helperApplyGroup($engine, $request, 'delete',
+				$this->getRequest('admin'));
+	}
+
+	protected function _adminDisable($engine, $request)
+	{
+		return $this->helperApplyGroup($engine, $request, 'disable',
+				$this->getRequest('admin'));
+	}
+
+	protected function _adminEnable($engine, $request)
+	{
+		return $this->helperApplyGroup($engine, $request, 'enable',
+				$this->getRequest('admin'));
+	}
+
 
 	//GroupModule::callDefault
 	protected function callDefault($engine, $request = FALSE)
@@ -407,7 +425,7 @@ class GroupModule extends Module
 		if(!$this->canDisable($engine, $group, $error))
 			return new ErrorResponse($group->getGroupname()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$group->setEnabled($engine, FALSE))
+		if(!$group->disable($engine, $error))
 			return new ErrorResponse($error);
 		return new StringResponse(_('Group disabled successfully'));
 	}
@@ -503,7 +521,7 @@ class GroupModule extends Module
 		if(!$this->canEnable($engine, $group, $error))
 			return new ErrorResponse($group->getGroupname()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$group->setEnabled($engine, TRUE))
+		if(!$group->enable($engine, $error))
 			return new ErrorResponse($error);
 		return new StringResponse(_('Group enabled successfully'));
 	}
@@ -728,53 +746,55 @@ class GroupModule extends Module
 
 
 	//helpers
-	//GroupModule::helperApply
-	protected function helperApply($engine, $request, $query, $args,
-			$success, $failure, $key = FALSE)
+	//GroupModule::helperApplyGroup
+	protected function helperApplyGroup($engine, $request, $action,
+			$fallback, $key = 'group_id')
 	{
 		$cred = $engine->getCredentials();
 
+		//FIXME use $this->can$action() instead
 		if(!$cred->isAdmin())
+			//must be admin
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('Permission denied')));
-		if($key === FALSE)
-			$key = 'group_id';
-		return parent::helperApply($engine, $request, $query, $args,
-				$success, $failure, $key);
-	}
-
-
-	//GroupModule::helperGroupDelete
-	protected function helperGroupDelete($engine, $request)
-	{
-		$query = static::$query_delete;
-
-		return $this->helperApply($engine, $request, $query, FALSE,
-			_('Group(s) could be deleted successfully'),
-			_('Some group(s) could not be deleted'));
-	}
-
-
-	//GroupModule::helperGroupDisable
-	protected function helperGroupDisable($engine, $request)
-	{
-		$query = static::$query_disable;
-
-		return $this->helperApply($engine, $request, $query, FALSE,
-			_('Group(s) could be disabled successfully'),
-			_('Some group(s) could not be disabled'));
-	}
-
-
-	//GroupModule::helperGroupEnable
-	protected function helperGroupEnable($engine, $request)
-	{
-		$query = static::$query_enable;
-
-		return $this->helperApply($engine, $request, $query, FALSE,
-			_('Group(s) could be enabled successfully'),
-			_('Some group(s) could not be enabled'));
+		if($request->isIdempotent())
+			//must be safe
+			return FALSE;
+		$invalid = 0;
+		$errors = 0;
+		$success = 0;
+		$message = '';
+		$sep = '';
+		if(($ids = $request->get('ids')) === FALSE || !is_array($ids))
+			$ids = array();
+		foreach($ids as $id)
+		{
+			$group = new Group($engine, $id);
+			if($group->getGroupID() === FALSE) //XXX
+				$invalid++;
+			else if($group->$action($engine) === FALSE)
+				$errors++;
+			else
+				$success++;
+		}
+		$type = $errors ? 'error' : ($invalid ? 'warning' : 'info');
+		if($errors)
+		{
+			$message .= "Could not $action $errors group(s)";
+			$sep = "\n";
+		}
+		if($invalid)
+		{
+			$message .= $sep.$invalid.' '._('invalid group(s)');
+			$sep = "\n";
+		}
+		if($success)
+			$message .= $sep."Could $action $success group(s)";
+		if($message == '')
+			return FALSE;
+		return new PageElement('dialog', array('type' => $type,
+				'text' => $message));
 	}
 
 
@@ -812,19 +832,6 @@ class GroupModule extends Module
 	       	FROM daportal_module
 		WHERE enabled='1'
 	       	ORDER BY name ASC";
-	//IN:	group_id
-	static private $query_delete = "DELETE FROM daportal_group
-		WHERE group_id=:group_id
-		AND group_id <> '0'";
-	//IN:	group_id
-	static private $query_disable = "UPDATE daportal_group
-		SET enabled='0'
-		WHERE group_id=:group_id
-		AND group_id <> '0'";
-	//IN:	group_id
-	static private $query_enable = "UPDATE daportal_group
-		SET enabled='1'
-		WHERE group_id=:group_id";
 	static private $query_list = "SELECT group_id AS id, groupname
 		FROM daportal_group_enabled
 		WHERE group_id <> '0'";

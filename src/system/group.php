@@ -26,9 +26,9 @@ class Group
 	public function __construct($engine, $gid, $groupname = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = $this->query_get_by_id;
-
+		$query = static::$query_get_by_id;
 		$args = array('group_id' => $gid);
+
 		if($groupname !== FALSE)
 		{
 			if($engine instanceof HTTPFriendlyEngine)
@@ -39,7 +39,7 @@ class Group
 				$groupname = str_replace('-', '_', $groupname);
 			}
 			else
-				$query = $this->query_get_by_id_groupname;
+				$query = static::$query_get_by_id_groupname;
 			$args['groupname'] = $groupname;
 		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
@@ -74,44 +74,46 @@ class Group
 	}
 
 
-	//Group::setEnabled
-	public function setEnabled($engine, $enabled)
-	{
-		$db = $engine->getDatabase();
-		$query = $this->query_set_enabled;
-		$args = array('group_id' => $this->group_id,
-			'enabled' => $enabled ? TRUE : FALSE);
-
-		return ($db->query($engine, $query, $args) !== FALSE);
-	}
-
-
-	//static
 	//useful
 	//Group::disable
-	static public function disable($engine, $gid)
+	public function disable($engine, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = Group::$query_disable;
-		$args = array('group_id' => $gid);
+		$query = static::$query_disable;
+		$args = array('group_id' => $this->group_id);
 
-		return ($db->query($engine, $query, $args) !== FALSE)
-			? TRUE : FALSE;
+		if($this->enabled === FALSE)
+			return TRUE;
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->groupname.': Could not disable group';
+			return FALSE;
+		}
+		$this->enabled = FALSE;
+		return TRUE;
 	}
 
 
 	//Group::enable
-	static public function enable($engine, $gid)
+	public function enable($engine, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = Group::$query_enable;
-		$args = array('group_id' => $gid);
+		$query = static::$query_enable;
+		$args = array('group_id' => $this->group_id);
 
-		return ($db->query($engine, $query, $args) !== FALSE)
-			? TRUE : FALSE;
+		if($this->enabled === TRUE)
+			return TRUE;
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->groupname.': Could not enable group';
+			return FALSE;
+		}
+		$this->enabled = TRUE;
+		return TRUE;
 	}
 
 
+	//static
 	//Group::insert
 	static public function insert($engine, $groupname, $enabled = FALSE,
 			&$error = FALSE)
@@ -186,26 +188,22 @@ class Group
 
 	//queries
 	//IN:	group_id
-	private $query_get_by_id = "SELECT group_id AS id, groupname, enabled
+	static private $query_get_by_id = "SELECT group_id AS id, groupname, enabled
 		FROM daportal_group
-		WHERE daportal_group.enabled='1' AND group_id=:group_id";
+		WHERE group_id=:group_id";
 	//IN:	group_id
 	//	groupname
-	private $query_get_by_id_groupname = "SELECT group_id AS id, groupname,
+	static private $query_get_by_id_groupname = "SELECT group_id AS id, groupname,
 		enabled
 		FROM daportal_group
 		WHERE group_id=:group_id
-		AND daportal_group.enabled='1' AND groupname=:groupname";
-	//IN:	group_id
-	//	enabled
-	private $query_set_enabled = "UPDATE daportal_group
-		SET enabled=:enabled
-		WHERE group_id=:group_id";
+		AND groupname=:groupname";
 	//static
 	//IN:	group_id
 	static private $query_disable = "UPDATE daportal_group
 		SET enabled='0'
-		WHERE group_id=:group_id";
+		WHERE group_id=:group_id
+		AND group_id <> '0'";
 	//IN:	group_id
 	static private $query_enable = "UPDATE daportal_group
 		SET enabled='1'
