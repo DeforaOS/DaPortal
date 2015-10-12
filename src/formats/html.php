@@ -1250,9 +1250,12 @@ class HTMLFormat extends FormatElements
 			{
 				$this->tagOpen('span', 'detail');
 				$name = $c->get('id');
-				$this->tag('input', FALSE, '_check_'.$id, array(
-							'type' => 'checkbox',
-							'name' => $name));
+				$args = array('type' => 'checkbox',
+					'name' => $name);
+				if($c->get('value'))
+					$args['checked'] = 'checked';
+				$this->tag('input', FALSE, '_check_'.$id,
+						$args);
 				$this->tagClose('span');
 			}
 			foreach($columns as $k => $v)
