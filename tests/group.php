@@ -23,8 +23,8 @@ require_once('./tests.php');
 if(($group = Group::lookup($engine, 'nogroup')) === FALSE
 		|| $group->getGroupID() != 0)
 	exit(2);
-if($group->setEnabled($engine, FALSE) === FALSE
-		|| $group->setEnabled($engine, TRUE) === FALSE)
+if($group->disable($engine) === FALSE
+		|| $group->enable($engine) === FALSE)
 	exit(3);
 exit(0);
 
