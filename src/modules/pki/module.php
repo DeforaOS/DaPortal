@@ -132,9 +132,11 @@ class PKIModule extends MultiContentModule
 		{
 			$request = $this->getRequest('latest', array(
 				'type' => $l));
-			$hbox->append($this->call($engine, $request));
+			$response = $this->call($engine, $request);
+			if($response instanceof PageResponse)
+				$hbox->append($response->getContent());
 		}
-		return $page;
+		return new PageResponse($page);
 	}
 
 
@@ -175,7 +177,8 @@ class PKIModule extends MultiContentModule
 			$error = _('Could not list Certification Authorities');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		$columns = CAPKIContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -185,7 +188,7 @@ class PKIModule extends MultiContentModule
 			'text' => _('More Certification Authorities...'),
 			'request' => $this->getRequest('list', array(
 				'type' => $type))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _latestCAClients($engine, $request, $type)
@@ -204,7 +207,8 @@ class PKIModule extends MultiContentModule
 			$error = _('Could not list CA clients');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		$columns = CAClientPKIContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -214,7 +218,7 @@ class PKIModule extends MultiContentModule
 			'text' => _('More CA clients...'),
 			'request' => $this->getRequest('list', array(
 				'type' => $type))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 	private function _latestCAServers($engine, $request, $type)
@@ -233,7 +237,8 @@ class PKIModule extends MultiContentModule
 			$error = _('Could not list CA servers');
 			$page->append('dialog', array('type' => 'error',
 					'text' => $error));
-			return $page;
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
 		}
 		$columns = CAServerPKIContent::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
@@ -243,7 +248,7 @@ class PKIModule extends MultiContentModule
 			'text' => _('More CA servers...'),
 			'request' => $this->getRequest('list', array(
 				'type' => $type))));
-		return $page;
+		return new PageResponse($page);
 	}
 
 
