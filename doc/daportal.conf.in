@@ -180,6 +180,7 @@ globs=@PREFIX@/share/mime/globs
 
 [module::download]
 #root=/tmp/download
+#umask=0277
 
 [module::pki]
 #root=/tmp/pki

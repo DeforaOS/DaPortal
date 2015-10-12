@@ -216,6 +216,7 @@ class FileDownloadContent extends DownloadContent
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
+		$umask = $this->configGet('umask');
 
 		//XXX duplicated with canSubmit() (we need the filename anyway)
 		if(($filename = $request->get('filename')) === FALSE
@@ -246,13 +247,20 @@ class FileDownloadContent extends DownloadContent
 				static::$download_table_id)) === FALSE)
 			return FALSE;
 		$this->set('download_id', $did);
+		//set the umask (if configured)
+		$umask = (sscanf($umask, '%o', $umask) == 1)
+			? umask($umask) : FALSE;
 		//copy (or move) the file
 		$dst = $this->getFilename($engine);
 		$error = _('Could not copy the file');
 		if(is_uploaded_file($filename))
-			return move_uploaded_file($filename, $dst);
+			//FIXME the umask is not applied
+			$ret = move_uploaded_file($filename, $dst);
 		else
-			return copy($filename, $dst);
+			$ret = copy($filename, $dst);
+		if($umask !== FALSE)
+			umask($umask);
+		return $ret;
 	}
 
 
