@@ -133,13 +133,10 @@ class BrowserModule extends Module
 	//BrowserModule::getRoot
 	protected function getRoot($engine)
 	{
-		global $config;
-		$error = 'The browser repository is not configured';
-
-		if(($root = $config->get('module::'.$this->name, 'root'))
-				=== FALSE)
+		if(($root = $this->configGet('root')) === FALSE)
 		{
-			$engine->log('LOG_WARNING', $error);
+			$message = 'The browser repository is not configured';
+			$engine->log('LOG_WARNING', $message);
 			$root = '/tmp';
 		}
 		return $root;
