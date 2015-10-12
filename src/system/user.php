@@ -144,18 +144,6 @@ class User
 	}
 
 
-	//User::setEnabled
-	public function setEnabled($engine, $enabled)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_set_enabled;
-		$args = array('user_id' => $this->user_id,
-			'enabled' => $enabled ? 1 : 0);
-
-		return ($db->query($engine, $query, $args) !== FALSE);
-	}
-
-
 	//User::setPassword
 	public function setPassword($engine, $password)
 	{
@@ -256,6 +244,46 @@ class User
 	}
 
 
+	//User::disable
+	public function disable($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_disable;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->enabled === FALSE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = $this->username.': Could not disable user';
+			return FALSE;
+		}
+		$this->enabled = FALSE;
+		return TRUE;
+	}
+
+
+	//User::enable
+	public function enable($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_enable;
+		$args = array('user_id' => $this->user_id);
+
+		if($this->enabled === TRUE)
+			return TRUE;
+		if(($res = $db->query($engine, $query, $args)) === FALSE
+				|| $res->getAffectedCount() != 1)
+		{
+			$error = $this->username.': Could not enable user';
+			return FALSE;
+		}
+		$this->enabled = TRUE;
+		return TRUE;
+	}
+
+
 	//User::lock
 	public function lock($engine, &$error = FALSE)
 	{
@@ -297,41 +325,6 @@ class User
 
 
 	//static
-	//useful
-	//User::disable
-	static public function disable($engine, $uid, &$error = FALSE)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_disable;
-		$args = array('user_id' => $uid);
-
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| $res->getAffectedCount() != 1)
-		{
-			$error = 'Could not disable user';
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-
-	//User::enable
-	static public function enable($engine, $uid, &$error = FALSE)
-	{
-		$db = $engine->getDatabase();
-		$query = static::$query_enable;
-		$args = array('user_id' => $uid);
-
-		if(($res = $db->query($engine, $query, $args)) === FALSE
-				|| $res->getAffectedCount() != 1)
-		{
-			$error = 'Could not enable user';
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-
 	//User::insert
 	static public function insert($engine, $username, $fullname, $password,
 		$email, $enabled = FALSE, $admin = FALSE, &$error = FALSE)
@@ -654,7 +647,7 @@ class User
 			return FALSE;
 		}
 		$user = new User($engine, $res['user_id']);
-		if($user->setEnabled($engine, TRUE) === FALSE
+		if($user->enable($engine) === FALSE
 				|| $db->transactionCommit($engine) === FALSE)
 		{
 			$db->transactionRollback($engine);
@@ -713,9 +706,6 @@ class User
 	static protected $query_set_password = 'UPDATE daportal_user
 		SET password=:password
 		WHERE user_id=:user_id';
-	static protected $query_set_enabled = "UPDATE daportal_user
-		SET enabled=:enabled
-		WHERE user_id=:user_id";
 	//IN:	user_id
 	static protected $query_delete = 'DELETE FROM daportal_user
 		WHERE user_id=:user_id';

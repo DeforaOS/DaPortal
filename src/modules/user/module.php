@@ -647,31 +647,31 @@ class UserModule extends Module
 	protected function _adminDelete($engine, $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'delete',
-			$this->getRequest('admin'));
+				$this->getRequest('admin'));
 	}
 
 	protected function _adminDisable($engine, $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'disable',
-			$this->getRequest('admin'));
+				$this->getRequest('admin'));
 	}
 
 	protected function _adminEnable($engine, $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'enable',
-			$this->getRequest('admin'));
+				$this->getRequest('admin'));
 	}
 
 	protected function _adminLock($engine, $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'lock',
-			$this->getRequest('admin'));
+				$this->getRequest('admin'));
 	}
 
 	protected function _adminUnlock($engine, $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'unlock',
-			$this->getRequest('admin'));
+				$this->getRequest('admin'));
 	}
 
 
@@ -724,7 +724,7 @@ class UserModule extends Module
 			return TRUE;
 		//disable the user
 		if(($user = User::lookup($engine, $username, $uid)) === FALSE
-				|| $user->setEnabled($engine, FALSE) !== TRUE)
+				|| $user->disable($engine) !== TRUE)
 			return _('The account could not be closed');
 		//log the user out
 		$this->helperLogout($engine, $username, TRUE);
@@ -814,7 +814,7 @@ class UserModule extends Module
 		if(!$this->canDisable($engine, $user, $error))
 			return new ErrorResponse($user->getUsername()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$user->setEnabled($engine, FALSE))
+		if(!$user->disable($engine, $error))
 			return new ErrorResponse($error);
 		return new StringResponse(_('User disabled successfully'));
 	}
@@ -902,7 +902,7 @@ class UserModule extends Module
 		if(!$this->canEnable($engine, $user, $error))
 			return new ErrorResponse($user->getUsername()
 					.': '.$error, Response::$CODE_EPERM);
-		if(!$user->setEnabled($engine, TRUE))
+		if(!$user->enable($engine, $error))
 			return new ErrorResponse($error);
 		return new StringResponse(_('User enabled successfully'));
 	}
@@ -1804,7 +1804,6 @@ class UserModule extends Module
 			$user = new User($engine, $id);
 			if($user->getUserID() === FALSE) //XXX
 				$invalid++;
-			//FIXME this is broken for enable/disable (static)
 			else if($user->$action($engine) === FALSE)
 				$errors++;
 			else
@@ -1813,12 +1812,12 @@ class UserModule extends Module
 		$type = $errors ? 'error' : ($invalid ? 'warning' : 'info');
 		if($errors)
 		{
-			$message .= "Could not $action $errors users";
+			$message .= "Could not $action $errors user(s)";
 			$sep = "\n";
 		}
 		if($invalid)
 		{
-			$message .= $sep.$invalid.' '._('invalid users');
+			$message .= $sep.$invalid.' '._('invalid user(s)');
 			$sep = "\n";
 		}
 		if($success)
