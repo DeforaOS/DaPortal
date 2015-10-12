@@ -336,8 +336,10 @@ class BrowserModule extends Module
 		}
 		if($count == 0)
 			return _('No file uploaded');
+		if(is_file($path) && $count != 1)
+			//overwrite files one file at a time
+			return _('Destination is not a directory');
 		//store each file uploaded
-		//XXX if $path is a file authorize only one file at a time
 		foreach($_FILES['files']['error'] as $k => $v)
 		{
 			if($_FILES['files']['error'] == UPLOAD_ERR_NO_FILE)
@@ -357,11 +359,7 @@ class BrowserModule extends Module
 		$root = $this->getRoot($engine);
 		$dst = $root.'/'.$parent.'/'.$filename;
 
-		//XXX is this check necessary?
-		if(is_uploaded_file($pathname))
-			//XXX can it handle cross-partition?
-			return move_uploaded_file($pathname, $dst);
-		return FALSE;
+		return move_uploaded_file($pathname, $dst);
 	}
 
 	protected function _uploadSuccess($engine, $request, $path, $page)
