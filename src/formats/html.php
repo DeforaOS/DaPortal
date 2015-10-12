@@ -774,12 +774,18 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmlview($e)
 	{
-		if(($text = $e->get('text')) === FALSE || !is_string($text))
+		$class = $e->get('class');
+		$class = $e->getType().(($class !== FALSE) ? ' '.$class : '');
+		$text = $e->get('text');
+
+		if(!is_string($text))
 			return;
+		$this->tagOpen('div', $class, $e->get('id'), FALSE);
 		if($e->get('trusted') === TRUE)
 			print($text);
 		else
 			print(HTML::filter($this->engine, $text));
+		$this->tagClose('div');
 	}
 
 
