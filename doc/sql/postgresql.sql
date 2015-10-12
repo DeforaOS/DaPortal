@@ -391,4 +391,8 @@ CREATE TABLE daportal_blog_content (
 INSERT INTO daportal_module (name, enabled) VALUES ('blog', '1');
 
 
+/* module: manual */
+INSERT INTO daportal_module (name, enabled) VALUES ('manual', '1');
+
+
 COMMIT;
