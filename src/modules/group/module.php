@@ -677,8 +677,9 @@ class GroupModule extends Module
 		if($error === FALSE)
 			//update was successful
 			return $this->_updateSuccess($engine, $request);
-		return $this->formUpdate($engine, $request, $group, $id,
+		$page = $this->formUpdate($engine, $request, $group, $id,
 				$error);
+		return new PageResponse($page);
 	}
 
 	private function _updateProcess($engine, $request, $group)
