@@ -157,6 +157,7 @@ class SearchModule extends Module
 		$page = $this->pageSearch($engine, $request, FALSE, $limit);
 		if(($q = $request->get('q')) === FALSE || strlen($q) == 0)
 			return new PageResponse($page);
+		$time = microtime(TRUE);
 		if(($res = $this->query($engine, $q, $case, TRUE, TRUE))
 				=== FALSE)
 		{
@@ -168,8 +169,9 @@ class SearchModule extends Module
 		}
 		else if($res === TRUE)
 			return new PageResponse($page);
+		$time = ceil((microtime(TRUE) - $time) * 1000);
 		return $this->helperResults($engine, $request, $page, $res,
-				$limit);
+				$limit, $time);
 	}
 
 
@@ -187,6 +189,7 @@ class SearchModule extends Module
 		if($intitle === FALSE && $incontent === FALSE)
 			$intitle = $incontent = TRUE;
 		$module = $request->get('inmodule');
+		$time = microtime(TRUE);
 		if(($res = $this->query($engine, $q, $case, $intitle,
 				$incontent, FALSE, $module)) === FALSE)
 		{
@@ -198,8 +201,9 @@ class SearchModule extends Module
 		}
 		else if($res === TRUE)
 			return new PageResponse($page);
+		$time = ceil((microtime(TRUE) - $time) * 1000);
 		return $this->helperResults($engine, $request, $page, $res,
-				$limit);
+				$limit, $time);
 	}
 
 
@@ -272,7 +276,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::helperResults
-	protected function helperResults($engine, $request, $page, $res, $limit)
+	protected function helperResults($engine, $request, $page, $res, $limit,
+			$time = FALSE)
 	{
 		$p = $this->getPage($engine, $request);
 		$count = count($res);
@@ -288,7 +293,10 @@ class SearchModule extends Module
 		$results = $page->append('vbox');
 		$results->set('id', 'search_results');
 		$label = $results->append('label');
-		$label->set('text', $count.' result(s)');
+		$text = $count.' result(s)';
+		if($time !== FALSE)
+			$text .= ' in '.$time.' ms';
+		$label->set('text', $text);
 		$view = $page->append('treeview', array('view' => 'preview',
 					'columns' => $columns));
 		$res->seek($offset);
