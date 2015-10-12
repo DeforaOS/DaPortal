@@ -60,8 +60,8 @@ class ManualModule extends Module
 			$message = 'Path to manual pages not configured';
 			return $engine->log('LOG_ERR', $message);
 		}
-		if(strchr($section, '/') !== FALSE
-				|| strchr($name, '/') !== FALSE)
+		if(strpos($section, '/') !== FALSE
+				|| strpos($name, '/') !== FALSE)
 			return FALSE;
 		$path = explode(',', $path);
 		$xml = new DOMDocument();
