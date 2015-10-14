@@ -43,6 +43,10 @@ table.bordered td, table.bordered th {
 	font-style:			italic;
 }
 
+.monospace {
+	font-family:			monospace;
+}
+
 .preformatted {
 	font-family:			monospace;
 	white-space:			pre-wrap;

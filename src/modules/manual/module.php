@@ -147,7 +147,7 @@ class ManualModule extends Module
 		$body = $xml->getElementsByTagName('body');
 		$xml = ($body->length >= 1) ? $xml->saveXML($body->item(0))
 			: $xml->saveXML();
-		$page->append('htmlview', array('class' => 'preformatted',
+		$page->append('htmlview', array('class' => 'monospace',
 				'text' => $xml));
 		return new PageResponse($page);
 	}
