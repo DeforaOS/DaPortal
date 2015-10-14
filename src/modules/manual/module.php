@@ -275,21 +275,23 @@ class ManualModule extends Module
 	protected function formPage($request)
 	{
 		$r = $this->getRequest();
-		//FIXME supply examples for the list of sections
+		$section = $request->getID() ?: $request->get('section');
+		$page = $request->getTitle() ?: $request->get('page');
+		//FIXME collect the list of sections available
 
 		$form = new PageElement('form', array('request' => $r,
 				'idempotent' => TRUE));
 		$box = $form->append('hbox');
-		$section = $box->append('combobox', array(
+		$combobox = $box->append('combobox', array(
 				'text' => _('Section: '),
-				'name' => 'section',
-				'value' => $request->get('section')));
+				'name' => 'section', 'value' => $section));
+		$combobox->append('label', array('value' => '',
+				'text' => _('Any')));
 		for($i = 1; $i <= 9; $i++)
-			$section->append('label', array('value' => $i,
+			$combobox->append('label', array('value' => $i,
 					'text' => $i));
 		$box->append('entry', array('text' => _('Page: '),
-				'name' => 'page',
-				'value' => $request->get('page')));
+				'name' => 'page', 'value' => $page));
 		$box->append('button', array('type' => 'submit',
 				'text' => _('Search')));
 		return $form;
