@@ -49,6 +49,28 @@ class ManualModule extends Module
 	}
 
 
+	//accessors
+	//ManualModule::getRequest
+	public function getRequest($action = FALSE, $parameters = FALSE)
+	{
+		$id = FALSE;
+		$title = FALSE;
+
+		if(is_array($parameters)
+				&& isset($parameters['section'])
+				&& is_numeric($parameters['section'])
+				&& isset($parameters['page']))
+		{
+			$id = $parameters['section'];
+			unset($parameters['section']);
+			$title = $parameters['page'];
+			unset($parameters['page']);
+		}
+		return new Request($this->name, $action, $id, $title,
+			$parameters);
+	}
+
+
 	//protected
 	//methods
 	//accessors
