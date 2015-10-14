@@ -230,7 +230,7 @@ class ManualModule extends Module
 				'text' => $title));
 		$form = $this->formPage($request);
 		$page->append($form);
-		if(($res = $this->getSections()) === FALSE)
+		if(($sections = $this->getSections()) === FALSE)
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list sections'));
@@ -238,13 +238,19 @@ class ManualModule extends Module
 		}
 		else
 		{
-			$columns = array('title' => _('Section'));
+			$columns = array('title' => _('Section list'));
 			$view = $page->append('treeview', array(
 					'columns' => $columns));
-			foreach($res as $r)
+			foreach($sections as $s)
 			{
-				$r = array('title' => $r);
-				$view->append('row', $r);
+				$r = $this->getRequest(FALSE, array(
+						'section' => $s,
+						//XXX let this be configured
+						'page' => 'intro'));
+				$link = new PageElement('link', array(
+						'request' => $r,
+						'text' => $s));
+				$view->append('row', array('title' => $link));
 			}
 		}
 		$page->append('link', array('stock' => 'back',
