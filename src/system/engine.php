@@ -77,7 +77,7 @@ abstract class Engine
 	//Engine::getDebug
 	public function getDebug()
 	{
-		return static::$debug;
+		return $this->debug;
 	}
 
 
@@ -152,7 +152,7 @@ abstract class Engine
 	//Engine::setDebug
 	public function setDebug($debug)
 	{
-		static::$debug = ($debug !== FALSE) ? TRUE : FALSE;
+		$this->debug = $debug ? TRUE : FALSE;
 	}
 
 
@@ -175,7 +175,7 @@ abstract class Engine
 				$level = 'Alert';
 				break;
 			case 'LOG_DEBUG':
-				if(static::$debug !== TRUE)
+				if($this->debug !== TRUE)
 					return FALSE;
 				$level = 'Debug';
 				break;
@@ -190,12 +190,12 @@ abstract class Engine
 				break;
 			case 'LOG_INFO':
 				if($this->verbose < 2
-						&& static::$debug !== TRUE)
+						&& $this->debug !== TRUE)
 					return FALSE;
 				$level = 'Info';
 				break;
 			default:
-				if(static::$debug !== TRUE)
+				if($this->debug !== TRUE)
 					return FALSE;
 				$level = 'Unknown';
 				break;
@@ -254,8 +254,6 @@ abstract class Engine
 
 		//XXX ignore errors
 		static::configLoad($prefix, TRUE);
-		if($config->get(FALSE, 'debug') == '1')
-			static::$debug = TRUE;
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
 			$class = $name.'Engine';
@@ -282,11 +280,12 @@ abstract class Engine
 			return error_log('Could not load any engine');
 		//XXX ignore errors
 		static::configLoadEngine($prefix, $name, FALSE);
-		if($config->get("engine::$name", 'debug') == 1)
-			static::$debug = TRUE;
 		$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
 				.' with priority '.$priority);
 		$ret->attach();
+		$debug = ($config->get(FALSE, 'debug')
+			|| $config->get("engine::$name", 'debug'));
+		$ret->setDebug($debug);
 		static::_defaultBootstrap();
 		return $ret;
 	}
@@ -368,7 +367,6 @@ abstract class Engine
 
 	//protected
 	//properties
-	static protected $debug = FALSE;
 	protected $verbose = 1;
 	//queries
 	static protected $query_modules = "SELECT module_id AS id, name
@@ -381,6 +379,7 @@ abstract class Engine
 	//properties
 	private $auth = FALSE;
 	private $database = FALSE;
+	private $debug = FALSE;
 	private $ret = 0;
 
 

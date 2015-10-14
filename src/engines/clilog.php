@@ -44,12 +44,12 @@ class CLILogEngine extends CLIEngine
 		switch($priority)
 		{
 			case 'LOG_DEBUG':
-				if(static::$debug !== TRUE)
+				if(!$this->getDebug())
 					return FALSE;
 				break;
 			case 'LOG_INFO':
 				if($this->verbose < 2
-						&& static::$debug !== TRUE)
+						&& !$this->getDebug())
 					return FALSE;
 				break;
 		}
