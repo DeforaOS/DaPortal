@@ -99,6 +99,51 @@ class ManualModule extends Module
 	}
 
 
+	//ManualModule::getPages
+	protected function getPages($engine, $name)
+	{
+		$ret = array();
+
+		if(($path = $this->configGet('path')) === FALSE)
+		{
+			$message = 'Path to manual pages not configured';
+			return $engine->log('LOG_ERR', $message);
+		}
+		$path = explode(',', $path);
+		foreach($path as $p)
+		{
+			if(($dir = @opendir($p)) === FALSE)
+				continue;
+			while(($de = readdir($dir)) !== FALSE)
+			{
+				if(sscanf($de, 'html%s', $section) != 1)
+					continue;
+				$filename = $p.'/'.$de.'/'.$name.'.html';
+				if(($title = $this->_pagesOpen($filename))
+						!== FALSE)
+					$ret[] = array(
+						'section' => $section,
+						'page' => $name,
+						'title' => $title);
+			}
+			closedir($dir);
+		}
+		return $ret;
+	}
+
+	private function _pagesOpen($filename)
+	{
+		$xml = new DOMDocument();
+
+		//we can hide errors
+		if(@$xml->loadHTMLfile($filename, LIBXML_NOENT) !== TRUE)
+			return FALSE;
+		$title = $xml->getElementsByTagName('title');
+		return ($title->length == 1)
+			? $title->item(0)->textContent : FALSE;
+	}
+
+
 	//useful
 	//actions
 	//ManualModule::actions
@@ -147,7 +192,16 @@ class ManualModule extends Module
 		$title = _('Manual browser');
 
 		$form = $this->formPage($request);
-		if(($xml = $this->getPage($engine, $section, $name)) === FALSE)
+		if($section === FALSE)
+		{
+			if($name === FALSE)
+				//XXX let this be configured
+				$name = 'intro';
+			$res = $this->getPages($engine, $name);
+		}
+		else
+			$res = $this->getPage($engine, $section, $name);
+		if($res === FALSE)
 		{
 			$page = new Page(array('title' => $title));
 			$page->append('title', array('stock' => $this->name,
@@ -157,17 +211,50 @@ class ManualModule extends Module
 					'text' => 'No manual page found'));
 			return new PageResponse($page, Response::$CODE_ENOENT);
 		}
+		if(is_array($res))
+		{
+			$page = new Page(array('title' => $title));
+			$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+			$page->append($form);
+			$columns = array('title' => _('Page'),
+				'section' => _('Section'),
+				'description' => _('Description'));
+			$view = $page->append('treeview', array(
+				'columns' => $columns));
+			foreach($res as $r)
+			{
+				$r['description'] = $r['title'];
+				$args = array('section' => $r['section'],
+					'page' => $r['page']);
+				$req = $this->getRequest(FALSE, $args);
+				$r['title'] = new PageElement('link', array(
+					'request' => $req,
+					'text' => $r['page'],
+					'title' => $r['title']));
+				$view->append('row', $r);
+			}
+			return new PageResponse($page);
+		}
 		$title .= _(': ')."$name($section)";
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		$page->append($form);
-		$body = $xml->getElementsByTagName('body');
-		$xml = ($body->length >= 1) ? $xml->saveXML($body->item(0))
-			: $xml->saveXML();
 		$page->append('htmlview', array('class' => 'monospace',
-				'text' => $xml));
+				'text' => $this->_pageFormat($engine, $res)));
+		$page->append('link', array('stock' => 'back',
+				'request' => $this->getRequest(),
+				'text' => _('Back to the homepage')));
 		return new PageResponse($page);
+	}
+
+	private function _pageFormat($engine, $xml)
+	{
+		//FIXME correct relative links
+		$body = $xml->getElementsByTagName('body');
+		return ($body->length == 1)
+			? $xml->saveXML($body->item(0)) : $xml->saveXML();
 	}
 
 
