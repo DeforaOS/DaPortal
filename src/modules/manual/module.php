@@ -146,6 +146,37 @@ class ManualModule extends Module
 	}
 
 
+	//ManualModule::getSections
+	protected function getSections()
+	{
+		//XXX code duplication
+		$ret = array();
+
+		if(($path = $this->configGet('path')) === FALSE)
+		{
+			$message = 'Path to manual pages not configured';
+			return $engine->log('LOG_ERR', $message);
+		}
+		$path = explode(',', $path);
+		foreach($path as $p)
+		{
+			if(($dir = @opendir($p)) === FALSE)
+				continue;
+			while(($de = readdir($dir)) !== FALSE)
+			{
+				if(!is_dir($p.'/'.$de))
+					continue;
+				if(sscanf($de, 'html%s', $section) != 1)
+					continue;
+				$ret[] = $section;
+			}
+			closedir($dir);
+		}
+		natsort($ret);
+		return array_unique($ret);
+	}
+
+
 	//useful
 	//actions
 	//ManualModule::actions
@@ -279,7 +310,6 @@ class ManualModule extends Module
 		$r = $this->getRequest();
 		$section = $request->getID() ?: $request->get('section');
 		$page = $request->getTitle() ?: $request->get('page');
-		//FIXME collect the list of sections available
 
 		$form = new PageElement('form', array('request' => $r,
 				'idempotent' => TRUE));
@@ -289,9 +319,10 @@ class ManualModule extends Module
 				'name' => 'section', 'value' => $section));
 		$combobox->append('label', array('value' => '',
 				'text' => _('Any')));
-		for($i = 1; $i <= 9; $i++)
-			$combobox->append('label', array('value' => $i,
-					'text' => $i));
+		if(($sections = $this->getSections()) !== FALSE)
+			foreach($sections as $s)
+				$combobox->append('label', array('value' => $s,
+						'text' => $s));
 		$box->append('entry', array('text' => _('Page: '),
 				'name' => 'page', 'value' => $page));
 		$box->append('button', array('type' => 'submit',
