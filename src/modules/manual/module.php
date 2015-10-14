@@ -251,7 +251,20 @@ class ManualModule extends Module
 
 	private function _pageFormat($engine, $xml)
 	{
-		//FIXME correct relative links
+		$links = $xml->getElementsByTagName('a');
+		foreach($links as $link)
+		{
+			if(($href = $link->attributes->getNamedItem('href'))
+					=== NULL)
+				continue;
+			//FIXME wrong if $page contains a dot
+			if(sscanf($href->textContent, '../html%[^/]/%[^.].html',
+					$section, $page) != 2)
+				continue;
+			$args = array('section' => $section, 'page' => $page);
+			$request = $this->getRequest(FALSE, $args);
+			$link->setAttribute('href', $engine->getURL($request));
+		}
 		$body = $xml->getElementsByTagName('body');
 		return ($body->length == 1)
 			? $xml->saveXML($body->item(0)) : $xml->saveXML();
