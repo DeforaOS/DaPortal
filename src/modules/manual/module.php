@@ -103,13 +103,7 @@ class ManualModule extends Module
 				return $this->callPage($engine, $request,
 						$section, $page);
 		}
-		$page = new Page(array('title' => $title));
-		//title
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-		$form = $this->formPage($request);
-		$page->append($form);
-		return new PageResponse($page);
+		return $this->callPage($engine, $request);
 	}
 
 
@@ -119,13 +113,14 @@ class ManualModule extends Module
 		$name = $request->getTitle();
 
 		if(($section = $request->getID()) === FALSE || $name === FALSE)
-			return $this->callDefault($engine);
+			return $this->callPage($engine, $request);
 		return $this->callPage($engine, $request, $section, $name);
 	}
 
 
 	//Manual::callPage
-	protected function callPage($engine, $request, $section, $name)
+	protected function callPage($engine, $request = FALSE, $section = FALSE,
+			$name = FALSE)
 	{
 		$title = _('Manual browser');
 
