@@ -153,6 +153,22 @@ abstract class Engine
 	public function setDebug($debug)
 	{
 		$this->debug = $debug ? TRUE : FALSE;
+		if($this->debug)
+			set_error_handler(function($errno, $errstr,
+					$errfile = FALSE, $errline = FALSE,
+					$errcontext = FALSE)
+		{
+			ob_start();
+			debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+			$backtrace = ob_get_contents();
+			ob_clean();
+			$backtrace = explode("\n", trim($backtrace));
+			foreach($backtrace as $b)
+				$this->log('LOG_DEBUG', $b);
+			return FALSE;
+		});
+		else
+			restore_error_handler();
 	}
 
 
