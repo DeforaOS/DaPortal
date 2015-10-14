@@ -94,7 +94,8 @@ class ManualModule extends Module
 
 		if($request !== FALSE)
 		{
-			if($request->getID() !== FALSE)
+			if($request->getID() !== FALSE
+					&& $request->getTitle() !== FALSE)
 				return $this->callDisplay($engine, $request);
 			if(($section = $request->get('section')) !== FALSE
 					&& ($page = $request->get('page'))
