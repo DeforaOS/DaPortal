@@ -116,6 +116,8 @@ class ManualModule extends Module
 				continue;
 			while(($de = readdir($dir)) !== FALSE)
 			{
+				if(!is_dir($p.'/'.$de))
+					continue;
 				if(sscanf($de, 'html%s', $section) != 1)
 					continue;
 				$filename = $p.'/'.$de.'/'.$name.'.html';
