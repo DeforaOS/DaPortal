@@ -40,6 +40,7 @@ class ManualModule extends Module
 		{
 			case 'default':
 			case 'display':
+			case 'list':
 				$action = 'call'.$action;
 				return $this->$action($engine, $request);
 			default:
@@ -215,6 +216,41 @@ class ManualModule extends Module
 		if(($section = $request->getID()) === FALSE || $name === FALSE)
 			return $this->callPage($engine, $request);
 		return $this->callPage($engine, $request, $section, $name);
+	}
+
+
+	//ManualModule::callList
+	protected function callList($engine, $request)
+	{
+		$code = Response::$CODE_SUCCESS;
+		$title = _('Manual browser');
+
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		$form = $this->formPage($request);
+		$page->append($form);
+		if(($res = $this->getSections()) === FALSE)
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => 'Could not list sections'));
+			$code = Response::$CODE_EUNKNOWN;
+		}
+		else
+		{
+			$columns = array('title' => _('Section'));
+			$view = $page->append('treeview', array(
+					'columns' => $columns));
+			foreach($res as $r)
+			{
+				$r = array('title' => $r);
+				$view->append('row', $r);
+			}
+		}
+		$page->append('link', array('stock' => 'back',
+				'request' => $this->getRequest(),
+				'text' => _('Back to the homepage')));
+		return new PageResponse($page, $code);
 	}
 
 
