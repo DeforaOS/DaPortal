@@ -119,7 +119,7 @@ class Group
 			&$error = FALSE)
 	{
 		$db = $engine->getDatabase();
-		$query = Group::$query_insert;
+		$query = static::$query_insert;
 		$error = '';
 
 		//FIXME really validate groupname
@@ -154,7 +154,7 @@ class Group
 			$enabled = TRUE)
 	{
 		$db = $engine->getDatabase();
-		$query = Group::$query_get_by_groupname;
+		$query = static::$query_get_by_groupname;
 		$args = array('groupname' => $groupname, 'enabled' => $enabled);
 		static $cache = array();
 
