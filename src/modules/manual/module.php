@@ -123,11 +123,10 @@ class ManualModule extends Module
 					continue;
 				$filename = $p.'/'.$de.'/'.$name.'.html';
 				if(($title = $this->_pagesOpen($filename))
-						!== FALSE)
-					$ret[] = array(
-						'section' => $section,
-						'page' => $name,
-						'title' => $title);
+						=== FALSE)
+					continue;
+				$ret[] = array('section' => $section,
+					'page' => $name, 'title' => $title);
 			}
 			closedir($dir);
 		}
