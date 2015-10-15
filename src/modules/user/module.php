@@ -339,9 +339,10 @@ class UserModule extends Module
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
 				'value' => $request->get('email')));
-		//primary group
+		//groups
 		if(($groups = Group::listAll($engine, TRUE)) !== FALSE)
 		{
+			//primary group
 			if(($group_id = $request->get('group_id')) === FALSE)
 				$group_id = 0;
 			$combobox = $vbox->append('combobox', array(
@@ -352,6 +353,29 @@ class UserModule extends Module
 				$combobox->append('label', array(
 					'text' => $group->getGroupname(),
 					'value' => $group->getGroupID()));
+			//secondary groups
+			$vbox->append('label', array(
+					'text' => _('Secondary groups:')));
+			$columns = array('group' => _('Group'),
+					'member' => _('Member'));
+			$view = $vbox->append('treeview', array(
+					'columns' => $columns,
+					'alternate' => TRUE));
+			foreach($groups as $group)
+			{
+				$r = new Request('group', 'list',
+					$group->getGroupID(),
+					$group->getGroupName());
+				$link = new PageElement('link', array(
+						'stock' => 'group',
+						'request' => $request,
+						'text' => $group->getGroupName()));
+				$checkbox = new PageElement('checkbox', array(
+					'name' => 'ids['.$group->getGroupID().']'));
+				$row = $view->append('row');
+				$row->set('group', $link);
+				$row->set('member', $checkbox);
+			}
 		}
 		//enabled
 		$vbox->append('checkbox', array('name' => 'enabled',
@@ -416,9 +440,9 @@ class UserModule extends Module
 		$vbox = $form->append('vbox');
 		if($id && ($groups = Group::listAll($engine, TRUE)) !== FALSE)
 		{
+			//primary group
 			if(($group_id = $request->get('group_id')) === FALSE)
 				$group_id = $user->getGroupID();
-			//primary group
 			$combobox = $vbox->append('combobox', array(
 					'text' => _('Primary group: '),
 					'name' => 'group_id',
@@ -427,6 +451,31 @@ class UserModule extends Module
 				$combobox->append('label', array(
 					'text' => $group->getGroupname(),
 					'value' => $group->getGroupID()));
+			//secondary groups
+			$vbox->append('label', array(
+					'text' => _('Secondary groups:')));
+			$columns = array('group' => _('Group'),
+					'member' => _('Member'));
+			$view = $vbox->append('treeview', array(
+					'columns' => $columns,
+					'alternate' => TRUE));
+			foreach($groups as $group)
+			{
+				$r = new Request('group', 'list',
+					$group->getGroupID(),
+					$group->getGroupName());
+				$link = new PageElement('link', array(
+						'stock' => 'group',
+						'request' => $request,
+						'text' => $group->getGroupName()));
+				$checkbox = new PageElement('checkbox', array(
+					'name' => 'ids['.$group->getGroupID().']'));
+				if($user->isMember($engine, $group->getGroupName()))
+					$checkbox->set('value', TRUE);
+				$row = $view->append('row');
+				$row->set('group', $link);
+				$row->set('member', $checkbox);
+			}
 		}
 		//password
 		$form->append('label', array('text' => _('Optionally: ')));
