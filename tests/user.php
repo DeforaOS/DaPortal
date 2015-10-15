@@ -84,6 +84,20 @@ function user_register($engine, $module)
 	}
 }
 
+function user_setgroup($engine, $user)
+{
+	if($user->setGroup($engine, 0) === FALSE)
+	{
+		print("Could not confirm the group\n");
+		exit(7);
+	}
+	if($user->setGroup($engine, 1) !== FALSE)
+	{
+		print("Could not constraint the group\n");
+		exit(8);
+	}
+}
+
 function test($engine)
 {
 	$user = new User($engine, 1, 'admin');
@@ -94,6 +108,7 @@ function test($engine)
 	user_unlock($engine, $user);
 	user_reset($engine, $user, $module);
 	user_register($engine, $module);
+	user_setgroup($engine, $user);
 }
 
 test($engine);
