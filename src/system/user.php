@@ -352,6 +352,7 @@ class User
 		$db = $engine->getDatabase();
 		$query = static::$query_insert;
 		$error = '';
+		$locked = FALSE;
 
 		//FIXME really validate username
 		if(!is_string($username) || strlen($username) == 0)
@@ -365,9 +366,9 @@ class User
 		if(strlen($error) > 0)
 			return FALSE;
 		if($password === FALSE || strlen($password) == 0)
-			$password = '';
+			$password = $locked ? '!' : '';
 		else
-			$password = crypt($password);
+			$password = ($locked ? '!' : '').crypt($password);
 		$args = array('username' => $username, 'fullname' => $fullname,
 			'password' => $password, 'email' => $email,
 			'enabled' => $enabled ? 1 : 0,
