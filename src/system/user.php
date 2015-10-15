@@ -145,6 +145,22 @@ class User
 	}
 
 
+	//User::setGroup
+	public function setGroup($engine, $group_id)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_set_group;
+
+		$args = array('user_id' => $this->user_id,
+			'group_id' => $group_id);
+		if($db->query($engine, $query, $args) === FALSE)
+			return FALSE;
+		//FIXME also invalidate the cache in User::lookup()
+		$this->group_id = $group_id;
+		return TRUE;
+	}
+
+
 	//User::setPassword
 	public function setPassword($engine, $password)
 	{
@@ -704,6 +720,13 @@ class User
 		AND user_id=:user_id
 		AND groupname=:groupname
 		AND enabled='1'";
+	//IN:	user_id
+	//	group_id
+	static protected $query_set_group = 'UPDATE daportal_user
+		SET group_id=:group_id
+		WHERE user_id=:user_id';
+	//IN:	user_id
+	//	password
 	static protected $query_set_password = 'UPDATE daportal_user
 		SET password=:password
 		WHERE user_id=:user_id';
