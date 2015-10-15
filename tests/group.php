@@ -26,6 +26,12 @@ if(($group = Group::lookup($engine, 'nogroup')) === FALSE
 if($group->disable($engine) === FALSE
 		|| $group->enable($engine) === FALSE)
 	exit(3);
+if(($groups = $group->listAll($engine)) === FALSE || count($groups) != 1)
+	exit(4);
+if(($groups = $group->listAll($engine, TRUE)) === FALSE || count($groups) != 1)
+	exit(5);
+if(($groups = $group->listAll($engine, FALSE)) === FALSE || count($groups) != 0)
+	exit(6);
 exit(0);
 
 ?>
