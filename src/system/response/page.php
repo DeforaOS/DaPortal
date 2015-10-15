@@ -30,7 +30,7 @@ class PageResponse extends Response
 		//XXX fallback on page properties
 		//XXX an engine is required
 		if(($page = $this->getContent(FALSE)) !== FALSE)
-			return $page->getProperty($name);
+			return $page->get($name);
 		return FALSE;
 	}
 
