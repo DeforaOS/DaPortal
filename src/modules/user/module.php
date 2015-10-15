@@ -414,7 +414,7 @@ class UserModule extends Module
 				'name' => 'email', 'value' => $email));
 		//groups
 		$vbox = $form->append('vbox');
-		if(($groups = Group::listAll($engine, TRUE)) !== FALSE)
+		if($id && ($groups = Group::listAll($engine, TRUE)) !== FALSE)
 		{
 			if(($group_id = $request->get('group_id')) === FALSE)
 				$group_id = $user->getGroupID();
@@ -1676,8 +1676,10 @@ class UserModule extends Module
 		if($db->query($engine, static::$query_update, $args) === FALSE)
 			return _('Could not update the profile');
 
-		//update the group if set and changed
-		if(($group_id = $request->get('group_id')) !== FALSE
+		//update the group if authorized, set and changed
+		if($cred->isAdmin()
+				&& ($group_id = $request->get('group_id'))
+				!== FALSE
 				&& $group_id != $user->getGroupID())
 			$user->setGroup($engine, $group_id);
 
