@@ -98,6 +98,15 @@ function user_setgroup($engine, $user)
 	}
 }
 
+function user_addgroup($engine, $user)
+{
+	if($user->addGroup($engine, 0) === FALSE)
+	{
+		print("Could not add to group\n");
+		exit(9);
+	}
+}
+
 function test($engine)
 {
 	$user = new User($engine, 1, 'admin');
@@ -109,6 +118,7 @@ function test($engine)
 	user_reset($engine, $user, $module);
 	user_register($engine, $module);
 	user_setgroup($engine, $user);
+	user_addgroup($engine, $user);
 }
 
 test($engine);
