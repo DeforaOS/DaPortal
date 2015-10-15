@@ -146,6 +146,45 @@ class ManualModule extends Module
 	}
 
 
+	//ManualModule::getSectionPages
+	protected function getSectionPages($section)
+	{
+		//XXX code duplication
+		$ret = array();
+
+		if(($path = $this->configGet('path')) === FALSE)
+		{
+			$message = 'Path to manual pages not configured';
+			return $engine->log('LOG_ERR', $message);
+		}
+		$path = explode(',', $path);
+		foreach($path as $p)
+		{
+			if(($dir = @opendir($p.'/html'.$section)) === FALSE)
+				continue;
+			while(($de = readdir($dir)) !== FALSE)
+			{
+				if(substr($de, -5) != '.html')
+					continue;
+				$filename = $p.'/html'.$section.'/'.$de;
+				//XXX this is *very* expensive
+				if(($title = $this->_pagesOpen($filename))
+						=== FALSE)
+					continue;
+				$name = substr($de, 0, -5);
+				$ret[] = array('section' => $section,
+					'page' => $name, 'title' => $title);
+			}
+			closedir($dir);
+		}
+		usort($ret, function($a, $b)
+		{
+			return strcmp($a['page'], $b['page']);
+		});
+		return $ret;
+	}
+
+
 	//ManualModule::getSections
 	protected function getSections()
 	{
@@ -193,35 +232,35 @@ class ManualModule extends Module
 		$title = _('Manual browser');
 
 		if($request !== FALSE)
-		{
-			if($request->getID() !== FALSE
-					&& $request->getTitle() !== FALSE)
-				return $this->callDisplay($engine, $request);
-			if(($section = $request->get('section')) !== FALSE
-					&& ($page = $request->get('page'))
-					!== FALSE)
-				return $this->callPage($engine, $request,
-						$section, $page);
-		}
-		return $this->callPage($engine, $request);
+			return $this->callDisplay($engine, $request);
+		return $this->callList($engine, $request);
 	}
 
 
 	//ManualModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
-		$name = $request->getTitle();
-
-		if(($section = $request->getID()) === FALSE || $name === FALSE)
-			return $this->callPage($engine, $request);
-		return $this->callPage($engine, $request, $section, $name);
+		$section = $request->getID();
+		$page = $request->getTitle();
+		if($section !== FALSE)
+			return ($page !== FALSE)
+				? $this->callPage($engine, $request, $section,
+					$page)
+				: $this->callList($engine, $request);
+		if(($section = $request->get('section')) == '')
+			$section = FALSE;
+		if(($page = $request->get('page')) == '')
+			$page = FALSE;
+		if($section !== FALSE || $page !== FALSE)
+			return $this->callPage($engine, $request, $section,
+					$page);
+		return $this->callList($engine, $request);
 	}
 
 
 	//ManualModule::callList
 	protected function callList($engine, $request)
 	{
-		$code = Response::$CODE_SUCCESS;
 		$title = _('Manual browser');
 
 		$page = new Page(array('title' => $title));
@@ -233,46 +272,37 @@ class ManualModule extends Module
 		{
 			$page->append('dialog', array('type' => 'error',
 					'text' => 'Could not list sections'));
-			$code = Response::$CODE_EUNKNOWN;
+			return new PageResponse($page,
+					Response::$CODE_EUNKNOWN);
 		}
-		else
+		$columns = array('title' => _('Section list'));
+		$view = $page->append('treeview', array(
+				'columns' => $columns));
+		foreach($sections as $s)
 		{
-			$columns = array('title' => _('Section list'));
-			$view = $page->append('treeview', array(
-					'columns' => $columns));
-			foreach($sections as $s)
-			{
-				$r = $this->getRequest(FALSE, array(
-						'section' => $s,
-						//XXX let this be configured
-						'page' => 'intro'));
-				$link = new PageElement('link', array(
-						'request' => $r,
-						'text' => $s));
-				$view->append('row', array('title' => $link));
-			}
+			$r = $this->getRequest(FALSE, array(
+					'section' => $s));
+			$link = new PageElement('link', array(
+					'request' => $r,
+					'text' => $s));
+			$view->append('row', array('title' => $link));
 		}
-		$page->append('link', array('stock' => 'back',
-				'request' => $this->getRequest(),
-				'text' => _('Back to the homepage')));
-		return new PageResponse($page, $code);
+		return new PageResponse($page);
 	}
 
 
 	//Manual::callPage
-	protected function callPage($engine, $request = FALSE, $section = FALSE,
-			$name = FALSE)
+	protected function callPage($engine, $request, $section, $name)
 	{
 		$title = _('Manual browser');
 
 		$form = $this->formPage($request);
 		if($section === FALSE)
-		{
-			if($name === FALSE)
-				//XXX let this be configured
-				$name = 'intro';
-			$res = $this->getPages($engine, $name);
-		}
+			$res = ($name !== FALSE)
+				? $this->getPages($engine, $name) : FALSE;
+		else if($name === FALSE)
+			//FIXME implement paging
+			$res = $this->getSectionPages($section);
 		else
 			$res = $this->getPage($engine, $section, $name);
 		if($res === FALSE)
