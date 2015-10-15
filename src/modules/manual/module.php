@@ -144,7 +144,7 @@ class ManualModule extends Module
 			return FALSE;
 		$title = $xml->getElementsByTagName('title');
 		return ($title->length == 1)
-			? $title->item(0)->textContent : FALSE;
+			? trim($title->item(0)->textContent) : FALSE;
 	}
 
 
