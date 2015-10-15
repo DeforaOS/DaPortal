@@ -273,6 +273,13 @@ class PDODatabase extends Database
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
 		$this->query($engine, $query);
+		//enforce support for foreign keys
+		$query = 'PRAGMA foreign_keys=ON';
+		if($this->query($engine, $query) === FALSE)
+		{
+			$message = 'Foreign keys are not enforced';
+			return $engine->log('LOG_WARNING', $message);
+		}
 	}
 
 
