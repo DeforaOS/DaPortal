@@ -88,6 +88,8 @@ regenerate=1
 
 [database::sqlite3]
 #filename=/var/www/sqlite/daportal.db3
+#enforce foreign keys
+#foreign=1
 
 [engine::cli]
 #debug=1

@@ -150,6 +150,12 @@ class SQLite3Database extends Database
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
 		$this->query($engine, $query);
+		//enforce foreign keys if configured to
+		if($this->configGet('foreign'))
+		{
+			$query = 'PRAGMA foreign_keys=ON';
+			$this->query($engine, $query);
+		}
 		return TRUE;
 	}
 
