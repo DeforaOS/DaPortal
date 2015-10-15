@@ -1875,7 +1875,6 @@ class UserModule extends Module
 			$fallback, $key = 'user_id')
 	{
 		$cred = $engine->getCredentials();
-		$db = $engine->getDatabase();
 
 		//FIXME use $this->can$action() instead
 		if(!$cred->isAdmin())
