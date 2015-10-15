@@ -412,6 +412,22 @@ class UserModule extends Module
 			$email = $user->getEmail();
 		$form->append('entry', array('text' => _('e-mail: '),
 				'name' => 'email', 'value' => $email));
+		//groups
+		$vbox = $form->append('vbox');
+		if(($groups = Group::listAll($engine, TRUE)) !== FALSE)
+		{
+			if(($group_id = $request->get('group_id')) === FALSE)
+				$group_id = $user->getGroupID();
+			//primary group
+			$combobox = $vbox->append('combobox', array(
+					'text' => _('Primary group: '),
+					'name' => 'group_id',
+					'value' => $group_id));
+			foreach($groups as $group)
+				$combobox->append('label', array(
+					'text' => $group->getGroupname(),
+					'value' => $group->getGroupID()));
+		}
 		//password
 		$form->append('label', array('text' => _('Optionally: ')));
 		if($id === FALSE && !$cred->isAdmin())
@@ -1659,6 +1675,12 @@ class UserModule extends Module
 			'fullname' => $fullname, 'email' => $email);
 		if($db->query($engine, static::$query_update, $args) === FALSE)
 			return _('Could not update the profile');
+
+		//update the group if set and changed
+		if(($group_id = $request->get('group_id')) !== FALSE
+				&& $group_id != $user->getGroupID())
+			$user->setGroup($engine, $group_id);
+
 		//update the password if requested
 		if(($password1 = $request->get('password1')) === FALSE
 				|| strlen($password1) == 0
