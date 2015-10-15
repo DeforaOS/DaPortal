@@ -257,19 +257,22 @@ class PDODatabase extends Database
 		switch($this->getBackend())
 		{
 			case 'sqlite':
-				$this->result_class = 'PDODatabaseResultCached';
-				$func = array($this, '_concat');
-				$this->handle->sqliteCreateFunction('concat',
-						$func, 2);
-				$func = array($this, '_date_trunc');
-				$this->handle->sqliteCreateFunction(
-						'date_trunc', $func);
-				//default the LIKE keyword to case-sensitive
-				$query = 'PRAGMA case_sensitive_like=1';
-				$this->query($engine, $query);
+				$this->_attachSqlite($engine);
 				break;
 		}
 		return TRUE;
+	}
+
+	private function _attachSqlite($engine)
+	{
+		$this->result_class = 'PDODatabaseResultCached';
+		$func = array($this, '_concat');
+		$this->handle->sqliteCreateFunction('concat', $func, 2);
+		$func = array($this, '_date_trunc');
+		$this->handle->sqliteCreateFunction('date_trunc', $func);
+		//default the LIKE keyword to case-sensitive
+		$query = 'PRAGMA case_sensitive_like=1';
+		$this->query($engine, $query);
 	}
 
 
