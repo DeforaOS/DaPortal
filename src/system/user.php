@@ -236,6 +236,18 @@ class User
 	}
 
 
+	//User::addGroup
+	public function addGroup($engine, $group_id)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_insert_group;
+		$args = array('user_id' => $this->user_id,
+			'group_id' => $group_id);
+
+		return ($db->query($engine, $query, $args) !== FALSE);
+	}
+
+
 	//User::delete
 	public function delete($engine)
 	{
@@ -758,6 +770,11 @@ class User
 		(username, group_id, fullname, password, email, enabled, admin)
 		VALUES (:username, :group_id, :fullname, :password, :email,
 		:enabled, :admin)';
+	//IN:	user_id
+	//	group_id
+	static protected $query_insert_group = 'INSERT INTO
+		daportal_user_group (user_id, group_id)
+		VALUES (:user_id, :group_id)';
 	//IN:	user_id
 	static protected $query_lock = "UPDATE daportal_user
 		SET password=concat('!', password)
