@@ -346,7 +346,9 @@ class User
 	static public function insert($engine, $username, $fullname, $password,
 		$email, $enabled = FALSE, $admin = FALSE, &$error = FALSE)
 	{
-		//FIXME code duplication with User::register()
+		//FIXME:
+		//- code duplication with User::register()
+		//- add parameters for group_id and locked
 		$db = $engine->getDatabase();
 		$query = static::$query_insert;
 		$error = '';
@@ -746,6 +748,12 @@ class User
 	static protected $query_get_by_username = 'SELECT user_id AS id
 		FROM daportal_user
 		WHERE username=:username AND enabled=:enabled';
+	//IN:	username
+	//	fullname
+	//	password
+	//	email
+	//	enabled
+	//	admin
 	static protected $query_insert = 'INSERT INTO daportal_user
 		(username, fullname, password, email, enabled, admin)
 		VALUES (:username, :fullname, :password, :email, :enabled,
