@@ -110,6 +110,8 @@ class ManualModule extends Module
 			$message = 'Path to manual pages not configured';
 			return $engine->log('LOG_ERR', $message);
 		}
+		if(strpos($name, '/') !== FALSE)
+			return FALSE;
 		$path = explode(',', $path);
 		foreach($path as $p)
 		{
@@ -157,6 +159,8 @@ class ManualModule extends Module
 			$message = 'Path to manual pages not configured';
 			return $engine->log('LOG_ERR', $message);
 		}
+		if(strpos($section, '/') !== FALSE)
+			return FALSE;
 		$path = explode(',', $path);
 		foreach($path as $p)
 		{
