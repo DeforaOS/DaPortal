@@ -339,6 +339,18 @@ class UserModule extends Module
 		$vbox->append('entry', array('name' => 'email',
 				'text' => _('e-mail: '),
 				'value' => $request->get('email')));
+		//primary group
+		if(($groups = Group::listAll($engine, TRUE)) !== FALSE)
+		{
+			$combobox = $vbox->append('combobox', array(
+					'text' => _('Primary group: '),
+					'name' => 'group_id',
+					'value' => $request->get('group_id')));
+			foreach($groups as $group)
+				$combobox->append('label', array(
+					'text' => $group->getGroupname(),
+					'value' => $group->getGroupID()));
+		}
 		//enabled
 		$vbox->append('checkbox', array('name' => 'enabled',
 				'value' => $request->get('enabled')
@@ -1549,6 +1561,9 @@ class UserModule extends Module
 				$enabled, $admin, $error);
 		if($user === FALSE)
 			return $error;
+		if(($group_id = $request->get('group_id')) !== FALSE)
+			//XXX ignore errors
+			$user->setGroup($engine, $group_id);
 		//no error
 		return FALSE;
 	}
