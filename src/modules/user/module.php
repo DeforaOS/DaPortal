@@ -358,6 +358,11 @@ class UserModule extends Module
 				'value' => $request->get('enabled')
 					? TRUE : FALSE,
 				'text' => _('Enabled')));
+		//locked
+		$vbox->append('checkbox', array('name' => 'locked',
+				'value' => $request->get('locked')
+					? TRUE : FALSE,
+				'text' => _('Locked')));
 		//administrator
 		$vbox->append('checkbox', array('name' => 'admin',
 				'value' => $request->get('admin')
@@ -1553,19 +1558,18 @@ class UserModule extends Module
 		if(($username = $request->get('username')) === FALSE)
 			return _('Invalid arguments');
 		$enabled = $request->get('enabled') ? TRUE : FALSE;
+		$locked = $request->get('locked') ? TRUE : FALSE;
 		$admin = $request->get('admin') ? TRUE : FALSE;
 		//create the user
 		$error = FALSE;
 		$user = User::insert($engine, $username,
+				$request->get('group_id'),
 				$request->get('fullname'),
 				$request->get('password'),
 				$request->get('email'),
-				$enabled, $admin, $error);
+				$enabled, $locked, $admin, $error);
 		if($user === FALSE)
 			return $error;
-		if(($group_id = $request->get('group_id')) !== FALSE)
-			//XXX ignore errors
-			$user->setGroup($engine, $group_id);
 		//no error
 		return FALSE;
 	}

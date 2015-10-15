@@ -343,16 +343,14 @@ class User
 
 	//static
 	//User::insert
-	static public function insert($engine, $username, $fullname, $password,
-		$email, $enabled = FALSE, $admin = FALSE, &$error = FALSE)
+	static public function insert($engine, $username, $group_id, $fullname,
+			$password, $email, $enabled = FALSE, $locked = FALSE,
+			$admin = FALSE, &$error = FALSE)
 	{
-		//FIXME:
-		//- code duplication with User::register()
-		//- add parameters for group_id and locked
+		//FIXME code duplication with User::register()
 		$db = $engine->getDatabase();
 		$query = static::$query_insert;
 		$error = '';
-		$locked = FALSE;
 
 		//FIXME really validate username
 		if(!is_string($username) || strlen($username) == 0)
@@ -369,9 +367,9 @@ class User
 			$password = $locked ? '!' : '';
 		else
 			$password = ($locked ? '!' : '').crypt($password);
-		$args = array('username' => $username, 'fullname' => $fullname,
-			'password' => $password, 'email' => $email,
-			'enabled' => $enabled ? 1 : 0,
+		$args = array('username' => $username, 'group_id' => $group_id,
+			'fullname' => $fullname, 'password' => $password,
+			'email' => $email, 'enabled' => $enabled ? 1 : 0,
 		       	'admin' => $admin ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || ($uid = $db->getLastID($engine,
@@ -750,15 +748,16 @@ class User
 		FROM daportal_user
 		WHERE username=:username AND enabled=:enabled';
 	//IN:	username
+	//	group_id
 	//	fullname
 	//	password
 	//	email
 	//	enabled
 	//	admin
 	static protected $query_insert = 'INSERT INTO daportal_user
-		(username, fullname, password, email, enabled, admin)
-		VALUES (:username, :fullname, :password, :email, :enabled,
-		:admin)';
+		(username, group_id, fullname, password, email, enabled, admin)
+		VALUES (:username, :group_id, :fullname, :password, :email,
+		:enabled, :admin)';
 	//IN:	user_id
 	static protected $query_lock = "UPDATE daportal_user
 		SET password=concat('!', password)
