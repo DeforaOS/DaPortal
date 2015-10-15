@@ -149,6 +149,25 @@ class Group
 	}
 
 
+	//Group::listAll
+	static public function listAll($engine, $enabled = -1)
+	{
+		$db = $engine->getDatabase();
+		$query = is_bool($enabled)
+			? static::$query_list_enabled : static::$query_list;
+		$args = is_bool($enabled)
+			? array('enabled' => $enabled) : FALSE;
+
+		if(($res = $db->query($engine, $query, $args)) === FALSE)
+			return FALSE;
+		$ret = array();
+		foreach($res as $r)
+			//XXX inefficient (issues more queries again)
+			$ret[] = new Group($engine, $r['group_id']);
+		return $ret;
+	}
+
+
 	//Group::lookup
 	static public function lookup($engine, $groupname, $group_id = FALSE,
 			$enabled = TRUE)
@@ -217,6 +236,14 @@ class Group
 	//	enabled
 	static private $query_insert = 'INSERT INTO daportal_group
 		(groupname, enabled) VALUES (:groupname, :enabled)';
+	static private $query_list = 'SELECT group_id
+		FROM daportal_group
+		ORDER BY groupname ASC';
+	//IN:	enabled
+	static private $query_list_enabled = 'SELECT group_id
+		FROM daportal_group
+		WHERE enabled=:enabled
+		ORDER BY groupname ASC';
 }
 
 ?>
