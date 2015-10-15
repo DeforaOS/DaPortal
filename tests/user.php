@@ -35,39 +35,68 @@ class Mail
 
 
 //functions
-$user = new User($engine, 1, 'admin');
-if(($res = $user->authenticate($engine, 'password')) === FALSE)
-	exit(2);
-if(!($res instanceof AuthCredentials)
-		|| $res->getUserID() != $user->getUserID()
-		|| $res->getUsername() != $user->getUsername())
-	exit(2);
-$error = 'Unknown error';
-if($user->lock($engine, $error) === FALSE)
+function user_authenticate($engine, $user)
 {
-	print("$error\n");
-	exit(3);
-}
-if($user->unlock($engine, $error) === FALSE)
-{
-	print("$error\n");
-	exit(4);
-}
-$module = Module::load($engine, 'user');
-if(User::reset($engine, $module, $user->getUsername(), $user->getEmail(),
-		$error) === FALSE)
-{
-	print("$error\n");
-	exit(5);
+	if(($res = $user->authenticate($engine, 'password')) === FALSE)
+		exit(2);
+	if(!($res instanceof AuthCredentials)
+			|| $res->getUserID() != $user->getUserID()
+			|| $res->getUsername() != $user->getUsername())
+		exit(2);
+	$error = 'Unknown error';
 }
 
-if(User::register($engine, $module, 'test', FALSE, 'root@localhost', FALSE,
-	$error) === FALSE)
+function user_lock($engine, $user)
 {
-	print("$error\n");
-	exit(6);
+	if($user->lock($engine, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(3);
+	}
 }
 
+function user_unlock($engine, $user)
+{
+	if($user->unlock($engine, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(4);
+	}
+}
+
+function user_reset($engine, $user, $module)
+{
+	if(User::reset($engine, $module, $user->getUsername(),
+			$user->getEmail(), $error) === FALSE)
+	{
+		print("$error\n");
+		exit(5);
+	}
+}
+
+function user_register($engine, $module)
+{
+	if(User::register($engine, $module, 'test', FALSE, 'root@localhost',
+			FALSE, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(6);
+	}
+}
+
+function test($engine)
+{
+	$user = new User($engine, 1, 'admin');
+	$module = Module::load($engine, 'user');
+
+	user_authenticate($engine, $user);
+	user_lock($engine, $user);
+	user_unlock($engine, $user);
+	user_reset($engine, $user, $module);
+	user_register($engine, $module);
+}
+
+test($engine);
 exit(0);
 
 ?>
