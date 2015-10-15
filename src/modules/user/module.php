@@ -342,10 +342,12 @@ class UserModule extends Module
 		//primary group
 		if(($groups = Group::listAll($engine, TRUE)) !== FALSE)
 		{
+			if(($group_id = $request->get('group_id')) === FALSE)
+				$group_id = 0;
 			$combobox = $vbox->append('combobox', array(
 					'text' => _('Primary group: '),
 					'name' => 'group_id',
-					'value' => $request->get('group_id')));
+					'value' => $group_id));
 			foreach($groups as $group)
 				$combobox->append('label', array(
 					'text' => $group->getGroupname(),
