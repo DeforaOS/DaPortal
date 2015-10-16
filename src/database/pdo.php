@@ -223,8 +223,6 @@ class PDODatabase extends Database
 	//PDODatabase::match
 	protected function match($engine)
 	{
-		global $config;
-
 		if(!class_exists('PDO'))
 			return 0;
 		if($this->configGet('dsn') !== FALSE)
@@ -236,8 +234,6 @@ class PDODatabase extends Database
 	//PDODatabase::attach
 	protected function attach($engine)
 	{
-		global $config;
-
 		if(($dsn = $this->configGet('dsn')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
@@ -287,8 +283,6 @@ class PDODatabase extends Database
 	//PDODatabase::getBackend
 	protected function getBackend()
 	{
-		global $config;
-
 		if($this->backend !== FALSE)
 			return $this->backend;
 		if(($this->backend = $this->configGet('dsn')) !== FALSE)

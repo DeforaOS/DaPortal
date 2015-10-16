@@ -95,8 +95,6 @@ class SQLite2Database extends Database
 	//SQLite2Database::match
 	protected function match($engine)
 	{
-		global $config;
-
 		if($this->configGet('filename') !== FALSE)
 			return 100;
 		return 0;
@@ -106,8 +104,6 @@ class SQLite2Database extends Database
 	//SQLite2Database::attach
 	protected function attach($engine)
 	{
-		global $config;
-
 		if(($filename = $this->configGet('filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');

@@ -114,8 +114,6 @@ class SQLite3Database extends Database
 	//SQLite3Database::match
 	protected function match($engine)
 	{
-		global $config;
-
 		if(!class_exists('SQLite3'))
 			return 0;
 		if($this->configGet('filename') !== FALSE)
@@ -127,8 +125,6 @@ class SQLite3Database extends Database
 	//SQLite3Database::attach
 	protected function attach($engine)
 	{
-		global $config;
-
 		if(($filename = $this->configGet('filename')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Database filename not defined');
