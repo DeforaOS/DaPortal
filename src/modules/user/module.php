@@ -1635,6 +1635,10 @@ class UserModule extends Module
 				$enabled, $locked, $admin, $error);
 		if($user === FALSE)
 			return $error;
+		//set the group memberships
+		if(($ids = $request->get('ids')) !== FALSE && is_array($ids))
+			foreach($ids as $id)
+				$user->addGroup($engine, $id);
 		//no error
 		return FALSE;
 	}
@@ -1734,6 +1738,9 @@ class UserModule extends Module
 
 		//update the group memberships
 		$user->removeGroups($engine);
+		if(($ids = $request->get('ids')) !== FALSE && is_array($ids))
+			foreach($ids as $id)
+				$user->addGroup($engine, $id);
 
 		//update the password if requested
 		if(($password1 = $request->get('password1')) === FALSE
