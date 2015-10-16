@@ -93,11 +93,9 @@ class PDODatabase extends Database
 	public function query($engine, $query, &$parameters = FALSE,
 			$async = FALSE)
 	{
-		global $config;
-
 		if($this->handle === FALSE)
 			return FALSE;
-		if($config->get('database', 'debug'))
+		if($this->debug)
 			$engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 			return $this->_queryError($engine,
@@ -234,6 +232,8 @@ class PDODatabase extends Database
 	//PDODatabase::attach
 	protected function attach($engine)
 	{
+		global $config;
+
 		if(($dsn = $this->configGet('dsn')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
@@ -249,6 +249,7 @@ class PDODatabase extends Database
 			return $engine->log('LOG_ERR', $message);
 		}
 		$this->engine = $engine;
+		$this->debug = $config->get('database', 'debug') ? TRUE : FALSE;
 		//database-specific hacks
 		switch($this->getBackend())
 		{
@@ -355,6 +356,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//private
 	//properties
 	private $stmt;
+	private $debug;
 	private $affected;
 }
 
