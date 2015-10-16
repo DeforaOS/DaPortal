@@ -702,7 +702,7 @@ class UserModule extends Module
 			$link = new PageElement('link', array('stock' => 'user',
 					'request' => $request,
 					'text' => $r['username']));
-			if($r['id'] != 0)
+			if($r['id'] != 0 && $db->isTrue($r['enabled']))
 				$row->set('username', $link);
 			$row->set('group', $r['groupname']);
 			$row->set('enabled', $db->isTrue($r['enabled'])
