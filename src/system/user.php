@@ -220,7 +220,8 @@ class User
 			if($res['password'] == $hash)
 				$this->setPassword($engine, $password);
 		}
-		else if(strlen($res['password']) > 0 && $res['password'][0] == '!')
+		else if(strlen($res['password']) > 0
+				&& $res['password'][0] == '!')
 			return $engine->log('LOG_ERR', $this->username
 					.': User is locked');
 		else
