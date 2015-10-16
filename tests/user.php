@@ -86,24 +86,34 @@ function user_register($engine, $module)
 
 function user_setgroup($engine, $user)
 {
-	if($user->setGroup($engine, 0) === FALSE)
+	if($user->setGroup($engine, 0, $error) === FALSE)
 	{
-		print("Could not confirm the group\n");
+		print("$error\n");
 		exit(7);
 	}
-	if($user->setGroup($engine, 1) !== FALSE)
+	if($user->setGroup($engine, 1, $error) !== FALSE)
 	{
-		print("Could not constraint the group\n");
+		print("$error\n");
 		exit(8);
 	}
 }
 
 function user_addgroup($engine, $user)
 {
-	if($user->addGroup($engine, 0) === FALSE)
+	if($user->addGroup($engine, 0, $error) === FALSE)
 	{
-		print("Could not add to group\n");
+		print("$error\n");
 		exit(9);
+	}
+	if($user->removeGroup($engine, 0, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(10);
+	}
+	if($user->addGroup($engine, 0, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(11);
 	}
 }
 

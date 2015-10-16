@@ -146,7 +146,7 @@ class User
 
 
 	//User::setGroup
-	public function setGroup($engine, $group_id)
+	public function setGroup($engine, $group_id, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_set_group;
@@ -154,7 +154,10 @@ class User
 		$args = array('user_id' => $this->user_id,
 			'group_id' => $group_id);
 		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username.': Could not set group';
 			return FALSE;
+		}
 		//FIXME also invalidate the cache in User::lookup()
 		$this->group_id = $group_id;
 		return TRUE;
@@ -238,14 +241,20 @@ class User
 
 
 	//User::addGroup
-	public function addGroup($engine, $group_id)
+	public function addGroup($engine, $group_id, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_insert_group;
 		$args = array('user_id' => $this->user_id,
 			'group_id' => $group_id);
 
-		return ($db->query($engine, $query, $args) !== FALSE);
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username.': '.$group_id
+				.': Could not add group';
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
@@ -264,7 +273,11 @@ class User
 			return FALSE;
 		}
 		//errors are caught when deleting the user
-		$this->removeGroups($engine, $error);
+		if($this->removeGroups($engine, $error) === FALSE)
+		{
+			$db->transactionRollback($engine);
+			return FALSE;
+		}
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| $res->getAffectedCount() != 1)
 		{
@@ -346,6 +359,24 @@ class User
 			return FALSE;
 		}
 		$this->locked = TRUE;
+		return TRUE;
+	}
+
+
+	//User::removeGroup
+	public function removeGroup($engine, $group_id, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_delete_group;
+		$args = array('user_id' => $this->user_id,
+			'group_id' => $group_id);
+
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username.': '.$group_id
+				.': Could not remove group';
+			return FALSE;
+		}
 		return TRUE;
 	}
 
@@ -779,6 +810,12 @@ class User
 	//IN:	user_id
 	static protected $query_delete = 'DELETE FROM daportal_user
 		WHERE user_id=:user_id';
+	//IN:	user_id
+	//	group_id
+	static protected $query_delete_group = 'DELETE
+		FROM daportal_user_group
+		WHERE user_id=:user_id
+		AND group_id=:group_id';
 	//IN:	user_id
 	static protected $query_delete_groups = 'DELETE
 		FROM daportal_user_group
