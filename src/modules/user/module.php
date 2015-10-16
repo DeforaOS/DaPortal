@@ -1645,7 +1645,9 @@ class UserModule extends Module
 
 	protected function _submitSuccess($engine, $request, $page, $user)
 	{
-		$r = $user->getRequest($this->name);
+		$r = $user->isEnabled()
+			? $user->getRequest($this->name)
+			: $this->getRequest('admin');
 		return $this->helperRedirect($engine, $r, $page);
 	}
 
