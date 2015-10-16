@@ -250,7 +250,7 @@ class User
 
 
 	//User::delete
-	public function delete($engine)
+	public function delete($engine, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_delete;
@@ -258,9 +258,25 @@ class User
 
 		if($this->user_id === FALSE)
 			return TRUE;
+		if($db->transactionBegin($engine) === FALSE)
+		{
+			$error = $this->username.': Could not delete user';
+			return FALSE;
+		}
+		//errors are caught when deleting the user
+		$this->removeGroups($engine, $error);
 		if(($res = $db->query($engine, $query, $args)) === FALSE
 				|| $res->getAffectedCount() != 1)
+		{
+			$error = $this->username.': Could not delete user';
+			$db->transactionRollback($engine);
 			return FALSE;
+		}
+		if($db->transactionCommit($engine) === FALSE)
+		{
+			$error = $this->username.': Could not delete user';
+			return FALSE;
+		}
 		$this->user_id = FALSE;
 		$this->username = FALSE;
 		$this->group_id = FALSE;
@@ -335,13 +351,18 @@ class User
 
 
 	//User::removeGroups
-	public function removeGroups($engine)
+	public function removeGroups($engine, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_delete_groups;
 		$args = array('user_id' => $this->user_id);
 
-		return ($db->query($engine, $query, $args) !== FALSE);
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username.': Could not remove groups';
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
