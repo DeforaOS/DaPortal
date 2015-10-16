@@ -269,14 +269,14 @@ class PDODatabase extends Database
 		$this->handle->sqliteCreateFunction('date_trunc', $func);
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
-		$this->query($engine, $query);
+		if($this->query($engine, $query) === FALSE)
+			$engine->log('LOG_WARNING',
+					'Pattern matching is case-insensitive');
 		//enforce support for foreign keys
 		$query = 'PRAGMA foreign_keys=ON';
 		if($this->query($engine, $query) === FALSE)
-		{
-			$message = 'Foreign keys are not enforced';
-			return $engine->log('LOG_WARNING', $message);
-		}
+			$engine->log('LOG_WARNING',
+					'Foreign keys are not enforced');
 	}
 
 
