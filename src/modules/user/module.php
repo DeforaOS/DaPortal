@@ -1732,6 +1732,9 @@ class UserModule extends Module
 				&& $group_id != $user->getGroupID())
 			$user->setGroup($engine, $group_id);
 
+		//update the group memberships
+		$user->removeGroups($engine);
+
 		//update the password if requested
 		if(($password1 = $request->get('password1')) === FALSE
 				|| strlen($password1) == 0

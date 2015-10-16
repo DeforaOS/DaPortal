@@ -333,6 +333,17 @@ class User
 	}
 
 
+	//User::removeGroups
+	public function removeGroups($engine)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_delete_groups;
+		$args = array('user_id' => $this->user_id);
+
+		return ($db->query($engine, $query, $args) !== FALSE);
+	}
+
+
 	//User::unlock
 	public function unlock($engine, &$error = FALSE)
 	{
@@ -745,6 +756,10 @@ class User
 		WHERE user_id=:user_id';
 	//IN:	user_id
 	static protected $query_delete = 'DELETE FROM daportal_user
+		WHERE user_id=:user_id';
+	//IN:	user_id
+	static protected $query_delete_groups = 'DELETE
+		FROM daportal_user_group
 		WHERE user_id=:user_id';
 	//IN:	user_id
 	static protected $query_disable = "UPDATE daportal_user
