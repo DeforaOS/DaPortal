@@ -1063,8 +1063,6 @@ class UserModule extends Module
 	protected function callList($engine, $request)
 	{
 		$list = $this->configGet('list');
-		$db = $engine->getDatabase();
-		$query = static::$query_list;
 		$cred = $engine->getCredentials();
 		$title = _('User list');
 
@@ -1079,7 +1077,7 @@ class UserModule extends Module
 					'text' => $error));
 			return new PageResponse($page, Response::$CODE_EPERM);
 		}
-		if(($res = $db->query($engine, $query)) === FALSE)
+		if(($users = User::listAll($engine, TRUE)) === FALSE)
 		{
 			$error = _('Could not list the users');
 			$vbox->append('dialog', array('type' => 'error',
@@ -1090,13 +1088,14 @@ class UserModule extends Module
 		$columns = array('title' => 'Username',
 			'fullname' => 'Full name');
 		$view = $vbox->append('treeview', array('columns' => $columns));
-		foreach($res as $r)
+		foreach($users as $user)
 		{
-			$req = new Request($this->name, FALSE, $r['user_id'],
-				$r['username']);
-			$link = new PageElement('link', array('request' => $req,
-				'stock' => 'user', 'text' => $r['username']));
-			$r['title'] = $link;
+			$r = $user->getRequest($this->name);
+			$link = new PageElement('link', array('request' => $r,
+				'stock' => 'user',
+				'text' => $user->getUsername()));
+			$r = array('title' => $link,
+				'fullname' => $user->getFullname());
 			$view->append('row', $r);
 		}
 		//buttons
@@ -2019,9 +2018,6 @@ class UserModule extends Module
 		AND daportal_group.group_id=member.group_id
 		GROUP BY dug.group_id, groupname
 		ORDER BY groupname ASC';
-	static private $query_list = 'SELECT user_id, username, fullname
-		FROM daportal_user_enabled
-		ORDER BY username ASC';
 	//IN:	user_id
 	//	fullname
 	//	email
