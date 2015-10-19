@@ -284,7 +284,7 @@ class ManualModule extends Module
 	{
 		$title = _('Manual browser');
 
-		$this->parseRequest($request, $section);
+		$this->parseRequest($request, $section, $name);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
@@ -293,7 +293,39 @@ class ManualModule extends Module
 		if($section !== FALSE)
 			return $this->_listSection($engine, $request, $page,
 					$section);
+		if($name !== FALSE)
+			return $this->_listPages($engine, $request, $page,
+					$name);
 		return $this->_listSections($engine, $request, $page);
+	}
+
+	private function _listPages($engine, $request, $page, $name)
+	{
+		if(($pages = $this->getPages($engine, $name)) === FALSE)
+		{
+			$error = _('Could not list pages');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return new PageResponse($page,
+					Response::$CODE_EUNKNOWN);
+		}
+		$columns = array('title' => _('Page'),
+			'section' => _('Section'),
+			'description' => _('Description'));
+		$view = $page->append('treeview', array('columns' => $columns));
+		foreach($pages as $r)
+		{
+			$r['description'] = $r['title'];
+			$args = array('section' => $r['section'],
+				'page' => $r['page']);
+			$req = $this->getRequest(FALSE, $args);
+			$r['title'] = new PageElement('link', array(
+				'request' => $req,
+				'text' => $r['page'],
+				'title' => $r['title']));
+			$view->append('row', $r);
+		}
+		return new PageResponse($page);
 	}
 
 	private function _listSection($engine, $request, $page, $section)
