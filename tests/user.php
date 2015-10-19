@@ -117,6 +117,15 @@ function user_addgroup($engine, $user)
 	}
 }
 
+function user_delete($engine, $user)
+{
+	if($user->delete($engine, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(12);
+	}
+}
+
 function test($engine)
 {
 	$user = new User($engine, 1, 'admin');
@@ -129,6 +138,7 @@ function test($engine)
 	user_register($engine, $module);
 	user_setgroup($engine, $user);
 	user_addgroup($engine, $user);
+	user_delete($engine, $user);
 }
 
 test($engine);

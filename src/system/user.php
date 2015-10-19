@@ -272,8 +272,12 @@ class User
 			$error = $this->username.': Could not delete user';
 			return FALSE;
 		}
-		//errors are caught when deleting the user
-		if($this->removeGroups($engine, $error) === FALSE)
+		//remove foreign constraints
+		if($this->removeGroups($engine, $error) === FALSE
+				|| $this->removeRegister($engine, $error)
+				=== FALSE
+				|| $this->removeReset($engine, $error)
+				=== FALSE)
 		{
 			$db->transactionRollback($engine);
 			return FALSE;
@@ -391,6 +395,39 @@ class User
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = $this->username.': Could not remove groups';
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//User::removeRegister
+	public function removeRegister($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_register_delete_user;
+		$args = array('user_id' => $this->user_id);
+
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username
+				.': Could not remove registration';
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	//User::removeReset
+	public function removeReset($engine, &$error = FALSE)
+	{
+		$db = $engine->getDatabase();
+		$query = static::$query_reset_delete_user;
+		$args = array('user_id' => $this->user_id);
+
+		if($db->query($engine, $query, $args) === FALSE)
+		{
+			$error = $this->username.': Could not remove reset';
 			return FALSE;
 		}
 		return TRUE;
@@ -861,18 +898,36 @@ class User
 		VALUES (:user_id, :token)';
 	static protected $query_register_cleanup = 'DELETE FROM daportal_user_register
 		WHERE timestamp <= :timestamp';
-	static protected $query_register_delete = 'DELETE FROM daportal_user_register
+	//IN:	user_register_id
+	static protected $query_register_delete = 'DELETE
+		FROM daportal_user_register
 		WHERE user_register_id=:user_register_id';
+	//IN:	user_id
+	static protected $query_register_delete_user = 'DELETE
+		FROM daportal_user_register
+		WHERE user_id=:user_id';
 	static protected $query_register_validate = 'SELECT user_register_id,
 		daportal_user.user_id AS user_id, username
 		FROM daportal_user, daportal_user_register
 		WHERE daportal_user.user_id=daportal_user_register.user_id
 		AND daportal_user.user_id=:user_id AND token=:token';
-	static protected $query_reset_cleanup = 'DELETE FROM daportal_user_reset
+	//IN:	timestamp
+	static protected $query_reset_cleanup = 'DELETE
+		FROM daportal_user_reset
 		WHERE timestamp <= :timestamp';
-	static protected $query_reset_delete = 'DELETE FROM daportal_user_reset
+	//IN:	user_id
+	//	token
+	static protected $query_reset_delete = 'DELETE
+		FROM daportal_user_reset
 		WHERE user_id=:user_id AND token=:token';
-	static protected $query_reset_token = 'INSERT INTO daportal_user_reset
+	//IN:	user_id
+	static protected $query_reset_delete_user = 'DELETE
+		FROM daportal_user_reset
+		WHERE user_id=:user_id';
+	//IN:	user_id
+	//	token
+	static protected $query_reset_token = 'INSERT
+		INTO daportal_user_reset
 		(user_id, token)
 		VALUES (:user_id, :token)';
 	static protected $query_reset_token_check = 'SELECT user_id
