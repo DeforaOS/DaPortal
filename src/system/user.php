@@ -631,10 +631,22 @@ class User
 			$content->append('link', array('request' => $r));
 			$text = _("Please note that this link will expire in 7 days.\n");
 			$content->append('label', array('text' => $text));
-			DaPortal\Mail::send($engine, FALSE, $email, $subject,
-					$content);
+			//FIXME send only if the transaction succeeds
+			if(DaPortal\Mail::send($engine, FALSE, $email, $subject,
+					$content) === FALSE)
+			{
+				$db->transactionRollback($engine);
+				$error = _('Could not register the user');
+				return $engine->log('LOG_ERR', $username
+					.': '.$email
+					.': Could not send the activation message');
+			}
 		}
-		$db->transactionCommit($engine);
+		if($db->transactionCommit($engine) === FALSE)
+		{
+			$error = _('Could not register the user');
+			return FALSE;
+		}
 		$error = '';
 		return $user;
 	}
