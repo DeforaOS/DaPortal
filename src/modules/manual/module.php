@@ -311,7 +311,7 @@ class ManualModule extends Module
 		}
 		$columns = array('title' => _('Page'),
 			'section' => _('Section'),
-			'description' => _('Description'));
+			'description' => _('Title'));
 		$view = $page->append('treeview', array('columns' => $columns));
 		foreach($pages as $r)
 		{
@@ -323,6 +323,12 @@ class ManualModule extends Module
 				'request' => $req,
 				'text' => $r['page'],
 				'title' => $r['title']));
+			$args = array('section' => $r['section']);
+			$req = $this->getRequest(FALSE, $args);
+			$r['section'] = new PageElement('link', array(
+				'request' => $req,
+				'text' => $r['section'],
+				'title' => $r['section']));
 			$view->append('row', $r);
 		}
 		return new PageResponse($page);
@@ -341,7 +347,7 @@ class ManualModule extends Module
 		}
 		$columns = array('title' => _('Page'),
 			'section' => _('Section'),
-			'description' => _('Description'));
+			'description' => _('Title'));
 		$view = $page->append('treeview', array('columns' => $columns));
 		foreach($pages as $r)
 		{
