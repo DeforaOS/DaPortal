@@ -110,6 +110,12 @@ function _autoload_filename($class, $filename = FALSE)
 		$module = substr($class, 0, $len - 4);
 		return './modules/'.strtolower($module).'/user.php';
 	}
+	//UserBackends
+	else if($len > 11 && substr($class, -11) == 'UserBackend')
+	{
+		$user = substr($class, 0, $len - 11);
+		return './user/'.strtolower($user).'.php';
+	}
 	//Templates
 	else if($len > 8 && substr($class, -8) == 'Template')
 	{
