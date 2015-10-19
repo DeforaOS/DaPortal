@@ -631,7 +631,8 @@ class User
 			$content->append('link', array('request' => $r));
 			$text = _("Please note that this link will expire in 7 days.\n");
 			$content->append('label', array('text' => $text));
-			Mail::send($engine, FALSE, $email, $subject, $content);
+			DaPortal\Mail::send($engine, FALSE, $email, $subject,
+					$content);
 		}
 		$db->transactionCommit($engine);
 		$error = '';
@@ -693,8 +694,8 @@ class User
 		$content->append('label', array('text' => "\n"));
 		$content->append('label', array(
 			'text' => _("Please note that this link will expire in 24 hours.")));
-		if(Mail::send($engine, FALSE, $email, $subject, $content)
-				=== FALSE)
+		if(DaPortal\Mail::send($engine, FALSE, $email, $subject,
+				$content) === FALSE)
 		{
 			$error = _('Could not send the confirmation e-mail');
 			return FALSE;

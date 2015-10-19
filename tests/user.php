@@ -16,6 +16,9 @@
 
 
 
+namespace DaPortal;
+
+
 require_once('./tests.php');
 
 
@@ -25,9 +28,8 @@ class Mail
 			$headers = FALSE, $attachments = FALSE)
 	{
 		//output the page
-		if($engine->render(new PageResponse($page)) === FALSE)
+		if($engine->render(new \PageResponse($page)) === FALSE)
 			return FALSE;
-
 		//do not really send any e-mail
 		return TRUE;
 	}
@@ -39,7 +41,7 @@ function user_authenticate($engine, $user)
 {
 	if(($res = $user->authenticate($engine, 'password')) === FALSE)
 		exit(2);
-	if(!($res instanceof AuthCredentials)
+	if(!($res instanceof \AuthCredentials)
 			|| $res->getUserID() != $user->getUserID()
 			|| $res->getUsername() != $user->getUsername())
 		exit(2);
@@ -66,7 +68,7 @@ function user_unlock($engine, $user)
 
 function user_reset($engine, $user, $module)
 {
-	if(User::reset($engine, $module, $user->getUsername(),
+	if(\User::reset($engine, $module, $user->getUsername(),
 			$user->getEmail(), $error) === FALSE)
 	{
 		print("$error\n");
@@ -76,7 +78,7 @@ function user_reset($engine, $user, $module)
 
 function user_register($engine, $module)
 {
-	if(User::register($engine, $module, 'test', FALSE, 'root@localhost',
+	if(\User::register($engine, $module, 'test', FALSE, 'root@localhost',
 			FALSE, $error) === FALSE)
 	{
 		print("$error\n");
@@ -128,8 +130,8 @@ function user_delete($engine, $user)
 
 function test($engine)
 {
-	$user = new User($engine, 1, 'admin');
-	$module = Module::load($engine, 'user');
+	$user = new \User($engine, 1, 'admin');
+	$module = \Module::load($engine, 'user');
 
 	user_authenticate($engine, $user);
 	user_lock($engine, $user);
