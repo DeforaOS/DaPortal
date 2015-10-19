@@ -108,7 +108,14 @@ class HTML
 				$content = utf8_encode($content);
 				break;
 		}
+		//convert to XML
+		//XXX inefficient
+		$dom = new DOMDocument('1.0', 'UTF-8');
+		if($dom->loadHTML($content) !== FALSE)
+			$content = $dom->saveXML();
+		unset($dom);
 		//give it a root tag if it seems to need one
+		//XXX may no longer be necessary
 		if(strncmp('<!DOCTYPE', $content, 9) != 0
 				&& strncmp('<?xml', $content, 4) != 0)
 			$content = '<root>'.$content.'</root>';
