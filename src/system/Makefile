@@ -78,6 +78,10 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 mutator.php $(DESTDIR)$(PREFIX)/daportal/src/system/mutator.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
+	$(INSTALL) -m 0644 observable.php $(DESTDIR)$(PREFIX)/daportal/src/system/observable.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
+	$(INSTALL) -m 0644 observer.php $(DESTDIR)$(PREFIX)/daportal/src/system/observer.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 page.php $(DESTDIR)$(PREFIX)/daportal/src/system/page.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/page
 	$(INSTALL) -m 0644 page/element.php $(DESTDIR)$(PREFIX)/daportal/src/system/page/element.php
@@ -127,6 +131,8 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/mime.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/module.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/mutator.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/observable.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/observer.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/page.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/page/element.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/profile.php
