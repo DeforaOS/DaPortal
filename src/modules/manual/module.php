@@ -79,31 +79,6 @@ class ManualModule extends Module
 	//protected
 	//methods
 	//accessors
-	//ManualModule::getPage
-	protected function getPage($engine, $section, $name)
-	{
-		if(($path = $this->configGet('path')) === FALSE)
-		{
-			$message = 'Path to manual pages not configured';
-			return $engine->log('LOG_ERR', $message);
-		}
-		if(strpos($section, '/') !== FALSE
-				|| strpos($name, '/') !== FALSE)
-			return FALSE;
-		$path = explode(',', $path);
-		$xml = new DOMDocument();
-		foreach($path as $p)
-		{
-			$filename = $p.'/html'.$section.'/'.$name.'.html';
-			//we can ignore errors
-			if(@$xml->loadHTMLfile($filename, LIBXML_NOENT)
-					=== TRUE)
-				return $xml;
-		}
-		return FALSE;
-	}
-
-
 	//ManualModule::getPages
 	protected function getPages($engine, $name)
 	{
@@ -248,62 +223,13 @@ class ManualModule extends Module
 	//ManualModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
+		$title = _('Manual browser');
+
 		$this->parseRequest($request, $section, $page);
-		if($section !== FALSE && $page !== FALSE)
-			return $this->callPage($engine, $request, $section,
-					$page)
-		return $this->callList($engine, $request);
-	}
-
-
-	//ManualModule::callList
-	protected function callList($engine, $request)
-	{
-		$title = _('Manual browser');
-
-		$page = new Page(array('title' => $title));
-		$page->append('title', array('stock' => $this->name,
-				'text' => $title));
+		if($section === FALSE || $page === FALSE)
+			return $this->callList($engine, $request);
 		$form = $this->formPage($request);
-		$page->append($form);
-		if(($sections = $this->getSections()) === FALSE)
-		{
-			$page->append('dialog', array('type' => 'error',
-					'text' => 'Could not list sections'));
-			return new PageResponse($page,
-					Response::$CODE_EUNKNOWN);
-		}
-		$columns = array('title' => _('Section list'));
-		$view = $page->append('treeview', array(
-				'columns' => $columns));
-		foreach($sections as $s)
-		{
-			$r = $this->getRequest(FALSE, array(
-					'section' => $s));
-			$link = new PageElement('link', array(
-					'request' => $r,
-					'text' => $s));
-			$view->append('row', array('title' => $link));
-		}
-		return new PageResponse($page);
-	}
-
-
-	//Manual::callPage
-	protected function callPage($engine, $request, $section, $name)
-	{
-		$title = _('Manual browser');
-
-		$form = $this->formPage($request);
-		if($section === FALSE)
-			$res = ($name !== FALSE)
-				? $this->getPages($engine, $name) : FALSE;
-		else if($name === FALSE)
-			//FIXME implement paging
-			$res = $this->getSectionPages($section);
-		else
-			$res = $this->getPage($engine, $section, $name);
-		if($res === FALSE)
+		if(($res = $this->pageOpen($engine, $section, $page)) === FALSE)
 		{
 			$page = new Page(array('title' => $title));
 			$page->append('title', array('stock' => $this->name,
@@ -313,39 +239,19 @@ class ManualModule extends Module
 					'text' => _('No manual page found')));
 			return new PageResponse($page, Response::$CODE_ENOENT);
 		}
-		if(is_array($res))
-		{
-			$page = new Page(array('title' => $title));
-			$page->append('title', array('stock' => $this->name,
-				'text' => $title));
-			$page->append($form);
-			$columns = array('title' => _('Page'),
-				'section' => _('Section'),
-				'description' => _('Description'));
-			$view = $page->append('treeview', array(
-				'columns' => $columns));
-			foreach($res as $r)
-			{
-				$r['description'] = $r['title'];
-				$args = array('section' => $r['section'],
-					'page' => $r['page']);
-				$req = $this->getRequest(FALSE, $args);
-				$r['title'] = new PageElement('link', array(
-					'request' => $req,
-					'text' => $r['page'],
-					'title' => $r['title']));
-				$view->append('row', $r);
-			}
-			return new PageResponse($page);
-		}
-		$title .= _(': ')."$name($section)";
+		$title = sprintf(_('%s: %s(%s)'), $title, $page, $section);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		$page->append($form);
-		$page->append('htmlview', array('class' => 'monospace',
+		$vbox = $page->append('vbox');
+		$vbox->append('htmlview', array('class' => 'monospace',
 				'text' => $this->_pageFormat($engine, $res)));
-		$page->append('link', array('stock' => 'back',
+		$vbox->append('link', array('stock' => 'back',
+				'request' => $this->getRequest(FALSE,
+					array('section' => $section)),
+				'text' => _('Back to the section')));
+		$vbox->append('link', array('stock' => 'back',
 				'request' => $this->getRequest(),
 				'text' => _('Back to the homepage')));
 		return new PageResponse($page);
@@ -370,6 +276,78 @@ class ManualModule extends Module
 		$body = $xml->getElementsByTagName('body');
 		return ($body->length == 1)
 			? $xml->saveXML($body->item(0)) : $xml->saveXML();
+	}
+
+
+	//ManualModule::callList
+	protected function callList($engine, $request)
+	{
+		$title = _('Manual browser');
+
+		$this->parseRequest($request, $section);
+		$page = new Page(array('title' => $title));
+		$page->append('title', array('stock' => $this->name,
+				'text' => $title));
+		$form = $this->formPage($request);
+		$page->append($form);
+		if($section !== FALSE)
+			return $this->_listSection($engine, $request, $page,
+					$section);
+		return $this->_listSections($engine, $request, $page);
+	}
+
+	private function _listSection($engine, $request, $page, $section)
+	{
+		//FIXME implement paging
+		if(($pages = $this->getSectionPages($section)) === FALSE)
+		{
+			$error = _('Could not list pages');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return new PageResponse($page,
+					Response::$CODE_EUNKNOWN);
+		}
+		$columns = array('title' => _('Page'),
+			'section' => _('Section'),
+			'description' => _('Description'));
+		$view = $page->append('treeview', array('columns' => $columns));
+		foreach($pages as $r)
+		{
+			$r['description'] = $r['title'];
+			$args = array('section' => $r['section'],
+				'page' => $r['page']);
+			$req = $this->getRequest(FALSE, $args);
+			$r['title'] = new PageElement('link', array(
+				'request' => $req,
+				'text' => $r['page'],
+				'title' => $r['title']));
+			$view->append('row', $r);
+		}
+		return new PageResponse($page);
+	}
+
+	private function _listSections($engine, $request, $page)
+	{
+		if(($sections = $this->getSections()) === FALSE)
+		{
+			$error = _('Could not list sections');
+			$page->append('dialog', array('type' => 'error',
+					'text' => $error));
+			return new PageResponse($page,
+					Response::$CODE_EUNKNOWN);
+		}
+		$columns = array('title' => _('Section list'));
+		$view = $page->append('treeview', array('columns' => $columns));
+		foreach($sections as $s)
+		{
+			$r = $this->getRequest(FALSE, array(
+					'section' => $s));
+			$link = new PageElement('link', array(
+					'request' => $r,
+					'text' => $s));
+			$view->append('row', array('title' => $link));
+		}
+		return new PageResponse($page);
 	}
 
 
@@ -401,8 +379,34 @@ class ManualModule extends Module
 
 
 	//useful
+	//ManualModule::pageOpen
+	protected function pageOpen($engine, $section, $name)
+	{
+		if(($path = $this->configGet('path')) === FALSE)
+		{
+			$message = 'Path to manual pages not configured';
+			return $engine->log('LOG_ERR', $message);
+		}
+		if(strpos($section, '/') !== FALSE
+				|| strpos($name, '/') !== FALSE)
+			return FALSE;
+		$path = explode(',', $path);
+		$xml = new DOMDocument();
+		foreach($path as $p)
+		{
+			$filename = $p.'/html'.$section.'/'.$name.'.html';
+			//we can ignore errors
+			if(@$xml->loadHTMLfile($filename, LIBXML_NOENT)
+					=== TRUE)
+				return $xml;
+		}
+		return FALSE;
+	}
+
+
 	//ManualModule::parseRequest
-	protected function parseRequest($request, &$section, &$page)
+	protected function parseRequest($request, &$section = FALSE,
+			&$page = FALSE)
 	{
 		$section = $request->getID() ?: $request->get('section');
 		$page = $request->getTitle() ?: $request->get('page');
