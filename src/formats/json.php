@@ -30,6 +30,8 @@ class JSONFormat extends PlainFormat
 	//JSONFormat::match
 	protected function match($engine, $type = FALSE)
 	{
+		if(!function_exists('json_encode'))
+			return 0;
 		switch($type)
 		{
 			case 'application/json':
