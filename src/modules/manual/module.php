@@ -244,20 +244,10 @@ class ManualModule extends Module
 	//ManualModule::callDisplay
 	protected function callDisplay($engine, $request)
 	{
-		$section = $request->getID();
-		$page = $request->getTitle();
-		if($section !== FALSE)
-			return ($page !== FALSE)
-				? $this->callPage($engine, $request, $section,
-					$page)
-				: $this->callList($engine, $request);
-		if(($section = $request->get('section')) == '')
-			$section = FALSE;
-		if(($page = $request->get('page')) == '')
-			$page = FALSE;
-		if($section !== FALSE || $page !== FALSE)
+		$this->parseRequest($request, $section, $page);
+		if($section !== FALSE && $page !== FALSE)
 			return $this->callPage($engine, $request, $section,
-					$page);
+					$page)
 		return $this->callList($engine, $request);
 	}
 
@@ -380,12 +370,12 @@ class ManualModule extends Module
 
 
 	//forms
+	//Manual::formPage
 	protected function formPage($request)
 	{
 		$r = $this->getRequest();
-		$section = $request->getID() ?: $request->get('section');
-		$page = $request->getTitle() ?: $request->get('page');
 
+		$this->parseRequest($request, $section, $page);
 		$form = new PageElement('form', array('request' => $r,
 				'idempotent' => TRUE));
 		$box = $form->append('hbox');
@@ -403,6 +393,15 @@ class ManualModule extends Module
 		$box->append('button', array('type' => 'submit',
 				'text' => _('Search')));
 		return $form;
+	}
+
+
+	//useful
+	//ManualModule::parseRequest
+	protected function parseRequest($request, &$section, &$page)
+	{
+		$section = $request->getID() ?: $request->get('section');
+		$page = $request->getTitle() ?: $request->get('page');
 	}
 }
 
