@@ -1,4 +1,4 @@
-SUBDIRS	= auth database engines formats modules system templates
+SUBDIRS	= auth database engines formats modules system templates user
 TARGETS	= $(OBJDIR)daportal.php
 OBJDIR	=
 PREFIX	= /usr/local

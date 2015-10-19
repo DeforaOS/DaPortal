@@ -346,6 +346,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/templates/desktop.php \
 		$(PACKAGE)-$(VERSION)/src/templates/khorben.php \
 		$(PACKAGE)-$(VERSION)/src/templates/project.conf \
+		$(PACKAGE)-$(VERSION)/src/user/Makefile \
+		$(PACKAGE)-$(VERSION)/src/user/sql.php \
+		$(PACKAGE)-$(VERSION)/src/user/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
 		$(PACKAGE)-$(VERSION)/tests/auth.php \
 		$(PACKAGE)-$(VERSION)/tests/config.php \
