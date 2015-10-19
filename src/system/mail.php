@@ -169,12 +169,14 @@ class Mail
 			'text_charset' => 'UTF-8',
 			'html_charset' => 'UTF-8'));
 		static::_renderBody($engine, $mime, $text, $page);
-		static::_renderAttachments($engine, $mime, $headers,
-				$attachments);
-		return $mime->get();
+		static::_renderAttachments($engine, $mime, $attachments);
+		$ret = $mime->get();
+		//XXX for Mail_Mime < 1.6.0 call get() before headers()
+		static::_renderHeaders($mime, $headers);
+		return $ret;
 	}
 
-	static protected function _renderAttachments($engine, $mime, &$headers,
+	static protected function _renderAttachments($engine, $mime,
 			$attachments)
 	{
 		//attachments
@@ -190,10 +192,6 @@ class Mail
 					FALSE)) !== TRUE)
 				$engine->log('LOG_ERR', $e->getMessage());
 		}
-		//headers
-		$hdrs = $mime->headers(array());
-		foreach($hdrs as $h => $v)
-			$headers[$h] = $v;
 	}
 
 	static protected function _renderBody($engine, $mime, $text,
@@ -259,6 +257,13 @@ class Mail
 		$filename = uniqid();
 		if($mime->addHTMLImage($data, 'image/jpeg', $filename, FALSE))
 			$img->setAttribute('src', $filename);
+	}
+
+	static protected function _renderHeaders($mime, &$headers)
+	{
+		$hdrs = $mime->headers(array());
+		foreach($hdrs as $h => $v)
+			$headers[$h] = $v;
 	}
 }
 
