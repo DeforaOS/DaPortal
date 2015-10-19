@@ -54,7 +54,7 @@ class EmailEngine extends CLIEngine
 					=== FALSE)
 			fprintf(STDERR, "%s\n", "daportal: Could not determine"
 					." the proper output format");
-		else if(Mail::send($this, FALSE, $email,
+		else if(DaPortal\Mail::send($this, FALSE, $email,
 				$page->getProperty('title'), $page) === FALSE)
 			fprintf(STDERR, "%s\n", "daportal: Could not send"
 					." the message");
