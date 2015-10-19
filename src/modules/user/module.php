@@ -1739,10 +1739,15 @@ class UserModule extends Module
 			$user->setGroup($engine, $group_id);
 
 		//update the group memberships
-		$user->removeGroups($engine);
-		if(($ids = $request->get('ids')) !== FALSE && is_array($ids))
-			foreach($ids as $id)
-				$user->addGroup($engine, $id);
+		$db->inTransaction($engine, function()
+			use ($engine, $request, $user)
+		{
+			$user->removeGroups($engine);
+			if(($ids = $request->get('ids')) !== FALSE
+					&& is_array($ids))
+				foreach($ids as $id)
+					$user->addGroup($engine, $id);
+		});
 
 		//update the password if requested
 		if(($password1 = $request->get('password1')) === FALSE
