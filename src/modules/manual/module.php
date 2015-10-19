@@ -306,7 +306,7 @@ class ManualModule extends Module
 					'text' => $title));
 			$page->append($form);
 			$page->append('dialog', array('type' => 'error',
-					'text' => 'No manual page found'));
+					'text' => _('No manual page found')));
 			return new PageResponse($page, Response::$CODE_ENOENT);
 		}
 		if(is_array($res))
