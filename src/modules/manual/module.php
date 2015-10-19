@@ -57,15 +57,19 @@ class ManualModule extends Module
 		$id = FALSE;
 		$title = FALSE;
 
-		if(is_array($parameters)
-				&& isset($parameters['section'])
-				&& is_numeric($parameters['section'])
-				&& isset($parameters['page']))
+		if(is_array($parameters))
 		{
-			$id = $parameters['section'];
-			unset($parameters['section']);
-			$title = $parameters['page'];
-			unset($parameters['page']);
+			if(isset($parameters['section'])
+					&& is_numeric($parameters['section']))
+			{
+				$id = $parameters['section'];
+				unset($parameters['section']);
+			}
+			if(isset($parameters['page']))
+			{
+				$title = $parameters['page'];
+				unset($parameters['page']);
+			}
 		}
 		return new Request($this->name, $action, $id, $title,
 			$parameters);
