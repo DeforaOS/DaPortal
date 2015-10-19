@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2015 Pierre Pronchery <khorben@defora.org>
 #
 #Redistribution and use in source and binary forms, with or without
 #modification, are permitted provided that the following conditions are met:
@@ -25,17 +25,19 @@
 
 
 #variables
+PROGNAME="phplint.sh"
 #executables
 DEBUG="_debug"
 FIND="find"
 PHPLINT="php -l"
+SORT="sort"
 
 
 #functions
 #debug
 _debug()
 {
-	echo "$@" 1>&2
+	echo "$@" 1>&3
 	"$@"
 	res=$?
 	#ignore errors when the command is not available
@@ -47,7 +49,7 @@ _debug()
 #usage
 _usage()
 {
-	echo "Usage: phplint.sh [-c] target" 1>&2
+	echo "Usage: $PROGNAME [-c] target" 1>&2
 	return 1
 }
 
@@ -78,7 +80,8 @@ target="$1"
 [ $clean -ne 0 ] && exit 0
 
 ret=0
-for i in $($FIND "../src" "../tools" -name '*.php'); do
+exec 3>&1
+for i in $($FIND "../src" "../tools" -name '*.php' | $SORT); do
 	$DEBUG $PHPLINT -f "$i"					|| ret=2
 done 2> "$target"
 exit $ret
