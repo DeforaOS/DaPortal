@@ -409,7 +409,11 @@ class ManualModule extends Module
 			&$page = FALSE)
 	{
 		$section = $request->getID() ?: $request->get('section');
+		if(strlen($section) == 0)
+			$section = FALSE;
 		$page = $request->getTitle() ?: $request->get('page');
+		if(strlen($page) == 0)
+			$page = FALSE;
 	}
 }
 
