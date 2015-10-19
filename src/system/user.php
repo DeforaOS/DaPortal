@@ -347,6 +347,23 @@ class User
 	}
 
 
+	//User::listAll
+	static public function listAll($engine, $enabled = -1)
+	{
+		$db = $engine->getDatabase();
+		$query = is_bool($enabled)
+			? static::$query_list_enabled : static::$query_list;
+
+		if(($res = $db->query($engine, $query)) === FALSE)
+			return FALSE;
+		$ret = array();
+		foreach($res as $r)
+			//XXX inefficient (issues more queries again)
+			$ret[] = new User($engine, $r['user_id']);
+		return $ret;
+	}
+
+
 	//User::lock
 	public function lock($engine, &$error = FALSE)
 	{
@@ -886,6 +903,12 @@ class User
 	static protected $query_insert_group = 'INSERT INTO
 		daportal_user_group (user_id, group_id)
 		VALUES (:user_id, :group_id)';
+	static private $query_list = 'SELECT user_id
+		FROM daportal_user
+		ORDER BY username ASC';
+	static private $query_list_enabled = 'SELECT user_id
+		FROM daportal_user_enabled
+		ORDER BY username ASC';
 	//IN:	user_id
 	static protected $query_lock = "UPDATE daportal_user
 		SET password=concat('!', password)
