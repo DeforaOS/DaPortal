@@ -158,6 +158,8 @@ abstract class Engine
 					$errfile = FALSE, $errline = FALSE,
 					$errcontext = FALSE)
 		{
+			if(error_reporting() == 0)
+				return FALSE;
 			ob_start();
 			debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 			$backtrace = ob_get_contents();
