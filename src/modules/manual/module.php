@@ -169,7 +169,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::getSections
-	protected function getSections()
+	protected function getSections($engine)
 	{
 		//XXX code duplication
 		$ret = array();
@@ -228,7 +228,7 @@ class ManualModule extends Module
 		$this->parseRequest($request, $section, $page);
 		if($section === FALSE || $page === FALSE)
 			return $this->callList($engine, $request);
-		$form = $this->formPage($request);
+		$form = $this->formPage($engine, $request);
 		if(($res = $this->pageOpen($engine, $section, $page)) === FALSE)
 		{
 			$page = new Page(array('title' => $title));
@@ -288,7 +288,7 @@ class ManualModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
-		$form = $this->formPage($request);
+		$form = $this->formPage($engine, $request);
 		$page->append($form);
 		if($section !== FALSE)
 			return $this->_listSection($engine, $request, $page,
@@ -366,7 +366,7 @@ class ManualModule extends Module
 
 	private function _listSections($engine, $request, $page)
 	{
-		if(($sections = $this->getSections()) === FALSE)
+		if(($sections = $this->getSections($engine)) === FALSE)
 		{
 			$error = _('Could not list sections');
 			$page->append('dialog', array('type' => 'error',
@@ -391,7 +391,7 @@ class ManualModule extends Module
 
 	//forms
 	//Manual::formPage
-	protected function formPage($request)
+	protected function formPage($engine, $request)
 	{
 		$r = $this->getRequest();
 
@@ -404,7 +404,7 @@ class ManualModule extends Module
 				'name' => 'section', 'value' => $section));
 		$combobox->append('label', array('value' => '',
 				'text' => _('Any')));
-		if(($sections = $this->getSections()) !== FALSE)
+		if(($sections = $this->getSections($engine)) !== FALSE)
 			foreach($sections as $s)
 				$combobox->append('label', array('value' => $s,
 						'text' => $s));
