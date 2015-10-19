@@ -365,6 +365,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/json.php \
 		$(PACKAGE)-$(VERSION)/tests/mail.php \
 		$(PACKAGE)-$(VERSION)/tests/module.php \
+		$(PACKAGE)-$(VERSION)/tests/observer.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
 		$(PACKAGE)-$(VERSION)/tests/pki.php \
 		$(PACKAGE)-$(VERSION)/tests/search.php \
