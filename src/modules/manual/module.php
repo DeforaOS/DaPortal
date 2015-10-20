@@ -179,6 +179,8 @@ class ManualModule extends Module
 				return _('System calls and error numbers');
 			case '3':
 				return _('System libraries');
+			case '4':
+				return _('Kernel interfaces');
 			case '5':
 				return _('File formats');
 			case '6':
