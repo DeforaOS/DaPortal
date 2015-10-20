@@ -359,7 +359,7 @@ class HTML
 		'sup' => array('class'),
 		'table' => array('border', 'class'),
 		'tbody' => array('class'),
-		'td' => array('class', 'colspan', 'rowspan'),
+		'td' => array('align', 'class', 'colspan', 'rowspan'),
 		'tfoot' => array('class'),
 		'th' => array('class', 'colspan', 'rowspan'),
 		'tr' => array('class'),
