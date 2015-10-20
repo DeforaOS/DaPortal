@@ -168,6 +168,33 @@ class ManualModule extends Module
 	}
 
 
+	//ManualModule::getSectionDescription
+	protected function getSectionDescriptioa($section)
+	{
+		switch($section)
+		{
+			case '1':
+				return _('General commands (tools and utilities)');
+			case '2':
+				return _('System calls and error numbers');
+			case '3':
+				return _('System libraries');
+			case '5':
+				return _('File formats');
+			case '6':
+				return _('Online games');
+			case '7':
+				return _('Miscellaneous information pages');
+			case '8':
+				return _('System maintenance procedures and commands');
+			case '9':
+				return _('Kernel internals');
+			default:
+				return FALSE;
+		}
+	}
+
+
 	//ManualModule::getSections
 	protected function getSections($engine)
 	{
@@ -374,7 +401,8 @@ class ManualModule extends Module
 			return new PageResponse($page,
 					Response::$CODE_EUNKNOWN);
 		}
-		$columns = array('title' => _('Section list'));
+		$columns = array('title' => _('Section'),
+			'description' => _('Description'));
 		$view = $page->append('treeview', array('columns' => $columns));
 		foreach($sections as $s)
 		{
@@ -383,7 +411,9 @@ class ManualModule extends Module
 			$link = new PageElement('link', array(
 					'request' => $r,
 					'text' => $s));
-			$view->append('row', array('title' => $link));
+			$description = $this->getSectionDescription($s);
+			$view->append('row', array('title' => $link,
+					'description' => $description));
 		}
 		return new PageResponse($page);
 	}
