@@ -38,7 +38,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 
 	//useful
 	//PgSQLPoolDatabase::query
-	public function query($engine, $query, &$parameters = FALSE,
+	public function query($engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		//every transaction goes to us (the master)

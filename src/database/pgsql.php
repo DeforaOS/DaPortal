@@ -114,7 +114,7 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::query
-	public function query($engine, $query, &$parameters = FALSE,
+	public function query($engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;

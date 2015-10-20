@@ -56,7 +56,7 @@ class SQLite3Database extends Database
 
 
 	//SQLite3Database::query
-	public function query($engine, $query, &$parameters = FALSE,
+	public function query($engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;

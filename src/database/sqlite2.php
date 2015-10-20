@@ -56,7 +56,7 @@ class SQLite2Database extends Database
 
 
 	//SQLite2Database::query
-	public function query($engine, $query, &$parameters = FALSE,
+	public function query($engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;
