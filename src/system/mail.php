@@ -110,9 +110,9 @@ class Mail
 	//Mail::pageToHTML
 	static protected function pageToHTML($engine, $page)
 	{
-		if($page instanceof PageElement)
+		if($page instanceof \PageElement)
 		{
-			if(($format = Format::attachDefault($engine,
+			if(($format = \Format::attachDefault($engine,
 					'text/html')) === FALSE)
 				return FALSE;
 			$format = clone $format;
@@ -133,9 +133,9 @@ class Mail
 	//Mail::pageToText
 	static protected function pageToText($engine, $page)
 	{
-		if($page instanceof PageElement)
+		if($page instanceof \PageElement)
 		{
-			if(($format = Format::attachDefault($engine,
+			if(($format = \Format::attachDefault($engine,
 					'text/plain')) === FALSE)
 				return FALSE;
 			$format = clone $format;
@@ -149,8 +149,7 @@ class Mail
 		else if(is_string($page) && substr($page, 0, 1) == '<')
 			//XXX assumes HTML
 			return 'This e-mail message requires an HTML viewer.';
-		else
-			return $page;
+		return $page;
 	}
 
 
@@ -160,7 +159,8 @@ class Mail
 	{
 		$class = 'Mail_Mime';
 
-		$text = static::pageToText($engine, $page);
+		if(($text = static::pageToText($engine, $page)) === FALSE)
+			return FALSE;
 		if(!class_exists($class))
 		{
 			$engine->log('LOG_WARNING', $class.': Class not found');
@@ -187,7 +187,7 @@ class Mail
 		{
 			if(!is_string($filename) || !is_string($data))
 				continue;
-			$type = Mime::getType($engine, $filename,
+			$type = \Mime::getType($engine, $filename,
 					'application/octet-stream');
 			if(($e = $mime->addAttachment($data, $type, $filename,
 					FALSE)) !== TRUE)
@@ -201,7 +201,9 @@ class Mail
 		//plain text content
 		$mime->setTXTBody($text);
 		//HTML contents
-		if(($html = static::pageToHTML($engine, $page)) !== FALSE)
+		if($page !== FALSE
+				&& ($html = static::pageToHTML($engine,
+					$page)) !== FALSE)
 			static::_renderBodyHtml($engine, $mime, $html);
 	}
 
@@ -210,7 +212,7 @@ class Mail
 		$jpeg = 'image/jpeg;base64,';
 		$png = 'image/png;base64,';
 
-		$xml = new DOMDocument('1.0', 'UTF-8');
+		$xml = new \DOMDocument('1.0', 'UTF-8');
 		if(version_compare(PHP_VERSION, '5.4.0') < 0)
 		{
 			//XXX for PHP < 5.4
