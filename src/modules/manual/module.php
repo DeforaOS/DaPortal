@@ -169,7 +169,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::getSectionDescription
-	protected function getSectionDescriptioa($section)
+	protected function getSectionDescription($section)
 	{
 		switch($section)
 		{
