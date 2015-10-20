@@ -65,7 +65,9 @@ class Mail
 			$charset = strtoupper($charset);
 		$headers['Content-Type'] = "text/plain; charset=$charset\n";
 		//prepare the message
-		$page = static::render($engine, $page, $headers, $attachments);
+		if(($page = static::render($engine, $page, $headers,
+				$attachments)) === FALSE)
+			return FALSE;
 		//send to each desired recipient
 		if(is_array($to))
 		{
