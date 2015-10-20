@@ -77,14 +77,13 @@ class Mail
 						$page, $headers, $attachments)
 						=== FALSE)
 					$ret = FALSE;
+			return $ret;
 		}
-		else
-			$ret = static::_send_to($engine, $from, $to, $subject,
-					$page, $headers, $attachments);
-		return $ret;
+		return static::_sendTo($engine, $from, $to, $subject, $page,
+				$headers, $attachments);
 	}
 
-	static protected function _send_to($engine, $from, $to, $subject,
+	static protected function _sendTo($engine, $from, $to, $subject,
 			$page, $headers, $attachments)
 	{
 		//verify the recipient
