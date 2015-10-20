@@ -65,19 +65,19 @@ class Mail
 			$charset = strtoupper($charset);
 		$headers['Content-Type'] = "text/plain; charset=$charset\n";
 		//prepare the message
-		$page = Mail::render($engine, $page, $headers, $attachments);
+		$page = static::render($engine, $page, $headers, $attachments);
 		//send to each desired recipient
 		if(is_array($to))
 		{
 			$ret = TRUE;
 			foreach($to as $t)
-				if(Mail::_send_to($engine, $from, $t, $subject,
+				if(static::_sendTo($engine, $from, $t, $subject,
 						$page, $headers, $attachments)
 						=== FALSE)
 					$ret = FALSE;
 		}
 		else
-			$ret = Mail::_send_to($engine, $from, $to, $subject,
+			$ret = static::_send_to($engine, $from, $to, $subject,
 					$page, $headers, $attachments);
 		return $ret;
 	}
@@ -159,7 +159,7 @@ class Mail
 	{
 		$class = 'Mail_Mime';
 
-		$text = Mail::pageToText($engine, $page);
+		$text = static::pageToText($engine, $page);
 		if(!class_exists($class))
 		{
 			$engine->log('LOG_WARNING', $class.': Class not found');
@@ -200,7 +200,7 @@ class Mail
 		//plain text content
 		$mime->setTXTBody($text);
 		//HTML contents
-		if(($html = Mail::pageToHTML($engine, $page)) !== FALSE)
+		if(($html = static::pageToHTML($engine, $page)) !== FALSE)
 			static::_renderBodyHtml($engine, $mime, $html);
 	}
 
