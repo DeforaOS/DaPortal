@@ -40,6 +40,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/css/Makefile \
 		$(PACKAGE)-$(VERSION)/data/css/icons.css \
 		$(PACKAGE)-$(VERSION)/data/css/index.php \
+		$(PACKAGE)-$(VERSION)/data/css/manual.css \
 		$(PACKAGE)-$(VERSION)/data/css/project.conf \
 		$(PACKAGE)-$(VERSION)/data/fonts/Makefile \
 		$(PACKAGE)-$(VERSION)/data/fonts/project.conf \
