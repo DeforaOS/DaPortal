@@ -1,0 +1,102 @@
+/* $Id$ */
+/* Copyright (c) 2015 Pierre Pronchery <khorben@defora.org> */
+/* This file is part of DeforaOS Web DaPortal */
+/* This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+
+div.manual {
+	margin-left:			5ex;
+}
+
+div.manual .emph {
+	font-style:			italic;
+	font-weight:			normal;
+}
+
+div.manual .lit {
+	font-style:			normal;
+	font-weight:			normal;
+}
+
+div.manual .symb {
+	font-style:			normal;
+	font-weight:			bold;
+}
+
+div.manual b.cmd, div.manual b.config, div.manual b.diag, div.manual b.flag,
+div.manual b.fname, div.manual b.includes, div.manual b.macro,
+div.manual b.name, div.manual b.utility, div.manual b.var {
+	font-style:			normal;
+}
+
+div.manual div.section {
+	margin-bottom:			2ex;
+	margin-left:			5ex;
+}
+
+div.manual h1 {
+	margin-left:			-2ex;
+	text-transform:			uppercase;
+}
+
+div.manual h2 {
+	margin-left:			-2ex;
+	text-transform:			uppercase;
+}
+
+div.manual blockquote, div.manual pre {
+	margin-left:			5ex;
+}
+
+div.manual span.ref-title {
+	text-decoration:		underline;
+}
+
+div.manual span.type {
+	font-style:			italic;
+	font-weight:			normal;
+}
+
+div.manual table {
+	width:				100%;
+}
+
+div.manual table.synopsis {
+	font-family:			monospace;
+}
+
+div.manual td {
+	vertical-align:			top;
+}
+
+div.manual td.foot-date {
+	width:				50%;
+}
+
+div.manual td.foot-os {
+	text-align:			right;
+	width:				50%;
+}
+
+div.manual td.head-ltitle {
+	width:				10%;
+}
+
+div.manual td.head-rtitle {
+	width:				10%;
+}
+
+div.manual td.head-vol {
+	text-align:			center;
+	width:				80%;
+}
