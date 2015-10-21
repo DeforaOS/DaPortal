@@ -274,7 +274,7 @@ class ManualModule extends Module
 				'text' => $title));
 		$page->append($form);
 		$vbox = $page->append('vbox');
-		$vbox->append('htmlview', array('class' => 'monospace',
+		$vbox->append('htmlview', array('class' => $this->name,
 				'text' => $this->_pageFormat($engine, $res)));
 		$vbox->append('link', array('stock' => 'back',
 				'request' => $this->getRequest(FALSE,
