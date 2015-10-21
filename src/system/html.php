@@ -108,19 +108,14 @@ class HTML
 				$content = utf8_encode($content);
 				break;
 		}
-		//give it a root tag if it seems to need one
-		if(strncmp('<!DOCTYPE', $content, 9) != 0
-				&& strncmp('<?xml', $content, 4) != 0)
-			$content = '<root>'.$content.'</root>';
-		if(($ret = xml_parse($html->parser, $content, TRUE)) != 1)
-		{
-			//try to load as HTML
-			$dom = new DOMDocument('1.0', 'UTF-8');
-			if($dom->loadHTML($content, LIBXML_NOENT | LIBXML_NONET)
-					!== FALSE)
-				$content = $dom->saveXML();
-			unset($dom);
-		}
+		//load as HTML if necessary
+		$dom = new DOMDocument('1.0', 'UTF-8');
+		if($dom->loadXML($content, LIBXML_NOENT | LIBXML_NONET)
+					!== FALSE
+				|| $dom->loadHTML($content,
+					LIBXML_NOENT | LIBXML_NONET) !== FALSE)
+			$content = $dom->saveXML();
+		unset($dom);
 		if(($ret = xml_parse($html->parser, $content, TRUE)) != 1)
 		{
 			$error = xml_error_string(xml_get_error_code(
