@@ -80,9 +80,9 @@ class HTML
 	//useful
 	//HTML::filter
 	static public function filter($engine, $content, $whitelist = FALSE,
-			$form = FALSE)
+			$form = FALSE, $charset = FALSE)
 	{
-		$html = new HTML(FALSE, $form);
+		$html = new HTML($charset, $form);
 		$start = array($html, '_filterElementStart');
 		$end = array($html, '_filterElementEnd');
 		$filter = array($html, '_filterCharacterData');
