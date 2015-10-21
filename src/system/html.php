@@ -331,6 +331,7 @@ class HTML
 		'center' => array(),
 		'cite' => array('class'),
 		'code' => array('class'),
+		'col' => array('class'),
 		'dd' => array('class'),
 		'del' => array('class'),
 		'dfn' => array('class'),
