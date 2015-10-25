@@ -132,6 +132,11 @@ regenerate=1
 
 [format::html]
 #alternate_themes=1
+#CDN support:
+#this parameter expects an absolute URL, pointing to the document root for
+#static content. It does not belong here though (HTTP engine) and will be moved
+#accordingly.
+#cdn=
 #favicon=
 #javascript support:
 #  0: no javascript will be generated; more rendering may happen server-side

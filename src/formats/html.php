@@ -192,6 +192,8 @@ class HTMLFormat extends FormatElements
 	private function _renderIcontheme($page)
 	{
 		global $config;
+		//XXX this should be set by the HTTP engine
+		$cdn = $this->configGet('cdn') ?: '';
 		$standalone = $this->get('standalone');
 
 		if(($icontheme = $config->get(FALSE, 'icontheme')) === FALSE)
@@ -201,7 +203,7 @@ class HTMLFormat extends FormatElements
 		$filename = "icons/$icontheme.css";
 		if(!$standalone || ($css = @file_get_contents(
 				'../data/'.$filename)) === FALSE)
-			$css = " @import url('$filename'); ";
+			$css = " @import url('$cdn$filename'); ";
 		$this->tagOpen('style', FALSE, FALSE, array(
 				'type' => 'text/css'));
 		print($this->escapeComment($css.'//'));
@@ -220,6 +222,8 @@ class HTMLFormat extends FormatElements
 
 	private function _renderJavascriptScript($src, $standalone = FALSE)
 	{
+		//XXX this should be set by the HTTP engine
+		$cdn = $this->configGet('cdn') ?: '';
 		$tag = 'script';
 		$type = 'text/javascript';
 
@@ -234,7 +238,7 @@ class HTMLFormat extends FormatElements
 		}
 		else
 			$this->tagOpen($tag, FALSE, FALSE, array(
-					'type' => $type, 'src' => $src));
+					'type' => $type, 'src' => $cdn.$src));
 		$this->tagClose($tag);
 	}
 
@@ -265,6 +269,8 @@ class HTMLFormat extends FormatElements
 
 	private function _renderThemeCSS($theme, $alternate = FALSE)
 	{
+		//XXX this should be set by the HTTP engine
+		$cdn = $this->configGet('cdn') ?: '';
 		$rel = $alternate ? 'alternate stylesheet' : 'stylesheet';
 		$standalone = $this->get('standalone');
 
@@ -281,7 +287,7 @@ class HTMLFormat extends FormatElements
 		}
 		else
 			$this->tag('link', FALSE, FALSE, array('rel' => $rel,
-					'href' => $filename,
+					'href' => $cdn.$filename,
 					'title' => $theme));
 	}
 
