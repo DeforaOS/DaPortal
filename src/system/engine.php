@@ -185,43 +185,7 @@ abstract class Engine
 	//Engine::log
 	public function log($priority, $message)
 	{
-		switch($priority)
-		{
-			case 'LOG_ALERT':
-			case 'LOG_CRIT':
-			case 'LOG_EMERG':
-				$level = 'Alert';
-				break;
-			case 'LOG_DEBUG':
-				if($this->debug !== TRUE)
-					return FALSE;
-				$level = 'Debug';
-				break;
-			case 'LOG_ERR':
-				$level = 'Error';
-				break;
-			case 'LOG_WARNING':
-				$level = 'Warning';
-				break;
-			case 'LOG_NOTICE':
-				$level = 'Notice';
-				break;
-			case 'LOG_INFO':
-				if($this->verbose < 2
-						&& $this->debug !== TRUE)
-					return FALSE;
-				$level = 'Info';
-				break;
-			default:
-				if($this->debug !== TRUE)
-					return FALSE;
-				$level = 'Unknown';
-				break;
-		}
-		if(!is_scalar($message))
-			//XXX potentially multi-line
-			$message = var_export($message, TRUE);
-		$message = $_SERVER['SCRIPT_FILENAME'].": $level: $message";
+		$message = $this->logMessage($priority, $message);
 		error_log($message, 0);
 		return FALSE;
 	}
@@ -392,6 +356,49 @@ abstract class Engine
 		FROM daportal_module
 		WHERE enabled='1'
 		ORDER BY name ASC";
+
+
+	//methods
+	//Engine::logMessage
+	protected function logMessage($priority, $message)
+	{
+		switch($priority)
+		{
+			case 'LOG_ALERT':
+			case 'LOG_CRIT':
+			case 'LOG_EMERG':
+				$level = 'Alert';
+				break;
+			case 'LOG_DEBUG':
+				if($this->debug !== TRUE)
+					return FALSE;
+				$level = 'Debug';
+				break;
+			case 'LOG_ERR':
+				$level = 'Error';
+				break;
+			case 'LOG_WARNING':
+				$level = 'Warning';
+				break;
+			case 'LOG_NOTICE':
+				$level = 'Notice';
+				break;
+			case 'LOG_INFO':
+				if($this->verbose < 2 && $this->debug !== TRUE)
+					return FALSE;
+				$level = 'Info';
+				break;
+			default:
+				if($this->debug !== TRUE)
+					return FALSE;
+				$level = 'Unknown';
+				break;
+		}
+		if(!is_scalar($message))
+			//XXX potentially multi-line
+			$message = var_export($message, TRUE);
+		return $_SERVER['SCRIPT_FILENAME'].": $level: $message";
+	}
 
 
 	//private
