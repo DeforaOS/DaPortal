@@ -22,7 +22,7 @@ $(OBJDIR)sqlite.db: ../doc/sql/sqlite.sql database.sh
 $(OBJDIR)sqlite.db3: ../doc/sql/sqlite.sql database.sh
 	./database.sh -P "$(PREFIX)" -- "$(OBJDIR)sqlite.db3"
 
-$(OBJDIR)tests.log: auth.php config.php coverage.php daportal.conf daportal.php database.php group.php html.php http.php json.php mail.php module.php observer.php pki.php search.php $(OBJDIR)sqlite.db3 template.php tests.php tests.sh user.php
+$(OBJDIR)tests.log: auth.php config.php coverage.php daportal.conf daportal.php database.php engine.php group.php html.php http.php json.php mail.php module.php observer.php pki.php search.php $(OBJDIR)sqlite.db3 template.php tests.php tests.sh user.php
 	./tests.sh -P "$(PREFIX)" -- "$(OBJDIR)tests.log"
 
 clean:

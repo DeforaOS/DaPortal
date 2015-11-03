@@ -360,6 +360,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/daportal.php \
 		$(PACKAGE)-$(VERSION)/tests/database.php \
 		$(PACKAGE)-$(VERSION)/tests/database.sh \
+		$(PACKAGE)-$(VERSION)/tests/engine.php \
 		$(PACKAGE)-$(VERSION)/tests/group.php \
 		$(PACKAGE)-$(VERSION)/tests/html.php \
 		$(PACKAGE)-$(VERSION)/tests/http.php \
