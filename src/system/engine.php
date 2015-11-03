@@ -394,7 +394,7 @@ abstract class Engine
 				$level = 'Unknown';
 				break;
 		}
-		if(!is_scalar($message))
+		if(!is_string($message))
 			//XXX potentially multi-line
 			$message = var_export($message, TRUE);
 		return $_SERVER['SCRIPT_FILENAME'].": $level: $message";
