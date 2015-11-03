@@ -48,8 +48,12 @@ $engine = new TestEngine();
 $engine->attach();
 $ret |= ($engine->logTest('LOG_ERR', 'Test string',
 		'./engine.php: Error: Test string') === TRUE) ? 0 : 2;
+$ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
+		"./engine.php: Error: Multi-line
+./engine.php: Error: test string") === TRUE)
+		? 0 : 4;
 $ret |= ($engine->logTest('LOG_ERR', FALSE,
-		'./engine.php: Error: false') === TRUE) ? 0 : 4;
+		'./engine.php: Error: false') === TRUE) ? 0 : 8;
 exit($ret);
 
 ?>
