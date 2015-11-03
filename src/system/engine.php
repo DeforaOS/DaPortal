@@ -395,9 +395,10 @@ abstract class Engine
 				break;
 		}
 		if(!is_string($message))
-			//XXX potentially multi-line
 			$message = var_export($message, TRUE);
-		return $_SERVER['SCRIPT_FILENAME'].": $level: $message";
+		$prefix = $_SERVER['SCRIPT_FILENAME'].": $level: ";
+		$message = str_replace("\n", "\n$prefix", $message);
+		return $prefix.$message;
 	}
 
 
