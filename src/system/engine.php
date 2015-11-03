@@ -359,6 +359,40 @@ abstract class Engine
 
 
 	//methods
+	//Engine::logBacktrace
+	protected function logBacktrace($priority = 'LOG_DEBUG')
+	{
+		$ret = '';
+		$sep = '';
+
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		for($i = 1, $cnt = count($backtrace); $i < $cnt; $i++)
+		{
+			$ret .= $sep.'#'.($i - 1).': ';
+			if(isset($backtrace[$i]['class']))
+				$ret .= $backtrace[$i]['class'];
+			if(isset($backtrace[$i]['type']))
+				$ret .= $backtrace[$i]['type'];
+			if(isset($backtrace[$i]['function']))
+				$ret .= $backtrace[$i]['function'].'()';
+			$at = '';
+			if(isset($backtrace[$i]['file']))
+			{
+				$at .= '['.$backtrace[$i]['file'];
+				if(isset($backtrace[$i]['line']))
+					$at .= ':'.$backtrace[$i]['line'];
+				$at .= ']';
+			}
+			else if(isset($backtrace[$i]['line']))
+				$at .= 'line '.$backtrace[$i]['line'];
+			if(!empty($at))
+				$ret .= " called at $at";
+			$sep = "\n";
+		}
+		return $this->log($priority, $ret);
+	}
+
+
 	//Engine::logMessage
 	protected function logMessage($priority, $message)
 	{
