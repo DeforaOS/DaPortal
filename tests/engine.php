@@ -30,6 +30,15 @@ class TestEngine extends Engine
 	{
 	}
 
+	public function backtraceTest($priority)
+	{
+		$closure = function($priority)
+		{
+			return $this->logBacktrace($priority);
+		};
+		return $closure($priority);
+	}
+
 	public function logTest($priority, $message, $expected)
 	{
 		$res = $this->logMessage($priority, $message);
@@ -54,6 +63,7 @@ $ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
 		? 0 : 4;
 $ret |= ($engine->logTest('LOG_ERR', FALSE,
 		'./engine.php: Error: false') === TRUE) ? 0 : 8;
+$engine->backtraceTest('LOG_NOTICE');
 exit($ret);
 
 ?>
