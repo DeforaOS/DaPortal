@@ -110,7 +110,7 @@ class HTML
 		}
 		//load as HTML if necessary
 		$dom = new DOMDocument('1.0', 'UTF-8');
-		if($dom->loadXML($content, LIBXML_NOENT | LIBXML_NONET)
+		if(@$dom->loadXML($content, LIBXML_NOENT | LIBXML_NONET)
 					!== FALSE
 				|| $dom->loadHTML($content,
 					LIBXML_NOENT | LIBXML_NONET) !== FALSE)
