@@ -74,7 +74,7 @@ class PKIModule extends MultiContentModule
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
 		{
-			case 'CAClientPKIContent':
+			case $this->content_classes['caclient']:
 				$this->text_content_admin
 					= _('CA clients administration');
 				$this->text_content_list_title
@@ -86,7 +86,7 @@ class PKIModule extends MultiContentModule
 				$this->text_content_submit_content
 					= _('Client certificate request');
 				break;
-			case 'CAServerPKIContent':
+			case $this->content_classes['caserver']:
 				$this->text_content_admin
 					= _('CA servers administration');
 				$this->text_content_list_title
@@ -99,7 +99,7 @@ class PKIModule extends MultiContentModule
 					= _('Server certificate request');
 				break;
 			default:
-			case 'CAPKIContent':
+			case $this->content_classes['ca']:
 				$this->text_content_admin
 					= _('CAs administration');
 				$this->text_content_list_title
@@ -163,6 +163,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAs($engine, $request, $type)
 	{
+		$class = $this->content_classes['ca'];
 		$title = _('Latest Certification Authorities');
 
 		//list the latest certification authorities
@@ -170,9 +171,8 @@ class PKIModule extends MultiContentModule
 		$page->append('title', array('stock' => $this->getName(),
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		if(($bugs = CAPKIContent::listAll($engine, $this,
-				'timestamp', $this->content_headline_count))
-				=== FALSE)
+		if(($bugs = $class::listAll($engine, $this, 'timestamp',
+				$this->content_headline_count)) === FALSE)
 		{
 			$error = _('Could not list Certification Authorities');
 			$page->append('dialog', array('type' => 'error',
@@ -180,7 +180,7 @@ class PKIModule extends MultiContentModule
 			return new PageResponse($page,
 				Response::$CODE_EUNKNOWN);
 		}
-		$columns = CAPKIContent::getColumns();
+		$columns = $class::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
 		foreach($bugs as $b)
 			$view->append($b->displayRow($engine, $request));
@@ -193,6 +193,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAClients($engine, $request, $type)
 	{
+		$class = $this->content_classes['caclient'];
 		$title = _('Latest CA clients');
 
 		//list the latest CA clients
@@ -200,9 +201,8 @@ class PKIModule extends MultiContentModule
 		$page->append('title', array('stock' => $this->getName(),
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		if(($bugs = CAClientPKIContent::listAll($engine, $this,
-				'timestamp', $this->content_headline_count))
-				=== FALSE)
+		if(($bugs = $class::listAll($engine, $this, 'timestamp',
+				$this->content_headline_count)) === FALSE)
 		{
 			$error = _('Could not list CA clients');
 			$page->append('dialog', array('type' => 'error',
@@ -210,7 +210,7 @@ class PKIModule extends MultiContentModule
 			return new PageResponse($page,
 				Response::$CODE_EUNKNOWN);
 		}
-		$columns = CAClientPKIContent::getColumns();
+		$columns = $class::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
 		foreach($bugs as $b)
 			$view->append($b->displayRow($engine, $request));
@@ -223,6 +223,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAServers($engine, $request, $type)
 	{
+		$class = $this->content_classes['caserver'];
 		$title = _('Latest CA servers');
 
 		//list the latest CA servers
@@ -230,9 +231,8 @@ class PKIModule extends MultiContentModule
 		$page->append('title', array('stock' => $this->getName(),
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		if(($bugs = CAServerPKIContent::listAll($engine, $this,
-				'timestamp', $this->content_headline_count))
-				=== FALSE)
+		if(($bugs = $class::listAll($engine, $this, 'timestamp',
+				$this->content_headline_count)) === FALSE)
 		{
 			$error = _('Could not list CA servers');
 			$page->append('dialog', array('type' => 'error',
@@ -240,7 +240,7 @@ class PKIModule extends MultiContentModule
 			return new PageResponse($page,
 				Response::$CODE_EUNKNOWN);
 		}
-		$columns = CAServerPKIContent::getColumns();
+		$columns = $class::getColumns();
 		$view = $vbox->append('treeview', array('columns' => $columns));
 		foreach($bugs as $b)
 			$view->append($b->displayRow($engine, $request));
@@ -255,7 +255,8 @@ class PKIModule extends MultiContentModule
 	//PKIModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$parent = CAPKIContent::load($engine, $this, $request->getID(),
+		$class = $this->content_classes['ca'];
+		$parent = $class::load($engine, $this, $request->getID(),
 				$request->getTitle());
 
 		if($parent !== FALSE)
