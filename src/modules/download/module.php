@@ -374,10 +374,8 @@ class DownloadModule extends MultiContentModule
 
 		$content = $class::loadFromProperties($engine, $this, $res);
 		$r = $content->displayRow($engine);
-		//XXX rework ContentModule::callAdmin() to avoid this
-		$row->set('id', 'ids['.$res['id'].']');
-		$columns = array('icon', 'title', 'enabled', 'public',
-			'username', 'date');
+		$columns = array('id', 'title', 'enabled', 'public', 'username',
+			'date');
 		foreach($columns as $c)
 			$row->set($c, $r->get($c));
 		$stock = ($res['mode'] & static::$S_IFDIR) ? 'folder' : 'file';
