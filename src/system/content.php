@@ -571,7 +571,7 @@ class Content
 		//date
 		$r['date'] = $this->getDate();
 		//id
-		$r['id'] = 'content_id:'.$this->getID();
+		$r['id'] = 'ids['.$this->getID().']';
 		return new PageElement('row', $r);
 	}
 
