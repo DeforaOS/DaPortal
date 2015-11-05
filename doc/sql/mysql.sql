@@ -1,6 +1,9 @@
 /* $Id$ */
 /* This file is part of DeforaOS Web DaPortal */
 /* Copyright (c) 2011-2015 Pierre Pronchery <khorben@defora.org> */
+/* XXX this database initialization file has not been maintained in many years
+ * and is currently not expected to work; please use PostgreSQL, SQLite3 or
+ * submit a patch. */
 
 
 
