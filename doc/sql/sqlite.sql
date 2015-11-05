@@ -4,6 +4,8 @@
 
 
 
+PRAGMA encoding="UTF-8";
+
 DROP TABLE daportal_blog_content;
 DROP TABLE daportal_blog_user;
 DROP TABLE daportal_caclient;
@@ -114,7 +116,7 @@ CREATE TABLE daportal_lang (
 );
 
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('en', 'English', '1');
-INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('fr', 'Français', '1');
+INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('fr', 'FranÃ§ais', '1');
 INSERT INTO daportal_lang (lang_id, name, enabled) VALUES ('de', 'Deutsch', '1');
 
 
