@@ -189,8 +189,9 @@ abstract class Engine
 	//Engine::log
 	public function log($priority, $message)
 	{
-		$message = $this->logMessage($priority, $message);
-		error_log($message, 0);
+		if(($message = $this->logMessage($priority, $message))
+				!== FALSE)
+			error_log($message, 0);
 		return FALSE;
 	}
 
