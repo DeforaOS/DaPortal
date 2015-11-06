@@ -101,7 +101,7 @@ class SQLUserBackend extends UserBackend
 		$db = $engine->getDatabase();
 		$query = static::$query_set_password;
 
-	       	//XXX seems to default to sh-md5 (should be configurable)
+		//XXX seems to default to sh-md5 (should be configurable)
 		$hash = crypt($password);
 		$args = array('user_id' => $this->user_id,
 			'password' => $hash);
@@ -431,7 +431,7 @@ class SQLUserBackend extends UserBackend
 		$args = array('username' => $username, 'group_id' => $group_id,
 			'fullname' => $fullname, 'password' => $password,
 			'email' => $email, 'enabled' => $enabled ? 1 : 0,
-		       	'admin' => $admin ? 1 : 0);
+			'admin' => $admin ? 1 : 0);
 		$res = $db->query($engine, $query, $args);
 		if($res === FALSE || ($uid = $db->getLastID($engine,
 						'daportal_user', 'user_id'))
@@ -562,7 +562,7 @@ class SQLUserBackend extends UserBackend
 			$content->append('link', array('request' => $r));
 			$text = _("Please note that this link will expire in 7 days.\n");
 			$content->append('label', array('text' => $text));
-                       //FIXME send only if the transaction succeeds
+			//FIXME send only if the transaction succeeds
 			if(DaPortal\Mail::send($engine, FALSE, $email, $subject,
 					$content) === FALSE)
 			{
@@ -656,7 +656,7 @@ class SQLUserBackend extends UserBackend
 
 		if($db->transactionBegin($engine) === FALSE)
 			return FALSE;
-	       	//delete password reset requests older than one day
+		//delete password reset requests older than one day
 		if(static::resetCleanup($engine) === FALSE)
 		{
 			$db->transactionRollback($engine);

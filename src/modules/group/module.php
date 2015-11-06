@@ -829,9 +829,9 @@ class GroupModule extends Module
 		ON daportal_group.group_id=daportal_user_group.group_id
 		GROUP BY daportal_group.group_id';
 	static private $query_content = "SELECT name
-	       	FROM daportal_module
+		FROM daportal_module
 		WHERE enabled='1'
-	       	ORDER BY name ASC";
+		ORDER BY name ASC";
 	static private $query_list = "SELECT group_id AS id, groupname
 		FROM daportal_group_enabled
 		WHERE group_id <> '0'";
