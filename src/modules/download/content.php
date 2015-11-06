@@ -55,10 +55,7 @@ abstract class DownloadContent extends ContentMulti
 			$name = 'download';
 		if(($root = $config->get('module::'.$name, 'root'))
 				=== FALSE)
-		{
-			$engine->log('LOG_WARNING', $error);
-			$root = '/tmp';
-		}
+			return $engine->log('LOG_ERR', $error);
 		return $root;
 	}
 

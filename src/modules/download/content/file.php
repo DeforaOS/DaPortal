@@ -85,8 +85,10 @@ class FileDownloadContent extends DownloadContent
 		$format = _('%A, %B %e %Y, %H:%M:%S');
 
 		//output the file details
-		$filename = $this->getFilename($engine);
 		$error = _('Could not obtain details for this file');
+		if(($filename = $this->getFilename($engine)) === FALSE)
+			return new PageElement('dialog', array(
+				'type' => 'error', 'text' => $error));
 		if(($st = stat($filename)) === FALSE)
 			return new PageElement('dialog', array(
 				'type' => 'error', 'text' => $error));
@@ -176,8 +178,8 @@ class FileDownloadContent extends DownloadContent
 	public function download($engine, $request)
 	{
 		//output the file
-		$filename = $this->getFilename($engine);
-		if(($fp = fopen($filename, 'rb')) === FALSE)
+		if(($filename = $this->getFilename($engine)) === FALSE
+				|| ($fp = fopen($filename, 'rb')) === FALSE)
 		{
 			$error = _('Could not read file');
 			return new ErrorResponse($error);
@@ -251,9 +253,10 @@ class FileDownloadContent extends DownloadContent
 		$umask = (sscanf($umask, '%o', $umask) == 1)
 			? umask($umask) : FALSE;
 		//copy (or move) the file
-		$dst = $this->getFilename($engine);
 		$error = _('Could not copy the file');
-		if(is_uploaded_file($filename))
+		if(($dst = $this->getFilename($engine)) === FALSE)
+			$ret = FALSE;
+		else if(is_uploaded_file($filename))
 			//FIXME the umask is not applied
 			$ret = move_uploaded_file($filename, $dst);
 		else
@@ -316,9 +319,13 @@ class FileDownloadContent extends DownloadContent
 	protected function getFilename($engine)
 	{
 		$module = $this->getModule()->getName();
-		$root = static::getRoot($engine, $module);
 
-		return $root.'/'.$this->get('download_id');
+		if(($root = static::getRoot($engine, $module)) === FALSE)
+			return FALSE;
+		if(($id = $this->get('download_id')) === FALSE
+				|| !is_numeric($id))
+			return FALSE;
+		return $root.'/'.$id;
 	}
 }
 
