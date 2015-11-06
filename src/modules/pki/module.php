@@ -74,7 +74,7 @@ class PKIModule extends MultiContentModule
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
 		{
-			case $this->content_classes['caclient']:
+			case static::$content_classes['caclient']:
 				$this->text_content_admin
 					= _('CA clients administration');
 				$this->text_content_list_title
@@ -86,7 +86,7 @@ class PKIModule extends MultiContentModule
 				$this->text_content_submit_content
 					= _('Client certificate request');
 				break;
-			case $this->content_classes['caserver']:
+			case static::$content_classes['caserver']:
 				$this->text_content_admin
 					= _('CA servers administration');
 				$this->text_content_list_title
@@ -99,7 +99,7 @@ class PKIModule extends MultiContentModule
 					= _('Server certificate request');
 				break;
 			default:
-			case $this->content_classes['ca']:
+			case static::$content_classes['ca']:
 				$this->text_content_admin
 					= _('CAs administration');
 				$this->text_content_list_title
@@ -163,7 +163,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAs($engine, $request, $type)
 	{
-		$class = $this->content_classes['ca'];
+		$class = static::$content_classes['ca'];
 		$title = _('Latest Certification Authorities');
 
 		//list the latest certification authorities
@@ -193,7 +193,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAClients($engine, $request, $type)
 	{
-		$class = $this->content_classes['caclient'];
+		$class = static::$content_classes['caclient'];
 		$title = _('Latest CA clients');
 
 		//list the latest CA clients
@@ -223,7 +223,7 @@ class PKIModule extends MultiContentModule
 
 	private function _latestCAServers($engine, $request, $type)
 	{
-		$class = $this->content_classes['caserver'];
+		$class = static::$content_classes['caserver'];
 		$title = _('Latest CA servers');
 
 		//list the latest CA servers
@@ -255,7 +255,7 @@ class PKIModule extends MultiContentModule
 	//PKIModule::formSubmit
 	protected function formSubmit($engine, $request)
 	{
-		$class = $this->content_classes['ca'];
+		$class = static::$content_classes['ca'];
 		$parent = $class::load($engine, $this, $request->getID(),
 				$request->getTitle());
 
