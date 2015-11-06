@@ -121,12 +121,15 @@ class FolderDownloadContent extends DownloadContent
 		$download_id = $this->get('download_id');
 
 		$toolbar = new PageElement('toolbar');
-		$parent = ($parent != NULL) ? $parent : FALSE;
 		//parent folder
-		//XXX would be nicer with the title too
-		$r = new Request($module->getName(), FALSE, $parent);
-		$toolbar->append('button', array('stock' => 'updir',
-				'request' => $r, 'text' => _('Parent folder')));
+		if($this->getID())
+		{
+			//XXX would be nicer with the title too
+			$r = new Request($module->getName(), FALSE, $parent);
+			$toolbar->append('button', array('stock' => 'updir',
+					'request' => $r,
+					'text' => _('Parent folder')));
+		}
 		//refresh
 		$r = $this->getRequest();
 		$toolbar->append('button', array('stock' => 'refresh',
