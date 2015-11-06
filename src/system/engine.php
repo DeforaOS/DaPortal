@@ -157,18 +157,11 @@ abstract class Engine
 			set_error_handler(function($errno, $errstr,
 					$errfile = FALSE, $errline = FALSE,
 					$errcontext = FALSE)
-		{
-			if((error_reporting() & $errno) == 0)
-				return FALSE;
-			ob_start();
-			debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-			$backtrace = ob_get_contents();
-			ob_clean();
-			$backtrace = explode("\n", trim($backtrace));
-			foreach($backtrace as $b)
-				$this->log('LOG_DEBUG', $b);
-			return FALSE;
-		});
+			{
+				if((error_reporting() & $errno) == 0)
+					return FALSE;
+				return $this->logBacktrace();
+			});
 		else
 			restore_error_handler();
 	}
