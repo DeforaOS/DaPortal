@@ -224,10 +224,12 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		//store the file
-		$error = _('Internal server error');
 		if(($did = $db->getLastID($engine, static::$download_table,
 				static::$download_table_id)) === FALSE)
+		{
+			$error = _('Internal server error');
 			return FALSE;
+		}
 		$this->set('download_id', $did);
 		//set the umask (if configured)
 		$umask = (sscanf($umask, '%o', $umask) == 1)
