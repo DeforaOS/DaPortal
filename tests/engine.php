@@ -64,6 +64,7 @@ $ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
 $ret |= ($engine->logTest('LOG_ERR', FALSE,
 		'./engine.php: Error: false') === TRUE) ? 0 : 8;
 $engine->backtraceTest('LOG_NOTICE');
+$test = UNDEFINED_CONSTANT;
 exit($ret);
 
 ?>
