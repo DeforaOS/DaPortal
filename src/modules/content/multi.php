@@ -39,6 +39,15 @@ abstract class MultiContentModule extends ContentModule
 	}
 
 
+	//MultiContentModule::getContentClass
+	static public function getContentClass($class)
+	{
+		if(isset(static::$content_classes[$class]))
+			return static::$content_classes[$class];
+		return FALSE;
+	}
+
+
 	//protected
 	//properties
 	static protected $content_classes = array();
