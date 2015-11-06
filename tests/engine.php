@@ -39,6 +39,11 @@ class TestEngine extends Engine
 		return $closure($priority);
 	}
 
+	public function errorTest()
+	{
+		$test = UNDEFINED_CONSTANT;
+	}
+
 	public function exceptionTest()
 	{
 		throw new Exception('Test exception', 42);
@@ -68,8 +73,27 @@ $ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
 		? 0 : 4;
 $ret |= ($engine->logTest('LOG_ERR', FALSE,
 		'./engine.php: Error: false') === TRUE) ? 0 : 8;
-$engine->backtraceTest('LOG_NOTICE');
-$test = UNDEFINED_CONSTANT;
+
+$engine->backtraceTest('LOG_INFO');
+$engine->errorTest();
+//XXX currently breaks the test
+//$engine->exceptionTest();
+
+$engine->setDebug(FALSE);
+$ret |= ($engine->logTest('LOG_ERR', 'Test string',
+		'./engine.php: Error: Test string') === TRUE) ? 0 : 16;
+$ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
+		"./engine.php: Error: Multi-line
+./engine.php: Error: test string") === TRUE)
+		? 0 : 32;
+$ret |= ($engine->logTest('LOG_ERR', FALSE,
+		'./engine.php: Error: false') === TRUE) ? 0 : 64;
+
+$engine->backtraceTest('LOG_INFO');
+$engine->errorTest();
+//XXX currently breaks the test
+//$engine->exceptionTest();
+
 exit($ret);
 
 ?>
