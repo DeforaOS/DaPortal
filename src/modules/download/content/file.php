@@ -198,6 +198,7 @@ class FileDownloadContent extends DownloadContent
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
 		$parent = $this->get('parent_id');
+		$mode = 420;
 		$umask = $this->configGet('umask');
 
 		if(($filename = $this->getFilenameSubmitted($request)) === FALSE
@@ -216,7 +217,7 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		$args = array('content_id' => $this->getID(),
 			'parent' => ($parent !== FALSE) ? $parent : NULL,
-			'mode' => 420);
+			'mode' => $mode);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = _('Could not register the file');
