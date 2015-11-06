@@ -154,6 +154,7 @@ abstract class Engine
 	{
 		$this->debug = $debug ? TRUE : FALSE;
 		if($this->debug)
+		{
 			set_error_handler(function($errno, $errstr,
 					$errfile = FALSE, $errline = FALSE,
 					$errcontext = FALSE)
@@ -162,8 +163,18 @@ abstract class Engine
 					return FALSE;
 				return $this->logBacktrace();
 			});
+			//XXX no type hint for compatibility with PHP 7
+			set_exception_handler(function($e)
+			{
+				$this->logException($e, 'LOG_ERR');
+				exit(125);
+			});
+		}
 		else
+		{
+			restore_exception_handler();
 			restore_error_handler();
+		}
 	}
 
 
@@ -355,29 +366,51 @@ abstract class Engine
 	//Engine::logBacktrace
 	protected function logBacktrace($priority = 'LOG_DEBUG')
 	{
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		array_shift($backtrace);
+		return $this->logTrace($backtrace, $priority);
+	}
+
+
+	//Engine::logException
+	protected function logException(Exception $exception,
+			$priority = 'LOG_DEBUG')
+	{
+		$this->logTrace($exception->getTrace());
+		$message = "Uncaught exception '".$exception->getMessage()."'";
+		if(($code = $exception->getCode()) != 0)
+			$message .= " (code $code)";
+		$message .= ' in file '.$exception->getFile().':'
+			.$exception->getLine();
+		return $this->log($priority, $message);
+	}
+
+
+	//Engine::logTrace
+	protected function logTrace($trace, $priority = 'LOG_DEBUG')
+	{
 		$ret = '';
 		$sep = '';
 
-		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-		for($i = 1, $cnt = count($backtrace); $i < $cnt; $i++)
+		for($i = 0, $cnt = count($trace); $i < $cnt; $i++)
 		{
-			$ret .= $sep.'#'.($i - 1).': ';
-			if(isset($backtrace[$i]['class']))
-				$ret .= $backtrace[$i]['class'];
-			if(isset($backtrace[$i]['type']))
-				$ret .= $backtrace[$i]['type'];
-			if(isset($backtrace[$i]['function']))
-				$ret .= $backtrace[$i]['function'].'()';
+			$ret .= $sep.'#'.$i.': ';
+			if(isset($trace[$i]['class']))
+				$ret .= $trace[$i]['class'];
+			if(isset($trace[$i]['type']))
+				$ret .= $trace[$i]['type'];
+			if(isset($trace[$i]['function']))
+				$ret .= $trace[$i]['function'].'()';
 			$at = '';
-			if(isset($backtrace[$i]['file']))
+			if(isset($trace[$i]['file']))
 			{
-				$at .= '['.$backtrace[$i]['file'];
-				if(isset($backtrace[$i]['line']))
-					$at .= ':'.$backtrace[$i]['line'];
+				$at .= '['.$trace[$i]['file'];
+				if(isset($trace[$i]['line']))
+					$at .= ':'.$trace[$i]['line'];
 				$at .= ']';
 			}
-			else if(isset($backtrace[$i]['line']))
-				$at .= 'line '.$backtrace[$i]['line'];
+			else if(isset($trace[$i]['line']))
+				$at .= 'line '.$trace[$i]['line'];
 			if(!empty($at))
 				$ret .= " called at $at";
 			$sep = "\n";

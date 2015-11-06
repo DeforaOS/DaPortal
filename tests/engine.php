@@ -39,6 +39,11 @@ class TestEngine extends Engine
 		return $closure($priority);
 	}
 
+	public function exceptionTest()
+	{
+		throw new Exception('Test exception', 42);
+	}
+
 	public function logTest($priority, $message, $expected)
 	{
 		$res = $this->logMessage($priority, $message);
