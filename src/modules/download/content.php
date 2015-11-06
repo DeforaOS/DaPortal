@@ -35,6 +35,24 @@ abstract class DownloadContent extends ContentMulti
 
 
 	//accessors
+	//DownloadContent::canSubmit
+	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	{
+		if(parent::canSubmit($engine, $request, $error) === FALSE)
+			return FALSE;
+		if($request === FALSE)
+			return TRUE;
+		//forbid empty filenames
+		$filename = $this->getFilenameSubmitted($request);
+		if(!is_string($filename) || strlen($filename) == 0)
+		{
+			$error = _('The filename must be specified');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 	//DownloadContent::getParent
 	public function getParent($engine, $request = FALSE)
 	{
@@ -77,6 +95,7 @@ abstract class DownloadContent extends ContentMulti
 	static protected $S_IFDIR = 512;
 	static protected $list_mask = 0;
 	static protected $load_title = 'daportal_content_enabled.title';
+
 	//queries
 	//IN:	module_id
 	static protected $query_list = 'SELECT
@@ -137,6 +156,11 @@ abstract class DownloadContent extends ContentMulti
 			return FALSE;
 		return parent::get($property);
 	}
+
+
+	//DownloadContent::getFilenameSubmitted
+	abstract protected function getFilenameSubmitted(
+			Request $request = NULL);
 
 
 	//DownloadContent::getIcon

@@ -44,24 +44,6 @@ class FolderDownloadContent extends DownloadContent
 	}
 
 
-	//FolderDownloadContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
-	{
-		if(parent::canSubmit($engine, $request, $error) === FALSE)
-			return FALSE;
-		if($request === FALSE)
-			return TRUE;
-		//forbid empty filenames
-		if(!is_string(($title = parent::getTitle()))
-				|| strlen($title) == 0)
-		{
-			$error = _('Folders must have a name');
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-
 	//FolderDownloadContent::getTitle
 	public function getTitle()
 	{
@@ -304,13 +286,14 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//protected
+	//properties
 	static protected $class = 'FolderDownloadContent';
 	static protected $class_file = 'FileDownloadContent';
 	static protected $list_mask = 512;
 
 	static protected $download_table = 'daportal_download';
 	static protected $download_table_id = 'download_id';
-	//properties
+
 	//queries
 	//IN:	content_id
 	//	parent
@@ -380,6 +363,13 @@ class FolderDownloadContent extends DownloadContent
 		AND (parent_content.enabled IS NULL OR parent_content.enabled='1')
 		AND (parent_content.public IS NULL OR parent_content.public='1'
 		OR parent_content.user_id=:user_id)";
+
+
+	//FolderDownloadContent::getFilenameSubmitted
+	protected function getFilenameSubmitted(Request $request = NULL)
+	{
+		return parent::getTitle();
+	}
 }
 
 ?>

@@ -37,26 +37,6 @@ class FileDownloadContent extends DownloadContent
 	}
 
 
-	//accessors
-	//FileDownloadContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
-	{
-		if(parent::canSubmit($engine, $request, $error) === FALSE)
-			return FALSE;
-		if($request === FALSE)
-			return TRUE;
-		//forbid empty filenames
-		if(($filename = $request->get('filename')) === FALSE)
-			$filename = $this->get('filename');
-		if(!is_string($filename) || strlen($filename) == 0)
-		{
-			$error = _('The filename must be specified');
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-
 	//useful
 	//FileDownloadContent::displayButtons
 	public function displayButtons($engine, $request)
@@ -220,10 +200,9 @@ class FileDownloadContent extends DownloadContent
 		$parent = $this->get('parent_id');
 		$umask = $this->configGet('umask');
 
-		//XXX duplicated with canSubmit() (we need the filename anyway)
-		if(($filename = $request->get('filename')) === FALSE
-				&& ($filename = $this->get('filename'))
-					=== FALSE)
+		if(($filename = $this->getFilenameSubmitted($request)) === FALSE
+				|| !is_string($filename)
+				|| strlen($filename) == 0)
 		{
 			$error = _('The filename must be specified');
 			$engine->log('LOG_ERR', $error);
@@ -326,6 +305,17 @@ class FileDownloadContent extends DownloadContent
 				|| !is_numeric($id))
 			return FALSE;
 		return $root.'/'.$id;
+	}
+
+
+	//FileDownloadContent::getFilenameSubmitted
+	protected function getFilenameSubmitted(Request $request = NULL)
+	{
+		if(!is_null($request)
+				&& ($filename = $request->get('filename'))
+				!== FALSE)
+			return $filename;
+		return $this->get('filename');
 	}
 }
 
