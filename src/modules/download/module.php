@@ -319,7 +319,6 @@ class DownloadModule extends MultiContentModule
 
 		if($filename === FALSE)
 			$filename = basename($pathname);
-		//FIXME check for filename unicity in the current folder
 		$content = new $class($engine, $this, array(
 			'title' => $filename, 'content' => FALSE,
 			'filename' => $pathname,

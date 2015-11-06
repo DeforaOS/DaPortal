@@ -210,11 +210,8 @@ class FolderDownloadContent extends DownloadContent
 	{
 		$db = $engine->getDatabase();
 		$query = static::$folder_query_insert;
-		$parent = $request->get('parent');
 		$mode = $request->get('mode');
 
-		if($parent === FALSE)
-			$parent = NULL;
 		if($mode !== FALSE)
 			$mode |= static::$S_IFDIR;
 		else if(($mode = $this->get('mode')) === FALSE)
@@ -225,11 +222,14 @@ class FolderDownloadContent extends DownloadContent
 		$error = 'Invalid mode for directory';
 		if(!$this->isDirectory($mode))
 			return FALSE;
-		//FIXME check for filename unicity in the current folder
 		//set missing parameters
 		$this->set('download_id', FALSE);
+		if(!$this->canSubmit($engine, $request, $error))
+			return FALSE;
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
+		if(($parent = $this->getParentSubmitted($request)) === FALSE)
+			$parent = NULL;
 		$args = array('content_id' => $this->getID(),
 			'parent' => $parent, 'mode' => $mode);
 		if($db->query($engine, $query, $args) === FALSE)
@@ -372,6 +372,18 @@ class FolderDownloadContent extends DownloadContent
 	protected function getFilenameSubmitted(Request $request = NULL)
 	{
 		return parent::getTitle();
+	}
+
+
+	//FolderDownloadContent::getParentSubmitted
+	protected function getParentSubmitted(Request $request = NULL)
+	{
+		if(is_null($request))
+			return FALSE;
+		if(($parent = $request->get('parent')) === FALSE
+				|| !is_numeric($parent))
+			return FALSE;
+		return $parent;
 	}
 }
 

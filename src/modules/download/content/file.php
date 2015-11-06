@@ -42,7 +42,7 @@ class FileDownloadContent extends DownloadContent
 	public function displayButtons($engine, $request)
 	{
 		$module = $this->getModule();
-		$parent = $this->get('parent_id');
+		$parent = $this->getParentSubmitted($request);
 
 		$hbox = new PageElement('hbox');
 		//parent folder
@@ -121,7 +121,7 @@ class FileDownloadContent extends DownloadContent
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
-		$parent = $this->get('parent_id');
+		$parent = $this->getParentSubmitted($request);
 
 		$toolbar = new PageElement('toolbar');
 		//parent folder
@@ -197,27 +197,19 @@ class FileDownloadContent extends DownloadContent
 	{
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
-		$parent = $this->get('parent_id');
 		$mode = 420;
 		$umask = $this->configGet('umask');
 
-		if(($filename = $this->getFilenameSubmitted($request)) === FALSE
-				|| !is_string($filename)
-				|| strlen($filename) == 0)
-		{
-			$error = _('The filename must be specified');
-			$engine->log('LOG_ERR', $error);
-			return FALSE;
-		}
-		//FIXME check for filename unicity in the current folder
-		$name = $this->getTitle();
 		//set missing parameters
 		$this->set('download_id', FALSE);
+		if(!$this->canSubmit($engine, $request, $error))
+			return FALSE;
 		if(parent::_saveInsert($engine, $request, $error) === FALSE)
 			return FALSE;
+		if(($parent = $this->getParentSubmitted($request)) === FALSE)
+			$parent = NULL;
 		$args = array('content_id' => $this->getID(),
-			'parent' => ($parent !== FALSE) ? $parent : NULL,
-			'mode' => $mode);
+			'parent' => $parent, 'mode' => $mode);
 		if($db->query($engine, $query, $args) === FALSE)
 		{
 			$error = _('Could not register the file');
@@ -231,6 +223,12 @@ class FileDownloadContent extends DownloadContent
 			return FALSE;
 		}
 		$this->set('download_id', $did);
+		//forbid empty filenames
+		if(($filename = $this->get('filename')) === FALSE)
+		{
+			$error = _('The filename must be specified');
+			return FALSE;
+		}
 		//set the umask (if configured)
 		$umask = (sscanf($umask, '%o', $umask) == 1)
 			? umask($umask) : FALSE;
@@ -314,11 +312,17 @@ class FileDownloadContent extends DownloadContent
 	//FileDownloadContent::getFilenameSubmitted
 	protected function getFilenameSubmitted(Request $request = NULL)
 	{
-		if(!is_null($request)
-				&& ($filename = $request->get('filename'))
-				!== FALSE)
-			return $filename;
-		return $this->get('filename');
+		return $this->getTitle();
+	}
+
+
+	//FileDownloadContent::getParentSubmitted
+	protected function getParentSubmitted(Request $request = NULL)
+	{
+		if(($parent = $this->get('parent_id')) === FALSE
+				|| !is_numeric($parent))
+			return FALSE;
+		return $parent;
 	}
 }
 

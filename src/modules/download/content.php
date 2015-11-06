@@ -49,6 +49,30 @@ abstract class DownloadContent extends ContentMulti
 			$error = _('The filename must be specified');
 			return FALSE;
 		}
+		//check for filename unicity
+		$module = $this->getModule();
+		if(($parent = $this->getParentSubmitted($request)) !== FALSE)
+		{
+			$class = $module::getContentClass('folder');
+			if(($parent = $class::loadByDownloadID($engine,
+					$module, $parent)) === FALSE)
+			{
+				$error = _('Could not load the parent');
+				return FALSE;
+			}
+		}
+		if(($files = static::_listFiles($engine, $module, FALSE, FALSE,
+				FALSE, FALSE, 0, $parent)) === FALSE)
+		{
+			$error = _('Could not obtain the file list');
+			return FALSE;
+		}
+		foreach($files as $f)
+			if($f['title'] == $filename)
+			{
+				$error = _('This file already exists');
+				return FALSE;
+			}
 		return TRUE;
 	}
 
@@ -161,6 +185,10 @@ abstract class DownloadContent extends ContentMulti
 	//DownloadContent::getFilenameSubmitted
 	abstract protected function getFilenameSubmitted(
 			Request $request = NULL);
+
+
+	//DownloadContent::getParentSubmitted
+	abstract protected function getParentSubmitted(Request $request = NULL);
 
 
 	//DownloadContent::getIcon
