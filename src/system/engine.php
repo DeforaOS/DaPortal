@@ -393,9 +393,9 @@ abstract class Engine
 		$ret = '';
 		$sep = '';
 
-		for($i = 0, $cnt = count($trace); $i < $cnt; $i++)
+		for($cnt = count($trace), $i = $cnt; $i > 0;)
 		{
-			$ret .= $sep.'#'.$i.': ';
+			$ret .= $sep.'#'.(--$i).': ';
 			if(isset($trace[$i]['class']))
 				$ret .= $trace[$i]['class'];
 			if(isset($trace[$i]['type']))
