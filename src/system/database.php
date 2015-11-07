@@ -102,7 +102,7 @@ abstract class Database
 
 
 	//Database::transactionBegin
-	public function transactionBegin($engine)
+	public function transactionBegin(Engine $engine = NULL)
 	{
 		if($this->inTransaction())
 		{
@@ -110,20 +110,20 @@ abstract class Database
 			return TRUE;
 		}
 		$this->rollback = FALSE;
-		if($this->_beginTransaction($engine) === FALSE)
+		if($this->_beginTransaction($this->engine) === FALSE)
 			return FALSE;
 		$this->transaction = 1;
 		return TRUE;
 	}
 
-	protected function _beginTransaction($engine)
+	protected function _beginTransaction()
 	{
-		return $this->query($engine, 'START TRANSACTION');
+		return $this->query($this->engine, 'START TRANSACTION');
 	}
 
 
 	//Database::transactionCommit
-	public function transactionCommit($engine)
+	public function transactionCommit(Engine $engine = NULL)
 	{
 		if(!$this->inTransaction())
 			return FALSE;
@@ -134,46 +134,46 @@ abstract class Database
 		}
 		if($this->rollback)
 		{
-			$this->transactionRollback($engine);
+			$this->transactionRollback($this->engine);
 			return FALSE;
 		}
 		$this->transaction--;
-		return $this->_commitTransaction($engine);
+		return $this->_commitTransaction($this->engine);
 	}
 
-	protected function _commitTransaction($engine)
+	protected function _commitTransaction()
 	{
-		return $this->query($engine, 'COMMIT');
+		return $this->query($this->engine, 'COMMIT');
 	}
 
 
 	//Database::transactionRollback
-	public function transactionRollback($engine)
+	public function transactionRollback(Engine $engine = NULL)
 	{
 		if(!$this->inTransaction())
 			return FALSE;
 		if($this->transaction-- == 1)
-			return $this->_rollbackTransaction($engine);
+			return $this->_rollbackTransaction($this->engine);
 		$this->rollback = TRUE;
 		return TRUE;
 	}
 
-	protected function _rollbackTransaction($engine)
+	protected function _rollbackTransaction()
 	{
-		return $this->query($engine, 'ROLLBACK');
+		return $this->query($this->engine, 'ROLLBACK');
 	}
 
 
 	//Database::withTransaction
-	public function withTransaction($engine, $callback)
+	public function withTransaction(Engine $engine, $callback)
 	{
 		if($this->inTransaction())
 			return $callback();
-		if($this->transactionBegin($engine) === FALSE)
+		if($this->transactionBegin($this->engine) === FALSE)
 			return FALSE;
 		if(($ret = $callback()) === FALSE)
-			$this->transactionRollback($engine);
-		else if($this->transactionCommit($engine) === FALSE)
+			$this->transactionRollback($this->engine);
+		else if($this->transactionCommit($this->engine) === FALSE)
 			return FALSE;
 		return $ret;
 	}
@@ -181,7 +181,7 @@ abstract class Database
 
 	//static
 	//Database::attachDefault
-	public static function attachDefault($engine)
+	public static function attachDefault(Engine $engine)
 	{
 		global $config;
 		$ret = FALSE;
@@ -224,11 +224,11 @@ abstract class Database
 
 
 	//virtual
-	abstract public function getLastID($engine, $table, $field);
+	abstract public function getLastID(Engine $engine, $table, $field);
 
-	abstract public function enum($engine, $table, $field);
-	abstract public function query($engine, $query, $parameters = FALSE,
-			$async = FALSE);
+	abstract public function enum(Engine $engine, $table, $field);
+	abstract public function query(Engine $engine, $query,
+			$parameters = FALSE, $async = FALSE);
 
 
 	//protected
@@ -248,8 +248,8 @@ abstract class Database
 
 	//methods
 	//virtual
-	abstract protected function match($engine);
-	abstract protected function attach($engine);
+	abstract protected function match(Engine $engine);
+	abstract protected function attach(Engine $engine);
 
 	abstract protected function escape($string);
 
@@ -285,7 +285,7 @@ abstract class Database
 
 
 	//Database::profileStart
-	protected function profileStart($engine)
+	protected function profileStart()
 	{
 		if($this->profile === FALSE)
 			$this->profile = microtime(TRUE);
@@ -294,7 +294,7 @@ abstract class Database
 
 
 	//Database::profileStop
-	protected function profileStop($engine, $query)
+	protected function profileStop($query)
 	{
 		global $config;
 
@@ -315,9 +315,9 @@ abstract class Database
 			$query = substr($query, 0, 252).'...';
 		$args = array('time' => $time, 'query' => $query);
 		$this->profile = TRUE;
-		if($this->query($engine, static::$query_sql_profile, $args)
-				=== FALSE)
-			$engine->log('LOG_ERR', $error.' (SQL error)');
+		if($this->query($this->engine, static::$query_sql_profile,
+				$args) === FALSE)
+			$this->engine->log('LOG_ERR', $error.' (SQL error)');
 		$this->profile = FALSE;
 		return TRUE;
 	}

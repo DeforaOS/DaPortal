@@ -31,12 +31,12 @@ class PgSQLDatabase extends Database
 	//methods
 	//accessors
 	//PgSQLDatabase::getLastID
-	public function getLastID($engine, $table, $field)
+	public function getLastID(Engine $engine, $table, $field)
 	{
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
-		if(($res = $this->query($engine, $query, $args)) === FALSE
+		if(($res = $this->query($this->engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res->current();
@@ -60,13 +60,13 @@ class PgSQLDatabase extends Database
 
 	//useful
 	//PgSQLDatabase::enum
-	public function enum($engine, $table, $field)
+	public function enum(Engine $engine, $table, $field)
 	{
 		$query = $this->query_enum;
 		$args = array('table' => $table,
 			'field' => $table.'_'.$field);
 
-		if(($res = $this->query($engine, $query, $args)) === FALSE
+		if(($res = $this->query($this->engine, $query, $args)) === FALSE
 				|| count($res) != 1)
 			return array();
 		$res = $res->current();
@@ -114,7 +114,7 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::query
-	public function query($engine, $query, $parameters = FALSE,
+	public function query(Engine $engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;
@@ -122,7 +122,7 @@ class PgSQLDatabase extends Database
 		if($this->handle === FALSE)
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$engine->log('LOG_DEBUG', $query);
+			$this->engine->log('LOG_DEBUG', $query);
 		//convert the query to the PostgreSQL way
 		//FIXME cache the results of the conversion
 		//XXX this may break the query string in illegitimate places
@@ -138,7 +138,7 @@ class PgSQLDatabase extends Database
 			if(!array_key_exists($k, $parameters))
 			{
 				$error = $k.': Missing parameter in query';
-				return $engine->log('LOG_ERR', $error);
+				return $this->engine->log('LOG_ERR', $error);
 			}
 			$query .= "\$$i ".substr($q[$i], $j);
 			if(is_bool($parameters[$k]))
@@ -147,21 +147,21 @@ class PgSQLDatabase extends Database
 				$args[$i] = $parameters[$k];
 		}
 		if($config->get('database::pgsql', 'debug'))
-			$engine->log('LOG_DEBUG', get_class().': '.$query);
+			$this->engine->log('LOG_DEBUG', get_class().': '.$query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
 		//execute the query
-		$this->profileStart($engine);
+		$this->profileStart();
 		if($async)
 			$res = pg_send_execute($this->handle, $q, $args);
 		else
 			$res = pg_execute($this->handle, $q, $args);
-		$this->profileStop($engine, $query);
+		$this->profileStop($this->engine, $query);
 		if($res === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
-				$engine->log('LOG_DEBUG', $error);
+				$this->engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
 		if($async)
@@ -184,14 +184,14 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::transactionBegin
-	public function transactionBegin($engine)
+	public function transactionBegin(Engine $engine = NULL)
 	{
-		return parent::transactionBegin($engine);
+		return parent::transactionBegin();
 	}
 
-	protected function _beginTransaction($engine)
+	protected function _beginTransaction()
 	{
-		return $this->query($engine, 'BEGIN');
+		return $this->query($this->engine, 'BEGIN');
 	}
 
 
@@ -211,7 +211,7 @@ class PgSQLDatabase extends Database
 
 	//methods
 	//PgSQLDatabase::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		global $config;
 		$variables = $this->variables;
@@ -226,7 +226,7 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		global $config;
 

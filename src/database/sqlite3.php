@@ -32,7 +32,7 @@ class SQLite3Database extends Database
 	//methods
 	//accessors
 	//SQLite3Database::getLastID
-	public function getLastID($engine, $table, $field)
+	public function getLastID(Engine $engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -43,10 +43,10 @@ class SQLite3Database extends Database
 
 	//useful
 	//SQLite3Database::enum
-	public function enum($engine, $table, $field)
+	public function enum(Engine $engine, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
-		if(($res = $this->query($engine, $query)) === FALSE)
+		if(($res = $this->query($this->engine, $query)) === FALSE)
 			return FALSE;
 		$ret = array();
 		foreach($res as $r)
@@ -56,7 +56,7 @@ class SQLite3Database extends Database
 
 
 	//SQLite3Database::query
-	public function query($engine, $query, $parameters = FALSE,
+	public function query(Engine $engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;
@@ -64,21 +64,21 @@ class SQLite3Database extends Database
 		if($this->handle === FALSE)
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$engine->log('LOG_DEBUG', $query);
+			$this->engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $this->engine->log('LOG_ERR',
 					'Could not prepare statement: '
 					.$this->handle->lastErrorMsg());
 		if($parameters === FALSE)
 			$parameters = array();
 		if($stmt->clear() !== TRUE)
-			return $engine->log('LOG_ERR',
+			return $this->engine->log('LOG_ERR',
 					'Could not clear statement: '
 					.$this->handle->lastErrorMsg());
 		foreach($parameters as $k => $v)
 			$stmt->bindValue(':'.$k, $v);
 		if(($res = $stmt->execute()) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $this->engine->log('LOG_ERR',
 					'Could not execute statement: '
 					.$this->handle->lastErrorMsg());
 		return new SQLite3DatabaseResult($res);
@@ -112,7 +112,7 @@ class SQLite3Database extends Database
 	//protected
 	//methods
 	//SQLite3Database::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		if(!class_exists('SQLite3'))
 			return 0;
@@ -123,10 +123,10 @@ class SQLite3Database extends Database
 
 
 	//SQLite3Database::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		if(($filename = $this->configGet('filename')) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $this->engine->log('LOG_ERR',
 					'Database filename not defined');
 		try
 		{
@@ -145,12 +145,12 @@ class SQLite3Database extends Database
 		$this->handle->createFunction('date_trunc', $func);
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
-		$this->query($engine, $query);
+		$this->query($this->engine, $query);
 		//enforce foreign keys if configured to
 		if($this->configGet('foreign'))
 		{
 			$query = 'PRAGMA foreign_keys=ON';
-			$this->query($engine, $query);
+			$this->query($this->engine, $query);
 		}
 		return TRUE;
 	}
@@ -200,14 +200,14 @@ class SQLite3Database extends Database
 
 
 	//SQLite3Database::transactionBegin
-	public function transactionBegin($engine)
+	public function transactionBegin(Engine $engine = NULL)
 	{
-		return parent::transactionBegin($engine);
+		return parent::transactionBegin();
 	}
 
-	protected function _beginTransaction($engine)
+	protected function _beginTransaction()
 	{
-		return $this->query($engine, 'BEGIN');
+		return $this->query($this->engine, 'BEGIN');
 	}
 
 

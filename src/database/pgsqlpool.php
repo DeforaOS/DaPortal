@@ -22,13 +22,14 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 	//public
 	//accessors
 	//PgSQLPoolDatabase::getLastID
-	public function getLastID($engine, $table, $field)
+	public function getLastID(Engine $engine, $table, $field)
 	{
 		//force the master to perform this query
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
 		$args = array('sequence' => $sequence);
-		if(($res = parent::query($engine, $query, $args)) === FALSE
+		if(($res = parent::query($this->engine, $query, $args))
+				=== FALSE
 				|| count($res) != 1)
 			return FALSE;
 		$res = $res->current();
@@ -38,26 +39,27 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 
 	//useful
 	//PgSQLPoolDatabase::query
-	public function query($engine, $query, $parameters = FALSE,
+	public function query(Engine $engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		//every transaction goes to us (the master)
-		if($this->inTransaction($engine)
+		if($this->inTransaction()
 				//only SELECT statements go to the slaves
 				|| strncasecmp($query, 'SELECT', 6) != 0
 				//there may be no slave available either
 				|| ($slave = $this->getDatabaseSlave())
 					== FALSE)
-			return parent::query($engine, $query, $parameters,
+			return parent::query($this->engine, $query, $parameters,
 					$async);
-		return $slave->query($engine, $query, $parameters, $async);
+		return $slave->query($this->engine, $query, $parameters,
+				$async);
 	}
 
 
 	//protected
 	//methods
 	//PgSQLPoolDatabase::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		global $config;
 
@@ -72,7 +74,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 
 
 	//PgSQLPoolDatabase::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		global $config;
 		$section = 'database::pgsqlpool';
@@ -86,7 +88,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		return TRUE;
 	}
 
-	private function _attachMaster($engine, $config, $section)
+	private function _attachMaster(Engine $engine, $config, $section)
 	{
 		if(($master = $config->get($section, 'master')) === FALSE
 				|| strlen($master) == 0)
@@ -94,7 +96,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		return $this->_attachConfig($config, "$section::$master");
 	}
 
-	private function _attachSlaves($engine, $config, $section)
+	private function _attachSlaves(Engine $engine, $config, $section)
 	{
 		$this->slaves = new ArrayIterator();
 		if(($slaves = $config->get($section, 'slaves')) === FALSE)

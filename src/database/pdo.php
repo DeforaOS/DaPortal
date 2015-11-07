@@ -30,7 +30,7 @@ class PDODatabase extends Database
 	//methods
 	//accessors
 	//PDODatabase::getLastID
-	public function getLastID($engine, $table, $field)
+	public function getLastID(Engine $engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -49,10 +49,10 @@ class PDODatabase extends Database
 
 	//useful
 	//PDODatabase::enum
-	public function enum($engine, $table, $field)
+	public function enum(Engine $engine, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
-		if(($res = $this->query($engine, $query)) === FALSE)
+		if(($res = $this->query($this->engine, $query)) === FALSE)
 			return FALSE;
 		$ret = array();
 		foreach($res as $r)
@@ -90,15 +90,15 @@ class PDODatabase extends Database
 
 
 	//PDODatabase::query
-	public function query($engine, $query, $parameters = FALSE,
+	public function query(Engine $engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
 		if($this->debug)
-			$engine->log('LOG_DEBUG', $query);
+			$this->engine->log('LOG_DEBUG', $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
-			return $this->_queryError($engine,
+			return $this->_queryError(
 					'Could not prepare statement');
 		if($parameters === FALSE)
 			$parameters = array();
@@ -109,19 +109,18 @@ class PDODatabase extends Database
 			else
 				$args[':'.$k] = $v;
 		if($stmt->execute($args) !== TRUE)
-			return $this->_queryError($engine,
-					'Could not execute query');
+			return $this->_queryError('Could not execute query');
 		return new $this->result_class($stmt);
 	}
 
-	protected function _queryError($engine, $message)
+	protected function _queryError($message)
 	{
 		$error = $this->handle->errorInfo();
 
 		if(count($error) == 3)
-			return $engine->log('LOG_ERR', $message.': '.$error[0]
-					.': '.$error[2]);
-		return $engine->log('LOG_ERR', $message.': '.$error[0]);
+			return $this->engine->log('LOG_ERR',
+					$message.': '.$error[0].': '.$error[2]);
+		return $this->engine->log('LOG_ERR', $message.': '.$error[0]);
 	}
 
 
@@ -175,12 +174,12 @@ class PDODatabase extends Database
 
 
 	//PDODatabase::transactionBegin
-	public function transactionBegin($engine)
+	public function transactionBegin(Engine $engine = NULL)
 	{
-		return parent::transactionBegin($engine);
+		return parent::transactionBegin();
 	}
 
-	protected function _beginTransaction($engine)
+	protected function _beginTransaction()
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -189,12 +188,12 @@ class PDODatabase extends Database
 
 
 	//PDODatabase::transactionCommit
-	public function transactionCommit($engine)
+	public function transactionCommit(Engine $engine = NULL)
 	{
-		return parent::transactionCommit($engine);
+		return parent::transactionCommit();
 	}
 
-	protected function _commitTransaction($engine)
+	protected function _commitTransaction()
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -203,12 +202,12 @@ class PDODatabase extends Database
 
 
 	//PDODatabase::transactionRollback
-	public function transactionRollback($engine)
+	public function transactionRollback(Engine $engine = NULL)
 	{
-		return parent::transactionRollback($engine);
+		return parent::transactionRollback();
 	}
 
-	protected function _rollbackTransaction($engine)
+	protected function _rollbackTransaction()
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -219,7 +218,7 @@ class PDODatabase extends Database
 	//protected
 	//methods
 	//PDODatabase::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		if(!class_exists('PDO'))
 			return 0;
@@ -230,7 +229,7 @@ class PDODatabase extends Database
 
 
 	//PDODatabase::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		global $config;
 
@@ -254,13 +253,13 @@ class PDODatabase extends Database
 		switch($this->getBackend())
 		{
 			case 'sqlite':
-				$this->_attachSqlite($engine);
+				$this->_attachSqlite();
 				break;
 		}
 		return TRUE;
 	}
 
-	private function _attachSqlite($engine)
+	private function _attachSqlite()
 	{
 		$this->result_class = 'PDODatabaseResultCached';
 		$func = array($this, '_concat');
@@ -269,13 +268,13 @@ class PDODatabase extends Database
 		$this->handle->sqliteCreateFunction('date_trunc', $func);
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
-		if($this->query($engine, $query) === FALSE)
-			$engine->log('LOG_WARNING',
+		if($this->query($this->engine, $query) === FALSE)
+			$this->engine->log('LOG_WARNING',
 					'Pattern matching is case-insensitive');
 		//enforce support for foreign keys
 		$query = 'PRAGMA foreign_keys=ON';
-		if($this->query($engine, $query) === FALSE)
-			$engine->log('LOG_WARNING',
+		if($this->query($this->engine, $query) === FALSE)
+			$this->engine->log('LOG_WARNING',
 					'Foreign keys are not enforced');
 	}
 

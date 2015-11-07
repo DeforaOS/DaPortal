@@ -32,7 +32,7 @@ class SQLite2Database extends Database
 	//methods
 	//accessors
 	//SQLite2Database::getLastID
-	public function getLastID($engine, $table, $field)
+	public function getLastID(Engine $engine, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -43,10 +43,10 @@ class SQLite2Database extends Database
 
 	//useful
 	//SQLite2Database::enum
-	public function enum($engine, $table, $field)
+	public function enum(Engine $engine, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
-		if(($res = $this->query($engine, $query)) === FALSE)
+		if(($res = $this->query($this->engine, $query)) === FALSE)
 			return FALSE;
 		$ret = array();
 		foreach($res as $r)
@@ -56,7 +56,7 @@ class SQLite2Database extends Database
 
 
 	//SQLite2Database::query
-	public function query($engine, $query, $parameters = FALSE,
+	public function query(Engine $engine, $query, $parameters = FALSE,
 			$async = FALSE)
 	{
 		global $config;
@@ -66,13 +66,13 @@ class SQLite2Database extends Database
 		if(($query = $this->prepare($query, $parameters)) === FALSE)
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$engine->log('LOG_DEBUG', $query);
+			$this->engine->log('LOG_DEBUG', $query);
 		$error = FALSE;
 		if(($res = sqlite_query($this->handle, $query, SQLITE_ASSOC,
 					$error)) === FALSE)
 		{
 			if($error !== FALSE)
-				$engine->log('LOG_DEBUG', $error);
+				$this->engine->log('LOG_DEBUG', $error);
 			return FALSE;
 		}
 		return new SQLite2DatabaseResult($res);
@@ -93,7 +93,7 @@ class SQLite2Database extends Database
 	//protected
 	//methods
 	//SQLite2Database::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		if($this->configGet('filename') !== FALSE)
 			return 100;
@@ -102,7 +102,7 @@ class SQLite2Database extends Database
 
 
 	//SQLite2Database::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		if(($filename = $this->configGet('filename')) === FALSE)
 			return $engine->log('LOG_ERR',
@@ -116,7 +116,7 @@ class SQLite2Database extends Database
 		sqlite_create_function($this->handle, 'date_trunc', $func);
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
-		$this->query($engine, $query);
+		$this->query($this->engine, $query);
 		return TRUE;
 	}
 
@@ -156,14 +156,14 @@ class SQLite2Database extends Database
 
 
 	//SQLite2Database::transactionBegin
-	public function transactionBegin($engine)
+	public function transactionBegin(Engine $engine = NULL)
 	{
-		return parent::transactionBegin($engine);
+		return parent::transactionBegin();
 	}
 
-	protected function _beginTransaction($engine)
+	protected function _beginTransaction()
 	{
-		return $this->query($engine, 'BEGIN');
+		return $this->query($this->engine, 'BEGIN');
 	}
 
 
