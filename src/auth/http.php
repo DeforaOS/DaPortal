@@ -22,7 +22,7 @@ class HTTPAuth extends Auth
 	//protected
 	//methods
 	//HTTPAuth::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		if(!isset($_SERVER['SERVER_PROTOCOL']))
 			return 0;
@@ -41,7 +41,7 @@ class HTTPAuth extends Auth
 
 
 	//HTTPAuth::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		global $config;
 		$protocol = isset($_SERVER['SERVER_PROTOCOL'])

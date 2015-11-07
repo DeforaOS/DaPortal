@@ -22,14 +22,14 @@ class UnixAuth extends Auth
 	//protected
 	//methods
 	//UnixAuth::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		return 1;
 	}
 
 
 	//UnixAuth::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		$uid = posix_getuid();
 		$pw = posix_getpwuid($uid);

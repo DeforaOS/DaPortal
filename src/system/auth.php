@@ -22,16 +22,16 @@ abstract class Auth
 	//public
 	//accessors
 	//Auth::getCredentials
-	public function getCredentials($engine)
+	public function getCredentials(Engine $engine)
 	{
 		if($this->credentials === FALSE)
-			$this->credentials = new AuthCredentials;
+			$this->credentials = new AuthCredentials();
 		return $this->credentials;
 	}
 
 
 	//Auth::getVariable
-	public function getVariable($engine, $variable)
+	public function getVariable(Engine $engine, $variable)
 	{
 		$credentials = $this->getCredentials($engine);
 		$database = $engine->getDatabase();
@@ -51,28 +51,26 @@ abstract class Auth
 
 
 	//Auth::setIdempotent
-	public function setIdempotent($engine, &$request, $idempotent)
+	public function setIdempotent(Engine $engine, Request &$request,
+			$idempotent)
 	{
 		$request->setIdempotent($idempotent);
 	}
 
 
 	//Auth::setCredentials
-	public function setCredentials($engine, $credentials)
+	public function setCredentials(Engine $engine,
+			AuthCredentials $credentials = NULL)
 	{
-		if($credentials !== FALSE
-				&& !($credentials instanceof AuthCredentials))
-		{
-			$this->credentials = FALSE;
-			return FALSE;
-		}
+		if(is_null($credentials))
+			$credentials = new AuthCredentials();
 		$this->credentials = $credentials;
 		return TRUE;
 	}
 
 
 	//Auth::setVariable
-	public function setVariable($engine, $variable, $value)
+	public function setVariable(Engine $engine, $variable, $value)
 	{
 		$credentials = $this->getCredentials($engine);
 		$database = $engine->getDatabase();
@@ -104,7 +102,7 @@ abstract class Auth
 
 	//static
 	//Auth::attachDefault
-	public static function attachDefault($engine)
+	public static function attachDefault(Engine $engine)
 	{
 		global $config;
 		$ret = FALSE;
@@ -147,6 +145,7 @@ abstract class Auth
 	//protected
 	//properties
 	protected $credentials = FALSE;
+
 	//queries
 	static protected $query_variable_add = 'INSERT INTO daportal_auth_variable
 		(user_id, variable, value)
@@ -163,8 +162,8 @@ abstract class Auth
 
 	//methods
 	//virtual
-	abstract protected function match($engine);
-	abstract protected function attach($engine);
+	abstract protected function match(Engine $engine);
+	abstract protected function attach(Engine $engine);
 }
 
 ?>

@@ -22,7 +22,7 @@ class EnvAuth extends UnixAuth
 	//protected
 	//methods
 	//EnvAuth::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		if(getenv('DAPORTAL_USERNAME') !== FALSE)
 			return 2;
@@ -31,7 +31,7 @@ class EnvAuth extends UnixAuth
 
 
 	//EnvAuth::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		if(($username = getenv('DAPORTAL_USERNAME')) === FALSE)
 			return parent::attach($engine);

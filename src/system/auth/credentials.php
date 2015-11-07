@@ -72,7 +72,7 @@ class AuthCredentials
 
 
 	//AuthCredentials::isMember
-	public function isMember($engine, $groupname)
+	public function isMember(Engine $engine, $groupname)
 	{
 		if(($user = User::lookup($engine, $this->username,
 				$this->uid)) === FALSE)

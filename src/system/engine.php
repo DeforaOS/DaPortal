@@ -135,11 +135,11 @@ abstract class Engine
 
 
 	//Engine::setCredentials
-	public function setCredentials($cred)
+	public function setCredentials(AuthCredentials $credentials = NULL)
 	{
 		if($this->_attachAuth() === FALSE)
 			return FALSE;
-		return $this->auth->setCredentials($this, $cred);
+		return $this->auth->setCredentials($this, $credentials);
 	}
 
 

@@ -22,7 +22,7 @@ class SessionAuth extends Auth
 	//protected
 	//methods
 	//SessionAuth::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		//return the result cached if called twice
 		if($this->match_score !== FALSE)
@@ -60,7 +60,7 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		//attaching depends on the code in match()
 		$this->match($engine);
@@ -70,7 +70,7 @@ class SessionAuth extends Auth
 	//public
 	//accessors
 	//SessionAuth::getCredentials
-	public function getCredentials($engine)
+	public function getCredentials(Engine $engine)
 	{
 		$uid = $this->getVariable($engine, 'SessionAuth::uid');
 		$username = $this->getVariable($engine,
@@ -90,7 +90,7 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::getVariable
-	public function getVariable($engine, $variable)
+	public function getVariable(Engine $engine, $variable)
 	{
 		if(isset($_SESSION[$variable]))
 			return $_SESSION[$variable];
@@ -99,10 +99,13 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::setCredentials
-	public function setCredentials($engine, $credentials)
+	public function setCredentials(Engine $engine,
+			AuthCredentials $credentials = NULL)
 	{
 		global $config;
 
+		if(is_null($credentials))
+			$credentials = new AuthCredentials();
 		//avoid session-fixation attacks
 		session_start();
 		$message = 'Could not regenerate the session';
@@ -119,7 +122,8 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::setIdempotent
-	public function setIdempotent($engine, &$request, $idempotent)
+	public function setIdempotent(Engine $engine, Request &$request,
+			$idempotent)
 	{
 		if($idempotent === TRUE)
 		{
@@ -155,7 +159,7 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::setVariable
-	public function setVariable($engine, $variable, $value)
+	public function setVariable(Engine $engine, $variable, $value)
 	{
 		//XXX errors when output has already started can be ignored
 		@session_start();
