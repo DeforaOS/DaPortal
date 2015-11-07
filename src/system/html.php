@@ -79,8 +79,8 @@ class HTML
 	//static
 	//useful
 	//HTML::filter
-	static public function filter($engine, $content, $whitelist = FALSE,
-			$form = FALSE, $charset = FALSE)
+	static public function filter(Engine $engine, $content,
+			$whitelist = FALSE, $form = FALSE, $charset = FALSE)
 	{
 		$html = new HTML($charset, $form);
 		$start = array($html, '_filterElementStart');
@@ -199,7 +199,7 @@ class HTML
 
 
 	//HTML::format
-	static public function format($engine, $content)
+	static public function format(Engine $engine, $content)
 	{
 		$from = '/((ftp:\/\/|http:\/\/|https:\/\/|mailto:)'
 			.'([-+a-zA-Z0-9.:\/_%?!=,;~#@()]|&amp;)+)/';
@@ -247,8 +247,8 @@ class HTML
 
 
 	//HTML::validate
-	static public function validate($engine, $content, $whitelist = FALSE,
-			$form = FALSE)
+	static public function validate(Engine $engine, $content,
+			$whitelist = FALSE, $form = FALSE)
 	{
 		$html = new HTML(FALSE, $form);
 		$start = array($html, '_validateElementStart');
