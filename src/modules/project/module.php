@@ -395,6 +395,8 @@ class ProjectModule extends MultiContentModule
 			$res = array();
 			$error = _('Unable to list bugs');
 		}
+		$res = new ContentResult($engine, $this, 'BugProjectContent',
+			$res);
 		//build the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
