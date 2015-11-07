@@ -28,7 +28,7 @@ class CSVFormat extends PlainFormat
 	//methods
 	//essential
 	//CSVFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -41,7 +41,7 @@ class CSVFormat extends PlainFormat
 
 
 	//CSVFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 		//configuration
 		$this->titles = $this->configGet('titles') ? TRUE : FALSE;
@@ -52,7 +52,8 @@ class CSVFormat extends PlainFormat
 	//methods
 	//rendering
 	//CSVFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

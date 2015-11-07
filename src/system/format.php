@@ -23,7 +23,7 @@ abstract class Format extends Mutator
 	//methods
 	//static
 	//Format::attachDefault
-	public static function attachDefault($engine, $type = FALSE)
+	public static function attachDefault(Engine $engine, $type = FALSE)
 	{
 		global $config;
 		$ret = FALSE;
@@ -77,7 +77,8 @@ abstract class Format extends Mutator
 
 
 	//virtual
-	abstract public function render($engine, $page, $filename = FALSE);
+	abstract public function render(Engine $engine, PageElement $page,
+			$filename = FALSE);
 
 
 	//protected
@@ -95,8 +96,8 @@ abstract class Format extends Mutator
 
 
 	//virtual
-	abstract protected function match($engine, $type = FALSE);
-	abstract protected function attach($engine, $type = FALSE);
+	abstract protected function match(Engine $engine, $type = FALSE);
+	abstract protected function attach(Engine $engine, $type = FALSE);
 
 
 	//accessors

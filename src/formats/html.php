@@ -28,7 +28,7 @@ class HTMLFormat extends FormatElements
 	//methods
 	//essential
 	//HTMLFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -41,7 +41,7 @@ class HTMLFormat extends FormatElements
 
 
 	//HTMLFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 		global $config;
 
@@ -126,7 +126,8 @@ class HTMLFormat extends FormatElements
 
 	//rendering
 	//HTMLFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		$this->ids = array();
 		$this->tags = array();

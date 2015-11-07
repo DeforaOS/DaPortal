@@ -25,7 +25,7 @@ class FPDFFormat extends FormatElements
 	//methods
 	//essential
 	//FPDFFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -38,7 +38,7 @@ class FPDFFormat extends FormatElements
 
 
 	//FPDFFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 	}
 
@@ -47,7 +47,8 @@ class FPDFFormat extends FormatElements
 	//methods
 	//rendering
 	//FPDFFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		$user = $engine->getCredentials();
 		//XXX obtain the full name instead

@@ -28,7 +28,7 @@ class XMLFormat extends PlainFormat
 	//methods
 	//essential
 	//XMLFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -42,7 +42,7 @@ class XMLFormat extends PlainFormat
 
 
 	//XMLFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 		global $config;
 
@@ -63,7 +63,8 @@ class XMLFormat extends PlainFormat
 	//methods
 	//rendering
 	//XMLFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

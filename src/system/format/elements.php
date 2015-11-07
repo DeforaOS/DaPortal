@@ -22,7 +22,8 @@ abstract class FormatElements extends Format
 	//public
 	//methods
 	//FormatElements::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

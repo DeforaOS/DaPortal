@@ -28,7 +28,7 @@ class PlainFormat extends Format
 	//methods
 	//essential
 	//PlainFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -41,7 +41,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 		$this->set('wrap', $this->configGet('wrap'));
 	}
@@ -68,7 +68,8 @@ class PlainFormat extends Format
 
 	//rendering
 	//PlainFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

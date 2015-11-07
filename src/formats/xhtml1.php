@@ -25,7 +25,7 @@ class XHTML1Format extends HTMLFormat
 	//methods
 	//essential
 	//XHTML1Format::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		switch($type)
 		{
@@ -38,7 +38,7 @@ class XHTML1Format extends HTMLFormat
 
 
 	//XHTML1Format::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 		$version = '1.0';
 		$encoding = 'UTF-8';

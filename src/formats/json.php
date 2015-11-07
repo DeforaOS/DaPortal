@@ -28,7 +28,7 @@ class JSONFormat extends PlainFormat
 	//methods
 	//essential
 	//JSONFormat::match
-	protected function match($engine, $type = FALSE)
+	protected function match(Engine $engine, $type = FALSE)
 	{
 		if(!function_exists('json_encode'))
 			return 0;
@@ -43,7 +43,7 @@ class JSONFormat extends PlainFormat
 
 
 	//JSONFormat::attach
-	protected function attach($engine, $type = FALSE)
+	protected function attach(Engine $engine, $type = FALSE)
 	{
 	}
 
@@ -52,7 +52,8 @@ class JSONFormat extends PlainFormat
 	//methods
 	//rendering
 	//JSONFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
 		if($page === FALSE)

@@ -34,7 +34,7 @@ class GtkFormat extends FormatElements
 	//methods
 	//essential
 	//GtkFormat::match
-	public function match($engine, $type = FALSE)
+	public function match(Engine $engine, $type = FALSE)
 	{
 		//never match by default
 		return 0;
@@ -42,7 +42,7 @@ class GtkFormat extends FormatElements
 
 
 	//GtkFormat::attach
-	public function attach($engine, $type = FALSE)
+	public function attach(Engine $engine, $type = FALSE)
 	{
 		//initialize fonts
 		$this->engine = $engine;
@@ -54,7 +54,8 @@ class GtkFormat extends FormatElements
 
 	//rendering
 	//GtkFormat::render
-	public function render($engine, $page, $filename = FALSE)
+	public function render(Engine $engine, PageElement $page,
+			$filename = FALSE)
 	{
 		if($filename !== FALSE)
 			return $engine->log('LOG_ERR',
