@@ -23,14 +23,14 @@ class Profile
 	//methods
 	//static
 	//Profile::start
-	static public function start($engine)
+	static public function start(Engine $engine)
 	{
 		Profile::$time = microtime(TRUE);
 	}
 
 
 	//Profile::stop
-	static public function stop($engine)
+	static public function stop(Engine $engine)
 	{
 		$database = $engine->getDatabase();
 		$query = Profile::$query_insert;
