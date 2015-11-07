@@ -1964,7 +1964,7 @@ class UserModule extends Module
 		$log = $this->configGet('log');
 
 		if($engine->setCredentials() === FALSE)
-			return $engine->log('LOG_NOTICE', $username
+			return $engine->log('LOG_ERR', $username
 					.': Unable to log user out');
 		if($log)
 			$engine->log('LOG_NOTICE', $username
