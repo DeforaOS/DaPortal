@@ -222,7 +222,7 @@ class HTTPEngine extends Engine
 
 
 	//HTTPEngine::getURL
-	public function getURL($request, $absolute = TRUE)
+	public function getURL(Request $request, $absolute = TRUE)
 	{
 		//FIXME do not include parameters for a POST request
 		if($request === FALSE)
@@ -294,15 +294,8 @@ class HTTPEngine extends Engine
 
 	//useful
 	//HTTPEngine::render
-	public function render($response)
+	public function render(Response $response)
 	{
-		if($response === FALSE)
-			$response = new ErrorResponse();
-		if(!($response instanceof Response))
-		{
-			$this->_renderCode(Response::$CODE_EUNKNOWN);
-			return $this->log('LOG_ERR', 'Invalid response');
-		}
 		if($response instanceof ErrorResponse)
 		{
 			//render ErrorResponse like a PageResponse dialog

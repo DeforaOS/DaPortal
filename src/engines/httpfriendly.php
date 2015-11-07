@@ -115,13 +115,11 @@ class HTTPFriendlyEngine extends HTTPEngine
 
 
 	//HTTPFriendlyEngine::getURL
-	public function getURL($request, $absolute = TRUE)
+	public function getURL(Request $request, $absolute = TRUE)
 	{
 		global $config;
 
 		//FIXME do not include parameters for a POST request
-		if($request === FALSE)
-			return FALSE;
 		//use the kicker if defined
 		if(($kicker = $config->get($this->section, 'kicker'))
 				!== FALSE)

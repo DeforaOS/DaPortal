@@ -30,7 +30,7 @@ class EmailEngine extends CLIEngine
 
 	//useful
 	//EmailEngine::render
-	public function render($response)
+	public function render(Response $response)
 	{
 		$cred = $this->getCredentials();
 		$user = User::lookup($this, $cred->getUsername(),

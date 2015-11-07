@@ -20,7 +20,8 @@
 class ContentResult implements ArrayAccess, Countable, SeekableIterator
 {
 	//ContentResult::ContentResult
-	public function __construct($engine, $module, $class, $result)
+	public function __construct(Engine $engine, Module $module, $class,
+			DatabaseResult $result)
 	{
 		$this->engine = $engine;
 		$this->module = $module;

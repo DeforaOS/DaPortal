@@ -28,17 +28,11 @@ abstract class Engine
 
 	//useful
 	//Engine::render
-	public function render($response)
+	public function render(Response $response)
 	{
-		if($response === FALSE)
-			$response = new ErrorResponse();
-		if($response instanceof Response)
-		{
-			if($this->verbose == 0)
-				return $response->getCode();
-			return $response->render($this);
-		}
-		return $this->log('LOG_ERR', 'Invalid response');
+		if($this->verbose == 0)
+			return $response->getCode();
+		return $response->render($this);
 	}
 
 
@@ -127,7 +121,7 @@ abstract class Engine
 
 
 	//Engine::getURL
-	public function getURL($request, $absolute = TRUE)
+	public function getURL(Request $request, $absolute = TRUE)
 	{
 		return FALSE;
 	}

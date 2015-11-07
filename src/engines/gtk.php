@@ -28,7 +28,7 @@ class GtkEngine extends CLIEngine
 	//methods
 	//useful
 	//GtkEngine::render
-	public function render($response)
+	public function render(Response $response)
 	{
 		global $config;
 
