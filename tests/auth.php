@@ -21,12 +21,26 @@ require_once('./tests.php');
 
 class AuthTest extends Auth
 {
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 	}
 
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
+		return 0;
+	}
+
+	protected function matchAll(Engine $engine)
+	{
+		$classes = array('EnvAuth', 'HTTPAuth', 'SessionAuth',
+			'UnixAuth');
+
+		foreach($classes as $class)
+		{
+			$auth = new $class;
+			$auth->match($engine);
+		}
+
 	}
 }
 
