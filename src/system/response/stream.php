@@ -57,7 +57,7 @@ class StreamResponse extends Response
 
 	//useful
 	//StreamResponse::render
-	public function render($engine)
+	public function render(Engine $engine)
 	{
 		$fp = $this->getContent();
 

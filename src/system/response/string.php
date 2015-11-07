@@ -50,7 +50,7 @@ class StringResponse extends Response
 
 	//useful
 	//StringResponse::render
-	public function render($engine)
+	public function render(Engine $engine)
 	{
 		print($this->getContent());
 		return $this->getCode();

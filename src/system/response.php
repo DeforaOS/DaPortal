@@ -123,7 +123,7 @@ abstract class Response extends Mutator
 	//Response::render
 	//OUT:	0	Success
 	//	integer	Exit value for PHP
-	abstract public function render($engine);
+	abstract public function render(Engine $engine);
 
 
 	//properties

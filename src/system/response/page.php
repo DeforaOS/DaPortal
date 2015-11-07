@@ -37,7 +37,7 @@ class PageResponse extends Response
 
 	//useful
 	//PageResponse::render
-	public function render($engine)
+	public function render(Engine $engine)
 	{
 		$page = $this->getContent();
 		$type = $this->getType();
