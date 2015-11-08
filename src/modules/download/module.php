@@ -53,7 +53,7 @@ class DownloadModule extends MultiContentModule
 
 	//useful
 	//DownloadModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		$action = $request->getAction();
 

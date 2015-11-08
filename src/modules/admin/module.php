@@ -32,7 +32,7 @@ class AdminModule extends Module
 
 	//useful
 	//AdminModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		$cred = $engine->getCredentials();
 
@@ -287,8 +287,8 @@ class AdminModule extends Module
 
 	//helpers
 	//AdminModule::helperApply
-	protected function helperApply($engine, $request, $query, $args,
-			$success, $failure, $key = FALSE)
+	protected function helperApply(Engine $engine, Request $request,
+			$query, $args, $success, $failure, $key = FALSE)
 	{
 		if($key === FALSE)
 			$key = 'module_id';

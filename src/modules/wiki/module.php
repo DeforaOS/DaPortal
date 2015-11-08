@@ -44,7 +44,7 @@ class WikiModule extends ContentModule
 
 	//useful
 	//WikiModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if($internal)
 			return parent::call($engine, $request, $internal);

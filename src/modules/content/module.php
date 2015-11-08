@@ -26,7 +26,7 @@ abstract class ContentModule extends Module
 	//methods
 	//calls
 	//ContentModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
@@ -1132,8 +1132,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperApply
-	protected function helperApply($engine, $request, $query, $args,
-			$success, $failure, $key = FALSE)
+	protected function helperApply(Engine $engine, Request $request,
+			$query, $args, $success, $failure, $key = FALSE)
 	{
 		if($key === FALSE)
 			$key = 'content_id';

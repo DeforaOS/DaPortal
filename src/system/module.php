@@ -54,7 +54,7 @@ abstract class Module
 	//static
 	//useful
 	//Module::load
-	static public function load($engine, $name)
+	static public function load(Engine $engine, $name)
 	{
 		if($name === FALSE)
 			return FALSE;
@@ -67,7 +67,7 @@ abstract class Module
 		return $ret;
 	}
 
-	static protected function _loadID($engine, $name)
+	static protected function _loadID(Engine $engine, $name)
 	{
 		static $modules = FALSE;
 		$db = $engine->getDatabase();
@@ -83,7 +83,8 @@ abstract class Module
 
 
 	//virtual
-	public abstract function call($engine, $request, $internal = 0);
+	public abstract function call(Engine $engine, Request $request,
+			$internal = 0);
 
 
 	//protected
@@ -117,8 +118,8 @@ abstract class Module
 	//useful
 	//helpers
 	//Module::helperApply
-	protected function helperApply($engine, $request, $query, $args,
-			$success, $failure, $key = FALSE)
+	protected function helperApply(Engine $engine, Request $request,
+			$query, $args, $success, $failure, $key = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$affected = 0;

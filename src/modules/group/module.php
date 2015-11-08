@@ -34,7 +34,7 @@ class GroupModule extends Module
 
 	//useful
 	//GroupModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
@@ -747,8 +747,8 @@ class GroupModule extends Module
 
 	//helpers
 	//GroupModule::helperApplyGroup
-	protected function helperApplyGroup($engine, $request, $action,
-			$fallback, $key = 'group_id')
+	protected function helperApplyGroup(Engine $engine, Request $request,
+			$action, $fallback, $key = 'group_id')
 	{
 		$cred = $engine->getCredentials();
 

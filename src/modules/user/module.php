@@ -43,7 +43,7 @@ class UserModule extends Module
 
 	//useful
 	//UserModule::call
-	public function call($engine, $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
@@ -1887,8 +1887,8 @@ class UserModule extends Module
 
 	//helpers
 	//UserModule::helperApplyUser
-	protected function helperApplyUser($engine, $request, $action,
-			$fallback, $key = 'user_id')
+	protected function helperApplyUser(Engine $engine, Request $request,
+			$action, $fallback, $key = 'user_id')
 	{
 		$cred = $engine->getCredentials();
 
