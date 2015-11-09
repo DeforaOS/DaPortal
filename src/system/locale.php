@@ -18,6 +18,8 @@
 
 namespace DaPortal;
 
+use \Engine;
+
 
 //Locale
 class Locale
@@ -27,7 +29,7 @@ class Locale
 	//static
 	//useful
 	//Locale::init
-	static public function init($engine, $package = FALSE)
+	static public function init(Engine $engine, $package = FALSE)
 	{
 		global $config;
 		$package = ($package !== FALSE) ? $package : 'DaPortal';
