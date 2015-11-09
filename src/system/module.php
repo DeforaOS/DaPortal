@@ -45,7 +45,7 @@ abstract class Module
 
 
 	//Module::getTitle
-	public function getTitle($engine)
+	public function getTitle(Engine $engine)
 	{
 		return $this->title;
 	}
