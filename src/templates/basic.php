@@ -188,7 +188,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::render
-	public function render(Engine $engine, Page $page)
+	public function render(Engine $engine, PageElement $page)
 	{
 		$title = $this->title;
 

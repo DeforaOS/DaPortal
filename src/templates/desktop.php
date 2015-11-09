@@ -36,7 +36,7 @@ class DesktopTemplate extends Template
 
 
 	//DesktopTemplate::render
-	public function render(Engine $engine, Page $page)
+	public function render(Engine $engine, PageElement $page)
 	{
 		//FIXME implement
 		return $page;
