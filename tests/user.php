@@ -18,17 +18,22 @@
 
 namespace DaPortal;
 
+use \Engine;
+use \Module;
+use \PageResponse;
+use \User;
+
 
 require_once('./tests.php');
 
 
 class Mail
 {
-	static public function send($engine, $from, $to, $subject, $page,
+	static public function send(Engine $engine, $from, $to, $subject, $page,
 			$headers = FALSE, $attachments = FALSE)
 	{
 		//output the page
-		if($engine->render(new \PageResponse($page)) === FALSE)
+		if($engine->render(new PageResponse($page)) === FALSE)
 			return FALSE;
 		//do not really send any e-mail
 		return TRUE;
@@ -37,7 +42,7 @@ class Mail
 
 
 //functions
-function user_authenticate($engine, $user)
+function user_authenticate(Engine $engine, User $user)
 {
 	if(($res = $user->authenticate($engine, 'password')) === FALSE)
 		exit(2);
@@ -48,7 +53,7 @@ function user_authenticate($engine, $user)
 	$error = 'Unknown error';
 }
 
-function user_lock($engine, $user)
+function user_lock(Engine $engine, User $user)
 {
 	if($user->lock($engine, $error) === FALSE)
 	{
@@ -57,7 +62,7 @@ function user_lock($engine, $user)
 	}
 }
 
-function user_unlock($engine, $user)
+function user_unlock(Engine $engine, User $user)
 {
 	if($user->unlock($engine, $error) === FALSE)
 	{
@@ -66,9 +71,9 @@ function user_unlock($engine, $user)
 	}
 }
 
-function user_reset($engine, $user, $module)
+function user_reset(Engine $engine, User $user, Module $module)
 {
-	if(\User::reset($engine, $module, $user->getUsername(),
+	if(User::reset($engine, $module, $user->getUsername(),
 			$user->getEmail(), $error) === FALSE)
 	{
 		print("$error\n");
@@ -76,9 +81,9 @@ function user_reset($engine, $user, $module)
 	}
 }
 
-function user_register($engine, $module)
+function user_register(Engine $engine, Module $module)
 {
-	if(\User::register($engine, $module, 'test', FALSE, 'root@localhost',
+	if(User::register($engine, $module, 'test', FALSE, 'root@localhost',
 			FALSE, $error) === FALSE)
 	{
 		print("$error\n");
@@ -86,7 +91,7 @@ function user_register($engine, $module)
 	}
 }
 
-function user_setgroup($engine, $user)
+function user_setgroup(Engine $engine, User $user)
 {
 	if($user->setGroup($engine, 0, $error) === FALSE)
 	{
@@ -100,7 +105,7 @@ function user_setgroup($engine, $user)
 	}
 }
 
-function user_addgroup($engine, $user)
+function user_addgroup(Engine $engine, User $user)
 {
 	if($user->addGroup($engine, 0, $error) === FALSE)
 	{
@@ -119,7 +124,7 @@ function user_addgroup($engine, $user)
 	}
 }
 
-function user_delete($engine, $user)
+function user_delete(Engine $engine, User $user)
 {
 	if($user->delete($engine, $error) === FALSE)
 	{
@@ -128,10 +133,10 @@ function user_delete($engine, $user)
 	}
 }
 
-function test($engine)
+function test(Engine $engine)
 {
-	$user = new \User($engine, 1, 'admin');
-	$module = \Module::load($engine, 'user');
+	$user = new User($engine, 1, 'admin');
+	$module = Module::load($engine, 'user');
 
 	user_authenticate($engine, $user);
 	user_lock($engine, $user);
