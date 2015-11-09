@@ -18,6 +18,9 @@
 
 namespace DaPortal;
 
+use \Engine;
+use \Mail_Mime;
+
 
 @include_once('Mail.php');
 @include_once('Mail/mime.php');
@@ -31,7 +34,7 @@ class Mail
 	//static
 	//useful
 	//Mail::send
-	static public function send($engine, $from, $to, $subject, $page,
+	static public function send(Engine $engine, $from, $to, $subject, $page,
 			$headers = FALSE, $attachments = FALSE)
 	{
 		global $config;
@@ -83,7 +86,7 @@ class Mail
 				$headers, $attachments);
 	}
 
-	static protected function _sendTo($engine, $from, $to, $subject,
+	static protected function _sendTo(Engine $engine, $from, $to, $subject,
 			$page, $headers, $attachments)
 	{
 		//verify the recipient
@@ -108,7 +111,7 @@ class Mail
 	//static
 	//useful
 	//Mail::pageToHTML
-	static protected function pageToHTML($engine, $page)
+	static protected function pageToHTML(Engine $engine, $page)
 	{
 		if($page instanceof \PageElement)
 		{
@@ -131,7 +134,7 @@ class Mail
 
 
 	//Mail::pageToText
-	static protected function pageToText($engine, $page)
+	static protected function pageToText(Engine $engine, $page)
 	{
 		if($page instanceof \PageElement)
 		{
@@ -154,7 +157,7 @@ class Mail
 
 
 	//Mail::render
-	static protected function render($engine, $page, &$headers,
+	static protected function render(Engine $engine, $page, &$headers,
 			$attachments = FALSE)
 	{
 		$class = 'Mail_Mime';
@@ -177,8 +180,8 @@ class Mail
 		return $ret;
 	}
 
-	static protected function _renderAttachments($engine, $mime,
-			$attachments)
+	static protected function _renderAttachments(Engine $engine,
+			Mail_Mime $mime, $attachments)
 	{
 		//attachments
 		if(!is_array($attachments))
@@ -195,8 +198,8 @@ class Mail
 		}
 	}
 
-	static protected function _renderBody($engine, $mime, $text,
-			$page = FALSE)
+	static protected function _renderBody(Engine $engine, Mail_Mime $mime,
+			$text, $page = FALSE)
 	{
 		//plain text content
 		$mime->setTXTBody($text);
@@ -207,7 +210,8 @@ class Mail
 			static::_renderBodyHtml($engine, $mime, $html);
 	}
 
-	static protected function _renderBodyHtml($engine, $mime, $html)
+	static protected function _renderBodyHtml(Engine $engine,
+			Mail_Mime $mime, $html)
 	{
 		$jpeg = 'image/jpeg;base64,';
 		$png = 'image/png;base64,';
@@ -254,15 +258,15 @@ class Mail
 		return TRUE;
 	}
 
-	static protected function _renderBodyHtmlImage($mime, $img, $type,
-			$data)
+	static protected function _renderBodyHtmlImage(Mail_Mime $mime, $img,
+			$type, $data)
 	{
 		$filename = uniqid();
 		if($mime->addHTMLImage($data, 'image/jpeg', $filename, FALSE))
 			$img->setAttribute('src', $filename);
 	}
 
-	static protected function _renderHeaders($mime, &$headers)
+	static protected function _renderHeaders(Mail_Mime $mime, &$headers)
 	{
 		$hdrs = $mime->headers(array());
 		foreach($hdrs as $h => $v)
