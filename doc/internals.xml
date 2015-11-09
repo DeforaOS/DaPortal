@@ -248,12 +248,18 @@ unset($engine);
 				<function>call()</function> public method of the
 				<classname>Module</classname> class. The relevant
 				<classname>Engine</classname> instance along with the request are passed to
-				the module, which is then responsible for handling the request, given the
+				this method, which is then responsible for handling the request, given the
 				resources provided by the <classname>Engine</classname>.</para>
-			<para>These calls are expected to offer a significant value in return of an
-				operation; this is however not mandatory. Content is typically formatted and
-				delivered back to the user by building pages, as described below in <xref
+			<para>Calls are divided into two categories: <emphasis>internal</emphasis>
+				and <emphasis>public</emphasis>.</para>
+			<para>Public calls are issued by users directly, and required to return
+				instances of the <classname>Response</classname> object. Content is
+				typically formatted and delivered back to the user by building pages through
+				<classname>PageResponse</classname> objects, as described below in <xref
 					linkend="pages"/>.</para>
+			<para>Internal calls on the other hand are meant for inter-module
+				communication, and can be used as an internal API. There are no restrictions
+				on return values (or their type).</para>
 		</section>
 		<section>
 			<title>Helpers</title>
