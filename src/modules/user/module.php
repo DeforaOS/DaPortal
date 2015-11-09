@@ -32,12 +32,12 @@ class UserModule extends Module
 
 	//accessors
 	//UserModule::getTitle
-	public function getTitle(Engine $engine)
+	public function getTitle(Engine $engine = NULL)
 	{
 		$credentials = $engine->getCredentials();
 
 		return $credentials->getUserID()
-			? _('User') : parent::getTitle($engine);
+			? _('User') : parent::getTitle();
 	}
 
 
