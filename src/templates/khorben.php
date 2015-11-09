@@ -22,7 +22,7 @@ class KhorbenTemplate extends BasicTemplate
 	//protected
 	//functions
 	//KhorbenTemplate::getEntries
-	protected function getEntries($engine)
+	protected function getEntries(Engine $engine = NULL)
 	{
 		$ret = array();
 
@@ -62,11 +62,11 @@ class KhorbenTemplate extends BasicTemplate
 
 
 	//BasicTemplate::getMenu
-	protected function getMenu($engine, $entries = FALSE)
+	protected function getMenu(Engine $engine = NULL, $entries = FALSE)
 	{
 		$menu = new PageElement('menubar');
 		if($entries === FALSE)
-			$entries = $this->getEntries($engine);
+			$entries = $this->getEntries();
 		if($entries === FALSE)
 			return $menu;
 		foreach($entries as $e)

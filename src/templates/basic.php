@@ -46,19 +46,20 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getEntries
-	protected function getEntries($engine)
+	protected function getEntries(Engine $engine = NULL)
 	{
-		if(($modules = $this->getModules($engine)) === FALSE)
+		if(($modules = $this->getModules()) === FALSE)
 			return FALSE;
 		$ret = array();
 		foreach($modules as $name)
 		{
-			if(($module = Module::load($engine, $name)) === FALSE)
-				continue;
-			$title = $module->getTitle($engine);
-			$request = new Request($name, 'actions');
-			if(($actions = $module->call($engine, $request, TRUE))
+			if(($module = Module::load($this->engine, $name))
 					=== FALSE)
+				continue;
+			$title = $module->getTitle($this->engine);
+			$request = new Request($name, 'actions');
+			if(($actions = $module->call($this->engine, $request,
+					TRUE)) === FALSE)
 				continue;
 			$ret[$name] = array('name' => $name, 'title' => $title,
 				'actions' => $actions);
@@ -74,7 +75,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getFooter
-	protected function getFooter($engine)
+	protected function getFooter(Engine $engine = NULL)
 	{
 		$footer = new PageElement('statusbar');
 		$footer->setProperty('id', 'footer');
@@ -86,13 +87,13 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getMenu
-	protected function getMenu($engine, $entries = FALSE)
+	protected function getMenu(Engine $engine = NULL, $entries = FALSE)
 	{
-		$cred = $engine->getCredentials();
+		$cred = $this->engine->getCredentials();
 
 		$menu = new PageElement('menubar');
 		if($entries === FALSE)
-			$entries = $this->getEntries($engine);
+			$entries = $this->getEntries();
 		if($entries === FALSE)
 			return $menu;
 		foreach($entries as $e)
@@ -144,14 +145,14 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getModules
-	protected function getModules($engine)
+	protected function getModules(Engine $engine = NULL)
 	{
-		return $engine->getModules();
+		return $this->engine->getModules();
 	}
 
 
 	//BasicTemplate::getTitle
-	protected function getTitle($engine)
+	protected function getTitle(Engine $engine = NULL)
 	{
 		$title = new PageElement('title', array('id' => 'title'));
 		$title->append('link', array('text' => $this->title,
@@ -163,20 +164,21 @@ class BasicTemplate extends Template
 
 	//useful
 	//BasicTemplate::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		return 100;
 	}
 
 
 	//BasicTemplate::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		global $config;
 		$properties = array('action', 'footer', 'homepage', 'id',
 			'message', 'message_title', 'message_type', 'module',
 			'title');
 
+		parent::attach($engine);
 		foreach($properties as $p)
 			if($this->$p === FALSE)
 				$this->$p = $this->configGet($p);
@@ -186,14 +188,14 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::render
-	public function render($engine, $page)
+	public function render(Engine $engine, Page $page)
 	{
 		$title = $this->title;
 
 		$p = new Page;
-		$p->append($this->getTitle($engine));
+		$p->append($this->getTitle());
 		$main = $p->append('vbox', array('id' => 'main'));
-		$main->append($this->getMenu($engine));
+		$main->append($this->getMenu());
 		if($this->message !== FALSE)
 			$main->append('dialog', array(
 				'type' => $this->message_type,
@@ -205,7 +207,7 @@ class BasicTemplate extends Template
 			$request = new Request($this->module, $this->action,
 				$this->id);
 			//XXX
-			$page = $engine->process($request);
+			$page = $this->engine->process($request);
 			$page = ($page instanceof PageResponse)
 				? $page->getContent() : FALSE;
 		}
@@ -218,7 +220,7 @@ class BasicTemplate extends Template
 		else if(($element = $this->getDefault()) !== FALSE)
 			$content->append($element);
 		$p->setProperty('title', $title);
-		$p->append($this->getFooter($engine));
+		$p->append($this->getFooter());
 		return $p;
 	}
 }

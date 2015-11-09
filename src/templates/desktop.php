@@ -22,20 +22,21 @@ class DesktopTemplate extends Template
 	//protected
 	//methods
 	//DesktopTemplate::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		return 100;
 	}
 
 
 	//DesktopTemplate::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
+		parent::attach($engine);
 	}
 
 
 	//DesktopTemplate::render
-	public function render($engine, $page)
+	public function render(Engine $engine, Page $page)
 	{
 		//FIXME implement
 		return $page;

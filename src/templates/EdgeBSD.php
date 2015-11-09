@@ -22,14 +22,14 @@ class EdgeBSDTemplate extends DeforaOSTemplate
 	//protected
 	//methods
 	//EdgeBSDTemplate::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		return 0;
 	}
 
 
 	//EdgeBSDTemplate::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		$this->name = 'EdgeBSD';
 		BasicTemplate::attach($engine);

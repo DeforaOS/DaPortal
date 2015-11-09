@@ -23,13 +23,13 @@ class DeforaOSTemplate extends BasicTemplate
 	//methods
 	//accessors
 	//DeforaOSTemplate::getMenu
-	protected function getMenu($engine, $entries = FALSE)
+	protected function getMenu(Engine $engine = NULL, $entries = FALSE)
 	{
-		$cred = $engine->getCredentials();
+		$cred = $this->engine->getCredentials();
 
 		//obtain the parent menu
 		if($entries === FALSE)
-			$entries = $this->getEntries($engine);
+			$entries = $this->getEntries();
 		if(($menu = parent::getMenu($engine, $entries)) === FALSE)
 			return FALSE;
 		$vbox = new PageElement('vbox', array('id' => 'menu'));
@@ -37,18 +37,18 @@ class DeforaOSTemplate extends BasicTemplate
 		//add some widgets
 		//search widget
 		$request = new Request('search', 'widget');
-		if(($widget = $engine->process($request)) !== FALSE)
+		if(($widget = $this->engine->process($request)) !== FALSE)
 			$vbox->append($widget->getContent());
 		//user widget
 		$request = new Request('user', 'widget');
-		if(($widget = $engine->process($request)) !== FALSE)
+		if(($widget = $this->engine->process($request)) !== FALSE)
 			$vbox->append($widget->getContent());
 		return $vbox;
 	}
 
 
 	//DeforaOSTemplate::getTitle
-	protected function getTitle($engine)
+	protected function getTitle(Engine $engine = NULL)
 	{
 		$title = new PageElement('title', array('id' => 'title'));
 		$link = $title->append('link', array('url' => $this->homepage,
@@ -60,14 +60,14 @@ class DeforaOSTemplate extends BasicTemplate
 
 	//useful
 	//DeforaOSTemplate::match
-	protected function match($engine)
+	protected function match(Engine $engine)
 	{
 		return 0;
 	}
 
 
 	//DeforaOSTemplate::attach
-	protected function attach($engine)
+	protected function attach(Engine $engine)
 	{
 		$this->name = 'DeforaOS';
 		parent::attach($engine);
