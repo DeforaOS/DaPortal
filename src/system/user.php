@@ -21,6 +21,17 @@ abstract class UserBackend
 {
 	//public
 	//methods
+	//essential
+	//UserBackend::UserBackend
+	public function __construct(Engine $engine, $uid, $username = FALSE)
+	{
+		$this->engine = $engine;
+		$this->user_id = $uid;
+		if($username !== FALSE)
+			$this->username = $username;
+	}
+
+
 	//accessors
 	//UserBackend::getEmail
 	public function getEmail()
@@ -95,37 +106,38 @@ abstract class UserBackend
 
 
 	//UserBackend::isMember
-	abstract public function isMember($engine, $group);
+	abstract public function isMember(Engine $engine, $group);
 
 
 	//UserBackend::setGroup
-	abstract public function setGroup($engine, $group_id,
+	abstract public function setGroup(Engine $engine, $group_id,
 			&$error = FALSE);
 
 
 	//UserBackend::setPassword
-	abstract public function setPassword($engine, $password,
+	abstract public function setPassword(Engine $engine, $password,
 			&$error = FALSE);
 
 
 	//useful
-	abstract public function addGroup($engine, $group_id,
+	abstract public function addGroup(Engine $engine, $group_id,
 			&$error = FALSE);
-	abstract public function authenticate($engine, $password);
-	abstract public function delete($engine, &$error = FALSE);
-	abstract public function disable($engine, &$error = FALSE);
-	abstract public function enable($engine, &$error = FALSE);
-	abstract public function lock($engine, &$error = FALSE);
-	abstract public function removeGroup($engine, $group_id,
+	abstract public function authenticate(Engine $engine, $password);
+	abstract public function delete(Engine $engine, &$error = FALSE);
+	abstract public function disable(Engine $engine, &$error = FALSE);
+	abstract public function enable(Engine $engine, &$error = FALSE);
+	abstract public function lock(Engine $engine, &$error = FALSE);
+	abstract public function removeGroup(Engine $engine, $group_id,
 			&$error = FALSE);
-	abstract public function removeGroups($engine, &$error = FALSE);
-	abstract public function removeRegister($engine, &$error = FALSE);
-	abstract public function removeReset($engine, &$error = FALSE);
-	abstract public function unlock($engine, &$error = FALSE);
+	abstract public function removeGroups(Engine $engine, &$error = FALSE);
+	abstract public function removeRegister(Engine $engine, &$error = FALSE);
+	abstract public function removeReset(Engine $engine, &$error = FALSE);
+	abstract public function unlock(Engine $engine, &$error = FALSE);
 
 
 	//protected
 	//properties
+	protected $engine;
 	protected $user_id = 0;
 	protected $username = 'username';
 	protected $group_id = 0;

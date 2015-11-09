@@ -22,8 +22,8 @@ class SQLUserBackend extends UserBackend
 	//public
 	//methods
 	//essential
-	//SQLUserBackend::User
-	public function __construct($engine, $uid, $username = FALSE)
+	//SQLUserBackend::SQLUserBackend
+	public function __construct(Engine $engine, $uid, $username = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_id;
@@ -48,6 +48,7 @@ class SQLUserBackend extends UserBackend
 		$res = $res->current();
 		$this->user_id = $res['id'];
 		$this->username = $res['username'];
+		parent::__construct($engine, $res['id'], $res['username']);
 		$this->enabled = $db->isTrue($res['enabled']);
 		$this->locked = ($res['locked'] == '!');
 		$this->group_id = $res['group_id'];
@@ -61,7 +62,7 @@ class SQLUserBackend extends UserBackend
 	//methods
 	//accessors
 	//SQLUserBackend::isMember
-	public function isMember($engine, $group)
+	public function isMember(Engine $engine, $group)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_member;
@@ -76,7 +77,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::setGroup
-	public function setGroup($engine, $group_id, &$error = FALSE)
+	public function setGroup(Engine $engine, $group_id, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_set_group;
@@ -95,7 +96,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::setPassword
-	public function setPassword($engine, $password,
+	public function setPassword(Engine $engine, $password,
 			&$error = FALSE)
 	{
 		$db = $engine->getDatabase();
@@ -111,7 +112,7 @@ class SQLUserBackend extends UserBackend
 
 	//useful
 	//SQLUserBackend::authenticate
-	public function authenticate($engine, $password)
+	public function authenticate(Engine $engine, $password)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_authenticate;
@@ -172,7 +173,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::addGroup
-	public function addGroup($engine, $group_id, &$error = FALSE)
+	public function addGroup(Engine $engine, $group_id, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_insert_group;
@@ -190,7 +191,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::delete
-	public function delete($engine, &$error = FALSE)
+	public function delete(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_delete;
@@ -239,7 +240,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::disable
-	public function disable($engine, &$error = FALSE)
+	public function disable(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_disable;
@@ -259,7 +260,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::enable
-	public function enable($engine, &$error = FALSE)
+	public function enable(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_enable;
@@ -279,7 +280,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::listAll
-	static public function listAll($engine, $enabled = -1)
+	static public function listAll(Engine $engine, $enabled = -1)
 	{
 		$db = $engine->getDatabase();
 		$query = is_bool($enabled)
@@ -296,7 +297,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::lock
-	public function lock($engine, &$error = FALSE)
+	public function lock(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_lock;
@@ -316,7 +317,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::removeGroup
-	public function removeGroup($engine, $group_id, &$error = FALSE)
+	public function removeGroup(Engine $engine, $group_id, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_delete_group;
@@ -334,7 +335,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::removeGroups
-	public function removeGroups($engine, &$error = FALSE)
+	public function removeGroups(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_delete_groups;
@@ -350,7 +351,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::removeRegister
-	public function removeRegister($engine, &$error = FALSE)
+	public function removeRegister(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_register_delete_user;
@@ -367,7 +368,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::removeReset
-	public function removeReset($engine, &$error = FALSE)
+	public function removeReset(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_reset_delete_user;
@@ -383,7 +384,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::unlock
-	public function unlock($engine, &$error = FALSE)
+	public function unlock(Engine $engine = NULL, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_unlock;
@@ -404,9 +405,9 @@ class SQLUserBackend extends UserBackend
 
 	//static
 	//SQLUserBackend::insert
-	static public function insert($engine, $username, $group_id, $fullname,
-			$password, $email, $enabled = FALSE, $locked = FALSE,
-			$admin = FALSE, &$error = FALSE)
+	static public function insert(Engine $engine, $username, $group_id,
+			$fullname, $password, $email, $enabled = FALSE,
+			$locked = FALSE, $admin = FALSE, &$error = FALSE)
 	{
 		//FIXME code duplication with User::register()
 		$db = $engine->getDatabase();
@@ -452,8 +453,8 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::lookup
-	static public function lookup($engine, $username, $user_id = FALSE,
-			$enabled = TRUE)
+	static public function lookup(Engine $engine, $username,
+			$user_id = FALSE, $enabled = TRUE)
 	{
 		static $cache = array();
 		$db = $engine->getDatabase();
@@ -493,8 +494,8 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::register
-	static public function register($engine, $module, $username, $password,
-			$email, $enabled = FALSE, &$error = FALSE)
+	static public function register(Engine $engine, $module, $username,
+			$password, $email, $enabled = FALSE, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$error = '';
@@ -584,7 +585,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::reset
-	static public function reset($engine, $module, $username, $email,
+	static public function reset(Engine $engine, $module, $username, $email,
 			&$error = FALSE)
 	{
 		$db = $engine->getDatabase();
@@ -648,8 +649,8 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::resetPassword
-	static public function resetPassword($engine, $uid, $password, $token,
-			&$error = FALSE)
+	static public function resetPassword(Engine $engine, $uid, $password,
+			$token, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$error = _('Could not reset the password');
@@ -692,7 +693,8 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::validate
-	static public function validate($engine, $uid, $token, &$error = FALSE)
+	static public function validate(Engine $engine, $uid, $token,
+			&$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$error = '';
@@ -921,7 +923,7 @@ class SQLUserBackend extends UserBackend
 	//useful
 	//SQLUserBackend::registerCleanup
 	//delete registrations older than one week
-	static protected function registerCleanup($engine)
+	static protected function registerCleanup(Engine $engine)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_register_cleanup;
@@ -938,7 +940,7 @@ class SQLUserBackend extends UserBackend
 
 	//SQLUserBackend::resetCleanup
 	//delete password reset requests older than one day
-	static protected function resetCleanup($engine)
+	static protected function resetCleanup(Engine $engine)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_reset_cleanup;
