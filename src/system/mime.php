@@ -23,7 +23,7 @@ class Mime
 	//methods
 	//static
 	//Mime::getIcon
-	static public function getIcon($engine, $filename, $size = 48)
+	static public function getIcon(Engine $engine, $filename, $size = 48)
 	{
 		if(static::init($engine) === FALSE)
 			return 'icons/generic/'.$size.'x'.$size.'/'.static::$default;
@@ -35,7 +35,7 @@ class Mime
 
 
 	//Mime::getIconByType
-	static public function getIconByType($engine, $type, $size = 48)
+	static public function getIconByType(Engine $engine, $type, $size = 48)
 	{
 		$from = array('application/', 'audio/', 'image/', 'text/',
 			'video/');
@@ -65,7 +65,7 @@ class Mime
 
 
 	//Mime::getType
-	static public function getType($engine, $filename,
+	static public function getType(Engine $engine, $filename,
 			$default = 'application/octet-stream')
 	{
 		if(static::init($engine) === FALSE)
@@ -96,7 +96,7 @@ class Mime
 
 	//methods
 	//Mime::init
-	static private function init($engine)
+	static private function init(Engine $engine)
 	{
 		if(!defined(FNM_CASEFOLD))
 			define(FNM_CASEFOLD, 0);
@@ -107,7 +107,7 @@ class Mime
 		return TRUE;
 	}
 
-	static private function _init_iconpath($engine)
+	static private function _init_iconpath(Engine $engine)
 	{
 		global $config;
 
@@ -127,7 +127,7 @@ class Mime
 		return TRUE;
 	}
 
-	static private function _init_types($engine)
+	static private function _init_types(Engine $engine)
 	{
 		global $config;
 
