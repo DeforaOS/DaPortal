@@ -23,7 +23,7 @@ class Group
 	//methods
 	//essential
 	//Group::Group
-	public function __construct($engine, $gid, $groupname = FALSE)
+	public function __construct(Engine $engine, $gid, $groupname = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_id;
@@ -46,6 +46,7 @@ class Group
 				|| count($res) != 1)
 			return;
 		$res = $res->current();
+		$this->engine = $engine;
 		$this->group_id = $res['id'];
 		$this->groupname = $res['groupname'];
 		$this->enabled = $db->isTrue($res['enabled']);
@@ -76,15 +77,15 @@ class Group
 
 	//useful
 	//Group::disable
-	public function disable($engine, &$error = FALSE)
+	public function disable(Engine $engine = NULL, &$error = FALSE)
 	{
-		$db = $engine->getDatabase();
+		$db = $this->engine->getDatabase();
 		$query = static::$query_disable;
 		$args = array('group_id' => $this->group_id);
 
 		if($this->enabled === FALSE)
 			return TRUE;
-		if($db->query($engine, $query, $args) === FALSE)
+		if($db->query($this->engine, $query, $args) === FALSE)
 		{
 			$error = $this->groupname.': Could not disable group';
 			return FALSE;
@@ -95,15 +96,15 @@ class Group
 
 
 	//Group::enable
-	public function enable($engine, &$error = FALSE)
+	public function enable(Engine $engine = NULL, &$error = FALSE)
 	{
-		$db = $engine->getDatabase();
+		$db = $this->engine->getDatabase();
 		$query = static::$query_enable;
 		$args = array('group_id' => $this->group_id);
 
 		if($this->enabled === TRUE)
 			return TRUE;
-		if($db->query($engine, $query, $args) === FALSE)
+		if($db->query($this->engine, $query, $args) === FALSE)
 		{
 			$error = $this->groupname.': Could not enable group';
 			return FALSE;
@@ -115,8 +116,8 @@ class Group
 
 	//static
 	//Group::insert
-	static public function insert($engine, $groupname, $enabled = FALSE,
-			&$error = FALSE)
+	static public function insert(Engine $engine, $groupname,
+			$enabled = FALSE, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_insert;
@@ -150,7 +151,7 @@ class Group
 
 
 	//Group::listAll
-	static public function listAll($engine, $enabled = -1)
+	static public function listAll(Engine $engine, $enabled = -1)
 	{
 		$db = $engine->getDatabase();
 		$query = is_bool($enabled)
@@ -169,8 +170,8 @@ class Group
 
 
 	//Group::lookup
-	static public function lookup($engine, $groupname, $group_id = FALSE,
-			$enabled = TRUE)
+	static public function lookup(Engine $engine, $groupname,
+			$group_id = FALSE, $enabled = TRUE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_groupname;
@@ -199,6 +200,7 @@ class Group
 
 	//private
 	//properties
+	private $engine;
 	private $group_id = 0;
 	private $groupname = 'nogroup';
 	private $enabled = FALSE;
