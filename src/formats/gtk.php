@@ -305,8 +305,8 @@ class GtkFormat extends FormatElements
 
 	protected function renderIconview($e)
 	{
-		$e->setProperty('Gtk::expand', TRUE);
-		$e->setProperty('Gtk::fill', TRUE);
+		$e->set('Gtk::expand', TRUE);
+		$e->set('Gtk::fill', TRUE);
 		$ret = new GtkScrolledWindow();
 		$ret->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 		$store = new GtkListStore(GdkPixbuf::gtype,
@@ -509,8 +509,8 @@ class GtkFormat extends FormatElements
 
 	protected function renderTreeview($e)
 	{
-		$e->setProperty('Gtk::expand', TRUE);
-		$e->setProperty('Gtk::fill', TRUE);
+		$e->set('Gtk::expand', TRUE);
+		$e->set('Gtk::fill', TRUE);
 		$ret = new GtkScrolledWindow();
 		$ret->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 		$columns = $e->getProperty('columns');
