@@ -65,6 +65,50 @@ class HTML5Format extends HTMLFormat
 
 
 	//rendering
+	//HTML5Format::renderCombobox
+	protected function renderCombobox($e)
+	{
+		//XXX code duplicated from HTMLFormat::renderCombobox
+		$tag = 'select';
+		$class = $e->get('class');
+		$list = FALSE;
+
+		$class = ($class !== FALSE) ? $class.' ' : '';
+		$this->tagOpen('span', $class.$e->getType(), $e->get('id'),
+				FALSE, $e->get('text'));
+		$this->renderTabs();
+		$name = $e->get('name');
+		$value = $e->get('value');
+		if($e->get('editable'))
+		{
+			$list = uniqid();
+			$attributes = array('type' => 'text', 'list' => $list,
+				'name' => $name);
+			if(($placeholder = $e->get('placeholder')) !== FALSE)
+				$attributes['placeholder'] = $placeholder;
+			$this->tag('input', FALSE, FALSE, $attributes);
+			$tag = 'datalist';
+		}
+		$this->tagOpen($tag, FALSE, $list, array('name' => $name));
+		$children = $e->getChildren();
+		foreach($children as $c)
+		{
+			$this->renderTabs();
+			$text = $c->get('text');
+			if(($v = $c->get('value')) === FALSE)
+				$v = $text;
+			$args = array('value' => $v);
+			if($value !== FALSE && $value == $v)
+				$args['selected'] = 'selected';
+			$this->tag('option', $c->get('class'), $c->get('id'),
+					$args, $text);
+		}
+		$this->renderTabs();
+		$this->tagClose($tag);
+		$this->tagClose('span');
+	}
+
+
 	//HTML5Format::renderEntry
 	protected function renderEntry($e)
 	{
