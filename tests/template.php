@@ -24,6 +24,8 @@ if(($dir = opendir('../src/templates')) === FALSE)
 	exit(2);
 $ret = 0;
 $page = new Page;
+$dialog = new PageElement('dialog', array('type' => 'info',
+		'text' => 'This is just a test'));
 while(($de = readdir($dir)) !== FALSE)
 {
 	if(substr($de, -4) != '.php')
@@ -35,9 +37,10 @@ while(($de = readdir($dir)) !== FALSE)
 		$engine->log('LOG_ERR',
 				$template.': Could not attach template');
 		$ret = 3;
+		continue;
 	}
-	else
-		$template->render($engine, $page);
+	$template->render($engine, $page);
+	$template->render($engine, $dialog);
 }
 closedir($dir);
 exit($ret);
