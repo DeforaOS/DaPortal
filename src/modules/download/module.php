@@ -207,7 +207,6 @@ class DownloadModule extends MultiContentModule
 	{
 		$class = static::$content_classes['folder'];
 		$p = ($request !== FALSE) ? $request->get('page') : 0;
-		$pcnt = FALSE;
 
 		if($request !== FALSE && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
