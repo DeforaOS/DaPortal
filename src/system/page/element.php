@@ -88,7 +88,7 @@ class PageElement extends Mutator
 			$element = new PageElement($type);
 		if(is_array($properties))
 			foreach($properties as $key => $value)
-				$element->setProperty($key, $value);
+				$element->set($key, $value);
 		$this->children[] = $element;
 		return $element;
 	}
@@ -103,7 +103,7 @@ class PageElement extends Mutator
 			$element = new PageElement($type, $properties);
 		if(is_array($properties))
 			foreach($properties as $key => $value)
-				$element->setProperty($key, $value);
+				$element->set($key, $value);
 		$this->children = array_merge(array($element), $this->children);
 		return $element;
 	}
