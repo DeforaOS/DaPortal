@@ -35,6 +35,15 @@ class PageResponse extends Response
 	}
 
 
+	//PageResponse::setContent
+	public function setContent($content)
+	{
+		if(!($content instanceof PageElement))
+			$content = new Page();
+		return parent::setContent($content);
+	}
+
+
 	//useful
 	//PageResponse::render
 	public function render(Engine $engine)
