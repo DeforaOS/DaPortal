@@ -77,8 +77,8 @@ class HTML5Format extends HTMLFormat
 		if(($text = $e->get('text')) !== FALSE)
 		{
 			$l = new PageElement('label', array(
-					'class' => $e->get('class')));
-			$l->setProperty('text', $text);
+					'class' => $e->get('class'),
+					'text' => $text));
 			$this->renderElement($l);
 		}
 		$name = $e->get('name');

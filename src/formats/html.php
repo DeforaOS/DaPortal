@@ -420,10 +420,9 @@ class HTMLFormat extends FormatElements
 		print('/>');
 		if(($text = $e->get('text')) !== FALSE)
 		{
-			$l = new PageElement('label');
-			$l->setProperty('text', $text);
+			$l = new PageElement('label', array('text' => $text));
 			if($name !== FALSE)
-				$l->setProperty('for', $name);
+				$l->set('for', $name);
 			$this->renderElement($l, $text);
 		}
 		$this->tagClose('div');
@@ -537,8 +536,8 @@ class HTMLFormat extends FormatElements
 		if($text !== FALSE)
 		{
 			$l = new PageElement('label', array(
-					'class' => $e->get('class')));
-			$l->setProperty('text', $text);
+					'class' => $e->get('class'),
+					'text' => $text));
 			$this->renderElement($l);
 		}
 		$name = $e->get('name');
@@ -584,8 +583,7 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('div', $e->getType());
 		if(($text = $e->get('text')) !== FALSE)
 		{
-			$l = new PageElement('label');
-			$l->setProperty('text', $text);
+			$l = new PageElement('label', array('text' => $text));
 			$this->renderElement($l);
 		}
 		$name = $e->get('name');
@@ -798,11 +796,11 @@ class HTMLFormat extends FormatElements
 
 	protected function renderIconview($e)
 	{
-		$e->setProperty('view', 'icons');
+		$e->set('view', 'icons');
 		if(($columns = $e->get('columns')) === FALSE)
 		{
 			$columns = array('icon' => 'Icon', 'label' => 'Label');
-			$e->setProperty('columns', $columns);
+			$e->set('columns', $columns);
 		}
 		$this->renderTreeview($e);
 	}
@@ -1039,8 +1037,7 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('div', $e->getType());
 		if(($text = $e->get('text')) !== FALSE)
 		{
-			$l = new PageElement('label');
-			$l->setProperty('text', $text);
+			$l = new PageElement('label', array('text' => $text));
 			$this->renderElement($l);
 		}
 		$value = $e->get('value');
@@ -1125,13 +1122,13 @@ class HTMLFormat extends FormatElements
 				if(($c = $e->get('columns')) !== FALSE)
 					break;
 				$c = array('icon' => '', 'label' => '');
-				$e->setProperty('columns', $c);
+				$e->set('columns', $c);
 				break;
 			case 'thumbnails':
 				if(($c = $e->get('columns')) !== FALSE)
 					break;
 				$c = array('thumbnail' => '', 'label' => '');
-				$e->setProperty('columns', $c);
+				$e->set('columns', $c);
 				break;
 			default:
 				$view = 'details';
