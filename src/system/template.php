@@ -70,7 +70,8 @@ abstract class Template
 
 
 	//virtual
-	abstract public function render(Engine $engine, PageElement $page);
+	abstract public function render(Engine $engine,
+			PageElement $page = NULL);
 
 
 	//protected

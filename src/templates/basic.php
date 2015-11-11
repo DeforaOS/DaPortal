@@ -34,14 +34,22 @@ class BasicTemplate extends Template
 
 	//methods
 	//accessors
-	//BasicTemplate::getDefault
-	protected function getDefault()
+	//BasicTemplate::getDefaultPage
+	protected function getDefaultPage()
 	{
-		global $config;
-
-		$title = $config->get(FALSE, 'title');
-		$res = new PageElement('title', array('text' => $title));
-		return $res;
+		$page = NULL;
+		if($this->module !== FALSE)
+		{
+			$request = new Request($this->module, $this->action,
+				$this->id);
+			$page = $this->engine->process($request);
+			if($page instanceof PageResponse)
+				$page = $page->getContent();
+		}
+		if(is_null($page))
+			$page = new PageElement('title', array(
+					'text' => $this->title));
+		return $page;
 	}
 
 
@@ -77,8 +85,7 @@ class BasicTemplate extends Template
 	//BasicTemplate::getFooter
 	protected function getFooter(Engine $engine = NULL)
 	{
-		$footer = new PageElement('statusbar');
-		$footer->setProperty('id', 'footer');
+		$footer = new PageElement('statusbar', array('id' => 'footer'));
 		if($this->footer !== FALSE)
 			$footer->append('htmlview', array(
 					'text' => $this->footer));
@@ -188,7 +195,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::render
-	public function render(Engine $engine, PageElement $page)
+	public function render(Engine $engine, PageElement $page = NULL)
 	{
 		$title = $this->title;
 
@@ -202,24 +209,13 @@ class BasicTemplate extends Template
 				'title' => $this->message_title,
 				'text' => $this->message));
 		$content = $main->append('vbox', array('id' => 'content'));
-		if($page === FALSE && $this->module !== FALSE)
-		{
-			$request = new Request($this->module, $this->action,
-				$this->id);
-			//XXX
-			$page = $this->engine->process($request);
-			$page = ($page instanceof PageResponse)
-				? $page->getContent() : FALSE;
-		}
-		if($page !== FALSE)
-		{
-			if(($t = $page->getProperty('title')) !== FALSE)
-				$title = $this->title.': '.$t;
-			$content->append($page);
-		}
-		else if(($element = $this->getDefault()) !== FALSE)
-			$content->append($element);
-		$p->setProperty('title', $title);
+		if(is_null($page))
+			$page = $this->getDefaultPage();
+		if($page instanceof Page
+				&& ($t = $page->get('title')) !== FALSE)
+			$title .= ': '.$t;
+		$content->append($page);
+		$p->set('title', $title);
 		$p->append($this->getFooter());
 		return $p;
 	}
