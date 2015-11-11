@@ -29,7 +29,7 @@ class PageResponse extends Response
 			return $ret;
 		//XXX fallback on page properties
 		//XXX an engine is required
-		if(($page = $this->getContent(FALSE)) !== FALSE)
+		if(($page = $this->getContent(FALSE)) !== NULL)
 			return $page->get($name);
 		return FALSE;
 	}
@@ -39,7 +39,7 @@ class PageResponse extends Response
 	public function setContent($content)
 	{
 		if(!($content instanceof PageElement))
-			$content = new Page();
+			$content = NULL;
 		return parent::setContent($content);
 	}
 
