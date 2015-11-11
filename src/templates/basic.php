@@ -38,6 +38,7 @@ class BasicTemplate extends Template
 	protected function getDefaultPage()
 	{
 		$page = NULL;
+
 		if($this->module !== FALSE)
 		{
 			$request = new Request($this->module, $this->action,
@@ -185,8 +186,7 @@ class BasicTemplate extends Template
 
 		parent::attach($engine);
 		foreach($properties as $p)
-			if($this->$p === FALSE)
-				$this->$p = $this->configGet($p);
+			$this->$p = $this->configGet($p);
 		if($this->title === FALSE)
 			$this->title = $config->get(FALSE, 'title');
 	}
