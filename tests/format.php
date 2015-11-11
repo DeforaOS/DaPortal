@@ -21,6 +21,20 @@ require_once('./tests.php');
 
 //variables
 $html5 = array(
+	array('type' => 'entry', 'attributes' => array(
+		'name' => 'entry', 'text' => 'Entry', 'value' => 'Value'
+	), 'expected' => "<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=\"utf-8\"/>
+		<base href=\"/\"/>
+		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
+		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
+	</head>
+	<body>
+		<div class=\"entry\"><span class=\"label\">Entry</span><input class=\"entry\" type=\"text\" name=\"entry\" value=\"Value\"/></div>
+	</body>
+</html>"),
 	array('type' => 'page', 'attributes' => FALSE, 'expected' => "<!DOCTYPE html>
 <html>
 	<head>
