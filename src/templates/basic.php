@@ -120,21 +120,19 @@ class BasicTemplate extends Template
 					$menuitem->append('separator');
 					continue;
 				}
-				if(($label = $a->getProperty('label'))
-						=== FALSE)
+				if(($label = $a->get('label')) === FALSE)
 					continue;
-				$important = $a->getProperty('important');
+				$important = $a->get('important');
 				$request = FALSE;
 				$stock = FALSE;
 				$text = FALSE;
-				if(($icon = $a->getProperty('icon')) !== FALSE
+				if(($icon = $a->get('icon')) !== FALSE
 						&& $icon instanceof PageElement)
-					$stock = $icon->getProperty('stock');
+					$stock = $icon->get('stock');
 				if($label instanceof PageElement)
 				{
-					$request = $label->getProperty(
-						'request');
-					$text = $label->getProperty('text');
+					$request = $label->get('request');
+					$text = $label->get('text');
 				}
 				else if(is_string($label))
 					$text = $label;

@@ -76,9 +76,9 @@ class KhorbenTemplate extends BasicTemplate
 				continue;
 			foreach($e['actions'] as $link)
 			{
-				$args['text'] = $link->getProperty('text');
-				$args['request'] = $link->getProperty('request');
-				$args['url'] = $link->getProperty('url');
+				$args['text'] = $link->get('text');
+				$args['request'] = $link->get('request');
+				$args['url'] = $link->get('url');
 				$menu->append('menuitem', $args);
 			}
 		}
