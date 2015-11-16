@@ -22,9 +22,8 @@ class SQLite3Database extends Database
 	//SQLite3Database::~SQLite3Database
 	function __destruct()
 	{
-		if($this->handle == NULL)
-			return;
-		$this->handle->close();
+		if(!is_null($this->handle))
+			$this->handle->close();
 	}
 
 
@@ -34,7 +33,7 @@ class SQLite3Database extends Database
 	//SQLite3Database::getLastID
 	public function getLastID(Engine $engine, $table, $field)
 	{
-		if($this->handle === FALSE)
+		if(is_null($this->handle))
 			return FALSE;
 		//FIXME return the real last ID for $table_$field
 		return $this->handle->lastInsertRowID();
@@ -61,7 +60,7 @@ class SQLite3Database extends Database
 	{
 		global $config;
 
-		if($this->handle === FALSE)
+		if(is_null($this->handle))
 			return FALSE;
 		if($config->get('database', 'debug'))
 			$this->engine->log('LOG_DEBUG', $query);
@@ -134,7 +133,7 @@ class SQLite3Database extends Database
 		}
 		catch(Exception $e)
 		{
-			$this->handle = FALSE;
+			$this->handle = NULL;
 			return $engine->log('LOG_ERR',
 				'Could not open database');
 		}
@@ -213,7 +212,7 @@ class SQLite3Database extends Database
 
 	//private
 	//properties
-	private $handle = FALSE;
+	private $handle = NULL;
 	private $case;
 	//functions
 	private $func_regexp = FALSE;
