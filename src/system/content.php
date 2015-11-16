@@ -924,7 +924,8 @@ class Content
 
 
 	//Content::load
-	static public function load($engine, $module, $id, $title = FALSE)
+	static public function load(Engine $engine, Module $module, $id,
+			$title = FALSE)
 	{
 		if(($res = static::_load($engine, $module, $id, $title))
 				=== FALSE)
@@ -932,7 +933,8 @@ class Content
 		return static::loadFromProperties($engine, $module, $res);
 	}
 
-	static protected function _load($engine, $module, $id, $title)
+	static protected function _load(Engine $engine, Module $module, $id,
+			$title)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -968,7 +970,8 @@ class Content
 
 
 	//Content::loadFromProperties
-	static public function loadFromProperties($engine, $module, $properties)
+	static public function loadFromProperties(Engine $engine,
+			Module $module, $properties)
 	{
 		$class = static::$class;
 
@@ -977,7 +980,8 @@ class Content
 
 
 	//Content::loadFromResult
-	static public function loadFromResult($engine, $module, $result)
+	static public function loadFromResult(Engine $engine, Module $module,
+			ContentResult $result)
 	{
 		$class = static::$class;
 

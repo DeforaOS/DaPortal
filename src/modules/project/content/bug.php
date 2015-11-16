@@ -238,7 +238,8 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::loadFromBugID
-	static public function loadFromBugID($engine, $module, $bug_id)
+	static public function loadFromBugID(Engine $engine, Module $module,
+			$bug_id)
 	{
 		//XXX code duplication
 		$database = $engine->getDatabase();

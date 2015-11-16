@@ -502,7 +502,8 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::loadFromName
-	static function loadFromName($engine, $module, $name, $parent = FALSE)
+	static function loadFromName(Engine $engine, Module $module, $name,
+			$parent = FALSE)
 	{
 		if(($res = static::_loadFromName($engine, $module, $name,
 				$parent)) === FALSE)
@@ -510,8 +511,8 @@ abstract class PKIContent extends ContentMulti
 		return static::loadFromProperties($engine, $module, $res);
 	}
 
-	static protected function _loadFromName($engine, $module, $name,
-			$parent)
+	static protected function _loadFromName(Engine $engine, Module $module,
+			$name, $parent)
 	{
 		$database = $engine->getDatabase();
 		$query = ($parent !== FALSE)

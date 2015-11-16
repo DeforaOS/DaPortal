@@ -250,7 +250,8 @@ class FolderDownloadContent extends DownloadContent
 	//static
 	//methods
 	//FolderDownloadContent::loadByDownloadID
-	static public function loadByDownloadID($engine, $module, $download_id)
+	static public function loadByDownloadID(Engine $engine, Module $module,
+			$download_id)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -268,7 +269,8 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::loadFromProperties
-	static public function loadFromProperties($engine, $module, $properties)
+	static public function loadFromProperties(Engine $engine,
+			Module $module, $properties)
 	{
 		$class = (isset($properties['mode'])
 				&& ($properties['mode'] & static::$S_IFDIR))
@@ -279,7 +281,7 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::loadRoot
-	static public function loadRoot($engine, $module)
+	static public function loadRoot(Engine $engine, Module $module)
 	{
 		$class = static::$class;
 
