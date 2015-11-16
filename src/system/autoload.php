@@ -23,7 +23,10 @@ function autoload($class, $filename = FALSE)
 	if(strncmp($class, 'DaPortal\\', 9) == 0)
 		$class = substr($class, 9);
 	if($filename !== FALSE)
-		return _autoload_filename($class, $filename);
+	{
+		_autoload_filename($class, $filename);
+		return;
+	}
 	$res = ($filename = _autoload_filename($class)) !== FALSE
 		&& is_readable($filename) ? include_once($filename) : FALSE;
 	if($res === FALSE)
