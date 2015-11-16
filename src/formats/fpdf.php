@@ -56,7 +56,7 @@ class FPDFFormat extends FormatElements
 		$title = $page->getProperty('title');
 
 		$this->pdf = new FPDF();
-		$this->pdf->addPage();
+		$this->pdf->AddPage();
 		$this->pdf->SetFont('Arial', '', 12);
 		$this->pdf->SetCreator('DaPortal');
 		$this->pdf->SetAuthor($author);
