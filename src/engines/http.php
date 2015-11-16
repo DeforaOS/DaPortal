@@ -308,30 +308,30 @@ class HTTPEngine extends Engine
 		$this->_renderCode($response->getCode());
 		//XXX escape the headers
 		//obtain the current content's type (and default to HTML)
-		if(($type = $response->getType($this)) === FALSE)
+		if(($type = $response->getType()) === FALSE)
 		{
 			$type = 'text/html';
 			$response->setType($type);
 		}
 		//set the content type and character set
 		$header = 'Content-Type: '.$type;
-		if(($charset = $response->getCharset($this)) !== FALSE)
+		if(($charset = $response->getCharset()) !== FALSE)
 			$header .= '; charset='.$charset;
 		header($header);
 		//set the disposition
 		$disposition = (strncmp('image/', $type, 6) == 0
 				|| strncmp('text/', $type, 5) == 0)
 			? 'inline' : 'attachment';
-		if(($filename = $response->getFilename($this)) !== FALSE)
+		if(($filename = $response->getFilename()) !== FALSE)
 			//FIXME escape $filename
 			$disposition .= '; filename="'.$filename.'"';
 		header('Content-Disposition: '.$disposition);
 		//set the length
-		if(($length = $response->getLength($this)) !== FALSE
+		if(($length = $response->getLength()) !== FALSE
 				&& is_numeric($length))
 			header('Content-Length: '.$length);
 		//set the modification time
-		if(($mtime = $response->getModified($this)) !== FALSE)
+		if(($mtime = $response->getModified()) !== FALSE)
 		{
 			$mtime = gmstrftime('%a, %d %b %Y %H:%M:%S', $mtime);
 			header('Last-Modified: '.$mtime);
