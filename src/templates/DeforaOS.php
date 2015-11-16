@@ -66,14 +66,6 @@ class DeforaOSTemplate extends BasicTemplate
 	}
 
 
-	//DeforaOSTemplate::attach
-	protected function attach(Engine $engine)
-	{
-		$this->name = 'DeforaOS';
-		parent::attach($engine);
-	}
-
-
 	//properties
 	protected $logo = 'themes/DeforaOS.png';
 }

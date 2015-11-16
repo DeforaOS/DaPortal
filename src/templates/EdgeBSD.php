@@ -31,7 +31,6 @@ class EdgeBSDTemplate extends DeforaOSTemplate
 	//EdgeBSDTemplate::attach
 	protected function attach(Engine $engine)
 	{
-		$this->name = 'EdgeBSD';
 		BasicTemplate::attach($engine);
 		$this->logo = 'themes/EdgeBSD.png';
 	}
