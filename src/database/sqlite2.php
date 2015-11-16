@@ -19,16 +19,17 @@
 //SQLite2Database
 class SQLite2Database extends Database
 {
+	//public
+	//methods
+	//essential
 	//SQLite2Database::~SQLite2Database
-	function __destruct()
+	public function __destruct()
 	{
 		if($this->handle !== FALSE)
 			sqlite_close($this->handle);
 	}
 
 
-	//public
-	//methods
 	//accessors
 	//SQLite2Database::getLastID
 	public function getLastID(Engine $engine, $table, $field)

@@ -19,16 +19,17 @@
 //PgSQLDatabase
 class PgSQLDatabase extends Database
 {
+	//public
+	//methods
+	//essential
 	//PgSQLDatabase::~PgSQLDatabase
-	function __destruct()
+	public function __destruct()
 	{
 		if($this->handle !== FALSE)
 			pg_close($this->handle);
 	}
 
 
-	//public
-	//methods
 	//accessors
 	//PgSQLDatabase::getLastID
 	public function getLastID(Engine $engine, $table, $field)

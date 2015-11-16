@@ -19,16 +19,17 @@
 //SQLite3Database
 class SQLite3Database extends Database
 {
+	//public
+	//methods
+	//essential
 	//SQLite3Database::~SQLite3Database
-	function __destruct()
+	public function __destruct()
 	{
 		if(!is_null($this->handle))
 			$this->handle->close();
 	}
 
 
-	//public
-	//methods
 	//accessors
 	//SQLite3Database::getLastID
 	public function getLastID(Engine $engine, $table, $field)

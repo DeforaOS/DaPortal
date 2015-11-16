@@ -19,15 +19,16 @@
 //PDODatabase
 class PDODatabase extends Database
 {
+	//public
+	//methods
+	//essential
 	//PDODatabase::~PDODatabase
-	function __destruct()
+	public function __destruct()
 	{
 		$this->handle = FALSE;
 	}
 
 
-	//public
-	//methods
 	//accessors
 	//PDODatabase::getLastID
 	public function getLastID(Engine $engine, $table, $field)
