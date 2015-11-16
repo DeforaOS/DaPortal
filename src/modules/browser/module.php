@@ -131,7 +131,7 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::getRoot
-	protected function getRoot($engine)
+	protected function getRoot(Engine $engine)
 	{
 		if(($root = $this->configGet('root')) === FALSE)
 		{

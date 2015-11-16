@@ -534,7 +534,7 @@ abstract class PKIContent extends ContentMulti
 	//methods
 	//accessors
 	//PKIContent::getRoot
-	protected function getRoot($engine)
+	protected function getRoot(Engine $engine)
 	{
 		global $config;
 
@@ -550,7 +550,7 @@ abstract class PKIContent extends ContentMulti
 
 
 	//CAPKIContent::getRootCA
-	protected function getRootCA($engine, $parent = FALSE)
+	protected function getRootCA(Engine $engine, $parent = FALSE)
 	{
 		if($parent === FALSE)
 			$parent = $this->getParent($engine);

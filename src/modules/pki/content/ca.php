@@ -63,7 +63,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::getRootCA
-	protected function getRootCA($engine, $parent = FALSE)
+	protected function getRootCA(Engine $engine, $parent = FALSE)
 	{
 		if(($root = $this->getRoot($engine)) === FALSE)
 			return FALSE;
