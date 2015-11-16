@@ -42,6 +42,7 @@ if($r['user_id'] != 0)
 $res->next();
 $r = $res->current();
 if($r['user_id'] != 1)
+	exit(6);
 
 exit(0);
 
