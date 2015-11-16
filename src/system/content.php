@@ -96,14 +96,14 @@ class Content
 	//Content::canDelete
 	public function canDelete($engine, $request = FALSE, &$error = FALSE)
 	{
-		return $this->canAdmin($engine, $request, $content, $error);
+		return $this->canAdmin($engine, $request, $error);
 	}
 
 
 	//Content::canDisable
 	public function canDisable($engine, $request = FALSE, &$error = FALSE)
 	{
-		return $this->canAdmin($engine, $request, $content, $error);
+		return $this->canAdmin($engine, $request, $error);
 	}
 
 
@@ -117,7 +117,7 @@ class Content
 	//Content::canEnable
 	public function canEnable($engine, $request = FALSE, &$error = FALSE)
 	{
-		return $this->canAdmin($engine, $request, $content, $error);
+		return $this->canAdmin($engine, $request, $error);
 	}
 
 
