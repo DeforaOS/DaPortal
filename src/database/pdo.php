@@ -212,7 +212,7 @@ class PDODatabase extends Database
 	{
 		if($this->handle === FALSE)
 			return FALSE;
-		return $this->handle->rollback();
+		return $this->handle->rollBack();
 	}
 
 
