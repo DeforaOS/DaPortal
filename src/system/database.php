@@ -110,7 +110,7 @@ abstract class Database
 			return TRUE;
 		}
 		$this->rollback = FALSE;
-		if($this->_beginTransaction($this->engine) === FALSE)
+		if($this->_beginTransaction() === FALSE)
 			return FALSE;
 		$this->transaction = 1;
 		return TRUE;
@@ -134,11 +134,11 @@ abstract class Database
 		}
 		if($this->rollback)
 		{
-			$this->transactionRollback($this->engine);
+			$this->transactionRollback();
 			return FALSE;
 		}
 		$this->transaction--;
-		return $this->_commitTransaction($this->engine);
+		return $this->_commitTransaction();
 	}
 
 	protected function _commitTransaction()
@@ -153,7 +153,7 @@ abstract class Database
 		if(!$this->inTransaction())
 			return FALSE;
 		if($this->transaction-- == 1)
-			return $this->_rollbackTransaction($this->engine);
+			return $this->_rollbackTransaction();
 		$this->rollback = TRUE;
 		return TRUE;
 	}
@@ -169,11 +169,11 @@ abstract class Database
 	{
 		if($this->inTransaction())
 			return $callback();
-		if($this->transactionBegin($this->engine) === FALSE)
+		if($this->transactionBegin() === FALSE)
 			return FALSE;
 		if(($ret = $callback()) === FALSE)
-			$this->transactionRollback($this->engine);
-		else if($this->transactionCommit($this->engine) === FALSE)
+			$this->transactionRollback();
+		else if($this->transactionCommit() === FALSE)
 			return FALSE;
 		return $ret;
 	}
