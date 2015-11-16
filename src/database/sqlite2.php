@@ -22,9 +22,8 @@ class SQLite2Database extends Database
 	//SQLite2Database::~SQLite2Database
 	function __destruct()
 	{
-		if($this->handle === FALSE)
-			return;
-		sqlite_close($this->handle);
+		if($this->handle !== FALSE)
+			sqlite_close($this->handle);
 	}
 
 
