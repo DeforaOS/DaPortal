@@ -395,7 +395,7 @@ CREATE TABLE daportal_bug_reply (
 	priority VARCHAR(255),
 	assigned INTEGER,
 	FOREIGN KEY (content_id) REFERENCES daportal_content (content_id),
-	FOREIGN KEY (bug_id) REFERENCES daportal_bug (bug_id)
+	FOREIGN KEY (bug_id) REFERENCES daportal_bug (bug_id),
 	FOREIGN KEY (state) REFERENCES daportal_bug_reply_enum_state (name),
 	FOREIGN KEY (type) REFERENCES daportal_bug_reply_enum_type (name),
 	FOREIGN KEY (priority) REFERENCES daportal_bug_reply_enum_type (name)
