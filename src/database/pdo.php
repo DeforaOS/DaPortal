@@ -326,7 +326,7 @@ class PDODatabaseResultCached extends DatabaseResult
 	//public
 	//methods
 	//PDODatabaseResultCached::PDODatabaseResultCached
-	public function __construct($stmt)
+	public function __construct(PDOStatement $stmt)
 	{
 		$this->stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$this->count = count($this->stmt);

@@ -22,7 +22,7 @@ class PDODatabaseResult extends DatabaseResult
 	//public
 	//methods
 	//PDODatabaseResult::PDODatabaseResult
-	public function __construct($stmt)
+	public function __construct(PDOStatement $stmt)
 	{
 		$this->count = $stmt->rowCount();
 		$this->stmt = $stmt;
