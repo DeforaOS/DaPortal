@@ -423,7 +423,7 @@ class HTMLFormat extends FormatElements
 			$l = new PageElement('label', array('text' => $text));
 			if($name !== FALSE)
 				$l->set('for', $name);
-			$this->renderElement($l, $text);
+			$this->renderElement($l);
 		}
 		$this->tagClose('div');
 	}
