@@ -981,7 +981,7 @@ class Content
 
 	//Content::loadFromResult
 	static public function loadFromResult(Engine $engine, Module $module,
-			ContentResult $result)
+			DatabaseResult $result)
 	{
 		$class = static::$class;
 
