@@ -91,8 +91,6 @@ class GtkFormat extends FormatElements
 		}
 		if($this->engine->getDebug())
 			$this->_log_append($icon, $priority, $message);
-		if($priority == 'LOG_DEBUG')
-			return FALSE;
 		return FALSE;
 	}
 
