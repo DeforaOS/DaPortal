@@ -250,6 +250,9 @@ class PDODatabase extends Database
 		}
 		$this->engine = $engine;
 		$this->debug = $config->get('database', 'debug') ? TRUE : FALSE;
+		if($this->debug)
+			$this->handle->setAttribute(PDO::ATTR_ERRMODE,
+					PDO::ERRMODE_WARNING);
 		//database-specific hacks
 		switch($this->getBackend())
 		{
