@@ -314,6 +314,7 @@ class PDODatabase extends Database
 	//private
 	//properties
 	private $backend = FALSE;
+	private $debug;
 	private $handle = FALSE;
 	private $result_class = 'PDODatabaseResult';
 	private $case;
@@ -359,7 +360,6 @@ class PDODatabaseResultCached extends DatabaseResult
 	//private
 	//properties
 	private $stmt;
-	private $debug;
 	private $affected;
 }
 
