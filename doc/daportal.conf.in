@@ -189,6 +189,9 @@ globs=@PREFIX@/share/mime/globs
 #root=/tmp/download
 #umask=0277
 
+[module::manual]
+#path=/usr/share/man,/usr/local/man
+
 [module::pki]
 #root=/tmp/pki
 
