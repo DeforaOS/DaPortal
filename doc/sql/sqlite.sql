@@ -532,4 +532,8 @@ INSERT INTO daportal_module (name, enabled) VALUES ('blog', '1');
 /* module: manual */
 INSERT INTO daportal_module (name, enabled) VALUES ('manual', '1');
 
+
+/* module: salt */
+INSERT INTO daportal_module (name, enabled) VALUES ('salt', '1');
+
 COMMIT;
