@@ -288,6 +288,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/cvs.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/git.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/scm/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/salt/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/salt/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/salt/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/search/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/search/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/search/project.conf \

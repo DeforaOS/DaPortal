@@ -1,4 +1,4 @@
-SUBDIRS	= admin article blog browser content download group manual news pki project search top user wiki
+SUBDIRS	= admin article blog browser content download group manual news pki project salt search top user wiki
 MKDIR	= mkdir -m 0755 -p
 
 
