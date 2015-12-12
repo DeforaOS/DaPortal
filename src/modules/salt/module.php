@@ -62,6 +62,7 @@ class SaltModule extends Module
 	private function _defaultForm($page, $hostname)
 	{
 		$form = $page->append('form', array(
+				'idempotent' => TRUE,
 				'request' => $this->getRequest()));
 		$hbox = $form->append('hbox');
 		$hbox->append('entry', array('text' => _('Host: '),
