@@ -53,11 +53,24 @@ class SaltModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title));
 		$vbox = $page->append('vbox');
-		$this->_defaultStatus($vbox, $hostname);
+		$this->_defaultForm($vbox, $hostname);
+		if($hostname !== FALSE)
+			$this->_defaultHost($vbox, $hostname);
 		return new PageResponse($page);
 	}
 
-	private function _defaultStatus($page, $hostname)
+	private function _defaultForm($page, $hostname)
+	{
+		$form = $page->append('form', array(
+				'request' => $this->getRequest()));
+		$hbox = $form->append('hbox');
+		$hbox->append('entry', array('text' => _('Host: '),
+				'name' => 'host', 'value' => $hostname));
+		$hbox->append('button', array('type' => 'submit',
+				'text' => _('Monitor')));
+	}
+
+	private function _defaultHost($page, $hostname)
 	{
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
@@ -66,7 +79,6 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 				return;
 		}
-		$this->renderStatusAll($data);
 		foreach($data as $hostname => $data)
 		{
 			$page->append('title', array('text' => $hostname));
@@ -182,6 +194,8 @@ class SaltModule extends Module
 	//SaltModule::renderStatusAll
 	protected function renderStatusAll($page, $data)
 	{
+		if(!($data instanceof Traversable) && !is_object($data))
+			return;
 		foreach($data as $key => $value)
 		{
 			$vbox = new PageElement('vbox');
