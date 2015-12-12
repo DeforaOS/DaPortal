@@ -141,7 +141,6 @@ class SaltModule extends Module
 		{
 			if($voldata->total == 0)
 				continue;
-			var_dump($voldata);
 			$capacity = 100 - ($voldata->available
 				/ $voldata->total * 100);
 			$progress = $page->append('progress', array(
