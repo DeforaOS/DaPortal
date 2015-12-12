@@ -53,91 +53,29 @@ class SaltModule extends Module
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title));
 		$vbox = $page->append('vbox');
-		$this->_defaultLoad($vbox, $hostname);
-		$this->_defaultDisk($vbox, $hostname);
-		$this->_defaultNetwork($vbox, $hostname);
+		$this->_defaultStatus($vbox, $hostname);
 		return new PageResponse($page);
 	}
 
-	private function _defaultDisk($page, $hostname)
+	private function _defaultStatus($page, $hostname)
 	{
-		if(($data = $this->helperSalt($hostname, 'disk.usage'))
-				=== FALSE)
+		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
-			$error = _('Could not obtain disk usage');
+			$error = _('Could not obtain statistics');
 			$page->append('dialog', array(
 					'type' => 'error', 'text' => $error));
 				return;
 		}
-		foreach($data as $host => $hostdata)
+		$this->renderStatusAll($data);
+		foreach($data as $hostname => $data)
 		{
-			$page->append('title', array('text' => $host));
-			$vbox = $page->append('vbox');
-			$vbox->append('title', array('text' => 'Disk usage'));
-			foreach($hostdata as $vol => $voldata)
-			{
-				sscanf($voldata->capacity, '%u', $capacity);
-				$progress = $vbox->append('progress', array(
-					'text' => $vol.': '.$voldata->capacity,
-					'min' => 0, 'max' => 100, 'high' => 75,
-					'value' => $capacity));
-				$progress->append('label', array(
-					'text' => ' '.$vol.' ('
-					.$voldata->filesystem.')'));
-			}
-		}
-	}
-
-	private function _defaultLoad($page, $hostname)
-	{
-		if(($data = $this->helperSalt($hostname, 'status.loadavg'))
-				=== FALSE)
-		{
-			$error = _('Could not obtain load average');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
-				return;
-		}
-		foreach($data as $host => $hostdata)
-		{
-			$page->append('title', array('text' => $host));
-			$vbox = $page->append('vbox');
-			$vbox2 = $vbox->append('vbox');
-			$vbox2->append('title', array(
-					'text' => _('Load average')));
-			foreach($hostdata as $key => $value)
-				$vbox2->append('label', array(
-						'text' => $key.': '.$value));
-		}
-	}
-
-	private function _defaultNetwork($page, $hostname)
-	{
-		if(($data = $this->helperSalt($hostname, 'status.netdev'))
-				=== FALSE)
-		{
-			$error = _('Could not obtain network statistics');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
-				return;
-		}
-		foreach($data as $host => $hostdata)
-		{
-			$page->append('title', array('text' => $host));
-			$vbox = $page->append('vbox');
-			foreach($hostdata as $name => $interface)
-			{
-				$title = _('Interface ').$name;
-				$vbox->append('title', array('text' => $title));
-				foreach($interface as $key => $value)
-					$vbox->append('label', array(
-							'text' => $key.': '.$value));
-			}
+			$page->append('title', array('text' => $hostname));
+			$this->renderStatusAll($page, $data);
 		}
 	}
 
 
-	//helper
+	//helpers
 	//SaltModule::helperSalt
 	protected function helperSalt($hostname = FALSE, $command = 'test.ping',
 			$args = FALSE, $options = FALSE)
@@ -163,6 +101,107 @@ class SaltModule extends Module
 		if(($data = json_decode($output)) === NULL)
 			return FALSE;
 		return $data;
+	}
+
+
+	//SaltModule::helperSaltDiskusage
+	protected function helperSaltDiskusage($hostname)
+	{
+		return $this->helperSalt($hostname, 'status.diskusage');
+	}
+
+
+	//SaltModule::helperSaltLoadavg
+	protected function helperSaltLoadavg($hostname)
+	{
+		return $this->helperSalt($hostname, 'status.loadavg');
+	}
+
+
+	//SaltModule::helperSaltNetdev
+	protected function helperSaltNetdev($hostname)
+	{
+		return $this->helperSalt($hostname, 'status.netdev');
+	}
+
+
+	//SaltModule::helperSaltStatusAll
+	protected function helperSaltStatusAll($hostname)
+	{
+		return $this->helperSalt($hostname, 'status.all_status');
+	}
+
+
+	//rendering
+	//SaltModule::renderDiskusage
+	private function renderDiskusage($page, $data)
+	{
+		$page->append('title', array('text' => 'Disk usage'));
+		foreach($data as $vol => $voldata)
+		{
+			if($voldata->total == 0)
+				continue;
+			var_dump($voldata);
+			$capacity = 100 - ($voldata->available
+				/ $voldata->total * 100);
+			$progress = $page->append('progress', array(
+				'text' => $vol.': '.round($capacity).'%',
+				'min' => 0, 'max' => 100, 'high' => 75,
+				'value' => $capacity));
+			$progress->append('label', array(
+				'text' => ' '.$vol));
+		}
+	}
+
+
+	//SaltModule::renderLoadavg
+	protected function renderLoadavg($page, $data)
+	{
+		$page->append('title', array('text' => _('Load average')));
+		foreach($data as $key => $value)
+			$page->append('label', array(
+					'text' => $key.': '.$value));
+	}
+
+
+	//SaltModule::renderNetdev
+	protected function renderNetdev($page, $data)
+	{
+		$page->append('title', array('text' => _('Network interfaces')));
+		foreach($data as $name => $interface)
+		{
+			$title = $name;
+			$vbox = $page->append('vbox');
+			$vbox->append('title', array('text' => $title));
+			foreach($interface as $key => $value)
+				$vbox->append('label', array(
+						'text' => $key.': '.$value));
+		}
+	}
+
+
+	//SaltModule::renderStatusAll
+	protected function renderStatusAll($page, $data)
+	{
+		foreach($data as $key => $value)
+		{
+			$vbox = new PageElement('vbox');
+			switch($key)
+			{
+				case 'diskusage':
+					$this->renderDiskusage($vbox, $value);
+					break;
+				case 'loadavg':
+					$this->renderLoadavg($vbox, $value);
+					break;
+				case 'netdev':
+					$this->renderNetdev($vbox, $value);
+					break;
+				default:
+					continue;
+			}
+			$page->append($vbox);
+		}
 	}
 }
 
