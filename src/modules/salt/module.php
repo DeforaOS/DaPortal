@@ -38,6 +38,36 @@ class SaltModule extends Module
 
 	//protected
 	//methods
+	//accessors
+	//SaltModule::canReboot
+	protected function canReboot(Engine $engine, Request $request,
+			$hostname, &$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		if(!$credentials->isAdmin())
+		{
+			$error = _('Permission denied');
+			return Response::$CODE_EPERM;
+		}
+		if($request->isIdempotent())
+		{
+			$error = _('Confirmation required');
+			return Response::$CODE_EROFS;
+		}
+		//let Salt decide
+		return Response::$CODE_SUCCESS;
+	}
+
+
+	//SaltModule::canShutdown
+	protected function canShutdown(Engine $engine, Request $request,
+			$hostname, &$error = FALSE)
+	{
+		return $this->canReboot($engine, $request, $hostname, $error);
+	}
+
+
 	//calls
 	//SaltModule::callDefault
 	protected function callDefault(Engine $engine, Request $request = NULL)
@@ -67,6 +97,21 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
+	private function _defaultToolbar(PageElement $page, $hostname)
+	{
+		$toolbar = $page->append('toolbar');
+		$request = $this->getRequest('reboot', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'refresh',
+				'text' => _('Reboot'),
+				'request' => $request));
+		$request = $this->getRequest('shutdown', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'logout',
+				'text' => _('Shutdown'),
+				'request' => $request));
+	}
+
 	private function _defaultHost(PageElement $page, $hostname)
 	{
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
@@ -79,12 +124,105 @@ class SaltModule extends Module
 		foreach($data as $hostname => $data)
 		{
 			$page->append('title', array('text' => $hostname));
+			$this->_defaultToolbar($page, $hostname);
 			$this->renderStatusAll($page, $data);
 		}
 	}
 
 
+	//SaltModule::callReboot
+	protected function callReboot(Engine $engine, Request $request)
+	{
+		return $this->helperAction($engine, $request);
+	}
+
+
+	//SaltModule::callShutdown
+	protected function callShutdown(Engine $engine, Request $request)
+	{
+		return $this->helperAction($engine, $request);
+	}
+
+
 	//helpers
+	//SaltModule::helperAction
+	protected function helperAction(Engine $engine, Request $request)
+	{
+		$action = $request->getAction();
+
+		if(($hostname = $request->get('host')) === FALSE)
+		{
+			$error = _('Unknown host');
+			$page = new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+			return new PageResponse($page, Response::$CODE_ENOENT);
+		}
+		$method = 'can'.$action;
+		if(method_exists($this, $method)
+				&& ($code = $this->$method($engine, $request,
+					$hostname, $error))
+					!== Response::$CODE_SUCCESS)
+			return $this->_actionError($request, $hostname, $action,
+					$code, $error);
+		$method = 'helperSalt'.$action;
+		if(!method_exists($this, $method))
+		{
+			$error = _('Unsupported action');
+			$page = new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+			return new PageResponse($page,
+				Response::$CODE_ENOENT);
+		}
+		if($this->$method($hostname) === FALSE)
+		{
+			$error = sprintf(_('Could not %s'), $action);
+			$page = new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+			return new PageResponse($page,
+				Response::$CODE_EUNKNOWN);
+		}
+		$message = sprintf(_('%s successful'), ucfirst($action));
+		$dialog = new PageElement('dialog', array('type' => 'info',
+				'title' => $hostname, 'text' => $message));
+		$r = $this->getRequest(FALSE, array('host' => $hostname));
+		$dialog->append('button', array('stock' => 'back',
+				'request' => $r, 'text' => _('Back')));
+		return new PageResponse($dialog);
+	}
+
+	private function _actionError($request, $hostname, $action, $code,
+			$error)
+	{
+		switch($code)
+		{
+			case Response::$CODE_EROFS:
+				$error .= "\n";
+				$format = _('Do you really want to %s %s?');
+				$error .= sprintf($format, $action, $hostname);
+				$dialog = new PageElement('dialog', array(
+						'type' => 'question',
+						'text' => $error));
+				$form = $dialog->append('form', array(
+						'request' => $request));
+				$r = $this->getRequest(FALSE, array(
+						'host' => $hostname));
+				$form->append('button', array(
+						'stock' => 'cancel',
+						'request' => $r,
+						'text' => _('Cancel')));
+				$form->append('button', array(
+						'type' => 'submit',
+						'text' => ucfirst($action)));
+				return new PageResponse($dialog);
+			default:
+				$dialog = new PageElement('dialog', array(
+						'type' => 'error',
+						'text' => $error));
+				return new PageResponse($dialog);
+		}
+	}
+
+
 	//SaltModule::helperSalt
 	protected function helperSalt($hostname = FALSE, $command = 'test.ping',
 			$args = FALSE, $options = FALSE)
@@ -131,6 +269,20 @@ class SaltModule extends Module
 	protected function helperSaltNetdev($hostname)
 	{
 		return $this->helperSalt($hostname, 'status.netdev');
+	}
+
+
+	//SaltModule::helperSaltReboot
+	protected function helperSaltReboot($hostname)
+	{
+		return $this->helperSalt($hostname, 'system.reboot');
+	}
+
+
+	//SaltModule::helperSaltShutdown
+	protected function helperSaltShutdown($hostname)
+	{
+		return $this->helperSalt($hostname, 'system.shutdown');
 	}
 
 
