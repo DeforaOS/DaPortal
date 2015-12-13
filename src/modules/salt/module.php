@@ -140,7 +140,8 @@ class SaltModule extends Module
 	{
 		$page->append('title', array('text' => $hostname));
 		$this->_defaultToolbar($page, $hostname);
-		if(($data = $this->helperSaltServiceList($hostname)) === FALSE)
+		if(($data = $this->helperSaltServiceListEnabled($hostname))
+				=== FALSE)
 		{
 			$error = _('Could not list services');
 			$page->append('dialog', array(
@@ -324,6 +325,20 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltServiceListEnabled
+	protected function helperSaltServiceListEnabled($hostname)
+	{
+		return $this->helperSalt($hostname, 'service.get_enabled');
+	}
+
+
+	//SaltModule::helperSaltServiceStatus
+	protected function helperSaltServiceStatus($hostname, $service)
+	{
+		return $this->helperSalt($hostname, 'service.status', $service);
+	}
+
+
 	//SaltModule::helperSaltStatusAll
 	protected function helperSaltStatusAll($hostname)
 	{
@@ -383,22 +398,15 @@ class SaltModule extends Module
 	//SaltModule::renderServiceList
 	protected function renderServiceList(PageElement $page, $data)
 	{
+		$hostname = FALSE; //XXX really obtain
+
 		$vbox = $page->append('vbox');
 		$vbox->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
 		$view = $vbox->append('treeview', array('columns' => $columns,
-				'headers' => FALSE));
+				'alternate' => TRUE));
 		foreach($data as $service)
-		{
-			$actions = FALSE;
-			if($this->canServiceRestart($this->engine, NULL)
-					== Response::$CODE_SUCCESS)
-				$actions = new PageElement('button', array(
-						'stock' => 'refresh',
-						'text' => _('Restart')));
-			$view->append('row', array('service' => $service,
-				'actions' => $actions));
-		}
+			$view->append('row', array('service' => $service));
 	}
 
 
