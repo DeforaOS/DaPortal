@@ -42,8 +42,8 @@ class SaltModule extends Module
 	//methods
 	//accessors
 	//SaltModule::canReboot
-	protected function canReboot(Engine $engine, Request $request,
-			$hostname, &$error = FALSE)
+	protected function canReboot(Engine $engine, Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -52,7 +52,7 @@ class SaltModule extends Module
 			$error = _('Permission denied');
 			return Response::$CODE_EPERM;
 		}
-		if($request->isIdempotent())
+		if($request !== NULL && $request->isIdempotent())
 		{
 			$error = _('Confirmation required');
 			return Response::$CODE_EROFS;
@@ -63,8 +63,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::canShutdown
-	protected function canShutdown(Engine $engine, Request $request,
-			$hostname, &$error = FALSE)
+	protected function canShutdown(Engine $engine, Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
 	{
 		return $this->canReboot($engine, $request, $hostname, $error);
 	}
