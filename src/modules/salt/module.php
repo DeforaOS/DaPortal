@@ -62,6 +62,28 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::canServiceRestart
+	protected function canServiceRestart(Engine $engine,
+			Request $request = NULL, $hostname = FALSE,
+			&$error = FALSE)
+	{
+		$credentials = $engine->getCredentials();
+
+		if(!$credentials->isAdmin())
+		{
+			$error = _('Permission denied');
+			return Response::$CODE_EPERM;
+		}
+		if($request !== NULL && $request->isIdempotent())
+		{
+			$error = _('Confirmation required');
+			return Response::$CODE_EROFS;
+		}
+		//let Salt decide
+		return Response::$CODE_SUCCESS;
+	}
+
+
 	//SaltModule::canShutdown
 	protected function canShutdown(Engine $engine, Request $request = NULL,
 			$hostname = FALSE, &$error = FALSE)
@@ -116,19 +138,26 @@ class SaltModule extends Module
 
 	private function _defaultHost(PageElement $page, $hostname)
 	{
+		$page->append('title', array('text' => $hostname));
+		$this->_defaultToolbar($page, $hostname);
+		if(($data = $this->helperSaltServiceList($hostname)) === FALSE)
+		{
+			$error = _('Could not list services');
+			$page->append('dialog', array(
+					'type' => 'error', 'text' => $error));
+		}
+		else
+			foreach($data as $hostname => $data)
+				$this->renderServiceList($page, $data);
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
 			$error = _('Could not obtain statistics');
 			$page->append('dialog', array(
 					'type' => 'error', 'text' => $error));
-				return;
 		}
-		foreach($data as $hostname => $data)
-		{
-			$page->append('title', array('text' => $hostname));
-			$this->_defaultToolbar($page, $hostname);
-			$this->renderStatusAll($page, $data);
-		}
+		else
+			foreach($data as $hostname => $data)
+				$this->renderStatusAll($page, $data);
 	}
 
 
@@ -288,6 +317,13 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltServiceList
+	protected function helperSaltServiceList($hostname)
+	{
+		return $this->helperSalt($hostname, 'service.get_all');
+	}
+
+
 	//SaltModule::helperSaltStatusAll
 	protected function helperSaltStatusAll($hostname)
 	{
@@ -340,6 +376,28 @@ class SaltModule extends Module
 			foreach($interface as $key => $value)
 				$vbox->append('label', array(
 						'text' => $key.': '.$value));
+		}
+	}
+
+
+	//SaltModule::renderServiceList
+	protected function renderServiceList(PageElement $page, $data)
+	{
+		$vbox = $page->append('vbox');
+		$vbox->append('title', array('text' => _('Services')));
+		$columns = array('service' => '', 'actions' => '');
+		$view = $vbox->append('treeview', array('columns' => $columns,
+				'headers' => FALSE));
+		foreach($data as $service)
+		{
+			$actions = FALSE;
+			if($this->canServiceRestart($this->engine, NULL,
+					$hostname) == Response::$CODE_SUCCESS)
+				$actions = new PageElement('button', array(
+						'stock' => 'refresh',
+						'text' => _('Restart')));
+			$view->append('row', array('service' => $service,
+				'actions' => $actions));
 		}
 	}
 
