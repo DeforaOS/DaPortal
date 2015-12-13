@@ -47,7 +47,7 @@ class SaltModule extends Module
 	//SaltModule::callDefault
 	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
-		$title = 'Salt monitoring';
+		$title = _('Salt monitoring');
 		$hostname = ($request !== NULL)
 			? $request->get('host') : FALSE;
 
