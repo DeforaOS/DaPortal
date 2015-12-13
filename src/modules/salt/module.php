@@ -60,7 +60,7 @@ class SaltModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _defaultForm(Page $page, $hostname)
+	private function _defaultForm(PageElement $page, $hostname)
 	{
 		$form = $page->append('form', array(
 				'idempotent' => TRUE,
@@ -72,7 +72,7 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultHost(Page $page, $hostname)
+	private function _defaultHost(PageElement $page, $hostname)
 	{
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
