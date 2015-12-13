@@ -28,16 +28,11 @@ class SaltModule extends Module
 			return FALSE;
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
-		switch($action)
-		{
-			case 'default':
-			case 'display':
-				$action = 'call'.$action;
-				return $this->$action($engine, $request);
-			default:
-				return new ErrorResponse(_('Invalid action'),
-					Response::$CODE_ENOENT);
-		}
+		$method = 'call'.$action;
+		if(!method_exists($this, $method))
+			return new ErrorResponse(_('Invalid action'),
+				Response::$CODE_ENOENT);
+		return $this->$method($engine, $request);
 	}
 
 
