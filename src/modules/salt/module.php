@@ -24,6 +24,8 @@ class SaltModule extends Module
 	//SaltModule::call
 	function call(Engine $engine, Request $request, $internal = 0)
 	{
+		//XXX should be saved in the constructor
+		$this->engine = $engine;
 		if($internal)
 			return FALSE;
 		if(($action = $request->getAction()) === FALSE)
@@ -367,6 +369,11 @@ class SaltModule extends Module
 			$page->append($vbox);
 		}
 	}
+
+
+	//private
+	//properties
+	private $engine;
 }
 
 ?>
