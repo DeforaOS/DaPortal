@@ -391,8 +391,8 @@ class SaltModule extends Module
 		foreach($data as $service)
 		{
 			$actions = FALSE;
-			if($this->canServiceRestart($this->engine, NULL,
-					$hostname) == Response::$CODE_SUCCESS)
+			if($this->canServiceRestart($this->engine, NULL)
+					== Response::$CODE_SUCCESS)
 				$actions = new PageElement('button', array(
 						'stock' => 'refresh',
 						'text' => _('Restart')));
