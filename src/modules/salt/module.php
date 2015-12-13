@@ -45,10 +45,11 @@ class SaltModule extends Module
 	//methods
 	//calls
 	//SaltModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$title = 'Salt monitoring';
-		$hostname = $request->get('host');
+		$hostname = ($request !== NULL)
+			? $request->get('host') : FALSE;
 
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title));
@@ -59,7 +60,7 @@ class SaltModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _defaultForm($page, $hostname)
+	private function _defaultForm(Page $page, $hostname)
 	{
 		$form = $page->append('form', array(
 				'idempotent' => TRUE,
@@ -71,7 +72,7 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultHost($page, $hostname)
+	private function _defaultHost(Page $page, $hostname)
 	{
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
@@ -147,7 +148,7 @@ class SaltModule extends Module
 
 	//rendering
 	//SaltModule::renderDiskusage
-	private function renderDiskusage($page, $data)
+	private function renderDiskusage(PageElement $page, $data)
 	{
 		$page->append('title', array('text' => 'Disk usage'));
 		foreach($data as $vol => $voldata)
@@ -167,7 +168,7 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderLoadavg
-	protected function renderLoadavg($page, $data)
+	protected function renderLoadavg(PageElement $page, $data)
 	{
 		$page->append('title', array('text' => _('Load average')));
 		foreach($data as $key => $value)
@@ -177,9 +178,11 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderNetdev
-	protected function renderNetdev($page, $data)
+	protected function renderNetdev(PageElement $page, $data)
 	{
-		$page->append('title', array('text' => _('Network interfaces')));
+		$title = _('Network interfaces');
+
+		$page->append('title', array('text' => $title));
 		foreach($data as $name => $interface)
 		{
 			$title = $name;
@@ -193,7 +196,7 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderStatusAll
-	protected function renderStatusAll($page, $data)
+	protected function renderStatusAll(PageElement $page, $data)
 	{
 		if(!($data instanceof Traversable) && !is_object($data))
 			return;
