@@ -104,7 +104,9 @@ class SaltModule extends Module
 		$page->append('title', array('text' => $title));
 		$vbox = $page->append('vbox');
 		$this->_defaultForm($vbox, $hostname);
-		if($hostname !== FALSE)
+		if(!is_string($hostname) || strlen($hostname) == 0)
+			$this->_defaultList($vbox);
+		else
 			$this->_defaultHost($vbox, $hostname);
 		return new PageResponse($page);
 	}
@@ -132,8 +134,13 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			foreach($data as $hostname => $data)
-				$this->renderUptime($page, $data);
+		{
+			if(!is_array($data))
+				$data = array($data);
+			foreach($data as $d)
+				foreach($d as $hostname => $data)
+					$this->renderUptime($page, $data);
+		}
 		if(($data = $this->helperSaltServiceListEnabled($hostname))
 				=== FALSE)
 		{
@@ -142,8 +149,14 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			foreach($data as $hostname => $data)
-				$this->renderServiceList($page, $data);
+		{
+			if(!is_array($data))
+				$data = array($data);
+			$vbox = $page->append('vbox');
+			foreach($data as $d)
+				foreach($d as $hostname => $data)
+					$this->renderServiceList($vbox, $data);
+		}
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
 			$error = _('Could not obtain statistics');
@@ -151,8 +164,37 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			foreach($data as $hostname => $data)
-				$this->renderStatusAll($page, $data);
+		{
+			if(!is_array($data))
+				$data = array($data);
+			foreach($data as $d)
+				foreach($d as $hostname => $data)
+					$this->renderStatusAll($page, $data);
+		}
+	}
+
+	private function _defaultList(PageElement $page)
+	{
+		if(($data = $this->helperSaltPing()) === FALSE)
+		{
+			$error = _('Could not list hosts');
+			$page->append('dialog', array(
+					'type' => 'error', 'text' => $error));
+			return;
+		}
+		$view = $page->append('iconview');
+		$icon = new PageElement('image', array('stock' => 'monitor'));
+		foreach($data as $d)
+			foreach($d as $hostname => $value)
+			{
+				$request = $this->getRequest(FALSE,
+					array('host' => $hostname));
+				$link = new PageElement('link', array(
+						'request' => $request,
+						'text' => $hostname));
+				$view->append('row', array('icon' => $icon,
+						'label' => $link));
+			}
 	}
 
 	private function _defaultToolbar(PageElement $page, $hostname)
@@ -270,7 +312,8 @@ class SaltModule extends Module
 	{
 		$salt = 'salt';
 		$options = is_array($options) ? $options : array('--out=json');
-		$hostname = $hostname ?: '*';
+		$hostname = (is_string($hostname) && strlen($hostname))
+			? $hostname : '*';
 		$args = is_array($args) ? $args : array();
 
 		$cmd = escapeshellarg($salt);
@@ -443,10 +486,9 @@ class SaltModule extends Module
 	{
 		$hostname = FALSE; //XXX really obtain
 
-		$vbox = $page->append('vbox');
-		$vbox->append('title', array('text' => _('Services')));
+		$page->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
-		$view = $vbox->append('treeview', array('columns' => $columns,
+		$view = $page->append('treeview', array('columns' => $columns,
 				'alternate' => TRUE));
 		foreach($data as $service)
 			$view->append('row', array('service' => $service));
