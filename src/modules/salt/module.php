@@ -285,10 +285,30 @@ class SaltModule extends Module
 			//something went really wrong, or finally right, or this
 			//is not salt, or it is not installed
 			return FALSE;
-		$output = implode("\n", $output);
+		$output = $this->_saltOutput($output);
 		if(($data = json_decode($output)) === NULL)
 			return FALSE;
 		return $data;
+	}
+
+	private function _saltOutput($output)
+	{
+		//XXX re-format as valid JSON
+		$ret = '';
+		$array = FALSE;
+		$sep = '';
+
+		for($i = 0, $cnt = count($output); $i < $cnt; $i++, $sep = "\n")
+			if($i + 1 != $cnt && $output[$i] == '}')
+			{
+				$ret .= $sep.'},';
+				$array = TRUE;
+			}
+			else
+				$ret .= $sep.$output[$i];
+		if($array)
+			return '['.$ret.']';
+		return $ret;
 	}
 
 
