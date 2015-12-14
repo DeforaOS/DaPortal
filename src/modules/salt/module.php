@@ -121,21 +121,6 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultToolbar(PageElement $page, $hostname)
-	{
-		$toolbar = $page->append('toolbar');
-		$request = $this->getRequest('reboot', array(
-				'host' => $hostname));
-		$toolbar->append('button', array('stock' => 'refresh',
-				'text' => _('Reboot'),
-				'request' => $request));
-		$request = $this->getRequest('shutdown', array(
-				'host' => $hostname));
-		$toolbar->append('button', array('stock' => 'logout',
-				'text' => _('Shutdown'),
-				'request' => $request));
-	}
-
 	private function _defaultHost(PageElement $page, $hostname)
 	{
 		$page->append('title', array('text' => $hostname));
@@ -168,6 +153,21 @@ class SaltModule extends Module
 		else
 			foreach($data as $hostname => $data)
 				$this->renderStatusAll($page, $data);
+	}
+
+	private function _defaultToolbar(PageElement $page, $hostname)
+	{
+		$toolbar = $page->append('toolbar');
+		$request = $this->getRequest('reboot', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'refresh',
+				'text' => _('Reboot'),
+				'request' => $request));
+		$request = $this->getRequest('shutdown', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'logout',
+				'text' => _('Shutdown'),
+				'request' => $request));
 	}
 
 
