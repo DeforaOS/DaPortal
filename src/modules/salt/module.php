@@ -333,6 +333,13 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltPing
+	protected function helperSaltPing($hostname = FALSE)
+	{
+		return $this->helperSalt($hostname, 'test.ping');
+	}
+
+
 	//SaltModule::helperSaltReboot
 	protected function helperSaltReboot($hostname)
 	{
