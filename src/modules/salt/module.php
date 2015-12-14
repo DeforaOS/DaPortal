@@ -461,6 +461,7 @@ class SaltModule extends Module
 		foreach($data as $key => $value)
 		{
 			$vbox = new PageElement('vbox');
+			$append = TRUE;
 			switch($key)
 			{
 				case 'diskusage':
@@ -473,9 +474,11 @@ class SaltModule extends Module
 					$this->renderNetdev($vbox, $value);
 					break;
 				default:
-					continue;
+					$append = FALSE;
+					break;
 			}
-			$page->append($vbox);
+			if($append)
+				$page->append($vbox);
 		}
 	}
 
