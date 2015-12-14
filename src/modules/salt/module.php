@@ -140,6 +140,15 @@ class SaltModule extends Module
 	{
 		$page->append('title', array('text' => $hostname));
 		$this->_defaultToolbar($page, $hostname);
+		if(($data = $this->helperSaltUptime($hostname)) === FALSE)
+		{
+			$error = _('Could not obtain uptime');
+			$page->append('dialog', array(
+					'type' => 'error', 'text' => $error));
+		}
+		else
+			foreach($data as $hostname => $data)
+				$this->renderUptime($page, $data);
 		if(($data = $this->helperSaltServiceListEnabled($hostname))
 				=== FALSE)
 		{
@@ -346,6 +355,13 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltUptime
+	protected function helperSaltUptime($hostname)
+	{
+		return $this->helperSalt($hostname, 'status.uptime');
+	}
+
+
 	//rendering
 	//SaltModule::renderDiskusage
 	private function renderDiskusage(PageElement $page, $data)
@@ -434,6 +450,13 @@ class SaltModule extends Module
 			}
 			$page->append($vbox);
 		}
+	}
+
+
+	//SaltModule::renderUptime
+	protected function renderUptime(PageElement $page, $data)
+	{
+		$page->append('label', array('text' => $data));
 	}
 
 
