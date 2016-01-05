@@ -34,7 +34,7 @@ class SaltModule extends Module
 		if(!method_exists($this, $method))
 			return new ErrorResponse(_('Invalid action'),
 				Response::$CODE_ENOENT);
-		return $this->$method($engine, $request);
+		return $this->$method($request);
 	}
 
 
@@ -42,10 +42,10 @@ class SaltModule extends Module
 	//methods
 	//accessors
 	//SaltModule::canReboot
-	protected function canReboot(Engine $engine, Request $request = NULL,
-			$hostname = FALSE, &$error = FALSE)
+	protected function canReboot(Request $request = NULL, $hostname = FALSE,
+			&$error = FALSE)
 	{
-		$credentials = $engine->getCredentials();
+		$credentials = $this->engine->getCredentials();
 
 		if(!$credentials->isAdmin())
 		{
@@ -63,11 +63,10 @@ class SaltModule extends Module
 
 
 	//SaltModule::canServiceRestart
-	protected function canServiceRestart(Engine $engine,
-			Request $request = NULL, $hostname = FALSE,
-			&$error = FALSE)
+	protected function canServiceRestart(Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
 	{
-		$credentials = $engine->getCredentials();
+		$credentials = $this->engine->getCredentials();
 
 		if(!$credentials->isAdmin())
 		{
@@ -85,16 +84,16 @@ class SaltModule extends Module
 
 
 	//SaltModule::canShutdown
-	protected function canShutdown(Engine $engine, Request $request = NULL,
+	protected function canShutdown(Request $request = NULL,
 			$hostname = FALSE, &$error = FALSE)
 	{
-		return $this->canReboot($engine, $request, $hostname, $error);
+		return $this->canReboot($request, $hostname, $error);
 	}
 
 
 	//calls
 	//SaltModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Request $request = NULL)
 	{
 		$title = _('Salt monitoring');
 		$hostname = ($request !== NULL)
@@ -214,22 +213,22 @@ class SaltModule extends Module
 
 
 	//SaltModule::callReboot
-	protected function callReboot(Engine $engine, Request $request)
+	protected function callReboot(Request $request)
 	{
-		return $this->helperAction($engine, $request);
+		return $this->helperAction($request);
 	}
 
 
 	//SaltModule::callShutdown
-	protected function callShutdown(Engine $engine, Request $request)
+	protected function callShutdown(Request $request)
 	{
-		return $this->helperAction($engine, $request);
+		return $this->helperAction($request);
 	}
 
 
 	//helpers
 	//SaltModule::helperAction
-	protected function helperAction(Engine $engine, Request $request)
+	protected function helperAction(Request $request)
 	{
 		$action = $request->getAction();
 
@@ -242,9 +241,8 @@ class SaltModule extends Module
 		}
 		$method = 'can'.$action;
 		if(method_exists($this, $method)
-				&& ($code = $this->$method($engine, $request,
-					$hostname, $error))
-					!== Response::$CODE_SUCCESS)
+				&& ($code = $this->$method($request, $hostname,
+					$error)) !== Response::$CODE_SUCCESS)
 			return $this->_actionError($request, $hostname, $action,
 					$code, $error);
 		$method = 'helperSalt'.$action;
