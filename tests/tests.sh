@@ -116,6 +116,7 @@ target="$1"
 
 if [ $clean -ne 0 ]; then
 	#XXX needs OBJDIR support
+	$DEBUG $RM -r -- "pki"
 	$DEBUG $RM -- "sqlite-tests.db3"
 	exit $?
 fi
