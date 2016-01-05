@@ -22,6 +22,7 @@
 ../src/modules/project/module.php
 ../src/modules/project/scm/cvs.php
 ../src/modules/project/scm/git.php
+../src/modules/salt/module.php
 ../src/modules/search/module.php
 ../src/modules/top/module.php
 ../src/modules/user/module.php

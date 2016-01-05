@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 16:51+0100\n"
+"POT-Creation-Date: 2016-01-05 17:50+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -88,7 +88,8 @@ msgstr "Modifier"
 #: ../src/modules/group/module.php:255 ../src/modules/group/module.php:417
 #: ../src/modules/group/module.php:513 ../src/modules/group/module.php:618
 #: ../src/modules/group/module.php:688 ../src/modules/group/module.php:760
-#: ../src/modules/project/module.php:641 ../src/modules/search/module.php:143
+#: ../src/modules/project/module.php:641 ../src/modules/salt/module.php:58
+#: ../src/modules/salt/module.php:87 ../src/modules/search/module.php:143
 #: ../src/modules/user/module.php:213 ../src/modules/user/module.php:643
 #: ../src/modules/user/module.php:890 ../src/modules/user/module.php:978
 #: ../src/modules/user/module.php:1075 ../src/modules/user/module.php:1120
@@ -394,14 +395,15 @@ msgstr "Contenu"
 
 #: ../src/modules/admin/module.php:67 ../src/modules/browser/module.php:47
 #: ../src/modules/content/module.php:57 ../src/modules/group/module.php:63
-#: ../src/modules/manual/module.php:47 ../src/modules/search/module.php:48
-#: ../src/modules/top/module.php:38 ../src/modules/user/module.php:83
+#: ../src/modules/manual/module.php:47 ../src/modules/salt/module.php:41
+#: ../src/modules/search/module.php:48 ../src/modules/top/module.php:38
+#: ../src/modules/user/module.php:83
 msgid "Invalid action"
 msgstr "Action invalide"
 
 #: ../src/modules/admin/module.php:100 ../src/modules/admin/module.php:156
 msgid "Configuration audit"
-msgstr ""
+msgstr "Audit de configuration"
 
 #: ../src/modules/admin/module.php:101 ../src/modules/admin/module.php:189
 msgid "Modules administration"
@@ -605,11 +607,11 @@ msgstr "Impossible d'ouvrir le fichier ou dossier demandé"
 #: ../src/modules/content/module.php:1395
 #: ../src/modules/content/module.php:1494 ../src/modules/group/module.php:139
 #: ../src/modules/group/module.php:171 ../src/modules/project/module.php:729
-#: ../src/modules/project/module.php:753 ../src/modules/user/module.php:247
-#: ../src/modules/user/module.php:275 ../src/modules/user/module.php:296
-#: ../src/modules/user/module.php:315 ../src/modules/user/module.php:400
-#: ../src/modules/user/module.php:500 ../src/modules/user/module.php:1269
-#: ../src/modules/user/module.php:1541
+#: ../src/modules/project/module.php:753 ../src/modules/salt/module.php:365
+#: ../src/modules/user/module.php:247 ../src/modules/user/module.php:275
+#: ../src/modules/user/module.php:296 ../src/modules/user/module.php:315
+#: ../src/modules/user/module.php:400 ../src/modules/user/module.php:500
+#: ../src/modules/user/module.php:1269 ../src/modules/user/module.php:1541
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -865,7 +867,7 @@ msgstr "Le(s) contenu(s) ont pu être activé(s)"
 msgid "Some content could not be enabled"
 msgstr "Certains contenus n'ont pas pu être activés"
 
-#: ../src/modules/content/module.php:1223
+#: ../src/modules/content/module.php:1223 ../src/modules/salt/module.php:342
 msgid "Back"
 msgstr "Retour"
 
@@ -1806,6 +1808,97 @@ msgstr "Aucun dépôt Git configuré"
 #: ../src/modules/project/scm/git.php:145
 msgid "Could not open file"
 msgstr "Impossible d'ouvrir le fichier"
+
+#: ../src/modules/salt/module.php:63 ../src/modules/salt/module.php:92
+msgid "Confirmation required"
+msgstr "Confirmation requise"
+
+#: ../src/modules/salt/module.php:136
+msgid "Salt monitoring"
+msgstr "Suivi de salt"
+
+#: ../src/modules/salt/module.php:157
+msgid "Host: "
+msgstr "Hôte : "
+
+#: ../src/modules/salt/module.php:160
+msgid "Monitor"
+msgstr "Suivi"
+
+#: ../src/modules/salt/module.php:169
+msgid "Could not obtain uptime"
+msgstr "Impossible d'obtenir le temps d'activité"
+
+#: ../src/modules/salt/module.php:184
+msgid "Could not list services"
+msgstr "Impossible de lister les services"
+
+#: ../src/modules/salt/module.php:200
+msgid "Could not obtain statistics"
+msgstr "Impossible d'obtenir les statistiques"
+
+#: ../src/modules/salt/module.php:218
+msgid "Could not list hosts"
+msgstr "Impossible de lister les hôtes"
+
+#: ../src/modules/salt/module.php:246
+msgid "Reboot"
+msgstr "Redémarrer"
+
+#: ../src/modules/salt/module.php:251
+msgid "Shutdown"
+msgstr "Éteindre"
+
+#: ../src/modules/salt/module.php:306
+msgid "Unknown host"
+msgstr "Hôte inconnu"
+
+#: ../src/modules/salt/module.php:320
+msgid "Unsupported action"
+msgstr "Action non supportée"
+
+#: ../src/modules/salt/module.php:331
+#, php-format
+msgid "Could not %s"
+msgstr "Impossible de %s"
+
+#: ../src/modules/salt/module.php:337
+#, php-format
+msgid "%s successful"
+msgstr "%s avec succès"
+
+#: ../src/modules/salt/module.php:353
+#, php-format
+msgid "Do you really want to %s %s?"
+msgstr "Voulez-vous vraiment %s %s ?"
+
+#: ../src/modules/salt/module.php:562
+msgid "Load average"
+msgstr "Charge moyenne"
+
+#: ../src/modules/salt/module.php:572
+msgid "Network interfaces"
+msgstr "Interfaces réseau"
+
+#: ../src/modules/salt/module.php:591
+msgid "Reload"
+msgstr "Recharger"
+
+#: ../src/modules/salt/module.php:591
+msgid "Start"
+msgstr "Démarrer"
+
+#: ../src/modules/salt/module.php:592
+msgid "Stop"
+msgstr "Stopper"
+
+#: ../src/modules/salt/module.php:592
+msgid "Restart"
+msgstr "Redémarrer"
+
+#: ../src/modules/salt/module.php:594
+msgid "Services"
+msgstr "Services"
 
 #: ../src/modules/search/module.php:115
 msgid "Advanced search"
