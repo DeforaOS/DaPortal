@@ -34,10 +34,11 @@ _fail()
 
 	shift
 	echo -n "$test:" 1>&2
+	#XXX breaks support for OBJDIR
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
-	$CP -- "sqlite.db3" "sqlite-tests.db3"
+	$CP -- "${OBJDIR}sqlite.db3" "sqlite-tests.db3"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then
@@ -55,10 +56,11 @@ _test()
 
 	shift
 	echo -n "$test:" 1>&2
+	#XXX breaks support for OBJDIR
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
-	$CP -- "sqlite.db3" "sqlite-tests.db3"
+	$CP -- "${OBJDIR}sqlite.db3" "sqlite-tests.db3"
 	$DEBUG $PHP "./$test.php" "$@" 2>&1) >> "$target"
 	res=$?
 	if [ $res -ne 0 ]; then

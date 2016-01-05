@@ -49,7 +49,11 @@ abstract class Engine
 }
 
 require_once('./tests.php');
-require_once('./daportal.php');
+if(($objdir = getenv('OBJDIR')) !== FALSE)
+	$objdir .= '../src/';
+else
+	$objdir = '';
+require_once($objdir.'daportal.php');
 
 
 exit(0);
