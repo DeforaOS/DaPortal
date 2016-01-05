@@ -62,6 +62,14 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::canServiceReload
+	protected function canServiceReload(Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
+	{
+		return $this->canServiceRestart($request, $hostname, $error);
+	}
+
+
 	//SaltModule::canServiceRestart
 	protected function canServiceRestart(Request $request = NULL,
 			$hostname = FALSE, &$error = FALSE)
@@ -80,6 +88,22 @@ class SaltModule extends Module
 		}
 		//let Salt decide
 		return Response::$CODE_SUCCESS;
+	}
+
+
+	//SaltModule::canServiceStart
+	protected function canServiceStart(Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
+	{
+		return $this->canServiceRestart($request, $hostname, $error);
+	}
+
+
+	//SaltModule::canServiceStop
+	protected function canServiceStop(Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
+	{
+		return $this->canServiceRestart($request, $hostname, $error);
 	}
 
 
@@ -154,7 +178,8 @@ class SaltModule extends Module
 			$vbox = $page->append('vbox');
 			foreach($data as $d)
 				foreach($d as $hostname => $data)
-					$this->renderServiceList($vbox, $data);
+					$this->renderServiceList($vbox,
+							$hostname, $data);
 		}
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
@@ -219,6 +244,34 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::callServiceReload
+	protected function callServiceReload(Request $request)
+	{
+		return $this->helperAction($request, array('service'));
+	}
+
+
+	//SaltModule::callServiceRestart
+	protected function callServiceRestart(Request $request)
+	{
+		return $this->helperAction($request, array('service'));
+	}
+
+
+	//SaltModule::callServiceStart
+	protected function callServiceStart(Request $request)
+	{
+		return $this->helperAction($request, array('service'));
+	}
+
+
+	//SaltModule::callServiceStop
+	protected function callServiceStop(Request $request)
+	{
+		return $this->helperAction($request, array('service'));
+	}
+
+
 	//SaltModule::callShutdown
 	protected function callShutdown(Request $request)
 	{
@@ -228,7 +281,7 @@ class SaltModule extends Module
 
 	//helpers
 	//SaltModule::helperAction
-	protected function helperAction(Request $request)
+	protected function helperAction(Request $request, $args = array())
 	{
 		$action = $request->getAction();
 
@@ -254,7 +307,10 @@ class SaltModule extends Module
 			return new PageResponse($page,
 				Response::$CODE_ENOENT);
 		}
-		if($this->$method($hostname) === FALSE)
+		$a = array($hostname);
+		foreach($args as $arg)
+			$a[] = $request->get($arg);
+		if(call_user_func_array(array($this, $method), $a) === FALSE)
 		{
 			$error = sprintf(_('Could not %s'), $action);
 			$page = new PageElement('dialog', array(
@@ -409,10 +465,43 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltServiceReload
+	protected function helperSaltServiceReload($hostname, $service)
+	{
+		return $this->helperSalt($hostname, 'service.reload',
+				array($service));
+	}
+
+
+	//SaltModule::helperSaltServiceRestart
+	protected function helperSaltServiceRestart($hostname, $service)
+	{
+		return $this->helperSalt($hostname, 'service.restart',
+				array($service));
+	}
+
+
+	//SaltModule::helperSaltServiceStart
+	protected function helperSaltServiceStart($hostname, $service)
+	{
+		return $this->helperSalt($hostname, 'service.start',
+				array($service));
+	}
+
+
 	//SaltModule::helperSaltServiceStatus
 	protected function helperSaltServiceStatus($hostname, $service)
 	{
-		return $this->helperSalt($hostname, 'service.status', $service);
+		return $this->helperSalt($hostname, 'service.status',
+				array($service));
+	}
+
+
+	//SaltModule::helperSaltServiceStop
+	protected function helperSaltServiceStop($hostname, $service)
+	{
+		return $this->helperSalt($hostname, 'service.stop',
+				array($service));
 	}
 
 
@@ -480,16 +569,38 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderServiceList
-	protected function renderServiceList(PageElement $page, $data)
+	protected function renderServiceList(PageElement $page, $hostname,
+			$data)
 	{
-		$hostname = FALSE; //XXX really obtain
+		$calls = array('reload' => _('Reload'), 'start' => _('Start'),
+			'stop' => _('Stop'), 'restart' => _('Restart'));
 
 		$page->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
 		$view = $page->append('treeview', array('columns' => $columns,
 				'alternate' => TRUE));
 		foreach($data as $service)
-			$view->append('row', array('service' => $service));
+		{
+			$actions = FALSE;
+			foreach($calls as $call => $label)
+			{
+				$c = 'canService'.$call;
+				if($this->$c(NULL, $hostname, $error)
+						!== Response::$CODE_SUCCESS)
+					continue;
+				$r = $this->getRequest('service'.$call, array(
+						'host' => $hostname,
+						'service' => $service));
+				if($actions === FALSE)
+					$actions = new PageElement('hbox');
+				$actions->append('button', array(
+						'stock' => $call,
+						'request' => $r,
+						'text' => $label));
+			}
+			$view->append('row', array('service' => $service,
+					'actions' => $actions));
+		}
 	}
 
 
