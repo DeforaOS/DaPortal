@@ -200,6 +200,9 @@ globs=@PREFIX@/share/mime/globs
 #scm::backend::cvs::cvsroot=/tmp/cvs
 #scm::backend::cvs::repository=localhost:/tmp/cvs
 
+[module::salt]
+#salt=@BINDIR@/salt
+
 [module::search]
 #default amount of results per page
 #limit=20

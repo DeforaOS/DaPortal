@@ -308,7 +308,7 @@ class SaltModule extends Module
 	protected function helperSalt($hostname = FALSE, $command = 'test.ping',
 			$args = FALSE, $options = FALSE)
 	{
-		$salt = 'salt';
+		$salt = $this->configGet('salt') ?: 'salt';
 		$options = is_array($options) ? $options : array('--out=json');
 		$hostname = (is_string($hostname) && strlen($hostname))
 			? $hostname : '*';
