@@ -26,10 +26,16 @@ class SaltModule extends Module
 	{
 		//XXX should be saved in the constructor
 		$this->engine = $engine;
-		if($internal)
-			return FALSE;
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
+		if($internal)
+			switch($action)
+			{
+				case 'actions':
+					return $this->$action($request);
+				default:
+					return FALSE;
+			}
 		$method = 'call'.$action;
 		if(!method_exists($this, $method))
 			return new ErrorResponse(_('Invalid action'),
@@ -112,6 +118,14 @@ class SaltModule extends Module
 			$hostname = FALSE, &$error = FALSE)
 	{
 		return $this->canReboot($request, $hostname, $error);
+	}
+
+
+	//actions
+	//SaltModule::actions
+	protected function actions($request)
+	{
+		return array();
 	}
 
 
