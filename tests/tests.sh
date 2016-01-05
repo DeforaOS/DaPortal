@@ -24,6 +24,7 @@ CP="cp -f"
 DATE="date"
 DEBUG="_debug"
 PHP="/usr/bin/env php"
+RM="rm -f"
 
 
 #functions
@@ -113,7 +114,11 @@ if [ $# -ne 1 ]; then
 fi
 target="$1"
 
-[ $clean -ne 0 ] && exit 0
+if [ $clean -ne 0 ]; then
+	#XXX needs OBJDIR support
+	$DEBUG $RM -- "sqlite-tests.db3"
+	exit $?
+fi
 
 $DATE > "$target"
 FAILED=
