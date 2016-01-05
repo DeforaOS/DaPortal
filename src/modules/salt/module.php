@@ -208,6 +208,8 @@ class SaltModule extends Module
 		}
 		$view = $page->append('iconview');
 		$icon = new PageElement('image', array('stock' => 'monitor'));
+		if(!is_array($data))
+			$data = array($data);
 		foreach($data as $d)
 			foreach($d as $hostname => $value)
 			{
