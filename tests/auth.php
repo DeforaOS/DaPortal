@@ -48,7 +48,8 @@ class AuthTest extends Auth
 //functions
 $auth = new AuthTest;
 $user = new User($engine, 1, 'admin');
-$credentials = $user->authenticate($engine, 'password');
+if(($credentials = $user->authenticate($engine, 'password')) === FALSE)
+	exit(2);
 //may as well have failed
 $auth->setCredentials($engine, $credentials);
 if($auth->setVariable($engine, 'test1', 'test2') === FALSE)
