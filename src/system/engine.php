@@ -228,14 +228,18 @@ abstract class Engine
 	//static
 	//useful
 	//Engine::attachDefault
-	static public function attachDefault($prefix = FALSE)
+	static public function attachDefault($prefix = FALSE,
+			$sysconfdir = FALSE)
 	{
 		global $config;
 		$ret = FALSE;
 		$priority = 0;
 
+		if($sysconfdir === FALSE && $prefix !== FALSE)
+			$sysconfdir = ($prefix == '/usr')
+				? '/etc' : $prefix.'/etc';
 		//XXX ignore errors
-		static::configLoad($prefix, TRUE);
+		static::configLoad($sysconfdir, TRUE);
 		if(($name = $config->get('engine', 'backend')) !== FALSE)
 		{
 			$class = $name.'Engine';
@@ -292,16 +296,11 @@ abstract class Engine
 
 	//Engine::configLoad
 	//loads the default configuration file
-	static public function configLoad($prefix = FALSE, $reset = TRUE)
+	static public function configLoad($sysconfdir = FALSE, $reset = TRUE)
 	{
-		$daportalconf = FALSE;
+		$daportalconf = ($sysconfdir !== FALSE)
+			? $sysconfdir.'/daportal.conf' : FALSE;
 
-		if($prefix !== FALSE)
-		{
-			$sysconfdir = ($prefix == '/usr')
-				? '/etc' : $prefix.'/etc';
-			$daportalconf = $sysconfdir.'/daportal.conf';
-		}
 		if(($d = getenv('DAPORTALCONF')) !== FALSE)
 			$daportalconf = $d;
 		if($daportalconf === FALSE)
@@ -315,17 +314,12 @@ abstract class Engine
 
 	//Engine::configLoadEngine
 	//loads the default configuration file for a specific engine
-	static public function configLoadEngine($prefix = FALSE, $name = FALSE,
-			$reset = TRUE)
+	static public function configLoadEngine($sysconfdir = FALSE,
+			$name = FALSE, $reset = TRUE)
 	{
-		$daportalconf = FALSE;
+		$daportalconf = ($sysconfdir !== FALSE)
+			? $sysconfdir.'/daportal.conf' : FALSE;
 
-		if($prefix !== FALSE)
-		{
-			$sysconfdir = ($prefix == '/usr')
-				? '/etc' : $prefix.'/etc';
-			$daportalconf = $sysconfdir.'/etc/daportal.conf';
-		}
 		if(($d = getenv('DAPORTALCONF')) !== FALSE)
 			return FALSE;
 		if($daportalconf === FALSE)

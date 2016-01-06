@@ -22,7 +22,7 @@ require_once('./system/autoload.php');
 //essential compatibility fixes
 require_once('./system/compat.php');
 
-if(($engine = Engine::attachDefault('@PREFIX@')) !== FALSE)
+if(($engine = Engine::attachDefault('@PREFIX@', '@SYSCONFDIR@')) !== FALSE)
 {
 	global $config;
 	$profile = $config->get(FALSE, 'profile') ? TRUE : FALSE;
