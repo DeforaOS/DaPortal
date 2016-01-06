@@ -24,7 +24,7 @@ DAPORTALPHP="daportal.php"
 PHP="php"
 
 PREFIX="@PREFIX@"
-ETCDIR="$PREFIX/etc"
+SYSCONFDIR="@SYSCONFDIR@"
 DAPORTALDIR="$PREFIX/$PACKAGE"
 
 
@@ -46,7 +46,7 @@ _warning() {
 #public
 #main
 #load the configuration
-[ -f "$ETCDIR/defaults/$PACKAGE" ] && . "$ETCDIR/defaults/$PACKAGE"
+[ -f "$SYSCONFDIR/defaults/$PACKAGE" ] && . "$SYSCONFDIR/defaults/$PACKAGE"
 
 #locate the installation directory
 if [ ! -d "$DAPORTALDIR/src" ]; then
