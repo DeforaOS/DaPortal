@@ -155,6 +155,7 @@ class SaltModule extends Module
 				'request' => $this->getRequest()));
 		$hbox = $form->append('hbox');
 		$hbox->append('entry', array('text' => _('Host: '),
+				'placeholder' => _('Hostname (or glob)'),
 				'name' => 'host', 'value' => $hostname));
 		$hbox->append('button', array('type' => 'submit',
 				'text' => _('Monitor')));
