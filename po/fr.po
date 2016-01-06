@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 17:50+0100\n"
+"POT-Creation-Date: 2016-01-06 13:48+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -607,7 +607,7 @@ msgstr "Impossible d'ouvrir le fichier ou dossier demandé"
 #: ../src/modules/content/module.php:1395
 #: ../src/modules/content/module.php:1494 ../src/modules/group/module.php:139
 #: ../src/modules/group/module.php:171 ../src/modules/project/module.php:729
-#: ../src/modules/project/module.php:753 ../src/modules/salt/module.php:365
+#: ../src/modules/project/module.php:753 ../src/modules/salt/module.php:366
 #: ../src/modules/user/module.php:247 ../src/modules/user/module.php:275
 #: ../src/modules/user/module.php:296 ../src/modules/user/module.php:315
 #: ../src/modules/user/module.php:400 ../src/modules/user/module.php:500
@@ -867,7 +867,7 @@ msgstr "Le(s) contenu(s) ont pu être activé(s)"
 msgid "Some content could not be enabled"
 msgstr "Certains contenus n'ont pas pu être activés"
 
-#: ../src/modules/content/module.php:1223 ../src/modules/salt/module.php:342
+#: ../src/modules/content/module.php:1223 ../src/modules/salt/module.php:343
 msgid "Back"
 msgstr "Retour"
 
@@ -1821,82 +1821,86 @@ msgstr "Suivi de salt"
 msgid "Host: "
 msgstr "Hôte : "
 
-#: ../src/modules/salt/module.php:160
+#: ../src/modules/salt/module.php:158
+msgid "Hostname (or glob)"
+msgstr "Hôte (ou glob)"
+
+#: ../src/modules/salt/module.php:161
 msgid "Monitor"
 msgstr "Suivi"
 
-#: ../src/modules/salt/module.php:169
+#: ../src/modules/salt/module.php:170
 msgid "Could not obtain uptime"
 msgstr "Impossible d'obtenir le temps d'activité"
 
-#: ../src/modules/salt/module.php:184
+#: ../src/modules/salt/module.php:185
 msgid "Could not list services"
 msgstr "Impossible de lister les services"
 
-#: ../src/modules/salt/module.php:200
+#: ../src/modules/salt/module.php:201
 msgid "Could not obtain statistics"
 msgstr "Impossible d'obtenir les statistiques"
 
-#: ../src/modules/salt/module.php:218
+#: ../src/modules/salt/module.php:219
 msgid "Could not list hosts"
 msgstr "Impossible de lister les hôtes"
 
-#: ../src/modules/salt/module.php:246
+#: ../src/modules/salt/module.php:247
 msgid "Reboot"
 msgstr "Redémarrer"
 
-#: ../src/modules/salt/module.php:251
+#: ../src/modules/salt/module.php:252
 msgid "Shutdown"
 msgstr "Éteindre"
 
-#: ../src/modules/salt/module.php:306
+#: ../src/modules/salt/module.php:307
 msgid "Unknown host"
 msgstr "Hôte inconnu"
 
-#: ../src/modules/salt/module.php:320
+#: ../src/modules/salt/module.php:321
 msgid "Unsupported action"
 msgstr "Action non supportée"
 
-#: ../src/modules/salt/module.php:331
+#: ../src/modules/salt/module.php:332
 #, php-format
 msgid "Could not %s"
 msgstr "Impossible de %s"
 
-#: ../src/modules/salt/module.php:337
+#: ../src/modules/salt/module.php:338
 #, php-format
 msgid "%s successful"
 msgstr "%s avec succès"
 
-#: ../src/modules/salt/module.php:353
+#: ../src/modules/salt/module.php:354
 #, php-format
 msgid "Do you really want to %s %s?"
 msgstr "Voulez-vous vraiment %s %s ?"
 
-#: ../src/modules/salt/module.php:562
+#: ../src/modules/salt/module.php:563
 msgid "Load average"
 msgstr "Charge moyenne"
 
-#: ../src/modules/salt/module.php:572
+#: ../src/modules/salt/module.php:573
 msgid "Network interfaces"
 msgstr "Interfaces réseau"
 
-#: ../src/modules/salt/module.php:591
+#: ../src/modules/salt/module.php:592
 msgid "Reload"
 msgstr "Recharger"
 
-#: ../src/modules/salt/module.php:591
+#: ../src/modules/salt/module.php:592
 msgid "Start"
 msgstr "Démarrer"
 
-#: ../src/modules/salt/module.php:592
+#: ../src/modules/salt/module.php:593
 msgid "Stop"
 msgstr "Stopper"
 
-#: ../src/modules/salt/module.php:592
+#: ../src/modules/salt/module.php:593
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../src/modules/salt/module.php:594
+#: ../src/modules/salt/module.php:595
 msgid "Services"
 msgstr "Services"
 
