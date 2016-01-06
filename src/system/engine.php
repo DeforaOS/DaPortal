@@ -294,9 +294,14 @@ abstract class Engine
 	//loads the default configuration file
 	static public function configLoad($prefix = FALSE, $reset = TRUE)
 	{
-		$daportalconf = ($prefix !== FALSE)
-			? $prefix.'/etc/daportal.conf' : FALSE;
+		$daportalconf = FALSE;
 
+		if($prefix !== FALSE)
+		{
+			$sysconfdir = ($prefix == '/usr')
+				? '/etc' : $prefix.'/etc';
+			$daportalconf = $sysconfdir.'/daportal.conf';
+		}
 		if(($d = getenv('DAPORTALCONF')) !== FALSE)
 			$daportalconf = $d;
 		if($daportalconf === FALSE)
@@ -313,9 +318,14 @@ abstract class Engine
 	static public function configLoadEngine($prefix = FALSE, $name = FALSE,
 			$reset = TRUE)
 	{
-		$daportalconf = ($prefix !== FALSE && $name !== FALSE)
-			? $prefix.'/etc/daportal-'.$name.'.conf' : FALSE;
+		$daportalconf = FALSE;
 
+		if($prefix !== FALSE)
+		{
+			$sysconfdir = ($prefix == '/usr')
+				? '/etc' : $prefix.'/etc';
+			$daportalconf = $sysconfdir.'/etc/daportal.conf';
+		}
 		if(($d = getenv('DAPORTALCONF')) !== FALSE)
 			return FALSE;
 		if($daportalconf === FALSE)
