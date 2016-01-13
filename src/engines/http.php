@@ -224,7 +224,6 @@ class HTTPEngine extends Engine
 	//HTTPEngine::getURL
 	public function getURL(Request $request, $absolute = TRUE)
 	{
-		//FIXME do not include parameters for a POST request
 		if($request === FALSE)
 			return FALSE;
 		$name = isset($_SERVER['SCRIPT_NAME'])

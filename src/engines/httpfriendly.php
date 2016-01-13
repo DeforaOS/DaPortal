@@ -119,7 +119,6 @@ class HTTPFriendlyEngine extends HTTPEngine
 	{
 		global $config;
 
-		//FIXME do not include parameters for a POST request
 		//use the kicker if defined
 		if(($kicker = $config->get($this->section, 'kicker'))
 				!== FALSE)
