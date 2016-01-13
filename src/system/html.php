@@ -55,16 +55,20 @@ class HTML
 			$this->whitelist['button'] = array('class', 'disabled',
 				'name', 'type', 'value');
 			$this->whitelist['datalist'] = array('class', 'id');
-			$this->whitelist['fieldset'] = array('class');
+			$this->whitelist['fieldset'] = array('class',
+				'disabled');
 			$this->whitelist['form'] = array('action', 'class',
 				'enctype', 'method');
 			$this->whitelist['input'] = array('checked', 'class',
-				'id', 'list', 'name', 'type', 'value');
+				'disabled', 'id', 'list', 'name', 'readonly',
+				'type', 'value');
 			$this->whitelist['label'] = array('class', 'for');
 			$this->whitelist['legend'] = array('class');
 			$this->whitelist['option'] = array('class', 'value');
-			$this->whitelist['select'] = array('class', 'name');
-			$this->whitelist['textarea'] = array('class', 'name');
+			$this->whitelist['select'] = array('class', 'disabled',
+				'multiple', 'name');
+			$this->whitelist['textarea'] = array('class',
+				'disabled', 'name', 'rows');
 		}
 	}
 
