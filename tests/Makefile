@@ -1,4 +1,4 @@
-TARGETS	= $(OBJDIR)phpinfo.html $(OBJDIR)phplint.log $(OBJDIR)shlint.log $(OBJDIR)sqlite.db $(OBJDIR)sqlite.db3 $(OBJDIR)tests.log $(OBJDIR)widgets.html
+TARGETS	= $(OBJDIR)phpinfo.txt $(OBJDIR)phplint.log $(OBJDIR)shlint.log $(OBJDIR)sqlite.db $(OBJDIR)sqlite.db3 $(OBJDIR)tests.log $(OBJDIR)widgets.html
 OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
@@ -10,8 +10,8 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-$(OBJDIR)phpinfo.html: php.sh phpinfo.php
-	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)phpinfo.html"
+$(OBJDIR)phpinfo.txt: php.sh phpinfo.php
+	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)phpinfo.txt"
 
 $(OBJDIR)phplint.log: phplint.sh $(OBJDIR)../src/daportal.php
 	./phplint.sh -P "$(PREFIX)" -- "$(OBJDIR)phplint.log"
@@ -32,8 +32,8 @@ $(OBJDIR)widgets.html: php.sh widgets.php
 	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)widgets.html"
 
 clean:
-	$(RM) -- $(phpinfo.html_OBJS) $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS) $(widgets.html_OBJS)
-	./php.sh -c -P "$(PREFIX)" -- "phpinfo.html"
+	$(RM) -- $(phpinfo.txt_OBJS) $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS) $(widgets.html_OBJS)
+	./php.sh -c -P "$(PREFIX)" -- "phpinfo.txt"
 	./phplint.sh -c -P "$(PREFIX)" -- "phplint.log"
 	./shlint.sh -c -P "$(PREFIX)" -- "shlint.log"
 	./database.sh -c -P "$(PREFIX)" -- "sqlite.db"
