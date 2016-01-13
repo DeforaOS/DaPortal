@@ -382,7 +382,8 @@ class SaltModule extends Module
 			$args = FALSE, $options = FALSE)
 	{
 		$salt = $this->configGet('salt') ?: 'salt';
-		$options = is_array($options) ? $options : array('--out=json');
+		$options = is_array($options)
+			? $options : array('--out=json', '--static');
 		$hostname = (is_string($hostname) && strlen($hostname))
 			? $hostname : '*';
 		$args = is_array($args) ? $args : array();
@@ -399,30 +400,9 @@ class SaltModule extends Module
 			//something went really wrong, or finally right, or this
 			//is not salt, or it is not installed
 			return FALSE;
-		$output = $this->_saltOutput($output);
-		if(($data = json_decode($output)) === NULL)
+		if(($data = json_decode(implode($output, "\n"))) === NULL)
 			return FALSE;
 		return $data;
-	}
-
-	private function _saltOutput($output)
-	{
-		//XXX re-format as valid JSON
-		$ret = '';
-		$array = FALSE;
-		$sep = '';
-
-		for($i = 0, $cnt = count($output); $i < $cnt; $i++, $sep = "\n")
-			if($i + 1 != $cnt && $output[$i] == '}')
-			{
-				$ret .= $sep.'},';
-				$array = TRUE;
-			}
-			else
-				$ret .= $sep.$output[$i];
-		if($array)
-			return '['.$ret.']';
-		return $ret;
 	}
 
 
