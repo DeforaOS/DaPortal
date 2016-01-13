@@ -373,6 +373,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/module.php \
 		$(PACKAGE)-$(VERSION)/tests/observer.php \
 		$(PACKAGE)-$(VERSION)/tests/php.sh \
+		$(PACKAGE)-$(VERSION)/tests/phpinfo.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
 		$(PACKAGE)-$(VERSION)/tests/pki.php \
 		$(PACKAGE)-$(VERSION)/tests/profile.php \
