@@ -21,15 +21,28 @@ require_once('./tests.php');
 $config->set('format', 'backend', 'html5');
 
 $page = new Page(array('title' => 'Widgets'));
+
+//titles
 $page->append('title', array('text' => 'Title (level 1)'));
-$vbox = $page->append('vbox');
-$vbox->append('title', array('text' => 'Title (level 2)'));
-$vbox = $vbox->append('vbox');
-$vbox->append('title', array('text' => 'Title (level 3)'));
-$form = $vbox->append('form');
+$vbox1 = $page->append('vbox');
+$vbox1->append('title', array('text' => 'Title (level 2)'));
+$vbox2 = $vbox1->append('vbox');
+$vbox2->append('title', array('text' => 'Title (level 3)'));
+
+//form
+$form = $vbox2->append('form');
 $form->append('button', array('text' => 'Button'));
 $form->append('button', array('type' => 'reset', 'text' => 'Reset'));
 $form->append('button', array('type' => 'submit', 'text' => 'Submit'));
+
+//treeview
+$columns = array('title' => 'Title', 'col1' => 'Header 1',
+	'col2' => 'Header 2', 'col3' => 'Header 3');
+$view = $vbox1->append('treeview', array('columns' => $columns));
+$view->append('row', array('title' => 'Title column', 'col1' => 'Column 1',
+		'col2' => 'Column 2', 'col3' => 'Column 3'));
+
+//statusbar
 $footer = $page->append('statusbar');
 $footer->append('label', array('text' => 'Status bar (footer)'));
 
