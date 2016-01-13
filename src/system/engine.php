@@ -123,7 +123,12 @@ abstract class Engine
 	//Engine::getURL
 	public function getURL(Request $request, $absolute = TRUE)
 	{
-		return FALSE;
+		if($absolute === FALSE)
+			return $_SERVER['SCRIPT_NAME'];
+		$filename = $_SERVER['SCRIPT_NAME'][0] == '/'
+			? $_SERVER['SCRIPT_NAME']
+			: $_SERVER['PWD'].'/'.$_SERVER['SCRIPT_NAME'];
+		return realpath($filename);
 	}
 
 
