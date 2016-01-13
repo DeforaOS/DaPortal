@@ -412,6 +412,7 @@ class SQLUserBackend extends UserBackend
 		$db = $engine->getDatabase();
 		$query = static::$query_insert;
 		$error = '';
+		$salt = '$5$'.static::passwordGenerate(16);
 
 		//FIXME really validate username
 		if(!is_string($username) || strlen($username) == 0)
@@ -427,7 +428,8 @@ class SQLUserBackend extends UserBackend
 		if($password === FALSE || strlen($password) == 0)
 			$password = $locked ? '!' : '';
 		else
-			$password = ($locked ? '!' : '').crypt($password);
+			$password = ($locked ? '!' : '')
+				.crypt($password, $salt);
 		$args = array('username' => $username, 'group_id' => $group_id,
 			'fullname' => $fullname, 'password' => $password,
 			'email' => $email, 'enabled' => $enabled ? 1 : 0,
