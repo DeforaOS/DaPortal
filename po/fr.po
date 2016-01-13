@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-06 13:48+0100\n"
+"POT-Creation-Date: 2016-01-13 12:29+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -1876,31 +1876,31 @@ msgstr "%s avec succès"
 msgid "Do you really want to %s %s?"
 msgstr "Voulez-vous vraiment %s %s ?"
 
-#: ../src/modules/salt/module.php:563
+#: ../src/modules/salt/module.php:543
 msgid "Load average"
 msgstr "Charge moyenne"
 
-#: ../src/modules/salt/module.php:573
+#: ../src/modules/salt/module.php:553
 msgid "Network interfaces"
 msgstr "Interfaces réseau"
 
-#: ../src/modules/salt/module.php:592
+#: ../src/modules/salt/module.php:572
 msgid "Reload"
 msgstr "Recharger"
 
-#: ../src/modules/salt/module.php:592
+#: ../src/modules/salt/module.php:572
 msgid "Start"
 msgstr "Démarrer"
 
-#: ../src/modules/salt/module.php:593
+#: ../src/modules/salt/module.php:573
 msgid "Stop"
 msgstr "Stopper"
 
-#: ../src/modules/salt/module.php:593
+#: ../src/modules/salt/module.php:573
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../src/modules/salt/module.php:595
+#: ../src/modules/salt/module.php:575
 msgid "Services"
 msgstr "Services"
 
