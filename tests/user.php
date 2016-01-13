@@ -53,12 +53,21 @@ function user_authenticate(Engine $engine, User $user, $password)
 	$error = 'Unknown error';
 }
 
+function user_password(Engine $engine, User $user, $password)
+{
+	if($user->setPassword($engine, $password, $error) === FALSE)
+	{
+		print("$error\n");
+		exit(3);
+	}
+}
+
 function user_lock(Engine $engine, User $user)
 {
 	if($user->lock($engine, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(3);
+		exit(4);
 	}
 }
 
@@ -67,7 +76,7 @@ function user_unlock(Engine $engine, User $user)
 	if($user->unlock($engine, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(4);
+		exit(5);
 	}
 }
 
@@ -77,7 +86,7 @@ function user_reset(Engine $engine, User $user, Module $module)
 			$user->getEmail(), $error) === FALSE)
 	{
 		print("$error\n");
-		exit(5);
+		exit(6);
 	}
 }
 
@@ -87,7 +96,7 @@ function user_register(Engine $engine, Module $module)
 			FALSE, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(6);
+		exit(7);
 	}
 }
 
@@ -96,12 +105,12 @@ function user_setgroup(Engine $engine, User $user)
 	if($user->setGroup($engine, 0, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(7);
+		exit(8);
 	}
 	if($user->setGroup($engine, 1, $error) !== FALSE)
 	{
 		print("$error\n");
-		exit(8);
+		exit(9);
 	}
 }
 
@@ -110,17 +119,17 @@ function user_addgroup(Engine $engine, User $user)
 	if($user->addGroup($engine, 0, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(9);
+		exit(10);
 	}
 	if($user->removeGroup($engine, 0, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(10);
+		exit(11);
 	}
 	if($user->addGroup($engine, 0, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(11);
+		exit(12);
 	}
 }
 
@@ -129,7 +138,7 @@ function user_delete(Engine $engine, User $user)
 	if($user->delete($engine, $error) === FALSE)
 	{
 		print("$error\n");
-		exit(12);
+		exit(13);
 	}
 }
 
@@ -139,6 +148,7 @@ function test(Engine $engine)
 	$module = Module::load($engine, 'user');
 
 	user_authenticate($engine, $user, 'password');
+	user_password($engine, $user, 'password2');
 	user_lock($engine, $user);
 	user_unlock($engine, $user);
 	user_reset($engine, $user, $module);
