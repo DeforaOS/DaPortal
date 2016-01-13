@@ -39,13 +39,26 @@ if(!function_exists('http_build_url'))
 			if(isset($url['pass']))
 				$ret .= ':'.$url['pass'];
 		}
+		//host
 		if(!isset($url['host']))
 		{
 			if($url['scheme'] != 'file')
 				return FALSE;
 		}
 		else
-			$ret .= $url['host'].'/';
+		{
+			$ret .= $url['host'];
+			//port
+			if(isset($url['port']) && is_numeric($url['port']))
+				if(($url['scheme'] == 'http'
+							&& $url['port'] != 80)
+						|| ($url['scheme'] == 'https'
+							&& $url['port'] != 443)
+						|| ($url['scheme'] != 'http'
+							&& $url['scheme'] != 'https'))
+					$ret .= ':'.$url['port'];
+			$ret .= '/';
+		}
 		//path
 		if(isset($url['path']))
 			$ret .= ltrim($url['path'], '/');
