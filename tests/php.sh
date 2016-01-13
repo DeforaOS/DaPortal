@@ -80,4 +80,4 @@ if [ $clean -ne 0 ]; then
 	exit 0
 fi
 
-_widgets "${target%.html}.php" "$target"
+_widgets "${target%.*}.php" "$target"
