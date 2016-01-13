@@ -314,7 +314,7 @@ class HTML
 	protected $blacklist_level = 0;
 	protected $whitelist = array(
 		'a' => array('href', 'name', 'rel', 'title'),
-		'abbr' => array('class'),
+		'abbr' => array('class', 'title'),
 		'acronym' => array('class'),
 		'address' => array('class'),
 		'b' => array('class'),
@@ -324,7 +324,7 @@ class HTML
 		'br' => array(),
 		'button' => array('class', 'disabled'),
 		'center' => array(),
-		'cite' => array('class'),
+		'cite' => array('class', 'title'),
 		'code' => array('class'),
 		'col' => array('class'),
 		'dd' => array('class'),
