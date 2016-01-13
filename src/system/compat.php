@@ -17,6 +17,24 @@
 
 
 //Compatibility fixes
+//hash_equals()
+if(!function_exists('hash_equals'))
+{
+	function hash_equals($known_string, $user_string)
+	{
+		if(!is_string($known_string) || !is_string($user_string))
+			return FALSE;
+		if(strlen($known_string) != strlen($user_string))
+			return FALSE;
+		$string = $known_string ^ $user_string;
+		$res = 0;
+		for($i = 0, $cnt = strlen($string); $i < $cnt; $i++)
+			$res |= ord($string[$i]);
+		return ($res == 0) ? TRUE : FALSE;
+	}
+}
+
+
 //http_build_url()
 if(!function_exists('http_build_url'))
 {

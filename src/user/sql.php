@@ -161,7 +161,7 @@ class SQLUserBackend extends UserBackend
 		else
 			return $engine->log('LOG_ERR', $this->username
 					.': Invalid password hash');
-		if($res['password'] != $hash)
+		if(hash_equals($res['password'], $hash) !== TRUE)
 			return $engine->log('LOG_ERR', $this->username
 					.': Could not authenticate user');
 		//the password is correct
