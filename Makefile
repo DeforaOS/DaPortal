@@ -372,6 +372,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/mail.php \
 		$(PACKAGE)-$(VERSION)/tests/module.php \
 		$(PACKAGE)-$(VERSION)/tests/observer.php \
+		$(PACKAGE)-$(VERSION)/tests/php.sh \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
 		$(PACKAGE)-$(VERSION)/tests/pki.php \
 		$(PACKAGE)-$(VERSION)/tests/profile.php \
@@ -382,7 +383,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/tests.sh \
 		$(PACKAGE)-$(VERSION)/tests/user.php \
 		$(PACKAGE)-$(VERSION)/tests/widgets.php \
-		$(PACKAGE)-$(VERSION)/tests/widgets.sh \
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
 		$(PACKAGE)-$(VERSION)/tools/Makefile \
 		$(PACKAGE)-$(VERSION)/tools/daportal.in \

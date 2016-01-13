@@ -18,7 +18,7 @@
 
 #variables
 DAPORTALCONF='../tests/daportal.conf'
-PROGNAME="widgets"
+PROGNAME="php.sh"
 #executables
 DEBUG="_debug"
 PHP="/usr/bin/env php"
