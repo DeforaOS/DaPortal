@@ -20,6 +20,7 @@ if(chdir('../src') === FALSE)
 	exit(2);
 
 require_once('./system/autoload.php');
+require_once('./system/compat.php');
 
 $engine = Engine::attachDefault();
 
