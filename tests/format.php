@@ -27,7 +27,7 @@ $html5 = array(
 <html>
 	<head>
 		<meta charset=\"utf-8\"/>
-		<base href=\"/\"/>
+		<base href=\"".dirname(getcwd())."/tests/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
@@ -42,7 +42,7 @@ $html5 = array(
 <html>
 	<head>
 		<meta charset=\"utf-8\"/>
-		<base href=\"/\"/>
+		<base href=\"".dirname(getcwd())."/tests/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
