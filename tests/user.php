@@ -42,9 +42,9 @@ class Mail
 
 
 //functions
-function user_authenticate(Engine $engine, User $user)
+function user_authenticate(Engine $engine, User $user, $password)
 {
-	if(($res = $user->authenticate($engine, 'password')) === FALSE)
+	if(($res = $user->authenticate($engine, $password)) === FALSE)
 		exit(2);
 	if(!($res instanceof \AuthCredentials)
 			|| $res->getUserID() != $user->getUserID()
@@ -138,7 +138,7 @@ function test(Engine $engine)
 	$user = new User($engine, 1, 'admin');
 	$module = Module::load($engine, 'user');
 
-	user_authenticate($engine, $user);
+	user_authenticate($engine, $user, 'password');
 	user_lock($engine, $user);
 	user_unlock($engine, $user);
 	user_reset($engine, $user, $module);
