@@ -381,6 +381,8 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/tests.php \
 		$(PACKAGE)-$(VERSION)/tests/tests.sh \
 		$(PACKAGE)-$(VERSION)/tests/user.php \
+		$(PACKAGE)-$(VERSION)/tests/widgets.php \
+		$(PACKAGE)-$(VERSION)/tests/widgets.sh \
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
 		$(PACKAGE)-$(VERSION)/tools/Makefile \
 		$(PACKAGE)-$(VERSION)/tools/daportal.in \

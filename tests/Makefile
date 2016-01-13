@@ -1,4 +1,4 @@
-TARGETS	= $(OBJDIR)phplint.log $(OBJDIR)shlint.log $(OBJDIR)sqlite.db $(OBJDIR)sqlite.db3 $(OBJDIR)tests.log
+TARGETS	= $(OBJDIR)phplint.log $(OBJDIR)shlint.log $(OBJDIR)sqlite.db $(OBJDIR)sqlite.db3 $(OBJDIR)tests.log $(OBJDIR)widgets.html
 OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
@@ -25,13 +25,17 @@ $(OBJDIR)sqlite.db3: ../doc/sql/sqlite.sql database.sh
 $(OBJDIR)tests.log: auth.php config.php coverage.php daportal.conf daportal.php database.php engine.php format.php group.php html.php http.php json.php mail.php module.php observer.php pki.php profile.php search.php $(OBJDIR)sqlite.db3 template.php tests.php tests.sh user.php
 	./tests.sh -P "$(PREFIX)" -- "$(OBJDIR)tests.log"
 
+$(OBJDIR)widgets.html: widgets.php widgets.sh
+	./widgets.sh -P "$(PREFIX)" -- "$(OBJDIR)widgets.html"
+
 clean:
-	$(RM) -- $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS)
+	$(RM) -- $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS) $(widgets.html_OBJS)
 	./phplint.sh -c -P "$(PREFIX)" -- "phplint.log"
 	./shlint.sh -c -P "$(PREFIX)" -- "shlint.log"
 	./database.sh -c -P "$(PREFIX)" -- "sqlite.db"
 	./database.sh -c -P "$(PREFIX)" -- "sqlite.db3"
 	./tests.sh -c -P "$(PREFIX)" -- "tests.log"
+	./widgets.sh -c -P "$(PREFIX)" -- "widgets.html"
 
 distclean: clean
 	$(RM) -- $(TARGETS)
