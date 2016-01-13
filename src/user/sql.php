@@ -100,9 +100,9 @@ class SQLUserBackend extends UserBackend
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_set_password;
+		$salt = '$5$'.static::passwordGenerate(16);
 
-		//XXX seems to default to sh-md5 (should be configurable)
-		$hash = crypt($password);
+		$hash = crypt($password, $salt);
 		$args = array('user_id' => $this->user_id,
 			'password' => $hash);
 		return ($db->query($engine, $query, $args) !== FALSE);
@@ -480,13 +480,12 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::passwordGenerate
-	static public function passwordGenerate()
+	static public function passwordGenerate($length = 8,
+			$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 	{
-		$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-			.'0123456789';
 		$password = '';
 
-		for($i = 0; $i < 8; $i++)
+		for($i = 0; $i < $length; $i++)
 			$password .= $string[rand(0, strlen($string) - 1)];
 		return $password;
 	}
