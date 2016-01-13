@@ -353,6 +353,7 @@ class HTML
 		'ol' => array('class'),
 		'p' => array('class'),
 		'pre' => array('class'),
+		's' => array('class'),
 		'samp' => array('class'),
 		'small' => array('class'),
 		'span' => array('class'),
