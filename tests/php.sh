@@ -74,6 +74,7 @@ if [ $# -ne 1 ]; then
 	exit $?
 fi
 target="$1"
+target="${target#$OBJDIR}"
 
 if [ $clean -ne 0 ]; then
 	exit 0
