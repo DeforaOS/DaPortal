@@ -29,6 +29,9 @@ $html5 = array(
 		<meta charset=\"utf-8\"/>
 		<base href=\"/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
@@ -41,6 +44,9 @@ $html5 = array(
 		<meta charset=\"utf-8\"/>
 		<base href=\"/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
