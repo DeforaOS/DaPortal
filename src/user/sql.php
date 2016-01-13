@@ -96,8 +96,7 @@ class SQLUserBackend extends UserBackend
 
 
 	//SQLUserBackend::setPassword
-	public function setPassword(Engine $engine, $password,
-			&$error = FALSE)
+	public function setPassword(Engine $engine, $password, &$error = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_set_password;
