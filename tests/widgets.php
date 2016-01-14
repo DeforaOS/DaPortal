@@ -31,6 +31,10 @@ $vbox2->append('title', array('text' => 'Title (level 3)'));
 
 //form
 $form = $vbox2->append('form');
+$form->append('entry', array('text' => 'Entry: ',
+		'placeholder' => 'Placeholder'));
+$form->append('textview', array('text' => 'Text editor: ',
+		'placeholder' => 'Placeholder'));
 $form->append('button', array('text' => 'Button'));
 $form->append('button', array('type' => 'reset', 'text' => 'Reset'));
 $form->append('button', array('type' => 'submit', 'text' => 'Submit'));
