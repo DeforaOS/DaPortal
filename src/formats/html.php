@@ -681,10 +681,15 @@ class HTMLFormat extends FormatElements
 		$class = $e->get('class');
 
 		$class = ($class === FALSE) ? 'editor' : 'editor '.$class;
+		$this->renderTabs();
+		if(($text = $e->get('text')) !== FALSE)
+		{
+			$l = new PageElement('label', array('text' => $text));
+			$this->renderElement($l);
+		}
 		if(($text = $e->get('value')) === FALSE || !is_string($text))
 			$text = '';
 		$text = HTML::filter($this->engine, $text);
-		$this->renderTabs();
 		$this->tagOpen('textarea', $class, $e->get('id'), array(
 				'name' => $e->get('name')));
 		print($this->escape($text));
