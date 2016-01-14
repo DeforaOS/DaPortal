@@ -30,8 +30,8 @@ $html5 = array(
 		<base href=\"".dirname(getcwd())."/tests/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
@@ -45,8 +45,8 @@ $html5 = array(
 		<base href=\"".dirname(getcwd())."/tests/\"/>
 		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
+		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
