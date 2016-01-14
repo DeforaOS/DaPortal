@@ -80,7 +80,7 @@ class ManualModule extends Module
 	//methods
 	//accessors
 	//ManualModule::getPages
-	protected function getPages($engine, $name)
+	protected function getPages(Engine $engine, $name)
 	{
 		$ret = array();
 
@@ -198,7 +198,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::getSections
-	protected function getSections($engine)
+	protected function getSections(Engine $engine)
 	{
 		//XXX code duplication
 		$ret = array();
@@ -231,7 +231,7 @@ class ManualModule extends Module
 	//useful
 	//actions
 	//ManualModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		return array();
 	}
@@ -239,18 +239,18 @@ class ManualModule extends Module
 
 	//calls
 	//ManualModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$title = _('Manual browser');
 
-		if($request !== FALSE)
+		if($request !== NULL)
 			return $this->callDisplay($engine, $request);
-		return $this->callList($engine, $request);
+		return $this->callList($engine, new Request());
 	}
 
 
 	//ManualModule::callDisplay
-	protected function callDisplay($engine, $request)
+	protected function callDisplay(Engine $engine, Request $request)
 	{
 		$title = _('Manual browser');
 
@@ -286,7 +286,7 @@ class ManualModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _pageFormat($engine, $xml)
+	private function _pageFormat(Engine $engine, DOMDocument $xml)
 	{
 		$links = $xml->getElementsByTagName('a');
 		foreach($links as $link)
@@ -309,7 +309,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::callList
-	protected function callList($engine, $request)
+	protected function callList(Engine $engine, Request $request)
 	{
 		$title = _('Manual browser');
 
@@ -328,7 +328,8 @@ class ManualModule extends Module
 		return $this->_listSections($engine, $request, $page);
 	}
 
-	private function _listPages($engine, $request, $page, $name)
+	private function _listPages(Engine $engine, Request $request,
+			PageElement $page, $name)
 	{
 		if(($pages = $this->getPages($engine, $name)) === FALSE)
 		{
@@ -363,7 +364,8 @@ class ManualModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _listSection($engine, $request, $page, $section)
+	private function _listSection(Engine $engine, Request $request,
+			PageElement $page, $section)
 	{
 		//FIXME implement paging
 		if(($pages = $this->getSectionPages($section)) === FALSE)
@@ -393,7 +395,8 @@ class ManualModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _listSections($engine, $request, $page)
+	private function _listSections(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		if(($sections = $this->getSections($engine)) === FALSE)
 		{
@@ -423,7 +426,7 @@ class ManualModule extends Module
 
 	//forms
 	//Manual::formPage
-	protected function formPage($engine, $request)
+	protected function formPage(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest();
 
@@ -450,7 +453,7 @@ class ManualModule extends Module
 
 	//useful
 	//ManualModule::pageOpen
-	protected function pageOpen($engine, $section, $name)
+	protected function pageOpen(Engine $engine, $section, $name)
 	{
 		if(($path = $this->configGet('path')) === FALSE)
 		{
@@ -475,7 +478,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::parseRequest
-	protected function parseRequest($request, &$section = FALSE,
+	protected function parseRequest(Request $request, &$section = FALSE,
 			&$page = FALSE)
 	{
 		$section = $request->getID() ?: $request->get('section');
