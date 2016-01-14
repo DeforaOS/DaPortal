@@ -13,11 +13,14 @@
 //
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//TODO:
+//- correct the path to the data in <base>
 
 
 
 require_once('./tests.php');
 
+//force HTML5 output
 $config->set('format', 'backend', 'html5');
 
 $page = new Page(array('title' => 'Widgets'));
