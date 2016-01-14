@@ -112,7 +112,7 @@ class CAPKIContent extends PKIContent
 		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
 
 		$toolbar = new PageElement('toolbar');
-		if($credentials->isAdmin($engine))
+		if($credentials->isAdmin())
 		{
 			$r = $this->getModule()->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,

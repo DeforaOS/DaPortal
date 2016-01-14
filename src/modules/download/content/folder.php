@@ -162,7 +162,7 @@ class FolderDownloadContent extends DownloadContent
 					'text' => $this->text_update));
 		}
 		//administration
-		if($credentials->isAdmin($engine))
+		if($credentials->isAdmin())
 		{
 			$r = new Request($module->getName(), 'admin');
 			$toolbar->append('button', array('request' => $r,

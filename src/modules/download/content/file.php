@@ -144,7 +144,7 @@ class FileDownloadContent extends DownloadContent
 					'text' => $this->text_update));
 		}
 		//administration
-		if($credentials->isAdmin($engine))
+		if($credentials->isAdmin())
 		{
 			$r = $module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,

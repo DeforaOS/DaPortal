@@ -594,7 +594,7 @@ class Content
 		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
 
 		$toolbar = new PageElement('toolbar');
-		if($credentials->isAdmin($engine))
+		if($credentials->isAdmin())
 		{
 			$r = $this->module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,

@@ -45,7 +45,7 @@ class ContentMulti extends Content
 			return parent::displayToolbar($engine, $request);
 		//FIXME code duplication
 		$toolbar = new PageElement('toolbar');
-		if($credentials->isAdmin($engine))
+		if($credentials->isAdmin())
 		{
 			$r = $module->getRequest('admin');
 			$toolbar->append('button', array('request' => $r,
