@@ -23,7 +23,8 @@ class FileDownloadContent extends DownloadContent
 	//methods
 	//essential
 	//FileDownloadContent::FileDownloadContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['filename'] = 'Filename';
 		parent::__construct($engine, $module, $properties);
@@ -39,7 +40,7 @@ class FileDownloadContent extends DownloadContent
 
 	//useful
 	//FileDownloadContent::displayButtons
-	public function displayButtons($engine, $request)
+	public function displayButtons(Engine $engine, $request)
 	{
 		$module = $this->getModule();
 		$parent = $this->getParentSubmitted($request);
@@ -59,7 +60,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
@@ -117,7 +118,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
@@ -155,7 +156,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::download
-	public function download($engine, $request)
+	public function download(Engine $engine, $request)
 	{
 		//output the file
 		if(($filename = $this->getFilename($engine)) === FALSE
@@ -173,7 +174,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
@@ -188,12 +189,12 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;
@@ -296,7 +297,7 @@ class FileDownloadContent extends DownloadContent
 	//methods
 	//accessors
 	//FileDownloadContent::getFilename
-	protected function getFilename($engine)
+	protected function getFilename(Engine $engine)
 	{
 		$module = $this->getModule()->getName();
 

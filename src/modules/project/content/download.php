@@ -23,7 +23,8 @@ class DownloadProjectContent extends ContentMulti
 	//methods
 	//essential
 	//DownloadProjectContent::DownloadProjectContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['download_id'] = 'Download';
 		$this->fields['project_id'] = 'Project';
@@ -49,7 +50,7 @@ class DownloadProjectContent extends ContentMulti
 
 	//useful
 	//DownloadProjectContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$module = Module::load($engine, 'download');
 
@@ -63,7 +64,7 @@ class DownloadProjectContent extends ContentMulti
 
 
 	//DownloadProjectContent::displayRow
-	public function displayRow($engine, $request = FALSE)
+	public function displayRow(Engine $engine, $request = FALSE)
 	{
 		$row = parent::displayRow($engine, $request);
 		$project = ProjectContent::load($engine, $this->getModule(),
@@ -86,8 +87,9 @@ class DownloadProjectContent extends ContentMulti
 
 
 	//DownloadProjectContent::listByProject
-	static public function listByProject($engine, $module, $project,
-			$order = FALSE, $limit = FALSE, $offset = FALSE)
+	static public function listByProject(Engine $engine, Module $module,
+			$project, $order = FALSE, $limit = FALSE,
+			$offset = FALSE)
 	{
 		$query = static::$query_list
 			.' AND project.content_id=:project_id';

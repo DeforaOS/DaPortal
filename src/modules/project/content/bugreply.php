@@ -22,7 +22,7 @@ class BugReplyProjectContent extends ContentMulti
 	//public
 	//methods
 	//BugReplyProjectContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -30,8 +30,9 @@ class BugReplyProjectContent extends ContentMulti
 
 
 	//BugReplyProjectContent::listByBugID
-	static public function listByBugID($engine, $module, $bug_id,
-			$limit = FALSE, $offset = FALSE, $order = FALSE)
+	static public function listByBugID(Engine $engine, Module $module,
+			$bug_id, $limit = FALSE, $offset = FALSE,
+			$order = FALSE)
 	{
 		$ret = array();
 		$class = static::$class;
@@ -44,8 +45,8 @@ class BugReplyProjectContent extends ContentMulti
 		return $ret;
 	}
 
-	static protected function _listByBugID($engine, $module, $bug_id,
-			$limit, $offset, $order)
+	static protected function _listByBugID(Engine $engine, Module $module,
+			$bug_id, $limit, $offset, $order)
 	{
 		$query = static::$query_list.' AND bug_id=:bug_id';
 		$args = array('module_id' => $module->getID(),

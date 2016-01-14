@@ -23,7 +23,8 @@ class NewsContent extends Content
 	//methods
 	//essential
 	//NewsContent::NewsContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		$this->text_content_by = _('News by');
@@ -36,7 +37,7 @@ class NewsContent extends Content
 
 	//useful
 	//NewsContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -44,7 +45,7 @@ class NewsContent extends Content
 
 
 	//NewsContent::previewContent
-	public function previewContent($engine, $request = FALSE)
+	public function previewContent(Engine $engine, $request = FALSE)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;

@@ -23,7 +23,8 @@ class BugProjectContent extends ContentMulti
 	//methods
 	//essential
 	//BugProjectContent::BugProjectContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['project_id'] = 'project ID';
 		$this->fields['bug_id'] = 'bug #';
@@ -63,7 +64,7 @@ class BugProjectContent extends ContentMulti
 
 	//accessors
 	//BugProjectContent::getBugReplies
-	public function getBugReplies($engine)
+	public function getBugReplies(Engine $engine)
 	{
 		return BugReplyProjectContent::listByBugID($engine,
 				$this->getModule(), $this->get('bug_id'));
@@ -124,7 +125,7 @@ class BugProjectContent extends ContentMulti
 
 	//useful
 	//BugProjectContent::display
-	public function display($engine, $request)
+	public function display(Engine $engine, $request)
 	{
 		$ret = parent::display($engine, $request);
 		//FIXME list the replies above the buttons
@@ -134,7 +135,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -142,7 +143,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayReplies
-	public function displayReplies($engine, $request)
+	public function displayReplies(Engine $engine, $request)
 	{
 		$error = _('Could not list the replies');
 
@@ -165,7 +166,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayRow
-	public function displayRow($engine, $request = FALSE)
+	public function displayRow(Engine $engine, $request = FALSE)
 	{
 		$project = ProjectContent::load($engine, $this->getModule(),
 			$this->get('project_id'));
@@ -195,7 +196,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		if($this->project !== FALSE)
 			return $this->project->displayToolbar($engine,
@@ -205,12 +206,12 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',

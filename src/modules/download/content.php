@@ -23,7 +23,8 @@ abstract class DownloadContent extends ContentMulti
 	//methods
 	//essential
 	//DownloadContent::DownloadContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['download_id'] = 'Download ID';
 		$this->fields['parent_id'] = 'Parent';
@@ -36,7 +37,8 @@ abstract class DownloadContent extends ContentMulti
 
 	//accessors
 	//DownloadContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
@@ -78,7 +80,7 @@ abstract class DownloadContent extends ContentMulti
 
 
 	//DownloadContent::getParent
-	public function getParent($engine, $request = FALSE)
+	public function getParent(Engine $engine, $request = FALSE)
 	{
 		return static::getContent($engine, $this->get('parent_id'),
 				FALSE, $request);
@@ -104,8 +106,9 @@ abstract class DownloadContent extends ContentMulti
 
 	//useful
 	//DownloadContent::listAll
-	static public function listAll($engine, $module, $order = FALSE,
-			$limit = FALSE, $offset = FALSE, $user = FALSE)
+	static public function listAll(Engine $engine, Module $module,
+			$order = FALSE, $limit = FALSE, $offset = FALSE,
+			$user = FALSE)
 	{
 		return static::listFiles($engine, $module, $order, $limit,
 				$offset, $user);
@@ -192,7 +195,7 @@ abstract class DownloadContent extends ContentMulti
 
 
 	//DownloadContent::getIcon
-	protected function getIcon($engine, $size = 16)
+	protected function getIcon(Engine $engine, $size = 16)
 	{
 		if($this->isDirectory())
 			return Mime::getIconByType($engine, 'inode/directory',
@@ -221,18 +224,19 @@ abstract class DownloadContent extends ContentMulti
 
 	//static
 	//DownloadContent::listFiles
-	static protected function listFiles($engine, $module, $order = FALSE,
-			$limit = FALSE, $offset = FALSE, $user = FALSE,
-			$mask = FALSE, $parent = FALSE)
+	static protected function listFiles(Engine $engine, Module $module,
+			$order = FALSE, $limit = FALSE, $offset = FALSE,
+			$user = FALSE, $mask = FALSE, $parent = FALSE)
 	{
 		if(($res = static::_listFiles($engine, $module, $order, $limit,
-				$offset, $user, $mask, $parent)) === FALSE)
+			$offset, $user, $mask, $parent)) === FALSE)
 			return FALSE;
 		return static::listFromResults($engine, $module, $res);
 	}
 
-	static protected function _listFiles($engine, $module, $order, $limit,
-			$offset, $user, $mask = FALSE, $parent = FALSE)
+	static protected function _listFiles(Engine $engine, Module $module,
+			$order, $limit, $offset, $user, $mask = FALSE,
+			$parent = FALSE)
 	{
 		$vbox = new PageElement('vbox');
 		$database = $engine->getDatabase();

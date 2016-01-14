@@ -23,7 +23,8 @@ class Content
 	//methods
 	//essential
 	//Content::Content
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -82,7 +83,8 @@ class Content
 
 	//accessors
 	//Content::canAdmin
-	public function canAdmin($engine, $request = FALSE, &$error = FALSE)
+	public function canAdmin(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -94,42 +96,48 @@ class Content
 
 
 	//Content::canDelete
-	public function canDelete($engine, $request = FALSE, &$error = FALSE)
+	public function canDelete(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
 	}
 
 
 	//Content::canDisable
-	public function canDisable($engine, $request = FALSE, &$error = FALSE)
+	public function canDisable(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
 	}
 
 
 	//Content::canDisplay
-	public function canDisplay($engine, $request = FALSE, &$error = FALSE)
+	public function canDisplay(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return TRUE;
 	}
 
 
 	//Content::canEnable
-	public function canEnable($engine, $request = FALSE, &$error = FALSE)
+	public function canEnable(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
 	}
 
 
 	//Content::canPreview
-	public function canPreview($engine, $request = FALSE, &$error = FALSE)
+	public function canPreview(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return $this->canDisplay($engine, $request, $error);
 	}
 
 
 	//Content::canPublish
-	public function canPublish($engine, $request = FALSE, &$error = FALSE)
+	public function canPublish(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		if($request === FALSE)
 			return TRUE;
@@ -143,7 +151,8 @@ class Content
 
 
 	//Content::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$properties = $this->properties;
@@ -189,7 +198,8 @@ class Content
 
 
 	//Content::canUnpublish
-	public function canUnpublish($engine, $request = FALSE, &$error = FALSE)
+	public function canUnpublish(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		if($request === FALSE)
 			return TRUE;
@@ -203,7 +213,8 @@ class Content
 
 
 	//Content::canUpdate
-	public function canUpdate($engine, $request = FALSE, &$error = FALSE)
+	public function canUpdate(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -224,7 +235,7 @@ class Content
 
 
 	//Content::canUpdateTimestamp
-	public function canUpdateTimestamp($engine, $request = FALSE,
+	public function canUpdateTimestamp(Engine $engine, $request = FALSE,
 			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
@@ -263,7 +274,7 @@ class Content
 
 
 	//Content::getContent
-	public function getContent($engine)
+	public function getContent(Engine $engine)
 	{
 		if($this->content === FALSE)
 			return '';
@@ -314,7 +325,7 @@ class Content
 
 
 	//Content::getOrder
-	static public function getOrder($engine, $order = FALSE)
+	static public function getOrder(Engine $engine, $order = FALSE)
 	{
 		switch($order)
 		{
@@ -349,7 +360,7 @@ class Content
 
 
 	//Content::getUser
-	public function getUser($engine)
+	public function getUser(Engine $engine)
 	{
 		//XXX may fail
 		return new User($engine, $this->user_id, $this->username);
@@ -395,7 +406,7 @@ class Content
 
 
 	//Content::setContent
-	public function setContent($engine, $content)
+	public function setContent(Engine $engine, $content)
 	{
 		if($content === FALSE)
 			$content = '';
@@ -419,7 +430,7 @@ class Content
 
 	//useful
 	//Content::delete
-	public function delete($engine)
+	public function delete(Engine $engine)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_delete;
@@ -432,7 +443,7 @@ class Content
 
 
 	//Content::disable
-	public function disable($engine)
+	public function disable(Engine $engine)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_disable;
@@ -445,7 +456,7 @@ class Content
 
 
 	//Content::enable
-	public function enable($engine)
+	public function enable(Engine $engine)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_enable;
@@ -458,7 +469,7 @@ class Content
 
 
 	//Content::display
-	public function display($engine, $request)
+	public function display(Engine $engine, $request)
 	{
 		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
 		$vbox = new PageElement('vbox');
@@ -480,7 +491,7 @@ class Content
 
 
 	//Content::displayButtons
-	public function displayButtons($engine, $request)
+	public function displayButtons(Engine $engine, $request)
 	{
 		$hbox = new PageElement('hbox');
 		$r = $this->module->getRequest();
@@ -496,7 +507,7 @@ class Content
 
 
 	//Content::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = $this->getContent($engine);
 
@@ -505,7 +516,7 @@ class Content
 
 
 	//Content::displayList
-	static public function displayList($engine, $request = FALSE,
+	static public function displayList(Engine $engine, $request = FALSE,
 			$content = FALSE, $limit = FALSE, $offset = 0)
 	{
 		$view = new PageElement('treeview', array(
@@ -530,7 +541,7 @@ class Content
 
 
 	//Content::displayMetadata
-	public function displayMetadata($engine, $request)
+	public function displayMetadata(Engine $engine, $request)
 	{
 		$r = new Request('user', FALSE, $this->getUserID(),
 			$this->getUsername());
@@ -547,7 +558,7 @@ class Content
 
 
 	//Content::displayRow
-	public function displayRow($engine, $request = FALSE)
+	public function displayRow(Engine $engine, $request = FALSE)
 	{
 		$r = array();
 		$no = new PageElement('image', array('stock' => 'no',
@@ -577,7 +588,7 @@ class Content
 
 
 	//Content::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
@@ -626,7 +637,7 @@ class Content
 
 
 	//Content::displayTitle
-	public function displayTitle($engine, $request)
+	public function displayTitle(Engine $engine, $request)
 	{
 		return new PageElement('title', array(
 			'stock' => $this->stock,
@@ -635,14 +646,14 @@ class Content
 
 
 	//Content::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return ($this->id !== FALSE)
 			? $this->_formUpdate($engine, $request)
 			: $this->_formSubmit($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -655,7 +666,7 @@ class Content
 		return $vbox;
 	}
 
-	protected function _formUpdate($engine, $request)
+	protected function _formUpdate(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		if(($value = $request->get('title')) === FALSE)
@@ -675,7 +686,7 @@ class Content
 
 
 	//Content::formPreview
-	public function formPreview($engine, $request)
+	public function formPreview(Engine $engine, $request)
 	{
 		$properties = $this->properties;
 
@@ -707,7 +718,7 @@ class Content
 
 
 	//Content::preview
-	public function preview($engine, $request = FALSE)
+	public function preview(Engine $engine, $request = FALSE)
 	{
 		$vbox = new PageElement('vbox');
 
@@ -720,7 +731,7 @@ class Content
 
 
 	//Content::previewButtons
-	public function previewButtons($engine, $request = FALSE)
+	public function previewButtons(Engine $engine, $request = FALSE)
 	{
 		$hbox = new PageElement('hbox');
 
@@ -733,7 +744,7 @@ class Content
 
 
 	//Content::previewContent
-	public function previewContent($engine, $request = FALSE)
+	public function previewContent(Engine $engine, $request = FALSE)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;
@@ -745,14 +756,14 @@ class Content
 
 
 	//Content::previewMetadata
-	public function previewMetadata($engine, $request = FALSE)
+	public function previewMetadata(Engine $engine, $request = FALSE)
 	{
 		return $this->displayMetadata($engine, $request);
 	}
 
 
 	//Content::previewTitle
-	public function previewTitle($engine, $request = FALSE)
+	public function previewTitle(Engine $engine, $request = FALSE)
 	{
 		if($this->id === FALSE)
 			return new PageElement('title', array(
@@ -766,7 +777,7 @@ class Content
 
 
 	//Content::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		$ret = ($this->id !== FALSE)
 			? $this->_saveUpdate($engine, $request, $error)
@@ -779,7 +790,7 @@ class Content
 		return $ret;
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_insert;
@@ -817,7 +828,7 @@ class Content
 			? TRUE : FALSE;
 	}
 
-	protected function _saveUpdate($engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_update;
@@ -870,7 +881,8 @@ class Content
 
 	//public static
 	//Content::countAll
-	static public function countAll($engine, $module, $user = FALSE)
+	static public function countAll(Engine $engine, Module $module,
+			$user = FALSE)
 	{
 		if(($res = static::_listAll($engine, $module, FALSE, FALSE,
 				FALSE, $user)) === FALSE)
@@ -880,8 +892,9 @@ class Content
 
 
 	//Content::listAll
-	static public function listAll($engine, $module, $order = FALSE,
-			$limit = FALSE, $offset = FALSE, $user = FALSE)
+	static public function listAll(Engine $engine, Module $module,
+			$order = FALSE, $limit = FALSE, $offset = FALSE,
+			$user = FALSE)
 	{
 		if(($res = static::_listAll($engine, $module, $order, $limit,
 				$offset, $user)) === FALSE)
@@ -889,8 +902,8 @@ class Content
 		return static::listFromResults($engine, $module, $res);
 	}
 
-	static protected function _listAll($engine, $module, $order, $limit,
-			$offset, $user)
+	static protected function _listAll(Engine $engine, Module $module,
+			$order, $limit, $offset, $user)
 	{
 		$credentials = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -916,7 +929,8 @@ class Content
 
 
 	//Content::listFromResults
-	static public function listFromResults($engine, $module, $results)
+	static public function listFromResults(Engine $engine, Module $module,
+			$results)
 	{
 		return new ContentResult($engine, $module, static::$class,
 			$results);
@@ -1145,7 +1159,7 @@ class Content
 
 	//useful
 	//Content::query
-	static protected function query($engine, $query, $args = FALSE,
+	static protected function query(Engine $engine, $query, $args = FALSE,
 			$order = FALSE, $limit = FALSE, $offset = FALSE)
 	{
 		$database = $engine->getDatabase();

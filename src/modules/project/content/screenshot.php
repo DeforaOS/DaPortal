@@ -23,7 +23,8 @@ class ScreenshotProjectContent extends DownloadProjectContent
 	//methods
 	//essential
 	//ScreenshotProjectContent::ScreenshotProjectContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
@@ -36,7 +37,7 @@ class ScreenshotProjectContent extends DownloadProjectContent
 
 
 	//ScreenshotProjectContent::displayRow
-	public function displayRow($engine, $request = FALSE)
+	public function displayRow(Engine $engine, $request = FALSE)
 	{
 		$module = Module::load($engine, 'download');
 

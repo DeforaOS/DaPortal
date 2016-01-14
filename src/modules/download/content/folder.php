@@ -23,7 +23,8 @@ class FolderDownloadContent extends DownloadContent
 	//methods
 	//essential
 	//FolderDownloadContent::FolderDownloadContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
@@ -38,7 +39,8 @@ class FolderDownloadContent extends DownloadContent
 
 	//accessors
 	//FolderDownloadContent::canPreview
-	public function canPreview($engine, $request = FALSE, &$error = FALSE)
+	public function canPreview(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		return FALSE;
 	}
@@ -65,7 +67,7 @@ class FolderDownloadContent extends DownloadContent
 
 	//useful
 	//FolderDownloadContent::display
-	public function display($engine, $request)
+	public function display(Engine $engine, $request)
 	{
 		$title = $this->text_content_list_title.': '.$this->getTitle();
 		$page = new Page(array('title' => $title));
@@ -113,7 +115,7 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
@@ -172,12 +174,12 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -187,7 +189,7 @@ class FolderDownloadContent extends DownloadContent
 		return $vbox;
 	}
 
-	protected function _formUpdate($engine, $request)
+	protected function _formUpdate(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		if(($value = $request->get('title')) === FALSE)
@@ -201,12 +203,12 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$folder_query_insert;

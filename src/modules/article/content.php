@@ -23,7 +23,8 @@ class ArticleContent extends Content
 	//methods
 	//essential
 	//ArticleContent::ArticleContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		$this->text_content_by = _('Article by');
@@ -35,7 +36,7 @@ class ArticleContent extends Content
 
 	//useful
 	//ArticleContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -43,7 +44,7 @@ class ArticleContent extends Content
 
 
 	//ArticleContent::previewContent
-	public function previewContent($engine, $request = FALSE)
+	public function previewContent(Engine $engine, $request = FALSE)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;

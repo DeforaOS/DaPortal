@@ -23,7 +23,8 @@ class CAServerPKIContent extends PKIContent
 	//methods
 	//essential
 	//CAServerPKIContent::CAServerPKIContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
@@ -38,12 +39,12 @@ class CAServerPKIContent extends PKIContent
 
 	//useful
 	//CAServerPKIContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$parent = ($request->getID() !== FALSE)
 			? CAPKIContent::load($engine, $this->getModule(),
@@ -89,7 +90,7 @@ class CAServerPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _insertCleanup($engine)
+	protected function _insertCleanup(Engine $engine)
 	{
 		//FIXME really implement
 		return FALSE;

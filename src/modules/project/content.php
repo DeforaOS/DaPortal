@@ -26,7 +26,8 @@ class ProjectContent extends ContentMulti
 	//methods
 	//essential
 	//ProjectContent::ProjectContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['synopsis'] = 'Synopsis';
 		$this->fields['scm'] = 'SCM';
@@ -43,7 +44,8 @@ class ProjectContent extends ContentMulti
 
 	//accessors
 	//ProjectContent::canBrowse
-	public function canBrowse($engine, $request = FALSE, &$error = FALSE)
+	public function canBrowse(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$error = _('No SCM configured for this project');
 
@@ -54,7 +56,8 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::canDownload
-	public function canDownload($engine, $request = FALSE, &$error = FALSE)
+	public function canDownload(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -68,7 +71,8 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::canUpload
-	public function canUpload($engine, $request = FALSE, &$error = FALSE)
+	public function canUpload(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -89,8 +93,8 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::getMembers
-	public function getMembers($engine, $order = FALSE, $limit = FALSE,
-			$offset = FALSE)
+	public function getMembers(Engine $engine, $order = FALSE,
+			$limit = FALSE, $offset = FALSE)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$project_query_list_members;
@@ -114,7 +118,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectUser::getOwner
-	public function getOwner($engine)
+	public function getOwner(Engine $engine)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$project_query_get_user;
@@ -133,7 +137,7 @@ class ProjectContent extends ContentMulti
 
 	//useful
 	//ProjectContent::display
-	public function display($engine, $request)
+	public function display(Engine $engine, $request)
 	{
 		switch(($action = $request->getAction()))
 		{
@@ -160,7 +164,7 @@ class ProjectContent extends ContentMulti
 		}
 	}
 
-	protected function _displayBrowse($engine, $request, $page)
+	protected function _displayBrowse(Engine $engine, $request, $page)
 	{
 		$class = get_class($this->getModule());
 		$error = _('Unknown error');
@@ -182,7 +186,7 @@ class ProjectContent extends ContentMulti
 		return $page;
 	}
 
-	protected function _displayDownload($engine, $request, $page)
+	protected function _displayDownload(Engine $engine, $request, $page)
 	{
 		$class = get_class($this->getModule());
 		$db = $engine->getDatabase();
@@ -251,7 +255,7 @@ class ProjectContent extends ContentMulti
 		return $page;
 	}
 
-	protected function _displayGallery($engine, $request, $page)
+	protected function _displayGallery(Engine $engine, $request, $page)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$project_query_list_screenshots;
@@ -283,7 +287,7 @@ class ProjectContent extends ContentMulti
 		return $page;
 	}
 
-	protected function _displayMembers($engine, $request, $page)
+	protected function _displayMembers(Engine $engine, $request, $page)
 	{
 		$vbox = $page->append('vbox');
 		//members
@@ -315,7 +319,7 @@ class ProjectContent extends ContentMulti
 		return $page;
 	}
 
-	protected function _displayTimeline($engine, $request, $page)
+	protected function _displayTimeline(Engine $engine, $request, $page)
 	{
 		$class = get_class($this->getModule());
 
@@ -335,7 +339,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 
@@ -351,7 +355,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::displayRow
-	public function displayRow($engine, $request = FALSE)
+	public function displayRow(Engine $engine, $request = FALSE)
 	{
 		$ret = parent::displayRow($engine, $request);
 		$ret->set('synopsis', $this->get('synopsis'));
@@ -360,7 +364,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
 		$actions = array('bug_list' => _('Bug reports'));
@@ -396,12 +400,12 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -431,7 +435,7 @@ class ProjectContent extends ContentMulti
 		return $vbox;
 	}
 
-	protected function _formUpdate($engine, $request)
+	protected function _formUpdate(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		//title
@@ -491,7 +495,7 @@ class ProjectContent extends ContentMulti
 
 
 	//ProjectContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
@@ -517,7 +521,7 @@ class ProjectContent extends ContentMulti
 		return TRUE;
 	}
 
-	protected function _saveUpdate($engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$project_query_update;

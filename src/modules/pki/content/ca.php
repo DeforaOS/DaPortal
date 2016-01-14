@@ -23,7 +23,8 @@ class CAPKIContent extends PKIContent
 	//methods
 	//essential
 	//CAPKIContent::CAPKIContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		parent::__construct($engine, $module, $properties);
 		//translations
@@ -38,7 +39,8 @@ class CAPKIContent extends PKIContent
 
 	//accessors
 	//CAPKIContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
@@ -73,7 +75,7 @@ class CAPKIContent extends PKIContent
 
 	//useful
 	//CAPKIContent::createRoot
-	protected function createRoot($engine)
+	protected function createRoot(Engine $engine)
 	{
 		if(($root = $this->getRootCA($engine)) === FALSE)
 			return FALSE;
@@ -91,7 +93,7 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _rootDirectory($engine, $directory)
+	protected function _rootDirectory(Engine $engine, $directory)
 	{
 		if(is_dir($directory) || is_readable($directory))
 			return FALSE;
@@ -103,7 +105,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		//XXX copied from Content
 		$credentials = $engine->getCredentials();
@@ -160,7 +162,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
@@ -223,14 +225,14 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _insertCleanup($engine, $directories = FALSE,
+	protected function _insertCleanup(Engine $engine, $directories = FALSE,
 			$files = FALSE, $certificates = FALSE)
 	{
 		//FIXME really implement
 		return FALSE;
 	}
 
-	protected function _insertConfig($engine)
+	protected function _insertConfig(Engine $engine)
 	{
 		$from = array("\\", "\"", "$");
 		$to = array("\\\\", "\\\"", "\\$");
@@ -256,14 +258,14 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _insertIndex($engine)
+	protected function _insertIndex(Engine $engine)
 	{
 		$root = $this->getRootCA($engine);
 
 		return touch($root.'/index.txt');
 	}
 
-	protected function _insertSerial($engine)
+	protected function _insertSerial(Engine $engine)
 	{
 		$root = $this->getRootCA($engine);
 		$filename = $root.'/serial';
@@ -279,7 +281,7 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _saveUpdate($engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$ca_query_update;
@@ -294,7 +296,8 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::sign
-	protected function sign($engine, $content = FALSE, &$error = FALSE)
+	protected function sign(Engine $engine, $content = FALSE,
+			&$error = FALSE)
 	{
 		$root = $this->getRootCA($engine);
 

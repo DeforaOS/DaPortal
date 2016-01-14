@@ -25,7 +25,8 @@ class WikiContent extends Content
 	//methods
 	//essential
 	//WikiContent::WikiContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		$this->fields['message'] = 'log message';
 		//let wiki pages always be public
@@ -39,7 +40,8 @@ class WikiContent extends Content
 
 	//accessors
 	//WikiContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
@@ -57,7 +59,8 @@ class WikiContent extends Content
 
 
 	//WikiContent::canUpdate
-	public function canUpdate($engine, $request = FALSE, &$error = FALSE)
+	public function canUpdate(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -85,14 +88,14 @@ class WikiContent extends Content
 
 
 	//WikiContent::getContent
-	public function getContent($engine)
+	public function getContent(Engine $engine)
 	{
 		return $this->getMarkup($engine);
 	}
 
 
 	//WikiContent::setContent
-	public function setContent($engine, $content)
+	public function setContent(Engine $engine, $content)
 	{
 		parent::setContent($engine,
 				HTML::filter($engine, $content, array()));
@@ -102,7 +105,7 @@ class WikiContent extends Content
 
 	//useful
 	//WikiContent::display
-	public function display($engine, $request)
+	public function display(Engine $engine, $request)
 	{
 		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
 		$types = array('revisions');
@@ -115,7 +118,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$type = $request->get('display');
 		$revision = $request->get('revision');
@@ -150,7 +153,7 @@ class WikiContent extends Content
 		return $vbox;
 	}
 
-	protected function _contentRevisions($engine, $request)
+	protected function _contentRevisions(Engine $engine, $request)
 	{
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
@@ -242,12 +245,12 @@ class WikiContent extends Content
 
 
 	//WikiContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
 
-	public function _formSubmit($engine, $request)
+	public function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -261,7 +264,7 @@ class WikiContent extends Content
 		return $vbox;
 	}
 
-	public function _formUpdate($engine, $request)
+	public function _formUpdate(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$value = FALSE;
@@ -282,7 +285,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::previewContent
-	public function previewContent($engine, $request = FALSE)
+	public function previewContent(Engine $engine, $request = FALSE)
 	{
 		//XXX use the cache from the database instead
 		$content = HTML::filter($engine, $this->getContent($engine),
@@ -296,12 +299,12 @@ class WikiContent extends Content
 
 
 	//WikiContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$module = $this->getModule()->getName();
 		$cred = $engine->getCredentials();
@@ -348,7 +351,7 @@ class WikiContent extends Content
 		return $ret;
 	}
 
-	protected function _saveUpdate($engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, $request, &$error)
 	{
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
@@ -414,7 +417,7 @@ class WikiContent extends Content
 	//methods
 	//accessors
 	//WikiContent::getMarkup
-	protected function getMarkup($engine, $request = FALSE)
+	protected function getMarkup(Engine $engine, $request = FALSE)
 	{
 		$revision = ($request !== FALSE) ? $request->get('revision')
 			: FALSE;
@@ -440,7 +443,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::getMarkupDiff
-	protected function getMarkupDiff($engine, $r1, $r2)
+	protected function getMarkupDiff(Engine $engine, $r1, $r2)
 	{
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
@@ -463,7 +466,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::getMarkupRevision
-	protected function getMarkupRevision($engine, $revision = FALSE)
+	protected function getMarkupRevision(Engine $engine, $revision = FALSE)
 	{
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();

@@ -23,7 +23,8 @@ abstract class PKIContent extends ContentMulti
 	//methods
 	//essential
 	//PKIContent::PKIContent
-	public function __construct($engine, $module, $properties = FALSE)
+	public function __construct(Engine $engine, Module $module,
+			$properties = FALSE)
 	{
 		//fields
 		$this->fields['country'] = 'Country';
@@ -44,7 +45,8 @@ abstract class PKIContent extends ContentMulti
 
 	//accessors
 	//PKIContent::canSubmit
-	public function canSubmit($engine, $request = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, $request = FALSE,
+			&$error = FALSE)
 	{
 		$class = static::$class;
 
@@ -84,7 +86,7 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::getParent
-	public function getParent($engine)
+	public function getParent(Engine $engine)
 	{
 		if(($parent = $this->get('parent')) === FALSE)
 			return FALSE;
@@ -134,7 +136,7 @@ abstract class PKIContent extends ContentMulti
 
 	//useful
 	//PKIContent::displayContent
-	public function displayContent($engine, $request)
+	public function displayContent(Engine $engine, $request)
 	{
 		$parent = $this->getParent($engine);
 		$columns = array('title' => '', 'value' => '');
@@ -171,12 +173,12 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::form
-	public function form($engine, $request = FALSE)
+	public function form(Engine $engine, $request = FALSE)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$countries = array('AF' => _('Afghanistan'),
 			'AX' => _('Åland'),
@@ -494,7 +496,7 @@ abstract class PKIContent extends ContentMulti
 		return $vbox;
 	}
 
-	protected function _formUpdate($engine, $request)
+	protected function _formUpdate(Engine $engine, $request)
 	{
 		//FIXME really implement
 		return parent::_formUpdate($engine, $request);
@@ -563,7 +565,7 @@ abstract class PKIContent extends ContentMulti
 
 	//useful
 	//PKIContent::createCertificate
-	protected function createCertificate($engine, $request = FALSE,
+	protected function createCertificate(Engine $engine, $request = FALSE,
 			$parent = FALSE, $days = FALSE, $keysize = FALSE,
 			&$error = FALSE)
 	{
@@ -637,7 +639,7 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::createSigningRequest
-	protected function createSigningRequest($engine, $parent = FALSE,
+	protected function createSigningRequest(Engine $engine, $parent = FALSE,
 			&$error = FALSE)
 	{
 		$root = $this->getRootCA($engine, $parent);
@@ -688,7 +690,8 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::sign
-	protected function sign($engine, $content = FALSE, &$error = FALSE)
+	protected function sign(Engine $engine, $content = FALSE,
+			&$error = FALSE)
 	{
 		$parent = $this->getParent($engine);
 
