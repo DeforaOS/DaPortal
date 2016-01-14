@@ -226,8 +226,8 @@ $(document).ready(function() {
 		visible = (children.size() > 0
 			&& children.slice(0).css('display') == 'none')
 			? true : false;
-		image = visible ? '../icons/generic/16x16/expanded.png'
-			: '../icons/generic/16x16/collapsed.png';
+		image = visible ? '../icons/generic/24x24/expanded.png'
+			: '../icons/generic/24x24/collapsed.png';
 		display = visible ? 'block' : 'none';
 
 		//update the expander's icon
