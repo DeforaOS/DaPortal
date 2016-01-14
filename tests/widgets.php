@@ -22,6 +22,7 @@ require_once('./tests.php');
 
 //force HTML5 output
 $config->set('format', 'backend', 'html5');
+$config->set('format::html', 'javascript', 1);
 
 $page = new Page(array('title' => 'Widgets'));
 
