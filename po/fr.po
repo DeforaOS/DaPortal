@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-13 12:29+0100\n"
+"POT-Creation-Date: 2016-01-14 11:24+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -200,196 +200,196 @@ msgstr "Impossible d'enregistrer le contenu"
 msgid "Could not update the content"
 msgstr "Impossible de modifier le contenu"
 
-#: ../src/formats/html.php:494
+#: ../src/formats/html.php:497
 msgid "Error"
 msgstr "Erreur"
 
-#: ../src/formats/html.php:497
+#: ../src/formats/html.php:500
 msgid "Question"
 msgstr "Question"
 
-#: ../src/formats/html.php:500
+#: ../src/formats/html.php:503
 msgid "Warning"
 msgstr "Avertissement"
 
-#: ../src/formats/html.php:504 ../src/modules/project/scm/cvs.php:223
+#: ../src/formats/html.php:507 ../src/modules/project/scm/cvs.php:223
 #: ../src/modules/wiki/content.php:175
 msgid "Message"
 msgstr "Message"
 
-#: ../src/formats/html.php:521 ../src/modules/user/module.php:251
+#: ../src/formats/html.php:524 ../src/modules/user/module.php:251
 msgid "Close"
 msgstr "Fermer"
 
-#: ../src/formats/html.php:557 ../src/formats/html.php:597
+#: ../src/formats/html.php:560 ../src/formats/html.php:600
 msgid "More"
 msgstr "Plus"
 
-#: ../src/formats/html.php:698
+#: ../src/formats/html.php:706
 msgid "Cut"
 msgstr ""
 
-#: ../src/formats/html.php:698
+#: ../src/formats/html.php:706
 msgid "Copy"
 msgstr ""
 
-#: ../src/formats/html.php:699
+#: ../src/formats/html.php:707
 msgid "Paste"
 msgstr "Coller"
 
-#: ../src/formats/html.php:700
+#: ../src/formats/html.php:708
 msgid "Undo"
 msgstr "Annuler"
 
-#: ../src/formats/html.php:700
+#: ../src/formats/html.php:708
 msgid "Redo"
 msgstr "Rétablir"
 
-#: ../src/formats/html.php:701
+#: ../src/formats/html.php:709
 msgid "Insert ruler"
 msgstr "Insérer un séparateur"
 
-#: ../src/formats/html.php:702
+#: ../src/formats/html.php:710
 msgid "Insert link"
 msgstr "Insérer un lien"
 
-#: ../src/formats/html.php:703
+#: ../src/formats/html.php:711
 msgid "Insert image"
 msgstr "Insérer une image"
 
-#: ../src/formats/html.php:704
+#: ../src/formats/html.php:712
 msgid "Insert table"
 msgstr "Insérer une table"
 
-#: ../src/formats/html.php:705
+#: ../src/formats/html.php:713
 msgid "Insert text"
 msgstr "Insérer du texte"
 
-#: ../src/formats/html.php:706
+#: ../src/formats/html.php:714
 msgid "Style"
 msgstr "Style"
 
-#: ../src/formats/html.php:707
+#: ../src/formats/html.php:715
 msgid "Heading 1"
 msgstr "Titre 1"
 
-#: ../src/formats/html.php:707
+#: ../src/formats/html.php:715
 msgid "Heading 2"
 msgstr "Titre 2"
 
-#: ../src/formats/html.php:708
+#: ../src/formats/html.php:716
 msgid "Heading 3"
 msgstr "Titre 3"
 
-#: ../src/formats/html.php:708
+#: ../src/formats/html.php:716
 msgid "Heading 4"
 msgstr "Titre 4"
 
-#: ../src/formats/html.php:709
+#: ../src/formats/html.php:717
 msgid "Heading 5"
 msgstr "Titre 5"
 
-#: ../src/formats/html.php:709
+#: ../src/formats/html.php:717
 msgid "Heading 6"
 msgstr "Titre 6"
 
-#: ../src/formats/html.php:710
+#: ../src/formats/html.php:718
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/formats/html.php:710
+#: ../src/formats/html.php:718
 msgid "Preformatted"
 msgstr "Préformatté"
 
-#: ../src/formats/html.php:711
+#: ../src/formats/html.php:719
 msgid "Quotation"
 msgstr "Citation"
 
-#: ../src/formats/html.php:712
+#: ../src/formats/html.php:720
 msgid "Font"
 msgstr "Police"
 
-#: ../src/formats/html.php:713
+#: ../src/formats/html.php:721
 msgid "Cursive"
 msgstr "Cursive"
 
-#: ../src/formats/html.php:714
+#: ../src/formats/html.php:722
 msgid "Fantasy"
 msgstr "Fantasy"
 
-#: ../src/formats/html.php:715
+#: ../src/formats/html.php:723
 msgid "Monospace"
 msgstr "Monospace"
 
-#: ../src/formats/html.php:716
+#: ../src/formats/html.php:724
 msgid "Sans serif"
 msgstr "Sans sérif"
 
-#: ../src/formats/html.php:717
+#: ../src/formats/html.php:725
 msgid "Serif"
 msgstr "Sérif"
 
-#: ../src/formats/html.php:718 ../src/modules/browser/module.php:413
+#: ../src/formats/html.php:726 ../src/modules/browser/module.php:413
 msgid "Size"
 msgstr "Taille"
 
-#: ../src/formats/html.php:720
+#: ../src/formats/html.php:728
 msgid "Bold"
 msgstr "Gras"
 
-#: ../src/formats/html.php:721
+#: ../src/formats/html.php:729
 msgid "Italic"
 msgstr "Italique"
 
-#: ../src/formats/html.php:722
+#: ../src/formats/html.php:730
 msgid "Underline"
 msgstr "Souligné"
 
-#: ../src/formats/html.php:723
+#: ../src/formats/html.php:731
 msgid "Strikethrough"
 msgstr ""
 
-#: ../src/formats/html.php:724
+#: ../src/formats/html.php:732
 msgid "Subscript"
 msgstr ""
 
-#: ../src/formats/html.php:725
+#: ../src/formats/html.php:733
 msgid "Superscript"
 msgstr "Exposant"
 
-#: ../src/formats/html.php:726
+#: ../src/formats/html.php:734
 msgid "Remove format"
 msgstr ""
 
-#: ../src/formats/html.php:727
+#: ../src/formats/html.php:735
 msgid "Align left"
 msgstr "Aligner à gauche"
 
-#: ../src/formats/html.php:728
+#: ../src/formats/html.php:736
 msgid "Center"
 msgstr "Centre"
 
-#: ../src/formats/html.php:729
+#: ../src/formats/html.php:737
 msgid "Align right"
 msgstr "Aligner à droite"
 
-#: ../src/formats/html.php:730
+#: ../src/formats/html.php:738
 msgid "Justify"
 msgstr "Justifier"
 
-#: ../src/formats/html.php:731
+#: ../src/formats/html.php:739
 msgid "Numbering"
 msgstr "Numérotation"
 
-#: ../src/formats/html.php:732
+#: ../src/formats/html.php:740
 msgid "Bullets"
 msgstr "Puces"
 
-#: ../src/formats/html.php:733
+#: ../src/formats/html.php:741
 msgid "Unindent"
 msgstr ""
 
-#: ../src/formats/html.php:734
+#: ../src/formats/html.php:742
 msgid "Indent"
 msgstr "Contenu"
 
