@@ -41,7 +41,9 @@ $form = $vbox2->append('form');
 $form->append('entry', array('text' => 'Entry: ',
 		'placeholder' => 'Placeholder'));
 $form->append('textview', array('text' => 'Text editor: ',
-		'placeholder' => 'Placeholder'));
+		'value' => 'Text viewer (and editor)'));
+$form->append('htmledit', array('text' => 'HTML editor: ',
+		'value' => '<h1>HTML viewer <small>and editor</small></h1>'));
 $form->append('button', array('text' => 'Button'));
 $form->append('button', array('type' => 'reset', 'text' => 'Reset'));
 $form->append('button', array('type' => 'submit', 'text' => 'Submit'));
