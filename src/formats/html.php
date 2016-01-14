@@ -259,12 +259,15 @@ class HTMLFormat extends FormatElements
 
 		if(($dir = @opendir($themes)) === FALSE)
 			return;
+		$themes = array();
 		while(($de = readdir($dir)) !== FALSE)
 			if(substr($de, -4, 4) == '.css'
 					&& ($theme === FALSE
 						|| $de != "$theme.css"))
-				$this->_renderThemeCSS(substr($de, 0, -4),
-						TRUE);
+				$themes[] = substr($de, 0, -4);
+		sort($themes, SORT_STRING);
+		foreach($themes as $theme)
+			$this->_renderThemeCSS($theme, TRUE);
 		closedir($dir);
 	}
 
