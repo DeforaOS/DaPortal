@@ -93,6 +93,10 @@ class HTML
 		$from = array('<br>', '<hr>');
 		$to = array('<br/>', '<hr/>');
 
+		if(!is_string($content))
+			return FALSE;
+		if(strlen($content) == 0)
+			return '';
 		if($whitelist !== FALSE)
 			$html->whitelist = $whitelist;
 		if(xml_set_element_handler($html->parser, $start, $end)
