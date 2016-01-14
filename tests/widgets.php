@@ -32,6 +32,10 @@ $vbox1->append('title', array('text' => 'Title (level 2)'));
 $vbox2 = $vbox1->append('vbox');
 $vbox2->append('title', array('text' => 'Title (level 3)'));
 
+//expander
+$expander = $vbox2->append('expander', array('text' => 'Expander: '));
+$expander->append('label', array('text' => 'Inside the expander'));
+
 //form
 $form = $vbox2->append('form');
 $form->append('entry', array('text' => 'Entry: ',
