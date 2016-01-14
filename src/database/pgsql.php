@@ -158,7 +158,7 @@ class PgSQLDatabase extends Database
 			$res = pg_send_execute($this->handle, $q, $args);
 		else
 			$res = pg_execute($this->handle, $q, $args);
-		$this->profileStop($this->engine, $query);
+		$this->profileStop($query);
 		if($res === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
