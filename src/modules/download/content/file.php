@@ -179,7 +179,7 @@ class FileDownloadContent extends DownloadContent
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit($engine, $request)
+	protected function _formSubmit(Engine $engine, $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('filechooser', array('text' => _('File: '),
