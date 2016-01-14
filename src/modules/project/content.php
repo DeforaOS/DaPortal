@@ -500,7 +500,7 @@ class ProjectContent extends ContentMulti
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, $request, &$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$project_query_insert;

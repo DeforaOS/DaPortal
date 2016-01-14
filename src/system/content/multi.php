@@ -36,7 +36,7 @@ class ContentMulti extends Content
 
 	//useful
 	//MultiContent::displayToolbar
-	public function displayToolbar($engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, $request = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
@@ -86,7 +86,7 @@ class ContentMulti extends Content
 
 
 	//MultiContent::save
-	public function save($engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
 	{
 		return $engine->getDatabase()->withTransaction($engine,
 			function() use ($engine, $request, &$error)

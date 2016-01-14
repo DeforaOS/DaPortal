@@ -167,7 +167,7 @@ class CAPKIContent extends PKIContent
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert($engine, $request, &$error)
+	protected function _saveInsert(Engine$engine, $request, &$error)
 	{
 		$parent = ($request->getID() !== FALSE)
 			? static::load($engine, $this->getModule(),
