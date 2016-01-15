@@ -39,7 +39,7 @@ class FolderDownloadContent extends DownloadContent
 
 	//accessors
 	//FolderDownloadContent::canPreview
-	public function canPreview(Engine $engine, $request = FALSE,
+	public function canPreview(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return FALSE;
@@ -67,7 +67,7 @@ class FolderDownloadContent extends DownloadContent
 
 	//useful
 	//FolderDownloadContent::display
-	public function display(Engine $engine, $request)
+	public function display(Engine $engine, Request $request = NULL)
 	{
 		$title = $this->text_content_list_title.': '.$this->getTitle();
 		$page = new Page(array('title' => $title));
@@ -115,7 +115,7 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::displayToolbar
-	public function displayToolbar(Engine $engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, Request $request = NULL)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
@@ -136,7 +136,7 @@ class FolderDownloadContent extends DownloadContent
 		$r = $this->getRequest();
 		$toolbar->append('button', array('stock' => 'refresh',
 				'request' => $r, 'text' => _('Refresh')));
-		if($module->canSubmit($engine, FALSE, $this))
+		if($module->canSubmit($engine, NULL, $this))
 		{
 			//new directory
 			$r = new Request($module->getName(), 'submit', FALSE,
@@ -153,7 +153,7 @@ class FolderDownloadContent extends DownloadContent
 					'text' => _('Upload file')));
 		}
 		if($this->getID() !== FALSE
-				&& $this->canUpdate($engine, FALSE, $this))
+				&& $this->canUpdate($engine, NULL, $this))
 		{
 			//rename
 			$r = $this->getRequest('update');
@@ -174,12 +174,12 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit(Engine $engine, $request)
+	protected function _formSubmit(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -189,7 +189,7 @@ class FolderDownloadContent extends DownloadContent
 		return $vbox;
 	}
 
-	protected function _formUpdate(Engine $engine, $request)
+	protected function _formUpdate(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		if(($value = $request->get('title')) === FALSE)
@@ -203,12 +203,14 @@ class FolderDownloadContent extends DownloadContent
 
 
 	//FolderDownloadContent::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert(Engine $engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$folder_query_insert;

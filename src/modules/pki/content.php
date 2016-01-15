@@ -45,14 +45,14 @@ abstract class PKIContent extends ContentMulti
 
 	//accessors
 	//PKIContent::canSubmit
-	public function canSubmit(Engine $engine, $request = FALSE,
+	public function canSubmit(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		$class = static::$class;
 
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
-		if($request !== FALSE)
+		if($request !== NULL)
 		{
 			if(($title = $request->get('title')) === FALSE
 					|| strlen($title) == 0
@@ -95,14 +95,14 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::getSubject
-	public function getSubject($request = FALSE)
+	public function getSubject(Request $request = NULL)
 	{
 		$ret = '';
 		$fields = array('country' => 'C', 'state' => 'ST',
 			'locality' => 'L', 'organization' => 'O',
 			'section' => 'OU', 'cn' => 'CN',
 			'email' => 'emailAddress');
-		$s = ($request !== FALSE) ? $request : $this;
+		$s = ($request !== NULL) ? $request : $this;
 
 		foreach($fields as $field => $key)
 		{
@@ -136,7 +136,7 @@ abstract class PKIContent extends ContentMulti
 
 	//useful
 	//PKIContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request = NULL)
 	{
 		$parent = $this->getParent($engine);
 		$columns = array('title' => '', 'value' => '');
@@ -151,8 +151,7 @@ abstract class PKIContent extends ContentMulti
 		{
 			$expander = $vbox->append('expander', array(
 				'title' => _('Parent CA')));
-			$expander->append($parent->displayContent($engine,
-				FALSE));
+			$expander->append($parent->displayContent($engine));
 		}
 		if($this->get('signed') === FALSE)
 			$vbox->append('dialog', array('type' => 'warning',
@@ -173,12 +172,12 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit(Engine $engine, $request)
+	protected function _formSubmit(Engine $engine, Request $request)
 	{
 		$countries = array('AF' => _('Afghanistan'),
 			'AX' => _('Åland'),
@@ -496,7 +495,7 @@ abstract class PKIContent extends ContentMulti
 		return $vbox;
 	}
 
-	protected function _formUpdate(Engine $engine, $request)
+	protected function _formUpdate(Engine $engine, Request $request)
 	{
 		//FIXME really implement
 		return parent::_formUpdate($engine, $request);
@@ -565,9 +564,9 @@ abstract class PKIContent extends ContentMulti
 
 	//useful
 	//PKIContent::createCertificate
-	protected function createCertificate(Engine $engine, $request = FALSE,
-			$parent = FALSE, $days = FALSE, $keysize = FALSE,
-			&$error = FALSE)
+	protected function createCertificate(Engine $engine,
+			Request $request = NULL, $parent = FALSE, $days = FALSE,
+			$keysize = FALSE, &$error = FALSE)
 	{
 		$root = $this->getRootCA($engine, $parent);
 		$subject = $this->getSubject($request);

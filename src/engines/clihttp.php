@@ -49,7 +49,7 @@ class CLIHTTPEngine extends CLIEngine
 
 	//accessors
 	//CLIHTTPEngine::getURL
-	public function getURL(Request $request, $absolute = TRUE)
+	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
 		global $config;
 

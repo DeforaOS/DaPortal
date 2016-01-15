@@ -37,7 +37,7 @@ class NewsContent extends Content
 
 	//useful
 	//NewsContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -45,7 +45,7 @@ class NewsContent extends Content
 
 
 	//NewsContent::previewContent
-	public function previewContent(Engine $engine, $request = FALSE)
+	public function previewContent(Engine $engine, Request $request = NULL)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;

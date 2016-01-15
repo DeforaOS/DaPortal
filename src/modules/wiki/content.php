@@ -40,7 +40,7 @@ class WikiContent extends Content
 
 	//accessors
 	//WikiContent::canSubmit
-	public function canSubmit(Engine $engine, $request = FALSE,
+	public function canSubmit(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
@@ -59,7 +59,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::canUpdate
-	public function canUpdate(Engine $engine, $request = FALSE,
+	public function canUpdate(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
@@ -69,10 +69,10 @@ class WikiContent extends Content
 			return FALSE;
 		//verify the request
 		$error = _('The request expired or is invalid');
-		if($request !== FALSE && $request->isIdempotent())
+		if($request !== NULL && $request->isIdempotent())
 			return FALSE;
 		//verify the title
-		$title = ($request !== FALSE) ? $request->get('title') : FALSE;
+		$title = ($request !== NULL) ? $request->get('title') : FALSE;
 		if($title === FALSE)
 			$title = $this->getTitle();
 		//it is forbidden to change the title
@@ -105,9 +105,9 @@ class WikiContent extends Content
 
 	//useful
 	//WikiContent::display
-	public function display(Engine $engine, $request)
+	public function display(Engine $engine, Request $request = NULL)
 	{
-		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
+		$type = ($request !== NULL) ? $request->get('display') : FALSE;
 		$types = array('revisions');
 
 		//allow more content types to be explicitly displayed
@@ -118,7 +118,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$type = $request->get('display');
 		$revision = $request->get('revision');
@@ -153,7 +153,7 @@ class WikiContent extends Content
 		return $vbox;
 	}
 
-	protected function _contentRevisions(Engine $engine, $request)
+	protected function _contentRevisions(Engine $engine, Request $request)
 	{
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
@@ -245,12 +245,12 @@ class WikiContent extends Content
 
 
 	//WikiContent::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return parent::form($engine, $request);
 	}
 
-	public function _formSubmit(Engine $engine, $request)
+	public function _formSubmit(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -264,18 +264,18 @@ class WikiContent extends Content
 		return $vbox;
 	}
 
-	public function _formUpdate(Engine $engine, $request)
+	public function _formUpdate(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$value = FALSE;
 
-		if($request !== FALSE)
+		if($request !== NULL)
 			$value = $request->get('content');
 		if($value === FALSE)
 			$value = $this->getMarkup($engine);
 		$vbox->append('htmledit', array('name' => 'content',
 				'value' => $value));
-		$value = ($request !== FALSE)
+		$value = ($request !== NULL)
 			? $request->get('message') : FALSE;
 		$vbox->append('entry', array('text' => _('Log message: '),
 				'name' => 'message',
@@ -285,7 +285,7 @@ class WikiContent extends Content
 
 
 	//WikiContent::previewContent
-	public function previewContent(Engine $engine, $request = FALSE)
+	public function previewContent(Engine $engine, Request $request = NULL)
 	{
 		//XXX use the cache from the database instead
 		$content = HTML::filter($engine, $this->getContent($engine),
@@ -299,12 +299,14 @@ class WikiContent extends Content
 
 
 	//WikiContent::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert(Engine $engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$module = $this->getModule()->getName();
 		$cred = $engine->getCredentials();
@@ -351,7 +353,8 @@ class WikiContent extends Content
 		return $ret;
 	}
 
-	protected function _saveUpdate(Engine $engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$cred = $engine->getCredentials();
 		$username = $cred->getUsername();
@@ -368,7 +371,7 @@ class WikiContent extends Content
 		//XXX remains even in case of failure
 		$this->setContent($engine, $request->get('content'));
 		//update the content
-		if(parent::_saveUpdate($engine, FALSE, $error) === FALSE)
+		if(parent::_saveUpdate($engine, NULL, $error) === FALSE)
 			return FALSE;
 		$error = _('Could not update the wiki page');
 		if(($fp = fopen($file, 'x')) === FALSE)
@@ -417,16 +420,16 @@ class WikiContent extends Content
 	//methods
 	//accessors
 	//WikiContent::getMarkup
-	protected function getMarkup(Engine $engine, $request = FALSE)
+	protected function getMarkup(Engine $engine, Request $request = NULL)
 	{
-		$revision = ($request !== FALSE) ? $request->get('revision')
+		$revision = ($request !== NULL) ? $request->get('revision')
 			: FALSE;
 		$module = $this->getModule()->getName();
 		$title = $this->getTitle();
 
 		if($revision !== FALSE)
 			return $this->getMarkupRevision($engine, $revision);
-		if($request !== FALSE && $request->get('diff') !== FALSE)
+		if($request !== NULL && $request->get('diff') !== FALSE)
 		{
 			$r1 = $request->get('r1');
 			$r2 = $request->get('r2');

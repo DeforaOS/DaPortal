@@ -125,7 +125,7 @@ class BugProjectContent extends ContentMulti
 
 	//useful
 	//BugProjectContent::display
-	public function display(Engine $engine, $request)
+	public function display(Engine $engine, Request $request = NULL)
 	{
 		$ret = parent::display($engine, $request);
 		//FIXME list the replies above the buttons
@@ -135,7 +135,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
@@ -143,7 +143,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayReplies
-	public function displayReplies(Engine $engine, $request)
+	public function displayReplies(Engine $engine, Request $request)
 	{
 		$error = _('Could not list the replies');
 
@@ -166,7 +166,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayRow
-	public function displayRow(Engine $engine, $request = FALSE)
+	public function displayRow(Engine $engine, Request $request = NULL)
 	{
 		$project = ProjectContent::load($engine, $this->getModule(),
 			$this->get('project_id'));
@@ -196,7 +196,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::displayToolbar
-	public function displayToolbar(Engine $engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, Request $request = NULL)
 	{
 		if($this->project !== FALSE)
 			return $this->project->displayToolbar($engine,
@@ -206,12 +206,12 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit(Engine $engine, $request)
+	protected function _formSubmit(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',

@@ -39,12 +39,12 @@ class CAPKIContent extends PKIContent
 
 	//accessors
 	//CAPKIContent::canSubmit
-	public function canSubmit(Engine $engine, $request = FALSE,
+	public function canSubmit(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
-		if($request !== FALSE)
+		if($request !== NULL)
 		{
 			$title = $request->get('title');
 
@@ -105,11 +105,11 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::displayToolbar
-	public function displayToolbar(Engine $engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, Request $request = NULL)
 	{
 		//XXX copied from Content
 		$credentials = $engine->getCredentials();
-		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
+		$action = ($request !== NULL) ? $request->getAction() : FALSE;
 
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin())
@@ -120,7 +120,7 @@ class CAPKIContent extends PKIContent
 					'text' => _('Administration')));
 		}
 		if($action != 'submit' && $this->getModule()->canSubmit($engine,
-				FALSE, $this))
+				NULL, $this))
 		{
 			$types = array('ca' => $this->text_submit_content,
 				'caserver' => _('New CA server'),
@@ -138,7 +138,7 @@ class CAPKIContent extends PKIContent
 		if($this->getID() !== FALSE)
 		{
 			if($action != 'publish' && !$this->isPublic()
-					&& $this->canPublish($engine, FALSE,
+					&& $this->canPublish($engine, NULL,
 						$this))
 			{
 				$r = $this->getRequest('publish');
@@ -148,7 +148,7 @@ class CAPKIContent extends PKIContent
 						'text' => $this->text_publish));
 			}
 			if($action != 'update' && $this->canUpdate($engine,
-					FALSE, $this))
+					NULL, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
@@ -162,12 +162,14 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert(Engine$engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$parent = ($request->getID() !== FALSE)
 			? static::load($engine, $this->getModule(),
@@ -281,7 +283,8 @@ class CAPKIContent extends PKIContent
 		return TRUE;
 	}
 
-	protected function _saveUpdate(Engine $engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$ca_query_update;

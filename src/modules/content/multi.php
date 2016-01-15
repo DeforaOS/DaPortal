@@ -23,15 +23,15 @@ abstract class MultiContentModule extends ContentModule
 	//methods
 	//accessors
 	//MultiContentModule::getContent
-	public function getContent($engine, $id, $title = FALSE,
-			$request = FALSE)
+	public function getContent(Engine $engine, $id, $title = FALSE,
+			Request $request = NULL)
 	{
 		//XXX this works only if the ID namespace is not ambiguous
 		foreach(static::$content_classes as $class)
 		{
 			$this->content_class = $class;
 			if(($res = parent::getContent($engine, $id, $title,
-					FALSE)) !== FALSE)
+					NULL)) !== FALSE)
 				return $res;
 		}
 		$this->setContext($engine, $request);
@@ -81,13 +81,13 @@ abstract class MultiContentModule extends ContentModule
 
 	//accessors
 	//MultiContentModule::setContext
-	protected function setContext($engine = FALSE, $request = FALSE,
-			$content = FALSE)
+	protected function setContext(Engine $engine = NULL,
+			Request $request = NULL, Content $content = NULL)
 	{
 		//the content type has precedence over the request
-		if($content !== FALSE)
+		if($content !== NULL)
 			$this->content_class = get_class($content);
-		else if($request !== FALSE
+		else if($request !== NULL
 				&& ($t = $request->get('type')) !== FALSE
 				&& isset(static::$content_classes[$t]))
 			$this->content_class = static::$content_classes[$t];
@@ -103,7 +103,7 @@ abstract class MultiContentModule extends ContentModule
 
 	//calls
 	//MultiContentModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callAdmin($engine, $request);
@@ -111,7 +111,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callDefault($engine, $request);
@@ -119,7 +119,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callGroup
-	protected function callGroup($engine, $request = FALSE)
+	protected function callGroup(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callGroup($engine, $request);
@@ -127,7 +127,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callHeadline
-	protected function callHeadline($engine, $request = FALSE)
+	protected function callHeadline(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callHeadline($engine, $request);
@@ -135,7 +135,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callList
-	protected function callList($engine, $request = FALSE)
+	protected function callList(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callList($engine, $request);
@@ -143,7 +143,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
+	protected function callSubmit(Engine $engine, Request $request = NULL)
 	{
 		$this->setContext($engine, $request);
 		return parent::callSubmit($engine, $request);
@@ -151,7 +151,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callUpdate
-	protected function callUpdate($engine, $request)
+	protected function callUpdate(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callUpdate($engine, $request);
@@ -160,7 +160,7 @@ abstract class MultiContentModule extends ContentModule
 
 	//forms
 	//MultiContentModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest('submit', array(
 				'type' => $request->get('type')));
@@ -176,7 +176,7 @@ abstract class MultiContentModule extends ContentModule
 
 	//helpers
 	//MultiContentModule::helperActionsAdmin
-	protected function helperActionsAdmin($engine, $request)
+	protected function helperActionsAdmin(Engine $engine, Request $request)
 	{
 		$ret = array();
 
@@ -194,7 +194,8 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::helperActionsGroup
-	protected function helperActionsGroup($engine, $request, $group)
+	protected function helperActionsGroup(Engine $engine, Request $request,
+			Group $group)
 	{
 		$ret = array();
 
@@ -213,7 +214,8 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::helperActionsList
-	protected function helperActionsList($engine, $request, $user)
+	protected function helperActionsList(Engine $engine, Request $request,
+			User $user)
 	{
 		$ret = array();
 
@@ -232,7 +234,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::helperActionsSubmit
-	protected function helperActionsSubmit($engine, $request)
+	protected function helperActionsSubmit(Engine $engine, Request $request)
 	{
 		$ret = array();
 
@@ -249,15 +251,16 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::helperListToolbar
-	protected function helperListToolbar($engine, $page, $request = FALSE)
+	protected function helperListToolbar(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 		//XXX code duplicated from ContentModule
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
-		$user = ($request !== FALSE)
+		$user = ($request !== NULL)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
-		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$type = ($request !== NULL) ? $request->get('type') : FALSE;
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;

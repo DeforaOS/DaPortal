@@ -54,7 +54,7 @@ class BrowserModule extends Module
 	//methods
 	//accessors
 	//BrowserModule::canUpload
-	protected function canUpload($engine, $request = FALSE,
+	protected function canUpload(Engine $engine, Request $request = NULL,
 			$content = FALSE, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
@@ -72,7 +72,7 @@ class BrowserModule extends Module
 			return TRUE;
 		//check for idempotence
 		$error = _('The request expired or is invalid');
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return FALSE;
 		//check for write permissions
 		$error = _('Could not lookup the path');
@@ -107,7 +107,7 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::getPath
-	protected function getPath($engine, $request)
+	protected function getPath(Engine $engine, Request $request)
 	{
 		$root = $this->getRoot($engine);
 		$from = array('-');
@@ -144,7 +144,7 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::getToolbar
-	protected function getToolbar($engine, $path, $directory = FALSE)
+	protected function getToolbar(Engine $engine, $path, $directory = FALSE)
 	{
 		$toolbar = new PageElement('toolbar');
 
@@ -197,14 +197,14 @@ class BrowserModule extends Module
 	//useful
 	//actions
 	//BrowserModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		$ret = array();
 
-		if($request->getParameter('user') !== FALSE
-				|| $request->getParameter('group') !== FALSE)
+		if($request->get('user') !== FALSE
+				|| $request->get('group') !== FALSE)
 			return $ret;
-		if($request->getParameter('admin') != 0)
+		if($request->get('admin') != 0)
 			return $ret;
 		return $ret;
 	}
@@ -212,7 +212,7 @@ class BrowserModule extends Module
 
 	//calls
 	//BrowserModule::callDefault
-	protected function callDefault($engine, $request)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		//obtain the path requested
 		$path = $this->getPath($engine, $request);
@@ -228,7 +228,7 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::callDownload
-	protected function callDownload($engine, $request)
+	protected function callDownload(Engine $engine, Request $request)
 	{
 		$root = $this->getRoot($engine);
 		$error = _('Could not download the file requested');
@@ -254,7 +254,7 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::callUpload
-	protected function callUpload($engine, $request)
+	protected function callUpload(Engine $engine, Request $request)
 	{
 		$root = $this->getRoot($engine);
 
@@ -303,7 +303,8 @@ class BrowserModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _uploadProcess($engine, $request, $path)
+	protected function _uploadProcess(Engine $engine, Request $request,
+			$path)
 	{
 		$ret = TRUE;
 		$forbidden = array('.', '..');
@@ -311,7 +312,7 @@ class BrowserModule extends Module
 		$delimiters = array('/', '\\');
 
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//upload the file(s)
 		if(!isset($_FILES['files'])
@@ -353,8 +354,8 @@ class BrowserModule extends Module
 		return FALSE;
 	}
 
-	protected function _uploadProcessFile($engine, $request, $parent,
-			$pathname, $filename, &$content)
+	protected function _uploadProcessFile(Engine $engine, Request $request,
+			$parent, $pathname, $filename, &$content)
 	{
 		$root = $this->getRoot($engine);
 		$dst = $root.'/'.$parent.'/'.$filename;
@@ -362,7 +363,8 @@ class BrowserModule extends Module
 		return move_uploaded_file($pathname, $dst);
 	}
 
-	protected function _uploadSuccess($engine, $request, $path, $page)
+	protected function _uploadSuccess(Engine $engine, Request $request,
+			$path, $page)
 	{
 		$r = new Request($this->name, FALSE, FALSE, ltrim($path, '/'));
 
@@ -373,7 +375,8 @@ class BrowserModule extends Module
 
 	//helpers
 	//BrowserModule::helperDisplay
-	protected function helperDisplay($engine, $page, $path)
+	protected function helperDisplay(Engine $engine, PageElement $page,
+			$path)
 	{
 		$root = $this->getRoot($engine);
 		$error = _('Could not open the file or directory requested');
@@ -400,7 +403,8 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::helperDisplayDirectory
-	protected function helperDisplayDirectory($engine, $page, $root, $path)
+	protected function helperDisplayDirectory(Engine $engine,
+			PageElement $page, $root, $path)
 	{
 		$error = _('Could not open the directory requested');
 
@@ -455,7 +459,8 @@ class BrowserModule extends Module
 
 
 	//BrowserModule::helperDisplayFile
-	protected function helperDisplayFile($engine, $page, $root, $path, $st)
+	protected function helperDisplayFile(Engine $engine, PageElement $page,
+			$root, $path, $st)
 	{
 		$hbox = $page->append('hbox');
 		$col1 = $hbox->append('vbox');
@@ -506,8 +511,8 @@ class BrowserModule extends Module
 
 
 	//DownloadModule::helperRedirect
-	protected function helperRedirect($engine, $request, $page,
-			$text = FALSE)
+	protected function helperRedirect(Engine $engine, Request $request,
+			$page, $text = FALSE)
 	{
 		//XXX duplicated from ContentModule
 		if($text === FALSE)

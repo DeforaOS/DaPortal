@@ -25,8 +25,8 @@ class DownloadModule extends MultiContentModule
 	//methods
 	//accessors
 	//DownloadModule::canPreview
-	public function canPreview($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canPreview(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		//XXX previewing is not always irrelevant
 		return FALSE;
@@ -34,8 +34,8 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::canPublish
-	public function canPublish($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canPublish(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$error = 'Publishing is always disabled';
 		return FALSE;
@@ -43,8 +43,8 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::canUnpublish
-	public function canUnpublish($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canUnpublish(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$error = 'Unpublishing is always disabled';
 		return FALSE;
@@ -158,16 +158,16 @@ class DownloadModule extends MultiContentModule
 
 	//accessors
 	//DownloadModule::canUpload
-	protected function canUpload($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	protected function canUpload(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		return $this->canUpdate($engine, $request, $content, $error);
 	}
 
 
 	//DownloadModule::setContext
-	protected function setContext($engine = FALSE, $request = FALSE,
-			$content = FALSE)
+	protected function setContext(Engine $engine = NULL,
+			Request $request = NULL, Content $content = NULL)
 	{
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
@@ -203,12 +203,12 @@ class DownloadModule extends MultiContentModule
 	//useful
 	//calls
 	//DownloadModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$class = static::$content_classes['folder'];
-		$p = ($request !== FALSE) ? $request->get('page') : 0;
+		$p = ($request !== NULL) ? $request->get('page') : 0;
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$root = new $class($engine, $this);
 		return new PageResponse($root->display($engine, $request));
@@ -216,7 +216,7 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::callDownload
-	protected function callDownload($engine, $request)
+	protected function callDownload(Engine $engine, Request $request)
 	{
 		global $config;
 		$error = _('Could not fetch content');
@@ -234,16 +234,16 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
+	protected function callSubmit(Engine $engine, Request $request = NULL)
 	{
 		return parent::callSubmit($engine, $request);
 	}
 
-	protected function _submitContent($engine, $request)
+	protected function _submitContent(Engine $engine, Request $request)
 	{
 		$class = static::$content_classes['folder'];
 
-		if($request !== FALSE
+		if($request !== NULL
 				&& $request->get('type') == 'file'
 				&& ($parent = $request->get('parent')) !== FALSE)
 			return $class::loadByDownloadID($engine, $this,
@@ -251,10 +251,11 @@ class DownloadModule extends MultiContentModule
 		return parent::_submitContent($engine, $request);
 	}
 
-	protected function _submitProcess($engine, $request, $content)
+	protected function _submitProcess(Engine $engine, Request $request,
+			Content $content)
 	{
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		switch($request->get('type'))
 		{
@@ -267,7 +268,8 @@ class DownloadModule extends MultiContentModule
 		}
 	}
 
-	protected function _submitProcessFile($engine, $request, $parent)
+	protected function _submitProcessFile(Engine $engine, Request $request,
+			$parent)
 	{
 		$forbidden = array('.', '..');
 		//XXX UNIX supports backward slashes in filenames
@@ -311,8 +313,9 @@ class DownloadModule extends MultiContentModule
 		return (count($errors)) ? implode("\n", $errors) : FALSE;
 	}
 
-	protected function _submitProcessFileDo($engine, $request, $parent,
-			$pathname, $filename, &$content = FALSE)
+	protected function _submitProcessFileDo(Engine $engine,
+			Request $request, $parent, $pathname, $filename,
+			&$content = FALSE)
 	{
 		$class = static::$content_classes['file'];
 
@@ -333,7 +336,7 @@ class DownloadModule extends MultiContentModule
 
 	//forms
 	//DownloadModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest('submit', array(
 				'type' => $request->get('type'),
@@ -350,7 +353,7 @@ class DownloadModule extends MultiContentModule
 
 	//helpers
 	//DownloadModule::helperActionsAdmin
-	protected function helperActionsAdmin($engine, $request)
+	protected function helperActionsAdmin(Engine $engine, Request $request)
 	{
 		//XXX duplicated from ContentModule::helperActionsAdmin
 		if($request->get('admin') === 0)
@@ -364,7 +367,8 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::helperAdminRow
-	protected function helperAdminRow($engine, $row, $res)
+	protected function helperAdminRow(Engine $engine, PageElement $row,
+			$res)
 	{
 		$class = ($res['mode'] & static::$S_IFDIR)
 			? static::$content_classes['folder']

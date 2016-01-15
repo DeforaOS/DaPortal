@@ -95,7 +95,7 @@ class AdminModule extends Module
 	//useful
 	//actions
 	//AdminModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		$admin = array('audit' => _('Configuration audit'),
 			'modules' => _('Modules administration'));
@@ -120,10 +120,10 @@ class AdminModule extends Module
 
 	//calls
 	//AdminModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
 		$title = _('Administration');
-		$admin = ($request !== FALSE) ? $request->get('admin') : FALSE;
+		$admin = ($request !== NULL) ? $request->get('admin') : FALSE;
 
 		$page = new Page();
 		switch($admin)
@@ -151,7 +151,8 @@ class AdminModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function callAdminAudit($engine, $request, $page)
+	protected function callAdminAudit(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		$title = _('Configuration audit');
 		$database = $engine->getDatabase();
@@ -181,7 +182,8 @@ class AdminModule extends Module
 		}
 	}
 
-	protected function callAdminModules($engine, $request, $page)
+	protected function callAdminModules(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		$actions = array('disable', 'enable');
 		$database = $engine->getDatabase();
@@ -190,7 +192,7 @@ class AdminModule extends Module
 		$dialog = FALSE;
 
 		//perform actions if necessary
-		if($request !== FALSE)
+		if($request !== NULL)
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
@@ -246,7 +248,7 @@ class AdminModule extends Module
 
 
 	//AdminModule::callDefault
-	protected function callDefault($engine, $request)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$title = _('Administration');
 		$database = $engine->getDatabase();
@@ -298,7 +300,7 @@ class AdminModule extends Module
 
 
 	//AdminModule::helperModuleDisable
-	protected function helperModuleDisable($engine, $request)
+	protected function helperModuleDisable(Engine $engine, Request $request)
 	{
 		$query = static::$query_module_disable;
 
@@ -313,7 +315,7 @@ class AdminModule extends Module
 
 
 	//AdminModule::helperModuleEnable
-	protected function helperModuleEnable($engine, $request)
+	protected function helperModuleEnable(Engine $engine, Request $request)
 	{
 		$query = static::$query_module_enable;
 

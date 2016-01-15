@@ -69,7 +69,8 @@ class GroupModule extends Module
 	//methods
 	//accessors
 	//GroupModule::canDisable
-	protected function canDisable($engine, $group = FALSE, &$error = FALSE)
+	protected function canDisable(Engine $engine, Group $group = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -78,7 +79,7 @@ class GroupModule extends Module
 			$error = _('Disabling groups is not allowed');
 			return FALSE;
 		}
-		if($group !== FALSE
+		if($group !== NULL
 				&& $group->getGroupID() == $cred->getGroupID())
 		{
 			$error = _('Disabling oneself is not allowed');
@@ -89,7 +90,8 @@ class GroupModule extends Module
 
 
 	//GroupModule::canEnable
-	protected function canEnable($engine, $group = FALSE, &$error = FALSE)
+	protected function canEnable(Engine $engine, Group $group = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -103,7 +105,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::canSubmit
-	protected function canSubmit($engine, &$error = FALSE)
+	protected function canSubmit(Engine $engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -118,7 +120,7 @@ class GroupModule extends Module
 
 	//forms
 	//GroupModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest('submit', array('type' => 'group'));
 		$form = new PageElement('form', array('request' => $r));
@@ -145,7 +147,8 @@ class GroupModule extends Module
 
 
 	//GroupModule::formUpdate
-	protected function formUpdate($engine, $request, $group, $id, $error)
+	protected function formUpdate(Engine $engine, Request $request,
+			Group $group, $id, $error)
 	{
 		//output the page
 		$title = _('Update group ').$group->getGroupname();
@@ -178,7 +181,7 @@ class GroupModule extends Module
 
 	//useful
 	//GroupModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 
@@ -190,7 +193,8 @@ class GroupModule extends Module
 		return FALSE;
 	}
 
-	private function _actionsAdmin($engine, $cred, $module)
+	private function _actionsAdmin(Engine $engine, AuthCredentials $cred,
+			$module)
 	{
 		if(!$cred->isAdmin())
 			return FALSE;
@@ -214,7 +218,7 @@ class GroupModule extends Module
 		return $ret;
 	}
 
-	private function _actionsUser($engine, $user)
+	private function _actionsUser(Engine $engine, User $user)
 	{
 		$ret = array();
 		$db = $engine->getDatabase();
@@ -243,7 +247,7 @@ class GroupModule extends Module
 
 	//calls
 	//GroupModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -255,7 +259,7 @@ class GroupModule extends Module
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
 		//perform actions if necessary
-		if($request !== FALSE)
+		if($request !== NULL)
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
@@ -344,19 +348,19 @@ class GroupModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _adminDelete($engine, $request)
+	protected function _adminDelete(Engine $engine, Request $request)
 	{
 		return $this->helperApplyGroup($engine, $request, 'delete',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminDisable($engine, $request)
+	protected function _adminDisable(Engine $engine, Request $request)
 	{
 		return $this->helperApplyGroup($engine, $request, 'disable',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminEnable($engine, $request)
+	protected function _adminEnable(Engine $engine, Request $request)
 	{
 		return $this->helperApplyGroup($engine, $request, 'enable',
 				$this->getRequest('admin'));
@@ -364,13 +368,13 @@ class GroupModule extends Module
 
 
 	//GroupModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
 		$title = _('Group menu');
 		$actions = array();
 
-		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
+		if($request !== NULL && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//determine the actions available
 		if($cred->isAdmin())
@@ -409,7 +413,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callDisable
-	protected function callDisable($engine, $request)
+	protected function callDisable(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -432,7 +436,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callDisplay
-	protected function callDisplay($engine, $request)
+	protected function callDisplay(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$database = $engine->getDatabase();
@@ -505,7 +509,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callEnable
-	protected function callEnable($engine, $request)
+	protected function callEnable(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -528,12 +532,12 @@ class GroupModule extends Module
 
 
 	//GroupModule::callList
-	protected function callList($engine, $request)
+	protected function callList(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_list;
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->_listGroup($engine, $request);
 		$title = _('Group list');
 		$page = new Page(array('title' => $title));
@@ -612,7 +616,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
+	protected function callSubmit(Engine $engine, Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
 		$error = _('Permission denied');
@@ -640,10 +644,11 @@ class GroupModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _submitProcess($engine, $request, &$group)
+	protected function _submitProcess(Engine $engine, Request $request,
+			&$group)
 	{
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		if(($groupname = $request->get('groupname')) === FALSE)
 			return _('Invalid arguments');
@@ -657,7 +662,8 @@ class GroupModule extends Module
 		return FALSE;
 	}
 
-	protected function _submitSuccess($engine, $request, $page, $group)
+	protected function _submitSuccess(Engine $engine, Request $request,
+			$page, Group $group)
 	{
 		$r = new Request($this->name, FALSE, $group->getGroupID(),
 			$group->getGroupname());
@@ -666,7 +672,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callUpdate
-	protected function callUpdate($engine, $request)
+	protected function callUpdate(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
@@ -700,14 +706,15 @@ class GroupModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _updateProcess($engine, $request, $group)
+	private function _updateProcess(Engine $engine, Request $request,
+			Group $group)
 	{
 		$ret = '';
 		$db = $engine->getDatabase();
 		$cred = $engine->getCredentials();
 
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		if(($groupname = $request->get('groupname')) === FALSE)
 			$ret .= _("The group name is required\n");
@@ -722,7 +729,7 @@ class GroupModule extends Module
 		return FALSE;
 	}
 
-	private function _updateSuccess($engine, $request)
+	private function _updateSuccess(Engine $engine, Request $request)
 	{
 		$id = $request->getID();
 
@@ -799,8 +806,8 @@ class GroupModule extends Module
 
 
 	//GroupModule::helperRedirect
-	protected function helperRedirect($engine, $request, $page,
-			$text = FALSE)
+	protected function helperRedirect(Engine $engine, Request $request,
+			PageElement $page, $text = FALSE)
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');

@@ -37,12 +37,12 @@ abstract class DownloadContent extends ContentMulti
 
 	//accessors
 	//DownloadContent::canSubmit
-	public function canSubmit(Engine $engine, $request = FALSE,
+	public function canSubmit(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		if(parent::canSubmit($engine, $request, $error) === FALSE)
 			return FALSE;
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		//forbid empty filenames
 		$filename = $this->getFilenameSubmitted($request);
@@ -80,7 +80,7 @@ abstract class DownloadContent extends ContentMulti
 
 
 	//DownloadContent::getParent
-	public function getParent(Engine $engine, $request = FALSE)
+	public function getParent(Engine $engine, Request $request = NULL)
 	{
 		return static::getContent($engine, $this->get('parent_id'),
 				FALSE, $request);

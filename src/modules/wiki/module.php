@@ -64,11 +64,11 @@ class WikiModule extends ContentModule
 	//methods
 	//calls
 	//WikiModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$title = $this->text_content_title;
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('text' => $title,
@@ -97,7 +97,7 @@ class WikiModule extends ContentModule
 		$vbox->append('title', array('text' => _('Recent changes'),
 				'stock' => 'help'));
 		//recent changes
-		$headlines = $this->callHeadline($engine, FALSE);
+		$headlines = $this->callHeadline($engine);
 		if($headlines instanceof PageResponse)
 			$vbox->append($headlines->getContent());
 		//page list
@@ -110,12 +110,12 @@ class WikiModule extends ContentModule
 
 
 	//WikiModule::callMonitor
-	protected function callMonitor($engine, $request)
+	protected function callMonitor(Engine $engine, Request $request)
 	{
 		$title = _('Wiki monitoring');
 
 		$error = _('Permission denied');
-		if(!$this->canAdmin($engine, FALSE, FALSE, $error))
+		if(!$this->canAdmin($engine, NULL, NULL, $error))
 			return new ErrorResponse($error, Response::$CODE_EPERM);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('class' => $this->getName(),
@@ -160,7 +160,7 @@ class WikiModule extends ContentModule
 
 	//helpers
 	//WikiModule::helperActionsAdmin
-	protected function helperActionsAdmin($engine, $request)
+	protected function helperActionsAdmin(Engine $engine, Request $request)
 	{
 		$admin = $request->get('admin');
 

@@ -39,12 +39,14 @@ class CAClientPKIContent extends PKIContent
 
 	//useful
 	//CAClientPKIContent::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert(Engine $engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$parent = ($request->getID() !== FALSE)
 			? CAPKIContent::load($engine, $this->getModule(),

@@ -37,7 +37,7 @@ class ScreenshotProjectContent extends DownloadProjectContent
 
 
 	//ScreenshotProjectContent::displayRow
-	public function displayRow(Engine $engine, $request = FALSE)
+	public function displayRow(Engine $engine, Request $request = NULL)
 	{
 		$module = Module::load($engine, 'download');
 

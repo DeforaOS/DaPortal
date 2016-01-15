@@ -192,7 +192,7 @@ class HTTPEngine extends Engine
 		return $this->request;
 	}
 
-	protected function _getRequestPrivate($request)
+	protected function _getRequestPrivate(Request $request)
 	{
 		global $config;
 		$cred = $this->getCredentials();
@@ -222,9 +222,9 @@ class HTTPEngine extends Engine
 
 
 	//HTTPEngine::getURL
-	public function getURL(Request $request, $absolute = TRUE)
+	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
-		if($request === FALSE)
+		if($request === NULL)
 			return FALSE;
 		$name = isset($_SERVER['SCRIPT_NAME'])
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';

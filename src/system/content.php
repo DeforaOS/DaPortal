@@ -83,7 +83,7 @@ class Content
 
 	//accessors
 	//Content::canAdmin
-	public function canAdmin(Engine $engine, $request = FALSE,
+	public function canAdmin(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
@@ -96,7 +96,7 @@ class Content
 
 
 	//Content::canDelete
-	public function canDelete(Engine $engine, $request = FALSE,
+	public function canDelete(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
@@ -104,7 +104,7 @@ class Content
 
 
 	//Content::canDisable
-	public function canDisable(Engine $engine, $request = FALSE,
+	public function canDisable(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
@@ -112,7 +112,7 @@ class Content
 
 
 	//Content::canDisplay
-	public function canDisplay(Engine $engine, $request = FALSE,
+	public function canDisplay(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return TRUE;
@@ -120,7 +120,7 @@ class Content
 
 
 	//Content::canEnable
-	public function canEnable(Engine $engine, $request = FALSE,
+	public function canEnable(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $error);
@@ -128,7 +128,7 @@ class Content
 
 
 	//Content::canPreview
-	public function canPreview(Engine $engine, $request = FALSE,
+	public function canPreview(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		return $this->canDisplay($engine, $request, $error);
@@ -136,10 +136,10 @@ class Content
 
 
 	//Content::canPublish
-	public function canPublish(Engine $engine, $request = FALSE,
+	public function canPublish(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		if($request->isIdempotent())
 		{
@@ -151,13 +151,13 @@ class Content
 
 
 	//Content::canSubmit
-	public function canSubmit(Engine $engine, $request = FALSE,
+	public function canSubmit(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$properties = $this->properties;
 
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		if($request->isIdempotent())
 		{
@@ -198,10 +198,10 @@ class Content
 
 
 	//Content::canUnpublish
-	public function canUnpublish(Engine $engine, $request = FALSE,
+	public function canUnpublish(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		if($request->isIdempotent())
 		{
@@ -213,7 +213,7 @@ class Content
 
 
 	//Content::canUpdate
-	public function canUpdate(Engine $engine, $request = FALSE,
+	public function canUpdate(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
@@ -223,7 +223,7 @@ class Content
 			$error = _('Only administrators can update content');
 			return FALSE;
 		}
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		if($request->isIdempotent())
 		{
@@ -235,8 +235,8 @@ class Content
 
 
 	//Content::canUpdateTimestamp
-	public function canUpdateTimestamp(Engine $engine, $request = FALSE,
-			&$error = FALSE)
+	public function canUpdateTimestamp(Engine $engine,
+			Request $request = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -245,7 +245,7 @@ class Content
 			$error = _('Only administrators can update timestamps');
 			return FALSE;
 		}
-		if($request === FALSE)
+		if($request === NULL)
 			return TRUE;
 		if($request->isIdempotent())
 		{
@@ -469,9 +469,9 @@ class Content
 
 
 	//Content::display
-	public function display(Engine $engine, $request)
+	public function display(Engine $engine, Request $request = NULL)
 	{
-		$type = ($request !== FALSE) ? $request->get('display') : FALSE;
+		$type = ($request !== NULL) ? $request->get('display') : FALSE;
 		$vbox = new PageElement('vbox');
 
 		if($type === FALSE || $type == 'title')
@@ -491,7 +491,7 @@ class Content
 
 
 	//Content::displayButtons
-	public function displayButtons(Engine $engine, $request)
+	public function displayButtons(Engine $engine, Request $request)
 	{
 		$hbox = new PageElement('hbox');
 		$r = $this->module->getRequest();
@@ -507,7 +507,7 @@ class Content
 
 
 	//Content::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$text = $this->getContent($engine);
 
@@ -516,8 +516,9 @@ class Content
 
 
 	//Content::displayList
-	static public function displayList(Engine $engine, $request = FALSE,
-			$content = FALSE, $limit = FALSE, $offset = 0)
+	static public function displayList(Engine $engine,
+			Request $request = NULL, $content = FALSE,
+			$limit = FALSE, $offset = 0)
 	{
 		$view = new PageElement('treeview', array(
 				'columns' => static::getColumns(),
@@ -541,7 +542,7 @@ class Content
 
 
 	//Content::displayMetadata
-	public function displayMetadata(Engine $engine, $request)
+	public function displayMetadata(Engine $engine, Request $request = NULL)
 	{
 		$r = new Request('user', FALSE, $this->getUserID(),
 			$this->getUsername());
@@ -558,7 +559,7 @@ class Content
 
 
 	//Content::displayRow
-	public function displayRow(Engine $engine, $request = FALSE)
+	public function displayRow(Engine $engine, Request $request = NULL)
 	{
 		$r = array();
 		$no = new PageElement('image', array('stock' => 'no',
@@ -588,10 +589,10 @@ class Content
 
 
 	//Content::displayToolbar
-	public function displayToolbar(Engine $engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, Request $request = NULL)
 	{
 		$credentials = $engine->getCredentials();
-		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
+		$action = ($request !== NULL) ? $request->getAction() : FALSE;
 
 		$toolbar = new PageElement('toolbar');
 		if($credentials->isAdmin())
@@ -602,7 +603,7 @@ class Content
 					'text' => _('Administration')));
 		}
 		if($action != 'submit' && $this->module->canSubmit($engine,
-				FALSE, $this))
+				NULL, $this))
 		{
 			$r = $this->module->getRequest('submit');
 			$toolbar->append('button', array('request' => $r,
@@ -612,7 +613,7 @@ class Content
 		if($this->getID() !== FALSE)
 		{
 			if($action != 'publish' && !$this->isPublic()
-					&& $this->canPublish($engine, FALSE,
+					&& $this->canPublish($engine, NULL,
 						$this))
 			{
 				$r = $this->getRequest('publish');
@@ -622,7 +623,7 @@ class Content
 						'text' => $this->text_publish));
 			}
 			if($action != 'update' && $this->canUpdate($engine,
-					FALSE, $this))
+					NULL, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
@@ -637,7 +638,7 @@ class Content
 
 
 	//Content::displayTitle
-	public function displayTitle(Engine $engine, $request)
+	public function displayTitle(Engine $engine, Request $request)
 	{
 		return new PageElement('title', array(
 			'stock' => $this->stock,
@@ -646,14 +647,14 @@ class Content
 
 
 	//Content::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return ($this->id !== FALSE)
 			? $this->_formUpdate($engine, $request)
 			: $this->_formSubmit($engine, $request);
 	}
 
-	protected function _formSubmit(Engine $engine, $request)
+	protected function _formSubmit(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('entry', array('name' => 'title',
@@ -666,7 +667,7 @@ class Content
 		return $vbox;
 	}
 
-	protected function _formUpdate(Engine $engine, $request)
+	protected function _formUpdate(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		if(($value = $request->get('title')) === FALSE)
@@ -686,7 +687,7 @@ class Content
 
 
 	//Content::formPreview
-	public function formPreview(Engine $engine, $request)
+	public function formPreview(Engine $engine, Request $request)
 	{
 		$properties = $this->properties;
 
@@ -718,7 +719,7 @@ class Content
 
 
 	//Content::preview
-	public function preview(Engine $engine, $request = FALSE)
+	public function preview(Engine $engine, Request $request = NULL)
 	{
 		$vbox = new PageElement('vbox');
 
@@ -731,7 +732,7 @@ class Content
 
 
 	//Content::previewButtons
-	public function previewButtons(Engine $engine, $request = FALSE)
+	public function previewButtons(Engine $engine, Request $request = NULL)
 	{
 		$hbox = new PageElement('hbox');
 
@@ -744,7 +745,7 @@ class Content
 
 
 	//Content::previewContent
-	public function previewContent(Engine $engine, $request = FALSE)
+	public function previewContent(Engine $engine, Request $request = NULL)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;
@@ -756,14 +757,14 @@ class Content
 
 
 	//Content::previewMetadata
-	public function previewMetadata(Engine $engine, $request = FALSE)
+	public function previewMetadata(Engine $engine, Request $request = NULL)
 	{
 		return $this->displayMetadata($engine, $request);
 	}
 
 
 	//Content::previewTitle
-	public function previewTitle(Engine $engine, $request = FALSE)
+	public function previewTitle(Engine $engine, Request $request = NULL)
 	{
 		if($this->id === FALSE)
 			return new PageElement('title', array(
@@ -777,12 +778,13 @@ class Content
 
 
 	//Content::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		$ret = ($this->id !== FALSE)
 			? $this->_saveUpdate($engine, $request, $error)
 			: $this->_saveInsert($engine, $request, $error);
-		if($ret === FALSE || $request === FALSE)
+		if($ret === FALSE || $request === NULL)
 			return $ret;
 		//reflect the new properties
 		foreach($this->fields as $f)
@@ -790,7 +792,8 @@ class Content
 		return $ret;
 	}
 
-	protected function _saveInsert(Engine $engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_insert;
@@ -811,7 +814,7 @@ class Content
 					break;
 			}
 		//set the timestamp if necessary
-		if($request !== FALSE
+		if($request !== NULL
 				&& ($timestamp = $request->get('timestamp'))
 				!== FALSE
 				&& $this->canUpdateTimestamp($engine, $request))
@@ -828,7 +831,8 @@ class Content
 			? TRUE : FALSE;
 	}
 
-	protected function _saveUpdate(Engine $engine, $request, &$error)
+	protected function _saveUpdate(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_update;
@@ -846,7 +850,7 @@ class Content
 				case 'content':
 					$args[$k] = ($this->$k !== FALSE)
 						? $this->$k : '';
-					if($request === FALSE)
+					if($request === NULL)
 						break;
 					if(($v = $request->get($k)) === FALSE)
 						break;
@@ -854,7 +858,7 @@ class Content
 					break;
 			}
 		//set the timestamp if necessary
-		if($request !== FALSE
+		if($request !== NULL
 				&& ($timestamp = $request->get('timestamp'))
 				!== FALSE
 				&& $this->canUpdateTimestamp($engine, $request))

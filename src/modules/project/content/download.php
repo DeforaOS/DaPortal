@@ -50,7 +50,7 @@ class DownloadProjectContent extends ContentMulti
 
 	//useful
 	//DownloadProjectContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$module = Module::load($engine, 'download');
 
@@ -64,7 +64,7 @@ class DownloadProjectContent extends ContentMulti
 
 
 	//DownloadProjectContent::displayRow
-	public function displayRow(Engine $engine, $request = FALSE)
+	public function displayRow(Engine $engine, Request $request = NULL)
 	{
 		$row = parent::displayRow($engine, $request);
 		$project = ProjectContent::load($engine, $this->getModule(),

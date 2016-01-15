@@ -43,7 +43,8 @@ class BlogModule extends ContentModule
 	//protected
 	//methods
 	//BlogModule::helperDisplayText
-	protected function helperDisplayText($engine, $request, $page, $content)
+	protected function helperDisplayText(Engine $engine, Request $request,
+			PageElement $page, Content $content)
 	{
 		$text = $content->getContent($engine);
 

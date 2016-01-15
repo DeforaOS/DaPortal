@@ -121,7 +121,7 @@ abstract class Engine
 
 
 	//Engine::getURL
-	public function getURL(Request $request, $absolute = TRUE)
+	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
 		if($absolute === FALSE)
 			return $_SERVER['SCRIPT_NAME'];

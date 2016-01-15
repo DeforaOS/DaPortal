@@ -71,9 +71,9 @@ class SearchModule extends Module
 	//methods
 	//accessors
 	//SearchModule::getLimit
-	protected function getLimit($engine, $request = FALSE)
+	protected function getLimit(Engine $engine, Request $request = NULL)
 	{
-		if($request !== FALSE
+		if($request !== NULL
 				&& ($limit = $request->get('limit')) !== FALSE
 				&& is_numeric($limit)
 				&& $limit > 0 && $limit <= 500)
@@ -90,9 +90,9 @@ class SearchModule extends Module
 
 
 	//SearchModule::getPage
-	protected function getPage($engine, $request = FALSE)
+	protected function getPage(Engine $engine, Request $request = NULL)
 	{
-		if($request !== FALSE && ($p = $request->get('page')) !== FALSE
+		if($request !== NULL && ($p = $request->get('page')) !== FALSE
 				&& is_numeric($p) && $p >= 1)
 			return $p;
 		return 1;
@@ -101,7 +101,7 @@ class SearchModule extends Module
 
 	//useful
 	//SearchModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		if($request->get('admin') !== FALSE)
 			return FALSE;
@@ -118,7 +118,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::appendResult
-	protected function appendResult($engine, &$view, &$res)
+	protected function appendResult(Engine $engine, &$view, &$res)
 	{
 		$row = $view->append('row');
 		$row->set('title', $res['title']);
@@ -135,7 +135,7 @@ class SearchModule extends Module
 
 	//calls
 	//SearchModule::callAdmin
-	protected function callAdmin($engine)
+	protected function callAdmin(Engine $engine)
 	{
 		$cred = $engine->getCredentials();
 
@@ -149,7 +149,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callDefault
-	protected function callDefault($engine, $request)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$case = FALSE;
 		$limit = $this->getLimit($engine, $request);
@@ -176,7 +176,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callAdvanced
-	protected function callAdvanced($engine, $request)
+	protected function callAdvanced(Engine $engine, Request $request)
 	{
 		$case = $request->get('case') ? '1' : '0';
 		$limit = $this->getLimit($engine, $request);
@@ -208,7 +208,7 @@ class SearchModule extends Module
 
 
 	//SearchModule::callWidget
-	protected function callWidget($engine, $request)
+	protected function callWidget(Engine $engine, Request $request)
 	{
 		$form = new PageElement('form', array('idempotent' => TRUE));
 
@@ -226,7 +226,8 @@ class SearchModule extends Module
 
 	//helpers
 	//SearchModule::helperAction
-	protected function helperAction($engine, $stock, $request, $text)
+	protected function helperAction(Engine $engine, $stock,
+			Request $request, $text)
 	{
 		$icon = new PageElement('image', array('stock' => $stock));
 		$link = new PageElement('link', array('request' => $request,
@@ -237,8 +238,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::helperPaging
-	protected function helperPaging($engine, $request, $page, $limit, $pcnt,
-			$pcur)
+	protected function helperPaging(Engine $engine, Request $request,
+			PageElement $page, $limit, $pcnt, $pcur)
 	{
 		//XXX copied from ContentModule
 		if($pcnt <= $limit)
@@ -276,8 +277,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::helperResults
-	protected function helperResults($engine, $request, $page, $res, $limit,
-			$time = FALSE)
+	protected function helperResults(Engine $engine, Request $request,
+			PageElement $page, $res, $limit, $time = FALSE)
 	{
 		$p = $this->getPage($engine, $request);
 		$count = count($res);
@@ -313,8 +314,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::pageSearch
-	protected function pageSearch($engine, $request, $advanced = FALSE,
-			$limit = FALSE)
+	protected function pageSearch(Engine $engine, Request $request,
+			$advanced = FALSE, $limit = FALSE)
 	{
 		$q = $request->get('q');
 		$title = $q ? _('Search results') : _('Search');
@@ -354,8 +355,8 @@ class SearchModule extends Module
 		return $page;
 	}
 
-	private function _pageSearchAdvanced($engine, $request, $form, $limit,
-			$case)
+	private function _pageSearchAdvanced(Engine $engine, Request $request,
+			PageElement $form, $limit, $case)
 	{
 		$hbox = $form->append('hbox');
 		$label = $hbox->append('label');
@@ -411,8 +412,8 @@ class SearchModule extends Module
 
 
 	//SearchModule::query
-	protected function query($engine, $string, $case, $intitle, $incontent,
-			$user = FALSE, $module = FALSE)
+	protected function query(Engine $engine, $string, $case, $intitle,
+			$incontent, $user = FALSE, $module = FALSE)
 	{
 		global $config;
 		$db = $engine->getDatabase();

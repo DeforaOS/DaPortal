@@ -90,7 +90,7 @@ class UserModule extends Module
 	//methods
 	//accessors
 	//UserModule::canClose
-	protected function canClose($engine, &$error = FALSE)
+	protected function canClose(Engine $engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -109,7 +109,8 @@ class UserModule extends Module
 
 
 	//UserModule::canDelete
-	protected function canDelete($engine, $user = FALSE, &$error = FALSE)
+	protected function canDelete(Engine $engine, User $user = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -123,7 +124,8 @@ class UserModule extends Module
 
 
 	//UserModule::canDisable
-	protected function canDisable($engine, $user = FALSE, &$error = FALSE)
+	protected function canDisable(Engine $engine, User $user = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -142,7 +144,8 @@ class UserModule extends Module
 
 
 	//UserModule::canEnable
-	protected function canEnable($engine, $user = FALSE, &$error = FALSE)
+	protected function canEnable(Engine $engine, User $user = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -156,7 +159,8 @@ class UserModule extends Module
 
 
 	//UserModule::canLock
-	protected function canLock($engine, $user = FALSE, &$error = FALSE)
+	protected function canLock(Engine $engine, User $user = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -170,14 +174,14 @@ class UserModule extends Module
 
 
 	//UserModule::canRegister
-	protected function canRegister($request = FALSE, &$error = FALSE)
+	protected function canRegister(Request $request = NULL, &$error = FALSE)
 	{
 		if($this->configGet('register') != 1)
 		{
 			$error = _('Registering is not allowed');
 			return FALSE;
 		}
-		if($request !== FALSE && $request->isIdempotent())
+		if($request !== NULL && $request->isIdempotent())
 		{
 			$error = _('The request expired or is invalid');
 			return FALSE;
@@ -187,14 +191,14 @@ class UserModule extends Module
 
 
 	//UserModule::canReset
-	protected function canReset($request = FALSE, &$error = FALSE)
+	protected function canReset(Request $request = NULL, &$error = FALSE)
 	{
 		if($this->configGet('reset') != 1)
 		{
 			$error = _('Password resets are not allowed');
 			return FALSE;
 		}
-		if($request !== FALSE && $request->isIdempotent())
+		if($request !== NULL && $request->isIdempotent())
 		{
 			$error = _('The request expired or is invalid');
 			return FALSE;
@@ -204,7 +208,7 @@ class UserModule extends Module
 
 
 	//UserModule::canSubmit
-	protected function canSubmit($engine, &$error = FALSE)
+	protected function canSubmit(Engine $engine, &$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -218,7 +222,8 @@ class UserModule extends Module
 
 
 	//UserModule::canUnlock
-	protected function canUnlock($engine, $user = FALSE, &$error = FALSE)
+	protected function canUnlock(Engine $engine, User $user = NULL,
+			&$error = FALSE)
 	{
 		$cred = $engine->getCredentials();
 
@@ -233,7 +238,7 @@ class UserModule extends Module
 
 	//forms
 	//UserModule::formClose
-	protected function formClose($engine)
+	protected function formClose(Engine $engine)
 	{
 		$r = $this->getRequest('close');
 		$form = new PageElement('form', array('request' => $r));
@@ -254,7 +259,8 @@ class UserModule extends Module
 
 
 	//UserModule::formLogin
-	protected function formLogin($engine, $request, $cancel = TRUE)
+	protected function formLogin(Engine $engine, Request $request,
+			$cancel = TRUE)
 	{
 		$username = $request->get('username');
 		$r = $this->getRequest('login', $request->getParameters());
@@ -284,7 +290,7 @@ class UserModule extends Module
 
 
 	//UserModule::formRegister
-	protected function formRegister($engine, $username, $email)
+	protected function formRegister(Engine $engine, $username, $email)
 	{
 		$r = $this->getRequest('register');
 		$form = new PageElement('form', array('request' => $r));
@@ -303,7 +309,7 @@ class UserModule extends Module
 
 
 	//UserModule::formReset
-	protected function formReset($engine, $username, $email)
+	protected function formReset(Engine $engine, $username, $email)
 	{
 		$r = $this->getRequest('reset');
 		$form = new PageElement('form', array('request' => $r));
@@ -322,7 +328,7 @@ class UserModule extends Module
 
 
 	//UserModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest('submit');
 		$form = new PageElement('form', array('request' => $r));
@@ -406,7 +412,8 @@ class UserModule extends Module
 
 
 	//UserModule::formUpdate
-	protected function formUpdate($engine, $request, $user, $id, $error)
+	protected function formUpdate(Engine $engine, Request $request,
+			User $user, $id, $error)
 	{
 		$cred = $engine->getCredentials();
 
@@ -506,7 +513,7 @@ class UserModule extends Module
 
 	//useful
 	//UserModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$list = $this->configGet('list');
@@ -605,7 +612,8 @@ class UserModule extends Module
 		return $ret;
 	}
 
-	private function _actions_admin($engine, $cred, &$ret)
+	private function _actions_admin(Engine $engine, AuthCredentials $cred,
+			&$ret)
 	{
 		if(!$cred->isAdmin())
 			return $ret;
@@ -630,7 +638,7 @@ class UserModule extends Module
 
 	//calls
 	//UserModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -643,7 +651,7 @@ class UserModule extends Module
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
 		//perform actions if necessary
-		if($request !== FALSE)
+		if($request !== NULL)
 			foreach($actions as $a => $t)
 				if($request->get($a) !== FALSE)
 				{
@@ -728,31 +736,31 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _adminDelete($engine, $request)
+	protected function _adminDelete(Engine $engine, Request $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'delete',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminDisable($engine, $request)
+	protected function _adminDisable(Engine $engine, Request $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'disable',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminEnable($engine, $request)
+	protected function _adminEnable(Engine $engine, Request $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'enable',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminLock($engine, $request)
+	protected function _adminLock(Engine $engine, Request $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'lock',
 				$this->getRequest('admin'));
 	}
 
-	protected function _adminUnlock($engine, $request)
+	protected function _adminUnlock(Engine $engine, Request $request)
 	{
 		return $this->helperApplyUser($engine, $request, 'unlock',
 				$this->getRequest('admin'));
@@ -760,7 +768,7 @@ class UserModule extends Module
 
 
 	//UserModule::callClose
-	protected function callClose($engine, $request)
+	protected function callClose(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$error = TRUE;
@@ -778,7 +786,7 @@ class UserModule extends Module
 		return $this->_closeForm($engine, $request, $error);
 	}
 
-	private function _closeForm($engine, $request, $error)
+	private function _closeForm(Engine $engine, Request $request, $error)
 	{
 		$title = _('Close your account');
 		$page = new Page(array('title' => $title));
@@ -797,14 +805,14 @@ class UserModule extends Module
 		return new PageResponse($page, $code);
 	}
 
-	private function _closeProcess($engine, $request)
+	private function _closeProcess(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$uid = $cred->getUserID();
 		$username = $cred->getUsername();
 
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//disable the user
 		if(($user = User::lookup($engine, $username, $uid)) === FALSE
@@ -816,7 +824,7 @@ class UserModule extends Module
 		return FALSE;
 	}
 
-	protected function _closeSuccess($engine, $request)
+	protected function _closeSuccess(Engine $engine, Request $request)
 	{
 		$title = _('Account closed');
 		$text = _('Your account was closed successfully.');
@@ -834,13 +842,13 @@ class UserModule extends Module
 
 
 	//UserModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_content;
 		$cred = $engine->getCredentials();
 
-		if($request !== FALSE && ($id = $request->getID()) !== FALSE)
+		if($request !== NULL && ($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//FIXME add content?
 		$title = ($cred->getUserID() != 0) ? _('My account')
@@ -882,7 +890,7 @@ class UserModule extends Module
 
 
 	//UserModule::callDisable
-	protected function callDisable($engine, $request)
+	protected function callDisable(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -905,7 +913,7 @@ class UserModule extends Module
 
 
 	//UserModule::callDisplay
-	protected function callDisplay($engine, $request)
+	protected function callDisplay(Engine $engine, Request $request)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_content;
@@ -970,7 +978,7 @@ class UserModule extends Module
 
 
 	//UserModule::callEnable
-	protected function callEnable($engine, $request)
+	protected function callEnable(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -993,7 +1001,7 @@ class UserModule extends Module
 
 
 	//UserModule::callGroups
-	protected function callGroups($engine, $request)
+	protected function callGroups(Engine $engine, Request $request)
 	{
 		$database = $engine->getDatabase();
 		$query = static::$query_groups_user;
@@ -1060,7 +1068,7 @@ class UserModule extends Module
 
 
 	//UserModule::callList
-	protected function callList($engine, $request)
+	protected function callList(Engine $engine, Request $request)
 	{
 		$list = $this->configGet('list');
 		$cred = $engine->getCredentials();
@@ -1112,7 +1120,7 @@ class UserModule extends Module
 
 
 	//UserModule::callLock
-	protected function callLock($engine, $request)
+	protected function callLock(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -1133,7 +1141,7 @@ class UserModule extends Module
 
 
 	//UserModule::callLogin
-	protected function callLogin($engine, $request)
+	protected function callLogin(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$title = _('User login');
@@ -1178,11 +1186,11 @@ class UserModule extends Module
 		return new PageResponse($page, $code);
 	}
 
-	protected function _loginProcess($engine, $request)
+	protected function _loginProcess(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			//no real login attempt
 			return TRUE;
 		if(($username = $request->get('username')) === FALSE
@@ -1195,7 +1203,8 @@ class UserModule extends Module
 		return FALSE;
 	}
 
-	protected function _loginSuccess($engine, $request, $page)
+	protected function _loginSuccess(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		$parameters = $request->getParameters();
 		$p = array();
@@ -1237,7 +1246,7 @@ class UserModule extends Module
 
 
 	//UserModule::callLogout
-	protected function callLogout($engine, $request)
+	protected function callLogout(Engine $engine, Request $request)
 	{
 		$title = _('User logout');
 		$cred = $engine->getCredentials();
@@ -1293,7 +1302,7 @@ class UserModule extends Module
 
 
 	//UserModule::callProfile
-	protected function callProfile($engine, $request)
+	protected function callProfile(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
@@ -1361,7 +1370,7 @@ class UserModule extends Module
 
 
 	//UserModule::callRegister
-	protected function callRegister($engine, $request)
+	protected function callRegister(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$error = TRUE;
@@ -1380,7 +1389,7 @@ class UserModule extends Module
 		return $this->_registerForm($engine, $request, $error);
 	}
 
-	private function _registerForm($engine, $request, $error)
+	private function _registerForm(Engine $engine, Request $request, $error)
 	{
 		$title = _('User registration');
 		$page = new Page(array('title' => $title));
@@ -1396,7 +1405,8 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _registerProcess($engine, $request, &$error)
+	private function _registerProcess(Engine $engine, Request $request,
+			&$error)
 	{
 		$error = '';
 
@@ -1413,7 +1423,7 @@ class UserModule extends Module
 		return TRUE;
 	}
 
-	private function _registerSuccess($engine, $request)
+	private function _registerSuccess(Engine $engine, Request $request)
 	{
 		$title = _('User registration');
 		$text = _("You should receive an e-mail shortly with your password, along with a confirmation key.\n
@@ -1431,7 +1441,7 @@ class UserModule extends Module
 
 
 	//UserModule::callReset
-	protected function callReset($engine, $request)
+	protected function callReset(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$error = TRUE;
@@ -1455,7 +1465,7 @@ class UserModule extends Module
 		return $this->_resetForm($engine, $request, $error);
 	}
 
-	private function _resetForm($engine, $request, $error)
+	private function _resetForm(Engine $engine, Request $request, $error)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1472,7 +1482,8 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _resetProcess($engine, $request, &$error)
+	private function _resetProcess(Engine $engine, Request $request,
+			&$error)
 	{
 		$error = '';
 
@@ -1489,7 +1500,7 @@ class UserModule extends Module
 		return TRUE;
 	}
 
-	private function _resetSuccess($engine, $request)
+	private function _resetSuccess(Engine $engine, Request $request)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1503,7 +1514,8 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _resetToken($engine, $request, $uid, $token)
+	private function _resetToken(Engine $engine, Request $request, $uid,
+			$token)
 	{
 		$error = TRUE;
 
@@ -1520,8 +1532,8 @@ class UserModule extends Module
 				$error);
 	}
 
-	private function _resetTokenForm($engine, $request, $uid, $token,
-			$error)
+	private function _resetTokenForm(Engine $engine, Request $request, $uid,
+			$token, $error)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1545,7 +1557,8 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _resetTokenProcess($engine, $request, $uid, $token)
+	private function _resetTokenProcess(Engine $engine, Request $request,
+			$uid, $token)
 	{
 		$ret = '';
 
@@ -1564,7 +1577,7 @@ class UserModule extends Module
 		return strlen($ret) ? $ret : FALSE;
 	}
 
-	private function _resetTokenSuccess($engine, $request)
+	private function _resetTokenSuccess(Engine $engine, Request $request)
 	{
 		$title = _('Password reset');
 		$page = new Page(array('title' => $title));
@@ -1583,7 +1596,7 @@ class UserModule extends Module
 
 
 	//UserModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
+	protected function callSubmit(Engine $engine, Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
 		$title = _('New user');
@@ -1611,10 +1624,11 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _submitProcess($engine, $request, &$user)
+	protected function _submitProcess(Engine $engine, Request $request,
+			&$user)
 	{
 		//verify the request
-		if($request === FALSE
+		if($request === NULL
 				|| $request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
@@ -1642,7 +1656,8 @@ class UserModule extends Module
 		return FALSE;
 	}
 
-	protected function _submitSuccess($engine, $request, $page, $user)
+	protected function _submitSuccess(Engine $engine, Request $request,
+			$page, User $user)
 	{
 		$r = $user->isEnabled()
 			? $user->getRequest($this->name)
@@ -1652,7 +1667,7 @@ class UserModule extends Module
 
 
 	//UserModule::callUnlock
-	protected function callUnlock($engine, $request)
+	protected function callUnlock(Engine $engine, Request $request)
 	{
 		$error = _('Unknown error');
 
@@ -1673,7 +1688,7 @@ class UserModule extends Module
 
 
 	//UserModule::callUpdate
-	protected function callUpdate($engine, $request)
+	protected function callUpdate(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$id = $request->getID();
@@ -1711,7 +1726,8 @@ class UserModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _updateProcess($engine, $request, $user)
+	private function _updateProcess(Engine $engine, Request $request,
+			User $user)
 	{
 		$ret = '';
 		$db = $engine->getDatabase();
@@ -1773,7 +1789,7 @@ class UserModule extends Module
 		return FALSE;
 	}
 
-	private function _updateSuccess($engine, $request)
+	private function _updateSuccess(Engine $engine, Request $request)
 	{
 		$id = $request->getID();
 		$title = _('Profile update');
@@ -1804,7 +1820,7 @@ class UserModule extends Module
 
 
 	//UserModule::callValidate
-	protected function callValidate($engine, $request)
+	protected function callValidate(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$error = TRUE;
@@ -1846,7 +1862,7 @@ class UserModule extends Module
 
 
 	//UserModule::callWidget
-	protected function callWidget($engine, $request)
+	protected function callWidget(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 
@@ -1868,7 +1884,7 @@ class UserModule extends Module
 		return new PageResponse($box);
 	}
 
-	protected function _widgetLogin($engine, $request)
+	protected function _widgetLogin(Engine $engine, Request $request)
 	{
 		$parameters = $request->getParameters();
 		$request = $engine->getRequest();
@@ -1939,7 +1955,7 @@ class UserModule extends Module
 
 
 	//UserModule::helperLogin
-	protected function helperLogin($engine, $username, $password)
+	protected function helperLogin(Engine $engine, $username, $password)
 	{
 		$log = $this->configGet('log');
 
@@ -1959,7 +1975,8 @@ class UserModule extends Module
 
 
 	//UserModule::helperLogout
-	protected function helperLogout($engine, $username, $closed = FALSE)
+	protected function helperLogout(Engine $engine, $username,
+			$closed = FALSE)
 	{
 		$log = $this->configGet('log');
 
@@ -1977,8 +1994,8 @@ class UserModule extends Module
 
 
 	//UserModule::helperRedirect
-	protected function helperRedirect($engine, $request, $page,
-			$text = FALSE)
+	protected function helperRedirect(Engine $engine, Request $request,
+			PageElement $page, $text = FALSE)
 	{
 		if($text === FALSE)
 			$text = _('Redirection in progress, please wait...');

@@ -53,7 +53,7 @@ class ProjectModule extends MultiContentModule
 	//static
 	//useful
 	//ProjectModule::attachSCM
-	static public function attachSCM($engine, $name, &$error = FALSE)
+	static public function attachSCM(Engine $engine, $name, &$error = FALSE)
 	{
 		//XXX use $module->getName()
 		$module = 'project';
@@ -142,34 +142,34 @@ class ProjectModule extends MultiContentModule
 
 	//accessors
 	//ProjectModule::canDownload
-	protected function canDownload($engine, $request = FALSE,
-			$content = FALSE)
+	protected function canDownload(Engine $engine, Request $request = NULL,
+			Content $content = NULL)
 	{
-		if($content === FALSE)
+		if($content === NULL)
 			$content = new ProjectContent($engine, $this);
 		return $content->canDownload($engine, $request);
 	}
 
 
 	//ProjectModule::canUpload
-	protected function canUpload($engine, $request = FALSE,
-			$content = FALSE)
+	protected function canUpload(Engine $engine, Request $request = NULL,
+			Content $content = NULL)
 	{
-		if($content === FALSE)
+		if($content === NULL)
 			$content = new ProjectContent($engine, $this);
 		return $content->canUpload($engine, $request);
 	}
 
 
 	//ProjectModule::getBugByID
-	protected function getBugByID($engine, $id)
+	protected function getBugByID(Engine $engine, $id)
 	{
 		return BugProjectContent::loadFromBugID($engine, $this, $id);
 	}
 
 
 	//ProjectModule::getFilter
-	protected function getFilter($engine, $request)
+	protected function getFilter(Engine $engine, Request $request)
 	{
 		$r = new Request($this->name, 'bug_list');
 		$form = new PageElement('form', array('request' => $r,
@@ -197,21 +197,21 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::getMembers
-	protected function getMembers($engine, $project)
+	protected function getMembers(Engine $engine, ProjectContent $project)
 	{
 		return $project->getMembers($engine);
 	}
 
 
 	//ProjectModule::_getProjectByName
-	protected function _getProjectByName($engine, $name)
+	protected function _getProjectByName(Engine $engine, $name)
 	{
 		return ProjectContent::loadFromName($engine, $this, $name);
 	}
 
 
 	//ProjectModule::isManager
-	protected function isManager($engine, $project)
+	protected function isManager(Engine $engine, ProjectContent $project)
 	{
 		$cred = $engine->getCredentials();
 
@@ -223,7 +223,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::isMember
-	protected function isMember($engine, $project)
+	protected function isMember(Engine $engine, ProjectContent $project)
 	{
 		$cred = $engine->getCredentials();
 
@@ -240,8 +240,8 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::setContext
-	protected function setContext($engine = FALSE, $request = FALSE,
-			$content = FALSE)
+	protected function setContext(Engine $engine = NULL,
+			Request $request = NULL, Content $content = NULL)
 	{
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
@@ -313,9 +313,9 @@ class ProjectModule extends MultiContentModule
 
 	//calls
 	//ProjectModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
-		if($request === FALSE)
+		if($request === NULL)
 			return parent::callAdmin($engine, $request);
 		switch($request->get('type'))
 		{
@@ -327,7 +327,7 @@ class ProjectModule extends MultiContentModule
 		}
 	}
 
-	private function _adminBugs($engine, $request)
+	private function _adminBugs(Engine $engine, Request $request)
 	{
 		//FIXME also set the columns
 		$this->text_content_admin = _('Bugs administration');
@@ -339,7 +339,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callBugList
-	protected function callBugList($engine, $request)
+	protected function callBugList(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 		$title = _('Bug reports');
@@ -418,7 +418,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callBugReply
-	protected function callBugReply($engine, $request)
+	protected function callBugReply(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$user = new User($engine, $cred->getUserID());
@@ -459,14 +459,14 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$title = _('Projects');
 		$latest = $this->canDownload($engine, $request)
 			? array('project', 'download', 'bug', 'screenshot')
 			: array('project', 'bug');
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->getName(),
@@ -485,7 +485,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callDownload
-	protected function callDownload($engine, $request = FALSE)
+	protected function callDownload(Engine $engine, Request $request = NULL)
 	{
 		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
@@ -496,9 +496,9 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callLatest
-	protected function callLatest($engine, $request = FALSE)
+	protected function callLatest(Engine $engine, $request = NULL)
 	{
-		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$type = ($request !== NULL) ? $request->get('type') : FALSE;
 
 		switch($type)
 		{
@@ -518,7 +518,7 @@ class ProjectModule extends MultiContentModule
 		}
 	}
 
-	private function _latestBugReports($engine, $request)
+	private function _latestBugReports(Engine $engine, Request $request)
 	{
 		$title = _('Latest bug reports');
 
@@ -545,7 +545,7 @@ class ProjectModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	private function _latestProjects($engine, $request)
+	private function _latestProjects(Engine $engine, Request $request)
 	{
 		$title = _('Latest projects');
 
@@ -572,7 +572,7 @@ class ProjectModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	private function _latestDownloads($engine, $request)
+	private function _latestDownloads(Engine $engine, Request $request)
 	{
 		$title = _('Latest downloads');
 
@@ -599,7 +599,7 @@ class ProjectModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	private function _latestScreenshots($engine, $request)
+	private function _latestScreenshots(Engine $engine, Request $request)
 	{
 		$title = _('Latest screenshots');
 
@@ -629,7 +629,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callSubmitRelease
-	protected function callSubmitRelease($engine, $request)
+	protected function callSubmitRelease(Engine $engine, Request $request)
 	{
 		$project = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request);
@@ -659,14 +659,14 @@ class ProjectModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	protected function _submitProcessRelease($engine, $request, $project,
-			&$content)
+	protected function _submitProcessRelease(Engine $engine,
+			Request $request, $project, &$content)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$project_query_project_download_insert;
 
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//FIXME obtain the download path
 		//XXX this assumes the file was just being uploaded
@@ -697,8 +697,8 @@ class ProjectModule extends MultiContentModule
 		return FALSE;
 	}
 
-	protected function _submitSuccessRelease($engine, $request, $page,
-			$content)
+	protected function _submitSuccessRelease(Engine $engine,
+			Request $request, $page, Content $content)
 	{
 		$r = new Request($this->name, 'download', $content->getID(),
 			$content->getTitle());
@@ -709,7 +709,8 @@ class ProjectModule extends MultiContentModule
 
 	//forms
 	//ProjectModule::formBugReply
-	protected function formBugReply($engine, $request, $bug, $project)
+	protected function formBugReply(Engine $engine, Request $request,
+			BugProjectContent $bug, $project)
 	{
 		$r = new Request($this->name, 'bugReply', $request->getID(),
 			$request->getTitle());
@@ -736,7 +737,8 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::formSubmitRelease
-	protected function formSubmitRelease($engine, $request, $project)
+	protected function formSubmitRelease(Engine $engine, Request $request,
+			ProjectContent $project)
 	{
 		$r = new Request($this->name, 'submit', $project->getID(),
 			$project->getTitle(), array('type' => 'download'));
@@ -760,7 +762,8 @@ class ProjectModule extends MultiContentModule
 
 	//helpers
 	//ProjectModule::helperDisplayBug
-	protected function helperDisplayBug($engine, $request, $page, $content)
+	protected function helperDisplayBug(Engine $engine, Request $request,
+			PageElement $page, $content)
 	{
 		$project = $this->getContent($engine, $content['project_id']);
 		$c = $content;
@@ -787,8 +790,9 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::helperDisplayBugMetadata
-	protected function helperDisplayBugMetadata($engine, $request, $page,
-			$bug, $project)
+	protected function helperDisplayBugMetadata(Engine $engine,
+			Request $request, PageElement $page, $bug,
+			ProjectContent $project)
 	{
 		global $config;
 		$encoding = $config->get('defaults', 'charset');
@@ -854,8 +858,8 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::helperDisplayBugReply
-	protected function helperDisplayBugReply($engine, $request, $page,
-			$content)
+	protected function helperDisplayBugReply(Engine $engine,
+			Request $request, PageElement $page, $content)
 	{
 		$bug = $this->getBugByID($engine, $content['bug_id']);
 		$project = ($bug !== FALSE)
@@ -878,13 +882,15 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::helperListButtons
-	protected function helperListButtons($engine, $page, $request = FALSE)
+	protected function helperListButtons(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 	}
 
 
 	//ProjectModule::helperListView
-	protected function helperListView($engine, $request = FALSE)
+	protected function helperListView(Engine $engine,
+			Request $request = NULL)
 	{
 		$view = parent::helperListView($engine, $request);
 		if($request->get('type') == 'screenshot')
@@ -897,8 +903,8 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::helperPreviewMetadata
-	protected function helperPreviewMetadata($engine, $preview, $request,
-			$content = FALSE)
+	protected function helperPreviewMetadata(Engine $engine, $preview,
+			Request $request, $content = FALSE)
 	{
 		if($this->content_class == 'BugProjectContent')
 			return parent::helperPreviewMetadata($engine, $preview,

@@ -63,59 +63,59 @@ abstract class ContentModule extends Module
 	//accessors
 	//FIXME make these more generic: can($action)
 	//ContentModule::canAdmin
-	public function canAdmin($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canAdmin(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
 		$error = _('Permission denied');
 		if(!$credentials->isAdmin())
 			return FALSE;
-		if($content === FALSE)
+		if($content === NULL)
 			return TRUE;
-		return $content->canAdmin($engine, FALSE, $error);
+		return $content->canAdmin($engine, NULL, $error);
 	}
 
 
 	//ContentModule::canDelete
-	public function canDelete($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canDelete(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $content, $error);
 	}
 
 
 	//ContentModule::canDisable
-	public function canDisable($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canDisable(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $content, $error);
 	}
 
 
 	//ContentModule::canEnable
-	public function canEnable($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canEnable(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		return $this->canAdmin($engine, $request, $content, $error);
 	}
 
 
 	//ContentModule::canPreview
-	public function canPreview($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canPreview(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$class = $this->content_class;
 
-		if($content === FALSE)
+		if($content === NULL)
 			$content = new $class($engine, $this);
-		return $content->canPreview($engine, FALSE, $error);
+		return $content->canPreview($engine, NULL, $error);
 	}
 
 
 	//ContentModule::canPublish
-	public function canPublish($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canPublish(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -131,15 +131,15 @@ abstract class ContentModule extends Module
 				$error = _('Only moderators can publish content');
 				return FALSE;
 			}
-		if($content === FALSE)
+		if($content === NULL)
 			return TRUE;
-		return $content->canPublish($engine, FALSE, $error);
+		return $content->canPublish($engine, NULL, $error);
 	}
 
 
 	//ContentModule::canSubmit
-	public function canSubmit($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canSubmit(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 		$anonymous = _('Anonymous submissions are not allowed');
@@ -150,15 +150,15 @@ abstract class ContentModule extends Module
 				$error = $anonymous;
 				return FALSE;
 			}
-		if($content === FALSE)
+		if($content === NULL)
 			return TRUE;
-		return $content->canSubmit($engine, FALSE, $error);
+		return $content->canSubmit($engine, NULL, $error);
 	}
 
 
 	//ContentModule::canUnpublish
-	public function canUnpublish($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canUnpublish(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -170,15 +170,15 @@ abstract class ContentModule extends Module
 		if(!$credentials->isAdmin())
 			if($this->configGet('moderate'))
 				return FALSE;
-		if($content === FALSE)
+		if($content === NULL)
 			return TRUE;
-		return $content->canUnpublish($engine, FALSE, $error);
+		return $content->canUnpublish($engine, NULL, $error);
 	}
 
 
 	//ContentModule::canUpdate
-	public function canUpdate($engine, $request = FALSE,
-			$content = FALSE, &$error = FALSE)
+	public function canUpdate(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -186,15 +186,15 @@ abstract class ContentModule extends Module
 		if($credentials->getUserID() == 0)
 			if(!$this->configGet('anonymous'))
 				return FALSE;
-		if($content === FALSE)
+		if($content === NULL)
 			return TRUE;
-		return $content->canUpdate($engine, FALSE, $error);
+		return $content->canUpdate($engine, NULL, $error);
 	}
 
 
 	//ContentModule::getContent
-	public function getContent($engine, $id, $title = FALSE,
-			$request = FALSE)
+	public function getContent(Engine $engine, $id, $title = FALSE,
+			Request $request = NULL)
 	{
 		$class = $this->content_class;
 
@@ -346,7 +346,7 @@ abstract class ContentModule extends Module
 
 	//forms
 	//ContentModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$r = $this->getRequest('submit');
 
@@ -360,7 +360,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::formUpdate
-	protected function formUpdate($engine, $request, $content)
+	protected function formUpdate(Engine $engine, Request $request,
+			Content $content)
 	{
 		//XXX the title may be wrong
 		$r = $content->getRequest('update');
@@ -377,7 +378,7 @@ abstract class ContentModule extends Module
 
 	//actions
 	//ContentModule::actions
-	protected function actions($engine, $request)
+	protected function actions(Engine $engine, Request $request)
 	{
 		//FIXME review
 		$cred = $engine->getCredentials();
@@ -410,18 +411,18 @@ abstract class ContentModule extends Module
 
 	//calls
 	//ContentModule::callAdmin
-	protected function callAdmin($engine, $request = FALSE)
+	protected function callAdmin(Engine $engine, Request $request = NULL)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_list_admin;
 		$args = array('module_id' => $this->id);
-		$p = ($request !== FALSE) ? $request->get('page') : 0;
+		$p = ($request !== NULL) ? $request->get('page') : 0;
 		$pcnt = FALSE;
 		$error = FALSE;
 		$dialog = FALSE;
 
 		//check credentials
-		if(!$this->canAdmin($engine, $request, FALSE, $error))
+		if(!$this->canAdmin($engine, $request, NULL, $error))
 		{
 			$r = new Request('user', 'login');
 			$dialog = new PageElement('dialog', array(
@@ -433,7 +434,7 @@ abstract class ContentModule extends Module
 			return new PageResponse($dialog, Response::$CODE_EPERM);
 		}
 		//perform actions if necessary
-		if($request !== FALSE)
+		if($request !== NULL)
 			$dialog = $this->helperAdminActions($engine, $request);
 		//administrative page
 		$title = $this->text_content_admin;
@@ -471,7 +472,7 @@ abstract class ContentModule extends Module
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
 			return new ErrorResponse($error);
 		$r = $this->getRequest('admin');
-		if($request !== FALSE
+		if($request !== NULL
 				&& ($type = $request->get('type')) !== FALSE)
 			$r->set('type', $type);
 		$columns = array('icon' => '', 'title' => _('Title'),
@@ -499,12 +500,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$class = $this->content_class;
-		$p = ($request !== FALSE) ? $request->get('page') : 0;
+		$p = ($request !== NULL) ? $request->get('page') : 0;
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $this->text_content_title));
 		$page->append('title', array('stock' => $this->name,
@@ -536,7 +537,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callDisplay
-	protected function callDisplay($engine, $request)
+	protected function callDisplay(Engine $engine, Request $request)
 	{
 		$error = _('Could not display the content');
 
@@ -558,17 +559,17 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callGroup
-	protected function callGroup($engine, $request)
+	protected function callGroup(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$group = ($request !== FALSE)
+		$group = ($request !== NULL)
 			? Group::lookup($engine, $request->getTitle(),
 					$request->getID())
 				: Group::lookup($engine, $cred->getGroupname(),
 						$cred->getGroupID());
-		$p = ($request !== FALSE) ? $request->get('page') : 0;
+		$p = ($request !== NULL) ? $request->get('page') : 0;
 
 		$title = $this->text_content_list_title_group;
 		$title = $this->text_content_list_title_by_group.' '
@@ -617,7 +618,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callHeadline
-	protected function callHeadline($engine, $request = FALSE)
+	protected function callHeadline(Engine $engine, Request $request = NULL)
 	{
 		$class = $this->content_class;
 		$title = $this->text_content_headline_title;
@@ -662,14 +663,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callList
-	protected function callList($engine, $request = FALSE)
+	protected function callList(Engine $engine, Request $request = NULL)
 	{
 		$class = $this->content_class;
 		$db = $engine->getDatabase();
-		$user = ($request !== FALSE)
+		$user = ($request !== NULL)
 			? User::lookup($engine, $request->getTitle(),
 					$request->getID()) : FALSE;
-		$p = ($request !== FALSE) ? $request->get('page') : 0;
+		$p = ($request !== NULL) ? $request->get('page') : 0;
 		$error = _('Unable to list contents');
 		$dialog = FALSE;
 
@@ -679,7 +680,7 @@ abstract class ContentModule extends Module
 			$actions[] = 'post';
 		if($this->canUnpublish($engine, $request))
 			$actions[] = 'unpost';
-		if($request !== FALSE)
+		if($request !== NULL)
 			foreach($actions as $a)
 				if($request->get($a) !== FALSE)
 				{
@@ -734,7 +735,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callPreview
-	protected function callPreview($engine, $request)
+	protected function callPreview(Engine $engine, Request $request)
 	{
 		$error = _('Could not preview content');
 
@@ -751,7 +752,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callPublish
-	protected function callPublish($engine, $request)
+	protected function callPublish(Engine $engine, Request $request)
 	{
 		$error = _('Could not preview content');
 
@@ -799,7 +800,8 @@ abstract class ContentModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _publishProcess($engine, $request, $content)
+	protected function _publishProcess(Engine $engine, Request $request,
+			Content $content)
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -809,7 +811,7 @@ abstract class ContentModule extends Module
 			'user_id' => $cred->getUserID());
 
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//publish the content
 		if($db->query($engine, $query, $args) === FALSE)
@@ -817,7 +819,8 @@ abstract class ContentModule extends Module
 		return FALSE;
 	}
 
-	protected function _publishSuccess($engine, $request, $content, $page)
+	protected function _publishSuccess(Engine $engine, Request $request,
+			Content $content, $page)
 	{
 		$r = $content->getRequest();
 		return $this->helperRedirect($engine, $r, $page,
@@ -826,14 +829,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callSubmit
-	protected function callSubmit($engine, $request = FALSE)
+	protected function callSubmit(Engine $engine, Request $request = NULL)
 	{
 		$title = $this->text_content_submit_content;
 		$code = 0;
 		$error = _('Could not submit content');
 
 		//check permissions
-		if($this->canSubmit($engine, $request, FALSE, $error) === FALSE)
+		if($this->canSubmit($engine, $request, NULL, $error) === FALSE)
 			return new ErrorResponse($error,
 				Response::$CODE_EUNKNOWN);
 		//create the page
@@ -863,7 +866,7 @@ abstract class ContentModule extends Module
 		return new PageResponse($page, $code);
 	}
 
-	protected function _submitContent($engine, $request)
+	protected function _submitContent(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
@@ -877,10 +880,11 @@ abstract class ContentModule extends Module
 		return new $class($engine, $this, $content);
 	}
 
-	protected function _submitProcess($engine, $request, $content)
+	protected function _submitProcess(Engine $engine, Request $request,
+			Content $content)
 	{
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//store the content uploaded
 		$error = _('Internal server error');
@@ -889,7 +893,8 @@ abstract class ContentModule extends Module
 		return FALSE;
 	}
 
-	protected function _submitSuccess($engine, $request, $content, $page)
+	protected function _submitSuccess(Engine $engine, Request $request,
+			Content $content, PageElement $page)
 	{
 		$r = $content->getRequest();
 		return $this->helperRedirect($engine, $r, $page,
@@ -898,7 +903,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callUpdate
-	protected function callUpdate($engine, $request)
+	protected function callUpdate(Engine $engine, Request $request)
 	{
 		//obtain the content
 		$error = _('Unable to fetch content');
@@ -908,8 +913,7 @@ abstract class ContentModule extends Module
 					Response::$CODE_ENOENT);
 		//check permissions
 		$error = _('Could not update content');
-		if($this->canUpdate($engine, $request, FALSE, $error)
-				=== FALSE)
+		if($this->canUpdate($engine, $request, NULL, $error) === FALSE)
 			return new ErrorResponse($error, Response::$CODE_EPERM);
 		//create the page
 		$title = _('Update ').$content->getTitle();
@@ -933,10 +937,11 @@ abstract class ContentModule extends Module
 		return new PageResponse($page);
 	}
 
-	protected function _updateProcess($engine, $request, $content)
+	protected function _updateProcess(Engine $engine, Request $request,
+			Content $content)
 	{
 		//verify the request
-		if($request === FALSE || $request->isIdempotent())
+		if($request === NULL || $request->isIdempotent())
 			return TRUE;
 		//update the content
 		$error = _('Internal server error');
@@ -945,7 +950,8 @@ abstract class ContentModule extends Module
 		return FALSE;
 	}
 
-	protected function _updateSuccess($engine, $request, $content, $page)
+	protected function _updateSuccess(Engine $engine, Request $request,
+			Content $content, PageElement $page)
 	{
 		$r = $content->getRequest();
 		return $this->helperRedirect($engine, $r, $page,
@@ -955,7 +961,8 @@ abstract class ContentModule extends Module
 
 	//helpers
 	//ContentModule::helperAction
-	protected function helperAction($engine, $stock, $request, $text)
+	protected function helperAction(Engine $engine, $stock,
+			Request $request, $text)
 	{
 		$icon = new PageElement('image', array('stock' => $stock));
 		$link = new PageElement('link', array('request' => $request,
@@ -966,14 +973,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperActions
-	protected function helperActions($engine, $request)
+	protected function helperActions(Engine $engine, Request $request)
 	{
 		return FALSE;
 	}
 
 
 	//ContentModule::helperActionsAdmin
-	protected function helperActionsAdmin($engine, $request)
+	protected function helperActionsAdmin(Engine $engine, Request $request)
 	{
 		if($request->get('admin') === 0)
 			return FALSE;
@@ -986,7 +993,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperActionsGroup
-	protected function helperActionsGroup($engine, $request, $group)
+	protected function helperActionsGroup(Engine $engine, Request $request,
+			Group $group)
 	{
 		$ret = array();
 
@@ -1001,7 +1009,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperActionsList
-	protected function helperActionsList($engine, $request, $user)
+	protected function helperActionsList(Engine $engine, Request $request,
+			User $user)
 	{
 		$ret = array();
 
@@ -1016,7 +1025,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperActionsSubmit
-	protected function helperActionsSubmit($engine, $request)
+	protected function helperActionsSubmit(Engine $engine, Request $request)
 	{
 		$ret = array();
 
@@ -1028,7 +1037,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperActionsUser
-	protected function helperActionsUser($engine, $request, $user)
+	protected function helperActionsUser(Engine $engine, Request $request,
+			User $user)
 	{
 		$ret = array();
 		$cred = $engine->getCredentials();
@@ -1044,7 +1054,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperAdminActions
-	protected function helperAdminActions($engine, $request)
+	protected function helperAdminActions(Engine $engine, Request $request)
 	{
 		$actions = array('delete', 'disable', 'enable', 'post',
 			'unpost');
@@ -1060,7 +1070,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperAdminButtons
-	protected function helperAdminButtons($engine, $page, $request)
+	protected function helperAdminButtons(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 		$r = $this->getRequest();
 		$page->append('link', array('request' => $r,
@@ -1073,7 +1084,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperAdminRow
-	protected function helperAdminRow($engine, $row, $res)
+	protected function helperAdminRow(Engine $engine, PageElement $row,
+			$res)
 	{
 		$db = $engine->getDatabase();
 		$no = new PageElement('image', array('stock' => 'no',
@@ -1103,7 +1115,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperAdminToolbar
-	protected function helperAdminToolbar($engine, $page, $request)
+	protected function helperAdminToolbar(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 		$actions = array();
 
@@ -1143,14 +1156,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDelete
-	protected function helperDelete($engine, $request)
+	protected function helperDelete(Engine $engine, Request $request)
 	{
 		$query = static::$query_delete;
 		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if(!$this->canDelete($engine, $request, FALSE, $error))
+		if(!$this->canDelete($engine, $request, NULL, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
@@ -1164,14 +1177,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperDisable
-	protected function helperDisable($engine, $request)
+	protected function helperDisable(Engine $engine, Request $request)
 	{
 		$query = static::$query_disable;
 		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if(!$this->canDisable($engine, $request, FALSE, $error))
+		if(!$this->canDisable($engine, $request, NULL, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
@@ -1185,14 +1198,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperEnable
-	protected function helperEnable($engine, $request)
+	protected function helperEnable(Engine $engine, Request $request)
 	{
 		$query = static::$query_enable;
 		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if(!$this->canEnable($engine, $request, FALSE, $error))
+		if(!$this->canEnable($engine, $request, NULL, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
@@ -1206,9 +1219,10 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperListButtons
-	protected function helperListButtons($engine, $page, $request = FALSE)
+	protected function helperListButtons(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
-		$user = ($request !== FALSE)
+		$user = ($request !== NULL)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
 
@@ -1225,7 +1239,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperListTitle
-	protected function helperListTitle($engine, $page, $request = FALSE)
+	protected function helperListTitle(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 		$title = $page->getProperty('title');
 
@@ -1235,10 +1250,11 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperListToolbar
-	protected function helperListToolbar($engine, $page, $request = FALSE)
+	protected function helperListToolbar(Engine $engine, PageElement $page,
+			Request $request = NULL)
 	{
 		$cred = $engine->getCredentials();
-		$user = ($request !== FALSE)
+		$user = ($request !== NULL)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
 
@@ -1274,11 +1290,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperListView
-	protected function helperListView($engine, $request = FALSE)
+	protected function helperListView(Engine $engine,
+			Request $request = NULL)
 	{
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
-		$user = ($request !== FALSE && $request->getID() !== FALSE)
+		$user = ($request !== NULL && $request->getID() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
 		$r = FALSE;
@@ -1298,17 +1315,18 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperPaging
-	protected function helperPaging($engine, $request, $page, $limit, $pcnt)
+	protected function helperPaging(Engine $engine, Request $request,
+			PageElement $page, $limit, $pcnt)
 	{
-		$action = ($request !== FALSE) ? $request->getAction() : FALSE;
-		$id = ($request !== FALSE) ? $request->getID() : FALSE;
-		$title = ($request !== FALSE) ? $request->getTitle() : FALSE;
-		$args = ($request !== FALSE)
+		$action = ($request !== NULL) ? $request->getAction() : FALSE;
+		$id = ($request !== NULL) ? $request->getID() : FALSE;
+		$title = ($request !== NULL) ? $request->getTitle() : FALSE;
+		$args = ($request !== NULL)
 			? $request->getParameters() : array();
 
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
-		if($request === FALSE
+		if($request === NULL
 				|| ($pcur = $request->get('page')) === FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
@@ -1344,14 +1362,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperPost
-	protected function helperPost($engine, $request)
+	protected function helperPost(Engine $engine, Request $request)
 	{
 		$query = static::$query_publish;
 		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if(!$this->canPublish($engine, $request, FALSE, $error))
+		if(!$this->canPublish($engine, $request, NULL, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
@@ -1365,8 +1383,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperRedirect
-	protected function helperRedirect($engine, $request, $page,
-			$text = FALSE)
+	protected function helperRedirect(Engine $engine, Request $request,
+			PageElement $page, $text = FALSE)
 	{
 		if($text === FALSE)
 			$text = $this->text_content_redirect_progress;
@@ -1385,7 +1403,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperSubmitButtons
-	protected function helperSubmitButtons($engine, $request, $page)
+	protected function helperSubmitButtons(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		$r = $this->getRequest();
 
@@ -1407,7 +1426,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperSubmitContent
-	protected function helperSubmitContent($engine, $request, $page)
+	protected function helperSubmitContent(Engine $engine, Request $request,
+			PageElement $page)
 	{
 		$class = $this->content_class;
 
@@ -1417,11 +1437,11 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperSubmitPreview
-	protected function helperSubmitPreview($engine, $request, $content,
-			$page)
+	protected function helperSubmitPreview(Engine $engine, Request $request,
+			$content, $page)
 	{
 		if($this->canPreview($engine, $request, $content) === FALSE
-				|| $request === FALSE
+				|| $request === NULL
 				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
@@ -1429,12 +1449,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperToolbar
-	protected function helperToolbar($engine, $request = FALSE,
-			$content = FALSE, $page)
+	protected function helperToolbar(Engine $engine,
+			Request $request = NULL, $content = NULL, $page)
 	{
 		$class = $this->content_class;
 
-		if($content === FALSE)
+		if($content === NULL)
 			$content = new $class($engine, $this);
 		return $page->append($content->displayToolbar($engine,
 				$request));
@@ -1442,14 +1462,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperUnpost
-	protected function helperUnpost($engine, $request)
+	protected function helperUnpost(Engine $engine, Request $request)
 	{
 		$query = static::$query_unpublish;
 		$args = array('module_id' => $this->getID());
 		$cred = $engine->getCredentials();
 
 		$error = _('Permission denied');
-		if(!$this->canUnpublish($engine, $request, FALSE, $error))
+		if(!$this->canUnpublish($engine, $request, NULL, $error))
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		if($cred->isAdmin())
@@ -1463,19 +1483,19 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperUpdateContent
-	protected function helperUpdateContent($engine, $request, $content,
-			$page)
+	protected function helperUpdateContent(Engine $engine, Request $request,
+			Content $content, PageElement $page)
 	{
 		$page->append($content->form($engine, $request));
 	}
 
 
 	//ContentModule::helperUpdatePreview
-	protected function helperUpdatePreview($engine, $request, $content,
-			$page)
+	protected function helperUpdatePreview(Engine $engine, Request $request,
+			Content $content, PageElement $page)
 	{
 		if($this->canPreview($engine, $request, $content) === FALSE
-				|| $request === FALSE
+				|| $request === NULL
 				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
@@ -1483,8 +1503,8 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::helperUpdateButtons
-	protected function helperUpdateButtons($engine, $request, $content,
-			$page)
+	protected function helperUpdateButtons(Engine $engine, Request $request,
+			Content $content, PageElement $page)
 	{
 		$hbox = $page->append('hbox');
 		$r = new Request($this->name, FALSE, $request->getID(),

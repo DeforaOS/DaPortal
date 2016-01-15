@@ -40,7 +40,7 @@ class FileDownloadContent extends DownloadContent
 
 	//useful
 	//FileDownloadContent::displayButtons
-	public function displayButtons(Engine $engine, $request)
+	public function displayButtons(Engine $engine, Request $request)
 	{
 		$module = $this->getModule();
 		$parent = $this->getParentSubmitted($request);
@@ -60,7 +60,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$text = $this->getContent($engine);
 		$format = _('%A, %B %e %Y, %H:%M:%S');
@@ -118,7 +118,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::displayToolbar
-	public function displayToolbar(Engine $engine, $request = FALSE)
+	public function displayToolbar(Engine $engine, Request $request = NULL)
 	{
 		$credentials = $engine->getCredentials();
 		$module = $this->getModule();
@@ -135,7 +135,7 @@ class FileDownloadContent extends DownloadContent
 				'request' => $this->getRequest('download'),
 				'text' => _('Download')));
 		if($this->getID() !== FALSE
-				&& $this->canUpdate($engine, FALSE, $this))
+				&& $this->canUpdate($engine, NULL, $this))
 		{
 			//rename
 			$r = $this->getRequest('update');
@@ -156,7 +156,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::download
-	public function download(Engine $engine, $request)
+	public function download(Engine $engine, Request $request)
 	{
 		//output the file
 		if(($filename = $this->getFilename($engine)) === FALSE
@@ -174,12 +174,12 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::form
-	public function form(Engine $engine, $request = FALSE)
+	public function form(Engine $engine, Request $request = NULL)
 	{
 		return parent::form($engine, $request);
 	}
 
-	protected function _formSubmit(Engine $engine, $request)
+	protected function _formSubmit(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
 		$vbox->append('filechooser', array('text' => _('File: '),
@@ -189,12 +189,14 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::save
-	public function save(Engine $engine, $request = FALSE, &$error = FALSE)
+	public function save(Engine $engine, Request $request = NULL,
+			&$error = FALSE)
 	{
 		return parent::save($engine, $request, $error);
 	}
 
-	protected function _saveInsert(Engine $engine, $request, &$error)
+	protected function _saveInsert(Engine $engine, Request $request = NULL,
+			&$error)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$file_query_insert;

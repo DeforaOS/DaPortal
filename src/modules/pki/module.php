@@ -56,8 +56,8 @@ class PKIModule extends MultiContentModule
 
 	//accessors
 	//PKIModule::canSubmit
-	public function canSubmit($engine, $request = FALSE, $content = FALSE,
-			&$error = FALSE)
+	public function canSubmit(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
 	{
 		$credentials = $engine->getCredentials();
 
@@ -68,8 +68,8 @@ class PKIModule extends MultiContentModule
 
 
 	//PKIModule::setContext
-	protected function setContext($engine = FALSE, $request = FALSE,
-			$content = FALSE)
+	protected function setContext(Engine $engine = NULL,
+			Request $request = NULL, Content $content = NULL)
 	{
 		parent::setContext($engine, $request, $content);
 		switch($this->content_class)
@@ -117,12 +117,12 @@ class PKIModule extends MultiContentModule
 
 	//calls
 	//PKIModule::callDefault
-	protected function callDefault($engine, $request = FALSE)
+	protected function callDefault(Engine $engine, Request $request = NULL)
 	{
 		$title = _('Certification activity');
 		$latest = array('ca', 'caserver', 'caclient');
 
-		if($request !== FALSE && $request->getID() !== FALSE)
+		if($request !== NULL && $request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->getName(),
@@ -141,9 +141,9 @@ class PKIModule extends MultiContentModule
 
 
 	//PKIModule::callLatest
-	protected function callLatest($engine, $request)
+	protected function callLatest(Engine $engine, Request $request)
 	{
-		$type = ($request !== FALSE) ? $request->get('type') : FALSE;
+		$type = ($request !== NULL) ? $request->get('type') : FALSE;
 
 		//XXX merge these sub-functions together
 		switch($type)
@@ -161,7 +161,7 @@ class PKIModule extends MultiContentModule
 		}
 	}
 
-	private function _latestCAs($engine, $request, $type)
+	private function _latestCAs(Engine $engine, Request $request, $type)
 	{
 		$class = static::$content_classes['ca'];
 		$title = _('Latest Certification Authorities');
@@ -191,7 +191,8 @@ class PKIModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	private function _latestCAClients($engine, $request, $type)
+	private function _latestCAClients(Engine $engine, Request $request,
+			$type)
 	{
 		$class = static::$content_classes['caclient'];
 		$title = _('Latest CA clients');
@@ -221,7 +222,8 @@ class PKIModule extends MultiContentModule
 		return new PageResponse($page);
 	}
 
-	private function _latestCAServers($engine, $request, $type)
+	private function _latestCAServers(Engine $engine, Request $request,
+			$type)
 	{
 		$class = static::$content_classes['caserver'];
 		$title = _('Latest CA servers');
@@ -253,7 +255,7 @@ class PKIModule extends MultiContentModule
 
 
 	//PKIModule::formSubmit
-	protected function formSubmit($engine, $request)
+	protected function formSubmit(Engine $engine, Request $request)
 	{
 		$class = static::$content_classes['ca'];
 		$parent = $class::load($engine, $this, $request->getID(),
