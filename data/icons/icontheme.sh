@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2014-2015 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2014-2016 Pierre Pronchery <khorben@defora.org>
 #This file is part of DeforaOS Artwork
 #Redistribution and use in source and binary forms, with or without
 #modification, are permitted provided that the following conditions are met:
@@ -140,7 +140,7 @@ _icontheme()
 	$MKDIR -- "$dirname"					|| return 2
 	($CAT << EOF
 /* \$Id\$ */
-/* Copyright (c) 2014-2015 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2014-2016 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Web DaPortal */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
