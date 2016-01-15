@@ -52,9 +52,31 @@ $form->append('button', array('type' => 'submit', 'text' => 'Submit'));
 //treeview
 $columns = array('title' => 'Title', 'col1' => 'Header 1',
 	'col2' => 'Header 2', 'col3' => 'Header 3');
+$vbox1->append('title', array('text' => 'Treeview'));
 $view = $vbox1->append('treeview', array('columns' => $columns));
-$view->append('row', array('title' => 'Title column', 'col1' => 'Column 1',
-		'col2' => 'Column 2', 'col3' => 'Column 3'));
+$view->append('row', array('title' => 'Row 1, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
+$view->append('row', array('title' => 'Row 2, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
+
+//treeview (alternate)
+$vbox1->append('title', array('text' => 'Treeview (alternate)'));
+$view = $vbox1->append('treeview', array('columns' => $columns,
+		'alternate' => TRUE));
+$view->append('row', array('title' => 'Row 1, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
+$view->append('row', array('title' => 'Row 2, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
+$view->append('row', array('title' => 'Row 3, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
+$view->append('row', array('title' => 'Row 4, title column',
+		'col1' => 'Column 1', 'col2' => 'Column 2',
+		'col3' => 'Column 3'));
 
 //statusbar
 $footer = $page->append('statusbar');
