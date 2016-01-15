@@ -28,6 +28,8 @@
 ICONS="
 actions/back				back
 actions/bottom				bottom
+actions/changes-allow			unlock
+actions/changes-prevent			lock
 actions/document-send			submit
 actions/filenew				file-new
 actions/folder-new			folder-new
@@ -37,13 +39,13 @@ actions/go-jump				connect
 actions/gtk-about			about
 actions/gtk-add				add more subscribe
 actions/gtk-bold			bold
-actions/gtk-cancel			cancel disable lock
+actions/gtk-cancel			cancel disable
 actions/gtk-clear			remove-format
 actions/gtk-close			close
 actions/gtk-copy			copy
 actions/gtk-cut				cut
 actions/gtk-delete			delete
-actions/gtk-execute			enable unlock
+actions/gtk-execute			enable
 actions/gtk-find			search
 actions/gtk-go-up			updir
 actions/gtk-goto-bottom			subscript
