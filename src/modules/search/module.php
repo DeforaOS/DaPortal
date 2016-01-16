@@ -144,7 +144,7 @@ class SearchModule extends Module
 				Response::$CODE_EPERM);
 		$title = _('Search administration');
 		//FIXME implement settings
-		return FALSE;
+		return new ErrorResponse(_('Not implemented'));
 	}
 
 
