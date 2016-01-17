@@ -45,7 +45,7 @@ class TopModule extends Module
 	//methods
 	//calls
 	//TopModule::callAdmin
-	protected function callAdmin($engine, $request)
+	protected function callAdmin(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 
@@ -58,7 +58,7 @@ class TopModule extends Module
 
 
 	//TopModule::callDefault
-	private function callDefault($engine, $request = FALSE)
+	private function callDefault($engine, Request $request = NULL)
 	{
 		//FIXME implement
 		return FALSE;

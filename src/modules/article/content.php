@@ -44,7 +44,7 @@ class ArticleContent extends Content
 
 
 	//ArticleContent::previewContent
-	public function previewContent(Engine $engine, $request = FALSE)
+	public function previewContent(Engine $engine, Request $request = NULL)
 	{
 		$content = $this->getContent($engine);
 		$length = $this->preview_length;
