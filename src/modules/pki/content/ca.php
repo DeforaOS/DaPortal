@@ -354,8 +354,9 @@ class CAPKIContent extends PKIContent
 			.' -infiles '.escapeshellarg($in);
 		$res = -1;
 		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
-		exec($cmd, $output, $res);
-		if($res != 0)
+		$fds = array(1 => STDOUT, 2 => STDOUT);
+		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
+				|| ($res = proc_close($fp)) != 0)
 		{
 			$error = _('Could not sign the certificate request');
 			return FALSE;

@@ -622,12 +622,12 @@ abstract class PKIContent extends ContentMulti
 			.' -config '.escapeshellarg($opensslcnf).$extensions
 			.' -keyout '.escapeshellarg($keyout)
 			.' -out '.escapeshellarg($out)
-			.' -subj '.escapeshellarg($subject)
-			.' 2>&1'; //XXX avoid garbage on the standard error
+			.' -subj '.escapeshellarg($subject);
 		$res = -1;
 		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
-		exec($cmd, $output, $res);
-		if($res != 0)
+		$fds = array(1 => STDOUT, 2 => STDOUT);
+		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
+				|| ($res = proc_close($fp)) != 0)
 		{
 			$error = _('Could not generate the certificate');
 			return $engine->log('LOG_ERR',
@@ -673,12 +673,12 @@ abstract class PKIContent extends ContentMulti
 		$cmd = 'openssl x509 -x509toreq'
 			.' -in '.escapeshellarg($in)
 			.' -out '.escapeshellarg($out)
-			.' -signkey '.escapeshellarg($signkey)
-			.' 2>&1'; //XXX avoid garbage on the standard error
+			.' -signkey '.escapeshellarg($signkey);
 		$res = -1;
 		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
-		exec($cmd, $output, $res);
-		if($res != 0)
+		$fds = array(1 => STDOUT, 2 => STDOUT);
+		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
+				|| ($res = proc_close($fp)) != 0)
 		{
 			$error = _('Could not generate the signing request');
 			return $engine->log('LOG_ERR',
