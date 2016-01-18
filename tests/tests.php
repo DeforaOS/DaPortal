@@ -27,6 +27,6 @@ $engine = Engine::attachDefault();
 //for OBJDIR support
 global $config;
 if(($objdir = getenv('OBJDIR')) !== FALSE)
-	$config->set('database::pdo', 'dsn', "sqlite:$objdir/sqlite.db3");
+	$config->set('database::pdo', 'dsn', "sqlite:$objdir/sqlite-tests.db3");
 
 ?>
