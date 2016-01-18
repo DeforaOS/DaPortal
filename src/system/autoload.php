@@ -37,7 +37,6 @@ function _autoload_filename($class, $filename = FALSE)
 {
 	static $classes = array(
 		'AuthCredentials' => './system/auth/credentials.php',
-		'DatabaseResult' => './system/database/result.php',
 		'FormatElements' => './system/format/elements.php',
 		'MultiContentModule' => './modules/content/multi.php',
 		'PageElement' => './system/page/element.php');
@@ -71,17 +70,23 @@ function _autoload_filename($class, $filename = FALSE)
 		$module = substr($class, 0, $len - 7);
 		return './modules/'.strtolower($module).'/content.php';
 	}
-	//Databases
+	//Database engines
 	else if($len > 8 && substr($class, -8) == 'Database')
 	{
 		$database = substr($class, 0, $len - 8);
 		return './database/'.strtolower($database).'.php';
 	}
-	//Database results
+	//Database engine results
 	else if($len > 14 && substr($class, -14) == 'DatabaseResult')
 	{
 		$database = substr($class, 0, $len - 14);
 		return './database/'.strtolower($database).'/result.php';
+	}
+	//Database sub-classes
+	else if($len > 8 && substr($class, 0, 8) == 'Database')
+	{
+		$database = substr($class, 8);
+		return './system/database/'.strtolower($database).'.php';
 	}
 	//Engines
 	else if($len > 6 && substr($class, -6) == 'Engine')
