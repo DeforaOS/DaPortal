@@ -36,7 +36,7 @@ class ArticleContent extends Content
 
 	//useful
 	//ArticleContent::displayContent
-	public function displayContent(Engine $engine, $request)
+	public function displayContent(Engine $engine, Request $request)
 	{
 		$text = HTML::format($engine, $this->getContent($engine));
 		return new PageElement('htmlview', array('text' => $text));
