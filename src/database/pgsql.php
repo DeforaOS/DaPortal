@@ -32,7 +32,7 @@ class PgSQLDatabase extends Database
 
 	//accessors
 	//PgSQLDatabase::getLastID
-	public function getLastID(Engine $engine, $table, $field)
+	public function getLastID(Engine $engine = NULL, $table, $field)
 	{
 		$sequence = $this->getSequence($table, $field);
 		$query = $this->query_currval;
@@ -61,7 +61,7 @@ class PgSQLDatabase extends Database
 
 	//useful
 	//PgSQLDatabase::enum
-	public function enum(Engine $engine, $table, $field)
+	public function enum(Engine $engine = NULL, $table, $field)
 	{
 		$query = $this->query_enum;
 		$args = array('table' => $table,
@@ -115,8 +115,8 @@ class PgSQLDatabase extends Database
 
 
 	//PgSQLDatabase::query
-	public function query(Engine $engine, $query, $parameters = FALSE,
-			$async = FALSE)
+	public function query(Engine $engine = NULL, $query,
+			$parameters = FALSE, $async = FALSE)
 	{
 		global $config;
 

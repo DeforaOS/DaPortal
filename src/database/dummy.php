@@ -23,7 +23,7 @@ class DummyDatabase extends Database
 	//methods
 	//accessors
 	//DummyDatabase::getLastID
-	public function getLastID(Engine $engine, $table, $field)
+	public function getLastID(Engine $engine = NULL, $table, $field)
 	{
 		//always fail
 		return FALSE;
@@ -32,7 +32,7 @@ class DummyDatabase extends Database
 
 	//useful
 	//DummyDatabase::enum
-	public function enum(Engine $engine, $table, $field)
+	public function enum(Engine $engine = NULL, $table, $field)
 	{
 		//always fail
 		return FALSE;
@@ -40,8 +40,8 @@ class DummyDatabase extends Database
 
 
 	//DummyDatabase::query
-	public function query(Engine $engine, $query, $parameters = FALSE,
-			$async = FALSE)
+	public function query(Engine $engine = NULL, $query,
+			$parameters = FALSE, $async = FALSE)
 	{
 		//always fail
 		return FALSE;

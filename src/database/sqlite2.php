@@ -32,7 +32,7 @@ class SQLite2Database extends Database
 
 	//accessors
 	//SQLite2Database::getLastID
-	public function getLastID(Engine $engine, $table, $field)
+	public function getLastID(Engine $engine = NULL, $table, $field)
 	{
 		if($this->handle === FALSE)
 			return FALSE;
@@ -43,7 +43,7 @@ class SQLite2Database extends Database
 
 	//useful
 	//SQLite2Database::enum
-	public function enum(Engine $engine, $table, $field)
+	public function enum(Engine $engine = NULL, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
 		if(($res = $this->query($this->engine, $query)) === FALSE)
@@ -56,8 +56,8 @@ class SQLite2Database extends Database
 
 
 	//SQLite2Database::query
-	public function query(Engine $engine, $query, $parameters = FALSE,
-			$async = FALSE)
+	public function query(Engine $engine = NULL, $query,
+			$parameters = FALSE, $async = FALSE)
 	{
 		global $config;
 

@@ -22,7 +22,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 	//public
 	//accessors
 	//PgSQLPoolDatabase::getLastID
-	public function getLastID(Engine $engine, $table, $field)
+	public function getLastID(Engine $engine = NULL, $table, $field)
 	{
 		//force the master to perform this query
 		$sequence = $this->getSequence($table, $field);
@@ -39,8 +39,8 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 
 	//useful
 	//PgSQLPoolDatabase::query
-	public function query(Engine $engine, $query, $parameters = FALSE,
-			$async = FALSE)
+	public function query(Engine $engine = NULL,
+			$query, $parameters = FALSE, $async = FALSE)
 	{
 		//every transaction goes to us (the master)
 		if($this->inTransaction()

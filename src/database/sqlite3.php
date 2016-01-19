@@ -32,7 +32,7 @@ class SQLite3Database extends Database
 
 	//accessors
 	//SQLite3Database::getLastID
-	public function getLastID(Engine $engine, $table, $field)
+	public function getLastID(Engine $engine = NULL, $table, $field)
 	{
 		if(is_null($this->handle))
 			return FALSE;
@@ -43,7 +43,7 @@ class SQLite3Database extends Database
 
 	//useful
 	//SQLite3Database::enum
-	public function enum(Engine $engine, $table, $field)
+	public function enum(Engine $engine = NULL, $table, $field)
 	{
 		$query = 'SELECT name FROM '.$table.'_enum_'.$field;
 		if(($res = $this->query($this->engine, $query)) === FALSE)
@@ -56,8 +56,8 @@ class SQLite3Database extends Database
 
 
 	//SQLite3Database::query
-	public function query(Engine $engine, $query, $parameters = FALSE,
-			$async = FALSE)
+	public function query(Engine $engine = NULL, $query,
+			$parameters = FALSE, $async = FALSE)
 	{
 		global $config;
 
