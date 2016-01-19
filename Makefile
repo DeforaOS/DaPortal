@@ -173,13 +173,17 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/database/dummy.php \
 		$(PACKAGE)-$(VERSION)/src/database/pdo.php \
 		$(PACKAGE)-$(VERSION)/src/database/pdo/result.php \
+		$(PACKAGE)-$(VERSION)/src/database/pdo/transaction.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql/result.php \
+		$(PACKAGE)-$(VERSION)/src/database/pgsql/transaction.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsqlpool.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite2.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite2/result.php \
+		$(PACKAGE)-$(VERSION)/src/database/sqlite2/transaction.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite3.php \
 		$(PACKAGE)-$(VERSION)/src/database/sqlite3/result.php \
+		$(PACKAGE)-$(VERSION)/src/database/sqlite3/transaction.php \
 		$(PACKAGE)-$(VERSION)/src/database/project.conf \
 		$(PACKAGE)-$(VERSION)/src/engines/Makefile \
 		$(PACKAGE)-$(VERSION)/src/engines/cgi.php \
@@ -316,6 +320,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/content.php \
 		$(PACKAGE)-$(VERSION)/src/system/database.php \
 		$(PACKAGE)-$(VERSION)/src/system/database/result.php \
+		$(PACKAGE)-$(VERSION)/src/system/database/transaction.php \
 		$(PACKAGE)-$(VERSION)/src/system/date.php \
 		$(PACKAGE)-$(VERSION)/src/system/engine.php \
 		$(PACKAGE)-$(VERSION)/src/system/format.php \

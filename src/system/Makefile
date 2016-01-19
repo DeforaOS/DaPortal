@@ -53,6 +53,8 @@ install:
 	$(INSTALL) -m 0644 database.php $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/database
 	$(INSTALL) -m 0644 database/result.php $(DESTDIR)$(PREFIX)/daportal/src/system/database/result.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/database
+	$(INSTALL) -m 0644 database/transaction.php $(DESTDIR)$(PREFIX)/daportal/src/system/database/transaction.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
 	$(INSTALL) -m 0644 date.php $(DESTDIR)$(PREFIX)/daportal/src/system/date.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system
@@ -119,6 +121,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/content.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database/result.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/database/transaction.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/date.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/engine.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/format.php
