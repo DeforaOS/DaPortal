@@ -21,7 +21,7 @@ interface Observer
 {
 	//public
 	//methods
-	public function notify($event);
+	public function notify(Observable $observable);
 }
 
 ?>

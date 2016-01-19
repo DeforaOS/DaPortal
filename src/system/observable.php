@@ -21,8 +21,10 @@ interface Observable
 {
 	//public
 	//methods
-	public function registerObserver(Observer $observer);
-	public function notifyObservers($event);
+	public function addObserver(Observer $observer);
+	public function removeObserver(Observer $observer);
+
+	public function notifyObservers();
 }
 
 ?>

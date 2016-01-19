@@ -21,15 +21,20 @@ require_once('./tests.php');
 
 class TestObservable implements Observable
 {
-	public function registerObserver(Observer $observer)
+	public function addObserver(Observer $observer)
 	{
 		$this->observers[] = $observer;
 	}
 
-	public function notifyObservers($event)
+	public function notifyObservers()
 	{
 		foreach($this->observers as $o)
-			$o->notify($event);
+			$o->notify($this);
+	}
+
+	public function removeObserver(Observer $observer)
+	{
+		//XXX not supported
 	}
 
 	private $observers = array();
@@ -42,10 +47,9 @@ class TestObserver implements Observer
 		return $this->property;
 	}
 
-	public function notify($event)
+	public function notify(Observable $observable)
 	{
-		if($event == 'TestEvent')
-			$this->property++;
+		$this->property++;
 	}
 
 	private $property = 0;
@@ -59,9 +63,9 @@ function observer()
 	$observer1 = new TestObserver;
 	$observer2 = new TestObserver;
 
-	$observable->registerObserver($observer1);
-	$observable->registerObserver($observer2);
-	$observable->notifyObservers('TestEvent');
+	$observable->addObserver($observer1);
+	$observable->addObserver($observer2);
+	$observable->notifyObservers();
 	return $observer1->getProperty() == 1 && $observer2->getProperty() == 1;
 }
 
