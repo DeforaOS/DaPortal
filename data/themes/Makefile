@@ -33,6 +33,8 @@ install:
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 khorben.css $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 khorben-coldfire.jpg $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben-coldfire.jpg
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/DaPortal.css
@@ -45,5 +47,6 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-favicon.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben-coldfire.jpg
 
 .PHONY: all clean distclean install uninstall
