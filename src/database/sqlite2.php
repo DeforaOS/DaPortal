@@ -91,6 +91,10 @@ class SQLite2Database extends Database
 
 
 	//protected
+	//properties
+	static protected $transactionClass = 'SQLite2DatabaseTransaction';
+
+
 	//methods
 	//SQLite2Database::match
 	protected function match(Engine $engine)
@@ -152,18 +156,6 @@ class SQLite2Database extends Database
 		//XXX the delimiter character may be used within the pattern
 		$pattern = $this->case ? ",$pattern," : ",$pattern,i";
 		return (preg_match($pattern, $subject) === 1) ? TRUE : FALSE;
-	}
-
-
-	//SQLite2Database::transactionBegin
-	public function transactionBegin(Engine $engine = NULL)
-	{
-		return parent::transactionBegin();
-	}
-
-	protected function _beginTransaction()
-	{
-		return $this->query($this->engine, 'BEGIN');
 	}
 
 

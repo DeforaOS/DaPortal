@@ -184,20 +184,10 @@ class PgSQLDatabase extends Database
 	}
 
 
-	//PgSQLDatabase::transactionBegin
-	public function transactionBegin(Engine $engine = NULL)
-	{
-		return parent::transactionBegin();
-	}
-
-	protected function _beginTransaction()
-	{
-		return $this->query($this->engine, 'BEGIN');
-	}
-
-
 	//protected
 	//properties
+	static protected $transactionClass = 'PgSQLDatabaseTransaction';
+
 	//queries
 	//IN:	sequence
 	protected $query_currval = 'SELECT currval(:sequence) AS currval';

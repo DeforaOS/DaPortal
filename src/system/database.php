@@ -29,10 +29,19 @@ abstract class Database
 
 
 	//accessors
+	//Database::getTransaction
+	public function getTransaction()
+	{
+		return $this->transaction;
+	}
+
+
 	//Database::inTransaction
 	public function inTransaction()
 	{
-		return $this->transaction > 0;
+		if(is_null($this->transaction))
+			return FALSE;
+		return $this->transaction->inTransaction();
 	}
 
 
@@ -104,77 +113,55 @@ abstract class Database
 	//Database::transactionBegin
 	public function transactionBegin(Engine $engine = NULL)
 	{
-		if($this->inTransaction())
-		{
-			$this->transaction++;
-			return TRUE;
-		}
-		$this->rollback = FALSE;
-		if($this->_beginTransaction() === FALSE)
+		if(!is_null($this->transaction))
 			return FALSE;
-		$this->transaction = 1;
+		$class = static::$transactionClass;
+		$transaction = new $class($this);
+		if($transaction->begin() === FALSE)
+			return FALSE;
+		$this->transaction = $transaction;
 		return TRUE;
-	}
-
-	protected function _beginTransaction()
-	{
-		return $this->query($this->engine, 'START TRANSACTION');
 	}
 
 
 	//Database::transactionCommit
 	public function transactionCommit(Engine $engine = NULL)
 	{
-		if(!$this->inTransaction())
+		if(is_null($this->transaction))
 			return FALSE;
-		if($this->transaction != 1)
-		{
-			$this->transaction--;
-			return TRUE;
-		}
-		if($this->rollback)
-		{
-			$this->transactionRollback();
-			return FALSE;
-		}
-		$this->transaction--;
-		return $this->_commitTransaction();
+		return $this->transaction->commit();
 	}
 
-	protected function _commitTransaction()
+
+	//Database::transactionComplete
+	public function transactionComplete()
 	{
-		return $this->query($this->engine, 'COMMIT');
+		if(is_null($this->transaction)
+				|| $this->transaction->inTransaction())
+			return FALSE;
+		$this->transaction = NULL;
 	}
 
 
 	//Database::transactionRollback
 	public function transactionRollback(Engine $engine = NULL)
 	{
-		if(!$this->inTransaction())
+		if(is_null($this->transaction))
 			return FALSE;
-		if($this->transaction-- == 1)
-			return $this->_rollbackTransaction();
-		$this->rollback = TRUE;
-		return TRUE;
-	}
-
-	protected function _rollbackTransaction()
-	{
-		return $this->query($this->engine, 'ROLLBACK');
+		return $this->transaction->rollback();
 	}
 
 
 	//Database::withTransaction
-	public function withTransaction(Engine $engine, callable $callback)
+	public function withTransaction(Engine $engine = NULL,
+			callable $callback)
 	{
-		if($this->inTransaction())
-			return $callback();
 		if($this->transactionBegin() === FALSE)
 			return FALSE;
 		if(($ret = $callback()) === FALSE)
 			$this->transactionRollback();
 		else if($this->transactionCommit() === FALSE)
-			return FALSE;
+			$ret = FALSE;
 		return $ret;
 	}
 
@@ -239,8 +226,8 @@ abstract class Database
 	//profiling
 	protected $profile = FALSE;
 	//transactions
-	protected $transaction = 0;
-	protected $rollback = FALSE;
+	static protected $transactionClass = 'DatabaseTransaction';
+	protected $transaction = NULL;
 
 	//queries
 	static protected $query_sql_profile = 'INSERT INTO daportal_sql_profile

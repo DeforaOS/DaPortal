@@ -150,6 +150,33 @@ class PDODatabase extends Database
 	}
 
 
+	//PDODatabase::transactionDoBegin
+	public function transactionDoBegin()
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->beginTransaction();
+	}
+
+
+	//PDODatabase::transactionDoCommit
+	public function transactionDoCommit()
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->commit();
+	}
+
+
+	//PDODatabase::transactionDoRollback
+	public function transactionDoRollback()
+	{
+		if($this->handle === FALSE)
+			return FALSE;
+		return $this->handle->rollback();
+	}
+
+
 	//functions
 	//PDODatabase::concat
 	public function _concat($string1, $string2)
@@ -174,49 +201,11 @@ class PDODatabase extends Database
 	}
 
 
-	//PDODatabase::transactionBegin
-	public function transactionBegin(Engine $engine = NULL)
-	{
-		return parent::transactionBegin();
-	}
-
-	protected function _beginTransaction()
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		return $this->handle->beginTransaction();
-	}
-
-
-	//PDODatabase::transactionCommit
-	public function transactionCommit(Engine $engine = NULL)
-	{
-		return parent::transactionCommit();
-	}
-
-	protected function _commitTransaction()
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		return $this->handle->commit();
-	}
-
-
-	//PDODatabase::transactionRollback
-	public function transactionRollback(Engine $engine = NULL)
-	{
-		return parent::transactionRollback();
-	}
-
-	protected function _rollbackTransaction()
-	{
-		if($this->handle === FALSE)
-			return FALSE;
-		return $this->handle->rollBack();
-	}
-
-
 	//protected
+	//properties
+	static protected $transactionClass = 'PDODatabaseTransaction';
+
+
 	//methods
 	//PDODatabase::match
 	protected function match(Engine $engine)

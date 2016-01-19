@@ -82,6 +82,12 @@ function _autoload_filename($class, $filename = FALSE)
 		$database = substr($class, 0, $len - 14);
 		return './database/'.strtolower($database).'/result.php';
 	}
+	//Database engine transactions
+	else if($len > 19 && substr($class, -19) == 'DatabaseTransaction')
+	{
+		$database = substr($class, 0, $len - 19);
+		return './database/'.strtolower($database).'/transaction.php';
+	}
 	//Database sub-classes
 	else if($len > 8 && substr($class, 0, 8) == 'Database')
 	{
