@@ -27,6 +27,8 @@ install:
 	$(INSTALL) -m 0644 pgsqlpool.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsqlpool.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 sqlite2.php $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2
+	$(INSTALL) -m 0644 sqlite2/result.php $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2/result.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 sqlite3.php $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite3.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite3
@@ -40,6 +42,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsqlpool.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite2/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite3.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/sqlite3/result.php
 
