@@ -388,6 +388,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/template.php \
 		$(PACKAGE)-$(VERSION)/tests/tests.php \
 		$(PACKAGE)-$(VERSION)/tests/tests.sh \
+		$(PACKAGE)-$(VERSION)/tests/transaction.php \
 		$(PACKAGE)-$(VERSION)/tests/user.php \
 		$(PACKAGE)-$(VERSION)/tests/widgets.php \
 		$(PACKAGE)-$(VERSION)/tests/project.conf \
