@@ -114,7 +114,7 @@ abstract class Database
 	public function transactionBegin(Engine $engine = NULL)
 	{
 		if(!is_null($this->transaction))
-			return FALSE;
+			return $this->transaction->begin();
 		$class = static::$transactionClass;
 		$transaction = new $class($this);
 		if($transaction->begin() === FALSE)
