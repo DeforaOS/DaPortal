@@ -140,6 +140,7 @@ _test "pki"
 _test "profile"
 _test "search"
 _test "template"
+_test "transaction"
 _test "user"
 #echo "Expected failures:" 1>&2
 #_fail "test"
