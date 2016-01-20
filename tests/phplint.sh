@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012-2015 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2016 Pierre Pronchery <khorben@defora.org>
 #
 #Redistribution and use in source and binary forms, with or without
 #modification, are permitted provided that the following conditions are met:
@@ -26,14 +26,51 @@
 
 #variables
 PROGNAME="phplint.sh"
+PROJECTCONF="../project.conf"
 #executables
+DATE="date"
 DEBUG="_debug"
 FIND="find"
 PHPLINT="php -l"
 SORT="sort"
+TR="tr"
 
 
 #functions
+#phplint
+_phplint()
+{
+	ret=0
+	subdirs="data doc src tests tools"
+
+	$DATE
+	echo
+	while read line; do
+		case "$line" in
+			"["*)
+				break
+				;;
+			"subdirs="*)
+				subdirs=${line#subdirs=}
+				subdirs=$(echo "$subdirs" | $TR ',' ' ')
+				;;
+		esac
+	done < "$PROJECTCONF"
+	for subdir in $subdirs; do
+		[ -d "../$subdir" ] || continue
+		for filename in $($FIND "../$subdir" -name '*.php'); do
+			echo "$filename:"
+			$DEBUG $PHPLINT -f "$filename" 2>&1
+			if [ $? -ne 0 ]; then
+				echo "$PROGNAME: $filename: FAIL" 1>&2
+				ret=2
+			fi
+		done
+	done
+	return $ret
+}
+
+
 #debug
 _debug()
 {
@@ -77,11 +114,8 @@ if [ $# -ne 1 ]; then
 fi
 target="$1"
 
+#clean
 [ $clean -ne 0 ] && exit 0
 
-ret=0
 exec 3>&1
-for i in $($FIND "../src" "../tools" -name '*.php' | $SORT); do
-	$DEBUG $PHPLINT -f "$i"					|| ret=2
-done 2> "$target"
-exit $ret
+_phplint > "$target"

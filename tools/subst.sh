@@ -137,7 +137,7 @@ _subst()
 #debug
 _debug()
 {
-	echo "$@" 1>&2
+	echo "$@" 1>&3
 	"$@"
 }
 
