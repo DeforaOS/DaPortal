@@ -76,6 +76,34 @@ if($database->transactionRollback() === FALSE)
 if(getUserID($database, 'admin') != $uid)
 	exit(11);
 
+//nested transaction (rollback)
+if($database->transactionBegin() === FALSE)
+	exit(12);
+if($database->transactionBegin() === FALSE)
+	exit(13);
+if(setUserID($database, 'admin', $uid + 1) === FALSE)
+	exit(14);
+if($database->transactionCommit() === FALSE)
+	exit(15);
+if($database->transactionRollback() === FALSE)
+	exit(16);
+if(getUserID($database, 'admin') != $uid)
+	exit(17);
+
+//nested transaction (commit)
+if($database->transactionBegin() === FALSE)
+	exit(18);
+if($database->transactionBegin() === FALSE)
+	exit(19);
+if(setUserID($database, 'admin', $uid + 1) === FALSE)
+	exit(20);
+if($database->transactionCommit() === FALSE)
+	exit(21);
+if($database->transactionCommit() === FALSE)
+	exit(22);
+if(getUserID($database, 'admin') != ++$uid)
+	exit(23);
+
 exit(0);
 
 ?>
