@@ -37,12 +37,12 @@ abstract class Engine
 		return FALSE;
 	}
 
-	public function process($request, $internal = FALSE)
+	public function process(Request $request, $internal = FALSE)
 	{
 		return new StringResponse();
 	}
 
-	public function render($response)
+	public function render(Response $response)
 	{
 		return $response->getCode();
 	}

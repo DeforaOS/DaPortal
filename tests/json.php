@@ -20,7 +20,7 @@ require_once('./tests.php');
 
 
 //json
-function json($engine, $page, $expected)
+function json(Engine $engine, PageElement $page, $expected)
 {
 	$page = new PageResponse($page);
 	//XXX really enforce JSONFormat

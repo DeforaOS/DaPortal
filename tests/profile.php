@@ -19,7 +19,7 @@
 require_once('./tests.php');
 
 
-function test($engine)
+function test(Engine $engine)
 {
 	Profile::start($engine);
 	Profile::stop($engine);

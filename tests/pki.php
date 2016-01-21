@@ -20,7 +20,7 @@ require_once('./tests.php');
 
 
 //pki
-function pki($engine, $module)
+function pki(Engine $engine, Module $module)
 {
 	global $config;
 

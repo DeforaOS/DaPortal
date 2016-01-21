@@ -20,7 +20,7 @@ require_once('./tests.php');
 
 
 //functions
-function html($engine, $html, $expected = FALSE)
+function html(Engine $engine, $html, $expected = FALSE)
 {
 	if(($html = HTML::filter($engine, $html)) === FALSE)
 		return FALSE;
@@ -33,7 +33,7 @@ function html($engine, $html, $expected = FALSE)
 	return TRUE;
 }
 
-function test($engine)
+function test(Engine $engine)
 {
 	if(html($engine, '<html><head><title>Title</title></head>'
 			.'<body><h1>Title</h1><p>Some text.</p></body>'

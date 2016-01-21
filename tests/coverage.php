@@ -21,7 +21,7 @@ require_once('./system/module.php');
 
 
 //functions
-function test($engine, $request, $internal = FALSE)
+function test(Engine $engine, Request $request, $internal = FALSE)
 {
 	$module = $request->getModule();
 	$action = $request->getAction();
@@ -50,7 +50,7 @@ function test($engine, $request, $internal = FALSE)
 	return TRUE;
 }
 
-function tests($engine, $format = FALSE)
+function tests(Engine $engine, $format = FALSE)
 {
 	global $config;
 	$ret = 0;
