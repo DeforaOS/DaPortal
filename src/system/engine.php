@@ -196,7 +196,7 @@ abstract class Engine
 
 
 	//Engine::process
-	public function process($request, $internal = FALSE)
+	public function process(Request $request, $internal = FALSE)
 	{
 		//return an empty page if no valid request is provided
 		if($request === FALSE
