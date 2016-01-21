@@ -24,7 +24,7 @@ class PgSQLDatabaseTransaction extends DatabaseTransaction
 	//PgSQLDatabaseTransaction::databaseBegin
 	protected function databaseBegin()
 	{
-		return $this->database->query(NULL, 'BEGIN');
+		return $this->getDatabase()->query(NULL, 'BEGIN');
 	}
 }
 

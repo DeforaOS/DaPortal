@@ -24,7 +24,7 @@ class SQLite2DatabaseTransaction extends DatabaseTransaction
 	//SQLite2DatabaseTransaction::databaseBegin
 	protected function databaseBegin()
 	{
-		return $this->database->query(NULL, 'BEGIN');
+		return $this->getDatabase()->query(NULL, 'BEGIN');
 	}
 }
 

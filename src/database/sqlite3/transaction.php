@@ -24,7 +24,7 @@ class SQLite3DatabaseTransaction extends DatabaseTransaction
 	//SQLite3DatabaseTransaction::databaseBegin
 	protected function databaseBegin()
 	{
-		return $this->database->query(NULL, 'BEGIN');
+		return $this->getDatabase()->query(NULL, 'BEGIN');
 	}
 }
 
