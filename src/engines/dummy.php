@@ -25,7 +25,7 @@ class DummyEngine extends Engine
 	//DummyEngine::getRequest
 	public function getRequest()
 	{
-		return FALSE;
+		return new Request();
 	}
 
 
