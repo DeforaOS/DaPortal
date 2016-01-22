@@ -21,9 +21,14 @@ require_once('./tests.php');
 
 class TestObservable implements Observable
 {
+	public function __construct()
+	{
+		$this->observers = new \SplObjectStorage();
+	}
+
 	public function addObserver(Observer $observer)
 	{
-		$this->observers[] = $observer;
+		$this->observers->attach($observer);
 	}
 
 	public function notifyObservers()
@@ -34,10 +39,10 @@ class TestObservable implements Observable
 
 	public function removeObserver(Observer $observer)
 	{
-		//XXX not supported
+		$this->observers->detach($observer);
 	}
 
-	private $observers = array();
+	private $observers;
 }
 
 class TestObserver implements Observer
@@ -66,6 +71,8 @@ function observer()
 	$observable->addObserver($observer1);
 	$observable->addObserver($observer2);
 	$observable->notifyObservers();
+	$observable->removeObserver($observer1);
+	$observable->removeObserver($observer1);
 	return $observer1->getProperty() == 1 && $observer2->getProperty() == 1;
 }
 
