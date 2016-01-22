@@ -73,10 +73,7 @@ class DatabaseTransaction implements Observable
 	//DatabaseTransaction::addObserver
 	public function addObserver(Observer $observer)
 	{
-		if($this->observers->contains($observer))
-			return FALSE;
 		$this->observers->attach($observer);
-		return TRUE;
 	}
 
 
@@ -93,10 +90,7 @@ class DatabaseTransaction implements Observable
 	//DatabaseTransaction::removeObserver
 	public function removeObserver(Observer $observer)
 	{
-		if(!$this->observers->contains($observer))
-			return FALSE;
 		$this->observers->detach($observer);
-		return TRUE;
 	}
 
 
