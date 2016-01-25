@@ -443,6 +443,7 @@ class GroupModule extends Module
 		$title = FALSE;
 		$stock = $this->name;
 		$link = FALSE;
+		$group = FALSE;
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
