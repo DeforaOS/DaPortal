@@ -206,7 +206,7 @@ class BugProjectContent extends ContentMulti
 
 
 	//BugProjectContent::form
-	public function form(Engine $engine, Request $request = NULL)
+	public function form(Engine $engine, Request $request)
 	{
 		return parent::form($engine, $request);
 	}

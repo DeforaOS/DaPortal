@@ -174,7 +174,7 @@ class FileDownloadContent extends DownloadContent
 
 
 	//FileDownloadContent::form
-	public function form(Engine $engine, Request $request = NULL)
+	public function form(Engine $engine, Request $request)
 	{
 		return parent::form($engine, $request);
 	}

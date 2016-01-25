@@ -647,7 +647,7 @@ class Content
 
 
 	//Content::form
-	public function form(Engine $engine, Request $request = NULL)
+	public function form(Engine $engine, Request $request)
 	{
 		return ($this->id !== FALSE)
 			? $this->_formUpdate($engine, $request)

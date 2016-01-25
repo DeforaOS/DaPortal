@@ -172,7 +172,7 @@ abstract class PKIContent extends ContentMulti
 
 
 	//PKIContent::form
-	public function form(Engine $engine, Request $request = NULL)
+	public function form(Engine $engine, Request $request)
 	{
 		return parent::form($engine, $request);
 	}
