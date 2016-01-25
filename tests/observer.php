@@ -33,8 +33,8 @@ class TestObservable implements Observable
 
 	public function notifyObservers()
 	{
-		foreach($this->observers as $o)
-			$o->notify($this);
+		foreach($this->observers as $observer)
+			$observer->notify($this);
 	}
 
 	public function removeObserver(Observer $observer)
