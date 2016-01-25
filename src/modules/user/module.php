@@ -811,7 +811,7 @@ class UserModule extends Module
 		$username = $cred->getUsername();
 
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//disable the user
 		if(($user = User::lookup($engine, $username, $uid)) === FALSE
@@ -939,7 +939,7 @@ class UserModule extends Module
 					'text' => _('Back to my account')));
 		}
 		if($user === FALSE || $user->getUserID() == 0)
-			return $this->callLogin($engine, new Request);
+			return $this->callLogin($engine, new Request());
 		$page = new Page(array('title' => $title));
 		//title
 		$page->append('title', array('stock' => $this->name,
@@ -1189,7 +1189,7 @@ class UserModule extends Module
 	{
 		$db = $engine->getDatabase();
 
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			//no real login attempt
 			return TRUE;
 		if(($username = $request->get('username')) === FALSE
@@ -1376,7 +1376,7 @@ class UserModule extends Module
 
 		if($cred->getUserID() != 0)
 			//already registered and logged in
-			return $this->callDisplay($engine, new Request);
+			return $this->callDisplay($engine, new Request());
 		//process registration
 		if($this->canRegister($request, $error)
 				&& $this->_registerProcess($engine, $request,
@@ -1447,7 +1447,7 @@ class UserModule extends Module
 
 		if($cred->getUserID() != 0)
 			//already registered and logged in
-			return $this->callDisplay($engine, new Request);
+			return $this->callDisplay($engine, new Request());
 		if(($uid = $request->getID()) !== FALSE
 				&& ($token = $request->get('token')) !== FALSE)
 			return $this->_resetToken($engine, $request, $uid,
@@ -1627,8 +1627,7 @@ class UserModule extends Module
 			&$user)
 	{
 		//verify the request
-		if($request === NULL
-				|| $request->get('submit') === FALSE)
+		if($request->get('submit') === FALSE)
 			return TRUE;
 		if($request->isIdempotent() !== FALSE)
 			return _('The request expired or is invalid');
@@ -1828,7 +1827,7 @@ class UserModule extends Module
 
 		if($cred->getUserID() != 0)
 			//already registered and logged in
-			return $this->callDisplay($engine, new Request);
+			return $this->callDisplay($engine, new Request());
 		$page = new Page(array('title' => _('Account confirmation')));
 		$page->append('title', array('stock' => $this->name,
 				'text' => _('Account confirmation')));
