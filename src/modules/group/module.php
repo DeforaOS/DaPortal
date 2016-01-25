@@ -367,13 +367,13 @@ class GroupModule extends Module
 
 
 	//GroupModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$title = _('Group menu');
 		$actions = array();
 
-		if($request !== NULL && ($id = $request->getID()) !== FALSE)
+		if(($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//determine the actions available
 		if($cred->isAdmin())
@@ -470,7 +470,7 @@ class GroupModule extends Module
 		}
 		$page = new Page(array('title' => $title));;
 		if($group === FALSE || $group->getGroupID() == 0)
-			return $this->callDefault($engine, new Request);
+			return $this->callDefault($engine, new Request());
 		//title
 		$page->append('title', array('stock' => $stock,
 				'text' => $title));
@@ -537,7 +537,7 @@ class GroupModule extends Module
 		$db = $engine->getDatabase();
 		$query = static::$query_list;
 
-		if($request !== NULL && $request->getID() !== FALSE)
+		if($request->getID() !== FALSE)
 			return $this->_listGroup($engine, $request);
 		$title = _('Group list');
 		$page = new Page(array('title' => $title));
