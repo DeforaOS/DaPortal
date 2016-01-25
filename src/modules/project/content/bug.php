@@ -244,7 +244,7 @@ class BugProjectContent extends ContentMulti
 	static public function loadFromBugID(Engine $engine, Module $module,
 			$bug_id)
 	{
-		//XXX code duplication
+		//XXX duplicated from Content::_load()
 		$database = $engine->getDatabase();
 		$query = static::$query_load_by_bug_id;
 		$args = array('module_id' => $module->getID(),
@@ -258,11 +258,11 @@ class BugProjectContent extends ContentMulti
 			$from[] = '/';
 			$to[] = '%';
 		}
-		if(is_string($title))
+		if(is_string($bug_id))
 		{
 			$query .= ' AND title '.$database->like(FALSE)
 				.' :title ESCAPE :escape';
-			$args['title'] = str_replace($from, $to, $title);
+			$args['title'] = str_replace($from, $to, $bug_id);
 			$args['escape'] = '\\';
 		}
 		if(($res = $database->query($engine, $query, $args)) === FALSE
