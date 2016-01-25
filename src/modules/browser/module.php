@@ -312,7 +312,7 @@ class BrowserModule extends Module
 		$delimiters = array('/', '\\');
 
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//upload the file(s)
 		if(!isset($_FILES['files'])

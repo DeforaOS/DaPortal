@@ -119,7 +119,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callGroup
-	protected function callGroup(Engine $engine, Request $request = NULL)
+	protected function callGroup(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callGroup($engine, $request);
@@ -127,7 +127,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callHeadline
-	protected function callHeadline(Engine $engine, Request $request = NULL)
+	protected function callHeadline(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callHeadline($engine, $request);
@@ -143,7 +143,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callSubmit
-	protected function callSubmit(Engine $engine, Request $request = NULL)
+	protected function callSubmit(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callSubmit($engine, $request);
@@ -252,15 +252,16 @@ abstract class MultiContentModule extends ContentModule
 
 	//MultiContentModule::helperListToolbar
 	protected function helperListToolbar(Engine $engine, PageElement $page,
-			Request $request = NULL)
+			Request $request)
 	{
 		//XXX code duplicated from ContentModule
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
-		$user = ($request !== NULL)
+		$user = ($request->getID !== FALSE
+				|| $request->getTitle() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
-		$type = ($request !== NULL) ? $request->get('type') : FALSE;
+		$type = $request->get('type');
 
 		if($user === FALSE || ($uid = $user->getUserID()) == 0)
 			$uid = FALSE;

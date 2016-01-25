@@ -1596,7 +1596,7 @@ class UserModule extends Module
 
 
 	//UserModule::callSubmit
-	protected function callSubmit(Engine $engine, Request $request = NULL)
+	protected function callSubmit(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$title = _('New user');

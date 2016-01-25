@@ -618,7 +618,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callHeadline
-	protected function callHeadline(Engine $engine, Request $request = NULL)
+	protected function callHeadline(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
 		$title = $this->text_content_headline_title;
@@ -829,7 +829,7 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callSubmit
-	protected function callSubmit(Engine $engine, Request $request = NULL)
+	protected function callSubmit(Engine $engine, Request $request)
 	{
 		$title = $this->text_content_submit_content;
 		$code = 0;

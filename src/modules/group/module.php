@@ -616,7 +616,7 @@ class GroupModule extends Module
 
 
 	//GroupModule::callSubmit
-	protected function callSubmit(Engine $engine, Request $request = NULL)
+	protected function callSubmit(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$error = _('Permission denied');
@@ -648,7 +648,7 @@ class GroupModule extends Module
 			&$group)
 	{
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		if(($groupname = $request->get('groupname')) === FALSE)
 			return _('Invalid arguments');
@@ -714,7 +714,7 @@ class GroupModule extends Module
 		$cred = $engine->getCredentials();
 
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		if(($groupname = $request->get('groupname')) === FALSE)
 			$ret .= _("The group name is required\n");

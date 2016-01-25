@@ -234,7 +234,7 @@ class DownloadModule extends MultiContentModule
 
 
 	//DownloadModule::callSubmit
-	protected function callSubmit(Engine $engine, Request $request = NULL)
+	protected function callSubmit(Engine $engine, Request $request)
 	{
 		return parent::callSubmit($engine, $request);
 	}
@@ -243,9 +243,9 @@ class DownloadModule extends MultiContentModule
 	{
 		$class = static::$content_classes['folder'];
 
-		if($request !== NULL
-				&& $request->get('type') == 'file'
-				&& ($parent = $request->get('parent')) !== FALSE)
+		if($request->get('type') == 'file'
+				&& ($parent = $request->get('parent'))
+				!== FALSE)
 			return $class::loadByDownloadID($engine, $this,
 					$parent);
 		return parent::_submitContent($engine, $request);
@@ -255,7 +255,7 @@ class DownloadModule extends MultiContentModule
 			Content $content)
 	{
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		switch($request->get('type'))
 		{
