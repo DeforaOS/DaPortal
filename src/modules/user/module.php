@@ -638,7 +638,7 @@ class UserModule extends Module
 
 	//calls
 	//UserModule::callAdmin
-	protected function callAdmin(Engine $engine, Request $request = NULL)
+	protected function callAdmin(Engine $engine, Request $request)
 	{
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
@@ -651,14 +651,13 @@ class UserModule extends Module
 			return new ErrorResponse(_('Permission denied'),
 					Response::$CODE_EPERM);
 		//perform actions if necessary
-		if($request !== NULL)
-			foreach($actions as $a => $t)
-				if($request->get($a) !== FALSE)
-				{
-					$a = '_admin'.$a;
-					$dialog = $this->$a($engine, $request);
-					break;
-				}
+		foreach($actions as $a => $t)
+			if($request->get($a) !== FALSE)
+			{
+				$a = '_admin'.$a;
+				$dialog = $this->$a($engine, $request);
+				break;
+			}
 		//list users
 		$title = _('Users administration');
 		$page = new Page(array('title' => $title));

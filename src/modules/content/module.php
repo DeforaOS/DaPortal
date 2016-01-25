@@ -411,7 +411,7 @@ abstract class ContentModule extends Module
 
 	//calls
 	//ContentModule::callAdmin
-	protected function callAdmin(Engine $engine, Request $request = NULL)
+	protected function callAdmin(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_list_admin;

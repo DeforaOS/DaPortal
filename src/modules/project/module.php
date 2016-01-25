@@ -313,10 +313,8 @@ class ProjectModule extends MultiContentModule
 
 	//calls
 	//ProjectModule::callAdmin
-	protected function callAdmin(Engine $engine, Request $request = NULL)
+	protected function callAdmin(Engine $engine, Request $request)
 	{
-		if($request === NULL)
-			return parent::callAdmin($engine, $request);
 		switch($request->get('type'))
 		{
 			case 'bug':
