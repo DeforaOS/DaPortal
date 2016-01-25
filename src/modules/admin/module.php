@@ -120,7 +120,7 @@ class AdminModule extends Module
 
 	//calls
 	//AdminModule::callAdmin
-	protected function callAdmin(Engine $engine, Request $request = NULL)
+	protected function callAdmin(Engine $engine, Request $request)
 	{
 		$title = _('Administration');
 		$admin = ($request !== NULL) ? $request->get('admin') : FALSE;
@@ -192,14 +192,13 @@ class AdminModule extends Module
 		$dialog = FALSE;
 
 		//perform actions if necessary
-		if($request !== NULL)
-			foreach($actions as $a)
-				if($request->get($a) !== FALSE)
-				{
-					$a = 'helperModule'.$a;
-					$dialog = $this->$a($engine, $request);
-					break;
-				}
+		foreach($actions as $a)
+			if($request->get($a) !== FALSE)
+			{
+				$a = 'helperModule'.$a;
+				$dialog = $this->$a($engine, $request);
+				break;
+			}
 		//list modules
 		if(($res = $database->query($engine, $query)) === FALSE)
 			return new ErrorResponse(_('Could not list modules'));
