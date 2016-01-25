@@ -1242,7 +1242,7 @@ abstract class ContentModule extends Module
 	protected function helperListTitle(Engine $engine, PageElement $page,
 			Request $request = NULL)
 	{
-		$title = $page->getProperty('title');
+		$title = $page->get('title');
 
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
