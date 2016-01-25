@@ -123,7 +123,7 @@ class AdminModule extends Module
 	protected function callAdmin(Engine $engine, Request $request)
 	{
 		$title = _('Administration');
-		$admin = ($request !== NULL) ? $request->get('admin') : FALSE;
+		$admin = $request->get('admin');
 
 		$page = new Page();
 		switch($admin)
