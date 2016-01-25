@@ -111,7 +111,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callDefault($engine, $request);
@@ -135,7 +135,7 @@ abstract class MultiContentModule extends ContentModule
 
 
 	//MultiContentModule::callList
-	protected function callList(Engine $engine, Request $request = NULL)
+	protected function callList(Engine $engine, Request $request)
 	{
 		$this->setContext($engine, $request);
 		return parent::callList($engine, $request);

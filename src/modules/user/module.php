@@ -774,7 +774,7 @@ class UserModule extends Module
 
 		if($cred->getUserID() == 0)
 			//must be logged in
-			return $this->callDefault($engine, $request);
+			return $this->callDefault($engine, new Request());
 		$error = _('Unknown error');
 		if(!$this->canClose($engine, $error))
 			return new ErrorResponse($error, Response::$CODE_EPERM);
@@ -841,13 +841,13 @@ class UserModule extends Module
 
 
 	//UserModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 		$query = static::$query_content;
 		$cred = $engine->getCredentials();
 
-		if($request !== NULL && ($id = $request->getID()) !== FALSE)
+		if(($id = $request->getID()) !== FALSE)
 			return $this->callDisplay($engine, $request);
 		//FIXME add content?
 		$title = ($cred->getUserID() != 0) ? _('My account')

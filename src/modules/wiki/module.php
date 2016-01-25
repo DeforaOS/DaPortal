@@ -64,7 +64,7 @@ class WikiModule extends ContentModule
 	//methods
 	//calls
 	//WikiModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$title = $this->text_content_title;
 

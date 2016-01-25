@@ -131,11 +131,10 @@ class SaltModule extends Module
 
 	//calls
 	//SaltModule::callDefault
-	protected function callDefault(Request $request = NULL)
+	protected function callDefault(Request $request)
 	{
 		$title = _('Salt monitoring');
-		$hostname = ($request !== NULL)
-			? $request->get('host') : FALSE;
+		$hostname = $request->get('host');
 
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'monitor',

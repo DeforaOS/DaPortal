@@ -239,13 +239,14 @@ class ManualModule extends Module
 
 	//calls
 	//ManualModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$title = _('Manual browser');
 
-		if($request !== NULL)
+		if($request->getID() !== FALSE
+				|| $request->getTitle() !== FALSE)
 			return $this->callDisplay($engine, $request);
-		return $this->callList($engine, new Request());
+		return $this->callList($engine, $request);
 	}
 
 
@@ -483,6 +484,7 @@ class ManualModule extends Module
 			&$page = FALSE)
 	{
 		$section = $request->getID() ?: $request->get('section');
+
 		if(strlen($section) == 0)
 			$section = FALSE;
 		$page = $request->getTitle() ?: $request->get('page');

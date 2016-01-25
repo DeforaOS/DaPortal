@@ -117,12 +117,12 @@ class PKIModule extends MultiContentModule
 
 	//calls
 	//PKIModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$title = _('Certification activity');
 		$latest = array('ca', 'caserver', 'caclient');
 
-		if($request !== NULL && $request->getID() !== FALSE)
+		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->getName(),

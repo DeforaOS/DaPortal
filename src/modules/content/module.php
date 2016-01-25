@@ -500,12 +500,12 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
-		$p = ($request !== NULL) ? $request->get('page') : 0;
+		$p = $request->get('page') ?: 0;
 
-		if($request !== NULL && $request->getID() !== FALSE)
+		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$page = new Page(array('title' => $this->text_content_title));
 		$page->append('title', array('stock' => $this->name,
@@ -663,14 +663,14 @@ abstract class ContentModule extends Module
 
 
 	//ContentModule::callList
-	protected function callList(Engine $engine, Request $request = NULL)
+	protected function callList(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
 		$db = $engine->getDatabase();
-		$user = ($request !== NULL)
+		$user = ($request->getID() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 					$request->getID()) : FALSE;
-		$p = ($request !== NULL) ? $request->get('page') : 0;
+		$p = $request->get('page');
 		$error = _('Unable to list contents');
 		$dialog = FALSE;
 
@@ -811,7 +811,7 @@ abstract class ContentModule extends Module
 			'user_id' => $cred->getUserID());
 
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//publish the content
 		if($db->query($engine, $query, $args) === FALSE)
@@ -884,7 +884,7 @@ abstract class ContentModule extends Module
 			Content $content)
 	{
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//store the content uploaded
 		$error = _('Internal server error');
@@ -941,7 +941,7 @@ abstract class ContentModule extends Module
 			Content $content)
 	{
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//update the content
 		$error = _('Internal server error');
@@ -1251,10 +1251,10 @@ abstract class ContentModule extends Module
 
 	//ContentModule::helperListToolbar
 	protected function helperListToolbar(Engine $engine, PageElement $page,
-			Request $request = NULL)
+			Request $request)
 	{
 		$cred = $engine->getCredentials();
-		$user = ($request !== NULL)
+		$user = ($request->getID() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
 
@@ -1318,16 +1318,14 @@ abstract class ContentModule extends Module
 	protected function helperPaging(Engine $engine, Request $request,
 			PageElement $page, $limit, $pcnt)
 	{
-		$action = ($request !== NULL) ? $request->getAction() : FALSE;
-		$id = ($request !== NULL) ? $request->getID() : FALSE;
-		$title = ($request !== NULL) ? $request->getTitle() : FALSE;
-		$args = ($request !== NULL)
-			? $request->getParameters() : array();
+		$action = $request->getAction();
+		$id = $request->getID();
+		$title = $request->getTitle();
+		$args = $request->getParameters();
 
 		if($pcnt === FALSE || $limit <= 0 || $pcnt <= $limit)
 			return;
-		if($request === NULL
-				|| ($pcur = $request->get('page')) === FALSE)
+		if(($pcur = $request->get('page')) === FALSE)
 			$pcur = 1;
 		$pcnt = ceil($pcnt / $limit);
 		unset($args['page']);
@@ -1441,7 +1439,6 @@ abstract class ContentModule extends Module
 			$content, $page)
 	{
 		if($this->canPreview($engine, $request, $content) === FALSE
-				|| $request === NULL
 				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));
@@ -1495,7 +1492,6 @@ abstract class ContentModule extends Module
 			Content $content, PageElement $page)
 	{
 		if($this->canPreview($engine, $request, $content) === FALSE
-				|| $request === NULL
 				|| $request->get('_preview') === FALSE)
 			return;
 		$page->append($content->formPreview($engine, $request));

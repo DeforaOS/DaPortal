@@ -424,7 +424,7 @@ class ProjectModule extends MultiContentModule
 		if(($bug = BugProjectContent::load($engine, $this,
 				$request->getID(), $request->getTitle()))
 				=== FALSE)
-			return $this->callDefault($engine);
+			return $this->callDefault($engine, new Request());
 		$project = $this->getContent($engine, $bug->get('project_id'));
 		$title = sprintf(_('Reply to #%u/%s: %s'), $bug->get('bug_id'),
 				$project->getTitle(), $bug->getTitle());
@@ -457,7 +457,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$title = _('Projects');
 		$latest = $this->canDownload($engine, $request)
@@ -483,7 +483,7 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callDownload
-	protected function callDownload(Engine $engine, Request $request = NULL)
+	protected function callDownload(Engine $engine, Request $request)
 	{
 		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
@@ -494,9 +494,9 @@ class ProjectModule extends MultiContentModule
 
 
 	//ProjectModule::callLatest
-	protected function callLatest(Engine $engine, $request = NULL)
+	protected function callLatest(Engine $engine, Request $request)
 	{
-		$type = ($request !== NULL) ? $request->get('type') : FALSE;
+		$type = $request->get('type');
 
 		switch($type)
 		{
@@ -664,7 +664,7 @@ class ProjectModule extends MultiContentModule
 		$query = static::$project_query_project_download_insert;
 
 		//verify the request
-		if($request === NULL || $request->isIdempotent())
+		if($request->isIdempotent())
 			return TRUE;
 		//FIXME obtain the download path
 		//XXX this assumes the file was just being uploaded

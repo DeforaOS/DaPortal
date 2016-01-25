@@ -203,12 +203,12 @@ class DownloadModule extends MultiContentModule
 	//useful
 	//calls
 	//DownloadModule::callDefault
-	protected function callDefault(Engine $engine, Request $request = NULL)
+	protected function callDefault(Engine $engine, Request $request)
 	{
 		$class = static::$content_classes['folder'];
-		$p = ($request !== NULL) ? $request->get('page') : 0;
+		$p = $request->get('page') ?: 0;
 
-		if($request !== NULL && $request->getID() !== FALSE)
+		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
 		$root = new $class($engine, $this);
 		return new PageResponse($root->display($engine, $request));
@@ -222,7 +222,7 @@ class DownloadModule extends MultiContentModule
 		$error = _('Could not fetch content');
 
 		if(($id = $request->getID()) === FALSE)
-			return $this->callDefault($engine);
+			return $this->callDefault($engine, new Request());
 		if(($content = $this->getContent($engine, $id,
 				$request->getTitle())) === FALSE)
 			return new ErrorResponse($error,
