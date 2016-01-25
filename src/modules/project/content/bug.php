@@ -221,14 +221,16 @@ class BugProjectContent extends ContentMulti
 				'text' => _('Description: '),
 				'value' => $request->getParameter('content')));
 		//type
-		$combobox = $vbox->append('combobox', array('name' => 'bug_type',
+		$combobox = $vbox->append('combobox', array(
+				'name' => 'bug_type',
 				'text' => _('Type: '),
 				'value' => $request->get('bug_type')));
 		foreach(self::$types as $value => $text)
 			$combobox->append('label', array('value' => $value,
 				'text' => $text));
 		//priority
-		$combobox = $vbox->append('combobox', array('name' => 'priority',
+		$combobox = $vbox->append('combobox', array(
+				'name' => 'priority',
 				'text' => _('Priority: '),
 				'value' => $request->get('priority')));
 		foreach(self::$priorities as $value => $text)
