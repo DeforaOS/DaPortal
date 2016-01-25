@@ -41,6 +41,7 @@ class DatabaseTransaction implements Observable
 	//DatabaseTransaction::~DatabaseTransaction
 	public function __destruct()
 	{
+		//XXX this will silently revert any transaction not completed
 		if($this->inTransaction())
 			$this->flush();
 	}
