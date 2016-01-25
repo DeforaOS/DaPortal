@@ -1414,7 +1414,7 @@ class UserModule extends Module
 		if(($email = $request->get('email')) === FALSE)
 			$error .= _("An e-mail address is required\n");
 		if(strlen($error) > 0)
-			return $ret;
+			return FALSE;
 		//register the user
 		if(($user = User::register($engine, $this->name, $username,
 				FALSE, $email, FALSE, $error)) === FALSE)
