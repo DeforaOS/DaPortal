@@ -143,7 +143,7 @@ class PKIModule extends MultiContentModule
 	//PKIModule::callLatest
 	protected function callLatest(Engine $engine, Request $request)
 	{
-		$type = ($request !== NULL) ? $request->get('type') : FALSE;
+		$type = $request->get('type');
 
 		//XXX merge these sub-functions together
 		switch($type)
