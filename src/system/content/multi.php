@@ -52,7 +52,7 @@ class ContentMulti extends Content
 					'stock' => 'admin',
 					'text' => _('Administration')));
 		}
-		if($module->canSubmit($engine, FALSE, $this))
+		if($module->canSubmit($engine, NULL, $this))
 		{
 			$r = $module->getRequest('submit', array(
 					'type' => $this->type));
@@ -63,7 +63,7 @@ class ContentMulti extends Content
 		if($this->getID() !== FALSE)
 		{
 			if(!$this->isPublic() && $this->canPublish($engine,
-					FALSE, $this))
+					NULL, $this))
 			{
 				$r = $this->getRequest('publish');
 				$toolbar->append('button', array(
@@ -71,7 +71,7 @@ class ContentMulti extends Content
 						'stock' => 'publish',
 						'text' => $this->text_publish));
 			}
-			if($this->canUpdate($engine, FALSE, $this))
+			if($this->canUpdate($engine, NULL, $this))
 			{
 				$r = $this->getRequest('update');
 				$toolbar->append('button', array(
