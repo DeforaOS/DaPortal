@@ -138,7 +138,8 @@ class SaltModule extends Module
 			? $request->get('host') : FALSE;
 
 		$page = new Page(array('title' => $title));
-		$page->append('title', array('text' => $title));
+		$page->append('title', array('stock' => 'monitor',
+				'text' => $title));
 		$vbox = $page->append('vbox');
 		$this->_defaultForm($vbox, $hostname);
 		if(!is_string($hostname) || strlen($hostname) == 0)
@@ -222,7 +223,7 @@ class SaltModule extends Module
 			return;
 		}
 		$view = $page->append('iconview');
-		$icon = new PageElement('image', array('stock' => 'monitor'));
+		$icon = new PageElement('image', array('stock' => 'server'));
 		if(!is_array($data))
 			$data = array($data);
 		foreach($data as $d)
@@ -569,8 +570,15 @@ class SaltModule extends Module
 	protected function renderServiceList(PageElement $page, $hostname,
 			$data)
 	{
-		$calls = array('reload' => _('Reload'), 'start' => _('Start'),
-			'stop' => _('Stop'), 'restart' => _('Restart'));
+		$calls = array(
+			'reload' => array('text' => _('Reload'),
+				'stock' => 'media-previous'),
+			'start' => array('text' => _('Start'),
+				'stock' => 'media-play'),
+			'stop' => array('text' => _('Stop'),
+				'stock' => 'media-stop'),
+			'restart' => array('text' => _('Restart'),
+				'stock' => 'media-loop'));
 
 		$page->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
@@ -579,7 +587,7 @@ class SaltModule extends Module
 		foreach($data as $service)
 		{
 			$actions = FALSE;
-			foreach($calls as $call => $label)
+			foreach($calls as $call => $p)
 			{
 				$c = 'canService'.$call;
 				if($this->$c(NULL, $hostname, $error)
@@ -591,9 +599,9 @@ class SaltModule extends Module
 				if($actions === FALSE)
 					$actions = new PageElement('hbox');
 				$actions->append('button', array(
-						'stock' => $call,
+						'stock' => $p['stock'],
 						'request' => $r,
-						'text' => $label));
+						'text' => $p['text']));
 			}
 			$view->append('row', array('service' => $service,
 					'actions' => $actions));
