@@ -918,6 +918,7 @@ class UserModule extends Module
 		$query = static::$query_content;
 		$cred = $engine->getCredentials();
 		$link = FALSE;
+		$user = FALSE;
 
 		//obtain the list of modules
 		if(($res = $database->query($engine, $query)) === FALSE)
