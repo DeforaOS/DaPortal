@@ -78,6 +78,15 @@ actions/insert-text			insert-text
 actions/mail-reply-all			comment
 actions/mail-reply-sender		reply
 actions/mail-send			email webmail
+actions/media-eject			media-eject
+actions/media-playback-start		media-play
+actions/media-playback-pause		media-pause
+actions/media-playback-seek-backward	media-rewind
+actions/media-playback-seek-forward	media-forward
+actions/media-skip-backward		media-previous
+actions/media-skip-forward		media-next
+actions/media-playback-stop		media-stop
+actions/media-record			media-record
 actions/next				next
 actions/previous			previous
 actions/revert				reset
@@ -104,7 +113,10 @@ mimetypes/image-x-generic		gallery
 mimetypes/stock_calendar		blog timeline
 places/folder				browse folder
 places/folder-download			download
+places/server				server
 places/user-bookmarks			bookmark
+status/media-playlist-repeat		media-loop
+status/media-playlist-shuffle		media-shuffle
 status/stock_dialog-error		error
 status/stock_dialog-info		info
 status/stock_dialog-question		question
