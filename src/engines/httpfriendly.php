@@ -144,7 +144,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 			//prepare a relative address
 			$url = basename($name);
 		//return if already complete
-		if(($module = $request->getModule()) === FALSE)
+		if(is_null($request)
+				|| ($module = $request->getModule()) === FALSE)
 			return $url;
 		//handle the main parameters
 		$url .= '/'.$module;

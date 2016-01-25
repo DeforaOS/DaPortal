@@ -224,8 +224,6 @@ class HTTPEngine extends Engine
 	//HTTPEngine::getURL
 	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
-		if($request === NULL)
-			return FALSE;
 		$name = isset($_SERVER['SCRIPT_NAME'])
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
 		if($absolute)
@@ -244,26 +242,26 @@ class HTTPEngine extends Engine
 		}
 		else
 			$url = basename($name);
-		if(($module = $request->getModule()) !== FALSE)
+		if(is_null($request)
+				|| ($module = $request->getModule()) !== FALSE)
+			return $url;
+		$url .= '?_module='.rawurlencode($module);
+		if(($action = $request->getAction()) !== FALSE)
+			$url .= '&_action='.rawurlencode($action);
+		if(($id = $request->getID()) !== FALSE)
+			$url .= '&_id='.rawurlencode($id);
+		if(($title = $request->getTitle()) !== FALSE)
 		{
-			$url .= '?_module='.rawurlencode($module);
-			if(($action = $request->getAction()) !== FALSE)
-				$url .= '&_action='.rawurlencode($action);
-			if(($id = $request->getID()) !== FALSE)
-				$url .= '&_id='.rawurlencode($id);
-			if(($title = $request->getTitle()) !== FALSE)
-			{
-				$title = str_replace(array(' ', '?', '#'), '-',
-						$title);
-				$url .= '&_title='.rawurlencode($title);
-			}
-			if($request->isIdempotent()
-					&& ($args = $request->getParameters())
-					!== FALSE)
-				foreach($args as $key => $value)
-					$url .= $this->_getURLParameter($key,
-							$value, '&');
+			$title = str_replace(array(' ', '?', '#'), '-',
+					$title);
+			$url .= '&_title='.rawurlencode($title);
 		}
+		if($request->isIdempotent()
+				&& ($args = $request->getParameters())
+				!== FALSE)
+			foreach($args as $key => $value)
+				$url .= $this->_getURLParameter($key, $value,
+						'&');
 		return $url;
 	}
 
