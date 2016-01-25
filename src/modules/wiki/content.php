@@ -267,16 +267,12 @@ class WikiContent extends Content
 	public function _formUpdate(Engine $engine, Request $request)
 	{
 		$vbox = new PageElement('vbox');
-		$value = FALSE;
 
-		if($request !== NULL)
-			$value = $request->get('content');
-		if($value === FALSE)
+		if(($value = $request->get('content')) === FALSE)
 			$value = $this->getMarkup($engine);
 		$vbox->append('htmledit', array('name' => 'content',
 				'value' => $value));
-		$value = ($request !== NULL)
-			? $request->get('message') : FALSE;
+		$value = $request->get('message');
 		$vbox->append('entry', array('text' => _('Log message: '),
 				'name' => 'message',
 				'value' => $value));
