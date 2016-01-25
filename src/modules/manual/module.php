@@ -128,7 +128,7 @@ class ManualModule extends Module
 
 
 	//ManualModule::getSectionPages
-	protected function getSectionPages($section)
+	protected function getSectionPages(Engine $engine, $section)
 	{
 		//XXX code duplication
 		$ret = array();
@@ -368,7 +368,8 @@ class ManualModule extends Module
 			PageElement $page, $section)
 	{
 		//FIXME implement paging
-		if(($pages = $this->getSectionPages($section)) === FALSE)
+		if(($pages = $this->getSectionPages($engine, $section))
+				=== FALSE)
 		{
 			$error = _('Could not list pages');
 			$page->append('dialog', array('type' => 'error',
