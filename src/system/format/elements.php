@@ -35,7 +35,7 @@ abstract class FormatElements extends Format
 			$this->renderPage($page);
 		else
 		{
-			$title = $page->getProperties('title');
+			$title = $page->get('title');
 			$p = new Page(array('title' => $title));
 			$p->append($page);
 			$this->renderPage($p);
