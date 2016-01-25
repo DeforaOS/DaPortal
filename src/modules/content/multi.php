@@ -257,7 +257,7 @@ abstract class MultiContentModule extends ContentModule
 		//XXX code duplicated from ContentModule
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
-		$user = ($request->getID !== FALSE
+		$user = ($request->getID() !== FALSE
 				|| $request->getTitle() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
 				$request->getID()) : FALSE;
