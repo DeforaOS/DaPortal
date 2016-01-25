@@ -1317,7 +1317,7 @@ class HTMLFormat extends FormatElements
 		if($id !== FALSE)
 		{
 			if(isset($ids[$id]))
-				$engine->log('LOG_DEBUG', 'HTML ID '.$id
+				$this->engine->log('LOG_DEBUG', 'HTML ID '.$id
 						.' is already defined');
 			$ids[$id] = TRUE;
 			$tag .= ' id="'.$this->escapeAttribute($id).'"';
@@ -1354,7 +1354,7 @@ class HTMLFormat extends FormatElements
 		if($id !== FALSE)
 		{
 			if(isset($ids[$id]))
-				$engine->log('LOG_DEBUG', 'HTML ID '.$id
+				$this->engine->log('LOG_DEBUG', 'HTML ID '.$id
 						.' is already defined');
 			$ids[$id] = TRUE;
 			$tag .= ' id="'.$this->escapeAttribute($id).'"';
