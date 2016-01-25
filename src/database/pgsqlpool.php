@@ -98,7 +98,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 
 	private function _attachSlaves(Engine $engine, $config, $section)
 	{
-		$this->slaves = new ArrayIterator();
+		$this->slaves = new \ArrayIterator();
 		if(($slaves = $config->get($section, 'slaves')) === FALSE)
 			return FALSE;
 		$slaves = explode(',', $slaves);
