@@ -399,4 +399,7 @@ INSERT INTO daportal_module (name, enabled) VALUES ('manual', '1');
 INSERT INTO daportal_module (name, enabled) VALUES ('salt', '1');
 
 
+/* module: donate */
+INSERT INTO daportal_module (name, enabled) VALUES ('donate', '1');
+
 COMMIT;

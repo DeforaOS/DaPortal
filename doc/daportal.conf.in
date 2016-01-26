@@ -185,6 +185,14 @@ globs=@PREFIX@/share/mime/globs
 [module::content]
 #moderate=1
 
+[module::donate]
+#whether to filter the HTML output
+#filter=0
+#message for successful donations (HTML)
+#widget=
+#content of the donation widget (HTML)
+#widget=
+
 [module::download]
 #root=/tmp/download
 #umask=0277
