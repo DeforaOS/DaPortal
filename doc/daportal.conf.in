@@ -189,7 +189,7 @@ globs=@PREFIX@/share/mime/globs
 #whether to filter the HTML output
 #filter=0
 #message for successful donations (HTML)
-#widget=
+#message=
 #content of the donation widget (HTML)
 #widget=
 
