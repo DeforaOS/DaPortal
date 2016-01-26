@@ -43,6 +43,10 @@ class DeforaOSTemplate extends BasicTemplate
 		$request = new Request('user', 'widget');
 		if(($widget = $this->engine->process($request)) !== FALSE)
 			$vbox->append($widget->getContent());
+		//donation widget
+		$request = new Request('donate', 'widget');
+		if(($widget = $this->engine->process($request, TRUE)) !== FALSE)
+			$vbox->append($widget);
 		return $vbox;
 	}
 
