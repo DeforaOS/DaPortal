@@ -416,7 +416,7 @@ abstract class ContentModule extends Module
 		$db = $engine->getDatabase();
 		$query = static::$query_list_admin;
 		$args = array('module_id' => $this->id);
-		$p = ($request !== NULL) ? $request->get('page') : 0;
+		$p = $request->get('page');
 		$pcnt = FALSE;
 		$error = FALSE;
 		$dialog = FALSE;
@@ -503,7 +503,7 @@ abstract class ContentModule extends Module
 	protected function callDefault(Engine $engine, Request $request)
 	{
 		$class = $this->content_class;
-		$p = $request->get('page') ?: 0;
+		$p = $request->get('page');
 
 		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
@@ -569,7 +569,7 @@ abstract class ContentModule extends Module
 					$request->getID())
 				: Group::lookup($engine, $cred->getGroupname(),
 						$cred->getGroupID());
-		$p = ($request !== NULL) ? $request->get('page') : 0;
+		$p = $request->get('page');
 
 		$title = $this->text_content_list_title_group;
 		$title = $this->text_content_list_title_by_group.' '

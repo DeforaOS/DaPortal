@@ -199,8 +199,7 @@ abstract class Engine
 	public function process(Request $request, $internal = FALSE)
 	{
 		//return an empty page if no valid request is provided
-		if($request === FALSE
-				|| ($module = $request->getModule()) === FALSE)
+		if(($module = $request->getModule()) === FALSE)
 			return new PageResponse(FALSE);
 		//preserve the type
 		$type = $request->getType();

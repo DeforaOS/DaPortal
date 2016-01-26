@@ -206,7 +206,6 @@ class DownloadModule extends MultiContentModule
 	protected function callDefault(Engine $engine, Request $request)
 	{
 		$class = static::$content_classes['folder'];
-		$p = $request->get('page') ?: 0;
 
 		if($request->getID() !== FALSE)
 			return $this->callDisplay($engine, $request);
