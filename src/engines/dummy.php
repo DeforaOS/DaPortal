@@ -29,6 +29,13 @@ class DummyEngine extends Engine
 	}
 
 
+	//DummyEngine::getURL
+	public function getURL(Request $request = NULL, $absolute = TRUE)
+	{
+		return FALSE;
+	}
+
+
 	//essential
 	//DummyEngine::match
 	public function match()
