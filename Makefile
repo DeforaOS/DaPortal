@@ -249,6 +249,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/content/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/modules/content/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/donate/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/donate/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/donate/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/download/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/download/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/download/module.php \
