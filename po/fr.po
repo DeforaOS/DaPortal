@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-25 19:42+0100\n"
+"POT-Creation-Date: 2016-01-27 18:22+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -616,20 +616,20 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: ../src/modules/browser/module.php:328 ../src/modules/browser/module.php:335
-#: ../src/modules/download/module.php:288
-#: ../src/modules/download/module.php:295
+#: ../src/modules/download/module.php:287
+#: ../src/modules/download/module.php:294
 #: ../src/modules/project/content.php:339
 #: ../src/modules/project/module.php:870
 msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
 #: ../src/modules/browser/module.php:331
-#: ../src/modules/download/module.php:291
+#: ../src/modules/download/module.php:290
 msgid "Forbidden filename"
 msgstr "Nom de fichier interdit"
 
 #: ../src/modules/browser/module.php:339
-#: ../src/modules/download/module.php:299
+#: ../src/modules/download/module.php:298
 msgid "No file uploaded"
 msgstr "Pas de fichier envoyé"
 
@@ -640,7 +640,7 @@ msgstr ""
 #: ../src/modules/browser/module.php:352 ../src/modules/content/module.php:818
 #: ../src/modules/content/module.php:890 ../src/modules/content/module.php:947
 #: ../src/modules/download/content/file.php:225
-#: ../src/modules/download/module.php:330 ../src/modules/project/module.php:64
+#: ../src/modules/download/module.php:329 ../src/modules/project/module.php:64
 #: ../src/modules/project/module.php:675 ../src/modules/project/module.php:680
 #: ../src/modules/project/module.php:686 ../src/modules/project/module.php:692
 msgid "Internal server error"
@@ -1066,7 +1066,7 @@ msgstr "Administration des téléchargements"
 msgid "Create"
 msgstr "Créer"
 
-#: ../src/modules/download/module.php:222
+#: ../src/modules/download/module.php:221
 msgid "Could not fetch content"
 msgstr "Impossible d'obtenir le contenu"
 
