@@ -690,7 +690,7 @@ class ProjectModule extends MultiContentModule
 			'download_id' => $did);
 		if($db->query($engine, $query, $args) === FALSE)
 			return _('Internal server error');
-		$content = Content::get($engine, $this->id, $project['id'],
+		$content = Content::load($engine, $this, $project['id'],
 				$project['title']);
 		return FALSE;
 	}
