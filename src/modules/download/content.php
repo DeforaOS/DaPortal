@@ -79,14 +79,6 @@ abstract class DownloadContent extends ContentMulti
 	}
 
 
-	//DownloadContent::getParent
-	public function getParent(Engine $engine, Request $request = NULL)
-	{
-		return static::getContent($engine, $this->get('parent_id'),
-				FALSE, $request);
-	}
-
-
 	//static
 	//accessors
 	//DownloadContent::getRoot
