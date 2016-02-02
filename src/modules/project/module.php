@@ -387,14 +387,15 @@ class ProjectModule extends MultiContentModule
 		$query .= ' ORDER BY '.$order;
 		//obtain the corresponding bug reports
 		if($error !== FALSE)
-			$res = array();
+			$res = FALSE;
 		else if(($res = $db->query($engine, $query, $args)) === FALSE)
 		{
-			$res = array();
+			$res = FALSE;
 			$error = _('Unable to list bugs');
 		}
-		$res = new ContentResult($engine, $this, 'BugProjectContent',
-			$res);
+		else
+			$res = new ContentResult($engine, $this,
+				'BugProjectContent', $res);
 		//build the page
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
@@ -409,6 +410,8 @@ class ProjectModule extends MultiContentModule
 			$page->append($filter);
 		$view = $page->append('treeview');
 		$view->set('columns', BugProjectContent::getColumns());
+		if($res === FALSE)
+			return new PageResponse($page);
 		foreach($res as $r)
 			$view->append($r->displayRow($engine, $request));
 		return new PageResponse($page);
