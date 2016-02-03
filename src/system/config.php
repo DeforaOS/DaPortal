@@ -67,7 +67,7 @@ class Config
 	public function load($filename)
 	{
 		$reg_comment = "/^[ \t]*(#.*$)?\r?$/";
-		$reg_section = "/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]+)\][ \t]*\r?$/";
+		$reg_section = "/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]*)\][ \t]*\r?$/";
 		$reg_variable = "/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/";
 		$section = '';
 
