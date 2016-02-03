@@ -172,7 +172,7 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			$this->_defaultHostRender($page, $data,
+			$this->_defaultHostRender($page, $hostname, $data,
 					array($this, 'renderUptime'));
 		if(($data = $this->helperSaltServiceListEnabled($hostname))
 				=== FALSE)
@@ -184,7 +184,7 @@ class SaltModule extends Module
 		else
 		{
 			$vbox = $page->append('vbox');
-			$this->_defaultHostRender($vbox, $data,
+			$this->_defaultHostRender($vbox, $hostname, $data,
 					array($this, 'renderServiceList'),
 					array('hostname'));
 		}
@@ -195,25 +195,30 @@ class SaltModule extends Module
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			$this->_defaultHostRender($page, $data,
+			$this->_defaultHostRender($page, $hostname, $data,
 					array($this, 'renderStatusAll'));
 	}
 
-	private function _defaultHostRender(PageElement $page, $data, $callback,
-			$params = array())
+	private function _defaultHostRender(PageElement $page, $host, $data,
+			$callback, $params = array())
 	{
 		if(!is_array($data))
 			$data = array($data);
-		foreach($data as $d)
+		if(count($data) > 1)
+			$page = $page->append('vbox');
+		foreach($data as $hosts)
 		{
-			if(!is_object($d))
+			if(!is_object($hosts))
 				continue;
-			foreach($d as $hostname => $data)
+			foreach($hosts as $hostname => $h)
 			{
+				if(count($data) > 1)
+					$page->append('title', array(
+							'text' => $hostname));
 				$args = array();
 				foreach($params as $p)
 					$args[$p] = $$p;
-				$callback($page, $data, $args);
+				$callback($page, $h, $args);
 			}
 		}
 	}
