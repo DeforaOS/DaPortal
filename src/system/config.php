@@ -66,20 +66,20 @@ class Config
 	//Config::load
 	public function load($filename)
 	{
+		$reg_comment = "/^[ \t]*(#.*$)?\r?$/";
+		$reg_section = "/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]+)\][ \t]*\r?$/";
+		$reg_variable = "/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/";
 		$section = '';
 
 		if(($fp = @fopen($filename, 'r')) === FALSE)
 			return FALSE;
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
 		{
-			if(preg_match("/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/",
-					$line, $matches) == 1)
+			if(preg_match($reg_variable, $line, $matches) == 1)
 				$this->set($section, $matches[1], $matches[2]);
-			else if(preg_match("/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]+)\]"
-						."[ \t]*\r?$/", $line, $matches)
-					== 1)
+			else if(preg_match($reg_section, $line, $matches) == 1)
 				$section = $matches[1];
-			else if(preg_match("/^[ \t]*(#.*$)?\r?$/", $line) == 1)
+			else if(preg_match($reg_comment, $line) == 1)
 				continue;
 			else
 				error_log($filename.': Line '.$i
