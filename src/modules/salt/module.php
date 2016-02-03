@@ -193,8 +193,11 @@ class SaltModule extends Module
 			$vbox = $page->append('vbox');
 			foreach($data as $d)
 				foreach($d as $hostname => $data)
-					$this->renderServiceList($vbox,
-							$hostname, $data);
+				{
+					$args = array('hostname' => $hostname);
+					$this->renderServiceList($vbox, $data,
+							$args);
+				}
 		}
 		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
 		{
@@ -518,7 +521,8 @@ class SaltModule extends Module
 
 	//rendering
 	//SaltModule::renderDiskusage
-	private function renderDiskusage(PageElement $page, $data)
+	private function renderDiskusage(PageElement $page, $data,
+			$args = array())
 	{
 		$page->append('title', array('text' => 'Disk usage'));
 		foreach($data as $vol => $voldata)
@@ -538,7 +542,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderLoadavg
-	protected function renderLoadavg(PageElement $page, $data)
+	protected function renderLoadavg(PageElement $page, $data,
+			$args = array())
 	{
 		$page->append('title', array('text' => _('Load average')));
 		foreach($data as $key => $value)
@@ -548,7 +553,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderNetdev
-	protected function renderNetdev(PageElement $page, $data)
+	protected function renderNetdev(PageElement $page, $data,
+			$args = array())
 	{
 		$title = _('Network interfaces');
 
@@ -566,8 +572,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderServiceList
-	protected function renderServiceList(PageElement $page, $hostname,
-			$data)
+	protected function renderServiceList(PageElement $page, $data,
+			$args = array())
 	{
 		$calls = array(
 			'reload' => array('text' => _('Reload'),
@@ -579,6 +585,9 @@ class SaltModule extends Module
 			'restart' => array('text' => _('Restart'),
 				'stock' => 'media-loop'));
 
+		if(!isset($args['hostname']))
+			return;
+		$hostname = $args['hostname'];
 		$page->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
 		$view = $page->append('treeview', array('columns' => $columns,
@@ -609,7 +618,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderStatusAll
-	protected function renderStatusAll(PageElement $page, $data)
+	protected function renderStatusAll(PageElement $page, $data,
+			$args = array())
 	{
 		if(!($data instanceof Traversable) && !is_object($data))
 			return;
@@ -639,7 +649,8 @@ class SaltModule extends Module
 
 
 	//SaltModule::renderUptime
-	protected function renderUptime(PageElement $page, $data)
+	protected function renderUptime(PageElement $page, $data,
+			$args = array())
 	{
 		$page->append('label', array('text' => $data));
 	}
