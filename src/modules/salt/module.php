@@ -121,6 +121,27 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::canUpgrade
+	protected function canUpgrade(Request $request = NULL,
+			$hostname = FALSE, &$error = FALSE)
+	{
+		$credentials = $this->engine->getCredentials();
+
+		if(!$credentials->isAdmin())
+		{
+			$error = _('Permission denied');
+			return Response::$CODE_EPERM;
+		}
+		if($request !== NULL && $request->isIdempotent())
+		{
+			$error = _('Confirmation required');
+			return Response::$CODE_EROFS;
+		}
+		//let Salt decide
+		return Response::$CODE_SUCCESS;
+	}
+
+
 	//actions
 	//SaltModule::actions
 	protected function actions($request)
@@ -174,6 +195,16 @@ class SaltModule extends Module
 		else
 			$this->_defaultHostRender($page, $host, $data,
 					array($this, 'renderUptime'));
+		if(($data = $this->helperSaltUpgradeList($host)) === FALSE)
+		{
+			$error = _('Could not list package upgrades');
+			$page->append('dialog', array(
+					'type' => 'error', 'text' => $error));
+		}
+		else
+			$this->_defaultHostRender($page, $host, $data,
+					array($this, 'renderUpgradeList'),
+					array('hostname'));
 		if(($data = $this->helperSaltServiceListEnabled($host))
 				=== FALSE)
 		{
@@ -302,6 +333,13 @@ class SaltModule extends Module
 
 	//SaltModule::callShutdown
 	protected function callShutdown(Request $request)
+	{
+		return $this->helperAction($request);
+	}
+
+
+	//SaltModule::callUpgrade
+	protected function callUpgrade(Request $request)
 	{
 		return $this->helperAction($request);
 	}
@@ -527,6 +565,20 @@ class SaltModule extends Module
 	}
 
 
+	//SaltModule::helperSaltUpgrade
+	protected function helperSaltUpgrade($hostname)
+	{
+		return $this->helperSalt($hostname, 'pkg.upgrade');
+	}
+
+
+	//SaltModule::helperSaltUpgradeList
+	protected function helperSaltUpgradeList($hostname)
+	{
+		return $this->helperSalt($hostname, 'pkg.list_upgrades');
+	}
+
+
 	//rendering
 	//SaltModule::renderDiskusage
 	private function renderDiskusage(PageElement $page, $data,
@@ -661,6 +713,42 @@ class SaltModule extends Module
 			$args = array())
 	{
 		$page->append('label', array('text' => $data));
+	}
+
+
+	//SaltModule::renderUpgradeList
+	protected function renderUpgradeList(PageElement $page, $data,
+			$args = array())
+	{
+		if(!isset($args['hostname']))
+			return;
+		$hostname = $args['hostname'];
+		$page = $page->append('vbox');
+		$page->append('title', array('text' => _('Package upgrades')));
+		//XXX optimize
+		$count = 0;
+		foreach($data as $d)
+			$count++;
+		if($count == 0)
+		{
+			$message = 'The system is up to date';
+			$page->append('dialog', array('type' => 'info',
+					'text' => $message));
+			return;
+		}
+		$message = "$count package upgrade(s) are available";
+		$dialog = $page->append('dialog', array('type' => 'warning',
+				'text' => $message));
+		$page = $dialog->append('expander', array(
+				'title' => 'Details'));
+		foreach($data as $key => $value)
+			$page->append('label', array(
+					'text' => $key.': '.$value));
+		$request = $this->getRequest('upgrade', array(
+				'host' => $hostname));
+		$dialog->append('button', array('stock' => 'submit',
+				'request' => $request,
+				'text' => 'Upgrade'));
 	}
 
 
