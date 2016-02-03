@@ -22,13 +22,16 @@ abstract class SCMProject
 	//public
 	//essential
 	//SCMProject::attach
-	abstract public function attach($engine);
+	public function attach($engine)
+	{
+		$this->engine = $engine;
+	}
 
 
 	//actions
-	abstract public function browse($engine, $project, $request);
-	abstract public function download($engine, $project, $request);
-	abstract public function timeline($engine, $project, $request);
+	abstract public function browse($project, $request);
+	abstract public function download($project, $request);
+	abstract public function timeline($project, $request);
 
 
 	//useful
@@ -47,6 +50,11 @@ abstract class SCMProject
 		closedir($dir);
 		return $ret;
 	}
+
+
+	//protected
+	//properties
+	protected $engine;
 }
 
 ?>

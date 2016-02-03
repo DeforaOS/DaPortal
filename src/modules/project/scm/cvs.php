@@ -32,12 +32,13 @@ class CVSSCMProject extends SCMProject
 				'scm::backend::cvs::cvsroot'); //XXX
 		$this->repository = $config->get('module::project',
 				'scm::backend::cvs::repository'); //XXX
+		parent::attach($engine);
 	}
 
 
 	//actions
 	//CVSSCMProject::browse
-	public function browse($engine, $project, $request)
+	public function browse($project, $request)
 	{
 		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
@@ -58,16 +59,14 @@ class CVSSCMProject extends SCMProject
 					'type' => 'error', 'text' => $error));
 		if(($st['mode'] & CVSSCMProject::$S_IFDIR)
 				=== CVSSCMProject::$S_IFDIR)
-			return $this->_browseDir($engine, $request, $vbox,
-					$path, $file);
+			return $this->_browseDir($request, $vbox, $path, $file);
 		if(($revision = $request->get('revision')) !== FALSE)
-			return $this->_browseFileRevision($engine, $request,
-					$vbox, $path, $file, $revision);
-		return $this->_browseFile($engine, $request, $vbox, $path,
-				$file);
+			return $this->_browseFileRevision($request, $vbox,
+					$path, $file, $revision);
+		return $this->_browseFile($request, $vbox, $path, $file);
 	}
 
-	private function _browseDir($engine, $request, $vbox, $path, $file)
+	private function _browseDir($request, $vbox, $path, $file)
 	{
 		$error = _('Could not open directory');
 
@@ -126,8 +125,8 @@ class CVSSCMProject extends SCMProject
 		foreach($folders as $de => $st)
 		{
 			$row = $view->append('row');
-			$icon = Mime::getIconByType($engine, 'inode/directory',
-					16);
+			$icon = Mime::getIconByType($this->engine,
+					'inode/directory', 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
 			$row->set('icon', $icon);
@@ -147,7 +146,7 @@ class CVSSCMProject extends SCMProject
 		foreach($files as $de => $st)
 		{
 			$row = $view->append('row');
-			$icon = Mime::getIcon($engine, $de, 16);
+			$icon = Mime::getIcon($this->engine, $de, 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
 			$row->set('icon', $icon);
@@ -189,7 +188,8 @@ class CVSSCMProject extends SCMProject
 			$username = substr($username, 0, strspn($username,
 					'0123456789abcdefghijklmnopqrstuvwxyz'
 					.'ABCDEFGHIJKLMNOPQRSTUVWXYZ'));
-			if(($user = User::lookup($engine, $username)) !== FALSE)
+			if(($user = User::lookup($this->engine, $username))
+					!== FALSE)
 			{
 				$r = new Request('project', 'list',
 					$user->getUserID(), $username);
@@ -206,7 +206,7 @@ class CVSSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFile($engine, $request, $vbox, $path, $file)
+	private function _browseFile($request, $vbox, $path, $file)
 	{
 		$error = _('Could not list revisions');
 
@@ -243,7 +243,8 @@ class CVSSCMProject extends SCMProject
 					'abcdefghijklmnopqrstuvwxyz'
 					.'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 					.'0123456789'));
-			if(($user = User::lookup($engine, $username)) !== FALSE)
+			if(($user = User::lookup($this->engine, $username))
+					!== FALSE)
 			{
 				$r = new Request('project', 'list',
 					$user->getUserID(), $username);
@@ -275,8 +276,8 @@ class CVSSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFileRevision($engine, $request, $vbox, $path,
-			$file, $revision)
+	private function _browseFileRevision($request, $vbox, $path, $file,
+			$revision)
 	{
 		$error = 'Internal server error';
 
@@ -286,7 +287,7 @@ class CVSSCMProject extends SCMProject
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$filename = basename($file);
-		$type = Mime::getType($engine, $filename);
+		$type = Mime::getType($this->engine, $filename);
 		if($request->get('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
@@ -335,7 +336,7 @@ class CVSSCMProject extends SCMProject
 
 
 	//CVSSCMProject::download
-	public function download($engine, $project, $request)
+	public function download($project, $request)
 	{
 		$title = _('Repository');
 		$repository = 'pserver:'.$this->repository;
@@ -355,7 +356,7 @@ class CVSSCMProject extends SCMProject
 
 
 	//CVSSCMProject::timeline
-	public function timeline($engine, $project, $request)
+	public function timeline($project, $request)
 	{
 		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
@@ -443,7 +444,8 @@ class CVSSCMProject extends SCMProject
 			$row->set('revision', $link);
 			//username
 			$username = $fields[1];
-			if(($user = User::lookup($engine, $username)) !== FALSE)
+			if(($user = User::lookup($this->engine, $username))
+					!== FALSE)
 			{
 				$r = new Request('user', FALSE,
 					$user->getUserID(),

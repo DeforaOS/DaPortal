@@ -178,7 +178,7 @@ class ProjectContent extends ContentMulti
 				=== FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		$browse = $scm->browse($engine, $this, $request);
+		$browse = $scm->browse($this, $request);
 		if(!($browse instanceof PageElement))
 			//FIXME set the proper filename
 			return $browse;
@@ -198,8 +198,8 @@ class ProjectContent extends ContentMulti
 		//source code
 		if(($scm = $class::attachSCM($engine, $this->get('scm')))
 				!== FALSE
-				&& ($download = $scm->download($engine,
-				$this, $request)) !== FALSE)
+				&& ($download = $scm->download($this, $request))
+				!== FALSE)
 			$page->append($download);
 		//downloads
 		$error = 'Could not list downloads';
@@ -337,7 +337,7 @@ class ProjectContent extends ContentMulti
 			return new PageElement('dialog', array(
 					'type' => 'error',
 					'text' => _('An error occurred')));
-		$timeline = $scm->timeline($engine, $this, $request);
+		$timeline = $scm->timeline($this, $request);
 		$vbox->append($timeline);
 		return $page;
 	}

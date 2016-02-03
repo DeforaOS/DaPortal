@@ -30,12 +30,13 @@ class GitSCMProject extends SCMProject
 
 		$this->gitroot = $config->get('module::project',
 				'scm::backend::git::gitroot');
+		parent::attach($engine);
 	}
 
 
 	//actions
 	//GitSCMProject::browse
-	public function browse($engine, $project, $request)
+	public function browse($project, $request)
 	{
 		$error = _('No Git repository defined');
 
@@ -59,15 +60,12 @@ class GitSCMProject extends SCMProject
 		if(($st = @lstat($path)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		if(($st['mode'] & GitSCMProject::$S_IFDIR)
-				=== GitSCMProject::$S_IFDIR)
-			return $this->_browseDir($engine, $request, $vbox,
-					$path, $file);
-		return $this->_browseFile($engine, $request, $vbox, $path,
-				$file);
+		if(($st['mode'] & static::$S_IFDIR) === static::$S_IFDIR)
+			return $this->_browseDir($request, $vbox, $path, $file);
+		return $this->_browseFile($request, $vbox, $path, $file);
 	}
 
-	private function _browseDir($engine, $request, $vbox, $path, $file)
+	private function _browseDir($request, $vbox, $path, $file)
 	{
 		$error = _('Could not open directory');
 
@@ -87,8 +85,7 @@ class GitSCMProject extends SCMProject
 				continue;
 			if(($st = lstat($path.'/'.$de)) === FALSE)
 				continue;
-			if(($st['mode'] & GitSCMProject::$S_IFDIR)
-					== GitSCMProject::$S_IFDIR)
+			if(($st['mode'] & static::$S_IFDIR) == static::$S_IFDIR)
 				$folders[$de] = $st;
 			else
 				$files[$de] = $st;
@@ -98,8 +95,8 @@ class GitSCMProject extends SCMProject
 		foreach($folders as $de => $st)
 		{
 			$row = $view->append('row');
-			$icon = Mime::getIconByType($engine, 'inode/directory',
-					16);
+			$icon = Mime::getIconByType($this->engine,
+					'inode/directory', 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
 			$row->set('icon', $icon);
@@ -119,7 +116,7 @@ class GitSCMProject extends SCMProject
 		foreach($files as $de => $st)
 		{
 			$row = $view->append('row');
-			$icon = Mime::getIcon($engine, $de, 16);
+			$icon = Mime::getIcon($this->engine, $de, 16);
 			$icon = new PageElement('image', array(
 					'source' => $icon));
 			$row->set('icon', $icon);
@@ -140,7 +137,7 @@ class GitSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFile($engine, $request, $vbox, $path, $file)
+	private function _browseFile($request, $vbox, $path, $file)
 	{
 		$error = _('Could not open file');
 
@@ -148,7 +145,7 @@ class GitSCMProject extends SCMProject
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
 		$filename = basename($file);
-		$type = Mime::getType($engine, $filename);
+		$type = Mime::getType($this->engine, $filename);
 		if($request->get('download') !== FALSE)
 		{
 			$ret = new StreamResponse($fp);
@@ -196,7 +193,7 @@ class GitSCMProject extends SCMProject
 
 
 	//GitSCMProject::download
-	public function download($engine, $project, $request)
+	public function download($project, $request)
 	{
 		$title = _('Repository');
 
@@ -213,7 +210,7 @@ class GitSCMProject extends SCMProject
 
 
 	//GitSCMProject::timeline
-	public function timeline($engine, $project, $request)
+	public function timeline($project, $request)
 	{
 		$error = _('No Git repository defined');
 
