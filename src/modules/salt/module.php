@@ -161,20 +161,20 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultHost(PageElement $page, $hostname)
+	private function _defaultHost(PageElement $page, $host)
 	{
-		$page->append('title', array('text' => $hostname));
-		$this->_defaultToolbar($page, $hostname);
-		if(($data = $this->helperSaltUptime($hostname)) === FALSE)
+		$page->append('title', array('text' => $host));
+		$this->_defaultToolbar($page, $host);
+		if(($data = $this->helperSaltUptime($host)) === FALSE)
 		{
 			$error = _('Could not obtain uptime');
 			$page->append('dialog', array(
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			$this->_defaultHostRender($page, $hostname, $data,
+			$this->_defaultHostRender($page, $host, $data,
 					array($this, 'renderUptime'));
-		if(($data = $this->helperSaltServiceListEnabled($hostname))
+		if(($data = $this->helperSaltServiceListEnabled($host))
 				=== FALSE)
 		{
 			$error = _('Could not list services');
@@ -184,18 +184,18 @@ class SaltModule extends Module
 		else
 		{
 			$vbox = $page->append('vbox');
-			$this->_defaultHostRender($vbox, $hostname, $data,
+			$this->_defaultHostRender($vbox, $host, $data,
 					array($this, 'renderServiceList'),
 					array('hostname'));
 		}
-		if(($data = $this->helperSaltStatusAll($hostname)) === FALSE)
+		if(($data = $this->helperSaltStatusAll($host)) === FALSE)
 		{
 			$error = _('Could not obtain statistics');
 			$page->append('dialog', array(
 					'type' => 'error', 'text' => $error));
 		}
 		else
-			$this->_defaultHostRender($page, $hostname, $data,
+			$this->_defaultHostRender($page, $host, $data,
 					array($this, 'renderStatusAll'));
 	}
 
