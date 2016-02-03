@@ -725,11 +725,7 @@ class SaltModule extends Module
 		$hostname = $args['hostname'];
 		$page = $page->append('vbox');
 		$page->append('title', array('text' => _('Package upgrades')));
-		//XXX optimize
-		$count = 0;
-		foreach($data as $d)
-			$count++;
-		if($count == 0)
+		if(($count = count((array)$data)) == 0)
 		{
 			$message = 'The system is up to date';
 			$page->append('dialog', array('type' => 'info',
