@@ -280,6 +280,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content/caclient.php \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content/caserver.php \
 		$(PACKAGE)-$(VERSION)/src/modules/pki/content/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/probe/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/probe/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/probe/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/project/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/project/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/project/content.php \
