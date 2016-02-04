@@ -343,10 +343,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/profile.php \
 		$(PACKAGE)-$(VERSION)/src/system/request.php \
 		$(PACKAGE)-$(VERSION)/src/system/response.php \
-		$(PACKAGE)-$(VERSION)/src/system/response/error.php \
-		$(PACKAGE)-$(VERSION)/src/system/response/page.php \
-		$(PACKAGE)-$(VERSION)/src/system/response/stream.php \
-		$(PACKAGE)-$(VERSION)/src/system/response/string.php \
 		$(PACKAGE)-$(VERSION)/src/system/template.php \
 		$(PACKAGE)-$(VERSION)/src/system/user.php \
 		$(PACKAGE)-$(VERSION)/src/system/project.conf \
@@ -354,6 +350,12 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/system/content/result.php \
 		$(PACKAGE)-$(VERSION)/src/system/content/project.conf \
+		$(PACKAGE)-$(VERSION)/src/system/response/Makefile \
+		$(PACKAGE)-$(VERSION)/src/system/response/error.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/page.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/stream.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/string.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/project.conf \
 		$(PACKAGE)-$(VERSION)/src/templates/Makefile \
 		$(PACKAGE)-$(VERSION)/src/templates/DeforaOS.php \
 		$(PACKAGE)-$(VERSION)/src/templates/EdgeBSD.php \
