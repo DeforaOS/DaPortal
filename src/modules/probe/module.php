@@ -140,7 +140,7 @@ class ProbeModule extends Module
 			$dialog = $page->append('dialog', array(
 					'type' => 'info',
 					'title' => $title,
-					'text' => $graph));
+					'text' => ''));
 			$request = $this->getRequest('widget', array(
 					'host' => $hostname, 'type' => $graph,
 					'time' => $time));
