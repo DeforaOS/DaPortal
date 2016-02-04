@@ -18,6 +18,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
 	$(INSTALL) -m 0644 page.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
+	$(INSTALL) -m 0644 pipe.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/pipe.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
 	$(INSTALL) -m 0644 stream.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/stream.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
 	$(INSTALL) -m 0644 string.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/string.php
@@ -25,6 +27,7 @@ install:
 uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/error.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/pipe.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/stream.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/string.php
 

@@ -353,6 +353,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/response/Makefile \
 		$(PACKAGE)-$(VERSION)/src/system/response/error.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/page.php \
+		$(PACKAGE)-$(VERSION)/src/system/response/pipe.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/stream.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/string.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/project.conf \
