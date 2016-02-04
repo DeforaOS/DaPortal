@@ -86,7 +86,7 @@ class ProbeModule extends Module
 		if(!is_string($hostname) || strlen($hostname) == 0)
 			$this->_defaultList($root, $vbox);
 		else
-			$this->_defaultHost($root, $hostname, $vbox);
+			$this->_defaultHost($request, $root, $hostname, $vbox);
 		return new PageResponse($page);
 	}
 
@@ -103,8 +103,11 @@ class ProbeModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultHost($root, $hostname, PageElement $page)
+	private function _defaultHost(Request $request, $root, $hostname,
+			PageElement $page)
 	{
+		$times = array('day', 'week', 'month');
+		$time = $request->get('time');
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
 			'user' => array('title' => 'Users logged')
@@ -112,6 +115,8 @@ class ProbeModule extends Module
 
 		$page->append('title', array('text' => $hostname));
 		$this->_defaultToolbar($page, $hostname);
+		if(!in_array($time, $times, TRUE))
+			$time = FALSE;
 		if(strstr($hostname, '/') !== FALSE
 				|| $hostname == '.' || $hostname == '..')
 			//FIXME report (error dialog)
@@ -137,7 +142,8 @@ class ProbeModule extends Module
 					'title' => $title,
 					'text' => $graph));
 			$request = $this->getRequest('widget', array(
-					'host' => $hostname, 'type' => $graph));
+					'host' => $hostname, 'type' => $graph,
+					'time' => $time));
 			$link = $dialog->append('link', array(
 					'request' => $request, 'text' => ''));
 			$link->append('image', array('request' => $request,
