@@ -203,6 +203,12 @@ globs=@PREFIX@/share/mime/globs
 [module::pki]
 #root=/tmp/pki
 
+[module::probe]
+#path to the DaMon repository (RRD files)
+#root=/tmp/probe
+#path to the RRD executable
+#rrdtool=rrdtool
+
 [module::project]
 #SCM backend: CVS
 #scm::backend::cvs::cvsroot=/tmp/cvs
