@@ -154,7 +154,7 @@ class SaltModule extends Module
 	//SaltModule::callDefault
 	protected function callDefault(Request $request)
 	{
-		$title = _('Salt monitoring');
+		$title = _('Salt administration');
 		$hostname = $request->get('host');
 
 		$page = new Page(array('title' => $title));
