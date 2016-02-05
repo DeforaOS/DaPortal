@@ -114,7 +114,8 @@ class ProbeModule extends Module
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
 			'procs' => array('title' => 'Process count'),
-			'users' => array('title' => 'Users logged')
+			'users' => array('title' => 'Users logged'),
+			'volume' => array('title' => 'Volume usage')
 		);
 
 		$page->append('title', array('text' => $hostname));
@@ -283,6 +284,30 @@ class ProbeModule extends Module
 					.' '.escapeshellarg('AREA:users#ff7f7f')
 					.' '.escapeshellarg('LINE1:users#ff4f4f:Users logged')
 					.' '.escapeshellarg('GPRINT:users:LAST: %.0lf');
+				break;
+			case 'volume':
+				if(($volume = $request->get('volume')) === FALSE
+						|| strlen($volume) == 0)
+				{
+					$volume = '/';
+					$rrd .= '/volume.rrd';
+				}
+				else if(strstr($volume, '/..') !== FALSE)
+					return new ErrorResponse($error);
+				else
+					$rrd .= '/volume/'.$volume.'.rrd';
+				$title = 'volume used: '.$volume.' '.$title;
+				$label = 'bytes';
+				$rrdtool .= ' --lower-limit 0'
+					.' '.escapeshellarg("DEF:used=$rrd:used:AVERAGE")
+					.' '.escapeshellarg("DEF:total=$rrd:total:AVERAGE")
+					.' '.escapeshellarg("CDEF:gbused=used,1024,/,1024,/,1024,/")
+					.' '.escapeshellarg("CDEF:gbtotal=total,1024,/,1024,/,1024,/")
+					.' '.escapeshellarg('AREA:used#7f7fff')
+					.' '.escapeshellarg('LINE1:used#4f4fff:Volume used')
+					.' '.escapeshellarg('GPRINT:gbused:LAST:%.2lf GB')
+					.' '.escapeshellarg('LINE1:total#4f4fff:Volume total')
+					.' '.escapeshellarg('GPRINT:gbtotal:LAST:%.2lf GB');
 				break;
 			default:
 				$error = 'Could not create graph for this type';
