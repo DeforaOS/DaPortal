@@ -45,6 +45,10 @@ class ProbeModule extends Module
 
 
 	//protected
+	//properties
+	static protected $times = array('day', 'week', 'month', 'year');
+
+
 	//methods
 	//accessors
 	protected function getRoot()
@@ -106,7 +110,6 @@ class ProbeModule extends Module
 	private function _defaultHost(Request $request, $root, $hostname,
 			PageElement $page)
 	{
-		$times = array('day', 'week', 'month');
 		$time = $request->get('time');
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
@@ -116,7 +119,7 @@ class ProbeModule extends Module
 
 		$page->append('title', array('text' => $hostname));
 		$this->_defaultToolbar($page, $hostname);
-		if(!in_array($time, $times, TRUE))
+		if(!in_array($time, static::$times, TRUE))
 			$time = FALSE;
 		if(strstr($hostname, '/') !== FALSE
 				|| $hostname == '.' || $hostname == '..')
@@ -187,11 +190,20 @@ class ProbeModule extends Module
 
 	private function _defaultToolbar(PageElement $page, $hostname)
 	{
-		$toolbar = $page->append('toolbar');
 		$request = $this->getRequest();
+
+		$toolbar = $page->append('toolbar');
 		$toolbar->append('button', array('stock' => 'server',
 				'text' => _('List hosts'),
 				'request' => $request));
+		foreach(static::$times as $time)
+		{
+			$r = $this->getRequest(FALSE, array('host' => $hostname,
+					'time' => $time));
+			$text = sprintf(_('Last %s'), $time);
+			$toolbar->append('button', array('stock' => 'refresh',
+					'text' => $text, 'request' => $r));
+		}
 	}
 
 
@@ -218,6 +230,10 @@ class ProbeModule extends Module
 			case 'week':
 				$rrdtool .= ' --start -604800';
 				$title = '(last week)';
+				break;
+			case 'year':
+				$rrdtool .= ' --start -31449600';
+				$title = '(last year)';
 				break;
 			case 'day':
 			default:
