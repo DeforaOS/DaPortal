@@ -110,6 +110,7 @@ class ProbeModule extends Module
 		$time = $request->get('time');
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
+			'procs' => array('title' => 'Process count'),
 			'user' => array('title' => 'Users logged')
 		);
 
@@ -245,6 +246,15 @@ class ProbeModule extends Module
 					.' '.escapeshellarg('GPRINT:rload5:LAST: %.2lf')
 					.' '.escapeshellarg('LINE2:rload15#ff7f00:Load 15 min')
 					.' '.escapeshellarg('GPRINT:rload15:LAST: %.2lf');
+				break;
+			case 'procs':
+				$rrd .= '/procs.rrd';
+				$title = 'process count '.$title;
+				$label = 'processes';
+				$rrdtool .= ' '.escapeshellarg("DEF:procs=$rrd:procs:AVERAGE")
+					.' '.escapeshellarg("AREA:procs#7f7fff")
+					.' '.escapeshellarg("LINE2:procs#4f4fff:Process count")
+					.' '.escapeshellarg("GPRINT:procs:LAST: %.0lf");
 				break;
 			case 'users':
 				$rrd .= '/users.rrd';
