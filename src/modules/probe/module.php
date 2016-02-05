@@ -135,7 +135,7 @@ class ProbeModule extends Module
 		{
 			if($de == '.' || $de == '..')
 				continue;
-			if(is_dir($root.'/'.$de))
+			if(is_dir($root.'/'.$hostname.'/'.$de))
 				continue;
 			if(substr($de, -4) != '.rrd')
 				continue;
