@@ -136,7 +136,12 @@ class ProbeModule extends Module
 			if($de == '.' || $de == '..')
 				continue;
 			if(is_dir($root.'/'.$hostname.'/'.$de))
-				continue;
+				if($de == 'volume')
+					$this->_defaultHostVolume($request,
+							$root, $hostname, $time,
+							$page);
+				else
+					continue;
 			if(substr($de, -4) != '.rrd')
 				continue;
 			$graph = substr($de, 0, -4);
@@ -154,6 +159,42 @@ class ProbeModule extends Module
 			$link->append('image', array('request' => $request,
 					'text' => $title));
 			//FIXME also append links in the toolbar
+		}
+		closedir($dir);
+	}
+
+	private function _defaultHostVolume(Request $request, $root, $hostname,
+			$time, PageElement $page)
+	{
+		$root .= '/'.$hostname.'/volume';
+
+		if(($dir = opendir($root)) === FALSE)
+		{
+			//FIXME report (error dialog)
+			return;
+		}
+		while(($de = readdir($dir)) !== FALSE)
+		{
+			if($de == '.' || $de == '..')
+				continue;
+			if(is_dir($root.'/'.$de))
+				//FIXME make it recursive
+				continue;
+			if(substr($de, -4) != '.rrd')
+				continue;
+			$volume = '/'.substr($de, 0, -4);
+			$title = 'Volume usage: '.$volume;
+			$dialog = $page->append('dialog', array(
+					'type' => 'info',
+					'title' => $title,
+					'text' => ''));
+			$request = $this->getRequest('widget', array(
+					'host' => $hostname, 'type' => 'volume',
+					'time' => $time, 'volume' => $volume));
+			$link = $dialog->append('link', array(
+					'request' => $request, 'text' => ''));
+			$link->append('image', array('request' => $request,
+					'text' => $title));
 		}
 		closedir($dir);
 	}
