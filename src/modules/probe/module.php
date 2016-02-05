@@ -111,7 +111,7 @@ class ProbeModule extends Module
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
 			'procs' => array('title' => 'Process count'),
-			'user' => array('title' => 'Users logged')
+			'users' => array('title' => 'Users logged')
 		);
 
 		$page->append('title', array('text' => $hostname));
