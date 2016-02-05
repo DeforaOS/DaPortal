@@ -354,6 +354,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/content/result.php \
 		$(PACKAGE)-$(VERSION)/src/system/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/system/response/Makefile \
+		$(PACKAGE)-$(VERSION)/src/system/response/cachepipe.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/error.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/page.php \
 		$(PACKAGE)-$(VERSION)/src/system/response/pipe.php \

@@ -14,6 +14,8 @@ distclean: clean
 
 install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
+	$(INSTALL) -m 0644 cachepipe.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/cachepipe.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
 	$(INSTALL) -m 0644 error.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/error.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/system/response
 	$(INSTALL) -m 0644 page.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
@@ -25,6 +27,7 @@ install:
 	$(INSTALL) -m 0644 string.php $(DESTDIR)$(PREFIX)/daportal/src/system/response/string.php
 
 uninstall:
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/cachepipe.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/error.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/page.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/system/response/pipe.php
