@@ -231,7 +231,8 @@ class ProbeModule extends Module
 				$rrd .= '/load.rrd';
 				$title = 'load average '.$title;
 				$label = 'load';
-				$rrdtool .= ' '.escapeshellarg("DEF:load1=$rrd:load1:AVERAGE")
+				$rrdtool .= ' --lower-limit 0.0'
+					.' '.escapeshellarg("DEF:load1=$rrd:load1:AVERAGE")
 					.' '.escapeshellarg("DEF:load5=$rrd:load5:AVERAGE")
 					.' '.escapeshellarg("DEF:load15=$rrd:load15:AVERAGE")
 					.' '.escapeshellarg('CDEF:rload1=load1,1000,/')
@@ -251,7 +252,8 @@ class ProbeModule extends Module
 				$rrd .= '/procs.rrd';
 				$title = 'process count '.$title;
 				$label = 'processes';
-				$rrdtool .= ' '.escapeshellarg("DEF:procs=$rrd:procs:AVERAGE")
+				$rrdtool .= ' --lower-limit 0'
+					.' '.escapeshellarg("DEF:procs=$rrd:procs:AVERAGE")
 					.' '.escapeshellarg('AREA:procs#7f7fff')
 					.' '.escapeshellarg('LINE1:procs#4f4fff:Process count')
 					.' '.escapeshellarg('GPRINT:procs:LAST: %.0lf');
@@ -260,7 +262,8 @@ class ProbeModule extends Module
 				$rrd .= '/users.rrd';
 				$title = 'users logged '.$title;
 				$label = 'users';
-				$rrdtool .= ' '.escapeshellarg("DEF:users=$rrd:users:AVERAGE")
+				$rrdtool .= ' --lower-limit 0'
+					.' '.escapeshellarg("DEF:users=$rrd:users:AVERAGE")
 					.' '.escapeshellarg('AREA:users#7f7fff')
 					.' '.escapeshellarg('LINE1:users#4f4fff:Users logged')
 					.' '.escapeshellarg('GPRINT:users:LAST: %.0lf');
