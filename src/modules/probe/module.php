@@ -139,7 +139,7 @@ class ProbeModule extends Module
 				if($de == 'volume')
 					$this->_defaultHostVolume($request,
 							$root, $hostname, $time,
-							$page);
+							$page, '');
 				else
 					continue;
 			if(substr($de, -4) != '.rrd')
@@ -164,11 +164,11 @@ class ProbeModule extends Module
 	}
 
 	private function _defaultHostVolume(Request $request, $root, $hostname,
-			$time, PageElement $page)
+			$time, PageElement $page, $volume)
 	{
-		$root .= '/'.$hostname.'/volume';
+		$parent = $root.'/'.$hostname.'/volume'.$volume;
 
-		if(($dir = opendir($root)) === FALSE)
+		if(($dir = opendir($parent)) === FALSE)
 		{
 			//FIXME report (error dialog)
 			return;
@@ -177,20 +177,24 @@ class ProbeModule extends Module
 		{
 			if($de == '.' || $de == '..')
 				continue;
-			if(is_dir($root.'/'.$de))
-				//FIXME make it recursive
+			if(is_dir($parent.'/'.$de))
+			{
+				$this->_defaultHostVolume($request, $root,
+						$hostname, $time, $page,
+						$volume.'/'.$de);
 				continue;
+			}
 			if(substr($de, -4) != '.rrd')
 				continue;
-			$volume = '/'.substr($de, 0, -4);
-			$title = 'Volume usage: '.$volume;
+			$v = $volume.'/'.substr($de, 0, -4);
+			$title = 'Volume usage: '.$v;
 			$dialog = $page->append('dialog', array(
 					'type' => 'info',
 					'title' => $title,
 					'text' => ''));
 			$request = $this->getRequest('widget', array(
 					'host' => $hostname, 'type' => 'volume',
-					'time' => $time, 'volume' => $volume));
+					'time' => $time, 'volume' => $v));
 			$link = $dialog->append('link', array(
 					'request' => $request, 'text' => ''));
 			$link->append('image', array('request' => $request,
