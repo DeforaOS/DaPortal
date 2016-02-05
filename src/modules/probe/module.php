@@ -234,12 +234,12 @@ class ProbeModule extends Module
 				$rrdtool .= ' '.escapeshellarg("DEF:load1=$rrd:load1:AVERAGE")
 					.' '.escapeshellarg("DEF:load5=$rrd:load5:AVERAGE")
 					.' '.escapeshellarg("DEF:load15=$rrd:load15:AVERAGE")
-					.' '.escapeshellarg("CDEF:rload1=load1,1000,/")
-					.' '.escapeshellarg("CDEF:rload5=load5,1000,/")
-					.' '.escapeshellarg("CDEF:rload15=load15,1000,/")
-					.' '.escapeshellarg("AREA:rload1#ffef00")
-					.' '.escapeshellarg("AREA:rload5#ffbf00")
-					.' '.escapeshellarg("AREA:rload15#ff8f00")
+					.' '.escapeshellarg('CDEF:rload1=load1,1000,/')
+					.' '.escapeshellarg('CDEF:rload5=load5,1000,/')
+					.' '.escapeshellarg('CDEF:rload15=load15,1000,/')
+					.' '.escapeshellarg('AREA:rload1#ffef00')
+					.' '.escapeshellarg('AREA:rload5#ffbf00')
+					.' '.escapeshellarg('AREA:rload15#ff8f00')
 					.' '.escapeshellarg('LINE2:rload1#ffdf00:Load 1 min')
 					.' '.escapeshellarg('GPRINT:rload1:LAST: %.2lf')
 					.' '.escapeshellarg('LINE2:rload5#ffaf00:Load 5 min')
@@ -252,18 +252,18 @@ class ProbeModule extends Module
 				$title = 'process count '.$title;
 				$label = 'processes';
 				$rrdtool .= ' '.escapeshellarg("DEF:procs=$rrd:procs:AVERAGE")
-					.' '.escapeshellarg("AREA:procs#7f7fff")
-					.' '.escapeshellarg("LINE2:procs#4f4fff:Process count")
-					.' '.escapeshellarg("GPRINT:procs:LAST: %.0lf");
+					.' '.escapeshellarg('AREA:procs#7f7fff')
+					.' '.escapeshellarg('LINE2:procs#4f4fff:Process count')
+					.' '.escapeshellarg('GPRINT:procs:LAST: %.0lf');
 				break;
 			case 'users':
 				$rrd .= '/users.rrd';
 				$title = 'users logged '.$title;
 				$label = 'users';
 				$rrdtool .= ' '.escapeshellarg("DEF:users=$rrd:users:AVERAGE")
-					.' '.escapeshellarg("AREA:users#7f7fff")
-					.' '.escapeshellarg("LINE2:users#4f4fff:Users logged")
-					.' '.escapeshellarg("GPRINT:users:LAST: %.0lf");
+					.' '.escapeshellarg('AREA:users#7f7fff')
+					.' '.escapeshellarg('LINE2:users#4f4fff:Users logged')
+					.' '.escapeshellarg('GPRINT:users:LAST: %.0lf');
 				break;
 			default:
 				$error = 'Could not create graph for this type';
