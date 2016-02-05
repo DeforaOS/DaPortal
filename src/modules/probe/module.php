@@ -264,8 +264,8 @@ class ProbeModule extends Module
 				$label = 'users';
 				$rrdtool .= ' --lower-limit 0'
 					.' '.escapeshellarg("DEF:users=$rrd:users:AVERAGE")
-					.' '.escapeshellarg('AREA:users#7f7fff')
-					.' '.escapeshellarg('LINE1:users#4f4fff:Users logged')
+					.' '.escapeshellarg('AREA:users#ff7f7f')
+					.' '.escapeshellarg('LINE1:users#ff4f4f:Users logged')
 					.' '.escapeshellarg('GPRINT:users:LAST: %.0lf');
 				break;
 			default:
