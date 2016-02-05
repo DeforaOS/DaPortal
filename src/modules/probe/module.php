@@ -277,9 +277,17 @@ class ProbeModule extends Module
 			.' --vertical-label '.escapeshellarg($label);
 		//render the graph
 		$this->engine->log('LOG_DEBUG', $rrdtool);
-		if(($fp = popen($rrdtool, 'rb')) === FALSE)
+		$filename = tempnam(sys_get_temp_dir(), 'rrdtool-');
+		$fp = fopen($filename, 'w+');
+		unlink($filename);
+		if($fp === FALSE)
 			return new ErrorResponse('Could not create the graph');
-		$response = new PipeResponse($fp);
+		$fds = array(1 => $fp);
+		if(($proc = proc_open($rrdtool, $fds, $pipes)) === FALSE)
+			return new ErrorResponse('Could not create the graph');
+		if(proc_close($proc) != 0)
+			return new ErrorResponse('Could not create the graph');
+		$response = new StreamResponse($fp);
 		$response->setType('image/png');
 		return $response;
 	}
