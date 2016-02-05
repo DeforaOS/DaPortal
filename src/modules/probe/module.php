@@ -115,7 +115,7 @@ class ProbeModule extends Module
 			'load' => array('title' => 'Load average'),
 			'procs' => array('title' => 'Process count'),
 			'users' => array('title' => 'Users logged'),
-			'volume' => array('title' => 'Volume usage')
+			'volume' => array('title' => 'Volume usage: /')
 		);
 
 		$page->append('title', array('text' => $hostname));
