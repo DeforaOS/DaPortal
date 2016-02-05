@@ -330,7 +330,7 @@ class CVSSCMProject extends SCMProject
 						'class' => 'preformatted',
 						'text' => $line));
 			}
-		fclose($fp);
+		pclose($fp);
 		return $vbox;
 	}
 
