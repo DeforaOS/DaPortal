@@ -290,7 +290,7 @@ class CVSSCMProject extends SCMProject
 		$type = Mime::getType($this->engine, $filename);
 		if($request->get('download') !== FALSE)
 		{
-			$ret = new StreamResponse($fp);
+			$ret = new PipeResponse($fp);
 			$ret->setFilename($filename);
 			$ret->setType($type);
 			return $ret;
