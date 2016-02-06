@@ -114,6 +114,8 @@ class ProbeModule extends Module
 		$graphs = array(
 			'load' => array('title' => 'Load average'),
 			'procs' => array('title' => 'Process count'),
+			'upgrades' => array(
+				'title' => 'Package upgrades pending'),
 			'users' => array('title' => 'Users logged'),
 			'volume' => array('title' => 'Volume usage: /')
 		);
@@ -319,6 +321,16 @@ class ProbeModule extends Module
 					.' '.escapeshellarg('AREA:procs#7f7fff')
 					.' '.escapeshellarg('LINE1:procs#4f4fff:Process count')
 					.' '.escapeshellarg('GPRINT:procs:LAST: %.0lf');
+				break;
+			case 'upgrades':
+				$rrd .= '/upgrades.rrd';
+				$title = 'package upgrades pending '.$title;
+				$label = 'packages';
+				$rrdtool .= ' --lower-limit 0'
+					.' '.escapeshellarg("DEF:upgrades=$rrd:upgrades:AVERAGE")
+					.' '.escapeshellarg('AREA:upgrades#7f7fff')
+					.' '.escapeshellarg('LINE1:upgrades#4f4fff:Process count')
+					.' '.escapeshellarg('GPRINT:upgrades:LAST: %.0lf');
 				break;
 			case 'users':
 				$rrd .= '/users.rrd';
