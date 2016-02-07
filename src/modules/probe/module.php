@@ -261,6 +261,8 @@ class ProbeModule extends Module
 		$root = $this->getRoot();
 		$rrdtool = $this->configGet('rrdtool') ?: 'rrdtool';
 		$slope = $this->configGet('slope');
+		$width = $this->configGet('width');
+		$height = $this->configGet('height');
 		$rrdcached = $this->configGet('rrdcached');
 		$hostname = $request->get('host');
 
@@ -382,8 +384,12 @@ class ProbeModule extends Module
 				return new ErrorResponse($error);
 		}
 		$title = $hostname.' '.$title;
-		$rrdtool .= ' --title '.escapeshellarg($title)
-			.' --vertical-label '.escapeshellarg($label);
+		$rrdtool .= ' --title '.escapeshellarg($title);
+		if(is_numeric($width) && $width > 0)
+			$rrdtool .= ' --width '.escapeshellarg($width);
+		if(is_numeric($height) && $height > 0)
+			$rrdtool .= ' --height '.escapeshellarg($height);
+		$rrdtool .= ' --vertical-label '.escapeshellarg($label);
 		//render the graph
 		$this->engine->log('LOG_DEBUG', $rrdtool);
 		if(($fp = popen($rrdtool, 'r')) === FALSE)
