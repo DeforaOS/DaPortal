@@ -260,6 +260,7 @@ class ProbeModule extends Module
 	{
 		$root = $this->getRoot();
 		$rrdtool = $this->configGet('rrdtool') ?: 'rrdtool';
+		$slope = $this->configGet('slope');
 		$rrdcached = $this->configGet('rrdcached');
 		$hostname = $request->get('host');
 
@@ -269,7 +270,10 @@ class ProbeModule extends Module
 				|| $hostname == '.' || $hostname == '..')
 			return new ErrorResponse('Invalid hostname');
 		$rrd = $root.'/'.$hostname;
-		$rrdtool .= ' graph - --imgformat PNG';
+		$rrdtool .= ' graph -';
+		if($slope)
+			$rrdtool .= ' --slope-mode';
+		$rrdtool .= ' --imgformat PNG';
 		if(is_string($rrdcached) && strlen($rrdcached) > 0)
 			$rrdtool .= ' --daemon '.escapeshellarg($rrdcached);
 		switch($request->get('time'))

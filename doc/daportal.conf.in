@@ -208,6 +208,8 @@ globs=@PREFIX@/share/mime/globs
 #root=/tmp/probe
 #path to the RRD executable
 #rrdtool=rrdtool
+#enable slope mode
+#slope=0
 #address of the rrdcached daemon (if available)
 #rrdcached=rrdcached
 
