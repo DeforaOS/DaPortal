@@ -179,6 +179,10 @@ class ManualModule extends Module
 				return _('System calls and error numbers');
 			case '3':
 				return _('System libraries');
+			case '3f':
+				return _('System libraries (Fortran)');
+			case '3lua':
+				return _('System libraries (Lua)');
 			case '4':
 				return _('Kernel interfaces');
 			case '5':
@@ -191,6 +195,8 @@ class ManualModule extends Module
 				return _('System maintenance procedures and commands');
 			case '9':
 				return _('Kernel internals');
+			case '9lua':
+				return _('Kernel internals (Lua)');
 			default:
 				return FALSE;
 		}
