@@ -81,7 +81,7 @@ class ProbeModule extends Module
 		$hostname = $request->get('host');
 
 		if($root === FALSE)
-			return new ErrorResponse('Internal server error');
+			return new ErrorResponse(_('Internal server error'));
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'monitor',
 				'text' => $title));
@@ -112,12 +112,12 @@ class ProbeModule extends Module
 	{
 		$time = $request->get('time');
 		$graphs = array(
-			'load' => array('title' => 'Load average'),
-			'procs' => array('title' => 'Process count'),
+			'load' => array('title' => _('Load average')),
+			'procs' => array('title' => _('Process count')),
 			'upgrades' => array(
-				'title' => 'Package upgrades pending'),
-			'users' => array('title' => 'Users logged'),
-			'volume' => array('title' => 'Volume usage: /')
+				'title' => _('Package upgrades pending')),
+			'users' => array('title' => _('Users logged')),
+			'volume' => array('title' => _('Volume usage: ').'/')
 		);
 
 		$page->append('title', array('text' => $hostname));
@@ -189,7 +189,7 @@ class ProbeModule extends Module
 			if(substr($de, -4) != '.rrd')
 				continue;
 			$v = $volume.'/'.substr($de, 0, -4);
-			$title = 'Volume usage: '.$v;
+			$title = _('Volume usage: ').$v;
 			$dialog = $page->append('dialog', array(
 					'type' => 'info',
 					'title' => $title,
@@ -263,7 +263,7 @@ class ProbeModule extends Module
 		$hostname = $request->get('host');
 
 		if($root === FALSE)
-			return new ErrorResponse('Internal server error');
+			return new ErrorResponse(_('Internal server error'));
 		if(strstr($hostname, '/') !== FALSE
 				|| $hostname == '.' || $hostname == '..')
 			return new ErrorResponse('Invalid hostname');
@@ -293,8 +293,8 @@ class ProbeModule extends Module
 		{
 			case 'load':
 				$rrd .= '/load.rrd';
-				$title = 'load average '.$title;
-				$label = 'load';
+				$title = _('load average').' '.$title;
+				$label = _('load');
 				$rrdtool .= ' --lower-limit 0.0'
 					.' '.escapeshellarg("DEF:load1=$rrd:load1:AVERAGE")
 					.' '.escapeshellarg("DEF:load5=$rrd:load5:AVERAGE")
@@ -314,8 +314,8 @@ class ProbeModule extends Module
 				break;
 			case 'procs':
 				$rrd .= '/procs.rrd';
-				$title = 'process count '.$title;
-				$label = 'processes';
+				$title = _('process count').' '.$title;
+				$label = _('processes');
 				$rrdtool .= ' --lower-limit 0'
 					.' '.escapeshellarg("DEF:procs=$rrd:procs:AVERAGE")
 					.' '.escapeshellarg('AREA:procs#7f7fff')
@@ -324,8 +324,9 @@ class ProbeModule extends Module
 				break;
 			case 'upgrades':
 				$rrd .= '/upgrades.rrd';
-				$title = 'package upgrades pending '.$title;
-				$label = 'packages';
+				$title = _('package upgrades pending').' '
+					.$title;
+				$label = _('packages');
 				$rrdtool .= ' --lower-limit 0'
 					.' '.escapeshellarg("DEF:upgrades=$rrd:upgrades:AVERAGE")
 					.' '.escapeshellarg('AREA:upgrades#7f7fff')
@@ -334,8 +335,8 @@ class ProbeModule extends Module
 				break;
 			case 'users':
 				$rrd .= '/users.rrd';
-				$title = 'users logged '.$title;
-				$label = 'users';
+				$title = _('users logged').' '.$title;
+				$label = _('users');
 				$rrdtool .= ' --lower-limit 0'
 					.' '.escapeshellarg("DEF:users=$rrd:users:AVERAGE")
 					.' '.escapeshellarg('AREA:users#ff7f7f')
@@ -353,8 +354,8 @@ class ProbeModule extends Module
 					return new ErrorResponse($error);
 				else
 					$rrd .= '/volume/'.$volume.'.rrd';
-				$title = 'volume used: '.$volume.' '.$title;
-				$label = 'bytes';
+				$title = _('volume used: ').$volume.' '.$title;
+				$label = _('bytes');
 				$rrdtool .= ' --lower-limit 0'
 					.' '.escapeshellarg("DEF:used=$rrd:used:AVERAGE")
 					.' '.escapeshellarg("DEF:total=$rrd:total:AVERAGE")
@@ -367,7 +368,7 @@ class ProbeModule extends Module
 					.' '.escapeshellarg('GPRINT:gbtotal:LAST:%.2lf GB');
 				break;
 			default:
-				$error = 'Could not create graph for this type';
+				$error = _('Could not create graph for this type');
 				return new ErrorResponse($error);
 		}
 		$title = $hostname.' '.$title;
@@ -376,7 +377,10 @@ class ProbeModule extends Module
 		//render the graph
 		$this->engine->log('LOG_DEBUG', $rrdtool);
 		if(($fp = popen($rrdtool, 'r')) === FALSE)
-			return new ErrorResponse('Could not create the graph');
+		{
+			$error = _('Could not create the graph');
+			return new ErrorResponse($error);
+		}
 		$response = new CachePipeResponse($fp);
 		$response->setType('image/png');
 		return $response;

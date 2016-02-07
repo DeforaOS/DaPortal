@@ -16,6 +16,7 @@
 ../src/modules/manual/module.php
 ../src/modules/news/content.php
 ../src/modules/news/module.php
+../src/modules/probe/module.php
 ../src/modules/project/content.php
 ../src/modules/project/content/bug.php
 ../src/modules/project/content/bugreply.php
