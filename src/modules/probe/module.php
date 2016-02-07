@@ -260,6 +260,7 @@ class ProbeModule extends Module
 	{
 		$root = $this->getRoot();
 		$rrdtool = $this->configGet('rrdtool') ?: 'rrdtool';
+		$rrdcached = $this->configGet('rrdcached');
 		$hostname = $request->get('host');
 
 		if($root === FALSE)
@@ -269,6 +270,8 @@ class ProbeModule extends Module
 			return new ErrorResponse('Invalid hostname');
 		$rrd = $root.'/'.$hostname;
 		$rrdtool .= ' graph - --imgformat PNG';
+		if(is_string($rrdcached) && strlen($rrdcached) > 0)
+			$rrdtool .= ' --daemon '.escapeshellarg($rrdcached);
 		switch($request->get('time'))
 		{
 			case 'month':
