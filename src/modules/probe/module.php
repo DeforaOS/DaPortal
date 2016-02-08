@@ -273,7 +273,7 @@ class ProbeModule extends Module
 			return new ErrorResponse('Invalid hostname');
 		$rrd = $root.'/'.$hostname;
 		$rrdtool .= ' graph -';
-		if($slope)
+		if($slope === FALSE || $slope)
 			$rrdtool .= ' --slope-mode';
 		$rrdtool .= ' --imgformat PNG';
 		if(is_string($rrdcached) && strlen($rrdcached) > 0)
