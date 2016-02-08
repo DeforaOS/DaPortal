@@ -211,7 +211,7 @@ globs=@PREFIX@/share/mime/globs
 #enable slope mode
 #slope=1
 #address of the rrdcached daemon (if available)
-#rrdcached=rrdcached
+#rrdcached=unix:/tmp/rrdcached.sock
 
 [module::project]
 #SCM backend: CVS
