@@ -66,26 +66,30 @@ class Config
 	//Config::load
 	public function load($filename)
 	{
-		$reg_comment = "/^[ \t]*(#.*$)?\r?$/";
-		$reg_section = "/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]*)\][ \t]*\r?$/";
-		$reg_variable = "/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/";
 		$section = '';
 
 		if(($fp = @fopen($filename, 'r')) === FALSE)
 			return FALSE;
 		for($i = 1; ($line = fgets($fp)) !== FALSE; $i++)
-		{
-			if(preg_match($reg_variable, $line, $matches) == 1)
-				$this->set($section, $matches[1], $matches[2]);
-			else if(preg_match($reg_section, $line, $matches) == 1)
-				$section = $matches[1];
-			else if(preg_match($reg_comment, $line) == 1)
-				continue;
-			else
+			if($this->loadLine($line, $section) === FALSE)
+				//XXX should cancel and return FALSE
 				error_log($filename.': Line '.$i
 						.' could not be parsed');
-		}
 		fclose($fp);
+		return TRUE;
+	}
+
+
+	//Config::loadString
+	public function loadString($string, &$error = FALSE)
+	{
+		$section = '';
+
+		$lines = explode("\n", $string);
+		for($i = 1; ($line = array_shift($lines)) !== NULL; $i++)
+			if($this->loadLine($line, $section) === FALSE)
+				//XXX should cancel and return FALSE
+				$error = _('Line '.$i.' could not be parsed');
 		return TRUE;
 	}
 
@@ -94,6 +98,25 @@ class Config
 	public function reset()
 	{
 		$this->sections = array('' => new ConfigSection);
+	}
+
+
+	//protected
+	//methods
+	//Config::loadLine
+	protected function loadLine($line, &$section = '')
+	{
+		$reg_comment = "/^[ \t]*(#.*$)?\r?$/";
+		$reg_section = "/^[ \t]*\[([a-zA-Z0-9-+_:\/ \t]*)\][ \t]*\r?$/";
+		$reg_variable = "/^([a-zA-Z0-9-+_: \t]+)=([^\r\n]*)\r?$/";
+
+		if(preg_match($reg_variable, $line, $matches) == 1)
+			$this->set($section, $matches[1], $matches[2]);
+		else if(preg_match($reg_section, $line, $matches) == 1)
+			$section = $matches[1];
+		else if(preg_match($reg_comment, $line) != 1)
+			return FALSE;
+		return TRUE;
 	}
 }
 
