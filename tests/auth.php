@@ -30,15 +30,25 @@ class AuthTest extends Auth
 		return 0;
 	}
 
-	protected function matchAll(Engine $engine)
+	public function matchAll(Engine $engine)
 	{
-		$classes = array('EnvAuth', 'HTTPAuth', 'SessionAuth',
-			'UnixAuth');
+		$classes = array();
 
+		if(($dir = opendir('auth')) === FALSE)
+			return;
+		while(($de = readdir($dir)) !== FALSE)
+		{
+			if(substr($de, -4) != '.php')
+				continue;
+			$classes[] = substr($de, 0, -4).'Auth';
+		}
+		closedir($dir);
+		sort($classes);
 		foreach($classes as $class)
 		{
-			$auth = new $class;
-			$auth->match($engine);
+			$auth = new $class();
+			$engine->log('LOG_INFO', get_class($auth).': '
+					.$auth->match($engine));
 		}
 
 	}
@@ -52,7 +62,8 @@ class AuthTest extends Auth
 
 
 //functions
-$auth = new AuthTest;
+$auth = new AuthTest();
+$auth->matchAll($engine);
 
 $request = new Request();
 $auth->setIdempotent($engine, $request, FALSE);
