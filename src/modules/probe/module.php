@@ -46,6 +46,7 @@ class ProbeModule extends Module
 
 	//protected
 	//properties
+	protected $engine;
 	static protected $times = array('day', 'week', 'month', 'year');
 
 

@@ -45,6 +45,10 @@ class SaltModule extends Module
 
 
 	//protected
+	//properties
+	protected $engine;
+
+
 	//methods
 	//accessors
 	//SaltModule::canReboot
@@ -746,11 +750,6 @@ class SaltModule extends Module
 				'request' => $request,
 				'text' => 'Upgrade'));
 	}
-
-
-	//private
-	//properties
-	private $engine;
 }
 
 ?>
