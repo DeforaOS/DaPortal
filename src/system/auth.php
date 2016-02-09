@@ -51,7 +51,7 @@ abstract class Auth
 
 
 	//Auth::setIdempotent
-	public function setIdempotent(Engine $engine, Request $request,
+	public function setIdempotent(Engine $engine, Request &$request,
 			$idempotent)
 	{
 		$request->setIdempotent($idempotent);
