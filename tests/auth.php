@@ -42,30 +42,43 @@ class AuthTest extends Auth
 		}
 
 	}
+
+	public function setIdempotent(Engine $engine, Request &$request,
+			$idempotent)
+	{
+		$request = NULL;
+	}
 }
 
 
 //functions
 $auth = new AuthTest;
+
+$request = new Request();
+$auth->setIdempotent($engine, $request, FALSE);
+if(!is_null($request))
+	exit(2);
+
 $user = new User($engine, 1, 'admin');
 if(($credentials = $user->authenticate($engine, 'password')) === FALSE)
-	exit(2);
+	exit(3);
 //may as well have failed
 $auth->setCredentials($engine, $credentials);
+
 if($auth->setVariable($engine, 'test1', 'test2') === FALSE)
-	exit(3);
-if($auth->getVariable($engine, 'test1') != 'test2')
 	exit(4);
-if($auth->getVariable($engine, 'test2') !== FALSE)
+if($auth->getVariable($engine, 'test1') != 'test2')
 	exit(5);
-if($auth->setVariable($engine, 'test3', 41) === FALSE)
+if($auth->getVariable($engine, 'test2') !== FALSE)
 	exit(6);
-if($auth->getVariable($engine, 'test3') != 41)
+if($auth->setVariable($engine, 'test3', 41) === FALSE)
 	exit(7);
-if($auth->setVariable($engine, 'test1', FALSE) !== TRUE)
+if($auth->getVariable($engine, 'test3') != 41)
 	exit(8);
-if($auth->getVariable($engine, 'test1') !== FALSE)
+if($auth->setVariable($engine, 'test1', FALSE) !== TRUE)
 	exit(9);
+if($auth->getVariable($engine, 'test1') !== FALSE)
+	exit(10);
 exit(0);
 
 ?>
