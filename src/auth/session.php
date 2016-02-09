@@ -122,7 +122,7 @@ class SessionAuth extends Auth
 
 
 	//SessionAuth::setIdempotent
-	public function setIdempotent(Engine $engine, Request $request,
+	public function setIdempotent(Engine $engine, Request &$request,
 			$idempotent)
 	{
 		if($idempotent === TRUE)
