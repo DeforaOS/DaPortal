@@ -93,11 +93,7 @@ abstract class MultiContentModule extends ContentModule
 			$this->content_class = static::$content_classes[$t];
 		else
 			//default to the first content type known
-			foreach(static::$content_classes as $t => $c)
-			{
-				$this->content_class = $c;
-				break;
-			}
+			$this->content_class = reset(static::$content_classes);
 	}
 
 
