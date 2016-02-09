@@ -51,6 +51,15 @@ class ProbeModule extends Module
 
 
 	//methods
+	//ProbeModule::ProbeModule
+	protected function __construct($id, $name, $title = FALSE)
+	{
+		$title = ($title === FALSE) ? _('Monitoring') : $title;
+		parent::__construct($id, $name, $title);
+	}
+
+
+	//methods
 	//accessors
 	protected function getRoot()
 	{
