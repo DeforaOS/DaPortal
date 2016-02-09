@@ -37,6 +37,7 @@ class HTML
 		switch(strtolower($charset))
 		{
 			case 'ascii':
+			case 'us-ascii':
 				$this->parser = xml_parser_create('US-ASCII');
 				break;
 			case 'iso-8859-1':
