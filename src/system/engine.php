@@ -93,7 +93,7 @@ abstract class Engine
 			$modules = array();
 		else if(count($modules) != 0)
 			return $modules;
-		if(($res = $database->query($this, $query)) === FALSE)
+		if(($res = $database->query(NULL, $query)) === FALSE)
 			return $modules;
 		foreach($res as $r)
 			$modules[$r['id']] = $r['name'];
