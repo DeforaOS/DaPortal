@@ -58,20 +58,17 @@ abstract class Format extends Mutator
 			$priority = $p;
 		}
 		closedir($dir);
-		if($ret != FALSE)
-		{
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
-					.' with priority '.$priority);
-			$ret->attach($engine, $type);
-		}
-		else
+		if($ret === FALSE)
 		{
 			$error = 'Could not attach ';
 			$error .= ($type !== FALSE)
 				? 'formatting backend for '.$type
 				: 'the default formatting backend';
-			$engine->log('LOG_ERR', $error);
+			return $engine->log('LOG_ERR', $error);
 		}
+		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+				.' with priority '.$priority);
+		$ret->attach($engine, $type);
 		return $ret;
 	}
 
