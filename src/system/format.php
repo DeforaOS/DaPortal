@@ -27,7 +27,6 @@ abstract class Format extends Mutator
 	{
 		global $config;
 		$ret = FALSE;
-		$priority = 0;
 
 		$name = FALSE;
 		if($type !== FALSE)
@@ -45,6 +44,7 @@ abstract class Format extends Mutator
 		}
 		if(($dir = opendir('formats')) === FALSE)
 			return FALSE;
+		$priority = 0;
 		while(($de = readdir($dir)) !== FALSE)
 		{
 			if(substr($de, -4) != '.php')
