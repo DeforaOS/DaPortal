@@ -28,6 +28,8 @@ abstract class ContentModule extends Module
 	//ContentModule::call
 	public function call(Engine $engine, Request $request, $internal = 0)
 	{
+		//XXX should be saved in the constructor
+		$this->engine = $engine;
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
 		if($internal)
@@ -202,6 +204,22 @@ abstract class ContentModule extends Module
 	}
 
 
+	//ContentModule::getContentColumns
+	public function getContentColumns($admin = FALSE)
+	{
+		$class = $this->content_class;
+
+		$columns = array('icon' => '', 'title' => _('Title'));
+		if($admin !== FALSE && $this->canEnable($this->engine))
+			$columns = array_merge($columns,
+					array('enabled' => _('Enabled')));
+		if($admin !== FALSE && $this->canPublish($this->engine))
+			$columns = array_merge($columns,
+					array('public' => _('Public')));
+		return array_merge($columns, $class::getColumns());
+	}
+
+
 	//protected
 	//properties
 	protected $content_class = 'Content';
@@ -210,6 +228,7 @@ abstract class ContentModule extends Module
 	protected $content_list_admin_count = 20;
 	protected $content_list_admin_order = 'timestamp DESC';
 	protected $content_preview_length = 150;
+	protected $engine;
 	protected $stock_back = 'back';
 	protected $stock_content_new = 'new';
 	protected $stock_content_submit = 'submit';
@@ -475,11 +494,7 @@ abstract class ContentModule extends Module
 		if($request !== NULL
 				&& ($type = $request->get('type')) !== FALSE)
 			$r->set('type', $type);
-		$columns = array('icon' => '', 'title' => _('Title'),
-			'enabled' => _('Enabled'), 'public' => _('Public'),
-			'username' => _('Username'), 'date' => _('Date'));
-		if(!$this->canPublish($engine))
-			unset($columns['public']);
+		$columns = $this->getContentColumns(TRUE);
 		$treeview = $page->append('treeview', array('request' => $r,
 				'columns' => $columns, 'alternate' => TRUE));
 		//toolbar
@@ -1293,7 +1308,6 @@ abstract class ContentModule extends Module
 	protected function helperListView(Engine $engine,
 			Request $request = NULL)
 	{
-		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request !== NULL && $request->getID() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
@@ -1305,10 +1319,8 @@ abstract class ContentModule extends Module
 		if($uid === $cred->getUserID())
 			$r = new Request($this->name, 'list', $uid,
 				$uid ? $user->getUsername() : FALSE);
-		$columns = $class::getColumns();
-		if($uid === $cred->getUserID()
-				&& $this->canPublish($engine, $request))
-			$columns['public'] = _('Public');
+		$columns = $this->getContentColumns(
+				($uid === $cred->getUserID()) ? TRUE : FALSE);
 		return new PageElement('treeview', array('request' => $r,
 				'columns' => $columns));
 	}
