@@ -42,6 +42,11 @@ if($config->load($filename) !== TRUE)
 	exit(8);
 if($config->get('defaults', 'charset') != 'utf-8')
 	exit(9);
+if($config->loadString('[defaults]
+charset=UTF-8') === FALSE)
+	exit(10);
+if($config->get('defaults', 'charset') != 'UTF-8')
+	exit(11);
 exit(0);
 
 ?>
