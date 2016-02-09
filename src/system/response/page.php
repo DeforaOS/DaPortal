@@ -56,8 +56,8 @@ class PageResponse extends Response
 		switch($type)
 		{
 			case 'text/html':
-				$template = Template::attachDefault($engine);
-				if($template === FALSE)
+				if(($template = Template::attachDefault(
+						$engine)) === FALSE)
 					break;
 				if(($p = $template->render($engine, $page))
 						!== FALSE)
