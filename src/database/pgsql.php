@@ -261,15 +261,12 @@ class PgSQLDatabase extends Database
 	//PgSQLDatabase::prepare
 	protected function prepare($query, &$parameters = FALSE)
 	{
-		//FIXME use a class property instead
-		static $statements = array();
-
-		if(isset($statements[$query]))
-			return $statements[$query];
+		if(isset($this->statements[$query]))
+			return $this->statements[$query];
 		$id = uniqid();
-		$statements[$query] = (pg_prepare($this->handle, $id, $query)
-			!== FALSE) ? $id : FALSE;
-		return $statements[$query];
+		$this->statements[$query] = (pg_prepare($this->handle, $id,
+				$query) !== FALSE) ? $id : FALSE;
+		return $this->statements[$query];
 	}
 
 
@@ -284,6 +281,7 @@ class PgSQLDatabase extends Database
 	//private
 	//properties
 	private $handle = FALSE;
+	private $statements = array();
 
 	private $variables = array('username' => 'user',
 		'password' => 'password',
