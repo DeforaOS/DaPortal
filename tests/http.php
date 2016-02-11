@@ -23,7 +23,7 @@ require_once('./system/compat.php');
 //main
 global $_SERVER;
 $hostname = gethostname();
-$url = array("http://$hostname/dir1/dir2/dir3/index.php",
+$urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
@@ -31,7 +31,26 @@ $url = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"https://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on");
 
 
-function _http($class)
+function _http($class, $urls)
+{
+	$ret = 0;
+
+	$res = _http_do($class);
+	foreach($res as $o)
+	{
+		$e = array_shift($urls);
+		if($o == $e)
+		{
+			print("$o\n");
+			continue;
+		}
+		print("$o (expected: $e)\n");
+		$ret = 2;
+	}
+	return $ret;
+}
+
+function _http_do($class)
 {
 	$res = array();
 
@@ -74,19 +93,7 @@ function _http($class)
 	return $res;
 }
 
-$ret = 0;
-$res = _http('HTTPFriendlyEngine');
-foreach($res as $o)
-{
-	$e = array_shift($url);
-	if($o == $e)
-	{
-		print("$o\n");
-		continue;
-	}
-	print("$o (expected: $e)\n");
-	$ret = 2;
-}
+$ret = _http('HTTPFriendlyEngine', $urls_friendly);
 
 exit($ret);
 
