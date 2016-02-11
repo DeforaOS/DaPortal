@@ -174,6 +174,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/database/pdo.php \
 		$(PACKAGE)-$(VERSION)/src/database/pdo/result.php \
 		$(PACKAGE)-$(VERSION)/src/database/pdo/transaction.php \
+		$(PACKAGE)-$(VERSION)/src/database/pdopool.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql/result.php \
 		$(PACKAGE)-$(VERSION)/src/database/pgsql/transaction.php \

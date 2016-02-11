@@ -22,6 +22,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/pdo
 	$(INSTALL) -m 0644 pdo/transaction.php $(DESTDIR)$(PREFIX)/daportal/src/database/pdo/transaction.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
+	$(INSTALL) -m 0644 pdopool.php $(DESTDIR)$(PREFIX)/daportal/src/database/pdopool.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database
 	$(INSTALL) -m 0644 pgsql.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql
 	$(INSTALL) -m 0644 pgsql/result.php $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/result.php
@@ -47,6 +49,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdo/transaction.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pdopool.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/result.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/database/pgsql/transaction.php
