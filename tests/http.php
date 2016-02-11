@@ -25,12 +25,14 @@ global $_SERVER;
 $hostname = 'www.example.com';
 $urls = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
+	"http://$hostname/dir1/dir2/dir3/index.php?_module=testmodule&arg1=test1&arg2=test2&arg3=test3&test4=&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost:8081/dir1/dir2/dir3/index.php",
 	"https://localhost/dir1/dir2/dir3/index.php");
 $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
+	"http://$hostname/dir1/dir2/dir3/index.php/testmodule?arg1=test1&arg2=test2&arg3=test3&test4=&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
 	"http://localhost:8081/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
@@ -59,6 +61,7 @@ function _http($hostname, $class, $urls)
 
 function _http_do($hostname, $class)
 {
+	global $_GET;
 	$res = array();
 
 	//reset
@@ -78,6 +81,14 @@ function _http_do($hostname, $class)
 	$engine = new $class();
 	$engine->attach();
 	$res[] = $engine->getURL($engine->getRequest());
+
+	$_GET = array('_module' => 'testmodule', 'arg1' => 'test1',
+		'arg2' => 'test2', 'arg3' => 'test3', 'test4' => '',
+		'arg5' => 'test5');
+	$engine = new $class();
+	$engine->attach();
+	$res[] = $engine->getURL($engine->getRequest());
+	$_GET = array();
 
 	$_SERVER['PATH_INFO'] = '/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title';
 	$_SERVER['QUERY_STRING'] = 'arg1=test1&arg2=test2&arg3=test3=test4&arg5=test5';
