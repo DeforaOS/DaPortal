@@ -393,6 +393,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/phpinfo.php \
 		$(PACKAGE)-$(VERSION)/tests/phplint.sh \
 		$(PACKAGE)-$(VERSION)/tests/pki.php \
+		$(PACKAGE)-$(VERSION)/tests/pool.php \
 		$(PACKAGE)-$(VERSION)/tests/profile.php \
 		$(PACKAGE)-$(VERSION)/tests/search.php \
 		$(PACKAGE)-$(VERSION)/tests/shlint.sh \
