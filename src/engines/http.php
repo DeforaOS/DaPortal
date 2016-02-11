@@ -242,8 +242,9 @@ class HTTPEngine extends Engine
 		}
 		else
 			$url = basename($name);
+		//return if already complete
 		if(is_null($request)
-				|| ($module = $request->getModule()) !== FALSE)
+				|| ($module = $request->getModule()) === FALSE)
 			return $url;
 		$url .= '?_module='.rawurlencode($module);
 		if(($action = $request->getAction()) !== FALSE)
