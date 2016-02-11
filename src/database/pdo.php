@@ -81,12 +81,10 @@ class PDODatabase extends Database
 	//PDODatabase::prepare
 	public function prepare($query, &$parameters = FALSE)
 	{
-		static $statements = array();
-
-		if(isset($statements[$query]))
-			return $statements[$query];
-		$statements[$query] = $this->handle->prepare($query);
-		return $statements[$query];
+		if(isset($this->statements[$query]))
+			return $this->statements[$query];
+		$this->statements[$query] = $this->handle->prepare($query);
+		return $this->statements[$query];
 	}
 
 
@@ -303,10 +301,11 @@ class PDODatabase extends Database
 	//private
 	//properties
 	private $backend = FALSE;
+	private $case;
 	private $debug;
 	private $handle = FALSE;
 	private $result_class = 'PDODatabaseResult';
-	private $case;
+	private $statements = array();
 	//functions
 	private $func_regexp = FALSE;
 }
