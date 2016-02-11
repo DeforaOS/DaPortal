@@ -244,13 +244,13 @@ class PDODatabase extends Database
 		switch($this->getBackend())
 		{
 			case 'sqlite':
-				$this->_attachSqlite();
+				$this->_attachSQLite();
 				break;
 		}
 		return TRUE;
 	}
 
-	private function _attachSqlite()
+	private function _attachSQLite()
 	{
 		$this->result_class = 'PDODatabaseResultCached';
 		$func = array($this, '_concat');
