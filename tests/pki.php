@@ -20,7 +20,7 @@ require_once('./tests.php');
 
 
 //pki
-function pki(Engine $engine, Module $module)
+function _pki(Engine $engine, Module $module)
 {
 	global $config;
 
@@ -194,8 +194,9 @@ function _cleanupUnlink($file)
 
 
 pki_cleanup();
-$module = Module::load($engine, 'pki');
-$ret = pki($engine, $module);
+if(($module = Module::load($engine, 'pki')) === FALSE)
+	exit(2);
+$ret = _pki($engine, $module);
 exit($ret);
 
 ?>
