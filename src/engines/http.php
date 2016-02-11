@@ -260,9 +260,12 @@ class HTTPEngine extends Engine
 		if($request->isIdempotent()
 				&& ($args = $request->getParameters())
 				!== FALSE)
+		{
+			$sep = '&';
 			foreach($args as $key => $value)
 				$url .= $this->_getURLParameter($key, $value,
-						'&');
+						$sep);
+		}
 		return $url;
 	}
 
