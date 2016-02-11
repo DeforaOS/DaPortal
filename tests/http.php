@@ -22,7 +22,13 @@ require_once('./system/compat.php');
 
 //main
 global $_SERVER;
-$hostname = gethostname();
+$hostname = 'www.example.com';
+$urls = array("http://$hostname/dir1/dir2/dir3/index.php",
+	"http://$hostname/dir1/dir2/dir3/index.php",
+	"http://localhost/dir1/dir2/dir3/index.php",
+	"http://localhost/dir1/dir2/dir3/index.php",
+	"http://localhost:8081/dir1/dir2/dir3/index.php",
+	"https://localhost/dir1/dir2/dir3/index.php");
 $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
@@ -31,11 +37,12 @@ $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"https://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on");
 
 
-function _http($class, $urls)
+function _http($hostname, $class, $urls)
 {
 	$ret = 0;
 
-	$res = _http_do($class);
+	print("$class:\n");
+	$res = _http_do($hostname, $class);
 	foreach($res as $o)
 	{
 		$e = array_shift($urls);
@@ -50,9 +57,17 @@ function _http($class, $urls)
 	return $ret;
 }
 
-function _http_do($class)
+function _http_do($hostname, $class)
 {
 	$res = array();
+
+	//reset
+	$_SERVER['SERVER_NAME'] = $hostname;
+	unset($_SERVER['REQUEST_METHOD']);
+	unset($_SERVER['PATH_INFO']);
+	unset($_SERVER['QUERY_STRING']);
+	unset($_SERVER['SERVER_PORT']);
+	unset($_SERVER['HTTPS']);
 
 	$_SERVER['SCRIPT_NAME'] = '/dir1/dir2/dir3/index.php';
 	$engine = new $class();
@@ -93,7 +108,8 @@ function _http_do($class)
 	return $res;
 }
 
-$ret = _http('HTTPFriendlyEngine', $urls_friendly);
+$ret = _http($hostname, 'HTTPFriendlyEngine', $urls_friendly);
+$ret |= _http($hostname, 'HTTPEngine', $urls);
 
 exit($ret);
 
