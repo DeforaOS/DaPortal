@@ -66,8 +66,9 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		if(!function_exists('pg_connect'))
 			return 0;
 		//do not bother if there is are no slaves
-		if(($slaves = $config->get('database::pgsqlpool', 'slaves'))
-				=== FALSE || strlen(trim($slaves)) == 0)
+		if(($slaves = $config->get('database::'.$this->name, 'slaves'))
+				=== FALSE
+				|| strlen(trim($slaves)) == 0)
 			return 0;
 		return parent::match($engine) + 1;
 	}
@@ -77,7 +78,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 	protected function attach(Engine $engine)
 	{
 		global $config;
-		$section = 'database::pgsqlpool';
+		$section = 'database::'.$this->name;
 
 		if($this->_attachMaster($engine, $config, $section) === FALSE)
 			return $engine->log('LOG_ERR',

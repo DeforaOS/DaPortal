@@ -50,8 +50,9 @@ class PDOPoolDatabase extends PDODatabase
 		if(!class_exists('PDO'))
 			return 0;
 		//do not bother if there is are no slaves
-		if(($slaves = $config->get('database::pdopool', 'slaves'))
-				=== FALSE || strlen(trim($slaves)) == 0)
+		if(($slaves = $config->get('database::'.$this->name, 'slaves'))
+				=== FALSE
+				|| strlen(trim($slaves)) == 0)
 			return 0;
 		return parent::match($engine) + 1;
 	}
@@ -61,7 +62,7 @@ class PDOPoolDatabase extends PDODatabase
 	protected function attach(Engine $engine)
 	{
 		global $config;
-		$section = 'database::pdopool';
+		$section = 'database::'.$this->name;
 
 		if($this->_attachMaster($engine, $config, $section) === FALSE)
 			return $engine->log('LOG_ERR',
@@ -72,39 +73,7 @@ class PDOPoolDatabase extends PDODatabase
 		return TRUE;
 	}
 
-	private function _attachConfig(Engine $engine,
-			$section = 'database::pdo', $new = FALSE)
-	{
-		//XXX code duplicated from PDODatabase::attach()
-		if(($dsn = $config->get($section, 'dsn')) === FALSE)
-			return $engine->log('LOG_ERR',
-					'Data Source Name (DSN) not defined');
-		$username = $config->get($section, 'username');
-		$password = $config->get($section, 'password');
-		$args = $config->get($section, 'persistent')
-			? array(PDO::ATTR_PERSISTENT => true) : array();
-		try {
-			$this->handle = new PDO($dsn, $username, $password,
-				$args);
-		} catch(PDOException $e) {
-			$message = 'Could not open database: '.$e->getMessage();
-			return $engine->log('LOG_ERR', $message);
-		}
-		$this->engine = $engine;
-		if($this->debug)
-			$this->handle->setAttribute(PDO::ATTR_ERRMODE,
-					PDO::ERRMODE_WARNING);
-		//database-specific hacks
-		switch($this->getBackend())
-		{
-			case 'sqlite':
-				$this->_attachSQLite();
-				break;
-		}
-		return TRUE;
-	}
-
-	private function _attachMaster(Engine $engine, $config, $section)
+	private function _attachMaster(Engine $engine, Config $config, $section)
 	{
 		if(($master = $config->get($section, 'master')) === FALSE
 				|| strlen($master) == 0)
@@ -113,7 +82,7 @@ class PDOPoolDatabase extends PDODatabase
 				"$section::$master");
 	}
 
-	private function _attachSlaves(Engine $engine, $config, $section)
+	private function _attachSlaves(Engine $engine, Config $config, $section)
 	{
 		$this->slaves = new \ArrayIterator();
 		if(($slaves = $config->get($section, 'slaves')) === FALSE)

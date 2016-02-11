@@ -228,13 +228,15 @@ class PgSQLDatabase extends Database
 		return TRUE;
 	}
 
-	protected function _attachConfig($config, $section = 'database::pgsql',
+	protected function _attachConfig(Config $config, $section = FALSE,
 			$new = FALSE)
 	{
 		$str = '';
 		$sep = '';
 		$flags = $new ? PGSQL_CONNECT_FORCE_NEW : 0;
 
+		if($section === FALSE)
+			$section = 'database::'.$this->name;
 		foreach($this->variables as $k => $v)
 			if(($p = $config->get($section, $k)) !== FALSE)
 			{

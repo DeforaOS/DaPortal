@@ -221,12 +221,21 @@ class PDODatabase extends Database
 	{
 		global $config;
 
-		if(($dsn = $this->configGet('dsn')) === FALSE)
+		return $this->_attachConfig($engine, $config);
+	}
+
+	protected function _attachConfig(Engine $engine, Config $config,
+			$section = FALSE, $new = FALSE)
+	{
+		if($section === FALSE)
+			$section = 'database::'.$this->name;
+		//XXX code duplicated from PDODatabase::attach()
+		if(($dsn = $config->get($section, 'dsn')) === FALSE)
 			return $engine->log('LOG_ERR',
 					'Data Source Name (DSN) not defined');
-		$username = $this->configGet('username');
-		$password = $this->configGet('password');
-		$args = $this->configGet('persistent')
+		$username = $config->get($section, 'username');
+		$password = $config->get($section, 'password');
+		$args = $config->get($section, 'persistent')
 			? array(PDO::ATTR_PERSISTENT => true) : array();
 		try {
 			$this->handle = new PDO($dsn, $username, $password,
