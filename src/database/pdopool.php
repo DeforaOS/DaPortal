@@ -13,9 +13,7 @@
 //
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//XXX:
-//- this has never been tested
-//- this code is duplicated directly from PgSQLPoolDatabase
+//XXX code duplicated directly from PgSQLPoolDatabase
 
 
 
@@ -49,7 +47,7 @@ class PDOPoolDatabase extends PDODatabase
 	{
 		global $config;
 
-		if(!function_exists('pg_connect'))
+		if(!class_exists('PDO'))
 			return 0;
 		//do not bother if there is are no slaves
 		if(($slaves = $config->get('database::pdopool', 'slaves'))
@@ -74,12 +72,45 @@ class PDOPoolDatabase extends PDODatabase
 		return TRUE;
 	}
 
+	private function _attachConfig(Engine $engine,
+			$section = 'database::pdo', $new = FALSE)
+	{
+		//XXX code duplicated from PDODatabase::attach()
+		if(($dsn = $config->get($section, 'dsn')) === FALSE)
+			return $engine->log('LOG_ERR',
+					'Data Source Name (DSN) not defined');
+		$username = $config->get($section, 'username');
+		$password = $config->get($section, 'password');
+		$args = $config->get($section, 'persistent')
+			? array(PDO::ATTR_PERSISTENT => true) : array();
+		try {
+			$this->handle = new PDO($dsn, $username, $password,
+				$args);
+		} catch(PDOException $e) {
+			$message = 'Could not open database: '.$e->getMessage();
+			return $engine->log('LOG_ERR', $message);
+		}
+		$this->engine = $engine;
+		if($this->debug)
+			$this->handle->setAttribute(PDO::ATTR_ERRMODE,
+					PDO::ERRMODE_WARNING);
+		//database-specific hacks
+		switch($this->getBackend())
+		{
+			case 'sqlite':
+				$this->_attachSQLite();
+				break;
+		}
+		return TRUE;
+	}
+
 	private function _attachMaster(Engine $engine, $config, $section)
 	{
 		if(($master = $config->get($section, 'master')) === FALSE
 				|| strlen($master) == 0)
 			return parent::attach($engine);
-		return $this->_attachConfig($config, "$section::$master");
+		return $this->_attachConfig($engine, $config,
+				"$section::$master");
 	}
 
 	private function _attachSlaves(Engine $engine, $config, $section)
@@ -91,7 +122,8 @@ class PDOPoolDatabase extends PDODatabase
 		foreach($slaves as $s)
 		{
 			$slave = new PDODatabase('pdo');
-			if($slave->_attachConfig($config, "$section::$s", TRUE))
+			if($slave->_attachConfig($engine, $config,
+					"$section::$s", TRUE))
 				$this->slaves->append($slave);
 			else
 				$engine->log('LOG_WARNING', $s.": Could not"

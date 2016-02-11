@@ -250,7 +250,7 @@ class PDODatabase extends Database
 		return TRUE;
 	}
 
-	private function _attachSQLite()
+	protected function _attachSQLite()
 	{
 		$this->result_class = 'PDODatabaseResultCached';
 		$func = array($this, '_concat');
