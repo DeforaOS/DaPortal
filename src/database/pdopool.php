@@ -23,26 +23,6 @@
 class PDOPoolDatabase extends PDODatabase
 {
 	//public
-	//accessors
-	//PDOPoolDatabase::getLastID
-	public function getLastID(Engine $engine = NULL, $table, $field)
-	{
-		//force the master to perform this query
-		if($this->handle === FALSE)
-			return FALSE;
-		//determine the underlying backend
-		switch($this->getBackend())
-		{
-			case 'pgsql':
-				//PostgreSQL requires a sequence object
-				$seq = $table.'_'.$field.'_seq';
-				return $this->handle->lastInsertId($seq);
-			default:
-				return $this->handle->lastInsertId();
-		}
-	}
-
-
 	//useful
 	//PDOPoolDatabase::query
 	public function query(Engine $engine = NULL,
