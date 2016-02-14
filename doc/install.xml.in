@@ -13,6 +13,7 @@
 <article>
 	<info>
 		<title>Installing &package;</title>
+		<date>@DATE@</date>
 		<productname>&package;</productname>
 		<authorgroup>
 			<author>
