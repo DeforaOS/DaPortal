@@ -13,6 +13,7 @@
 <article>
 	<info>
 		<title>&package; internals</title>
+		<date>@DATE@</date>
 		<productname>&package;</productname>
 		<authorgroup>
 			<author>
