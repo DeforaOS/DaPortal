@@ -2,7 +2,7 @@ SUBDIRS	= apache php sql
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
-TARGETS	= $(OBJDIR)daportal.1 $(OBJDIR)daportal.html $(OBJDIR)daportal.conf $(OBJDIR)daportal.conf.5 $(OBJDIR)daportal.conf.html $(OBJDIR)daportal.xml $(OBJDIR)install.html $(OBJDIR)install.xml $(OBJDIR)internals.html $(OBJDIR)internals-print.pdf
+TARGETS	= $(OBJDIR)daportal.1 $(OBJDIR)daportal.html $(OBJDIR)daportal.conf $(OBJDIR)daportal.conf.5 $(OBJDIR)daportal.conf.html $(OBJDIR)daportal.xml $(OBJDIR)install.html $(OBJDIR)install.xml $(OBJDIR)internals.html $(OBJDIR)internals.xml $(OBJDIR)internals-print.pdf
 OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
@@ -48,6 +48,9 @@ $(OBJDIR)install.xml: install.xml.in
 $(OBJDIR)internals.html: internals.xml internals.xsl
 	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals.html"
 
+$(OBJDIR)internals.xml: internals.xml.in
+	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)internals.xml"
+
 $(OBJDIR)internals-print.pdf: internals-print.xml internals-print.xsl
 	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 
@@ -56,7 +59,7 @@ clean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.conf"
@@ -66,6 +69,7 @@ clean:
 	./docbook.sh -c -P "$(PREFIX)" -- "install.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "install.xml"
 	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "internals.xml"
 	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
 
 distclean:
@@ -73,7 +77,7 @@ distclean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals-print.pdf_OBJS)
+	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.conf"
@@ -83,6 +87,7 @@ distclean:
 	./docbook.sh -c -P "$(PREFIX)" -- "install.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "install.xml"
 	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "internals.xml"
 	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
 	$(RM) -- $(TARGETS)
 

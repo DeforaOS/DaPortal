@@ -135,7 +135,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/docbook.sh \
 		$(PACKAGE)-$(VERSION)/doc/install.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/install.xsl \
-		$(PACKAGE)-$(VERSION)/doc/internals.xml \
+		$(PACKAGE)-$(VERSION)/doc/internals.xml.in \
 		$(PACKAGE)-$(VERSION)/doc/internals.xsl \
 		$(PACKAGE)-$(VERSION)/doc/internals-print.xml \
 		$(PACKAGE)-$(VERSION)/doc/internals-print.xsl \
