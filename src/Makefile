@@ -27,7 +27,7 @@ clean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(daportal.php_OBJS)
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.php"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.php"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
@@ -35,7 +35,7 @@ distclean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(daportal.php_OBJS)
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.php"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.php"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)

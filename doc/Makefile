@@ -60,17 +60,17 @@ clean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.conf"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.conf.5"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.conf.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "install.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "install.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "internals.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.1"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.5"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)install.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)install.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
@@ -78,17 +78,17 @@ distclean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.1"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.conf"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.conf.5"
-	./docbook.sh -c -P "$(PREFIX)" -- "daportal.conf.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "daportal.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "install.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "install.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "internals.html"
-	../tools/subst.sh -c -P "$(PREFIX)" -- "internals.xml"
-	./docbook.sh -c -P "$(PREFIX)" -- "internals-print.pdf"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.1"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.5"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)install.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)install.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals.html"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals.xml"
+	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)

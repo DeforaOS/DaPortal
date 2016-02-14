@@ -18,8 +18,8 @@ $(OBJDIR)fr.mo: $(OBJDIR)DaPortal.pot fr.po
 
 clean:
 	$(RM) -- $(DaPortal.pot_OBJS) $(fr.mo_OBJS)
-	./gettext.sh -c -P "$(PREFIX)" -- "DaPortal.pot"
-	./gettext.sh -c -P "$(PREFIX)" -- "fr.mo"
+	./gettext.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DaPortal.pot"
+	./gettext.sh -c -P "$(PREFIX)" -- "$(OBJDIR)fr.mo"
 
 distclean: clean
 	$(RM) -- $(TARGETS)

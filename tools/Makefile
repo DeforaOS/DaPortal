@@ -18,7 +18,7 @@ $(OBJDIR)daportal: daportal.in subst.sh ../config.sh
 
 clean:
 	$(RM) -- $(daportal_OBJS)
-	./subst.sh -c -P "$(PREFIX)" -- "daportal"
+	./subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal"
 
 distclean: clean
 	$(RM) -- $(TARGETS)

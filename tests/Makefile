@@ -33,13 +33,13 @@ $(OBJDIR)widgets.html: php.sh widgets.php
 
 clean:
 	$(RM) -- $(phpinfo.txt_OBJS) $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS) $(widgets.html_OBJS)
-	./php.sh -c -P "$(PREFIX)" -- "phpinfo.txt"
-	./phplint.sh -c -P "$(PREFIX)" -- "phplint.log"
-	./shlint.sh -c -P "$(PREFIX)" -- "shlint.log"
-	./database.sh -c -P "$(PREFIX)" -- "sqlite.db"
-	./database.sh -c -P "$(PREFIX)" -- "sqlite.db3"
-	./tests.sh -c -P "$(PREFIX)" -- "tests.log"
-	./php.sh -c -P "$(PREFIX)" -- "widgets.html"
+	./php.sh -c -P "$(PREFIX)" -- "$(OBJDIR)phpinfo.txt"
+	./phplint.sh -c -P "$(PREFIX)" -- "$(OBJDIR)phplint.log"
+	./shlint.sh -c -P "$(PREFIX)" -- "$(OBJDIR)shlint.log"
+	./database.sh -c -P "$(PREFIX)" -- "$(OBJDIR)sqlite.db"
+	./database.sh -c -P "$(PREFIX)" -- "$(OBJDIR)sqlite.db3"
+	./tests.sh -c -P "$(PREFIX)" -- "$(OBJDIR)tests.log"
+	./php.sh -c -P "$(PREFIX)" -- "$(OBJDIR)widgets.html"
 
 distclean: clean
 	$(RM) -- $(TARGETS)

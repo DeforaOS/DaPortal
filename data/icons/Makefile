@@ -51,14 +51,14 @@ clean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(DeforaOS/16x16.css_OBJS) $(DeforaOS/24x24.css_OBJS) $(DeforaOS/32x32.css_OBJS) $(DeforaOS/48x48.css_OBJS) $(gnome/16x16.css_OBJS) $(gnome/24x24.css_OBJS) $(gnome/32x32.css_OBJS) $(gnome/48x48.css_OBJS)
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/16x16.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/24x24.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/32x32.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/48x48.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/16x16.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/24x24.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/32x32.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/48x48.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/16x16.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/24x24.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/32x32.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/48x48.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/16x16.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/24x24.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/32x32.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/48x48.css"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
@@ -66,14 +66,14 @@ distclean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(DeforaOS/16x16.css_OBJS) $(DeforaOS/24x24.css_OBJS) $(DeforaOS/32x32.css_OBJS) $(DeforaOS/48x48.css_OBJS) $(gnome/16x16.css_OBJS) $(gnome/24x24.css_OBJS) $(gnome/32x32.css_OBJS) $(gnome/48x48.css_OBJS)
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/16x16.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/24x24.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/32x32.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "DeforaOS/48x48.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/16x16.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/24x24.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/32x32.css"
-	./icontheme.sh -c -P "$(PREFIX)" -- "gnome/48x48.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/16x16.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/24x24.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/32x32.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DeforaOS/48x48.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/16x16.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/24x24.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/32x32.css"
+	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/48x48.css"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)

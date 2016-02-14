@@ -30,7 +30,7 @@ clean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
 	$(RM) -- $(index.php_OBJS)
-	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 
 distclean:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
@@ -38,7 +38,7 @@ distclean:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
 	$(RM) -- $(index.php_OBJS)
-	../tools/subst.sh -c -P "$(PREFIX)" -- "index.php"
+	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 	$(RM) -- $(TARGETS)
 
 install: $(TARGETS)
