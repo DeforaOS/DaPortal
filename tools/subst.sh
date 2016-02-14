@@ -39,6 +39,7 @@ SYSCONFDIR=
 [ -f "$CONFIGSH" ] && . "$CONFIGSH"
 #executables
 CHMOD="chmod"
+DATE="date"
 DEBUG="_debug"
 DEVNULL="/dev/null"
 INSTALL="install"
@@ -111,18 +112,19 @@ _subst()
 		#create
 		source="${target#$OBJDIR}"
 		source="${source}.in"
-		$DEBUG $SED -e "s,@PACKAGE@,$PACKAGE,g" \
-			-e "s,@VERSION@,$VERSION,g" \
-			-e "s,@PREFIX@,$PREFIX,g" \
-			-e "s,@BINDIR@,$BINDIR,g" \
-			-e "s,@DATADIR@,$DATADIR,g" \
-			-e "s,@INCLUDEDIR@,$INCLUDEDIR,g" \
-			-e "s,@LDSO@,$LDSO,g" \
-			-e "s,@LIBDIR@,$LIBDIR,g" \
-			-e "s,@LIBEXECDIR@,$LIBEXECDIR,g" \
-			-e "s,@MANDIR@,$MANDIR,g" \
-			-e "s,@SYSCONFDIR@,$SYSCONFDIR,g" \
-			-e "s,@PWD@,$PWD,g" \
+		$DEBUG $SED -e "s;@PACKAGE@;$PACKAGE;g" \
+			-e "s;@VERSION@;$VERSION;g" \
+			-e "s;@PREFIX@;$PREFIX;g" \
+			-e "s;@BINDIR@;$BINDIR;g" \
+			-e "s;@DATADIR@;$DATADIR;g" \
+			-e "s;@DATE@;$DATE;g" \
+			-e "s;@INCLUDEDIR@;$INCLUDEDIR;g" \
+			-e "s;@LDSO@;$LDSO;g" \
+			-e "s;@LIBDIR@;$LIBDIR;g" \
+			-e "s;@LIBEXECDIR@;$LIBEXECDIR;g" \
+			-e "s;@MANDIR@;$MANDIR;g" \
+			-e "s;@SYSCONFDIR@;$SYSCONFDIR;g" \
+			-e "s;@PWD@;$PWD;g" \
 			-- "$source" > "$target"
 		if [ $? -ne 0 ]; then
 			$RM -- "$target" 2> "$DEVNULL"
@@ -191,6 +193,12 @@ shift $(($OPTIND - 1))
 if [ $# -eq 0 ]; then
 	_usage
 	exit $?
+fi
+
+if [ -n "$SOURCE_DATE_EPOCH" ]; then
+	DATE="$($DATE -d "@$SOURCE_DATE_EPOCH" '+%B %d, %Y')"
+else
+	DATE="$($DATE '+%B %d, %Y')"
 fi
 
 exec 3>&1
