@@ -30,6 +30,8 @@ install:
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 EdgeBSD-favicon.png $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-favicon.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
+	$(INSTALL) -m 0644 EdgeBSD-small.png $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-small.png
+	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/themes
 	$(INSTALL) -m 0644 khorben.css $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
@@ -45,6 +47,7 @@ uninstall:
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-favicon.png
+	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/EdgeBSD-small.png
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/index.php
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben.css
 	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/themes/khorben-coldfire.jpg
