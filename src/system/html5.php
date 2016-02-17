@@ -49,6 +49,9 @@ class HTML5 extends HTML
 		if($form)
 		{
 			$this->whitelist['datalist'] = array('class', 'id');
+			$this->whitelist['keygen'] = array('class', 'autofocus',
+				'challenge', 'disabled', 'form', 'keytype',
+				'name');
 			$this->whitelist['output'] = array('class', 'for',
 				'form', 'name');
 		}
