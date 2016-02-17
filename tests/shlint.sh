@@ -32,6 +32,7 @@ DATE="date"
 DEBUG="_debug"
 FIND="find"
 SHLINT="sh -n"
+SORT="sort"
 TR="tr"
 
 
@@ -57,7 +58,7 @@ _shlint()
 	done < "$PROJECTCONF"
 	for subdir in $subdirs; do
 		[ -d "../$subdir" ] || continue
-		for filename in $($FIND "../$subdir" -name '*.sh'); do
+		for filename in $($FIND "../$subdir" -name '*.sh' | $SORT); do
 			$DEBUG $SHLINT "$filename" 2>&1
 			if [ $? -eq 0 ]; then
 				echo "$filename:"

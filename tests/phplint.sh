@@ -58,7 +58,7 @@ _phplint()
 	done < "$PROJECTCONF"
 	for subdir in $subdirs; do
 		[ -d "../$subdir" ] || continue
-		for filename in $($FIND "../$subdir" -name '*.php'); do
+		for filename in $($FIND "../$subdir" -name '*.php' | $SORT); do
 			echo "$filename:"
 			$DEBUG $PHPLINT -f "$filename" 2>&1
 			if [ $? -ne 0 ]; then
