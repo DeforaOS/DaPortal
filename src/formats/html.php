@@ -840,8 +840,8 @@ class HTMLFormat extends FormatElements
 				//FIXME use the actual icon
 				$attributes['src'] = 'data:image/png'
 					.';base64,'.base64_encode($img);
-			$attributes['width'] = 0;
-			$attributes['height'] = 0;
+			$attributes['width'] = $size;
+			$attributes['height'] = $size;
 		}
 		else if(($r = $e->get('request')) !== FALSE)
 			$attributes['src'] = $this->engine->getURL($r, FALSE);
