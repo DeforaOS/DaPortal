@@ -45,7 +45,7 @@ $(OBJDIR)install.html: $(OBJDIR)install.xml install.xsl
 $(OBJDIR)install.xml: install.xml.in
 	../tools/subst.sh -P "$(PREFIX)" -- "$(OBJDIR)install.xml"
 
-$(OBJDIR)internals.html: internals.xml internals.xsl
+$(OBJDIR)internals.html: $(OBJDIR)internals.xml internals.xsl
 	./docbook.sh -P "$(PREFIX)" -- "$(OBJDIR)internals.html"
 
 $(OBJDIR)internals.xml: internals.xml.in
