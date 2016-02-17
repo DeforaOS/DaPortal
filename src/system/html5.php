@@ -45,7 +45,7 @@ class HTML5 extends HTML
 		$this->whitelist['progress'] = array('class');
 		$this->whitelist['section'] = array('class');
 		$this->whitelist['summary'] = array('class');
-		$this->whitelist['time'] = array('class');
+		$this->whitelist['time'] = array('class', 'datetime');
 		parent::__construct($charset, $form);
 	}
 
