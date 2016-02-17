@@ -329,7 +329,6 @@ class HTML
 		'a' => array('href', 'name', 'rel', 'title'),
 		'abbr' => array('class', 'title'),
 		'acronym' => array('class'),
-		'address' => array('class'),
 		'b' => array('class'),
 		'bdo' => array('dir'),
 		'big' => array('class'),

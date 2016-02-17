@@ -30,6 +30,7 @@ class HTML5 extends HTML
 			define('ENT_HTML5', 0);
 		$this->flags = ENT_COMPAT | ENT_HTML5;
 		//allow more tags
+		$this->whitelist['address'] = array('class');
 		$this->whitelist['article'] = array('class');
 		$this->whitelist['aside'] = array('class');
 		$this->whitelist['details'] = array('class', 'open');
