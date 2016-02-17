@@ -49,6 +49,14 @@ $form->append('button', array('text' => 'Button'));
 $form->append('button', array('type' => 'reset', 'text' => 'Reset'));
 $form->append('button', array('type' => 'submit', 'text' => 'Submit'));
 
+//stock images
+$vbox1->append('title', array('text' => 'Images'));
+$hbox = $vbox1->append('hbox');
+$sizes = array(FALSE, 16, 24, 32, 48);
+foreach($sizes as $size)
+				$hbox->append('image', array('stock' => 'missing-image',
+												'size' => $size));
+
 //treeview
 $columns = array('title' => 'Title', 'col1' => 'Header 1',
 	'col2' => 'Header 2', 'col3' => 'Header 3');
