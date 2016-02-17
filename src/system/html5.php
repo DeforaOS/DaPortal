@@ -47,8 +47,11 @@ class HTML5 extends HTML
 		$this->whitelist['summary'] = array('class');
 		$this->whitelist['time'] = array('class', 'datetime');
 		if($form)
+		{
+			$this->whitelist['datalist'] = array('class', 'id');
 			$this->whitelist['output'] = array('class', 'for',
 				'form', 'name');
+		}
 		parent::__construct($charset, $form);
 	}
 
