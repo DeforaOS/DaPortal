@@ -30,6 +30,7 @@ class HTML
 		//for escaping
 		if(!defined('ENT_HTML401'))
 			define('ENT_HTML401', 0);
+		$this->flags = ENT_COMPAT | ENT_HTML401;
 		//for encoding
 		if($charset === FALSE)
 			$charset = $config->get('defaults', 'charset');
@@ -87,7 +88,8 @@ class HTML
 	static public function filter(Engine $engine, $content,
 			$whitelist = FALSE, $form = FALSE, $charset = FALSE)
 	{
-		$html = new HTML($charset, $form);
+		$class = static::$class;
+		$html = new $class($charset, $form);
 		$start = array($html, '_filterElementStart');
 		$end = array($html, '_filterElementEnd');
 		$filter = array($html, '_filterCharacterData');
@@ -170,9 +172,8 @@ class HTML
 			$attr = strtolower($k);
 			if(!in_array($attr, $a))
 				continue;
-			$this->content .= ' '.$attr.'="'
-				.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401,
-						$this->charset).'"';
+			$this->content .= ' '.$attr.'="' .htmlspecialchars($v,
+					$this->flags, $this->charset).'"';
 		}
 		//close the <br>, <hr> and <img> tags directly
 		if($tag == 'br' || $tag == 'hr' || $tag == 'img')
@@ -259,7 +260,8 @@ class HTML
 	static public function validate(Engine $engine, $content,
 			$whitelist = FALSE, $form = FALSE)
 	{
-		$html = new HTML(FALSE, $form);
+		$class = static::$class;
+		$html = new $class(FALSE, $form);
 		$start = array($html, '_validateElementStart');
 		$end = array($html, '_validateElementEnd');
 
@@ -315,6 +317,8 @@ class HTML
 	//protected
 	//properties
 	protected $charset = FALSE;
+	static protected $class = 'HTML';
+	protected $flags;
 	protected $parser;
 	protected $content = '';
 	protected $stack = array();
