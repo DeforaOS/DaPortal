@@ -72,8 +72,6 @@ class PlainFormat extends Format
 			$filename = FALSE)
 	{
 		//FIXME ignore filename for the moment
-		if($page === FALSE)
-			$page = new Page;
 		$this->engine = $engine;
 		if(($wrap = $this->get('wrap')) > 0)
 		{
