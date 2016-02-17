@@ -26,9 +26,12 @@ $config->set('database', 'backend', 'pdopool');
 
 //for OBJDIR support
 if(($objdir = getenv('OBJDIR')) !== FALSE)
+{
 	$config->set('database::pdopool', 'dsn',
-			"sqlite:$objdir/sqlite-tests.db3");
-
+			"sqlite:$objdir/../tests/sqlite-tests.db3");
+	$config->set('database::pdopool::slave', 'dsn',
+			"sqlite:$objdir/../tests/sqlite-tests.db3");
+}
 
 //XXX duplicated from the "transaction" test
 //load the test database
