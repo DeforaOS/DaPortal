@@ -155,7 +155,7 @@ class HTML
 		//skip the contents of blacklisted tags
 		if($this->blacklist_level > 0)
 			return $this->blacklist_level++;
-		if(in_array($tag, static::$blacklist))
+		if(in_array($tag, $this->blacklist))
 		{
 			$this->blacklist_level = 1;
 			return;
@@ -190,7 +190,7 @@ class HTML
 		if($this->blacklist_level > 1)
 			return $this->blacklist_level--;
 		if($this->blacklist_level == 1 && in_array($tag,
-				static::$blacklist))
+				$this->blacklist))
 		{
 			$this->blacklist_level = 0;
 			return;
@@ -319,7 +319,7 @@ class HTML
 	protected $content = '';
 	protected $stack = array();
 	protected $valid = TRUE;
-	static protected $blacklist = array('script', 'style', 'title');
+	protected $blacklist = array('script', 'style', 'title');
 	protected $blacklist_level = 0;
 	protected $whitelist = array(
 		'a' => array('href', 'name', 'rel', 'title'),
