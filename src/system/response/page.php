@@ -39,7 +39,7 @@ class PageResponse extends Response
 	public function setContent($content)
 	{
 		if(!($content instanceof PageElement))
-			$content = new Page();
+			$content = NULL;
 		return parent::setContent($content);
 	}
 
