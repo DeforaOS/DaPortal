@@ -155,7 +155,7 @@ class HTML
 		//skip the contents of blacklisted tags
 		if($this->blacklist_level > 0)
 			return $this->blacklist_level++;
-		if(in_array($tag, HTML::$blacklist))
+		if(in_array($tag, static::$blacklist))
 		{
 			$this->blacklist_level = 1;
 			return;
@@ -190,7 +190,7 @@ class HTML
 		if($this->blacklist_level > 1)
 			return $this->blacklist_level--;
 		if($this->blacklist_level == 1 && in_array($tag,
-				HTML::$blacklist))
+				static::$blacklist))
 		{
 			$this->blacklist_level = 0;
 			return;
