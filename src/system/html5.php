@@ -32,7 +32,7 @@ class HTML5 extends HTML
 		//allow more tags
 		$this->whitelist['article'] = array('class');
 		$this->whitelist['aside'] = array('class');
-		$this->whitelist['details'] = array('class');
+		$this->whitelist['details'] = array('class', 'open');
 		$this->whitelist['figcaption'] = array('class');
 		$this->whitelist['figure'] = array('class');
 		$this->whitelist['footer'] = array('class');
