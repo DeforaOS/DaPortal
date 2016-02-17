@@ -24,7 +24,7 @@ class CVSSCMProject extends SCMProject
 {
 	//public
 	//CVSSCMProject::attach
-	public function attach($engine)
+	public function attach(Engine $engine)
 	{
 		global $config;
 
@@ -38,7 +38,7 @@ class CVSSCMProject extends SCMProject
 
 	//actions
 	//CVSSCMProject::browse
-	public function browse($project, $request)
+	public function browse(ProjectContent $project, Request $request)
 	{
 		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
@@ -206,7 +206,8 @@ class CVSSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFile($request, $vbox, $path, $file)
+	private function _browseFile(Request $request, PageElement $vbox, $path,
+			$file)
 	{
 		$error = _('Could not list revisions');
 
@@ -276,7 +277,8 @@ class CVSSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFileRevision($request, $vbox, $path, $file,
+	private function _browseFileRevision(Request $request,
+			PageElement $vbox, $path, $file,
 			$revision)
 	{
 		$error = 'Internal server error';
@@ -336,7 +338,7 @@ class CVSSCMProject extends SCMProject
 
 
 	//CVSSCMProject::download
-	public function download($project, $request)
+	public function download(ProjectContent $project, Request $request)
 	{
 		$title = _('Repository');
 		$repository = 'pserver:'.$this->repository;
@@ -356,7 +358,7 @@ class CVSSCMProject extends SCMProject
 
 
 	//CVSSCMProject::timeline
-	public function timeline($project, $request)
+	public function timeline(ProjectContent $project, Request $request)
 	{
 		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');

@@ -24,7 +24,7 @@ class GitSCMProject extends SCMProject
 {
 	//public
 	//GitSCMProject::attach
-	public function attach($engine)
+	public function attach(Engine $engine)
 	{
 		global $config;
 
@@ -36,7 +36,7 @@ class GitSCMProject extends SCMProject
 
 	//actions
 	//GitSCMProject::browse
-	public function browse($project, $request)
+	public function browse(ProjectContent $project, Request $request)
 	{
 		$error = _('No Git repository defined');
 
@@ -65,7 +65,8 @@ class GitSCMProject extends SCMProject
 		return $this->_browseFile($request, $vbox, $path, $file);
 	}
 
-	private function _browseDir($request, $vbox, $path, $file)
+	private function _browseDir(Request $request, PageElement $vbox, $path,
+			$file)
 	{
 		$error = _('Could not open directory');
 
@@ -137,7 +138,8 @@ class GitSCMProject extends SCMProject
 		return $vbox;
 	}
 
-	private function _browseFile($request, $vbox, $path, $file)
+	private function _browseFile(Request $request, PageElement $vbox, $path,
+			$file)
 	{
 		$error = _('Could not open file');
 
@@ -193,7 +195,7 @@ class GitSCMProject extends SCMProject
 
 
 	//GitSCMProject::download
-	public function download($project, $request)
+	public function download(ProjectContent $project, Request $request)
 	{
 		$title = _('Repository');
 
@@ -210,7 +212,7 @@ class GitSCMProject extends SCMProject
 
 
 	//GitSCMProject::timeline
-	public function timeline($project, $request)
+	public function timeline(ProjectContent $project, Request $request)
 	{
 		$error = _('No Git repository defined');
 

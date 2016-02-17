@@ -22,21 +22,24 @@ abstract class SCMProject
 	//public
 	//essential
 	//SCMProject::attach
-	public function attach($engine)
+	public function attach(Engine $engine)
 	{
 		$this->engine = $engine;
 	}
 
 
 	//actions
-	abstract public function browse($project, $request);
-	abstract public function download($project, $request);
-	abstract public function timeline($project, $request);
+	abstract public function browse(ProjectContent $project,
+			Request $request);
+	abstract public function download(ProjectContent $project,
+			Request $request);
+	abstract public function timeline(ProjectContent $project,
+			Request $request);
 
 
 	//useful
 	//SCMProject::listAll
-	static public function listAll($engine, $module)
+	static public function listAll(Engine $engine, Module $module)
 	{
 		$name = $module->getName();
 		$folder = 'modules/'.$name.'/scm';
