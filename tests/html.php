@@ -20,9 +20,9 @@ require_once('./tests.php');
 
 
 //functions
-function html(Engine $engine, $html, $expected = FALSE)
+function html(Engine $engine, $html, $expected = FALSE, $class = 'HTML')
 {
-	if(($html = HTML::filter($engine, $html)) === FALSE)
+	if(($html = $class::filter($engine, $html)) === FALSE)
 		return FALSE;
 	if($expected !== FALSE && $html != $expected)
 	{
@@ -35,10 +35,15 @@ function html(Engine $engine, $html, $expected = FALSE)
 
 function test(Engine $engine)
 {
-	if(html($engine, '<html><head><title>Title</title></head>'
-			.'<body><h1>Title</h1><p>Some text.</p></body>'
-			.'</html>', '<h1>Title</h1><p>Some text.</p>') === FALSE)
+	$html = '<html><head><title>Title</title></head><body>'
+		.'<h1>Title</h1><p>Some text.</p><time>Now</time>'
+		.'</body></html>';
+
+	if(html($engine, $html, '<h1>Title</h1><p>Some text.</p>Now') === FALSE)
 		exit(2);
+	if(html($engine, $html, '<h1>Title</h1><p>Some text.</p>'
+		.'<time>Now</time>', 'HTML5') === FALSE)
+		exit(3);
 }
 
 test($engine);
