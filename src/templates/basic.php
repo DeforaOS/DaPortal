@@ -197,7 +197,7 @@ class BasicTemplate extends Template
 	{
 		$title = $this->title;
 
-		$p = new Page;
+		$p = new Page();
 		$p->append($this->getTitle());
 		$main = $p->append('vbox', array('id' => 'main'));
 		$main->append($this->getMenu());
