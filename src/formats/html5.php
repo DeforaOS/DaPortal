@@ -20,6 +20,10 @@
 class HTML5Format extends HTMLFormat
 {
 	//protected
+	//properties
+	static protected $filter_class = 'HTML5';
+
+
 	//methods
 	//essential
 	//HTML5Format::match

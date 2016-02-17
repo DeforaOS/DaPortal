@@ -23,6 +23,7 @@ class HTMLFormat extends FormatElements
 	//properties
 	protected $doctype = FALSE;
 	protected $encoding = FALSE;
+	static protected $filter_class = 'HTML';
 
 
 	//methods
@@ -681,6 +682,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmledit($e)
 	{
+		$filter_class = static::$filter_class;
 		$class = $e->get('class');
 
 		$class = ($class === FALSE) ? 'editor' : 'editor '.$class;
@@ -692,7 +694,7 @@ class HTMLFormat extends FormatElements
 		}
 		if(($text = $e->get('value')) === FALSE || !is_string($text))
 			$text = '';
-		$text = HTML::filter($this->engine, $text);
+		$text = $filter_class::filter($this->engine, $text);
 		$this->tagOpen('textarea', $class, $e->get('id'), array(
 				'name' => $e->get('name')));
 		print($this->escape($text));
@@ -787,6 +789,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderHtmlview($e)
 	{
+		$filter_class = static::$filter_class;
 		$class = $e->get('class');
 		$class = $e->getType().(($class !== FALSE) ? ' '.$class : '');
 		$text = $e->get('text');
@@ -797,7 +800,7 @@ class HTMLFormat extends FormatElements
 		if($e->get('trusted') === TRUE)
 			print($text);
 		else
-			print(HTML::filter($this->engine, $text));
+			print($filter_class::filter($this->engine, $text));
 		$this->tagClose('div');
 	}
 
