@@ -39,10 +39,11 @@ class HTML5 extends HTML
 		$this->whitelist['header'] = array('class');
 		$this->whitelist['main'] = array('class');
 		$this->whitelist['mark'] = array('class');
-		$this->whitelist['meter'] = array('class');
+		$this->whitelist['meter'] = array('class', 'high', 'low', 'max',
+			'min', 'optimum', 'value');
 		$this->whitelist['nav'] = array('class');
 		$this->whitelist['output'] = array('class');
-		$this->whitelist['progress'] = array('class');
+		$this->whitelist['progress'] = array('class', 'max', 'value');
 		$this->whitelist['section'] = array('class');
 		$this->whitelist['summary'] = array('class');
 		$this->whitelist['time'] = array('class', 'datetime');
