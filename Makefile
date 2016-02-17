@@ -335,6 +335,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/system/format/elements.php \
 		$(PACKAGE)-$(VERSION)/src/system/group.php \
 		$(PACKAGE)-$(VERSION)/src/system/html.php \
+		$(PACKAGE)-$(VERSION)/src/system/html5.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale.php \
 		$(PACKAGE)-$(VERSION)/src/system/locale/gettext.php \
 		$(PACKAGE)-$(VERSION)/src/system/mail.php \
