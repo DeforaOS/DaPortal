@@ -40,7 +40,7 @@ class CLIEngine extends Engine
 		$id = FALSE;
 		$title = FALSE;
 		$parameters = array();
-		$type = 'text/plain';
+		$type = $this->getDefaultType();
 		foreach($options as $key => $value)
 			switch($key)
 			{
@@ -99,8 +99,7 @@ class CLIEngine extends Engine
 			}
 		$ret = new Request($module, $action, $id, $title, $parameters);
 		$ret->setIdempotent($idempotent);
-		if($ret->getType() === FALSE)
-			$ret->setType($type);
+		$ret->setType($type);
 		return $ret;
 	}
 
