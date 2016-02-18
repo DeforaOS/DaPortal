@@ -64,11 +64,13 @@ class PageResponse extends Response
 					$page = $p;
 				break;
 		}
-		if(is_null($page))
-			$page = new Page();
 		$error = _('Could not determine the proper output format');
 		if(($output = Format::attachDefault($engine, $type)) !== FALSE)
+		{
+			if(is_null($page))
+				$page = new Page();
 			$output->render($engine, $page);
+		}
 		else
 		{
 			$engine->log('LOG_ERR', $error);
