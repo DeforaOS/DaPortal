@@ -200,30 +200,36 @@ abstract class Engine
 	{
 		//return an empty page if no valid request is provided
 		if(($module = $request->getModule()) === FALSE)
-			return new PageResponse(FALSE);
-		//preserve the type
-		$type = $request->getType();
-		//obtain the response
-		$action = $request->getAction();
-		$this->log('LOG_DEBUG', 'Processing'
-				.($internal ? ' internal' : '')
-				." request: module $module"
-				.(($action !== FALSE) ? ", action $action"
-					: ''));
-		if(($module = Module::load($this, $module)) === FALSE)
-			$ret = new ErrorResponse(_('Could not load the module'),
-					Response::$CODE_ENOENT);
+			$ret = new PageResponse(FALSE);
 		else
-			$ret = $module->call($this, $request, $internal);
-		if($internal)
-			return $ret;
-		if(!($ret instanceof Response))
-			return $this->log('LOG_ERR', 'Unknown response type');
-		//check if the request recommends a default type
-		if($type === FALSE)
-			$type = $request->getType();
+		{
+			//obtain the response
+			$action = $request->getAction();
+			$message = 'Processing'.($internal ? ' internal' : '')
+				." request: module $module"
+				.(($action !== FALSE)
+					? ", action $action" : '');
+			$this->log('LOG_DEBUG', $message);
+			if(($module = Module::load($this, $module)) === FALSE)
+			{
+				$message = _('Could not load the module');
+				$ret = new ErrorResponse($message,
+						Response::$CODE_ENOENT);
+			}
+			else
+				$ret = $module->call($this, $request,
+						$internal);
+			if($internal)
+				return $ret;
+			if(!($ret instanceof Response))
+			{
+				$message = 'Unknown response type';
+				return $this->log('LOG_ERR', $message);
+			}
+		}
 		//restore the type if not already enforced
-		if($type !== FALSE && $ret->getType() === FALSE)
+		if(($type = $request->getType()) !== FALSE
+				&& $ret->getType() === FALSE)
 			$ret->setType($type);
 		return $ret;
 	}
