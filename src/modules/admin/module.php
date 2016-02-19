@@ -38,11 +38,10 @@ class AdminModule extends Module
 
 		if(!$cred->isAdmin())
 		{
-			if($request->getAction() == 'actions')
+			if($internal && $request->getAction() == 'actions')
 				return FALSE;
-			return new PageElement('dialog', array(
-					'type' => 'error',
-					'text' => _('Permission denied')));
+			return new ErrorResponse(_('Permission denied'),
+				Response::$CODE_EPERM);
 		}
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';
