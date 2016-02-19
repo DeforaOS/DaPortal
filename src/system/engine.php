@@ -224,7 +224,8 @@ abstract class Engine
 			if(!($ret instanceof Response))
 			{
 				$message = 'Unknown response type';
-				return $this->log('LOG_ERR', $message);
+				$this->log('LOG_ERR', $message);
+				return new ErrorResponse();
 			}
 		}
 		//restore the type if not already enforced
