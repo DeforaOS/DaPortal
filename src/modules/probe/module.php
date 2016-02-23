@@ -26,7 +26,8 @@ class ProbeModule extends Module
 	{
 		//XXX should be saved in the constructor
 		$this->engine = $engine;
-		if(($action = $request->getAction()) === FALSE)
+		$action = $request->getAction();
+		if(!is_string($action) || strlen($action) === 0)
 			$action = 'default';
 		if($internal)
 			switch($action)
