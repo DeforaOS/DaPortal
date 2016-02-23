@@ -268,7 +268,6 @@ class SaltModule extends Module
 			return;
 		}
 		$view = $page->append('iconview');
-		$icon = new PageElement('image', array('stock' => 'server'));
 		if(!is_array($data))
 			$data = array($data);
 		sort($data);
@@ -280,7 +279,13 @@ class SaltModule extends Module
 				$link = new PageElement('link', array(
 						'request' => $request,
 						'text' => $hostname));
+				$stock = ($value === TRUE)
+					? 'server' : 'warning';
+				$title = is_string($value) ? FALSE : $value;
+				$icon = new PageElement('image', array(
+						'stock' => $stock));
 				$view->append('row', array('icon' => $icon,
+						'title' => $title,
 						'label' => $link));
 			}
 	}
