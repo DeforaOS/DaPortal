@@ -271,6 +271,7 @@ class SaltModule extends Module
 		$icon = new PageElement('image', array('stock' => 'server'));
 		if(!is_array($data))
 			$data = array($data);
+		sort($data);
 		foreach($data as $d)
 			foreach($d as $hostname => $value)
 			{
