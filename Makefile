@@ -249,7 +249,6 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/browser/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/content/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/content/module.php \
-		$(PACKAGE)-$(VERSION)/src/modules/content/multi.php \
 		$(PACKAGE)-$(VERSION)/src/modules/content/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/donate/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/donate/module.php \
@@ -268,6 +267,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/modules/manual/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/manual/module.php \
 		$(PACKAGE)-$(VERSION)/src/modules/manual/project.conf \
+		$(PACKAGE)-$(VERSION)/src/modules/multicontent/Makefile \
+		$(PACKAGE)-$(VERSION)/src/modules/multicontent/module.php \
+		$(PACKAGE)-$(VERSION)/src/modules/multicontent/project.conf \
 		$(PACKAGE)-$(VERSION)/src/modules/news/Makefile \
 		$(PACKAGE)-$(VERSION)/src/modules/news/content.php \
 		$(PACKAGE)-$(VERSION)/src/modules/news/module.php \
