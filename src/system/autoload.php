@@ -38,7 +38,6 @@ function _autoload_filename($class, $filename = FALSE)
 	static $classes = array(
 		'AuthCredentials' => './system/auth/credentials.php',
 		'FormatElements' => './system/format/elements.php',
-		'MultiContentModule' => './modules/content/multi.php',
 		'PageElement' => './system/page/element.php');
 
 	//validate the class name
