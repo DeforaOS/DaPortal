@@ -144,6 +144,10 @@ regenerate=1
 #  2: javascript is mandatory for some functionality to work correctly
 #  3: javascript support is absolutely mandatory
 #javascript=0
+#properties for meta-information
+#meta::author=
+#meta::description=
+#properties of the viewport
 #viewport::width=device-width
 #viewport::width=device-width,maximum-scale=1.0
 

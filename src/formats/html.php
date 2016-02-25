@@ -134,6 +134,7 @@ class HTMLFormat extends FormatElements
 		$this->tags = array();
 		$this->titles = array();
 		$this->engine = $engine;
+		$meta = array('author', 'description');
 		//FIXME also track tags are properly closed
 
 		if($this->doctype !== FALSE)
@@ -154,6 +155,16 @@ class HTMLFormat extends FormatElements
 		if(($refresh = $page->get('refresh')) !== FALSE
 				&& is_numeric($refresh))
 			$this->renderMeta('Refresh', $refresh);
+		//meta-information
+		foreach($meta as $m)
+			if(($content = $this->configGet('meta::'.$m)) !== FALSE)
+			{
+				$this->renderTabs();
+				$this->tag('meta', FALSE, FALSE, array(
+						'name' => $m,
+						'content' => $content));
+			}
+		//viewport
 		if(($vw = $this->configGet('viewport::width')) !== FALSE)
 		{
 			$this->renderTabs();
