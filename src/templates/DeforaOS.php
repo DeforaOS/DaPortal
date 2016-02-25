@@ -23,14 +23,14 @@ class DeforaOSTemplate extends BasicTemplate
 	//methods
 	//accessors
 	//DeforaOSTemplate::getMenu
-	protected function getMenu(Engine $engine = NULL, $entries = FALSE)
+	protected function getMenu($entries = FALSE)
 	{
 		$cred = $this->engine->getCredentials();
 
 		//obtain the parent menu
 		if($entries === FALSE)
 			$entries = $this->getEntries();
-		if(($menu = parent::getMenu($engine, $entries)) === FALSE)
+		if(($menu = parent::getMenu($entries)) === FALSE)
 			return FALSE;
 		//add some widgets
 		//search widget
@@ -50,7 +50,7 @@ class DeforaOSTemplate extends BasicTemplate
 
 
 	//DeforaOSTemplate::getTitle
-	protected function getTitle(Engine $engine = NULL)
+	protected function getTitle()
 	{
 		$title = new PageElement('title', array('id' => 'title'));
 		$link = $title->append('link', array('text' => '',

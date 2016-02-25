@@ -56,7 +56,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getEntries
-	protected function getEntries(Engine $engine = NULL)
+	protected function getEntries()
 	{
 		if(($modules = $this->getModules()) === FALSE)
 			return FALSE;
@@ -96,7 +96,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getMenu
-	protected function getMenu(Engine $engine = NULL, $entries = FALSE)
+	protected function getMenu($entries = FALSE)
 	{
 		$cred = $this->engine->getCredentials();
 
@@ -153,14 +153,14 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::getModules
-	protected function getModules(Engine $engine = NULL)
+	protected function getModules()
 	{
 		return $this->engine->getModules();
 	}
 
 
 	//BasicTemplate::getTitle
-	protected function getTitle(Engine $engine = NULL)
+	protected function getTitle()
 	{
 		$title = new PageElement('title', array('id' => 'title'));
 		$title->append('link', array('text' => $this->title,
@@ -197,7 +197,7 @@ class BasicTemplate extends Template
 
 
 	//BasicTemplate::render
-	public function render(Engine $engine, PageElement $page = NULL)
+	public function render(Engine $engine = NULL, PageElement $page = NULL)
 	{
 		$title = $this->title;
 
