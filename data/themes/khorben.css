@@ -126,7 +126,7 @@ table tr th a {
 
 /* modules */
 /* wiki */
-h2.wiki.revisions, form.treeview.revisions {
+.expander {
 	display:			none;
 }
 
