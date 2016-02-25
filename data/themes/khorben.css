@@ -64,11 +64,12 @@ body {
 	max-width:			85ex;
 }
 
-@media screen and (min-width: 80ex) {
+@media screen and (min-width: 85ex) {
 	body {
 		border:			1px solid #000000;
 		float:			left;
 		margin-left:		6%;
+		width:			85ex;
 	}
 }
 
@@ -91,8 +92,8 @@ img {
 	border-width:			0;
 }
 
-table tr th, table tr td {
-	vertical-align:                 top;
+ol li, ul li {
+	margin-left:			2ex;
 }
 
 pre {
@@ -101,7 +102,11 @@ pre {
 	padding:			4px;
 }
 
-table th a {
+table tr th, table tr td {
+	vertical-align:                 top;
+}
+
+table tr th a {
 	text-decoration:		none;
 }
 
