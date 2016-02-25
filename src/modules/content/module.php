@@ -769,9 +769,8 @@ abstract class ContentModule extends Module
 	//ContentModule::callPublish
 	protected function callPublish(Engine $engine, Request $request)
 	{
-		$error = _('Could not preview content');
-
 		//obtain the content
+		$error = _('Could not preview content');
 		if(($content = $this->getContent($engine, $request->getID(),
 				$request->getTitle(), $request)) === FALSE)
 			return new ErrorResponse($error,
@@ -899,7 +898,8 @@ abstract class ContentModule extends Module
 			Content $content)
 	{
 		//verify the request
-		if($request->isIdempotent())
+		if($request->isIdempotent()
+				|| $request->get('_preview') !== FALSE)
 			return TRUE;
 		//store the content uploaded
 		$error = _('Internal server error');
@@ -956,7 +956,8 @@ abstract class ContentModule extends Module
 			Content $content)
 	{
 		//verify the request
-		if($request->isIdempotent())
+		if($request->isIdempotent()
+				|| $request->get('preview') === FALSE)
 			return TRUE;
 		//update the content
 		$error = _('Internal server error');
