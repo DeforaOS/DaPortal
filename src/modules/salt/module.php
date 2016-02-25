@@ -255,7 +255,7 @@ class SaltModule extends Module
 			{
 				$args = array();
 				foreach($params as $param)
-					$args[$param] = $$p;
+					$args[$param] = $$param;
 				if(count($data) > 1)
 				{
 					$row = $page->append('row', array(
