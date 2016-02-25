@@ -25,6 +25,7 @@ class BasicTemplate extends Template
 	protected $footer = FALSE;
 	protected $homepage = FALSE;
 	protected $id = FALSE;
+	protected $logo = FALSE;
 	protected $module = FALSE;
 	protected $title = FALSE;
 	protected $message = FALSE;
@@ -162,8 +163,10 @@ class BasicTemplate extends Template
 	{
 		$title = new PageElement('title', array('id' => 'title'));
 		$title->append('link', array('text' => $this->title,
-					'title' => $this->title,
-					'url' => $this->homepage));
+				'title' => $this->title,
+				'url' => $this->homepage));
+		if($this->logo !== FALSE)
+			$link->append('image', array('source' => $this->logo));
 		return $title;
 	}
 

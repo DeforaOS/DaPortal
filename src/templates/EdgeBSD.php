@@ -19,15 +19,6 @@
 //EdgeBSDTemplate
 class EdgeBSDTemplate extends DeforaOSTemplate
 {
-	//protected
-	//methods
-	//EdgeBSDTemplate::match
-	protected function match(Engine $engine)
-	{
-		return 0;
-	}
-
-
 	//EdgeBSDTemplate::attach
 	protected function attach(Engine $engine)
 	{

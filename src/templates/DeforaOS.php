@@ -55,8 +55,9 @@ class DeforaOSTemplate extends BasicTemplate
 	protected function getTitle(Engine $engine = NULL)
 	{
 		$title = new PageElement('title', array('id' => 'title'));
-		$link = $title->append('link', array('url' => $this->homepage,
-				'text' => ''));
+		$link = $title->append('link', array('text' => '',
+				'title' => $this->title,
+				'url' => $this->homepage));
 		$link->append('image', array('source' => $this->logo));
 		return $title;
 	}
@@ -70,8 +71,12 @@ class DeforaOSTemplate extends BasicTemplate
 	}
 
 
-	//properties
-	protected $logo = 'themes/DeforaOS.png';
+	//DeforaOSTemplate::attach
+	protected function attach(Engine $engine)
+	{
+		parent::attach($engine);
+		$this->logo = 'themes/DeforaOS.png';
+	}
 }
 
 ?>
