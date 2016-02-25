@@ -145,8 +145,11 @@ regenerate=1
 #  3: javascript support is absolutely mandatory
 #javascript=0
 #properties for meta-information
+#meta::application-name=
 #meta::author=
 #meta::description=
+#meta::generator=
+#meta::keywords=
 #properties of the viewport
 #viewport::width=device-width
 #viewport::width=device-width,maximum-scale=1.0

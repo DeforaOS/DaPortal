@@ -134,7 +134,8 @@ class HTMLFormat extends FormatElements
 		$this->tags = array();
 		$this->titles = array();
 		$this->engine = $engine;
-		$meta = array('author', 'description');
+		$meta = array('application-name', 'author', 'description',
+			'generator', 'keywords');
 		//FIXME also track tags are properly closed
 
 		if($this->doctype !== FALSE)
