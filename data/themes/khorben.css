@@ -17,6 +17,8 @@
 
 /* default includes */
 @import url("../css/DaPortal.css");
+@import url("../css/manual.css");
+
 
 * {
 	font-family: sans-serif;
