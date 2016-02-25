@@ -189,85 +189,111 @@ class SaltModule extends Module
 
 	private function _defaultHost(PageElement $page, $host)
 	{
+		$salt = array('uptime' => array('title' => _('Uptime'),
+				'helper' => 'Uptime',
+				'error' => _('Could not obtain uptime')),
+			'upgrades' => array('title' => _('Package upgrades'),
+				'helper' => 'UpgradeList',
+				'error' => _('Could not list package upgrades'),
+				'args' => array('hostname')),
+			'services' => array('title' => _('Services'),
+				'helper' => 'ServiceListEnabled',
+				'error' => _('Could not list the services'),
+				'args' => array('hostname'),
+				'render' => 'ServiceList'),
+			'status' => array('title' => _('Statistics'),
+				'helper' => 'StatusAll',
+				'error' => _('Could not obtain statistics')));
+
 		$page->append('title', array('text' => $host));
 		$this->_defaultToolbar($page, $host);
-		if(($data = $this->helperSaltUptime($host)) === FALSE)
+		//gather the data
+		$count = 0;
+		foreach($salt as $s => $v)
 		{
-			$error = _('Could not obtain uptime');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
+			$helper = 'helperSalt'.$v['helper'];
+			if(($data = $this->$helper($host)) === FALSE
+					|| !is_object($data))
+				continue;
+			$count = max($count, $this->_defaultHostCount($data));
+			$salt[$s]['data'] = $data;
 		}
-		else
-			$this->_defaultHostRender($page, $host, $data,
-					array($this, 'renderUptime'));
-		if(($data = $this->helperSaltUpgradeList($host)) === FALSE)
+		foreach($salt as $s => $v)
 		{
-			$error = _('Could not list package upgrades');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
+			if(!isset($v['data']))
+			{
+				$page->append('dialog', array('type' => 'error',
+						'text' => $v['error']));
+				continue;
+			}
+			$render = isset($v['render'])
+				? $v['render'] : $v['helper'];
+			$render = 'render'.$render;
+			$args = isset($v['args']) ? $v['args'] : array();
+			if($count > 1)
+				$this->_defaultHostRenderMultiple($page, $host,
+						$v['title'], $v['data'],
+						array($this, $render), $args);
+			else
+				$this->_defaultHostRender($page, $host,
+						$v['title'], $v['data'],
+						array($this, $render), $args);
+
 		}
-		else
-			$this->_defaultHostRender($page, $host, $data,
-					array($this, 'renderUpgradeList'),
-					array('hostname'));
-		if(($data = $this->helperSaltServiceListEnabled($host))
-				=== FALSE)
-		{
-			$error = _('Could not list services');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
-		}
-		else
-		{
-			$vbox = $page->append('vbox');
-			$this->_defaultHostRender($vbox, $host, $data,
-					array($this, 'renderServiceList'),
-					array('hostname'));
-		}
-		if(($data = $this->helperSaltStatusAll($host)) === FALSE)
-		{
-			$error = _('Could not obtain statistics');
-			$page->append('dialog', array(
-					'type' => 'error', 'text' => $error));
-		}
-		else
-			$this->_defaultHostRender($page, $host, $data,
-					array($this, 'renderStatusAll'));
 	}
 
-	private function _defaultHostRender(PageElement $page, $host, $data,
-			$callback, $params = array())
+	private function _defaultHostCount($data)
+	{
+		$hostnames = array();
+
+		if(!is_array($data))
+			$data = array($data);
+		foreach($data as $hosts)
+			if(is_object($hosts))
+				foreach($hosts as $hostname => $h)
+					$hostnames[$hostname] = FALSE;
+		return count($hostnames);
+	}
+
+	private function _defaultHostRender(PageElement $page, $host, $title,
+			$data, $callback, $params = array())
 	{
 		if(!is_array($data))
 			$data = array($data);
-		if(count($data) > 1)
-		{
-			$columns = array('title' => _('Hostname'),
-					'status' => _('Status'));
-			$page = $page->append('treeview', array(
-					'columns' => $columns));
-		}
 		foreach($data as $hosts)
-		{
-			if(!is_object($hosts))
-				continue;
-			foreach($hosts as $hostname => $h)
-			{
-				$args = array();
-				foreach($params as $param)
-					$args[$param] = $$param;
-				if(count($data) > 1)
+			if(is_object($hosts))
+				foreach($hosts as $hostname => $h)
 				{
+					$page->append('title', array(
+							'text' => $title));
+					$args = array();
+					foreach($params as $param)
+						$args[$param] = $$param;
+					$callback($page, $h, $args);
+				}
+	}
+
+	private function _defaultHostRenderMultiple(PageElement $page, $host,
+			$title, $data, $callback, $params = array())
+	{
+		$page->append('title', array('text' => $title));
+		$columns = array('title' => '', 'status' => '');
+		$page = $page->append('treeview', array('columns' => $columns));
+		if(!is_array($data))
+			$data = array($data);
+		foreach($data as $hosts)
+			if(is_object($hosts))
+				foreach($hosts as $hostname => $h)
+				{
+					$args = array();
+					foreach($params as $param)
+						$args[$param] = $$param;
 					$row = $page->append('row', array(
 							'title' => $hostname));
 					$p = new PageElement('vbox');
 					$callback($p, $h, $args);
-					$row['status'] = $p;
+					$row->set('status', $p);
 				}
-				else
-					$callback($page, $h, $args);
-			}
-		}
 	}
 
 	private function _defaultList(PageElement $page)
@@ -606,7 +632,6 @@ class SaltModule extends Module
 	private function renderDiskusage(PageElement $page, $data,
 			$args = array())
 	{
-		$page->append('title', array('text' => 'Disk usage'));
 		foreach($data as $vol => $voldata)
 		{
 			if($voldata->total == 0)
@@ -627,7 +652,6 @@ class SaltModule extends Module
 	protected function renderLoadavg(PageElement $page, $data,
 			$args = array())
 	{
-		$page->append('title', array('text' => _('Load average')));
 		foreach($data as $key => $value)
 			$page->append('label', array(
 					'text' => $key.': '.$value));
@@ -638,9 +662,6 @@ class SaltModule extends Module
 	protected function renderNetdev(PageElement $page, $data,
 			$args = array())
 	{
-		$title = _('Network interfaces');
-
-		$page->append('title', array('text' => $title));
 		foreach($data as $name => $interface)
 		{
 			$title = $name;
@@ -670,7 +691,6 @@ class SaltModule extends Module
 		if(!isset($args['hostname']))
 			return;
 		$hostname = $args['hostname'];
-		$page->append('title', array('text' => _('Services')));
 		$columns = array('service' => '', 'actions' => '');
 		$view = $page->append('treeview', array('columns' => $columns,
 				'alternate' => TRUE));
@@ -712,12 +732,21 @@ class SaltModule extends Module
 			switch($key)
 			{
 				case 'diskusage':
+					$title = _('Disk usage');
+					$vbox->append('title', array(
+						'text' => $title));
 					$this->renderDiskusage($vbox, $value);
 					break;
 				case 'loadavg':
+					$title = _('Load average');
+					$vbox->append('title', array(
+						'text' => $title));
 					$this->renderLoadavg($vbox, $value);
 					break;
 				case 'netdev':
+					$title = _('Network interfaces');
+					$vbox->append('title', array(
+						'text' => $title));
 					$this->renderNetdev($vbox, $value);
 					break;
 				default:
@@ -746,7 +775,6 @@ class SaltModule extends Module
 			return;
 		$hostname = $args['hostname'];
 		$page = $page->append('vbox');
-		$page->append('title', array('text' => _('Package upgrades')));
 		if(($count = count((array)$data)) == 0)
 		{
 			$message = 'The system is up to date';
