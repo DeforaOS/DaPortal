@@ -1026,8 +1026,12 @@ class HTMLFormat extends FormatElements
 
 	protected function renderStatusbar($e)
 	{
+		$class = 'statusbar';
+
 		$this->renderTabs();
-		$this->tagOpen('div', 'statusbar', $e->get('id'), FALSE,
+		if(($c = $e->get('class')) !== FALSE)
+			$class .= ' '.$c;
+		$this->tagOpen('div', $class, $e->get('id'), FALSE,
 				$e->get('text'));
 		$this->renderChildren($e);
 		$this->tagClose('div');

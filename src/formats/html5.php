@@ -195,10 +195,13 @@ class HTML5Format extends HTMLFormat
 	//HTML5Format::renderStatusbar
 	protected function renderStatusbar($e)
 	{
+		$class = 'statusbar';
+
 		$this->renderTabs();
-		$this->tagOpen('footer', $e->getProperty('class'),
-				$e->getProperty('id'), FALSE,
-				$e->getProperty('text'));
+		if(($c = $e->get('class')) !== FALSE)
+			$class .= ' '.$c;
+		$this->tagOpen('footer', $class, $e->get('id'), FALSE,
+				$e->get('text'));
 		$this->renderChildren($e);
 		$this->tagClose('footer');
 	}
