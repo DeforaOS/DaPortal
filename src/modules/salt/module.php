@@ -241,20 +241,31 @@ class SaltModule extends Module
 		if(!is_array($data))
 			$data = array($data);
 		if(count($data) > 1)
-			$page = $page->append('vbox');
+		{
+			$columns = array('title' => _('Hostname'),
+					'status' => _('Status'));
+			$page = $page->append('treeview', array(
+					'columns' => $columns));
+		}
 		foreach($data as $hosts)
 		{
 			if(!is_object($hosts))
 				continue;
 			foreach($hosts as $hostname => $h)
 			{
-				if(count($data) > 1)
-					$page->append('title', array(
-							'text' => $hostname));
 				$args = array();
-				foreach($params as $p)
-					$args[$p] = $$p;
-				$callback($page, $h, $args);
+				foreach($params as $param)
+					$args[$param] = $$p;
+				if(count($data) > 1)
+				{
+					$row = $page->append('row', array(
+							'title' => $hostname));
+					$p = new PageElement('vbox');
+					$callback($p, $h, $args);
+					$row['status'] = $p;
+				}
+				else
+					$callback($page, $h, $args);
 			}
 		}
 	}
