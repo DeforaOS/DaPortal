@@ -18,15 +18,14 @@
 /* default includes */
 @import url("../css/DaPortal.css");
 
+* {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
 
 html {
 	background-color:		#221133;
-	font-size:			90%;
-	text-align:			justify;
-}
-
-html, input {
-	font-family:			sans-serif;
 }
 
 a {
@@ -52,13 +51,40 @@ blockquote {
 	font-style:			oblique;
 }
 
+body {
+	background-color:		#ffffff;
+	background-image:		url("khorben-coldfire.jpg");
+	background-position:		bottom right;
+	background-repeat:		no-repeat;
+	font-size: 90%;
+	margin-bottom:			2ex;
+	margin-top:			3ex;
+	min-height:			240px;
+	padding:			2ex;
+	max-width:			85ex;
+}
+
+@media screen and (min-width: 80ex) {
+	body {
+		border:			1px solid #000000;
+		float:			left;
+		margin-left:		6%;
+	}
+}
+
 h1 {
 	clear:				left;
 	text-align:			left;
 }
 
-h1.title:before {
-	float:				right;
+h1.stock48 {
+	background-position:		right top;
+	padding-left:			0 !important;
+	padding-right:			52px;
+}
+
+h1 a, h2  a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration:		none;
 }
 
 img {
@@ -80,84 +106,16 @@ table th a {
 }
 
 
-/* main */
-html > body {
-	background-color:		#ffffff;
-	background-image:		url("khorben-coldfire.jpg");
-	background-position:		bottom right;
-	background-repeat:		no-repeat;
-	border:				1px solid #000000;
-	margin-left:			6%;
-	margin-top:			3%;
-	min-height:			240px;
-	padding:			2ex;
-	width:				85ex;
-}
-
-
 /* title */
 #title {
 	display:			none;
 }
 
 
-/* classes */
-.field {
-	font-weight:			bold;
-}
-
-.hidden {
-	display:			none;
-}
-
-.title a {
-	text-decoration:		none;
-}
-
-
 /* modules */
-/* blog */
-.blog {
-	padding-top:			2em;
-	padding-bottom:			1em;
-}
-
-.blog.description {
-	font-style:			oblique;
-}
-
-.blog .title {
-	font-weight:			bold;
-	font-size:			large;
-}
-
-.blog .author {
-	display:			none;
-}
-
-.blog .date {
-	padding:			1ex;
-	padding-left:			2em;
-}
-
-.blog h2.category {
-	display:			none;
-}
-
-
 /* wiki */
 h2.wiki.revisions, form.treeview.revisions {
 	display:			none;
-}
-
-
-/* explorer */
-form.explorer a {
-	text-decoration:		none;
-}
-
-form.explorer .selected {
-	background-color:		#ddccee;
 }
 
 
@@ -180,10 +138,10 @@ ul.menu li a, ul.menubar li a {
 	text-decoration:		none;
 }
 
-ul.menu li a:hover, ul.menubar li a:hover {
-	background-color:		#e8d5fb;
+ul.menubar li ul {
+	display:			none;
 }
 
-ul.menu span.middot, ul.menubar span.middot {
-	display:			none;
+ul.menu li a:hover, ul.menubar li a:hover {
+	background-color:		#e8d5fb;
 }
