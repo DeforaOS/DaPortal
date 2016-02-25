@@ -32,22 +32,20 @@ class DeforaOSTemplate extends BasicTemplate
 			$entries = $this->getEntries();
 		if(($menu = parent::getMenu($engine, $entries)) === FALSE)
 			return FALSE;
-		$vbox = new PageElement('vbox', array('id' => 'menu'));
-		$vbox->append($menu);
 		//add some widgets
 		//search widget
 		$request = new Request('search', 'widget');
 		if(($widget = $this->engine->process($request)) !== FALSE)
-			$vbox->append($widget->getContent());
+			$menu->append($widget->getContent());
 		//user widget
 		$request = new Request('user', 'widget');
 		if(($widget = $this->engine->process($request)) !== FALSE)
-			$vbox->append($widget->getContent());
+			$menu->append($widget->getContent());
 		//donation widget
 		$request = new Request('donate', 'widget');
 		if(($widget = $this->engine->process($request, TRUE)) !== FALSE)
-			$vbox->append($widget);
-		return $vbox;
+			$menu->append($widget);
+		return $menu;
 	}
 
 

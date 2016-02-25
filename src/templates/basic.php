@@ -100,7 +100,8 @@ class BasicTemplate extends Template
 	{
 		$cred = $this->engine->getCredentials();
 
-		$menu = new PageElement('menubar');
+		$menu = new PageElement('vbox', array('id' => 'menu'));
+		$menubar = $menu->append('menubar');
 		if($entries === FALSE)
 			$entries = $this->getEntries();
 		if($entries === FALSE)
@@ -110,7 +111,7 @@ class BasicTemplate extends Template
 			if(!is_array($e))
 				continue;
 			$r = new Request($e['name']);
-			$menuitem = $menu->append('menuitem', array(
+			$menuitem = $menubar->append('menuitem', array(
 					'text' => $e['title'],
 					'request' => $r));
 			if(($actions = $e['actions']) === FALSE)
@@ -141,10 +142,10 @@ class BasicTemplate extends Template
 				if($text === FALSE)
 					continue;
 				$menuitem->append('menuitem', array(
-					'important' => $important,
-					'request' => $request,
-					'stock' => $stock,
-					'text' => $text));
+						'important' => $important,
+						'request' => $request,
+						'stock' => $stock,
+						'text' => $text));
 			}
 		}
 		return $menu;
@@ -203,12 +204,13 @@ class BasicTemplate extends Template
 		$p = new Page();
 		$p->append($this->getTitle());
 		$main = $p->append('vbox', array('id' => 'main'));
-		$main->append($this->getMenu());
+		if(($menu = $this->getMenu()) !== FALSE)
+			$main->append($menu);
 		if($this->message !== FALSE)
 			$main->append('dialog', array(
-				'type' => $this->message_type,
-				'title' => $this->message_title,
-				'text' => $this->message));
+					'type' => $this->message_type,
+					'title' => $this->message_title,
+					'text' => $this->message));
 		$content = $main->append('vbox', array('id' => 'content'));
 		if(is_null($page))
 			$page = $this->getDefaultPage();
