@@ -244,14 +244,13 @@ class UserModule extends Module
 		$form = new PageElement('form', array('request' => $r));
 		$message = _('Do you really want to close your account?');
 
-		//FIXME make it a warning dialog
-		$vbox = $form->append('vbox');
-		$vbox->append('label', array('text' => $message));
-		$form->append('button', array('stock' => 'cancel',
+		$dialog = $form->append('dialog', array('type' => 'warning',
+				'text' => $message));
+		$dialog->append('button', array('stock' => 'cancel',
 				'target' => '_cancel',
 				'text' => _('Cancel'),
 				'request' => $this->getRequest('profile')));
-		$form->append('button', array('stock' => 'close',
+		$dialog->append('button', array('stock' => 'close',
 				'type' => 'submit', 'value' => 'submit',
 				'text' => _('Close')));
 		return $form;
@@ -1386,7 +1385,8 @@ class UserModule extends Module
 			//already registered and logged in
 			return $this->callDisplay($engine, new Request());
 		//process registration
-		if($this->canRegister($request, $error)
+		if(!$request->isIdempotent()
+				&& $this->canRegister($request, $error)
 				&& $this->_registerProcess($engine, $request,
 					$error))
 			$error = FALSE;
