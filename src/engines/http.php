@@ -234,7 +234,7 @@ class HTTPEngine extends Engine
 					? $_SERVER['SERVER_NAME']
 					: gethostname(),
 				'port' => isset($_SERVER['SERVER_PORT'])
-					? $_SERVER['SERVER_PORT']: 80,
+					? $_SERVER['SERVER_PORT'] : 80,
 				'path' => $name);
 			if(($url = http_build_url($url)) === FALSE)
 				//fallback to a relative address
