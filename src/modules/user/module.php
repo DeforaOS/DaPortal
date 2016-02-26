@@ -1276,18 +1276,17 @@ class UserModule extends Module
 		$r = $this->getRequest('logout');
 		if($request->isIdempotent())
 		{
-			//FIXME make it a question dialog
 			$form = $page->append('form', array(
 						'request' => $r));
-			$vbox = $form->append('vbox');
-			$vbox->append('label', array(
-				'text' => _('Do you really want to logout?')));
+			$text = _('Do you really want to logout?');
+			$dialog = $form->append('dialog', array(
+					'type' => 'question', 'text' => $text));
 			$r = $this->getRequest();
-			$form->append('button', array('text' => _('Cancel'),
+			$dialog->append('button', array('text' => _('Cancel'),
 						'stock' => 'cancel',
 						'target' => '_cancel',
 						'request' => $r));
-			$form->append('button', array('text' => _('Logout'),
+			$dialog->append('button', array('text' => _('Logout'),
 						'stock' => 'logout',
 						'type' => 'submit'));
 			return new PageResponse($page);
