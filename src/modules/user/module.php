@@ -262,10 +262,12 @@ class UserModule extends Module
 	protected function formLogin(Engine $engine, Request $request,
 			$cancel = TRUE)
 	{
+		$secure = ($this->configGet('secure') === '0') ? FALSE : TRUE;
 		$username = $request->get('username');
-		$r = $this->getRequest('login', $request->getParameters());
 
-		$form = new PageElement('form', array('request' => $r));
+		$r = $this->getRequest('login', $request->getParameters());
+		$form = new PageElement('form', array('request' => $r,
+			'secure' => $secure));
 		$entry = $form->append('entry', array(
 					'name' => 'username',
 					'text' => _('Username: '),

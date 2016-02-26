@@ -245,6 +245,8 @@ globs=@PREFIX@/share/mime/globs
 #register=1
 #allow users to reset their password (default: disabled)
 #reset=1
+#force login attempts over HTTPS (default: enabled)
+#secure=1
 
 [module::wiki]
 #anonymous=0

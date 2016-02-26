@@ -618,12 +618,28 @@ class HTMLFormat extends FormatElements
 	protected function renderForm($e)
 	{
 		$request = $e->get('request');
+		$secure = $e->get('secure');
+		$action = 'index.php';
 
 		$this->renderTabs();
-		$args = array('action' => 'index.php');
-		$args['enctype'] = $this->_formEnctype($e);
+		if($secure && !isset($_SERVER['HTTPS']))
+		{
+			//XXX requires insider from HTTPEngine
+			$_SERVER['HTTPS'] = 1;
+			$port = isset($_SERVER['SERVER_PORT'])
+				? $_SERVER['SERVER_PORT'] : FALSE;
+			$_SERVER['SERVER_PORT'] = 443;
+			$action = $this->engine->getURL(new Request(), TRUE);
+			//restore the previous state
+			if($port !== FALSE)
+				$_SERVER['SERVER_PORT'] = $port;
+			else
+				unset($_SERVER['SERVER_PORT']);
+			unset($_SERVER['HTTPS']);
+		}
 		$method = $e->get('idempotent') ? 'get' : 'post';
-		$args['method'] = $method;
+		$args = array('action' => $action, 'method' => $method,
+			'enctype' => $this->_formEnctype($e));
 		$this->tagOpen('form', $e->getType(), $e->get('id'), $args);
 		if($method === 'post')
 		{
