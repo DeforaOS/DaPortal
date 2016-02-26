@@ -1400,6 +1400,7 @@ class UserModule extends Module
 	{
 		$title = _('User registration');
 		$page = new Page(array('title' => $title));
+
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		if(is_string($error))
@@ -1510,11 +1511,13 @@ class UserModule extends Module
 	private function _resetSuccess(Engine $engine, Request $request)
 	{
 		$title = _('Password reset');
+		$text = _("You should receive an e-mail shortly, with a link allowing you to reset your password.");
+
 		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => $this->name,
 				'text' => $title));
 		$page->append('dialog', array('type' => 'info',
-				'text' => _("You should receive an e-mail shortly, with a link allowing you to reset your password.\n")));
+				'text' => $text));
 		$page->append('link', array('stock' => 'home',
 				'text' => _('Back to the homepage'),
 				'request' => new Request()));
