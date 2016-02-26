@@ -617,7 +617,7 @@ class HTMLFormat extends FormatElements
 
 	protected function renderForm($e)
 	{
-		$auth = $this->engine->getAuth();
+		$request = $e->get('request');
 
 		$this->renderTabs();
 		$args = array('action' => 'index.php');
@@ -627,6 +627,7 @@ class HTMLFormat extends FormatElements
 		$this->tagOpen('form', $e->getType(), $e->get('id'), $args);
 		if($method === 'post')
 		{
+			$auth = $this->engine->getAuth();
 			$token = sha1(uniqid(php_uname(), TRUE));
 			if(($tokens = $auth->getVariable($this->engine,
 						'tokens')) === FALSE)
@@ -635,13 +636,13 @@ class HTMLFormat extends FormatElements
 			$auth->setVariable($this->engine, 'tokens', $tokens);
 			$this->_formHidden('_token', $token);
 		}
-		if(($r = $e->get('request')) !== FALSE)
+		if($request !== FALSE)
 		{
-			$this->_formHidden('_module', $r->getModule());
-			$this->_formHidden('_action', $r->getAction());
-			$this->_formHidden('_id', $r->getID());
-			$this->_formHidden('_title', $r->getTitle());
-			if(($args = $r->getParameters()) !== FALSE)
+			$this->_formHidden('_module', $request->getModule());
+			$this->_formHidden('_action', $request->getAction());
+			$this->_formHidden('_id', $request->getID());
+			$this->_formHidden('_title', $request->getTitle());
+			if(($args = $request->getParameters()) !== FALSE)
 				foreach($args as $k => $v)
 					$this->_formHidden($k, $v);
 		}
