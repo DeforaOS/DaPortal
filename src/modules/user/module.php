@@ -294,8 +294,11 @@ class UserModule extends Module
 	//UserModule::formRegister
 	protected function formRegister(Engine $engine, $username, $email)
 	{
+		$secure = ($this->configGet('secure') === '0') ? FALSE : TRUE;
 		$r = $this->getRequest('register');
-		$form = new PageElement('form', array('request' => $r));
+
+		$form = new PageElement('form', array('request' => $r,
+				'secure' => $secure));
 		$form->append('entry', array('text' => _('Username: '),
 				'name' => 'username', 'value' => $username));
 		$form->append('entry', array('text' => _('e-mail address: '),
@@ -313,8 +316,11 @@ class UserModule extends Module
 	//UserModule::formReset
 	protected function formReset(Engine $engine, $username, $email)
 	{
+		$secure = ($this->configGet('secure') === '0') ? FALSE : TRUE;
 		$r = $this->getRequest('reset');
-		$form = new PageElement('form', array('request' => $r));
+
+		$form = new PageElement('form', array('request' => $r,
+				'secure' => $secure));
 		$form->append('entry', array('text' => _('Username: '),
 				'name' => 'username', 'value' => $username));
 		$form->append('entry', array('text' => _('e-mail address: '),
