@@ -1,0 +1,2607 @@
+# $Id$
+# Copyright (c) 2016 Pierre Pronchery <khorben@defora.org>
+# This file is distributed under the same license as the DaPortal package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DaPortal 1.10.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 14:21+0100\n"
+"PO-Revision-Date: 2016-02-28 18:01+0100\n"
+"Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/system/common.php:58 ../src/modules/probe/module.php:381
+msgid "bytes"
+msgstr ""
+
+#: ../src/system/common.php:58
+msgid "byte"
+msgstr ""
+
+#: ../src/system/common.php:60
+msgid "kB"
+msgstr ""
+
+#: ../src/system/common.php:62
+msgid "MB"
+msgstr ""
+
+#: ../src/system/common.php:64
+msgid "GB"
+msgstr ""
+
+#: ../src/system/common.php:65
+msgid "TB"
+msgstr ""
+
+#: ../src/system/content.php:73 ../src/modules/content/module.php:350
+msgid "Content by"
+msgstr ""
+
+#: ../src/system/content.php:74
+msgid "Permalink"
+msgstr ""
+
+#: ../src/system/content.php:75
+msgid "More content..."
+msgstr ""
+
+#: ../src/system/content.php:76
+msgid "on"
+msgstr ""
+
+#: ../src/system/content.php:77
+msgid "Open"
+msgstr "Abrir"
+
+#: ../src/system/content.php:78 ../src/modules/content/module.php:351
+#: ../src/modules/content/module.php:1153
+#: ../src/modules/content/module.php:1295
+msgid "Publish"
+msgstr ""
+
+#: ../src/system/content.php:79 ../src/modules/content/module.php:357
+msgid "Submit content"
+msgstr ""
+
+#: ../src/system/content.php:80 ../src/modules/content/module.php:1534
+#: ../src/modules/group/module.php:177 ../src/modules/user/module.php:516
+#: ../src/modules/user/module.php:1353 ../src/modules/user/module.php:1357
+msgid "Update"
+msgstr ""
+
+#: ../src/system/content.php:91 ../src/modules/admin/module.php:43
+#: ../src/modules/browser/module.php:61 ../src/modules/browser/module.php:81
+#: ../src/modules/content/module.php:73 ../src/modules/content/module.php:167
+#: ../src/modules/content/module.php:779
+#: ../src/modules/content/module.php:1181
+#: ../src/modules/content/module.php:1202
+#: ../src/modules/content/module.php:1223
+#: ../src/modules/content/module.php:1382
+#: ../src/modules/content/module.php:1481 ../src/modules/group/module.php:114
+#: ../src/modules/group/module.php:259 ../src/modules/group/module.php:420
+#: ../src/modules/group/module.php:517 ../src/modules/group/module.php:622
+#: ../src/modules/group/module.php:694 ../src/modules/group/module.php:767
+#: ../src/modules/project/module.php:642 ../src/modules/salt/module.php:63
+#: ../src/modules/salt/module.php:92 ../src/modules/salt/module.php:137
+#: ../src/modules/search/module.php:143 ../src/modules/user/module.php:217
+#: ../src/modules/user/module.php:658 ../src/modules/user/module.php:904
+#: ../src/modules/user/module.php:993 ../src/modules/user/module.php:1090
+#: ../src/modules/user/module.php:1135 ../src/modules/user/module.php:1615
+#: ../src/modules/user/module.php:1684 ../src/modules/user/module.php:1724
+#: ../src/modules/user/module.php:1925 ../src/modules/wiki/module.php:117
+msgid "Permission denied"
+msgstr ""
+
+#: ../src/system/content.php:146 ../src/system/content.php:164
+#: ../src/system/content.php:208 ../src/system/content.php:230
+#: ../src/system/content.php:252 ../src/modules/browser/module.php:74
+#: ../src/modules/user/module.php:186 ../src/modules/user/module.php:203
+#: ../src/modules/user/module.php:1644 ../src/modules/wiki/content.php:71
+msgid "The request expired or is invalid"
+msgstr ""
+
+#: ../src/system/content.php:192 ../src/system/content.php:193
+msgid " must be set"
+msgstr ""
+
+#: ../src/system/content.php:223
+msgid "Only administrators can update content"
+msgstr ""
+
+#: ../src/system/content.php:245
+msgid "Only administrators can update timestamps"
+msgstr ""
+
+#: ../src/system/content.php:271 ../src/system/content.php:662
+#: ../src/system/content.php:677 ../src/modules/browser/module.php:415
+#: ../src/modules/content/module.php:212 ../src/modules/content/module.php:642
+#: ../src/modules/manual/module.php:351 ../src/modules/manual/module.php:389
+#: ../src/modules/project/content.php:89
+#: ../src/modules/project/content/bug.php:77
+#: ../src/modules/project/content/bug.php:153
+#: ../src/modules/search/module.php:285
+msgid "Title"
+msgstr "Titulo"
+
+#: ../src/system/content.php:272 ../src/modules/group/module.php:594
+#: ../src/modules/project/content/bug.php:154
+#: ../src/modules/search/module.php:286 ../src/modules/user/module.php:273
+#: ../src/modules/user/module.php:680
+msgid "Username"
+msgstr ""
+
+#: ../src/system/content.php:272 ../src/modules/browser/module.php:417
+#: ../src/modules/content/module.php:642
+#: ../src/modules/download/content/folder.php:88
+#: ../src/modules/project/content.php:90
+#: ../src/modules/project/content/bug.php:79
+#: ../src/modules/project/content/bug.php:154
+#: ../src/modules/project/scm/cvs.php:79
+#: ../src/modules/project/scm/cvs.php:222
+#: ../src/modules/project/scm/cvs.php:379
+#: ../src/modules/project/scm/git.php:79 ../src/modules/search/module.php:286
+#: ../src/modules/wiki/content.php:176
+msgid "Date"
+msgstr "Fecha"
+
+#: ../src/system/content.php:566 ../src/modules/admin/module.php:229
+#: ../src/modules/content/module.php:1108 ../src/modules/group/module.php:309
+#: ../src/modules/project/content.php:309 ../src/modules/user/module.php:702
+msgid "Disabled"
+msgstr ""
+
+#: ../src/system/content.php:568 ../src/modules/admin/module.php:212
+#: ../src/modules/admin/module.php:231 ../src/modules/content/module.php:215
+#: ../src/modules/content/module.php:1110 ../src/modules/group/module.php:136
+#: ../src/modules/group/module.php:282 ../src/modules/group/module.php:311
+#: ../src/modules/project/content.php:311 ../src/modules/user/module.php:397
+#: ../src/modules/user/module.php:682 ../src/modules/user/module.php:704
+msgid "Enabled"
+msgstr ""
+
+#: ../src/system/content.php:603 ../src/modules/admin/module.php:28
+#: ../src/modules/admin/module.php:124 ../src/modules/admin/module.php:251
+#: ../src/modules/download/content/file.php:152
+#: ../src/modules/download/content/folder.php:170
+msgid "Administration"
+msgstr ""
+
+#: ../src/system/content.php:661 ../src/system/content.php:676
+#: ../src/modules/project/content.php:417
+#: ../src/modules/project/content.php:450
+#: ../src/modules/project/content/bug.php:218
+#: ../src/modules/project/module.php:721 ../src/modules/wiki/content.php:257
+msgid "Title: "
+msgstr "Titulo: "
+
+#: ../src/system/content.php:665 ../src/system/content.php:680
+#: ../src/modules/project/module.php:723
+msgid "Content: "
+msgstr ""
+
+#: ../src/system/content.php:714 ../src/modules/content/module.php:800
+#: ../src/modules/project/module.php:447
+msgid "Preview: "
+msgstr ""
+
+#: ../src/system/content.php:826
+msgid "Could not insert the content"
+msgstr ""
+
+#: ../src/system/content.php:870
+msgid "Could not update the content"
+msgstr ""
+
+#: ../src/formats/html.php:510
+msgid "Error"
+msgstr "Error"
+
+#: ../src/formats/html.php:513
+msgid "Question"
+msgstr "Pregunta"
+
+#: ../src/formats/html.php:516
+msgid "Warning"
+msgstr "Aviso"
+
+#: ../src/formats/html.php:520 ../src/modules/project/scm/cvs.php:224
+#: ../src/modules/wiki/content.php:178
+msgid "Message"
+msgstr ""
+
+#: ../src/formats/html.php:537 ../src/modules/user/module.php:255
+msgid "Close"
+msgstr ""
+
+#: ../src/formats/html.php:573 ../src/formats/html.php:613
+msgid "More"
+msgstr ""
+
+#: ../src/formats/html.php:737
+msgid "Cut"
+msgstr "Cortar"
+
+#: ../src/formats/html.php:737
+msgid "Copy"
+msgstr "Copiar"
+
+#: ../src/formats/html.php:738
+msgid "Paste"
+msgstr "Pegar"
+
+#: ../src/formats/html.php:739
+msgid "Undo"
+msgstr ""
+
+#: ../src/formats/html.php:739
+msgid "Redo"
+msgstr ""
+
+#: ../src/formats/html.php:740
+msgid "Insert ruler"
+msgstr ""
+
+#: ../src/formats/html.php:741
+msgid "Insert link"
+msgstr ""
+
+#: ../src/formats/html.php:742
+msgid "Insert image"
+msgstr ""
+
+#: ../src/formats/html.php:743
+msgid "Insert table"
+msgstr ""
+
+#: ../src/formats/html.php:744
+msgid "Insert text"
+msgstr ""
+
+#: ../src/formats/html.php:745
+msgid "Style"
+msgstr ""
+
+#: ../src/formats/html.php:746
+msgid "Heading 1"
+msgstr ""
+
+#: ../src/formats/html.php:746
+msgid "Heading 2"
+msgstr ""
+
+#: ../src/formats/html.php:747
+msgid "Heading 3"
+msgstr ""
+
+#: ../src/formats/html.php:747
+msgid "Heading 4"
+msgstr ""
+
+#: ../src/formats/html.php:748
+msgid "Heading 5"
+msgstr ""
+
+#: ../src/formats/html.php:748
+msgid "Heading 6"
+msgstr ""
+
+#: ../src/formats/html.php:749
+msgid "Normal"
+msgstr ""
+
+#: ../src/formats/html.php:749
+msgid "Preformatted"
+msgstr ""
+
+#: ../src/formats/html.php:750
+msgid "Quotation"
+msgstr ""
+
+#: ../src/formats/html.php:751
+msgid "Font"
+msgstr "Fuente"
+
+#: ../src/formats/html.php:752
+msgid "Cursive"
+msgstr ""
+
+#: ../src/formats/html.php:753
+msgid "Fantasy"
+msgstr ""
+
+#: ../src/formats/html.php:754
+msgid "Monospace"
+msgstr ""
+
+#: ../src/formats/html.php:755
+msgid "Sans serif"
+msgstr ""
+
+#: ../src/formats/html.php:756
+msgid "Serif"
+msgstr ""
+
+#: ../src/formats/html.php:757 ../src/modules/browser/module.php:417
+msgid "Size"
+msgstr "Tamaño"
+
+#: ../src/formats/html.php:759
+msgid "Bold"
+msgstr ""
+
+#: ../src/formats/html.php:760
+msgid "Italic"
+msgstr ""
+
+#: ../src/formats/html.php:761
+msgid "Underline"
+msgstr ""
+
+#: ../src/formats/html.php:762
+msgid "Strikethrough"
+msgstr ""
+
+#: ../src/formats/html.php:763
+msgid "Subscript"
+msgstr ""
+
+#: ../src/formats/html.php:764
+msgid "Superscript"
+msgstr ""
+
+#: ../src/formats/html.php:765
+msgid "Remove format"
+msgstr ""
+
+#: ../src/formats/html.php:766
+msgid "Align left"
+msgstr ""
+
+#: ../src/formats/html.php:767
+msgid "Center"
+msgstr ""
+
+#: ../src/formats/html.php:768
+msgid "Align right"
+msgstr ""
+
+#: ../src/formats/html.php:769
+msgid "Justify"
+msgstr ""
+
+#: ../src/formats/html.php:770
+msgid "Numbering"
+msgstr ""
+
+#: ../src/formats/html.php:771
+msgid "Bullets"
+msgstr ""
+
+#: ../src/formats/html.php:772
+msgid "Unindent"
+msgstr ""
+
+#: ../src/formats/html.php:773
+msgid "Indent"
+msgstr ""
+
+#: ../src/modules/admin/module.php:66 ../src/modules/browser/module.php:47
+#: ../src/modules/content/module.php:59 ../src/modules/group/module.php:63
+#: ../src/modules/manual/module.php:47 ../src/modules/probe/module.php:42
+#: ../src/modules/salt/module.php:42 ../src/modules/search/module.php:48
+#: ../src/modules/top/module.php:38 ../src/modules/user/module.php:83
+msgid "Invalid action"
+msgstr ""
+
+#: ../src/modules/admin/module.php:99 ../src/modules/admin/module.php:156
+msgid "Configuration audit"
+msgstr ""
+
+#: ../src/modules/admin/module.php:100 ../src/modules/admin/module.php:190
+msgid "Modules administration"
+msgstr ""
+
+#: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1098
+#: ../src/modules/group/module.php:346 ../src/modules/user/module.php:741
+msgid "Back to the administration"
+msgstr ""
+
+#: ../src/modules/admin/module.php:165
+msgid "Could not check for the default password"
+msgstr ""
+
+#: ../src/modules/admin/module.php:171
+msgid "The administrative password must be changed"
+msgstr ""
+
+#: ../src/modules/admin/module.php:178
+msgid "The default password was changed accordingly"
+msgstr ""
+
+#: ../src/modules/admin/module.php:203 ../src/modules/admin/module.php:257
+#: ../src/modules/user/module.php:867 ../src/modules/user/module.php:932
+msgid "Could not list modules"
+msgstr ""
+
+#: ../src/modules/admin/module.php:211
+msgid "Module"
+msgstr ""
+
+#: ../src/modules/admin/module.php:219 ../src/modules/browser/module.php:162
+#: ../src/modules/content/module.php:1144
+#: ../src/modules/content/module.php:1283
+#: ../src/modules/download/content/folder.php:138
+#: ../src/modules/group/module.php:294 ../src/modules/user/module.php:695
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1147
+#: ../src/modules/group/module.php:297 ../src/modules/user/module.php:652
+msgid "Disable"
+msgstr ""
+
+#: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1149
+#: ../src/modules/group/module.php:301 ../src/modules/user/module.php:653
+msgid "Enable"
+msgstr ""
+
+#: ../src/modules/admin/module.php:306
+msgid "Module(s) could be disabled successfully"
+msgstr ""
+
+#: ../src/modules/admin/module.php:307
+msgid "Some module(s) could not be disabled"
+msgstr ""
+
+#: ../src/modules/admin/module.php:321
+msgid "Module(s) could be enabled successfully"
+msgstr ""
+
+#: ../src/modules/admin/module.php:322
+msgid "Some module(s) could not be enabled"
+msgstr ""
+
+#: ../src/modules/article/module.php:28 ../src/modules/article/module.php:38
+msgid "Articles"
+msgstr ""
+
+#: ../src/modules/article/module.php:32
+msgid "Articles administration"
+msgstr ""
+
+#: ../src/modules/article/module.php:33
+msgid "Article list"
+msgstr ""
+
+#: ../src/modules/article/module.php:34
+msgid "Articles by"
+msgstr ""
+
+#: ../src/modules/article/module.php:35
+msgid "Articles by group"
+msgstr ""
+
+#: ../src/modules/article/module.php:36 ../src/modules/article/content.php:33
+msgid "New article..."
+msgstr ""
+
+#: ../src/modules/article/module.php:37
+msgid "Submit article"
+msgstr ""
+
+#: ../src/modules/article/content.php:30
+msgid "Article by"
+msgstr ""
+
+#: ../src/modules/article/content.php:31
+msgid "More articles..."
+msgstr ""
+
+#: ../src/modules/article/content.php:32 ../src/modules/news/content.php:32
+msgid "Read"
+msgstr ""
+
+#: ../src/modules/blog/module.php:28
+msgid "Blog"
+msgstr ""
+
+#: ../src/modules/blog/module.php:31
+msgid "Blogs administration"
+msgstr ""
+
+#: ../src/modules/blog/module.php:32
+msgid "Post by"
+msgstr ""
+
+#: ../src/modules/blog/module.php:33
+msgid "Blog post"
+msgstr ""
+
+#: ../src/modules/blog/module.php:34
+msgid "Blog posts"
+msgstr ""
+
+#: ../src/modules/blog/module.php:35
+msgid "Latest posts"
+msgstr ""
+
+#: ../src/modules/blog/module.php:36
+msgid "Posts by"
+msgstr ""
+
+#: ../src/modules/blog/module.php:37
+msgid "Posts by group"
+msgstr ""
+
+#: ../src/modules/blog/module.php:38
+msgid "New post"
+msgstr ""
+
+#: ../src/modules/blog/module.php:39
+msgid "Planet"
+msgstr ""
+
+#: ../src/modules/browser/module.php:67 ../src/modules/content/module.php:147
+msgid "Anonymous submissions are not allowed"
+msgstr ""
+
+#: ../src/modules/browser/module.php:78
+msgid "Could not lookup the path"
+msgstr ""
+
+#: ../src/modules/browser/module.php:89 ../src/modules/project/scm/cvs.php:435
+msgid "%d/%m/%Y %H:%M:%S"
+msgstr ""
+
+#: ../src/modules/browser/module.php:158
+#: ../src/modules/project/scm/cvs.php:119
+msgid "Parent directory"
+msgstr ""
+
+#: ../src/modules/browser/module.php:169
+#: ../src/modules/download/content/file.php:136
+#: ../src/modules/project/content.php:379
+msgid "Download"
+msgstr ""
+
+#: ../src/modules/browser/module.php:177 ../src/modules/browser/module.php:302
+#: ../src/modules/download/content/file.php:37
+#: ../src/modules/download/module.php:183
+msgid "Upload"
+msgstr ""
+
+#: ../src/modules/browser/module.php:219 ../src/modules/browser/module.php:246
+#: ../src/modules/browser/module.php:268
+msgid "Browser: "
+msgstr ""
+
+#: ../src/modules/browser/module.php:234
+msgid "Could not download the file requested"
+msgstr ""
+
+#: ../src/modules/browser/module.php:262 ../src/modules/group/module.php:417
+#: ../src/modules/group/module.php:514 ../src/modules/project/content.php:171
+#: ../src/modules/user/module.php:785 ../src/modules/user/module.php:901
+#: ../src/modules/user/module.php:990 ../src/modules/user/module.php:1132
+#: ../src/modules/user/module.php:1681
+msgid "Unknown error"
+msgstr "Error desconocido"
+
+#: ../src/modules/browser/module.php:268
+msgid "Upload to "
+msgstr ""
+
+#: ../src/modules/browser/module.php:275 ../src/modules/browser/module.php:382
+msgid "Could not open the file or directory requested"
+msgstr ""
+
+#: ../src/modules/browser/module.php:299 ../src/modules/content/module.php:810
+#: ../src/modules/content/module.php:1425
+#: ../src/modules/content/module.php:1523 ../src/modules/group/module.php:141
+#: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
+#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:463
+#: ../src/modules/user/module.php:251 ../src/modules/user/module.php:282
+#: ../src/modules/user/module.php:306 ../src/modules/user/module.php:328
+#: ../src/modules/user/module.php:413 ../src/modules/user/module.php:514
+#: ../src/modules/user/module.php:1284 ../src/modules/user/module.php:1563
+msgid "Cancel"
+msgstr "Annular"
+
+#: ../src/modules/browser/module.php:328 ../src/modules/browser/module.php:335
+#: ../src/modules/download/module.php:287
+#: ../src/modules/download/module.php:294
+#: ../src/modules/project/content.php:339
+#: ../src/modules/project/module.php:873
+msgid "An error occurred"
+msgstr ""
+
+#: ../src/modules/browser/module.php:331
+#: ../src/modules/download/module.php:290
+msgid "Forbidden filename"
+msgstr ""
+
+#: ../src/modules/browser/module.php:339
+#: ../src/modules/download/module.php:298
+msgid "No file uploaded"
+msgstr ""
+
+#: ../src/modules/browser/module.php:342
+msgid "Destination is not a directory"
+msgstr ""
+
+#: ../src/modules/browser/module.php:352 ../src/modules/content/module.php:832
+#: ../src/modules/content/module.php:905 ../src/modules/content/module.php:963
+#: ../src/modules/download/content/file.php:225
+#: ../src/modules/download/module.php:329 ../src/modules/probe/module.php:95
+#: ../src/modules/probe/module.php:281 ../src/modules/project/module.php:64
+#: ../src/modules/project/module.php:678 ../src/modules/project/module.php:683
+#: ../src/modules/project/module.php:689 ../src/modules/project/module.php:695
+msgid "Internal server error"
+msgstr ""
+
+#: ../src/modules/browser/module.php:409
+msgid "Could not open the directory requested"
+msgstr ""
+
+#: ../src/modules/browser/module.php:416 ../src/modules/user/module.php:40
+msgid "User"
+msgstr ""
+
+#: ../src/modules/browser/module.php:416
+#: ../src/modules/download/content/folder.php:87
+#: ../src/modules/group/module.php:281 ../src/modules/group/module.php:550
+#: ../src/modules/user/module.php:372 ../src/modules/user/module.php:471
+#: ../src/modules/user/module.php:681 ../src/modules/user/module.php:1049
+msgid "Group"
+msgstr ""
+
+#: ../src/modules/browser/module.php:418
+#: ../src/modules/download/content/folder.php:88
+#: ../src/modules/project/content.php:213
+msgid "Permissions"
+msgstr ""
+
+#: ../src/modules/browser/module.php:470
+msgid "Filename:"
+msgstr "Nombre de archivo:"
+
+#: ../src/modules/browser/module.php:477
+msgid "Type:"
+msgstr "Tipo:"
+
+#: ../src/modules/browser/module.php:480
+msgid "User:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:483
+msgid "Group:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:486
+msgid "Permissions:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:490
+msgid "Size:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:493
+msgid "Created on:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:496
+msgid "Last modified:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:499
+msgid "Last access:"
+msgstr ""
+
+#: ../src/modules/browser/module.php:525
+#: ../src/modules/content/module.php:1407 ../src/modules/group/module.php:819
+#: ../src/modules/user/module.php:1246 ../src/modules/user/module.php:1300
+#: ../src/modules/user/module.php:2016
+msgid "If you are not redirected within 30 seconds, please "
+msgstr ""
+
+#: ../src/modules/browser/module.php:527
+#: ../src/modules/content/module.php:1409 ../src/modules/group/module.php:821
+#: ../src/modules/user/module.php:1248 ../src/modules/user/module.php:1302
+#: ../src/modules/user/module.php:2018
+msgid "click here"
+msgstr ""
+
+#: ../src/modules/content/module.php:127
+msgid "You need to be logged in to publish content"
+msgstr ""
+
+#: ../src/modules/content/module.php:133
+msgid "Only moderators can publish content"
+msgstr ""
+
+#: ../src/modules/content/module.php:171
+msgid "Only moderators can unpublish content"
+msgstr ""
+
+#: ../src/modules/content/module.php:187
+msgid "Anonymous updates are not allowed"
+msgstr ""
+
+#: ../src/modules/content/module.php:218
+msgid "Public"
+msgstr ""
+
+#: ../src/modules/content/module.php:347
+msgid "Content administration"
+msgstr ""
+
+#: ../src/modules/content/module.php:348
+msgid "Content headlines"
+msgstr ""
+
+#: ../src/modules/content/module.php:349
+msgid "Content list"
+msgstr ""
+
+#: ../src/modules/content/module.php:353
+msgid "Publication in progress, please wait..."
+msgstr ""
+
+#: ../src/modules/content/module.php:355 ../src/modules/group/module.php:813
+#: ../src/modules/user/module.php:2010
+msgid "Redirection in progress, please wait..."
+msgstr ""
+
+#: ../src/modules/content/module.php:356 ../src/modules/news/content.php:33
+#: ../src/modules/project/content.php:40 ../src/modules/project/module.php:758
+msgid "Submit"
+msgstr ""
+
+#: ../src/modules/content/module.php:359
+msgid "Submission in progress, please wait..."
+msgstr ""
+
+#: ../src/modules/content/module.php:360
+msgid "Content"
+msgstr ""
+
+#: ../src/modules/content/module.php:362
+msgid "Update in progress, please wait..."
+msgstr ""
+
+#: ../src/modules/content/module.php:451 ../src/modules/user/module.php:288
+#: ../src/modules/user/module.php:551 ../src/modules/user/module.php:1864
+msgid "Login"
+msgstr ""
+
+#: ../src/modules/content/module.php:490 ../src/modules/content/module.php:649
+#: ../src/modules/content/module.php:689
+msgid "Unable to list contents"
+msgstr ""
+
+#: ../src/modules/content/module.php:528
+msgid "Could not list the content available"
+msgstr ""
+
+#: ../src/modules/content/module.php:557
+msgid "Could not display the content"
+msgstr ""
+
+#: ../src/modules/content/module.php:595
+msgid "Unable to lookup the group"
+msgstr ""
+
+#: ../src/modules/content/module.php:599
+msgid "Unable to list the content"
+msgstr ""
+
+#: ../src/modules/content/module.php:643 ../src/modules/project/scm/cvs.php:81
+#: ../src/modules/project/scm/cvs.php:223
+#: ../src/modules/project/scm/cvs.php:381 ../src/modules/wiki/content.php:177
+msgid "Author"
+msgstr ""
+
+#: ../src/modules/content/module.php:755 ../src/modules/content/module.php:773
+msgid "Could not preview content"
+msgstr ""
+
+#: ../src/modules/content/module.php:850
+msgid "Could not submit content"
+msgstr ""
+
+#: ../src/modules/content/module.php:924
+msgid "Unable to fetch content"
+msgstr ""
+
+#: ../src/modules/content/module.php:930
+msgid "Could not update content"
+msgstr ""
+
+#: ../src/modules/content/module.php:934
+msgid "Update "
+msgstr ""
+
+#: ../src/modules/content/module.php:1095
+msgid "Back to this module"
+msgstr ""
+
+#: ../src/modules/content/module.php:1151
+#: ../src/modules/content/module.php:1300
+msgid "Unpublish"
+msgstr ""
+
+#: ../src/modules/content/module.php:1155 ../src/modules/group/module.php:305
+#: ../src/modules/user/module.php:654
+msgid "Delete"
+msgstr "Eliminar"
+
+#: ../src/modules/content/module.php:1190
+msgid "Content could be deleted successfully"
+msgstr ""
+
+#: ../src/modules/content/module.php:1191
+msgid "Some content could not be deleted"
+msgstr ""
+
+#: ../src/modules/content/module.php:1211
+msgid "Content could be disabled successfully"
+msgstr ""
+
+#: ../src/modules/content/module.php:1212
+msgid "Some content could not be disabled"
+msgstr ""
+
+#: ../src/modules/content/module.php:1232
+msgid "Content could be enabled successfully"
+msgstr ""
+
+#: ../src/modules/content/module.php:1233
+msgid "Some content could not be enabled"
+msgstr ""
+
+#: ../src/modules/content/module.php:1253 ../src/modules/salt/module.php:440
+msgid "Back"
+msgstr ""
+
+#: ../src/modules/content/module.php:1391
+msgid "Content could be published successfully"
+msgstr ""
+
+#: ../src/modules/content/module.php:1392
+msgid "Some content could not be published"
+msgstr ""
+
+#: ../src/modules/content/module.php:1431
+#: ../src/modules/content/module.php:1531
+#: ../src/modules/project/content/bug.php:155
+#: ../src/modules/project/module.php:734 ../src/modules/search/module.php:287
+msgid "Preview"
+msgstr ""
+
+#: ../src/modules/content/module.php:1490
+msgid "Content could be unpublished successfully"
+msgstr ""
+
+#: ../src/modules/content/module.php:1491
+msgid "Some content could not be unpublished"
+msgstr ""
+
+#: ../src/modules/content/module.php:1525
+#: ../src/modules/project/module.php:191 ../src/modules/search/module.php:410
+#: ../src/modules/user/module.php:332 ../src/modules/user/module.php:1566
+msgid "Reset"
+msgstr ""
+
+#: ../src/modules/download/content.php:51
+#: ../src/modules/download/content/file.php:232
+msgid "The filename must be specified"
+msgstr ""
+
+#: ../src/modules/download/content.php:62
+msgid "Could not load the parent"
+msgstr ""
+
+#: ../src/modules/download/content.php:69
+msgid "Could not obtain the file list"
+msgstr ""
+
+#: ../src/modules/download/content.php:75
+msgid "This file already exists"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:34
+msgid "Uploaded by"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:35
+#: ../src/modules/download/content/folder.php:133
+msgid "Parent folder"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:36
+msgid "Upload file..."
+msgstr ""
+
+#: ../src/modules/download/content/file.php:66
+msgid "%A, %B %e %Y, %H:%M:%S"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:69
+msgid "Could not obtain details for this file"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:80
+#: ../src/modules/download/content/folder.php:186
+#: ../src/modules/download/content/folder.php:198
+msgid "Name: "
+msgstr "Nombre: "
+
+#: ../src/modules/download/content/file.php:84
+#: ../src/modules/project/content/bug.php:226
+#: ../src/modules/project/module.php:844
+msgid "Type: "
+msgstr "Tipo: "
+
+#: ../src/modules/download/content/file.php:88
+msgid "Owner: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:93
+msgid "Group: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:95
+msgid "Permissions: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:97
+msgid "Size: "
+msgstr "Tamaño: "
+
+#: ../src/modules/download/content/file.php:99
+msgid "Created on: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:101
+msgid "Last modified: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:103
+msgid "Last access: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:105
+msgid "Comment: "
+msgstr ""
+
+#: ../src/modules/download/content/file.php:132
+#: ../src/modules/project/content.php:383
+msgid "Browse"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:165
+msgid "Could not read file"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:185
+#: ../src/modules/project/module.php:747
+msgid "File: "
+msgstr "Archivo: "
+
+#: ../src/modules/download/content/file.php:218
+msgid "Could not register the file"
+msgstr ""
+
+#: ../src/modules/download/content/file.php:239
+msgid "Could not copy the file"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:32
+msgid "Folder from"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:33
+msgid "Directory listing"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:34
+msgid "Browse..."
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:35
+msgid "New folder..."
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:36
+#: ../src/modules/download/module.php:197
+msgid "New folder"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:86
+#: ../src/modules/project/scm/cvs.php:78
+#: ../src/modules/project/scm/cvs.php:378
+#: ../src/modules/project/scm/git.php:78
+msgid "Filename"
+msgstr "Nombre de archivo"
+
+#: ../src/modules/download/content/folder.php:87
+msgid "Owner"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:153
+#: ../src/modules/download/module.php:185
+msgid "Upload file"
+msgstr ""
+
+#: ../src/modules/download/content/folder.php:187
+#: ../src/modules/download/content/folder.php:199
+#: ../src/modules/project/content.php:304 ../src/modules/wiki/content.php:176
+msgid "Name"
+msgstr "Nombre"
+
+#: ../src/modules/download/content/folder.php:241
+msgid "Could not create the directory"
+msgstr ""
+
+#: ../src/modules/download/module.php:152
+#: ../src/modules/download/module.php:155
+#: ../src/modules/project/content.php:210
+msgid "Downloads"
+msgstr ""
+
+#: ../src/modules/download/module.php:154
+msgid "Downloads administration"
+msgstr ""
+
+#: ../src/modules/download/module.php:195 ../src/modules/group/module.php:144
+#: ../src/modules/user/module.php:416
+msgid "Create"
+msgstr ""
+
+#: ../src/modules/download/module.php:221
+msgid "Could not fetch content"
+msgstr ""
+
+#: ../src/modules/group/module.php:30
+msgid "Groups"
+msgstr "Grupos"
+
+#: ../src/modules/group/module.php:79
+msgid "Disabling groups is not allowed"
+msgstr ""
+
+#: ../src/modules/group/module.php:85 ../src/modules/user/module.php:139
+msgid "Disabling oneself is not allowed"
+msgstr ""
+
+#: ../src/modules/group/module.php:100
+msgid "Enabling groups is not allowed"
+msgstr ""
+
+#: ../src/modules/group/module.php:129 ../src/modules/group/module.php:167
+msgid "Group name: "
+msgstr ""
+
+#: ../src/modules/group/module.php:130 ../src/modules/group/module.php:168
+msgid "Group name"
+msgstr ""
+
+#: ../src/modules/group/module.php:154
+msgid "Update group "
+msgstr ""
+
+#: ../src/modules/group/module.php:206 ../src/modules/group/module.php:290
+#: ../src/modules/group/module.php:385 ../src/modules/group/module.php:623
+msgid "New group"
+msgstr "Nuevo grupo"
+
+#: ../src/modules/group/module.php:215 ../src/modules/group/module.php:255
+#: ../src/modules/group/module.php:382 ../src/modules/group/module.php:746
+msgid "Groups administration"
+msgstr ""
+
+#: ../src/modules/group/module.php:239 ../src/modules/group/module.php:456
+#: ../src/modules/group/module.php:610
+msgid "Content from group"
+msgstr ""
+
+#: ../src/modules/group/module.php:274
+msgid "Could not list groups"
+msgstr ""
+
+#: ../src/modules/group/module.php:283 ../src/modules/group/module.php:551
+#: ../src/modules/project/content.php:303
+#: ../src/modules/project/content.php:384 ../src/modules/user/module.php:1050
+msgid "Members"
+msgstr ""
+
+#: ../src/modules/group/module.php:342 ../src/modules/group/module.php:469
+#: ../src/modules/user/module.php:737 ../src/modules/user/module.php:947
+#: ../src/modules/user/module.php:1071 ../src/modules/user/module.php:1118
+#: ../src/modules/user/module.php:1365
+msgid "Back to my account"
+msgstr ""
+
+#: ../src/modules/group/module.php:373 ../src/modules/group/module.php:747
+msgid "Group menu"
+msgstr ""
+
+#: ../src/modules/group/module.php:387 ../src/modules/group/module.php:542
+msgid "Group list"
+msgstr ""
+
+#: ../src/modules/group/module.php:409
+msgid "Back to the site"
+msgstr ""
+
+#: ../src/modules/group/module.php:426 ../src/modules/group/module.php:523
+msgid "Could not find group"
+msgstr ""
+
+#: ../src/modules/group/module.php:433
+msgid "Group disabled successfully"
+msgstr ""
+
+#: ../src/modules/group/module.php:465 ../src/modules/user/module.php:590
+#: ../src/modules/user/module.php:943 ../src/modules/user/module.php:1886
+msgid "My content"
+msgstr ""
+
+#: ../src/modules/group/module.php:501 ../src/modules/group/module.php:564
+#: ../src/modules/group/module.php:585
+msgid "Members of group"
+msgstr ""
+
+#: ../src/modules/group/module.php:506 ../src/modules/group/module.php:570
+msgid "Back to the group menu"
+msgstr ""
+
+#: ../src/modules/group/module.php:530
+msgid "Group enabled successfully"
+msgstr ""
+
+#: ../src/modules/group/module.php:547 ../src/modules/user/module.php:1043
+msgid "Could not list the groups"
+msgstr ""
+
+#: ../src/modules/group/module.php:591
+msgid "Could not list the members for this group"
+msgstr ""
+
+#: ../src/modules/group/module.php:595
+msgid "Full name"
+msgstr ""
+
+#: ../src/modules/group/module.php:613
+msgid "Back to the group list"
+msgstr ""
+
+#: ../src/modules/group/module.php:654 ../src/modules/user/module.php:1646
+msgid "Invalid arguments"
+msgstr ""
+
+#: ../src/modules/group/module.php:688
+msgid "Could not find the group to update"
+msgstr ""
+
+#: ../src/modules/group/module.php:720
+msgid "The group name is required\n"
+msgstr ""
+
+#: ../src/modules/group/module.php:728
+msgid "Could not update the group"
+msgstr ""
+
+#: ../src/modules/group/module.php:736
+msgid "Group update"
+msgstr ""
+
+#: ../src/modules/group/module.php:740
+msgid "The group was updated successfully"
+msgstr ""
+
+#: ../src/modules/group/module.php:796
+msgid "invalid group(s)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:177
+msgid "General commands (tools and utilities)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:179
+msgid "System calls and error numbers"
+msgstr ""
+
+#: ../src/modules/manual/module.php:181
+msgid "System libraries"
+msgstr ""
+
+#: ../src/modules/manual/module.php:183
+msgid "System libraries (Fortran)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:185
+msgid "System libraries (Lua)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:187
+msgid "Kernel interfaces"
+msgstr ""
+
+#: ../src/modules/manual/module.php:189
+msgid "File formats"
+msgstr ""
+
+#: ../src/modules/manual/module.php:191
+msgid "Online games"
+msgstr ""
+
+#: ../src/modules/manual/module.php:193
+msgid "Miscellaneous information pages"
+msgstr ""
+
+#: ../src/modules/manual/module.php:195
+msgid "System maintenance procedures and commands"
+msgstr ""
+
+#: ../src/modules/manual/module.php:197
+msgid "Kernel internals"
+msgstr ""
+
+#: ../src/modules/manual/module.php:199
+msgid "Kernel internals (Lua)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:250 ../src/modules/manual/module.php:262
+#: ../src/modules/manual/module.php:321
+msgid "Manual browser"
+msgstr ""
+
+#: ../src/modules/manual/module.php:275
+msgid "No manual page found"
+msgstr ""
+
+#: ../src/modules/manual/module.php:278
+#, php-format
+msgid "%s: %s(%s)"
+msgstr ""
+
+#: ../src/modules/manual/module.php:289
+msgid "Back to the section"
+msgstr ""
+
+#: ../src/modules/manual/module.php:292 ../src/modules/user/module.php:844
+#: ../src/modules/user/module.php:893 ../src/modules/user/module.php:1124
+#: ../src/modules/user/module.php:1272 ../src/modules/user/module.php:1445
+#: ../src/modules/user/module.php:1522 ../src/modules/user/module.php:1599
+#: ../src/modules/user/module.php:1868
+msgid "Back to the homepage"
+msgstr ""
+
+#: ../src/modules/manual/module.php:343 ../src/modules/manual/module.php:381
+msgid "Could not list pages"
+msgstr ""
+
+#: ../src/modules/manual/module.php:349 ../src/modules/manual/module.php:387
+msgid "Page"
+msgstr ""
+
+#: ../src/modules/manual/module.php:350 ../src/modules/manual/module.php:388
+#: ../src/modules/manual/module.php:417
+msgid "Section"
+msgstr ""
+
+#: ../src/modules/manual/module.php:411
+msgid "Could not list sections"
+msgstr ""
+
+#: ../src/modules/manual/module.php:418 ../src/modules/project/content.php:91
+#: ../src/modules/project/scm/cvs.php:82
+msgid "Description"
+msgstr ""
+
+#: ../src/modules/manual/module.php:446
+msgid "Section: "
+msgstr ""
+
+#: ../src/modules/manual/module.php:449 ../src/modules/search/module.php:388
+msgid "Any"
+msgstr ""
+
+#: ../src/modules/manual/module.php:454
+msgid "Page: "
+msgstr ""
+
+#: ../src/modules/manual/module.php:457 ../src/modules/search/module.php:221
+#: ../src/modules/search/module.php:321 ../src/modules/search/module.php:340
+#: ../src/modules/wiki/module.php:87 ../src/modules/wiki/module.php:96
+msgid "Search"
+msgstr "Buscar"
+
+#: ../src/modules/news/content.php:30 ../src/modules/news/module.php:34
+msgid "News by"
+msgstr ""
+
+#: ../src/modules/news/content.php:31
+msgid "More news..."
+msgstr ""
+
+#: ../src/modules/news/content.php:34 ../src/modules/news/module.php:36
+msgid "Submit news"
+msgstr ""
+
+#: ../src/modules/news/module.php:28 ../src/modules/news/module.php:37
+msgid "News"
+msgstr ""
+
+#: ../src/modules/news/module.php:32
+msgid "News administration"
+msgstr ""
+
+#: ../src/modules/news/module.php:33
+msgid "News list"
+msgstr ""
+
+#: ../src/modules/news/module.php:35
+msgid "News by group"
+msgstr ""
+
+#: ../src/modules/probe/module.php:58 ../src/modules/probe/module.php:91
+msgid "Monitoring"
+msgstr ""
+
+#: ../src/modules/probe/module.php:114 ../src/modules/salt/module.php:183
+msgid "Host: "
+msgstr ""
+
+#: ../src/modules/probe/module.php:115
+msgid "Hostname"
+msgstr ""
+
+#: ../src/modules/probe/module.php:118 ../src/modules/salt/module.php:187
+msgid "Monitor"
+msgstr ""
+
+#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:741
+msgid "Load average"
+msgstr ""
+
+#: ../src/modules/probe/module.php:127
+msgid "Process count"
+msgstr ""
+
+#: ../src/modules/probe/module.php:129
+msgid "Package upgrades pending"
+msgstr ""
+
+#: ../src/modules/probe/module.php:130
+msgid "Users logged"
+msgstr ""
+
+#: ../src/modules/probe/module.php:131 ../src/modules/probe/module.php:203
+msgid "Volume usage: "
+msgstr ""
+
+#: ../src/modules/probe/module.php:256
+msgid "List hosts"
+msgstr ""
+
+#: ../src/modules/probe/module.php:262
+#, php-format
+msgid "Last %s"
+msgstr ""
+
+#: ../src/modules/probe/module.php:316
+msgid "load average"
+msgstr ""
+
+#: ../src/modules/probe/module.php:317
+msgid "load"
+msgstr ""
+
+#: ../src/modules/probe/module.php:340
+msgid "process count"
+msgstr ""
+
+#: ../src/modules/probe/module.php:341
+msgid "processes"
+msgstr ""
+
+#: ../src/modules/probe/module.php:350
+msgid "package upgrades pending"
+msgstr ""
+
+#: ../src/modules/probe/module.php:352
+msgid "packages"
+msgstr ""
+
+#: ../src/modules/probe/module.php:361
+msgid "users logged"
+msgstr ""
+
+#: ../src/modules/probe/module.php:362
+msgid "users"
+msgstr ""
+
+#: ../src/modules/probe/module.php:380
+msgid "volume used: "
+msgstr ""
+
+#: ../src/modules/probe/module.php:394
+msgid "Could not create graph for this type"
+msgstr ""
+
+#: ../src/modules/probe/module.php:408
+msgid "Could not create the graph"
+msgstr ""
+
+#: ../src/modules/project/content.php:37
+msgid "Project from"
+msgstr ""
+
+#: ../src/modules/project/content.php:38 ../src/modules/project/module.php:302
+msgid "Project list"
+msgstr ""
+
+#: ../src/modules/project/content.php:39 ../src/modules/project/module.php:570
+msgid "More projects..."
+msgstr ""
+
+#: ../src/modules/project/content.php:41 ../src/modules/project/module.php:308
+msgid "New project"
+msgstr ""
+
+#: ../src/modules/project/content.php:50 ../src/modules/project/module.php:60
+msgid "No SCM configured for this project"
+msgstr ""
+
+#: ../src/modules/project/content.php:66
+msgid "The download module is not available"
+msgstr ""
+
+#: ../src/modules/project/content.php:90
+msgid "Manager"
+msgstr ""
+
+#: ../src/modules/project/content.php:153
+#: ../src/modules/project/module.php:183 ../src/modules/project/module.php:823
+msgid "Project: "
+msgstr ""
+
+#: ../src/modules/project/content.php:176
+msgid "Could not browse the project"
+msgstr ""
+
+#: ../src/modules/project/content.php:224
+#: ../src/modules/project/module.php:283
+msgid "New download"
+msgstr ""
+
+#: ../src/modules/project/content.php:268
+#: ../src/modules/project/module.php:616
+msgid "Could not list screenshots"
+msgstr ""
+
+#: ../src/modules/project/content.php:274
+#: ../src/modules/project/content.php:380
+msgid "Gallery"
+msgstr ""
+
+#: ../src/modules/project/content.php:298
+msgid "Could not list members"
+msgstr ""
+
+#: ../src/modules/project/content.php:305 ../src/modules/user/module.php:407
+#: ../src/modules/user/module.php:684
+msgid "Administrator"
+msgstr ""
+
+#: ../src/modules/project/content.php:375
+#: ../src/modules/project/content/bug.php:45
+#: ../src/modules/project/module.php:253 ../src/modules/project/module.php:343
+msgid "Bug reports"
+msgstr ""
+
+#: ../src/modules/project/content.php:382
+#: ../src/modules/project/scm/cvs.php:383
+msgid "Timeline"
+msgstr ""
+
+#: ../src/modules/project/content.php:385
+msgid "Homepage"
+msgstr ""
+
+#: ../src/modules/project/content.php:420
+#: ../src/modules/project/content.php:456
+msgid "Synopsis: "
+msgstr ""
+
+#: ../src/modules/project/content.php:423
+#: ../src/modules/project/content.php:460
+#: ../src/modules/project/content/bug.php:221
+msgid "Description: "
+msgstr ""
+
+#: ../src/modules/project/content.php:427
+#: ../src/modules/project/content.php:469
+msgid "SCM: "
+msgstr ""
+
+#: ../src/modules/project/content.php:430
+#: ../src/modules/project/content.php:471
+msgid "(none)"
+msgstr ""
+
+#: ../src/modules/project/content.php:438
+#: ../src/modules/project/content.php:481
+msgid "Repository: "
+msgstr ""
+
+#: ../src/modules/project/content.php:520
+msgid "Could not insert the project"
+msgstr ""
+
+#: ../src/modules/project/content.php:542
+msgid "Could not update the project"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:44
+msgid "Bug report from"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:46
+msgid "More reports..."
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:47
+msgid "Report bug..."
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:48
+msgid "Urgent"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:49
+msgid "High"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:50
+msgid "Medium"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:51
+msgid "Low"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:52
+msgid "Assigned"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:53
+msgid "Closed"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:54
+msgid "Fixed"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:55
+msgid "Implemented"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:56
+msgid "New"
+msgstr "Nuevo"
+
+#: ../src/modules/project/content/bug.php:57
+msgid "Re-opened"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:58
+msgid "Major"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:59
+msgid "Minor"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:60
+msgid "Functionality"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:61
+msgid "Feature"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:78
+msgid "ID"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:78
+msgid "Project"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:79
+msgid "State"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:80
+msgid "Type"
+msgstr "Tipo"
+
+#: ../src/modules/project/content/bug.php:80
+msgid "Priority"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:148
+msgid "Could not list the replies"
+msgstr ""
+
+#: ../src/modules/project/content/bug.php:234
+#: ../src/modules/project/module.php:848
+msgid "Priority: "
+msgstr ""
+
+#: ../src/modules/project/module.php:137 ../src/modules/project/module.php:465
+msgid "Projects"
+msgstr ""
+
+#: ../src/modules/project/module.php:186
+msgid "Submitted by: "
+msgstr ""
+
+#: ../src/modules/project/module.php:194
+msgid "Filter"
+msgstr ""
+
+#: ../src/modules/project/module.php:251 ../src/modules/project/module.php:331
+msgid "Bugs administration"
+msgstr ""
+
+#: ../src/modules/project/module.php:255
+msgid "Bugs reported by"
+msgstr ""
+
+#: ../src/modules/project/module.php:257
+msgid "Bugs reported by group"
+msgstr ""
+
+#: ../src/modules/project/module.php:259
+msgid "Report bug"
+msgstr ""
+
+#: ../src/modules/project/module.php:263
+msgid "Bug replies administration"
+msgstr ""
+
+#: ../src/modules/project/module.php:265
+msgid "Bug replies"
+msgstr ""
+
+#: ../src/modules/project/module.php:267
+msgid "Bug replies by"
+msgstr ""
+
+#: ../src/modules/project/module.php:269
+msgid "Bug replies by group"
+msgstr ""
+
+#: ../src/modules/project/module.php:271
+msgid "Reply to a bug"
+msgstr ""
+
+#: ../src/modules/project/module.php:275
+msgid "Project downloads administration"
+msgstr ""
+
+#: ../src/modules/project/module.php:277
+msgid "Project download list"
+msgstr ""
+
+#: ../src/modules/project/module.php:279
+msgid "Project downloads from"
+msgstr ""
+
+#: ../src/modules/project/module.php:281
+msgid "Project downloads from group"
+msgstr ""
+
+#: ../src/modules/project/module.php:287
+msgid "Project screenshots administration"
+msgstr ""
+
+#: ../src/modules/project/module.php:289
+msgid "Project screenshot list"
+msgstr ""
+
+#: ../src/modules/project/module.php:291
+msgid "Project screenshots from"
+msgstr ""
+
+#: ../src/modules/project/module.php:293
+msgid "Project screenshots from group"
+msgstr ""
+
+#: ../src/modules/project/module.php:295
+msgid "New screenshot"
+msgstr ""
+
+#: ../src/modules/project/module.php:300
+msgid "Projects administration"
+msgstr ""
+
+#: ../src/modules/project/module.php:304
+msgid "Projects from"
+msgstr ""
+
+#: ../src/modules/project/module.php:306
+msgid "Projects from group"
+msgstr ""
+
+#: ../src/modules/project/module.php:355 ../src/modules/project/module.php:363
+msgid "Unknown project"
+msgstr ""
+
+#: ../src/modules/project/module.php:368
+msgid "Bug reports for "
+msgstr ""
+
+#: ../src/modules/project/module.php:376
+msgid " by "
+msgstr " de "
+
+#: ../src/modules/project/module.php:394
+msgid "Unable to list bugs"
+msgstr ""
+
+#: ../src/modules/project/module.php:432
+#, php-format
+msgid "Reply to #%u/%s: %s"
+msgstr ""
+
+#: ../src/modules/project/module.php:524
+msgid "Latest bug reports"
+msgstr ""
+
+#: ../src/modules/project/module.php:535
+msgid "Could not list bug reports"
+msgstr ""
+
+#: ../src/modules/project/module.php:543
+msgid "More bug reports..."
+msgstr ""
+
+#: ../src/modules/project/module.php:551
+msgid "Latest projects"
+msgstr ""
+
+#: ../src/modules/project/module.php:562
+msgid "Could not list projects"
+msgstr ""
+
+#: ../src/modules/project/module.php:578
+msgid "Latest downloads"
+msgstr ""
+
+#: ../src/modules/project/module.php:589
+msgid "Could not list downloads"
+msgstr ""
+
+#: ../src/modules/project/module.php:597
+msgid "More downloads..."
+msgstr ""
+
+#: ../src/modules/project/module.php:605
+msgid "Latest screenshots"
+msgstr ""
+
+#: ../src/modules/project/module.php:625
+msgid "More screenshots..."
+msgstr ""
+
+#: ../src/modules/project/module.php:638
+msgid "Invalid project"
+msgstr ""
+
+#: ../src/modules/project/module.php:645
+msgid "New download for project "
+msgstr ""
+
+#: ../src/modules/project/module.php:750
+msgid "Directory: "
+msgstr ""
+
+#: ../src/modules/project/module.php:773
+#, php-format
+msgid "#%u/%s: %s"
+msgstr ""
+
+#: ../src/modules/project/module.php:788
+msgid "Reply"
+msgstr ""
+
+#: ../src/modules/project/module.php:828
+msgid "Submitter: "
+msgstr ""
+
+#: ../src/modules/project/module.php:833
+msgid "Date: "
+msgstr "Fecha: "
+
+#: ../src/modules/project/module.php:840
+msgid "State: "
+msgstr ""
+
+#: ../src/modules/project/module.php:852
+msgid "Assigned to: "
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:44
+#: ../src/modules/project/scm/cvs.php:364
+msgid "No CVS repository defined"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:56 ../src/modules/project/scm/git.php:59
+msgid "No such file or directory"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:71 ../src/modules/project/scm/git.php:71
+msgid "Could not open directory"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:73 ../src/modules/project/scm/git.php:73
+msgid "Browse source"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:80
+#: ../src/modules/project/scm/cvs.php:222
+#: ../src/modules/project/scm/cvs.php:380
+msgid "Revision"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:122
+#: ../src/modules/project/scm/cvs.php:143
+#: ../src/modules/project/scm/cvs.php:163
+#: ../src/modules/project/scm/git.php:114
+#: ../src/modules/project/scm/git.php:134
+msgid "%Y/%m/%d %H:%M:%S"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:212 ../src/modules/wiki/content.php:160
+msgid "Could not list revisions"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:221 ../src/modules/wiki/content.php:135
+msgid "Revisions"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:343
+#: ../src/modules/project/scm/git.php:200
+msgid "Repository"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:352
+#: ../src/modules/project/scm/git.php:205
+msgid "The source code can be obtained as follows: "
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:372
+msgid "Could not open the project history"
+msgstr ""
+
+#: ../src/modules/project/scm/cvs.php:379
+msgid "Action"
+msgstr ""
+
+#: ../src/modules/project/scm/git.php:41
+#: ../src/modules/project/scm/git.php:217
+msgid "No Git repository defined"
+msgstr ""
+
+#: ../src/modules/project/scm/git.php:144
+msgid "Could not open file"
+msgstr ""
+
+#: ../src/modules/salt/module.php:68 ../src/modules/salt/module.php:97
+#: ../src/modules/salt/module.php:142
+msgid "Confirmation required"
+msgstr ""
+
+#: ../src/modules/salt/module.php:162
+msgid "Salt administration"
+msgstr ""
+
+#: ../src/modules/salt/module.php:184
+msgid "Hostname (or glob)"
+msgstr ""
+
+#: ../src/modules/salt/module.php:192
+msgid "Uptime"
+msgstr ""
+
+#: ../src/modules/salt/module.php:194
+msgid "Could not obtain uptime"
+msgstr ""
+
+#: ../src/modules/salt/module.php:195
+msgid "Package upgrades"
+msgstr ""
+
+#: ../src/modules/salt/module.php:197
+msgid "Could not list package upgrades"
+msgstr ""
+
+#: ../src/modules/salt/module.php:199
+msgid "Services"
+msgstr ""
+
+#: ../src/modules/salt/module.php:201
+msgid "Could not list the services"
+msgstr ""
+
+#: ../src/modules/salt/module.php:204
+msgid "Statistics"
+msgstr ""
+
+#: ../src/modules/salt/module.php:206
+msgid "Could not obtain statistics"
+msgstr ""
+
+#: ../src/modules/salt/module.php:303
+msgid "Could not list hosts"
+msgstr ""
+
+#: ../src/modules/salt/module.php:337
+msgid "Reboot"
+msgstr ""
+
+#: ../src/modules/salt/module.php:342
+msgid "Shutdown"
+msgstr ""
+
+#: ../src/modules/salt/module.php:404
+msgid "Unknown host"
+msgstr ""
+
+#: ../src/modules/salt/module.php:418
+msgid "Unsupported action"
+msgstr ""
+
+#: ../src/modules/salt/module.php:429
+#, php-format
+msgid "Could not %s"
+msgstr ""
+
+#: ../src/modules/salt/module.php:435
+#, php-format
+msgid "%s successful"
+msgstr ""
+
+#: ../src/modules/salt/module.php:451
+#, php-format
+msgid "Do you really want to %s %s?"
+msgstr ""
+
+#: ../src/modules/salt/module.php:682
+msgid "Reload"
+msgstr ""
+
+#: ../src/modules/salt/module.php:684
+msgid "Start"
+msgstr ""
+
+#: ../src/modules/salt/module.php:686
+msgid "Stop"
+msgstr ""
+
+#: ../src/modules/salt/module.php:688
+msgid "Restart"
+msgstr ""
+
+#: ../src/modules/salt/module.php:735 ../src/modules/wiki/module.php:125
+msgid "Disk usage"
+msgstr ""
+
+#: ../src/modules/salt/module.php:747
+msgid "Network interfaces"
+msgstr ""
+
+#: ../src/modules/search/module.php:115
+msgid "Advanced search"
+msgstr ""
+
+#: ../src/modules/search/module.php:145
+msgid "Search administration"
+msgstr ""
+
+#: ../src/modules/search/module.php:147
+msgid "Not implemented"
+msgstr ""
+
+#: ../src/modules/search/module.php:164 ../src/modules/search/module.php:196
+msgid "Unable to search"
+msgstr ""
+
+#: ../src/modules/search/module.php:218
+msgid "Search..."
+msgstr "Buscar..."
+
+#: ../src/modules/search/module.php:321
+msgid "Search results"
+msgstr ""
+
+#: ../src/modules/search/module.php:332
+msgid "Search query: "
+msgstr ""
+
+#: ../src/modules/search/module.php:345
+msgid "Simpler search..."
+msgstr ""
+
+#: ../src/modules/search/module.php:351
+msgid "Advanced search..."
+msgstr ""
+
+#: ../src/modules/search/module.php:363
+msgid "Search in: "
+msgstr ""
+
+#: ../src/modules/search/module.php:366
+msgid "titles"
+msgstr "titulos"
+
+#: ../src/modules/search/module.php:370
+msgid "content"
+msgstr ""
+
+#: ../src/modules/search/module.php:383
+msgid "module: "
+msgstr ""
+
+#: ../src/modules/search/module.php:398
+msgid "Case-insensitive"
+msgstr ""
+
+#: ../src/modules/search/module.php:400
+msgid "Case-sensitive"
+msgstr ""
+
+#: ../src/modules/search/module.php:405
+msgid "Results per page:"
+msgstr ""
+
+#: ../src/modules/top/module.php:54
+msgid "Top links administration"
+msgstr ""
+
+#: ../src/modules/user/module.php:28
+msgid "Users"
+msgstr ""
+
+#: ../src/modules/user/module.php:99
+msgid "Administrators cannot close themselves"
+msgstr ""
+
+#: ../src/modules/user/module.php:104
+msgid "Closing accounts is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:119
+msgid "Deleting users is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:134
+msgid "Disabling users is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:154
+msgid "Enabling users is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:169
+msgid "Locking users is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:181 ../src/modules/user/module.php:1848
+msgid "Registering is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:198 ../src/modules/user/module.php:1534
+msgid "Password resets are not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:232
+msgid "Unlocking users is not allowed"
+msgstr ""
+
+#: ../src/modules/user/module.php:245
+msgid "Do you really want to close your account?"
+msgstr ""
+
+#: ../src/modules/user/module.php:272 ../src/modules/user/module.php:301
+#: ../src/modules/user/module.php:323 ../src/modules/user/module.php:344
+#: ../src/modules/user/module.php:441
+msgid "Username: "
+msgstr ""
+
+#: ../src/modules/user/module.php:278
+msgid "Password"
+msgstr ""
+
+#: ../src/modules/user/module.php:279 ../src/modules/user/module.php:351
+#: ../src/modules/user/module.php:1558
+msgid "Password: "
+msgstr ""
+
+#: ../src/modules/user/module.php:303 ../src/modules/user/module.php:325
+msgid "e-mail address: "
+msgstr ""
+
+#: ../src/modules/user/module.php:310 ../src/modules/user/module.php:574
+msgid "Register"
+msgstr ""
+
+#: ../src/modules/user/module.php:347 ../src/modules/user/module.php:446
+msgid "Full name: "
+msgstr ""
+
+#: ../src/modules/user/module.php:353 ../src/modules/user/module.php:451
+#: ../src/modules/user/module.php:1345
+msgid "e-mail: "
+msgstr ""
+
+#: ../src/modules/user/module.php:362 ../src/modules/user/module.php:461
+msgid "Primary group: "
+msgstr ""
+
+#: ../src/modules/user/module.php:371 ../src/modules/user/module.php:470
+msgid "Secondary groups:"
+msgstr ""
+
+#: ../src/modules/user/module.php:373 ../src/modules/user/module.php:472
+msgid "Member"
+msgstr ""
+
+#: ../src/modules/user/module.php:402 ../src/modules/user/module.php:683
+#: ../src/modules/user/module.php:706
+msgid "Locked"
+msgstr ""
+
+#: ../src/modules/user/module.php:428
+msgid "Profile update for "
+msgstr ""
+
+#: ../src/modules/user/module.php:429 ../src/modules/user/module.php:1804
+msgid "Profile update"
+msgstr ""
+
+#: ../src/modules/user/module.php:495
+msgid "Optionally: "
+msgstr ""
+
+#: ../src/modules/user/module.php:498
+msgid "Current password: "
+msgstr ""
+
+#: ../src/modules/user/module.php:500
+msgid "New password: "
+msgstr ""
+
+#: ../src/modules/user/module.php:503
+msgid "Repeat new password: "
+msgstr ""
+
+#: ../src/modules/user/module.php:540 ../src/modules/user/module.php:1082
+msgid "User list"
+msgstr ""
+
+#: ../src/modules/user/module.php:562 ../src/modules/user/module.php:1478
+#: ../src/modules/user/module.php:1513 ../src/modules/user/module.php:1548
+#: ../src/modules/user/module.php:1592
+msgid "Password reset"
+msgstr ""
+
+#: ../src/modules/user/module.php:598 ../src/modules/user/module.php:1035
+msgid "My groups"
+msgstr ""
+
+#: ../src/modules/user/module.php:606 ../src/modules/user/module.php:1333
+#: ../src/modules/user/module.php:1822 ../src/modules/user/module.php:1889
+msgid "My profile"
+msgstr ""
+
+#: ../src/modules/user/module.php:614 ../src/modules/user/module.php:1288
+#: ../src/modules/user/module.php:1892
+msgid "Logout"
+msgstr ""
+
+#: ../src/modules/user/module.php:631 ../src/modules/user/module.php:692
+#: ../src/modules/user/module.php:1612
+msgid "New user"
+msgstr ""
+
+#: ../src/modules/user/module.php:638 ../src/modules/user/module.php:669
+msgid "Users administration"
+msgstr ""
+
+#: ../src/modules/user/module.php:653
+msgid "Lock"
+msgstr ""
+
+#: ../src/modules/user/module.php:654
+msgid "Unlock"
+msgstr ""
+
+#: ../src/modules/user/module.php:679
+msgid "Could not list users"
+msgstr ""
+
+#: ../src/modules/user/module.php:685
+msgid "e-mail"
+msgstr ""
+
+#: ../src/modules/user/module.php:708
+msgid "Unlocked"
+msgstr ""
+
+#: ../src/modules/user/module.php:797
+msgid "Close your account"
+msgstr ""
+
+#: ../src/modules/user/module.php:826
+msgid "The account could not be closed"
+msgstr ""
+
+#: ../src/modules/user/module.php:835
+msgid "Account closed"
+msgstr ""
+
+#: ../src/modules/user/module.php:836
+msgid "Your account was closed successfully."
+msgstr ""
+
+#: ../src/modules/user/module.php:860 ../src/modules/user/module.php:1883
+msgid "My account"
+msgstr ""
+
+#: ../src/modules/user/module.php:861
+msgid "Site menu"
+msgstr ""
+
+#: ../src/modules/user/module.php:910 ../src/modules/user/module.php:999
+#: ../src/modules/user/module.php:1139 ../src/modules/user/module.php:1688
+msgid "Could not load user"
+msgstr ""
+
+#: ../src/modules/user/module.php:917
+msgid "User disabled successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:937
+msgid "Content from "
+msgstr ""
+
+#: ../src/modules/user/module.php:981
+msgid "Back to the user list"
+msgstr ""
+
+#: ../src/modules/user/module.php:1006
+msgid "User enabled successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1028
+msgid "There are no groups for this user"
+msgstr ""
+
+#: ../src/modules/user/module.php:1034
+msgid "Groups for "
+msgstr ""
+
+#: ../src/modules/user/module.php:1097
+msgid "Could not list the users"
+msgstr ""
+
+#: ../src/modules/user/module.php:1119
+msgid "Back to the site menu"
+msgstr ""
+
+#: ../src/modules/user/module.php:1146
+msgid "User locked successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1154
+msgid "User login"
+msgstr ""
+
+#: ../src/modules/user/module.php:1155
+msgid "You are already logged in"
+msgstr ""
+
+#: ../src/modules/user/module.php:1156
+msgid "I forgot my password..."
+msgstr ""
+
+#: ../src/modules/user/module.php:1157
+msgid "Register an account..."
+msgstr ""
+
+#: ../src/modules/user/module.php:1207
+msgid "The username and password must be set"
+msgstr ""
+
+#: ../src/modules/user/module.php:1209
+msgid "Invalid username or password"
+msgstr ""
+
+#: ../src/modules/user/module.php:1243
+msgid "Authentication in progress, please wait..."
+msgstr ""
+
+#: ../src/modules/user/module.php:1258
+msgid "User logout"
+msgstr ""
+
+#: ../src/modules/user/module.php:1266
+msgid "You were logged out successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1280
+msgid "Do you really want to logout?"
+msgstr ""
+
+#: ../src/modules/user/module.php:1297
+msgid "Logging out, please wait..."
+msgstr ""
+
+#: ../src/modules/user/module.php:1326 ../src/modules/user/module.php:1716
+msgid "There is no profile for this user"
+msgstr ""
+
+#: ../src/modules/user/module.php:1332
+msgid "Profile for "
+msgstr ""
+
+#: ../src/modules/user/module.php:1342
+msgid "Fullname: "
+msgstr ""
+
+#: ../src/modules/user/module.php:1371
+msgid "Close my account"
+msgstr ""
+
+#: ../src/modules/user/module.php:1401 ../src/modules/user/module.php:1436
+msgid "User registration"
+msgstr ""
+
+#: ../src/modules/user/module.php:1422
+msgid "A username is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1424
+msgid "An e-mail address is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1437
+msgid ""
+"You should receive an e-mail shortly with your password, along with a "
+"confirmation key.\n"
+"\n"
+" Thank you for registering!"
+msgstr ""
+
+#: ../src/modules/user/module.php:1499
+msgid "Your username is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1501
+msgid "Your e-mail address is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1514
+msgid ""
+"You should receive an e-mail shortly, with a link allowing you to reset your "
+"password."
+msgstr ""
+
+#: ../src/modules/user/module.php:1560
+msgid "Repeat password: "
+msgstr ""
+
+#: ../src/modules/user/module.php:1576
+msgid "A new password is required"
+msgstr ""
+
+#: ../src/modules/user/module.php:1579
+msgid "The passwords did not match"
+msgstr ""
+
+#: ../src/modules/user/module.php:1597
+msgid "Your password was reset successfully.\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1602
+msgid "Proceed to login page"
+msgstr ""
+
+#: ../src/modules/user/module.php:1695
+msgid "User unlocked successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1746
+msgid "The full name is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1748
+msgid "The e-mail address is required\n"
+msgstr ""
+
+#: ../src/modules/user/module.php:1756
+msgid "Could not update the profile"
+msgstr ""
+
+#: ../src/modules/user/module.php:1786
+msgid "The current password must be specified"
+msgstr ""
+
+#: ../src/modules/user/module.php:1795
+msgid "The new password does not match"
+msgstr ""
+
+#: ../src/modules/user/module.php:1797
+msgid "Could not set the new password"
+msgstr ""
+
+#: ../src/modules/user/module.php:1809
+msgid "The profile was updated successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1810
+msgid "Your profile was updated successfully"
+msgstr ""
+
+#: ../src/modules/user/module.php:1818
+msgid "User administration"
+msgstr ""
+
+#: ../src/modules/user/module.php:1819
+msgid "User profile"
+msgstr ""
+
+#: ../src/modules/user/module.php:1842 ../src/modules/user/module.php:1844
+msgid "Account confirmation"
+msgstr ""
+
+#: ../src/modules/user/module.php:1859
+msgid "Congratulations!"
+msgstr ""
+
+#: ../src/modules/user/module.php:1860
+msgid "Your account is now enabled."
+msgstr ""
+
+#: ../src/modules/user/module.php:1954
+msgid "invalid user(s)"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:35
+msgid "Wiki page by"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:36 ../src/modules/wiki/module.php:39
+msgid "More wiki pages..."
+msgstr ""
+
+#: ../src/modules/wiki/content.php:37
+msgid "Create a page"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:49
+msgid "The title must be set and not empty"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:53 ../src/modules/wiki/content.php:82
+msgid "The title must not contain slash characters"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:67
+msgid "You need to be logged in to update wiki pages"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:79
+msgid "The title is not allowed to change"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:261 ../src/modules/wiki/content.php:276
+msgid "Log message: "
+msgstr ""
+
+#: ../src/modules/wiki/content.php:312 ../src/modules/wiki/content.php:359
+msgid "Could not find the wiki repository"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:317
+msgid "A wiki page already exists with this name"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:326
+msgid "Could not create the wiki page"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:338 ../src/modules/wiki/content.php:386
+msgid "Could not write the wiki page"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:363
+msgid "No wiki page was found with this name"
+msgstr ""
+
+#: ../src/modules/wiki/content.php:372
+msgid "Could not update the wiki page"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:29 ../src/modules/wiki/module.php:41
+msgid "Wiki"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:32 ../src/modules/wiki/module.php:156
+msgid "Wiki administration"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:33
+msgid "Page by"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:34
+msgid "Wiki page"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:35 ../src/modules/wiki/module.php:36
+msgid "Wiki pages"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:37
+msgid "Wiki pages by"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:38
+msgid "Wiki pages by group"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:40
+msgid "New wiki page"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:78
+msgid "Search the wiki"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:85
+msgid "Look for a page: "
+msgstr ""
+
+#: ../src/modules/wiki/module.php:94
+msgid "Look inside pages: "
+msgstr ""
+
+#: ../src/modules/wiki/module.php:97
+msgid "Recent changes"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:107
+msgid "List all pages"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:115 ../src/modules/wiki/module.php:172
+msgid "Wiki monitoring"
+msgstr ""
+
+#: ../src/modules/wiki/module.php:128
+msgid "The root folder is not configured"
+msgstr ""
