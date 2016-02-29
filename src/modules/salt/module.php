@@ -166,7 +166,6 @@ class SaltModule extends Module
 		$page->append('title', array('stock' => 'monitor',
 				'text' => $title));
 		$vbox = $page->append('vbox');
-		$this->_defaultForm($vbox, $hostname);
 		if(!is_string($hostname) || strlen($hostname) == 0)
 			$this->_defaultList($vbox);
 		else
@@ -176,13 +175,13 @@ class SaltModule extends Module
 
 	private function _defaultForm(PageElement $page, $hostname)
 	{
-		$form = $page->append('form', array(
-				'idempotent' => TRUE,
+		//XXX forms are blocks by default in HTML
+		$form = $page->append('form', array('idempotent' => TRUE,
 				'request' => $this->getRequest()));
 		$hbox = $form->append('hbox');
-		$hbox->append('entry', array('text' => _('Host: '),
+		$hbox->append('entry', array('name' => 'host',
 				'placeholder' => _('Hostname (or glob)'),
-				'name' => 'host', 'value' => $hostname));
+				'value' => $hostname));
 		$hbox->append('button', array('type' => 'submit',
 				'text' => _('Monitor')));
 	}
@@ -311,6 +310,7 @@ class SaltModule extends Module
 		$toolbar->append('button', array('stock' => 'logout',
 				'text' => _('Shutdown'),
 				'request' => $request));
+		$this->_defaultForm($toolbar, $hostname);
 	}
 
 	private function _defaultList(PageElement $page)
@@ -353,6 +353,7 @@ class SaltModule extends Module
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $request));
+		$this->_defaultForm($toolbar, $hostname);
 	}
 
 
