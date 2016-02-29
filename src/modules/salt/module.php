@@ -326,7 +326,7 @@ class SaltModule extends Module
 		$view = $page->append('iconview');
 		if(!is_array($data))
 			$data = array($data);
-		sort($data);
+		$rows = array();
 		foreach($data as $d)
 			foreach($d as $hostname => $value)
 			{
@@ -340,10 +340,12 @@ class SaltModule extends Module
 				$title = is_string($value) ? FALSE : $value;
 				$icon = new PageElement('image', array(
 						'stock' => $stock));
-				$view->append('row', array('icon' => $icon,
-						'title' => $title,
-						'label' => $link));
+				$rows[$hostname] = array('icon' => $icon,
+					'title' => $title, 'label' => $link);
 			}
+		sort($rows);
+		foreach($rows as $row)
+			$view->append('row', $row);
 	}
 
 	private function _defaultListToolbar(PageElement $page)
