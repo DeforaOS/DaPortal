@@ -299,11 +299,13 @@ class SaltModule extends Module
 	private function _defaultHostToolbar(PageElement $page, $hostname)
 	{
 		$toolbar = $page->append('toolbar');
+		$request = $this->getRequest(FALSE, array('host' => $hostname));
+		$toolbar->append('button', array('stock' => 'refresh',
+				'text' => _('Refresh'), 'request' => $request));
 		$request = $this->getRequest('reboot', array(
 				'host' => $hostname));
 		$toolbar->append('button', array('stock' => 'refresh',
-				'text' => _('Reboot'),
-				'request' => $request));
+				'text' => _('Reboot'), 'request' => $request));
 		$request = $this->getRequest('shutdown', array(
 				'host' => $hostname));
 		$toolbar->append('button', array('stock' => 'logout',
