@@ -206,7 +206,7 @@ class SaltModule extends Module
 				'error' => _('Could not obtain statistics')));
 
 		$page->append('title', array('text' => $host));
-		$this->_defaultToolbar($page, $host);
+		$this->_defaultHostToolbar($page, $host);
 		//gather the data
 		$count = 0;
 		foreach($salt as $s => $v)
@@ -296,8 +296,24 @@ class SaltModule extends Module
 				}
 	}
 
+	private function _defaultHostToolbar(PageElement $page, $hostname)
+	{
+		$toolbar = $page->append('toolbar');
+		$request = $this->getRequest('reboot', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'refresh',
+				'text' => _('Reboot'),
+				'request' => $request));
+		$request = $this->getRequest('shutdown', array(
+				'host' => $hostname));
+		$toolbar->append('button', array('stock' => 'logout',
+				'text' => _('Shutdown'),
+				'request' => $request));
+	}
+
 	private function _defaultList(PageElement $page)
 	{
+		$this->_defaultListToolbar($page);
 		if(($data = $this->helperSaltPing()) === FALSE)
 		{
 			$error = _('Could not list hosts');
@@ -328,18 +344,12 @@ class SaltModule extends Module
 			}
 	}
 
-	private function _defaultToolbar(PageElement $page, $hostname)
+	private function _defaultListToolbar(PageElement $page)
 	{
 		$toolbar = $page->append('toolbar');
-		$request = $this->getRequest('reboot', array(
-				'host' => $hostname));
+		$request = $this->getRequest();
 		$toolbar->append('button', array('stock' => 'refresh',
-				'text' => _('Reboot'),
-				'request' => $request));
-		$request = $this->getRequest('shutdown', array(
-				'host' => $hostname));
-		$toolbar->append('button', array('stock' => 'logout',
-				'text' => _('Shutdown'),
+				'text' => _('Refresh'),
 				'request' => $request));
 	}
 
