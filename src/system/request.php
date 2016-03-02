@@ -22,8 +22,8 @@ class Request extends Mutator
 	//public
 	//methods
 	//Request::Request
-	function __construct($module = FALSE, $action = FALSE, $id = FALSE,
-			$title = FALSE, $parameters = FALSE)
+	public function __construct($module = FALSE, $action = FALSE,
+			$id = FALSE, $title = FALSE, $parameters = FALSE)
 	{
 		if($module === FALSE
 				|| $this->setModule($module) === FALSE
