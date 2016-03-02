@@ -38,7 +38,6 @@ class SearchModule extends Module
 			}
 		switch($action)
 		{
-			case 'admin':
 			case 'advanced':
 			case 'default':
 			case 'widget':
@@ -134,20 +133,6 @@ class SearchModule extends Module
 
 
 	//calls
-	//SearchModule::callAdmin
-	protected function callAdmin(Engine $engine)
-	{
-		$cred = $engine->getCredentials();
-
-		if(!$cred->isAdmin())
-			return new ErrorResponse(_('Permission denied'),
-				Response::$CODE_EPERM);
-		$title = _('Search administration');
-		//FIXME implement settings
-		return new ErrorResponse(_('Not implemented'));
-	}
-
-
 	//SearchModule::callDefault
 	protected function callDefault(Engine $engine, Request $request)
 	{
