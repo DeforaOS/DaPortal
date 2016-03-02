@@ -48,7 +48,7 @@ class PDODatabaseTransaction extends DatabaseTransaction
 	//PDODatabaseTransaction::databaseRollback
 	protected function databaseRollback()
 	{
-		return $this->getDatabase()->transactionDoRollBack();
+		return $this->getDatabase()->transactionDoRollback();
 	}
 }
 
