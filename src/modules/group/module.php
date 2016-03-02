@@ -571,7 +571,7 @@ class GroupModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _listGroup($engine, $request)
+	private function _listGroup(Engine $engine, Request $request)
 	{
 		$db = $engine->getDatabase();
 		$id = $request->getID();

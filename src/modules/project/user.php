@@ -23,8 +23,8 @@ class ProjectUser extends User
 	//methods
 	//accessors
 	//ProjectUser::getProjects
-	public function getProjects($engine, $module, $order = FALSE,
-			$limit = FALSE, $offset = FALSE)
+	public function getProjects(Engine $engine, Module $module,
+			$order = FALSE, $limit = FALSE, $offset = FALSE)
 	{
 		return ProjectContent::listAll($engine, $module, $order, $limit,
 				$offset, $this);
@@ -32,7 +32,7 @@ class ProjectUser extends User
 
 
 	//ProjectUser::isProjectAdmin
-	public function isProjectAdmin($engine, $project)
+	public function isProjectAdmin(Engine $engine, ProjectContent $project)
 	{
 		if(($id = $project->getID()) === FALSE)
 			return FALSE;
@@ -44,7 +44,7 @@ class ProjectUser extends User
 
 
 	//ProjectUser::isProjectMember
-	public function isProjectMember($engine, $project)
+	public function isProjectMember(Engine $engine, ProjectContent $project)
 	{
 		//FIXME implement
 		return FALSE;
@@ -52,7 +52,7 @@ class ProjectUser extends User
 
 
 	//ProjectUser::setProjectAdmin
-	public function setProjectAdmin($project, $admin)
+	public function setProjectAdmin(ProjectContent $project, $admin)
 	{
 		if(($id = $project->getID()) === FALSE)
 			return FALSE;

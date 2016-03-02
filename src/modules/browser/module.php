@@ -512,7 +512,7 @@ class BrowserModule extends Module
 
 	//DownloadModule::helperRedirect
 	protected function helperRedirect(Engine $engine, Request $request,
-			$page, $text = FALSE)
+			PageElement $page, $text = FALSE)
 	{
 		//XXX duplicated from ContentModule
 		if($text === FALSE)

@@ -90,7 +90,7 @@ class DownloadModule extends MultiContentModule
 		return parent::call($engine, $request, $internal);
 	}
 
-	protected function _callInternalSubmit($engine, $request)
+	protected function _callInternalSubmit(Engine $engine, Request $request)
 	{
 		if(($filename = $request->get('filename')) === FALSE)
 			return FALSE;

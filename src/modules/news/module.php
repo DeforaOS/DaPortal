@@ -56,7 +56,7 @@ class NewsModule extends ContentModule
 
 	//calls
 	//NewsModule::callRSS
-	protected function callRSS($engine, $request)
+	protected function callRSS(Engine $engine, Request $request)
 	{
 		$request->setType('application/rss+xml');
 		return $this->callHeadline($engine, $request);

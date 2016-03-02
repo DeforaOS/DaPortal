@@ -1449,7 +1449,7 @@ abstract class ContentModule extends Module
 
 	//ContentModule::helperSubmitPreview
 	protected function helperSubmitPreview(Engine $engine, Request $request,
-			$content, $page)
+			Content $content, PageElement $page)
 	{
 		if($this->canPreview($engine, $request, $content) === FALSE
 				|| $request->get('_preview') === FALSE)
@@ -1460,7 +1460,8 @@ abstract class ContentModule extends Module
 
 	//ContentModule::helperToolbar
 	protected function helperToolbar(Engine $engine,
-			Request $request = NULL, $content = NULL, $page)
+			Request $request = NULL, Content $content = NULL,
+			PageElement $page)
 	{
 		$class = $this->content_class;
 
