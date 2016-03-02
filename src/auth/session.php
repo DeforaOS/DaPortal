@@ -167,7 +167,7 @@ class SessionAuth extends Auth
 		session_write_close();
 		return $ret;
 	}
-	private function _setVariable($engine, $variable, $value)
+	private function _setVariable(Engine $engine, $variable, $value)
 	{
 		$_SESSION[$variable] = $value;
 		return TRUE;
