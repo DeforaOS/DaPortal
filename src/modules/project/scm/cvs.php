@@ -278,8 +278,7 @@ class CVSSCMProject extends SCMProject
 	}
 
 	private function _browseFileRevision(Request $request,
-			PageElement $vbox, $path, $file,
-			$revision)
+			PageElement $vbox, $path, $file, $revision)
 	{
 		$error = 'Internal server error';
 
