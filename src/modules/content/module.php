@@ -579,11 +579,8 @@ abstract class ContentModule extends Module
 		$class = $this->content_class;
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
-		$group = ($request !== NULL)
-			? Group::lookup($engine, $request->getTitle(),
-					$request->getID())
-				: Group::lookup($engine, $cred->getGroupname(),
-						$cred->getGroupID());
+		$group = Group::lookup($engine, $request->getTitle(),
+				$request->getID());
 		$p = $request->get('page');
 
 		$title = $this->text_content_list_title_group;
