@@ -1763,7 +1763,7 @@ class UserModule extends Module
 			$user->setGroup($engine, $group_id);
 
 		//update the group memberships
-		$db->inTransaction($engine, function()
+		$db->withTransaction($engine, function()
 			use ($engine, $request, $user)
 		{
 			$user->removeGroups($engine);
