@@ -58,7 +58,7 @@ class TopModule extends Module
 
 
 	//TopModule::callDefault
-	private function callDefault($engine, Request $request)
+	private function callDefault(Engine $engine, Request $request)
 	{
 		//FIXME implement
 		return FALSE;
