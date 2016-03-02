@@ -76,7 +76,7 @@ function observer()
 	return $observer1->getProperty() == 1 && $observer2->getProperty() == 1;
 }
 
-function test($engine)
+function test(Engine $engine)
 {
 	if(observer() === FALSE)
 		exit(2);
