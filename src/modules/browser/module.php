@@ -517,8 +517,8 @@ class BrowserModule extends Module
 		//XXX duplicated from ContentModule
 		if($text === FALSE)
 			$text = $this->text_redirect_progress;
-		$page->setProperty('location', $engine->getURL($request));
-		$page->setProperty('refresh', 30);
+		$page->set('location', $engine->getURL($request));
+		$page->set('refresh', 30);
 		$box = $page->append('vbox');
 		$box->append('label', array('text' => $text));
 		$box = $box->append('hbox');
