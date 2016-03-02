@@ -468,7 +468,7 @@ class GroupModule extends Module
 					'request' => $request,
 					'text' => _('Back to my account')));
 		}
-		$page = new Page(array('title' => $title));;
+		$page = new Page(array('title' => $title));
 		if($group === FALSE || $group->getGroupID() == 0)
 			return $this->callDefault($engine, new Request());
 		//title

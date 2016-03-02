@@ -307,7 +307,7 @@ class SearchModule extends Module
 		$args = $q ? array('q' => $q) : FALSE;
 		$case = $request->get('case') ? '1' : '0';
 
-		$page = new Page(array('title' => $title));;
+		$page = new Page(array('title' => $title));
 		$page->append('title', array('stock' => 'search',
 				'text' => $title));
 		$form = $page->append('form');
