@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.10.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 14:21+0100\n"
+"POT-Creation-Date: 2016-03-03 15:44+0100\n"
 "PO-Revision-Date: 2016-02-28 18:01+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -61,8 +61,8 @@ msgid "Open"
 msgstr "Abrir"
 
 #: ../src/system/content.php:78 ../src/modules/content/module.php:351
-#: ../src/modules/content/module.php:1153
-#: ../src/modules/content/module.php:1295
+#: ../src/modules/content/module.php:1150
+#: ../src/modules/content/module.php:1292
 msgid "Publish"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit content"
 msgstr ""
 
-#: ../src/system/content.php:80 ../src/modules/content/module.php:1534
+#: ../src/system/content.php:80 ../src/modules/content/module.php:1532
 #: ../src/modules/group/module.php:177 ../src/modules/user/module.php:516
 #: ../src/modules/user/module.php:1353 ../src/modules/user/module.php:1357
 msgid "Update"
@@ -79,23 +79,23 @@ msgstr ""
 #: ../src/system/content.php:91 ../src/modules/admin/module.php:43
 #: ../src/modules/browser/module.php:61 ../src/modules/browser/module.php:81
 #: ../src/modules/content/module.php:73 ../src/modules/content/module.php:167
-#: ../src/modules/content/module.php:779
-#: ../src/modules/content/module.php:1181
-#: ../src/modules/content/module.php:1202
-#: ../src/modules/content/module.php:1223
-#: ../src/modules/content/module.php:1382
-#: ../src/modules/content/module.php:1481 ../src/modules/group/module.php:114
+#: ../src/modules/content/module.php:776
+#: ../src/modules/content/module.php:1178
+#: ../src/modules/content/module.php:1199
+#: ../src/modules/content/module.php:1220
+#: ../src/modules/content/module.php:1379
+#: ../src/modules/content/module.php:1479 ../src/modules/group/module.php:114
 #: ../src/modules/group/module.php:259 ../src/modules/group/module.php:420
 #: ../src/modules/group/module.php:517 ../src/modules/group/module.php:622
 #: ../src/modules/group/module.php:694 ../src/modules/group/module.php:767
 #: ../src/modules/project/module.php:642 ../src/modules/salt/module.php:63
 #: ../src/modules/salt/module.php:92 ../src/modules/salt/module.php:137
-#: ../src/modules/search/module.php:143 ../src/modules/user/module.php:217
-#: ../src/modules/user/module.php:658 ../src/modules/user/module.php:904
-#: ../src/modules/user/module.php:993 ../src/modules/user/module.php:1090
-#: ../src/modules/user/module.php:1135 ../src/modules/user/module.php:1615
-#: ../src/modules/user/module.php:1684 ../src/modules/user/module.php:1724
-#: ../src/modules/user/module.php:1925 ../src/modules/wiki/module.php:117
+#: ../src/modules/user/module.php:217 ../src/modules/user/module.php:658
+#: ../src/modules/user/module.php:904 ../src/modules/user/module.php:993
+#: ../src/modules/user/module.php:1090 ../src/modules/user/module.php:1135
+#: ../src/modules/user/module.php:1615 ../src/modules/user/module.php:1684
+#: ../src/modules/user/module.php:1724 ../src/modules/user/module.php:1925
+#: ../src/modules/wiki/module.php:117
 msgid "Permission denied"
 msgstr ""
 
@@ -121,45 +121,45 @@ msgstr ""
 
 #: ../src/system/content.php:271 ../src/system/content.php:662
 #: ../src/system/content.php:677 ../src/modules/browser/module.php:415
-#: ../src/modules/content/module.php:212 ../src/modules/content/module.php:642
+#: ../src/modules/content/module.php:212 ../src/modules/content/module.php:639
 #: ../src/modules/manual/module.php:351 ../src/modules/manual/module.php:389
 #: ../src/modules/project/content.php:89
 #: ../src/modules/project/content/bug.php:77
 #: ../src/modules/project/content/bug.php:153
-#: ../src/modules/search/module.php:285
+#: ../src/modules/search/module.php:270
 msgid "Title"
 msgstr "Titulo"
 
 #: ../src/system/content.php:272 ../src/modules/group/module.php:594
 #: ../src/modules/project/content/bug.php:154
-#: ../src/modules/search/module.php:286 ../src/modules/user/module.php:273
+#: ../src/modules/search/module.php:271 ../src/modules/user/module.php:273
 #: ../src/modules/user/module.php:680
 msgid "Username"
 msgstr ""
 
 #: ../src/system/content.php:272 ../src/modules/browser/module.php:417
-#: ../src/modules/content/module.php:642
+#: ../src/modules/content/module.php:639
 #: ../src/modules/download/content/folder.php:88
 #: ../src/modules/project/content.php:90
 #: ../src/modules/project/content/bug.php:79
 #: ../src/modules/project/content/bug.php:154
 #: ../src/modules/project/scm/cvs.php:79
 #: ../src/modules/project/scm/cvs.php:222
-#: ../src/modules/project/scm/cvs.php:379
-#: ../src/modules/project/scm/git.php:79 ../src/modules/search/module.php:286
+#: ../src/modules/project/scm/cvs.php:378
+#: ../src/modules/project/scm/git.php:79 ../src/modules/search/module.php:271
 #: ../src/modules/wiki/content.php:176
 msgid "Date"
 msgstr "Fecha"
 
 #: ../src/system/content.php:566 ../src/modules/admin/module.php:229
-#: ../src/modules/content/module.php:1108 ../src/modules/group/module.php:309
+#: ../src/modules/content/module.php:1105 ../src/modules/group/module.php:309
 #: ../src/modules/project/content.php:309 ../src/modules/user/module.php:702
 msgid "Disabled"
 msgstr ""
 
 #: ../src/system/content.php:568 ../src/modules/admin/module.php:212
 #: ../src/modules/admin/module.php:231 ../src/modules/content/module.php:215
-#: ../src/modules/content/module.php:1110 ../src/modules/group/module.php:136
+#: ../src/modules/content/module.php:1107 ../src/modules/group/module.php:136
 #: ../src/modules/group/module.php:282 ../src/modules/group/module.php:311
 #: ../src/modules/project/content.php:311 ../src/modules/user/module.php:397
 #: ../src/modules/user/module.php:682 ../src/modules/user/module.php:704
@@ -186,7 +186,7 @@ msgstr "Titulo: "
 msgid "Content: "
 msgstr ""
 
-#: ../src/system/content.php:714 ../src/modules/content/module.php:800
+#: ../src/system/content.php:714 ../src/modules/content/module.php:797
 #: ../src/modules/project/module.php:447
 msgid "Preview: "
 msgstr ""
@@ -395,7 +395,7 @@ msgstr ""
 #: ../src/modules/admin/module.php:66 ../src/modules/browser/module.php:47
 #: ../src/modules/content/module.php:59 ../src/modules/group/module.php:63
 #: ../src/modules/manual/module.php:47 ../src/modules/probe/module.php:42
-#: ../src/modules/salt/module.php:42 ../src/modules/search/module.php:48
+#: ../src/modules/salt/module.php:42 ../src/modules/search/module.php:47
 #: ../src/modules/top/module.php:38 ../src/modules/user/module.php:83
 msgid "Invalid action"
 msgstr ""
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Modules administration"
 msgstr ""
 
-#: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1098
+#: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1095
 #: ../src/modules/group/module.php:346 ../src/modules/user/module.php:741
 msgid "Back to the administration"
 msgstr ""
@@ -435,19 +435,20 @@ msgid "Module"
 msgstr ""
 
 #: ../src/modules/admin/module.php:219 ../src/modules/browser/module.php:162
-#: ../src/modules/content/module.php:1144
-#: ../src/modules/content/module.php:1283
+#: ../src/modules/content/module.php:1141
+#: ../src/modules/content/module.php:1280
 #: ../src/modules/download/content/folder.php:138
-#: ../src/modules/group/module.php:294 ../src/modules/user/module.php:695
+#: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:303
+#: ../src/modules/salt/module.php:356 ../src/modules/user/module.php:695
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1147
+#: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1144
 #: ../src/modules/group/module.php:297 ../src/modules/user/module.php:652
 msgid "Disable"
 msgstr ""
 
-#: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1149
+#: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1146
 #: ../src/modules/group/module.php:301 ../src/modules/user/module.php:653
 msgid "Enable"
 msgstr ""
@@ -556,7 +557,7 @@ msgstr ""
 msgid "Could not lookup the path"
 msgstr ""
 
-#: ../src/modules/browser/module.php:89 ../src/modules/project/scm/cvs.php:435
+#: ../src/modules/browser/module.php:89 ../src/modules/project/scm/cvs.php:434
 msgid "%d/%m/%Y %H:%M:%S"
 msgstr ""
 
@@ -602,11 +603,11 @@ msgstr ""
 msgid "Could not open the file or directory requested"
 msgstr ""
 
-#: ../src/modules/browser/module.php:299 ../src/modules/content/module.php:810
-#: ../src/modules/content/module.php:1425
-#: ../src/modules/content/module.php:1523 ../src/modules/group/module.php:141
+#: ../src/modules/browser/module.php:299 ../src/modules/content/module.php:807
+#: ../src/modules/content/module.php:1422
+#: ../src/modules/content/module.php:1521 ../src/modules/group/module.php:141
 #: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
-#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:463
+#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:478
 #: ../src/modules/user/module.php:251 ../src/modules/user/module.php:282
 #: ../src/modules/user/module.php:306 ../src/modules/user/module.php:328
 #: ../src/modules/user/module.php:413 ../src/modules/user/module.php:514
@@ -636,8 +637,8 @@ msgstr ""
 msgid "Destination is not a directory"
 msgstr ""
 
-#: ../src/modules/browser/module.php:352 ../src/modules/content/module.php:832
-#: ../src/modules/content/module.php:905 ../src/modules/content/module.php:963
+#: ../src/modules/browser/module.php:352 ../src/modules/content/module.php:829
+#: ../src/modules/content/module.php:902 ../src/modules/content/module.php:960
 #: ../src/modules/download/content/file.php:225
 #: ../src/modules/download/module.php:329 ../src/modules/probe/module.php:95
 #: ../src/modules/probe/module.php:281 ../src/modules/project/module.php:64
@@ -705,14 +706,14 @@ msgid "Last access:"
 msgstr ""
 
 #: ../src/modules/browser/module.php:525
-#: ../src/modules/content/module.php:1407 ../src/modules/group/module.php:819
+#: ../src/modules/content/module.php:1404 ../src/modules/group/module.php:819
 #: ../src/modules/user/module.php:1246 ../src/modules/user/module.php:1300
 #: ../src/modules/user/module.php:2016
 msgid "If you are not redirected within 30 seconds, please "
 msgstr ""
 
 #: ../src/modules/browser/module.php:527
-#: ../src/modules/content/module.php:1409 ../src/modules/group/module.php:821
+#: ../src/modules/content/module.php:1406 ../src/modules/group/module.php:821
 #: ../src/modules/user/module.php:1248 ../src/modules/user/module.php:1302
 #: ../src/modules/user/module.php:2018
 msgid "click here"
@@ -781,8 +782,8 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: ../src/modules/content/module.php:490 ../src/modules/content/module.php:649
-#: ../src/modules/content/module.php:689
+#: ../src/modules/content/module.php:490 ../src/modules/content/module.php:646
+#: ../src/modules/content/module.php:686
 msgid "Unable to list contents"
 msgstr ""
 
@@ -794,107 +795,107 @@ msgstr ""
 msgid "Could not display the content"
 msgstr ""
 
-#: ../src/modules/content/module.php:595
+#: ../src/modules/content/module.php:592
 msgid "Unable to lookup the group"
 msgstr ""
 
-#: ../src/modules/content/module.php:599
+#: ../src/modules/content/module.php:596
 msgid "Unable to list the content"
 msgstr ""
 
-#: ../src/modules/content/module.php:643 ../src/modules/project/scm/cvs.php:81
+#: ../src/modules/content/module.php:640 ../src/modules/project/scm/cvs.php:81
 #: ../src/modules/project/scm/cvs.php:223
-#: ../src/modules/project/scm/cvs.php:381 ../src/modules/wiki/content.php:177
+#: ../src/modules/project/scm/cvs.php:380 ../src/modules/wiki/content.php:177
 msgid "Author"
 msgstr ""
 
-#: ../src/modules/content/module.php:755 ../src/modules/content/module.php:773
+#: ../src/modules/content/module.php:752 ../src/modules/content/module.php:770
 msgid "Could not preview content"
 msgstr ""
 
-#: ../src/modules/content/module.php:850
+#: ../src/modules/content/module.php:847
 msgid "Could not submit content"
 msgstr ""
 
-#: ../src/modules/content/module.php:924
+#: ../src/modules/content/module.php:921
 msgid "Unable to fetch content"
 msgstr ""
 
-#: ../src/modules/content/module.php:930
+#: ../src/modules/content/module.php:927
 msgid "Could not update content"
 msgstr ""
 
-#: ../src/modules/content/module.php:934
+#: ../src/modules/content/module.php:931
 msgid "Update "
 msgstr ""
 
-#: ../src/modules/content/module.php:1095
+#: ../src/modules/content/module.php:1092
 msgid "Back to this module"
 msgstr ""
 
-#: ../src/modules/content/module.php:1151
-#: ../src/modules/content/module.php:1300
+#: ../src/modules/content/module.php:1148
+#: ../src/modules/content/module.php:1297
 msgid "Unpublish"
 msgstr ""
 
-#: ../src/modules/content/module.php:1155 ../src/modules/group/module.php:305
+#: ../src/modules/content/module.php:1152 ../src/modules/group/module.php:305
 #: ../src/modules/user/module.php:654
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../src/modules/content/module.php:1190
+#: ../src/modules/content/module.php:1187
 msgid "Content could be deleted successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1191
+#: ../src/modules/content/module.php:1188
 msgid "Some content could not be deleted"
 msgstr ""
 
-#: ../src/modules/content/module.php:1211
+#: ../src/modules/content/module.php:1208
 msgid "Content could be disabled successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1212
+#: ../src/modules/content/module.php:1209
 msgid "Some content could not be disabled"
 msgstr ""
 
-#: ../src/modules/content/module.php:1232
+#: ../src/modules/content/module.php:1229
 msgid "Content could be enabled successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1233
+#: ../src/modules/content/module.php:1230
 msgid "Some content could not be enabled"
 msgstr ""
 
-#: ../src/modules/content/module.php:1253 ../src/modules/salt/module.php:440
+#: ../src/modules/content/module.php:1250 ../src/modules/salt/module.php:455
 msgid "Back"
 msgstr ""
 
-#: ../src/modules/content/module.php:1391
+#: ../src/modules/content/module.php:1388
 msgid "Content could be published successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1392
+#: ../src/modules/content/module.php:1389
 msgid "Some content could not be published"
 msgstr ""
 
-#: ../src/modules/content/module.php:1431
-#: ../src/modules/content/module.php:1531
+#: ../src/modules/content/module.php:1428
+#: ../src/modules/content/module.php:1529
 #: ../src/modules/project/content/bug.php:155
-#: ../src/modules/project/module.php:734 ../src/modules/search/module.php:287
+#: ../src/modules/project/module.php:734 ../src/modules/search/module.php:272
 msgid "Preview"
 msgstr ""
 
-#: ../src/modules/content/module.php:1490
+#: ../src/modules/content/module.php:1488
 msgid "Content could be unpublished successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1491
+#: ../src/modules/content/module.php:1489
 msgid "Some content could not be unpublished"
 msgstr ""
 
-#: ../src/modules/content/module.php:1525
-#: ../src/modules/project/module.php:191 ../src/modules/search/module.php:410
+#: ../src/modules/content/module.php:1523
+#: ../src/modules/project/module.php:191 ../src/modules/search/module.php:395
 #: ../src/modules/user/module.php:332 ../src/modules/user/module.php:1566
 msgid "Reset"
 msgstr ""
@@ -1026,7 +1027,7 @@ msgstr ""
 
 #: ../src/modules/download/content/folder.php:86
 #: ../src/modules/project/scm/cvs.php:78
-#: ../src/modules/project/scm/cvs.php:378
+#: ../src/modules/project/scm/cvs.php:377
 #: ../src/modules/project/scm/git.php:78
 msgid "Filename"
 msgstr "Nombre de archivo"
@@ -1311,7 +1312,7 @@ msgstr ""
 msgid "Section: "
 msgstr ""
 
-#: ../src/modules/manual/module.php:449 ../src/modules/search/module.php:388
+#: ../src/modules/manual/module.php:449 ../src/modules/search/module.php:373
 msgid "Any"
 msgstr ""
 
@@ -1319,8 +1320,8 @@ msgstr ""
 msgid "Page: "
 msgstr ""
 
-#: ../src/modules/manual/module.php:457 ../src/modules/search/module.php:221
-#: ../src/modules/search/module.php:321 ../src/modules/search/module.php:340
+#: ../src/modules/manual/module.php:457 ../src/modules/search/module.php:206
+#: ../src/modules/search/module.php:306 ../src/modules/search/module.php:325
 #: ../src/modules/wiki/module.php:87 ../src/modules/wiki/module.php:96
 msgid "Search"
 msgstr "Buscar"
@@ -1357,7 +1358,7 @@ msgstr ""
 msgid "Monitoring"
 msgstr ""
 
-#: ../src/modules/probe/module.php:114 ../src/modules/salt/module.php:183
+#: ../src/modules/probe/module.php:114
 msgid "Host: "
 msgstr ""
 
@@ -1365,11 +1366,11 @@ msgstr ""
 msgid "Hostname"
 msgstr ""
 
-#: ../src/modules/probe/module.php:118 ../src/modules/salt/module.php:187
+#: ../src/modules/probe/module.php:118 ../src/modules/salt/module.php:186
 msgid "Monitor"
 msgstr ""
 
-#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:741
+#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:756
 msgid "Load average"
 msgstr ""
 
@@ -1510,7 +1511,7 @@ msgid "Bug reports"
 msgstr ""
 
 #: ../src/modules/project/content.php:382
-#: ../src/modules/project/scm/cvs.php:383
+#: ../src/modules/project/scm/cvs.php:382
 msgid "Timeline"
 msgstr ""
 
@@ -1844,7 +1845,7 @@ msgid "Assigned to: "
 msgstr ""
 
 #: ../src/modules/project/scm/cvs.php:44
-#: ../src/modules/project/scm/cvs.php:364
+#: ../src/modules/project/scm/cvs.php:363
 msgid "No CVS repository defined"
 msgstr ""
 
@@ -1862,7 +1863,7 @@ msgstr ""
 
 #: ../src/modules/project/scm/cvs.php:80
 #: ../src/modules/project/scm/cvs.php:222
-#: ../src/modules/project/scm/cvs.php:380
+#: ../src/modules/project/scm/cvs.php:379
 msgid "Revision"
 msgstr ""
 
@@ -1882,21 +1883,21 @@ msgstr ""
 msgid "Revisions"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:343
+#: ../src/modules/project/scm/cvs.php:342
 #: ../src/modules/project/scm/git.php:200
 msgid "Repository"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:352
+#: ../src/modules/project/scm/cvs.php:351
 #: ../src/modules/project/scm/git.php:205
 msgid "The source code can be obtained as follows: "
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:372
+#: ../src/modules/project/scm/cvs.php:371
 msgid "Could not open the project history"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:379
+#: ../src/modules/project/scm/cvs.php:378
 msgid "Action"
 msgstr ""
 
@@ -1918,162 +1919,154 @@ msgstr ""
 msgid "Salt administration"
 msgstr ""
 
-#: ../src/modules/salt/module.php:184
+#: ../src/modules/salt/module.php:183
 msgid "Hostname (or glob)"
 msgstr ""
 
-#: ../src/modules/salt/module.php:192
+#: ../src/modules/salt/module.php:191
 msgid "Uptime"
 msgstr ""
 
-#: ../src/modules/salt/module.php:194
+#: ../src/modules/salt/module.php:193
 msgid "Could not obtain uptime"
 msgstr ""
 
-#: ../src/modules/salt/module.php:195
+#: ../src/modules/salt/module.php:194
 msgid "Package upgrades"
 msgstr ""
 
-#: ../src/modules/salt/module.php:197
+#: ../src/modules/salt/module.php:196
 msgid "Could not list package upgrades"
 msgstr ""
 
-#: ../src/modules/salt/module.php:199
+#: ../src/modules/salt/module.php:198
 msgid "Services"
 msgstr ""
 
-#: ../src/modules/salt/module.php:201
+#: ../src/modules/salt/module.php:200
 msgid "Could not list the services"
 msgstr ""
 
-#: ../src/modules/salt/module.php:204
+#: ../src/modules/salt/module.php:203
 msgid "Statistics"
 msgstr ""
 
-#: ../src/modules/salt/module.php:206
+#: ../src/modules/salt/module.php:205
 msgid "Could not obtain statistics"
 msgstr ""
 
-#: ../src/modules/salt/module.php:303
-msgid "Could not list hosts"
-msgstr ""
-
-#: ../src/modules/salt/module.php:337
+#: ../src/modules/salt/module.php:307
 msgid "Reboot"
 msgstr ""
 
-#: ../src/modules/salt/module.php:342
+#: ../src/modules/salt/module.php:311
 msgid "Shutdown"
 msgstr ""
 
-#: ../src/modules/salt/module.php:404
+#: ../src/modules/salt/module.php:321
+msgid "Could not list hosts"
+msgstr ""
+
+#: ../src/modules/salt/module.php:419
 msgid "Unknown host"
 msgstr ""
 
-#: ../src/modules/salt/module.php:418
+#: ../src/modules/salt/module.php:433
 msgid "Unsupported action"
 msgstr ""
 
-#: ../src/modules/salt/module.php:429
+#: ../src/modules/salt/module.php:444
 #, php-format
 msgid "Could not %s"
 msgstr ""
 
-#: ../src/modules/salt/module.php:435
+#: ../src/modules/salt/module.php:450
 #, php-format
 msgid "%s successful"
 msgstr ""
 
-#: ../src/modules/salt/module.php:451
+#: ../src/modules/salt/module.php:466
 #, php-format
 msgid "Do you really want to %s %s?"
 msgstr ""
 
-#: ../src/modules/salt/module.php:682
+#: ../src/modules/salt/module.php:697
 msgid "Reload"
 msgstr ""
 
-#: ../src/modules/salt/module.php:684
+#: ../src/modules/salt/module.php:699
 msgid "Start"
 msgstr ""
 
-#: ../src/modules/salt/module.php:686
+#: ../src/modules/salt/module.php:701
 msgid "Stop"
 msgstr ""
 
-#: ../src/modules/salt/module.php:688
+#: ../src/modules/salt/module.php:703
 msgid "Restart"
 msgstr ""
 
-#: ../src/modules/salt/module.php:735 ../src/modules/wiki/module.php:125
+#: ../src/modules/salt/module.php:750 ../src/modules/wiki/module.php:125
 msgid "Disk usage"
 msgstr ""
 
-#: ../src/modules/salt/module.php:747
+#: ../src/modules/salt/module.php:762
 msgid "Network interfaces"
 msgstr ""
 
-#: ../src/modules/search/module.php:115
+#: ../src/modules/search/module.php:114
 msgid "Advanced search"
 msgstr ""
 
-#: ../src/modules/search/module.php:145
-msgid "Search administration"
-msgstr ""
-
-#: ../src/modules/search/module.php:147
-msgid "Not implemented"
-msgstr ""
-
-#: ../src/modules/search/module.php:164 ../src/modules/search/module.php:196
+#: ../src/modules/search/module.php:149 ../src/modules/search/module.php:181
 msgid "Unable to search"
 msgstr ""
 
-#: ../src/modules/search/module.php:218
+#: ../src/modules/search/module.php:203
 msgid "Search..."
 msgstr "Buscar..."
 
-#: ../src/modules/search/module.php:321
+#: ../src/modules/search/module.php:306
 msgid "Search results"
 msgstr ""
 
-#: ../src/modules/search/module.php:332
+#: ../src/modules/search/module.php:317
 msgid "Search query: "
 msgstr ""
 
-#: ../src/modules/search/module.php:345
+#: ../src/modules/search/module.php:330
 msgid "Simpler search..."
 msgstr ""
 
-#: ../src/modules/search/module.php:351
+#: ../src/modules/search/module.php:336
 msgid "Advanced search..."
 msgstr ""
 
-#: ../src/modules/search/module.php:363
+#: ../src/modules/search/module.php:348
 msgid "Search in: "
 msgstr ""
 
-#: ../src/modules/search/module.php:366
+#: ../src/modules/search/module.php:351
 msgid "titles"
 msgstr "titulos"
 
-#: ../src/modules/search/module.php:370
+#: ../src/modules/search/module.php:355
 msgid "content"
 msgstr ""
 
-#: ../src/modules/search/module.php:383
+#: ../src/modules/search/module.php:368
 msgid "module: "
 msgstr ""
 
-#: ../src/modules/search/module.php:398
+#: ../src/modules/search/module.php:383
 msgid "Case-insensitive"
 msgstr ""
 
-#: ../src/modules/search/module.php:400
+#: ../src/modules/search/module.php:385
 msgid "Case-sensitive"
 msgstr ""
 
-#: ../src/modules/search/module.php:405
+#: ../src/modules/search/module.php:390
 msgid "Results per page:"
 msgstr ""
 
