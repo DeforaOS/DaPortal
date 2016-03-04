@@ -32,31 +32,19 @@ class CLILogEngine extends CLIEngine
 	//CLILogEngine::log
 	public function log($priority, $message)
 	{
-		$priorities = array('LOG_ALERT' => LOG_ALERT,
-			'LOG_CRIT' => LOG_CRIT,
-			'LOG_EMERG' => LOG_EMERG,
-			'LOG_DEBUG' => LOG_DEBUG,
-			'LOG_ERR' => LOG_ERR,
-			'LOG_WARNING' => LOG_WARNING,
-			'LOG_INFO' => LOG_INFO,
-			'LOG_NOTICE' => LOG_NOTICE);
-
+		$priority = $this->logPriority($priority);
 		switch($priority)
 		{
-			case 'LOG_DEBUG':
+			case LOG_DEBUG:
 				if(!$this->getDebug())
 					return FALSE;
 				break;
-			case 'LOG_INFO':
+			case LOG_INFO:
 				if($this->verbose < 2
 						&& !$this->getDebug())
 					return FALSE;
 				break;
 		}
-		if(isset($priorities[$priority]))
-			$priority = $priorities[$priority];
-		else
-			$priority = LOG_WARNING;
 		if(!is_string($message))
 		{
 			ob_start();

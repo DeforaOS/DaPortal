@@ -34,7 +34,7 @@ while(($de = readdir($dir)) !== FALSE)
 	$config->set('template', 'backend', $name);
 	if(($template = Template::attachDefault($engine)) === FALSE)
 	{
-		$engine->log('LOG_ERR',
+		$engine->log(LOG_ERR,
 				$template.': Could not attach template');
 		$ret = 3;
 		continue;

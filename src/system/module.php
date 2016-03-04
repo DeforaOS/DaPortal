@@ -62,7 +62,7 @@ abstract class Module
 			return FALSE;
 		$module = $name.'Module';
 		if(($ret = new $module($id, $name)) == NULL)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					$name.': Could not load module');
 		return $ret;
 	}
@@ -76,7 +76,7 @@ abstract class Module
 		if($modules === FALSE)
 			$modules = $engine->getModules();
 		if(($ret = array_search($name, $modules)) === FALSE)
-			return $engine->log('LOG_DEBUG',
+			return $engine->log(LOG_DEBUG,
 					$name.': Module not available');
 		return $ret;
 	}

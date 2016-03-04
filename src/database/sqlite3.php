@@ -64,21 +64,21 @@ class SQLite3Database extends Database
 		if(is_null($this->handle))
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$this->engine->log('LOG_DEBUG', $query);
+			$this->engine->log(LOG_DEBUG, $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
-			return $this->engine->log('LOG_ERR',
+			return $this->engine->log(LOG_ERR,
 					'Could not prepare statement: '
 					.$this->handle->lastErrorMsg());
 		if($parameters === FALSE)
 			$parameters = array();
 		if($stmt->clear() !== TRUE)
-			return $this->engine->log('LOG_ERR',
+			return $this->engine->log(LOG_ERR,
 					'Could not clear statement: '
 					.$this->handle->lastErrorMsg());
 		foreach($parameters as $k => $v)
 			$stmt->bindValue(':'.$k, $v);
 		if(($res = $stmt->execute()) === FALSE)
-			return $this->engine->log('LOG_ERR',
+			return $this->engine->log(LOG_ERR,
 					'Could not execute statement: '
 					.$this->handle->lastErrorMsg());
 		return new SQLite3DatabaseResult($res);
@@ -130,7 +130,7 @@ class SQLite3Database extends Database
 	protected function attach(Engine $engine)
 	{
 		if(($filename = $this->configGet('filename')) === FALSE)
-			return $this->engine->log('LOG_ERR',
+			return $this->engine->log(LOG_ERR,
 					'Database filename not defined');
 		try
 		{
@@ -139,7 +139,7 @@ class SQLite3Database extends Database
 		catch(Exception $e)
 		{
 			$this->handle = NULL;
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 				'Could not open database');
 		}
 		$this->engine = $engine;

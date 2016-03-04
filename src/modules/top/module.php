@@ -50,7 +50,7 @@ class TopModule extends Module
 		$cred = $engine->getCredentials();
 
 		if(!$cred->isAdmin())
-			return $engine->log('LOG_ERR', 'Permission denied');
+			return $engine->log(LOG_ERR, 'Permission denied');
 		$title = _('Top links administration');
 		//FIXME implement
 		return FALSE;

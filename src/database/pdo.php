@@ -95,7 +95,7 @@ class PDODatabase extends Database
 		if($this->handle === FALSE)
 			return FALSE;
 		if($this->debug)
-			$this->engine->log('LOG_DEBUG', $query);
+			$this->engine->log(LOG_DEBUG, $query);
 		if(($stmt = $this->prepare($query, $parameters)) === FALSE)
 			return $this->_queryError(
 					'Could not prepare statement');
@@ -117,9 +117,9 @@ class PDODatabase extends Database
 		$error = $this->handle->errorInfo();
 
 		if(count($error) == 3)
-			return $this->engine->log('LOG_ERR',
+			return $this->engine->log(LOG_ERR,
 					$message.': '.$error[0].': '.$error[2]);
-		return $this->engine->log('LOG_ERR', $message.': '.$error[0]);
+		return $this->engine->log(LOG_ERR, $message.': '.$error[0]);
 	}
 
 
@@ -231,7 +231,7 @@ class PDODatabase extends Database
 			$section = 'database::'.$this->name;
 		//XXX code duplicated from PDODatabase::attach()
 		if(($dsn = $config->get($section, 'dsn')) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Data Source Name (DSN) not defined');
 		$username = $config->get($section, 'username');
 		$password = $config->get($section, 'password');
@@ -242,7 +242,7 @@ class PDODatabase extends Database
 				$args);
 		} catch(PDOException $e) {
 			$message = 'Could not open database: '.$e->getMessage();
-			return $engine->log('LOG_ERR', $message);
+			return $engine->log(LOG_ERR, $message);
 		}
 		$this->engine = $engine;
 		$this->debug = $config->get('database', 'debug') ? TRUE : FALSE;
@@ -269,12 +269,12 @@ class PDODatabase extends Database
 		//default the LIKE keyword to case-sensitive
 		$query = 'PRAGMA case_sensitive_like=1';
 		if($this->query($this->engine, $query) === FALSE)
-			$this->engine->log('LOG_WARNING',
+			$this->engine->log(LOG_WARNING,
 					'Pattern matching is case-insensitive');
 		//enforce support for foreign keys
 		$query = 'PRAGMA foreign_keys=ON';
 		if($this->query($this->engine, $query) === FALSE)
-			$this->engine->log('LOG_WARNING',
+			$this->engine->log(LOG_WARNING,
 					'Foreign keys are not enforced');
 	}
 

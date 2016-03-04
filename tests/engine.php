@@ -65,31 +65,31 @@ class TestEngine extends Engine
 $ret = 0;
 $engine = new TestEngine();
 $engine->attach();
-$ret |= ($engine->logTest('LOG_ERR', 'Test string',
+$ret |= ($engine->logTest(LOG_ERR, 'Test string',
 		'./engine.php: Error: Test string') === TRUE) ? 0 : 2;
-$ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
+$ret |= ($engine->logTest(LOG_ERR, "Multi-line\ntest string",
 		"./engine.php: Error: Multi-line
 ./engine.php: Error: test string") === TRUE)
 		? 0 : 4;
-$ret |= ($engine->logTest('LOG_ERR', FALSE,
+$ret |= ($engine->logTest(LOG_ERR, FALSE,
 		'./engine.php: Error: false') === TRUE) ? 0 : 8;
 
-$engine->backtraceTest('LOG_INFO');
+$engine->backtraceTest(LOG_INFO);
 $engine->errorTest();
 //XXX currently breaks the test
 //$engine->exceptionTest();
 
 $engine->setDebug(FALSE);
-$ret |= ($engine->logTest('LOG_ERR', 'Test string',
+$ret |= ($engine->logTest(LOG_ERR, 'Test string',
 		'./engine.php: Error: Test string') === TRUE) ? 0 : 16;
-$ret |= ($engine->logTest('LOG_ERR', "Multi-line\ntest string",
+$ret |= ($engine->logTest(LOG_ERR, "Multi-line\ntest string",
 		"./engine.php: Error: Multi-line
 ./engine.php: Error: test string") === TRUE)
 		? 0 : 32;
-$ret |= ($engine->logTest('LOG_ERR', FALSE,
+$ret |= ($engine->logTest(LOG_ERR, FALSE,
 		'./engine.php: Error: false') === TRUE) ? 0 : 64;
 
-$engine->backtraceTest('LOG_INFO');
+$engine->backtraceTest(LOG_INFO);
 $engine->errorTest();
 //XXX currently breaks the test
 //$engine->exceptionTest();

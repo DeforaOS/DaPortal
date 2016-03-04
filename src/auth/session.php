@@ -111,7 +111,7 @@ class SessionAuth extends Auth
 		$message = 'Could not regenerate the session';
 		if($config->get('auth::session', 'regenerate') == 1
 				&& session_regenerate_id(TRUE) !== TRUE)
-			$engine->log('LOG_WARNING', $message);
+			$engine->log(LOG_WARNING, $message);
 		$this->_setVariable($engine, 'SessionAuth::uid',
 				$credentials->getUserID());
 		$this->_setVariable($engine, 'SessionAuth::username',

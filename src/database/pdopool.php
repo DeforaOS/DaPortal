@@ -65,10 +65,10 @@ class PDOPoolDatabase extends PDODatabase
 		$section = 'database::'.$this->name;
 
 		if($this->_attachMaster($engine, $config, $section) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not open database master');
 		if($this->_attachSlaves($engine, $config, $section) === FALSE)
-			$engine->log('LOG_WARNING',
+			$engine->log(LOG_WARNING,
 					'Could not open any database slave');
 		return TRUE;
 	}
@@ -95,7 +95,7 @@ class PDOPoolDatabase extends PDODatabase
 					"$section::$s", TRUE))
 				$this->slaves->append($slave);
 			else
-				$engine->log('LOG_WARNING', $s.": Could not"
+				$engine->log(LOG_WARNING, $s.": Could not"
 						.' open database slave');
 		}
 		return ($this->slaves->count() > 0) ? TRUE : FALSE;

@@ -100,7 +100,7 @@ class DownloadModule extends MultiContentModule
 				$filename, $request->getTitle(), $content);
 		if($error !== FALSE)
 			//XXX report the error to the user instead
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		return $content;
 	}
 

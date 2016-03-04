@@ -112,7 +112,7 @@ abstract class Auth
 		{
 			$name .= 'Auth';
 			$ret = new $name();
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' (default)');
 			$ret->attach($engine);
 			return $ret;
@@ -134,7 +134,7 @@ abstract class Auth
 		closedir($dir);
 		if($ret !== FALSE)
 		{
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
 			$ret->attach($engine);
 		}

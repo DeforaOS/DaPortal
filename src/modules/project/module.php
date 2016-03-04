@@ -68,7 +68,7 @@ class ProjectModule extends MultiContentModule
 			return FALSE;
 		$name = $name.'SCMProject';
 		$ret = new $name();
-		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret));
+		$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret));
 		$ret->attach($engine);
 		return $ret;
 	}

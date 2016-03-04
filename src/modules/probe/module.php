@@ -67,7 +67,7 @@ class ProbeModule extends Module
 		if(($root = $this->configGet('root')) === FALSE
 				|| strlen($root) == 0)
 		{
-			$this->engine->log('LOG_ERR',
+			$this->engine->log(LOG_ERR,
 					'The RRD repository is not configured');
 			return FALSE;
 		}
@@ -402,7 +402,7 @@ class ProbeModule extends Module
 			$rrdtool .= ' --height '.escapeshellarg($height);
 		$rrdtool .= ' --vertical-label '.escapeshellarg($label);
 		//render the graph
-		$this->engine->log('LOG_DEBUG', $rrdtool);
+		$this->engine->log(LOG_DEBUG, $rrdtool);
 		if(($fp = popen($rrdtool, 'r')) === FALSE)
 		{
 			$error = _('Could not create the graph');

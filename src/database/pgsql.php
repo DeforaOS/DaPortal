@@ -123,7 +123,7 @@ class PgSQLDatabase extends Database
 		if($this->handle === FALSE)
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$this->engine->log('LOG_DEBUG', $query);
+			$this->engine->log(LOG_DEBUG, $query);
 		//convert the query to the PostgreSQL way
 		//FIXME cache the results of the conversion
 		//XXX this may break the query string in illegitimate places
@@ -139,7 +139,7 @@ class PgSQLDatabase extends Database
 			if(!array_key_exists($k, $parameters))
 			{
 				$error = $k.': Missing parameter in query';
-				return $this->engine->log('LOG_ERR', $error);
+				return $this->engine->log(LOG_ERR, $error);
 			}
 			$query .= "\$$i ".substr($q[$i], $j);
 			if(is_bool($parameters[$k]))
@@ -148,7 +148,7 @@ class PgSQLDatabase extends Database
 				$args[$i] = $parameters[$k];
 		}
 		if($config->get('database::pgsql', 'debug'))
-			$this->engine->log('LOG_DEBUG', get_class().': '.$query);
+			$this->engine->log(LOG_DEBUG, get_class().': '.$query);
 		//prepare the query
 		if(($q = $this->prepare($query, $args)) === FALSE)
 			return FALSE;
@@ -162,7 +162,7 @@ class PgSQLDatabase extends Database
 		if($res === FALSE)
 		{
 			if(($error = pg_last_error($this->handle)) !== FALSE)
-				$this->engine->log('LOG_DEBUG', $error);
+				$this->engine->log(LOG_DEBUG, $error);
 			return FALSE;
 		}
 		if($async)
@@ -222,7 +222,7 @@ class PgSQLDatabase extends Database
 		global $config;
 
 		if($this->_attachConfig($config) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not open database');
 		$this->engine = $engine;
 		return TRUE;

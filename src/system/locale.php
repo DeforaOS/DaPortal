@@ -47,7 +47,7 @@ class Locale
 		{
 			$message = 'Gettext must be installed and enabled'
 				.' for translations';
-			$engine->log('LOG_WARNING', $message);
+			$engine->log(LOG_WARNING, $message);
 			require_once('./system/locale/gettext.php');
 			return;
 		}
@@ -60,7 +60,7 @@ class Locale
 		else
 			$locales = $locale;
 		if(setlocale(LC_ALL, $locales) === FALSE)
-			$engine->log('LOG_WARNING',
+			$engine->log(LOG_WARNING,
 					'The locale may not have been set');
 		bindtextdomain('DaPortal', $path);
 		textdomain('DaPortal');

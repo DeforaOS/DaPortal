@@ -98,7 +98,7 @@ class CAPKIContent extends PKIContent
 		if(is_dir($directory) || is_readable($directory))
 			return FALSE;
 		if(mkdir($directory, 0700, TRUE) === FALSE)
-			return $engine->log('LOG_ERR', $directory.': Could not'
+			return $engine->log(LOG_ERR, $directory.': Could not'
 					.' create directory');
 		return TRUE;
 	}
@@ -343,7 +343,7 @@ class CAPKIContent extends PKIContent
 		if(!file_exists($in) || file_exists($out))
 		{
 			$error = _('Could not generate the signed certificate');
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not generate the signed certificate');
 		}
 		$cmd = 'openssl ca -batch'
@@ -353,7 +353,7 @@ class CAPKIContent extends PKIContent
 			.' -out '.escapeshellarg($out)
 			.' -infiles '.escapeshellarg($in);
 		$res = -1;
-		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		$engine->log(LOG_DEBUG, 'Executing: '.$cmd);
 		$fds = array(1 => STDOUT, 2 => STDOUT);
 		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
 				|| ($res = proc_close($fp)) != 0)

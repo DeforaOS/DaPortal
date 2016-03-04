@@ -1971,13 +1971,13 @@ class UserModule extends Module
 		if(($user = User::lookup($engine, $username)) === FALSE
 				|| ($credentials = $user->authenticate($engine,
 						$password)) === FALSE)
-			return $engine->log('LOG_NOTICE', $username
+			return $engine->log(LOG_NOTICE, $username
 					.': Invalid login attempt');
 		if($engine->setCredentials($credentials) !== TRUE)
-			return $engine->log('LOG_NOTICE', $username
+			return $engine->log(LOG_NOTICE, $username
 					.': Unable to log user in');
 		if($log)
-			$engine->log('LOG_NOTICE',
+			$engine->log(LOG_NOTICE,
 					$username.': User logged in');
 		return TRUE;
 	}
@@ -1990,13 +1990,13 @@ class UserModule extends Module
 		$log = $this->configGet('log');
 
 		if($engine->setCredentials() === FALSE)
-			return $engine->log('LOG_ERR', $username
+			return $engine->log(LOG_ERR, $username
 					.': Unable to log user out');
 		if($log)
-			$engine->log('LOG_NOTICE', $username
+			$engine->log(LOG_NOTICE, $username
 					.': User logged out');
 		if($log && $closed)
-			$engine->log('LOG_NOTICE',
+			$engine->log(LOG_NOTICE,
 					$username.': User account closed');
 		return TRUE;
 	}

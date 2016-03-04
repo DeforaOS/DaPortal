@@ -544,7 +544,7 @@ abstract class PKIContent extends ContentMulti
 		$module = $this->getModule();
 		$section = 'module::'.$module->getName(); //XXX
 		if(($this->root = $config->get($section, 'root')) === FALSE)
-			return $engine->log('LOG_ERR', 'The PKI root folder is'
+			return $engine->log(LOG_ERR, 'The PKI root folder is'
 					.' not configured');
 		return $this->root;
 	}
@@ -613,7 +613,7 @@ abstract class PKIContent extends ContentMulti
 		if(file_exists($keyout) || file_exists($out))
 		{
 			$error = _('Could not generate the certificate');
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not generate the certificate');
 		}
 		$days = ' -days '.escapeshellarg($days);
@@ -624,13 +624,13 @@ abstract class PKIContent extends ContentMulti
 			.' -out '.escapeshellarg($out)
 			.' -subj '.escapeshellarg($subject);
 		$res = -1;
-		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		$engine->log(LOG_DEBUG, 'Executing: '.$cmd);
 		$fds = array(1 => STDOUT, 2 => STDOUT);
 		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
 				|| ($res = proc_close($fp)) != 0)
 		{
 			$error = _('Could not generate the certificate');
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not generate the certificate');
 		}
 		return TRUE;
@@ -667,7 +667,7 @@ abstract class PKIContent extends ContentMulti
 				|| !file_exists($signkey))
 		{
 			$error = _('Could not generate the signing request');
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not generate the signing request');
 		}
 		$cmd = 'openssl x509 -x509toreq'
@@ -675,13 +675,13 @@ abstract class PKIContent extends ContentMulti
 			.' -out '.escapeshellarg($out)
 			.' -signkey '.escapeshellarg($signkey);
 		$res = -1;
-		$engine->log('LOG_DEBUG', 'Executing: '.$cmd);
+		$engine->log(LOG_DEBUG, 'Executing: '.$cmd);
 		$fds = array(1 => STDOUT, 2 => STDOUT);
 		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
 				|| ($res = proc_close($fp)) != 0)
 		{
 			$error = _('Could not generate the signing request');
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not generate the signing request');
 		}
 		return TRUE;

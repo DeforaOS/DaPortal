@@ -73,7 +73,7 @@ class PageResponse extends Response
 		}
 		else
 		{
-			$engine->log('LOG_ERR', $error);
+			$engine->log(LOG_ERR, $error);
 			return Response::$CODE_EIO;
 		}
 		return $this->getCode();

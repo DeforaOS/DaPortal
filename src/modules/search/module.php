@@ -448,7 +448,7 @@ class SearchModule extends Module
 		$query .= ') ORDER BY timestamp DESC';
 		//paging
 		if(($res = $db->query($engine, $query, $args)) === FALSE)
-			return $engine->log('LOG_ERR', 'Unable to search');
+			return $engine->log(LOG_ERR, 'Unable to search');
 		return $res;
 	}
 }

@@ -87,7 +87,7 @@ class ManualModule extends Module
 		if(($path = $this->configGet('path')) === FALSE)
 		{
 			$message = 'Path to manual pages not configured';
-			return $engine->log('LOG_ERR', $message);
+			return $engine->log(LOG_ERR, $message);
 		}
 		if(strpos($name, '/') !== FALSE)
 			return FALSE;
@@ -136,7 +136,7 @@ class ManualModule extends Module
 		if(($path = $this->configGet('path')) === FALSE)
 		{
 			$message = 'Path to manual pages not configured';
-			return $engine->log('LOG_ERR', $message);
+			return $engine->log(LOG_ERR, $message);
 		}
 		if(strpos($section, '/') !== FALSE)
 			return FALSE;
@@ -212,7 +212,7 @@ class ManualModule extends Module
 		if(($path = $this->configGet('path')) === FALSE)
 		{
 			$message = 'Path to manual pages not configured';
-			return $engine->log('LOG_ERR', $message);
+			return $engine->log(LOG_ERR, $message);
 		}
 		$path = explode(',', $path);
 		foreach($path as $p)
@@ -466,7 +466,7 @@ class ManualModule extends Module
 		if(($path = $this->configGet('path')) === FALSE)
 		{
 			$message = 'Path to manual pages not configured';
-			return $engine->log('LOG_ERR', $message);
+			return $engine->log(LOG_ERR, $message);
 		}
 		if(strpos($section, '/') !== FALSE
 				|| strpos($name, '/') !== FALSE)

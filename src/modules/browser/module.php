@@ -136,7 +136,7 @@ class BrowserModule extends Module
 		if(($root = $this->configGet('root')) === FALSE)
 		{
 			$message = 'The browser repository is not configured';
-			$engine->log('LOG_WARNING', $message);
+			$engine->log(LOG_WARNING, $message);
 			$root = '/tmp';
 		}
 		return $root;

@@ -134,13 +134,13 @@ class Mime
 		static::$types = array();
 		if(($globs = $config->get('mime', 'globs')) === FALSE)
 		{
-			$engine->log('LOG_WARNING',
+			$engine->log(LOG_WARNING,
 					'The globs file is not defined');
 			return FALSE;
 		}
 		if(($globs = file_get_contents($globs)) === FALSE)
 		{
-			$engine->log('LOG_WARNING',
+			$engine->log(LOG_WARNING,
 					'Could not read the globs file');
 			return FALSE;
 		}

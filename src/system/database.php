@@ -178,7 +178,7 @@ abstract class Database
 		{
 			$class = $name.'Database';
 			$ret = new $class($name);
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' (default)');
 			if($ret->attach($engine) === FALSE)
 				return FALSE;
@@ -201,7 +201,7 @@ abstract class Database
 		closedir($dir);
 		if($ret != FALSE)
 		{
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
 			if($ret->attach($engine) === FALSE)
 				return FALSE;
@@ -305,7 +305,7 @@ abstract class Database
 		$this->profile = TRUE;
 		if($this->query($this->engine, static::$query_sql_profile,
 				$args) === FALSE)
-			$this->engine->log('LOG_ERR', $error.' (SQL error)');
+			$this->engine->log(LOG_ERR, $error.' (SQL error)');
 		$this->profile = FALSE;
 		return TRUE;
 	}

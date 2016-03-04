@@ -44,7 +44,7 @@ class ErrorResponse extends Response
 	//ErrorResponse::render
 	public function render(Engine $engine)
 	{
-		$engine->log('LOG_ERR', $this->getContent());
+		$engine->log(LOG_ERR, $this->getContent());
 		return $this->getCode();
 	}
 }

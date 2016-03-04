@@ -47,7 +47,7 @@ class AuthTest extends Auth
 		foreach($classes as $class)
 		{
 			$auth = new $class();
-			$engine->log('LOG_INFO', get_class($auth).': '
+			$engine->log(LOG_INFO, get_class($auth).': '
 					.$auth->match($engine));
 		}
 

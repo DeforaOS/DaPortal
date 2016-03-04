@@ -53,14 +53,14 @@ class Mail
 		$error = 'Could not send e-mail (invalid parameters)';
 		if(strpos($from, "\n") !== FALSE
 				|| strpos($subject, "\n") !== FALSE)
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		//verify the headers
 		if(!is_array($headers))
 			$headers = array();
 		foreach($headers as $h => $v)
 			if(strpos($h, "\n") !== FALSE
 					|| strpos($v, "\n") !== FALSE)
-				return $engine->log('LOG_ERR', $error);
+				return $engine->log(LOG_ERR, $error);
 		//obtain the charset
 		if(($charset = $config->get('defaults', 'charset')) === FALSE)
 			$charset = 'UTF-8';
@@ -92,7 +92,7 @@ class Mail
 		//verify the recipient
 		$error = 'Could not send e-mail (invalid recipient)';
 		if(strpos($to, "\n") !== FALSE)
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		//assemble the headers
 		$hdr = "From: $from\n";
 		foreach($headers as $h => $v)
@@ -100,8 +100,8 @@ class Mail
 		//send the message
 		$error = 'Could not send e-mail';
 		if(mail($to, $subject, $page, $hdr) === FALSE)
-			return $engine->log('LOG_ERR', $error);
-		$engine->log('LOG_DEBUG', 'e-mail sent to '.$to);
+			return $engine->log(LOG_ERR, $error);
+		$engine->log(LOG_DEBUG, 'e-mail sent to '.$to);
 		return TRUE;
 	}
 
@@ -166,7 +166,7 @@ class Mail
 			return FALSE;
 		if(!class_exists($class))
 		{
-			$engine->log('LOG_WARNING', $class.': Class not found');
+			$engine->log(LOG_WARNING, $class.': Class not found');
 			return $text;
 		}
 		$mime = new $class(array('eol' => "\n",
@@ -194,7 +194,7 @@ class Mail
 					'application/octet-stream');
 			if(($e = $mime->addAttachment($data, $type, $filename,
 					FALSE)) !== TRUE)
-				$engine->log('LOG_ERR', $e->getMessage());
+				$engine->log(LOG_ERR, $e->getMessage());
 		}
 	}
 
@@ -221,12 +221,12 @@ class Mail
 		{
 			//XXX for PHP < 5.4
 			if($xml->loadHTML($html) === FALSE)
-				return $engine->log('LOG_ERR',
+				return $engine->log(LOG_ERR,
 						'Could not set the HTML body');
 		}
 		else if($xml->loadHTML($html, LIBXML_NOENT | LIBXML_NONET)
 				=== FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not set the HTML body');
 		//convert in-line images for compatibility
 		$images = $xml->getElementsByTagName('img');

@@ -64,12 +64,12 @@ class StreamResponse extends Response
 		if(($pos = ftell($fp)) !== FALSE && $pos != 0
 				&& rewind($fp) === FALSE)
 		{
-			$engine->log('LOG_ERR', 'Could not rewind the stream');
+			$engine->log(LOG_ERR, 'Could not rewind the stream');
 			return Response::$CODE_EIO;
 		}
 		if(($res = fpassthru($fp)) === FALSE)
 		{
-			$engine->log('LOG_ERR', 'Could not render the stream');
+			$engine->log(LOG_ERR, 'Could not render the stream');
 			return Response::$CODE_EIO;
 		}
 		return $this->getCode();

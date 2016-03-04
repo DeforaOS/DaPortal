@@ -58,7 +58,7 @@ class GtkFormat extends FormatElements
 			$filename = FALSE)
 	{
 		if($filename !== FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Cannot render to a filename');
 		parent::render($engine, $page, $filename);
 		//enter the main loop
@@ -74,17 +74,17 @@ class GtkFormat extends FormatElements
 	{
 		$icon = Gtk::STOCK_DIALOG_INFO;
 		$title = 'Information';
-		switch($priority)
+		switch($this->logPriority($priority))
 		{
-			case 'LOG_DEBUG':
+			case LOG_DEBUG:
 				if(!$this->engine->getDebug())
 					return FALSE;
 				break;
-			case 'LOG_ERR':
+			case LOG_ERR:
 				$icon = Gtk::STOCK_DIALOG_ERROR;
 				$title = 'Error';
 				break;
-			case 'LOG_WARNING':
+			case LOG_WARNING:
 				$icon = Gtk::STOCK_DIALOG_WARNING;
 				$title = 'Warning';
 				break;
@@ -101,7 +101,8 @@ class GtkFormat extends FormatElements
 		if($this->debug_window === FALSE)
 			$this->_log_create();
 		$iter = $this->debug_store->append();
-		$this->debug_store->set($iter, 0, $pixbuf, 1, $priority,
+		$this->debug_store->set($iter, 0, $pixbuf,
+				1, $this->priorities[$priority],
 				2, $message);
 		$this->debug_window->show_all();
 	}

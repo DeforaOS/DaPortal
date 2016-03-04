@@ -165,7 +165,7 @@ abstract class Engine
 			//XXX no type hint for compatibility with PHP 7
 			set_exception_handler(function($e)
 			{
-				$this->logException($e, 'LOG_ERR');
+				$this->logException($e, LOG_ERR);
 				exit(125);
 			});
 		}
@@ -209,7 +209,7 @@ abstract class Engine
 				." request: module $module"
 				.(($action !== FALSE)
 					? ", action $action" : '');
-			$this->log('LOG_DEBUG', $message);
+			$this->log(LOG_DEBUG, $message);
 			if(($module = Module::load($this, $module)) === FALSE)
 			{
 				$message = _('Could not load the module');
@@ -224,7 +224,7 @@ abstract class Engine
 			if(!($ret instanceof Response))
 			{
 				$message = 'Unknown response type';
-				$this->log('LOG_ERR', $message);
+				$this->log(LOG_ERR, $message);
 				return new ErrorResponse();
 			}
 		}
@@ -277,7 +277,7 @@ abstract class Engine
 			return error_log('Could not load any engine');
 		//XXX ignore errors
 		static::configLoadEngine($prefix, $name, FALSE);
-		$ret->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+		$ret->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 				.' with priority '.$priority);
 		$ret->attach();
 		$debug = ($config->get(FALSE, 'debug')
@@ -364,6 +364,15 @@ abstract class Engine
 
 	//protected
 	//properties
+	protected $priorities = array('LOG_ALERT' => LOG_ALERT,
+		'LOG_CRIT' => LOG_CRIT,
+		'LOG_EMERG' => LOG_EMERG,
+		'LOG_DEBUG' => LOG_DEBUG,
+		'LOG_ERR' => LOG_ERR,
+		'LOG_WARNING' => LOG_WARNING,
+		'LOG_INFO' => LOG_INFO,
+		'LOG_NOTICE' => LOG_NOTICE);
+
 	protected $verbose = 1;
 	//queries
 	static protected $query_modules = "SELECT module_id AS id, name
@@ -374,7 +383,7 @@ abstract class Engine
 
 	//methods
 	//Engine::logBacktrace
-	protected function logBacktrace($priority = 'LOG_DEBUG')
+	protected function logBacktrace($priority = LOG_DEBUG)
 	{
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		array_shift($backtrace);
@@ -384,7 +393,7 @@ abstract class Engine
 
 	//Engine::logException
 	protected function logException(Exception $exception,
-			$priority = 'LOG_DEBUG')
+			$priority = LOG_DEBUG)
 	{
 		$this->logTrace($exception->getTrace());
 		$message = "Uncaught exception '".$exception->getMessage()."'";
@@ -396,8 +405,20 @@ abstract class Engine
 	}
 
 
+	//Engine::logPriority
+	protected function logPriority($priority)
+	{
+		if(in_array($priority, $this->priorities))
+			return $priority;
+		//support the old API with strings
+		if(isset($this->priorities[$priority]))
+			return $this->priorities[$priority];
+		return LOG_WARNING;
+	}
+
+
 	//Engine::logTrace
-	protected function logTrace($trace, $priority = 'LOG_DEBUG')
+	protected function logTrace($trace, $priority = LOG_DEBUG)
 	{
 		$ret = '';
 		$sep = '';
@@ -432,28 +453,28 @@ abstract class Engine
 	//Engine::logMessage
 	protected function logMessage($priority, $message)
 	{
-		switch($priority)
+		switch($this->logPriority($priority))
 		{
-			case 'LOG_ALERT':
-			case 'LOG_CRIT':
-			case 'LOG_EMERG':
+			case LOG_ALERT:
+			case LOG_CRIT:
+			case LOG_EMERG:
 				$level = 'Alert';
 				break;
-			case 'LOG_DEBUG':
+			case LOG_DEBUG:
 				if($this->debug !== TRUE)
 					return FALSE;
 				$level = 'Debug';
 				break;
-			case 'LOG_ERR':
+			case LOG_ERR:
 				$level = 'Error';
 				break;
-			case 'LOG_WARNING':
+			case LOG_WARNING:
 				$level = 'Warning';
 				break;
-			case 'LOG_NOTICE':
+			case LOG_NOTICE:
 				$level = 'Notice';
 				break;
-			case 'LOG_INFO':
+			case LOG_INFO:
 				if($this->verbose < 2 && $this->debug !== TRUE)
 					return FALSE;
 				$level = 'Info';

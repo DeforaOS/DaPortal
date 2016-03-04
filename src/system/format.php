@@ -37,7 +37,7 @@ abstract class Format extends Mutator
 		{
 			$class = $name.'Format';
 			$ret = new $class($name);
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' (default)');
 			$ret->attach($engine, $type);
 			return $ret;
@@ -64,9 +64,9 @@ abstract class Format extends Mutator
 			$error .= ($type !== FALSE)
 				? 'formatting backend for '.$type
 				: 'the default formatting backend';
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		}
-		$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+		$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 				.' with priority '.$priority);
 		$ret->attach($engine, $type);
 		return $ret;

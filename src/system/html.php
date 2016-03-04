@@ -134,7 +134,7 @@ class HTML
 				.xml_get_current_line_number($html->parser)
 				.', column '
 				.xml_get_current_column_number($html->parser);
-			$engine->log('LOG_DEBUG', $error);
+			$engine->log(LOG_DEBUG, $error);
 		}
 		//close the remaining tags
 		while(($tag = array_pop($html->stack)) != NULL)
@@ -285,7 +285,7 @@ class HTML
 				.xml_get_current_line_number($html->parser)
 				.', column '
 				.xml_get_current_column_number($html->parser);
-			$engine->log('LOG_DEBUG', $error);
+			$engine->log(LOG_DEBUG, $error);
 		}
 		return ($ret == 1) ? $html->valid : FALSE;
 	}

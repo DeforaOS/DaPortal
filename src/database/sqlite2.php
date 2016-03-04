@@ -66,13 +66,13 @@ class SQLite2Database extends Database
 		if(($query = $this->prepare($query, $parameters)) === FALSE)
 			return FALSE;
 		if($config->get('database', 'debug'))
-			$this->engine->log('LOG_DEBUG', $query);
+			$this->engine->log(LOG_DEBUG, $query);
 		$error = FALSE;
 		if(($res = sqlite_query($this->handle, $query, SQLITE_ASSOC,
 					$error)) === FALSE)
 		{
 			if($error !== FALSE)
-				$this->engine->log('LOG_DEBUG', $error);
+				$this->engine->log(LOG_DEBUG, $error);
 			return FALSE;
 		}
 		return new SQLite2DatabaseResult($res);
@@ -109,11 +109,11 @@ class SQLite2Database extends Database
 	protected function attach(Engine $engine)
 	{
 		if(($filename = $this->configGet('filename')) === FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Database filename not defined');
 		if(($this->handle = sqlite_open($filename, 0666, $error))
 				=== FALSE)
-			return $engine->log('LOG_ERR',
+			return $engine->log(LOG_ERR,
 					'Could not open database: '.$error);
 		$this->engine = $engine;
 		$func = array($this, '_date_trunc');

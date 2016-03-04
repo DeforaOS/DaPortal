@@ -52,7 +52,7 @@ class HTTPEngine extends Engine
 
 		DaPortal\Locale::init($this);
 		if($this->getDebug())
-			$this->log('LOG_DEBUG', 'URL is '.$url);
+			$this->log(LOG_DEBUG, 'URL is '.$url);
 		if(isset($_SERVER['SCRIPT_NAME'])
 				&& substr($_SERVER['SCRIPT_NAME'],
 					-strlen($index)) != $index)

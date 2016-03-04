@@ -36,7 +36,7 @@ abstract class Template
 				return FALSE;
 			$class = $name.'Template';
 			$ret = new $class();
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' (default)');
 			$ret->name = $name;
 			$ret->attach($engine);
@@ -61,7 +61,7 @@ abstract class Template
 		closedir($dir);
 		if($ret != FALSE)
 		{
-			$engine->log('LOG_DEBUG', 'Attaching '.get_class($ret)
+			$engine->log(LOG_DEBUG, 'Attaching '.get_class($ret)
 					.' with priority '.$priority);
 			$ret->attach($engine);
 		}

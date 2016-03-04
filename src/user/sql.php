@@ -123,7 +123,7 @@ class SQLUserBackend extends UserBackend
 		{
 			$error = $this->username
 				.': Could not obtain the password hash';
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		}
 		$res = $res->current();
 		if(strlen($res['password']) > 0 && $res['password'][0] == '$')
@@ -143,7 +143,7 @@ class SQLUserBackend extends UserBackend
 				default:
 					$error = $this->username
 						.': Unsupported cipher';
-					return $engine->log('LOG_ERR', $error);
+					return $engine->log(LOG_ERR, $error);
 			}
 		}
 		else if(strlen($res['password']) == 32)
@@ -156,13 +156,13 @@ class SQLUserBackend extends UserBackend
 		}
 		else if(strlen($res['password']) > 0
 				&& $res['password'][0] == '!')
-			return $engine->log('LOG_ERR', $this->username
+			return $engine->log(LOG_ERR, $this->username
 					.': User is locked');
 		else
-			return $engine->log('LOG_ERR', $this->username
+			return $engine->log(LOG_ERR, $this->username
 					.': Invalid password hash');
 		if(hash_equals($res['password'], $hash) !== TRUE)
-			return $engine->log('LOG_ERR', $this->username
+			return $engine->log(LOG_ERR, $this->username
 					.': Could not authenticate user');
 		//the password is correct
 		return new AuthCredentials($res['user_id'], $res['username'],
@@ -569,7 +569,7 @@ class SQLUserBackend extends UserBackend
 			{
 				$db->transactionRollback($engine);
 				$error = _('Could not register the user');
-				return $engine->log('LOG_ERR', $username
+				return $engine->log(LOG_ERR, $username
 						.': '.$email
 						.': Could not send the activation message');
 			}
@@ -933,7 +933,7 @@ class SQLUserBackend extends UserBackend
 		$error = 'Could not clean the registration database up';
 
 		if($db->query($engine, $query, $args, TRUE) === FALSE)
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		return TRUE;
 	}
 
@@ -950,7 +950,7 @@ class SQLUserBackend extends UserBackend
 		$error = 'Could not clean the password reset database up';
 
 		if($db->query($engine, $query, $args, TRUE) === FALSE)
-			return $engine->log('LOG_ERR', $error);
+			return $engine->log(LOG_ERR, $error);
 		return TRUE;
 	}
 }
