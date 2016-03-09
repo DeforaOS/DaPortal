@@ -59,6 +59,7 @@ class BrowserModule extends Module
 	{
 		$credentials = $engine->getCredentials();
 		$error = _('Permission denied');
+		$root = $this->getRoot($engine);
 
 		//check for the global setting
 		if(!$this->configGet('upload'))
@@ -79,7 +80,7 @@ class BrowserModule extends Module
 		if(($path = $this->getPath($engine, $request)) === FALSE)
 			return FALSE;
 		$error = _('Permission denied');
-		return posix_access($path, W_OK) ? TRUE : FALSE;
+		return posix_access($root.'/'.$path, POSIX_W_OK) ? TRUE : FALSE;
 	}
 
 
