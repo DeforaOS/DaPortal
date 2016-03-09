@@ -188,6 +188,7 @@ abstract class Engine
 	//Engine::log
 	public function log($priority, $message)
 	{
+		$priority = $this->logPriority($priority);
 		if(($message = $this->logMessage($priority, $message))
 				!== FALSE)
 			error_log($message, 0);
@@ -453,7 +454,7 @@ abstract class Engine
 	//Engine::logMessage
 	protected function logMessage($priority, $message)
 	{
-		switch($this->logPriority($priority))
+		switch($priority)
 		{
 			case LOG_ALERT:
 			case LOG_CRIT:
