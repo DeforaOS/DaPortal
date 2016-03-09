@@ -29,7 +29,7 @@ abstract class MultiContentModule extends ContentModule
 		//XXX this works only if the ID namespace is not ambiguous
 		foreach(static::$content_classes as $class)
 		{
-			$this->content_class = $class;
+			static::$content_class = $class;
 			if(($res = parent::getContent($engine, $id, $title,
 					NULL)) !== FALSE)
 				return $res;
@@ -86,14 +86,14 @@ abstract class MultiContentModule extends ContentModule
 	{
 		//the content type has precedence over the request
 		if($content !== NULL)
-			$this->content_class = get_class($content);
+			static::$content_class = get_class($content);
 		else if($request !== NULL
 				&& ($t = $request->get('type')) !== FALSE
 				&& isset(static::$content_classes[$t]))
-			$this->content_class = static::$content_classes[$t];
+			static::$content_class = static::$content_classes[$t];
 		else
 			//default to the first content type known
-			$this->content_class = reset(static::$content_classes);
+			static::$content_class = reset(static::$content_classes);
 	}
 
 
@@ -251,7 +251,7 @@ abstract class MultiContentModule extends ContentModule
 			Request $request)
 	{
 		//XXX code duplicated from ContentModule
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$cred = $engine->getCredentials();
 		$user = ($request->getID() !== FALSE
 				|| $request->getTitle() !== FALSE)

@@ -170,7 +170,7 @@ class DownloadModule extends MultiContentModule
 			Request $request = NULL, Content $content = NULL)
 	{
 		parent::setContext($engine, $request, $content);
-		switch($this->content_class)
+		switch(static::$content_class)
 		{
 			case static::$content_classes['file']:
 				$this->stock_content_submit = 'upload';

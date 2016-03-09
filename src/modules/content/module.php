@@ -107,7 +107,7 @@ abstract class ContentModule extends Module
 	public function canPreview(Engine $engine, Request $request = NULL,
 			Content $content = NULL, &$error = FALSE)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 
 		if($content === NULL)
 			$content = new $class($engine, $this);
@@ -198,7 +198,7 @@ abstract class ContentModule extends Module
 	public function getContent(Engine $engine, $id, $title = FALSE,
 			Request $request = NULL)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 
 		return $class::load($engine, $this, $id, $title);
 	}
@@ -207,7 +207,7 @@ abstract class ContentModule extends Module
 	//ContentModule::getContentColumns
 	public function getContentColumns($admin = FALSE)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 
 		$columns = array('icon' => '', 'title' => _('Title'));
 		if($admin !== FALSE && $this->canEnable($this->engine))
@@ -222,7 +222,7 @@ abstract class ContentModule extends Module
 
 	//protected
 	//properties
-	protected $content_class = 'Content';
+	static protected $content_class = 'Content';
 	protected $content_headline_count = 6;
 	protected $content_list_count = 10;
 	protected $content_list_admin_count = 20;
@@ -517,7 +517,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callDefault
 	protected function callDefault(Engine $engine, Request $request)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$p = $request->get('page');
 
 		if($request->getID() !== FALSE)
@@ -576,7 +576,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callGroup
 	protected function callGroup(Engine $engine, Request $request)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$cred = $engine->getCredentials();
 		$db = $engine->getDatabase();
 		$group = Group::lookup($engine, $request->getTitle(),
@@ -632,7 +632,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callHeadline
 	protected function callHeadline(Engine $engine, Request $request)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$title = $this->text_content_headline_title;
 
 		//view
@@ -677,7 +677,7 @@ abstract class ContentModule extends Module
 	//ContentModule::callList
 	protected function callList(Engine $engine, Request $request)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$db = $engine->getDatabase();
 		$user = ($request->getID() !== FALSE)
 			? User::lookup($engine, $request->getTitle(),
@@ -879,7 +879,7 @@ abstract class ContentModule extends Module
 
 	protected function _submitContent(Engine $engine, Request $request)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 		$cred = $engine->getCredentials();
 		$content = array('user_id' => $cred->getUserID(),
 			'username' => $cred->getUsername(),
@@ -1437,7 +1437,7 @@ abstract class ContentModule extends Module
 	protected function helperSubmitContent(Engine $engine, Request $request,
 			PageElement $page)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 
 		$content = new $class($engine, $this);
 		$page->append($content->form($engine, $request));
@@ -1460,7 +1460,7 @@ abstract class ContentModule extends Module
 			Request $request = NULL, Content $content = NULL,
 			PageElement $page)
 	{
-		$class = $this->content_class;
+		$class = static::$content_class;
 
 		if($content === NULL)
 			$content = new $class($engine, $this);

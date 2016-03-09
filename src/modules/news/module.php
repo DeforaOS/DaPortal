@@ -27,7 +27,6 @@ class NewsModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('News') : FALSE;
 		parent::__construct($id, $name, $title);
-		$this->content_class = 'NewsContent';
 		//translations
 		$this->text_content_admin = _('News administration');
 		$this->text_content_list_title = _('News list');
@@ -61,6 +60,11 @@ class NewsModule extends ContentModule
 		$request->setType('application/rss+xml');
 		return $this->callHeadline($engine, $request);
 	}
+
+
+	//protected
+	//properties
+	static protected $content_class = 'NewsContent';
 }
 
 ?>

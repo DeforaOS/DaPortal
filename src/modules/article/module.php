@@ -27,7 +27,6 @@ class ArticleModule extends ContentModule
 	{
 		$title = ($title === FALSE) ? _('Articles') : $title;
 		parent::__construct($id, $name, $title);
-		$this->content_class = 'ArticleContent';
 		//translations
 		$this->text_content_admin = _('Articles administration');
 		$this->text_content_list_title = _('Article list');
@@ -37,6 +36,11 @@ class ArticleModule extends ContentModule
 		$this->text_content_submit_content = _('Submit article');
 		$this->text_content_title = _('Articles');
 	}
+
+
+	//protected
+	//properties
+	static protected $content_class = 'ArticleContent';
 }
 
 ?>

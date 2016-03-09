@@ -244,7 +244,7 @@ class ProjectModule extends MultiContentModule
 			Request $request = NULL, Content $content = NULL)
 	{
 		parent::setContext($engine, $request, $content);
-		switch($this->content_class)
+		switch(static::$content_class)
 		{
 			case 'BugProjectContent':
 				$this->text_content_admin
@@ -907,7 +907,7 @@ class ProjectModule extends MultiContentModule
 	protected function helperPreviewMetadata(Engine $engine, $preview,
 			Request $request, $content = FALSE)
 	{
-		if($this->content_class == 'BugProjectContent')
+		if(static::$content_class == 'BugProjectContent')
 			return parent::helperPreviewMetadata($engine, $preview,
 					$request, $content);
 		parent::helperPreviewMetadata($engine, $preview, $request,
