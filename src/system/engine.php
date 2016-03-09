@@ -364,7 +364,7 @@ abstract class Engine
 
 	//protected
 	//properties
-	protected $priorities = array('LOG_ALERT' => LOG_ALERT,
+	static protected $priorities = array('LOG_ALERT' => LOG_ALERT,
 		'LOG_CRIT' => LOG_CRIT,
 		'LOG_EMERG' => LOG_EMERG,
 		'LOG_DEBUG' => LOG_DEBUG,
@@ -408,11 +408,11 @@ abstract class Engine
 	//Engine::logPriority
 	protected function logPriority($priority)
 	{
-		if(in_array($priority, $this->priorities))
+		if(in_array($priority, static::$priorities))
 			return $priority;
 		//support the old API with strings
-		if(isset($this->priorities[$priority]))
-			return $this->priorities[$priority];
+		if(isset(static::$priorities[$priority]))
+			return static::$priorities[$priority];
 		return LOG_WARNING;
 	}
 
