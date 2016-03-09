@@ -379,6 +379,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/user/project.conf \
 		$(PACKAGE)-$(VERSION)/tests/Makefile \
 		$(PACKAGE)-$(VERSION)/tests/auth.php \
+		$(PACKAGE)-$(VERSION)/tests/browser.php \
 		$(PACKAGE)-$(VERSION)/tests/config.php \
 		$(PACKAGE)-$(VERSION)/tests/coverage.php \
 		$(PACKAGE)-$(VERSION)/tests/daportal.conf \
