@@ -409,7 +409,7 @@ abstract class Engine
 	//Engine::logPriority
 	protected function logPriority($priority)
 	{
-		if(in_array($priority, static::$priorities))
+		if(in_array($priority, static::$priorities, TRUE))
 			return $priority;
 		//support the old API with strings
 		if(isset(static::$priorities[$priority]))
