@@ -90,6 +90,17 @@ if($auth->setVariable($engine, 'test1', FALSE) !== TRUE)
 	exit(9);
 if($auth->getVariable($engine, 'test1') !== FALSE)
 	exit(10);
+
+//test a large variable
+$variable = array();
+for($i = 0; $i < 256; $i++)
+	$variable[] = $i;
+if($auth->setVariable($engine, 'array', $variable) !== TRUE)
+	exit(10);
+//XXX this should fail but SQLite does not enforce sizes
+if(($v = $auth->getVariable($engine, 'array')) !== $variable)
+	exit(11);
+
 exit(0);
 
 ?>

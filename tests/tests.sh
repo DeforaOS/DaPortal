@@ -122,7 +122,6 @@ fi
 $DATE > "$target"
 FAILED=
 echo "Performing tests:" 1>&2
-_test "auth"
 _test "config"
 _test "coverage"
 _test "daportal"
@@ -143,8 +142,8 @@ _test "search"
 _test "template"
 _test "transaction"
 _test "user"
-#echo "Expected failures:" 1>&2
-#_fail "test"
+echo "Expected failures:" 1>&2
+_fail "auth"
 if [ -n "$FAILED" ]; then
 	echo "Failed tests:$FAILED" 1>&2
 	exit 2
