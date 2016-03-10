@@ -24,8 +24,7 @@ require_once('./tests.php');
 
 //functions
 $page = new \Page();
-if(Mail::send($engine, 'test', array(), 'Test subject', $page)
-		=== FALSE)
+if(Mail::send($engine, 'test', array(), 'Test subject', $page) === FALSE)
 	exit(2);
 exit(0);
 
