@@ -71,25 +71,27 @@ if(!is_null($request))
 	exit(2);
 
 $user = new User($engine, 1, 'admin');
-if(($credentials = $user->authenticate($engine, 'password')) === FALSE)
+if(($credentials = $user->authenticate($engine, 'wrong password')) !== FALSE)
 	exit(3);
+if(($credentials = $user->authenticate($engine, 'password')) === FALSE)
+	exit(4);
 //may as well have failed
 $auth->setCredentials($engine, $credentials);
 
 if($auth->setVariable($engine, 'test1', 'test2') === FALSE)
-	exit(4);
-if($auth->getVariable($engine, 'test1') != 'test2')
 	exit(5);
-if($auth->getVariable($engine, 'test2') !== FALSE)
+if($auth->getVariable($engine, 'test1') != 'test2')
 	exit(6);
-if($auth->setVariable($engine, 'test3', 41) === FALSE)
+if($auth->getVariable($engine, 'test2') !== FALSE)
 	exit(7);
-if($auth->getVariable($engine, 'test3') != 41)
+if($auth->setVariable($engine, 'test3', 41) === FALSE)
 	exit(8);
-if($auth->setVariable($engine, 'test1', FALSE) !== TRUE)
+if($auth->getVariable($engine, 'test3') != 41)
 	exit(9);
-if($auth->getVariable($engine, 'test1') !== FALSE)
+if($auth->setVariable($engine, 'test1', FALSE) !== TRUE)
 	exit(10);
+if($auth->getVariable($engine, 'test1') !== FALSE)
+	exit(11);
 
 //test a large variable
 $variable = array();
@@ -99,7 +101,7 @@ if($auth->setVariable($engine, 'array', $variable) !== TRUE)
 	exit(10);
 //XXX this should fail but SQLite does not enforce sizes
 if(($v = $auth->getVariable($engine, 'array')) !== $variable)
-	exit(11);
+	exit(12);
 
 exit(0);
 
