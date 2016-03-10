@@ -187,8 +187,7 @@ class HTMLFormat extends FormatElements
 
 	private function _renderBase($page)
 	{
-		$request = new Request();
-		$url = dirname($this->engine->getURL($request, TRUE)).'/'; //XXX
+		$url = dirname($this->engine->getURL()).'/'; //XXX
 		$this->renderTabs();
 		$this->tag('base', FALSE, FALSE, array('href' => $url));
 	}
@@ -629,7 +628,7 @@ class HTMLFormat extends FormatElements
 			$port = isset($_SERVER['SERVER_PORT'])
 				? $_SERVER['SERVER_PORT'] : FALSE;
 			$_SERVER['SERVER_PORT'] = 443;
-			$action = $this->engine->getURL(new Request(), TRUE);
+			$action = $this->engine->getURL();
 			//restore the previous state
 			if($port !== FALSE)
 				$_SERVER['SERVER_PORT'] = $port;
