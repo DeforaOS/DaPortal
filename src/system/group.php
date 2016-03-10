@@ -173,10 +173,10 @@ class Group
 	static public function lookup(Engine $engine, $groupname,
 			$group_id = FALSE, $enabled = TRUE)
 	{
+		static $cache = array();
 		$db = $engine->getDatabase();
 		$query = static::$query_get_by_groupname;
 		$args = array('groupname' => $groupname, 'enabled' => $enabled);
-		static $cache = array();
 
 		if(isset($cache[$groupname]))
 		{
