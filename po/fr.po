@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 15:44+0100\n"
+"POT-Creation-Date: 2016-03-10 11:05+0100\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -77,7 +77,7 @@ msgid "Update"
 msgstr "Modifier"
 
 #: ../src/system/content.php:91 ../src/modules/admin/module.php:43
-#: ../src/modules/browser/module.php:61 ../src/modules/browser/module.php:81
+#: ../src/modules/browser/module.php:61 ../src/modules/browser/module.php:82
 #: ../src/modules/content/module.php:73 ../src/modules/content/module.php:167
 #: ../src/modules/content/module.php:776
 #: ../src/modules/content/module.php:1178
@@ -95,13 +95,13 @@ msgstr "Modifier"
 #: ../src/modules/user/module.php:1090 ../src/modules/user/module.php:1135
 #: ../src/modules/user/module.php:1615 ../src/modules/user/module.php:1684
 #: ../src/modules/user/module.php:1724 ../src/modules/user/module.php:1925
-#: ../src/modules/wiki/module.php:117
+#: ../src/modules/wiki/module.php:120
 msgid "Permission denied"
 msgstr "Permission non accordée"
 
 #: ../src/system/content.php:146 ../src/system/content.php:164
 #: ../src/system/content.php:208 ../src/system/content.php:230
-#: ../src/system/content.php:252 ../src/modules/browser/module.php:74
+#: ../src/system/content.php:252 ../src/modules/browser/module.php:75
 #: ../src/modules/user/module.php:186 ../src/modules/user/module.php:203
 #: ../src/modules/user/module.php:1644 ../src/modules/wiki/content.php:71
 msgid "The request expired or is invalid"
@@ -120,7 +120,7 @@ msgid "Only administrators can update timestamps"
 msgstr "Seuls les administrateurs peuvent modifier l'horodatage"
 
 #: ../src/system/content.php:271 ../src/system/content.php:662
-#: ../src/system/content.php:677 ../src/modules/browser/module.php:415
+#: ../src/system/content.php:677 ../src/modules/browser/module.php:416
 #: ../src/modules/content/module.php:212 ../src/modules/content/module.php:639
 #: ../src/modules/manual/module.php:351 ../src/modules/manual/module.php:389
 #: ../src/modules/project/content.php:89
@@ -137,7 +137,7 @@ msgstr "Titre"
 msgid "Username"
 msgstr "Utilisateur"
 
-#: ../src/system/content.php:272 ../src/modules/browser/module.php:417
+#: ../src/system/content.php:272 ../src/modules/browser/module.php:418
 #: ../src/modules/content/module.php:639
 #: ../src/modules/download/content/folder.php:88
 #: ../src/modules/project/content.php:90
@@ -328,7 +328,7 @@ msgstr "Sans sérif"
 msgid "Serif"
 msgstr "Sérif"
 
-#: ../src/formats/html.php:757 ../src/modules/browser/module.php:417
+#: ../src/formats/html.php:757 ../src/modules/browser/module.php:418
 msgid "Size"
 msgstr "Taille"
 
@@ -434,7 +434,7 @@ msgstr "Impossible de lister les modules"
 msgid "Module"
 msgstr "Module"
 
-#: ../src/modules/admin/module.php:219 ../src/modules/browser/module.php:162
+#: ../src/modules/admin/module.php:219 ../src/modules/browser/module.php:163
 #: ../src/modules/content/module.php:1141
 #: ../src/modules/content/module.php:1280
 #: ../src/modules/download/content/folder.php:138
@@ -469,31 +469,31 @@ msgstr "Le(s) module(s) ont pu être activé(s)"
 msgid "Some module(s) could not be enabled"
 msgstr "Certains modules n'ont pas pu être activés"
 
-#: ../src/modules/article/module.php:28 ../src/modules/article/module.php:38
+#: ../src/modules/article/module.php:28 ../src/modules/article/module.php:37
 msgid "Articles"
 msgstr "Articles"
 
-#: ../src/modules/article/module.php:32
+#: ../src/modules/article/module.php:31
 msgid "Articles administration"
 msgstr "Administration des articles"
 
-#: ../src/modules/article/module.php:33
+#: ../src/modules/article/module.php:32
 msgid "Article list"
 msgstr "Liste des articles"
 
-#: ../src/modules/article/module.php:34
+#: ../src/modules/article/module.php:33
 msgid "Articles by"
 msgstr "Articles par"
 
-#: ../src/modules/article/module.php:35
+#: ../src/modules/article/module.php:34
 msgid "Articles by group"
 msgstr "Articles par le groupe"
 
-#: ../src/modules/article/module.php:36 ../src/modules/article/content.php:33
+#: ../src/modules/article/module.php:35 ../src/modules/article/content.php:33
 msgid "New article..."
 msgstr "Nouvel article..."
 
-#: ../src/modules/article/module.php:37
+#: ../src/modules/article/module.php:36
 msgid "Submit article"
 msgstr "Soumettre un article"
 
@@ -549,45 +549,45 @@ msgstr "Nouveau billet"
 msgid "Planet"
 msgstr "Planète"
 
-#: ../src/modules/browser/module.php:67 ../src/modules/content/module.php:147
+#: ../src/modules/browser/module.php:68 ../src/modules/content/module.php:147
 msgid "Anonymous submissions are not allowed"
 msgstr "Les soumissions anonymes ne sont pas autorisées"
 
-#: ../src/modules/browser/module.php:78
+#: ../src/modules/browser/module.php:79
 msgid "Could not lookup the path"
 msgstr "Impossible d'obtenir le chemin"
 
-#: ../src/modules/browser/module.php:89 ../src/modules/project/scm/cvs.php:434
+#: ../src/modules/browser/module.php:90 ../src/modules/project/scm/cvs.php:434
 msgid "%d/%m/%Y %H:%M:%S"
 msgstr "%d/%m/%Y %H:%M:%S"
 
-#: ../src/modules/browser/module.php:158
+#: ../src/modules/browser/module.php:159
 #: ../src/modules/project/scm/cvs.php:119
 msgid "Parent directory"
 msgstr "Dossier parent"
 
-#: ../src/modules/browser/module.php:169
+#: ../src/modules/browser/module.php:170
 #: ../src/modules/download/content/file.php:136
 #: ../src/modules/project/content.php:379
 msgid "Download"
 msgstr "Télécharger"
 
-#: ../src/modules/browser/module.php:177 ../src/modules/browser/module.php:302
+#: ../src/modules/browser/module.php:178 ../src/modules/browser/module.php:303
 #: ../src/modules/download/content/file.php:37
 #: ../src/modules/download/module.php:183
 msgid "Upload"
 msgstr "Envoyer"
 
-#: ../src/modules/browser/module.php:219 ../src/modules/browser/module.php:246
-#: ../src/modules/browser/module.php:268
+#: ../src/modules/browser/module.php:220 ../src/modules/browser/module.php:247
+#: ../src/modules/browser/module.php:269
 msgid "Browser: "
 msgstr "Browser : "
 
-#: ../src/modules/browser/module.php:234
+#: ../src/modules/browser/module.php:235
 msgid "Could not download the file requested"
 msgstr "Impossible de télécharger le fichier demandé"
 
-#: ../src/modules/browser/module.php:262 ../src/modules/group/module.php:417
+#: ../src/modules/browser/module.php:263 ../src/modules/group/module.php:417
 #: ../src/modules/group/module.php:514 ../src/modules/project/content.php:171
 #: ../src/modules/user/module.php:785 ../src/modules/user/module.php:901
 #: ../src/modules/user/module.php:990 ../src/modules/user/module.php:1132
@@ -595,15 +595,15 @@ msgstr "Impossible de télécharger le fichier demandé"
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
-#: ../src/modules/browser/module.php:268
+#: ../src/modules/browser/module.php:269
 msgid "Upload to "
 msgstr "Envoyer vers "
 
-#: ../src/modules/browser/module.php:275 ../src/modules/browser/module.php:382
+#: ../src/modules/browser/module.php:276 ../src/modules/browser/module.php:383
 msgid "Could not open the file or directory requested"
 msgstr "Impossible d'ouvrir le fichier ou dossier demandé"
 
-#: ../src/modules/browser/module.php:299 ../src/modules/content/module.php:807
+#: ../src/modules/browser/module.php:300 ../src/modules/content/module.php:807
 #: ../src/modules/content/module.php:1422
 #: ../src/modules/content/module.php:1521 ../src/modules/group/module.php:141
 #: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
@@ -615,7 +615,7 @@ msgstr "Impossible d'ouvrir le fichier ou dossier demandé"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../src/modules/browser/module.php:328 ../src/modules/browser/module.php:335
+#: ../src/modules/browser/module.php:329 ../src/modules/browser/module.php:336
 #: ../src/modules/download/module.php:287
 #: ../src/modules/download/module.php:294
 #: ../src/modules/project/content.php:339
@@ -623,21 +623,21 @@ msgstr "Annuler"
 msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
-#: ../src/modules/browser/module.php:331
+#: ../src/modules/browser/module.php:332
 #: ../src/modules/download/module.php:290
 msgid "Forbidden filename"
 msgstr "Nom de fichier interdit"
 
-#: ../src/modules/browser/module.php:339
+#: ../src/modules/browser/module.php:340
 #: ../src/modules/download/module.php:298
 msgid "No file uploaded"
 msgstr "Pas de fichier envoyé"
 
-#: ../src/modules/browser/module.php:342
+#: ../src/modules/browser/module.php:343
 msgid "Destination is not a directory"
 msgstr "La destination doit être un répertoire"
 
-#: ../src/modules/browser/module.php:352 ../src/modules/content/module.php:829
+#: ../src/modules/browser/module.php:353 ../src/modules/content/module.php:829
 #: ../src/modules/content/module.php:902 ../src/modules/content/module.php:960
 #: ../src/modules/download/content/file.php:225
 #: ../src/modules/download/module.php:329 ../src/modules/probe/module.php:95
@@ -647,15 +647,15 @@ msgstr "La destination doit être un répertoire"
 msgid "Internal server error"
 msgstr "Erreur interne du serveur"
 
-#: ../src/modules/browser/module.php:409
+#: ../src/modules/browser/module.php:410
 msgid "Could not open the directory requested"
 msgstr "Impossible d'ouvrir le dossier demandé"
 
-#: ../src/modules/browser/module.php:416 ../src/modules/user/module.php:40
+#: ../src/modules/browser/module.php:417 ../src/modules/user/module.php:40
 msgid "User"
 msgstr "Utilisateur"
 
-#: ../src/modules/browser/module.php:416
+#: ../src/modules/browser/module.php:417
 #: ../src/modules/download/content/folder.php:87
 #: ../src/modules/group/module.php:281 ../src/modules/group/module.php:550
 #: ../src/modules/user/module.php:372 ../src/modules/user/module.php:471
@@ -663,56 +663,56 @@ msgstr "Utilisateur"
 msgid "Group"
 msgstr "Groupe"
 
-#: ../src/modules/browser/module.php:418
+#: ../src/modules/browser/module.php:419
 #: ../src/modules/download/content/folder.php:88
 #: ../src/modules/project/content.php:213
 msgid "Permissions"
 msgstr "Permissions"
 
-#: ../src/modules/browser/module.php:470
+#: ../src/modules/browser/module.php:471
 msgid "Filename:"
 msgstr "Nom du fichier :"
 
-#: ../src/modules/browser/module.php:477
+#: ../src/modules/browser/module.php:478
 msgid "Type:"
 msgstr "Type :"
 
-#: ../src/modules/browser/module.php:480
+#: ../src/modules/browser/module.php:481
 msgid "User:"
 msgstr "Utilisateur :"
 
-#: ../src/modules/browser/module.php:483
+#: ../src/modules/browser/module.php:484
 msgid "Group:"
 msgstr "Groupe :"
 
-#: ../src/modules/browser/module.php:486
+#: ../src/modules/browser/module.php:487
 msgid "Permissions:"
 msgstr "Permissions :"
 
-#: ../src/modules/browser/module.php:490
+#: ../src/modules/browser/module.php:491
 msgid "Size:"
 msgstr "Taille :"
 
-#: ../src/modules/browser/module.php:493
+#: ../src/modules/browser/module.php:494
 msgid "Created on:"
 msgstr "Créé le :"
 
-#: ../src/modules/browser/module.php:496
+#: ../src/modules/browser/module.php:497
 msgid "Last modified:"
 msgstr "Modifié le :"
 
-#: ../src/modules/browser/module.php:499
+#: ../src/modules/browser/module.php:500
 msgid "Last access:"
 msgstr "Accédé le :"
 
-#: ../src/modules/browser/module.php:525
+#: ../src/modules/browser/module.php:526
 #: ../src/modules/content/module.php:1404 ../src/modules/group/module.php:819
 #: ../src/modules/user/module.php:1246 ../src/modules/user/module.php:1300
 #: ../src/modules/user/module.php:2016
 msgid "If you are not redirected within 30 seconds, please "
 msgstr "Si vous n'êtes pas redirigé(e) d'ici 30 secondes, veuillez "
 
-#: ../src/modules/browser/module.php:527
+#: ../src/modules/browser/module.php:528
 #: ../src/modules/content/module.php:1406 ../src/modules/group/module.php:821
 #: ../src/modules/user/module.php:1248 ../src/modules/user/module.php:1302
 #: ../src/modules/user/module.php:2018
@@ -1322,11 +1322,11 @@ msgstr "Page : "
 
 #: ../src/modules/manual/module.php:457 ../src/modules/search/module.php:206
 #: ../src/modules/search/module.php:306 ../src/modules/search/module.php:325
-#: ../src/modules/wiki/module.php:87 ../src/modules/wiki/module.php:96
+#: ../src/modules/wiki/module.php:90 ../src/modules/wiki/module.php:99
 msgid "Search"
 msgstr "Recherche"
 
-#: ../src/modules/news/content.php:30 ../src/modules/news/module.php:34
+#: ../src/modules/news/content.php:30 ../src/modules/news/module.php:33
 msgid "News by"
 msgstr "Dépêche par"
 
@@ -1334,23 +1334,23 @@ msgstr "Dépêche par"
 msgid "More news..."
 msgstr "Autres dépêches..."
 
-#: ../src/modules/news/content.php:34 ../src/modules/news/module.php:36
+#: ../src/modules/news/content.php:34 ../src/modules/news/module.php:35
 msgid "Submit news"
 msgstr "Envoyer une dépêche"
 
-#: ../src/modules/news/module.php:28 ../src/modules/news/module.php:37
+#: ../src/modules/news/module.php:28 ../src/modules/news/module.php:36
 msgid "News"
 msgstr "Dépêche"
 
-#: ../src/modules/news/module.php:32
+#: ../src/modules/news/module.php:31
 msgid "News administration"
 msgstr "Administration des dépêches"
 
-#: ../src/modules/news/module.php:33
+#: ../src/modules/news/module.php:32
 msgid "News list"
 msgstr "Liste des dépêches"
 
-#: ../src/modules/news/module.php:35
+#: ../src/modules/news/module.php:34
 msgid "News by group"
 msgstr "Dépêches par le groupe"
 
@@ -2006,7 +2006,7 @@ msgstr "Stopper"
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../src/modules/salt/module.php:750 ../src/modules/wiki/module.php:125
+#: ../src/modules/salt/module.php:750 ../src/modules/wiki/module.php:128
 msgid "Disk usage"
 msgstr "Utilisation disque"
 
@@ -2493,7 +2493,7 @@ msgstr "utilisateur(s) invalide(s)"
 msgid "Wiki page by"
 msgstr "Page wiki de"
 
-#: ../src/modules/wiki/content.php:36 ../src/modules/wiki/module.php:39
+#: ../src/modules/wiki/content.php:36 ../src/modules/wiki/module.php:38
 msgid "More wiki pages..."
 msgstr "Autres pages wiki..."
 
@@ -2545,62 +2545,62 @@ msgstr "Aucune page wiki n'a été trouvée avec ce nom"
 msgid "Could not update the wiki page"
 msgstr "Impossible de mettre à jour la page wiki"
 
-#: ../src/modules/wiki/module.php:29 ../src/modules/wiki/module.php:41
+#: ../src/modules/wiki/module.php:29 ../src/modules/wiki/module.php:40
 msgid "Wiki"
 msgstr "Wiki"
 
-#: ../src/modules/wiki/module.php:32 ../src/modules/wiki/module.php:156
+#: ../src/modules/wiki/module.php:31 ../src/modules/wiki/module.php:159
 msgid "Wiki administration"
 msgstr "Administration du wiki"
 
-#: ../src/modules/wiki/module.php:33
+#: ../src/modules/wiki/module.php:32
 msgid "Page by"
 msgstr "Page par"
 
-#: ../src/modules/wiki/module.php:34
+#: ../src/modules/wiki/module.php:33
 msgid "Wiki page"
 msgstr "Page wiki"
 
-#: ../src/modules/wiki/module.php:35 ../src/modules/wiki/module.php:36
+#: ../src/modules/wiki/module.php:34 ../src/modules/wiki/module.php:35
 msgid "Wiki pages"
 msgstr "Pages wiki"
 
-#: ../src/modules/wiki/module.php:37
+#: ../src/modules/wiki/module.php:36
 msgid "Wiki pages by"
 msgstr "Pages wiki par"
 
-#: ../src/modules/wiki/module.php:38
+#: ../src/modules/wiki/module.php:37
 msgid "Wiki pages by group"
 msgstr "Pages wiki par le groupe"
 
-#: ../src/modules/wiki/module.php:40
+#: ../src/modules/wiki/module.php:39
 msgid "New wiki page"
 msgstr "Nouvelle page wiki"
 
-#: ../src/modules/wiki/module.php:78
+#: ../src/modules/wiki/module.php:81
 msgid "Search the wiki"
 msgstr "Recherche dans le wiki : "
 
-#: ../src/modules/wiki/module.php:85
+#: ../src/modules/wiki/module.php:88
 msgid "Look for a page: "
 msgstr "Chercher une page : "
 
-#: ../src/modules/wiki/module.php:94
+#: ../src/modules/wiki/module.php:97
 msgid "Look inside pages: "
 msgstr "Chercher dans les pages : "
 
-#: ../src/modules/wiki/module.php:97
+#: ../src/modules/wiki/module.php:100
 msgid "Recent changes"
 msgstr "Dernières modifications"
 
-#: ../src/modules/wiki/module.php:107
+#: ../src/modules/wiki/module.php:110
 msgid "List all pages"
 msgstr "Lister toutes les pages"
 
-#: ../src/modules/wiki/module.php:115 ../src/modules/wiki/module.php:172
+#: ../src/modules/wiki/module.php:118 ../src/modules/wiki/module.php:175
 msgid "Wiki monitoring"
 msgstr "Suivi du wiki"
 
-#: ../src/modules/wiki/module.php:128
+#: ../src/modules/wiki/module.php:131
 msgid "The root folder is not configured"
 msgstr "Le répertoire racine n'est pas configuré"
