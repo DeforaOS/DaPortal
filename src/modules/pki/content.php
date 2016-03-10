@@ -68,7 +68,8 @@ abstract class PKIContent extends ContentMulti
 				return FALSE;
 			}
 			if(($parent = $request->get('parent')) !== FALSE
-					&& CAPKIContent::load($engine, $module,
+					&& CAPKIContent::load($engine,
+							$this->getModule(),
 							$parent) === FALSE)
 			{
 				$error = _('Invalid parent');
