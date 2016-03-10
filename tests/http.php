@@ -25,12 +25,14 @@ global $_SERVER;
 $hostname = 'www.example.com';
 $urls = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
+	"http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php?_module=testmodule&arg1=test1&arg2=test2&arg3=test3&test4=&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost:8081/dir1/dir2/dir3/index.php",
 	"https://localhost/dir1/dir2/dir3/index.php");
 $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
+	"http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php/testmodule?arg1=test1&arg2=test2&arg3=test3&test4=&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
@@ -75,6 +77,9 @@ function _http_do($hostname, $class)
 	$_SERVER['SCRIPT_NAME'] = '/dir1/dir2/dir3/index.php';
 	$engine = new $class();
 	$engine->attach();
+
+	$res[] = $engine->getURL();
+
 	$res[] = $engine->getURL($engine->getRequest());
 
 	$_SERVER['REQUEST_METHOD'] = 'GET';
