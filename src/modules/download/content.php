@@ -127,7 +127,8 @@ abstract class DownloadContent extends ContentMulti
 		AND module_id=:module_id';
 	//IN:	module_id
 	//	group_id
-	static protected $query_list_group = 'SELECT content_id AS id,
+	static protected $query_list_group = 'SELECT
+		daportal_content.content_id AS id,
 		timestamp, module_id, module,
 		daportal_content.user_id AS user_id, username,
 		daportal_content.group_id AS group_id,
