@@ -67,6 +67,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/icontheme.sh \
 		$(PACKAGE)-$(VERSION)/data/icons/index.php \
 		$(PACKAGE)-$(VERSION)/data/icons/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/DeforaOS/project.conf \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/Makefile \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/48x48.css \
 		$(PACKAGE)-$(VERSION)/data/icons/Rodent/index.php \
@@ -107,6 +110,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/spinner.xcf \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/stock.png \
 		$(PACKAGE)-$(VERSION)/data/icons/generic/48x48/project.conf \
+		$(PACKAGE)-$(VERSION)/data/icons/gnome/Makefile \
+		$(PACKAGE)-$(VERSION)/data/icons/gnome/index.php \
+		$(PACKAGE)-$(VERSION)/data/icons/gnome/project.conf \
 		$(PACKAGE)-$(VERSION)/data/js/Makefile \
 		$(PACKAGE)-$(VERSION)/data/js/DaPortal.js \
 		$(PACKAGE)-$(VERSION)/data/js/index.php \

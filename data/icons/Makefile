@@ -1,4 +1,4 @@
-SUBDIRS	= Rodent Tango generic
+SUBDIRS	= DeforaOS Rodent Tango generic gnome
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
