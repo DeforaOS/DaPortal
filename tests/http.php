@@ -30,6 +30,7 @@ $urls = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php",
 	"http://localhost:8081/dir1/dir2/dir3/index.php",
+	"https://localhost/dir1/dir2/dir3/index.php",
 	"https://localhost/dir1/dir2/dir3/index.php");
 $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://$hostname/dir1/dir2/dir3/index.php",
@@ -38,6 +39,7 @@ $urls_friendly = array("http://$hostname/dir1/dir2/dir3/index.php",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?arg1=test1&arg2=test2&arg3=test3%3Dtest4&arg5=test5",
 	"http://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
 	"http://localhost:8081/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
+	"https://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on",
 	"https://localhost/dir1/dir2/dir3/index.php/dir4/dir5/dir6/index.php/testmodule/testaction/32/Test%20title?ids%5B123%5D=on&ids%5B125%5D=on");
 
 
@@ -63,7 +65,7 @@ function _http($hostname, $class, $urls)
 
 function _http_do($hostname, $class)
 {
-	global $_GET;
+	global $_GET, $config;
 	$res = array();
 
 	//reset
@@ -113,6 +115,13 @@ function _http_do($hostname, $class)
 	$engine = new $class();
 	$engine->attach();
 	$res[] = $engine->getURL($engine->getRequest());
+
+	//security upgrade
+	$engine = new $class();
+	$engine->attach();
+	$config->set('engine::http', 'secure', 1);
+	$res[] = $engine->getURL($engine->getRequest());
+	$config->set('engine::http', 'secure', 0);
 
 	//https
 	$_SERVER['HTTPS'] = 'on';
