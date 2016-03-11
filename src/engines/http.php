@@ -228,14 +228,15 @@ class HTTPEngine extends Engine
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
 		if($absolute)
 		{
+			$port = isset($_SERVER['SERVER_PORT'])
+				? $_SERVER['SERVER_PORT']
+				: (isset($_SERVER['HTTPS']) ? 443 : 80);
 			$url = array('scheme' => isset($_SERVER['HTTPS'])
 					? 'https' : 'http',
 				'host' => isset($_SERVER['SERVER_NAME'])
 					? $_SERVER['SERVER_NAME']
 					: gethostname(),
-				'port' => isset($_SERVER['SERVER_PORT'])
-					? $_SERVER['SERVER_PORT'] : 80,
-				'path' => $name);
+				'port' => $port, 'path' => $name);
 			if(($url = http_build_url($url)) === FALSE)
 				//fallback to a relative address
 				$url = basename($name);
