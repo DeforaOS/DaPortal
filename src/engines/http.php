@@ -46,6 +46,7 @@ class HTTPEngine extends Engine
 	//HTTPEngine::attach
 	public function attach()
 	{
+		global $config;
 		$index = '/index.php';
 		$request = $this->getRequest();
 		$url = $this->getURL($request);
@@ -59,6 +60,12 @@ class HTTPEngine extends Engine
 		{
 			//FIXME might be an invalid address
 	 		header('Location: '.dirname($url));
+			exit(0);
+		}
+		if(!isset($_SERVER['HTTPS'])
+				&& $config->get('engine::http', 'secure'))
+		{
+	 		header('Location: '.$this->getURL($request));
 			exit(0);
 		}
 	}
@@ -224,23 +231,13 @@ class HTTPEngine extends Engine
 	//HTTPEngine::getURL
 	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
+		global $config;
+		$secure = $config->get('engine::http', 'secure');
+
 		$name = isset($_SERVER['SCRIPT_NAME'])
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
-		if($absolute)
-		{
-			$port = isset($_SERVER['SERVER_PORT'])
-				? $_SERVER['SERVER_PORT']
-				: (isset($_SERVER['HTTPS']) ? 443 : 80);
-			$url = array('scheme' => isset($_SERVER['HTTPS'])
-					? 'https' : 'http',
-				'host' => isset($_SERVER['SERVER_NAME'])
-					? $_SERVER['SERVER_NAME']
-					: gethostname(),
-				'port' => $port, 'path' => $name);
-			if(($url = http_build_url($url)) === FALSE)
-				//fallback to a relative address
-				$url = basename($name);
-		}
+		if((!isset($_SERVER['HTTPS']) && $secure) || $absolute)
+			$url = $this->_getURLAbsolute($name, $secure);
 		else
 			$url = basename($name);
 		//return if already complete
@@ -267,6 +264,35 @@ class HTTPEngine extends Engine
 				$url .= $this->_getURLParameter($key, $value,
 						$sep);
 		}
+		return $url;
+	}
+
+	protected function _getURLAbsolute($name, $secure)
+	{
+		if($secure && !isset($_SERVER['HTTPS']))
+		{
+			$scheme = 'https';
+			$port = 443;
+		}
+		else if(isset($_SERVER['HTTPS']))
+		{
+			$scheme = 'https';
+			$port = isset($_SERVER['SERVER_PORT'])
+				? $_SERVER['SERVER_PORT'] : 443;
+		}
+		else
+		{
+			$scheme = 'http';
+			$port = isset($_SERVER['SERVER_PORT'])
+				? $_SERVER['SERVER_PORT'] : 80;
+		}
+		$host = isset($_SERVER['SERVER_NAME'])
+			? $_SERVER['SERVER_NAME'] : gethostname();
+		$url = array('scheme' => $scheme, 'host' => $host,
+			'port' => $port, 'path' => $name);
+		if(($url = http_build_url($url)) === FALSE)
+			//fallback to a relative address
+			$url = basename($name);
 		return $url;
 	}
 

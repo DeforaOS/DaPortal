@@ -118,6 +118,7 @@ class HTTPFriendlyEngine extends HTTPEngine
 	public function getURL(Request $request = NULL, $absolute = TRUE)
 	{
 		global $config;
+		$secure = $config->get('engine::http', 'secure');
 
 		//use the kicker if defined
 		if(($kicker = $config->get($this->section, 'kicker'))
@@ -126,21 +127,8 @@ class HTTPFriendlyEngine extends HTTPEngine
 		else
 			$name = $_SERVER['SCRIPT_NAME'];
 		$name = ltrim($name, '/');
-		if($absolute)
-		{
-			$port = isset($_SERVER['SERVER_PORT'])
-				? $_SERVER['SERVER_PORT']
-				: (isset($_SERVER['HTTPS']) ? 443 : 80);
-			$url = array('scheme' => isset($_SERVER['HTTPS'])
-					? 'https' : 'http',
-				'host' => isset($_SERVER['SERVER_NAME'])
-					? $_SERVER['SERVER_NAME']
-					: gethostname(),
-				'port' => $port, 'path' => $name);
-			if(($url = http_build_url($url)) === FALSE)
-				//fallback to a relative address
-				$url = basename($name);
-		}
+		if((!isset($_SERVER['HTTPS']) && $secure) || $absolute)
+			$url = $this->_getURLAbsolute($name, $secure);
 		else
 			//prepare a relative address
 			$url = basename($name);

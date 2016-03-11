@@ -108,6 +108,8 @@ regenerate=1
 #private=1
 #private::module=user
 #private::actions=login,register,reset
+#force use of HTTPS (default: disabled)
+#secure=1
 
 [engine::httpfriendly]
 #debug=1
