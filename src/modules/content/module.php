@@ -581,11 +581,12 @@ abstract class ContentModule extends Module
 		$db = $engine->getDatabase();
 		$group = Group::lookup($engine, $request->getTitle(),
 				$request->getID());
+		$title = ($group !== FALSE)
+			? $this->text_content_list_title_by_group.' '
+			.$group->getGroupname()
+			: $this->text_content_list_title_group;
 		$p = $request->get('page');
 
-		$title = $this->text_content_list_title_group;
-		$title = $this->text_content_list_title_by_group.' '
-			.$group->getGroupname();
 		//title
 		$page = new Page(array('title' => $title));
 		$this->helperListTitle($engine, $page, $request);
