@@ -955,7 +955,7 @@ abstract class ContentModule extends Module
 	{
 		//verify the request
 		if($request->isIdempotent()
-				|| $request->get('preview') === FALSE)
+				|| $request->get('_preview') !== FALSE)
 			return TRUE;
 		//update the content
 		$error = _('Internal server error');
