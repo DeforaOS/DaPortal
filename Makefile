@@ -387,6 +387,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tests/auth.php \
 		$(PACKAGE)-$(VERSION)/tests/browser.php \
 		$(PACKAGE)-$(VERSION)/tests/config.php \
+		$(PACKAGE)-$(VERSION)/tests/content.php \
 		$(PACKAGE)-$(VERSION)/tests/coverage.php \
 		$(PACKAGE)-$(VERSION)/tests/daportal.conf \
 		$(PACKAGE)-$(VERSION)/tests/daportal.php \
