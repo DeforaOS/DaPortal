@@ -124,6 +124,7 @@ FAILED=
 echo "Performing tests:" 1>&2
 _test "browser"
 _test "config"
+_test "content"
 _test "coverage"
 _test "daportal"
 _test "database"
