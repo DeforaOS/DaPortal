@@ -263,8 +263,14 @@ class UserModule extends Module
 	{
 		$secure = ($this->configGet('secure') === '0') ? FALSE : TRUE;
 		$username = $request->get('username');
+		$args = $request->getParameters();
 
-		$r = $this->getRequest('login', $request->getParameters());
+		if(is_array($args))
+		{
+			unset($args['username']);
+			unset($args['password']);
+		}
+		$r = $this->getRequest('login', $args);
 		$form = new PageElement('form', array('request' => $r,
 			'secure' => $secure));
 		$entry = $form->append('entry', array(
