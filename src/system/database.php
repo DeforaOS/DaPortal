@@ -140,6 +140,7 @@ abstract class Database
 				|| $this->transaction->inTransaction())
 			return FALSE;
 		$this->transaction = NULL;
+		return TRUE;
 	}
 
 
