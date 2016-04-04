@@ -22,7 +22,7 @@ class SaltModule extends Module
 	//public
 	//methods
 	//SaltModule::call
-	function call(Engine $engine, Request $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		//XXX should be saved in the constructor
 		$this->engine = $engine;

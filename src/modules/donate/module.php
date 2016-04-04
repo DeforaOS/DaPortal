@@ -22,7 +22,7 @@ class DonateModule extends Module
 	//public
 	//methods
 	//DonateModule::call
-	function call(Engine $engine, Request $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if(($action = $request->getAction()) === FALSE)
 			$action = 'default';

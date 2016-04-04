@@ -22,7 +22,7 @@ class TopModule extends Module
 	//public
 	//methods
 	//TopModule::call
-	function call(Engine $engine, Request $request, $internal = 0)
+	public function call(Engine $engine, Request $request, $internal = 0)
 	{
 		if($internal)
 			return FALSE;
