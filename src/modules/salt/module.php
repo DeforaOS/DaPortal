@@ -792,16 +792,18 @@ class SaltModule extends Module
 		$page = $page->append('vbox');
 		if(($count = count((array)$data)) == 0)
 		{
-			$message = 'The system is up to date';
+			$message = _('There is no package to update.');
 			$page->append('dialog', array('type' => 'info',
+					'title' => _('System up to date'),
 					'text' => $message));
 			return;
 		}
-		$message = "$count package upgrade(s) are available";
+		$message = sprintf(_('%u package upgrade(s) are available'),
+				$count);
 		$dialog = $page->append('dialog', array('type' => 'warning',
 				'text' => $message));
 		$page = $dialog->append('expander', array(
-				'title' => 'Details'));
+				'title' => _('Details')));
 		foreach($data as $key => $value)
 			$page->append('label', array(
 					'text' => $key.': '.$value));
@@ -809,7 +811,7 @@ class SaltModule extends Module
 				'host' => $hostname));
 		$dialog->append('button', array('stock' => 'submit',
 				'request' => $request,
-				'text' => 'Upgrade'));
+				'text' => _('Upgrade')));
 	}
 }
 
