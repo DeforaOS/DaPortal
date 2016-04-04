@@ -173,7 +173,7 @@ class SaltModule extends Module
 		return new PageResponse($page);
 	}
 
-	private function _defaultForm(PageElement $page, $hostname)
+	private function _defaultForm(PageElement $page, $hostname = FALSE)
 	{
 		//XXX forms are blocks by default in HTML
 		$form = $page->append('form', array('idempotent' => TRUE,
@@ -355,7 +355,7 @@ class SaltModule extends Module
 		$toolbar->append('button', array('stock' => 'refresh',
 				'text' => _('Refresh'),
 				'request' => $request));
-		$this->_defaultForm($toolbar, $hostname);
+		$this->_defaultForm($toolbar);
 	}
 
 
