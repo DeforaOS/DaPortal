@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.10.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-11 16:21+0100\n"
+"POT-Creation-Date: 2016-04-12 18:44+0200\n"
 "PO-Revision-Date: 2016-02-28 18:01+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -18,31 +18,31 @@ msgstr ""
 
 #: ../src/system/common.php:58 ../src/modules/probe/module.php:381
 msgid "bytes"
-msgstr ""
+msgstr "bytes"
 
 #: ../src/system/common.php:58
 msgid "byte"
-msgstr ""
+msgstr "byte"
 
 #: ../src/system/common.php:60
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: ../src/system/common.php:62
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: ../src/system/common.php:64
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: ../src/system/common.php:65
 msgid "TB"
-msgstr ""
+msgstr "TB"
 
 #: ../src/system/content.php:73 ../src/modules/content/module.php:350
 msgid "Content by"
-msgstr ""
+msgstr "Contenidos de "
 
 #: ../src/system/content.php:74
 msgid "Permalink"
@@ -71,8 +71,8 @@ msgid "Submit content"
 msgstr ""
 
 #: ../src/system/content.php:80 ../src/modules/content/module.php:1533
-#: ../src/modules/group/module.php:177 ../src/modules/user/module.php:516
-#: ../src/modules/user/module.php:1353 ../src/modules/user/module.php:1357
+#: ../src/modules/group/module.php:177 ../src/modules/user/module.php:522
+#: ../src/modules/user/module.php:1359 ../src/modules/user/module.php:1363
 msgid "Update"
 msgstr ""
 
@@ -90,20 +90,20 @@ msgstr ""
 #: ../src/modules/group/module.php:694 ../src/modules/group/module.php:767
 #: ../src/modules/project/module.php:642 ../src/modules/salt/module.php:63
 #: ../src/modules/salt/module.php:92 ../src/modules/salt/module.php:137
-#: ../src/modules/user/module.php:217 ../src/modules/user/module.php:658
-#: ../src/modules/user/module.php:904 ../src/modules/user/module.php:993
-#: ../src/modules/user/module.php:1090 ../src/modules/user/module.php:1135
-#: ../src/modules/user/module.php:1615 ../src/modules/user/module.php:1684
-#: ../src/modules/user/module.php:1724 ../src/modules/user/module.php:1925
+#: ../src/modules/user/module.php:217 ../src/modules/user/module.php:664
+#: ../src/modules/user/module.php:910 ../src/modules/user/module.php:999
+#: ../src/modules/user/module.php:1096 ../src/modules/user/module.php:1141
+#: ../src/modules/user/module.php:1621 ../src/modules/user/module.php:1690
+#: ../src/modules/user/module.php:1730 ../src/modules/user/module.php:1931
 #: ../src/modules/wiki/module.php:120
 msgid "Permission denied"
-msgstr ""
+msgstr "Permiso denegado"
 
 #: ../src/system/content.php:146 ../src/system/content.php:164
 #: ../src/system/content.php:208 ../src/system/content.php:230
 #: ../src/system/content.php:252 ../src/modules/browser/module.php:75
 #: ../src/modules/user/module.php:186 ../src/modules/user/module.php:203
-#: ../src/modules/user/module.php:1644 ../src/modules/wiki/content.php:71
+#: ../src/modules/user/module.php:1650 ../src/modules/wiki/content.php:71
 msgid "The request expired or is invalid"
 msgstr ""
 
@@ -132,8 +132,8 @@ msgstr "Titulo"
 
 #: ../src/system/content.php:272 ../src/modules/group/module.php:594
 #: ../src/modules/project/content/bug.php:154
-#: ../src/modules/search/module.php:271 ../src/modules/user/module.php:273
-#: ../src/modules/user/module.php:680
+#: ../src/modules/search/module.php:271 ../src/modules/user/module.php:279
+#: ../src/modules/user/module.php:686
 msgid "Username"
 msgstr ""
 
@@ -153,18 +153,18 @@ msgstr "Fecha"
 
 #: ../src/system/content.php:566 ../src/modules/admin/module.php:229
 #: ../src/modules/content/module.php:1106 ../src/modules/group/module.php:309
-#: ../src/modules/project/content.php:309 ../src/modules/user/module.php:702
+#: ../src/modules/project/content.php:309 ../src/modules/user/module.php:708
 msgid "Disabled"
-msgstr ""
+msgstr "Deshabilitado"
 
 #: ../src/system/content.php:568 ../src/modules/admin/module.php:212
 #: ../src/modules/admin/module.php:231 ../src/modules/content/module.php:215
 #: ../src/modules/content/module.php:1108 ../src/modules/group/module.php:136
 #: ../src/modules/group/module.php:282 ../src/modules/group/module.php:311
-#: ../src/modules/project/content.php:311 ../src/modules/user/module.php:397
-#: ../src/modules/user/module.php:682 ../src/modules/user/module.php:704
+#: ../src/modules/project/content.php:311 ../src/modules/user/module.php:403
+#: ../src/modules/user/module.php:688 ../src/modules/user/module.php:710
 msgid "Enabled"
-msgstr ""
+msgstr "Habilitado"
 
 #: ../src/system/content.php:603 ../src/modules/admin/module.php:28
 #: ../src/modules/admin/module.php:124 ../src/modules/admin/module.php:251
@@ -184,12 +184,12 @@ msgstr "Titulo: "
 #: ../src/system/content.php:665 ../src/system/content.php:680
 #: ../src/modules/project/module.php:723
 msgid "Content: "
-msgstr ""
+msgstr "Contenidos: "
 
 #: ../src/system/content.php:714 ../src/modules/content/module.php:798
 #: ../src/modules/project/module.php:447
 msgid "Preview: "
-msgstr ""
+msgstr "Previa: "
 
 #: ../src/system/content.php:826
 msgid "Could not insert the content"
@@ -214,15 +214,15 @@ msgstr "Aviso"
 #: ../src/formats/html.php:519 ../src/modules/project/scm/cvs.php:224
 #: ../src/modules/wiki/content.php:178
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: ../src/formats/html.php:536 ../src/modules/user/module.php:255
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: ../src/formats/html.php:572 ../src/formats/html.php:612
 msgid "More"
-msgstr ""
+msgstr "Más"
 
 #: ../src/formats/html.php:736
 msgid "Cut"
@@ -238,11 +238,11 @@ msgstr "Pegar"
 
 #: ../src/formats/html.php:738
 msgid "Undo"
-msgstr ""
+msgstr "Deshacer"
 
 #: ../src/formats/html.php:738
 msgid "Redo"
-msgstr ""
+msgstr "Rehacer"
 
 #: ../src/formats/html.php:739
 msgid "Insert ruler"
@@ -409,7 +409,7 @@ msgid "Modules administration"
 msgstr ""
 
 #: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1096
-#: ../src/modules/group/module.php:346 ../src/modules/user/module.php:741
+#: ../src/modules/group/module.php:346 ../src/modules/user/module.php:747
 msgid "Back to the administration"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgid "The default password was changed accordingly"
 msgstr ""
 
 #: ../src/modules/admin/module.php:203 ../src/modules/admin/module.php:257
-#: ../src/modules/user/module.php:867 ../src/modules/user/module.php:932
+#: ../src/modules/user/module.php:873 ../src/modules/user/module.php:938
 msgid "Could not list modules"
 msgstr ""
 
@@ -439,19 +439,19 @@ msgstr ""
 #: ../src/modules/content/module.php:1281
 #: ../src/modules/download/content/folder.php:138
 #: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:303
-#: ../src/modules/salt/module.php:356 ../src/modules/user/module.php:695
+#: ../src/modules/salt/module.php:356 ../src/modules/user/module.php:701
 msgid "Refresh"
 msgstr "Actualizar"
 
 #: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1145
-#: ../src/modules/group/module.php:297 ../src/modules/user/module.php:652
+#: ../src/modules/group/module.php:297 ../src/modules/user/module.php:658
 msgid "Disable"
-msgstr ""
+msgstr "Deshabilitar"
 
 #: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1147
-#: ../src/modules/group/module.php:301 ../src/modules/user/module.php:653
+#: ../src/modules/group/module.php:301 ../src/modules/user/module.php:659
 msgid "Enable"
-msgstr ""
+msgstr "Habilitar"
 
 #: ../src/modules/admin/module.php:306
 msgid "Module(s) could be disabled successfully"
@@ -589,9 +589,9 @@ msgstr ""
 
 #: ../src/modules/browser/module.php:263 ../src/modules/group/module.php:417
 #: ../src/modules/group/module.php:514 ../src/modules/project/content.php:171
-#: ../src/modules/user/module.php:785 ../src/modules/user/module.php:901
-#: ../src/modules/user/module.php:990 ../src/modules/user/module.php:1132
-#: ../src/modules/user/module.php:1681
+#: ../src/modules/user/module.php:791 ../src/modules/user/module.php:907
+#: ../src/modules/user/module.php:996 ../src/modules/user/module.php:1138
+#: ../src/modules/user/module.php:1687
 msgid "Unknown error"
 msgstr "Error desconocido"
 
@@ -608,10 +608,10 @@ msgstr ""
 #: ../src/modules/content/module.php:1522 ../src/modules/group/module.php:141
 #: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
 #: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:478
-#: ../src/modules/user/module.php:251 ../src/modules/user/module.php:282
-#: ../src/modules/user/module.php:306 ../src/modules/user/module.php:328
-#: ../src/modules/user/module.php:413 ../src/modules/user/module.php:514
-#: ../src/modules/user/module.php:1284 ../src/modules/user/module.php:1563
+#: ../src/modules/user/module.php:251 ../src/modules/user/module.php:288
+#: ../src/modules/user/module.php:312 ../src/modules/user/module.php:334
+#: ../src/modules/user/module.php:419 ../src/modules/user/module.php:520
+#: ../src/modules/user/module.php:1290 ../src/modules/user/module.php:1569
 msgid "Cancel"
 msgstr "Annular"
 
@@ -658,8 +658,8 @@ msgstr ""
 #: ../src/modules/browser/module.php:417
 #: ../src/modules/download/content/folder.php:87
 #: ../src/modules/group/module.php:281 ../src/modules/group/module.php:550
-#: ../src/modules/user/module.php:372 ../src/modules/user/module.php:471
-#: ../src/modules/user/module.php:681 ../src/modules/user/module.php:1049
+#: ../src/modules/user/module.php:378 ../src/modules/user/module.php:477
+#: ../src/modules/user/module.php:687 ../src/modules/user/module.php:1055
 msgid "Group"
 msgstr ""
 
@@ -707,15 +707,15 @@ msgstr ""
 
 #: ../src/modules/browser/module.php:526
 #: ../src/modules/content/module.php:1405 ../src/modules/group/module.php:819
-#: ../src/modules/user/module.php:1246 ../src/modules/user/module.php:1300
-#: ../src/modules/user/module.php:2016
+#: ../src/modules/user/module.php:1252 ../src/modules/user/module.php:1306
+#: ../src/modules/user/module.php:2022
 msgid "If you are not redirected within 30 seconds, please "
 msgstr ""
 
 #: ../src/modules/browser/module.php:528
 #: ../src/modules/content/module.php:1407 ../src/modules/group/module.php:821
-#: ../src/modules/user/module.php:1248 ../src/modules/user/module.php:1302
-#: ../src/modules/user/module.php:2018
+#: ../src/modules/user/module.php:1254 ../src/modules/user/module.php:1308
+#: ../src/modules/user/module.php:2024
 msgid "click here"
 msgstr ""
 
@@ -756,7 +756,7 @@ msgid "Publication in progress, please wait..."
 msgstr ""
 
 #: ../src/modules/content/module.php:355 ../src/modules/group/module.php:813
-#: ../src/modules/user/module.php:2010
+#: ../src/modules/user/module.php:2016
 msgid "Redirection in progress, please wait..."
 msgstr ""
 
@@ -771,14 +771,14 @@ msgstr ""
 
 #: ../src/modules/content/module.php:360
 msgid "Content"
-msgstr ""
+msgstr "Contenidos"
 
 #: ../src/modules/content/module.php:362
 msgid "Update in progress, please wait..."
 msgstr ""
 
-#: ../src/modules/content/module.php:451 ../src/modules/user/module.php:288
-#: ../src/modules/user/module.php:551 ../src/modules/user/module.php:1864
+#: ../src/modules/content/module.php:451 ../src/modules/user/module.php:294
+#: ../src/modules/user/module.php:557 ../src/modules/user/module.php:1870
 msgid "Login"
 msgstr ""
 
@@ -839,7 +839,7 @@ msgid "Unpublish"
 msgstr ""
 
 #: ../src/modules/content/module.php:1153 ../src/modules/group/module.php:305
-#: ../src/modules/user/module.php:654
+#: ../src/modules/user/module.php:660
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -896,7 +896,7 @@ msgstr ""
 
 #: ../src/modules/content/module.php:1524
 #: ../src/modules/project/module.php:191 ../src/modules/search/module.php:395
-#: ../src/modules/user/module.php:332 ../src/modules/user/module.php:1566
+#: ../src/modules/user/module.php:338 ../src/modules/user/module.php:1572
 msgid "Reset"
 msgstr ""
 
@@ -952,11 +952,11 @@ msgstr "Tipo: "
 
 #: ../src/modules/download/content/file.php:88
 msgid "Owner: "
-msgstr ""
+msgstr "Dueño: "
 
 #: ../src/modules/download/content/file.php:93
 msgid "Group: "
-msgstr ""
+msgstr "Grupo: "
 
 #: ../src/modules/download/content/file.php:95
 msgid "Permissions: "
@@ -1034,7 +1034,7 @@ msgstr "Nombre de archivo"
 
 #: ../src/modules/download/content/folder.php:87
 msgid "Owner"
-msgstr ""
+msgstr "Dueño"
 
 #: ../src/modules/download/content/folder.php:153
 #: ../src/modules/download/module.php:185
@@ -1062,7 +1062,7 @@ msgid "Downloads administration"
 msgstr ""
 
 #: ../src/modules/download/module.php:195 ../src/modules/group/module.php:144
-#: ../src/modules/user/module.php:416
+#: ../src/modules/user/module.php:422
 msgid "Create"
 msgstr ""
 
@@ -1119,14 +1119,14 @@ msgstr ""
 
 #: ../src/modules/group/module.php:283 ../src/modules/group/module.php:551
 #: ../src/modules/project/content.php:303
-#: ../src/modules/project/content.php:384 ../src/modules/user/module.php:1050
+#: ../src/modules/project/content.php:384 ../src/modules/user/module.php:1056
 msgid "Members"
 msgstr ""
 
 #: ../src/modules/group/module.php:342 ../src/modules/group/module.php:469
-#: ../src/modules/user/module.php:737 ../src/modules/user/module.php:947
-#: ../src/modules/user/module.php:1071 ../src/modules/user/module.php:1118
-#: ../src/modules/user/module.php:1365
+#: ../src/modules/user/module.php:743 ../src/modules/user/module.php:953
+#: ../src/modules/user/module.php:1077 ../src/modules/user/module.php:1124
+#: ../src/modules/user/module.php:1371
 msgid "Back to my account"
 msgstr ""
 
@@ -1150,8 +1150,8 @@ msgstr ""
 msgid "Group disabled successfully"
 msgstr ""
 
-#: ../src/modules/group/module.php:465 ../src/modules/user/module.php:590
-#: ../src/modules/user/module.php:943 ../src/modules/user/module.php:1886
+#: ../src/modules/group/module.php:465 ../src/modules/user/module.php:596
+#: ../src/modules/user/module.php:949 ../src/modules/user/module.php:1892
 msgid "My content"
 msgstr ""
 
@@ -1168,7 +1168,7 @@ msgstr ""
 msgid "Group enabled successfully"
 msgstr ""
 
-#: ../src/modules/group/module.php:547 ../src/modules/user/module.php:1043
+#: ../src/modules/group/module.php:547 ../src/modules/user/module.php:1049
 msgid "Could not list the groups"
 msgstr ""
 
@@ -1184,7 +1184,7 @@ msgstr ""
 msgid "Back to the group list"
 msgstr ""
 
-#: ../src/modules/group/module.php:654 ../src/modules/user/module.php:1646
+#: ../src/modules/group/module.php:654 ../src/modules/user/module.php:1652
 msgid "Invalid arguments"
 msgstr ""
 
@@ -1278,11 +1278,11 @@ msgstr ""
 msgid "Back to the section"
 msgstr ""
 
-#: ../src/modules/manual/module.php:292 ../src/modules/user/module.php:844
-#: ../src/modules/user/module.php:893 ../src/modules/user/module.php:1124
-#: ../src/modules/user/module.php:1272 ../src/modules/user/module.php:1445
-#: ../src/modules/user/module.php:1522 ../src/modules/user/module.php:1599
-#: ../src/modules/user/module.php:1868
+#: ../src/modules/manual/module.php:292 ../src/modules/user/module.php:850
+#: ../src/modules/user/module.php:899 ../src/modules/user/module.php:1130
+#: ../src/modules/user/module.php:1278 ../src/modules/user/module.php:1451
+#: ../src/modules/user/module.php:1528 ../src/modules/user/module.php:1605
+#: ../src/modules/user/module.php:1874
 msgid "Back to the homepage"
 msgstr ""
 
@@ -1499,8 +1499,8 @@ msgstr ""
 msgid "Could not list members"
 msgstr ""
 
-#: ../src/modules/project/content.php:305 ../src/modules/user/module.php:407
-#: ../src/modules/user/module.php:684
+#: ../src/modules/project/content.php:305 ../src/modules/user/module.php:413
+#: ../src/modules/user/module.php:690
 msgid "Administrator"
 msgstr ""
 
@@ -1567,19 +1567,19 @@ msgstr ""
 
 #: ../src/modules/project/content/bug.php:48
 msgid "Urgent"
-msgstr ""
+msgstr "Urgente"
 
 #: ../src/modules/project/content/bug.php:49
 msgid "High"
-msgstr ""
+msgstr "Alta"
 
 #: ../src/modules/project/content/bug.php:50
 msgid "Medium"
-msgstr ""
+msgstr "Media"
 
 #: ../src/modules/project/content/bug.php:51
 msgid "Low"
-msgstr ""
+msgstr "Baja"
 
 #: ../src/modules/project/content/bug.php:52
 msgid "Assigned"
@@ -1627,7 +1627,7 @@ msgstr ""
 
 #: ../src/modules/project/content/bug.php:78
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: ../src/modules/project/content/bug.php:79
 msgid "State"
@@ -1639,7 +1639,7 @@ msgstr "Tipo"
 
 #: ../src/modules/project/content/bug.php:80
 msgid "Priority"
-msgstr ""
+msgstr "Prioridad"
 
 #: ../src/modules/project/content/bug.php:148
 msgid "Could not list the replies"
@@ -1648,7 +1648,7 @@ msgstr ""
 #: ../src/modules/project/content/bug.php:234
 #: ../src/modules/project/module.php:848
 msgid "Priority: "
-msgstr ""
+msgstr "Prioridad: "
 
 #: ../src/modules/project/module.php:137 ../src/modules/project/module.php:465
 msgid "Projects"
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: ../src/modules/project/module.php:750
 msgid "Directory: "
-msgstr ""
+msgstr "Directorio: "
 
 #: ../src/modules/project/module.php:773
 #, php-format
@@ -1865,7 +1865,7 @@ msgstr ""
 #: ../src/modules/project/scm/cvs.php:222
 #: ../src/modules/project/scm/cvs.php:379
 msgid "Revision"
-msgstr ""
+msgstr "Revisión"
 
 #: ../src/modules/project/scm/cvs.php:122
 #: ../src/modules/project/scm/cvs.php:143
@@ -1886,7 +1886,7 @@ msgstr ""
 #: ../src/modules/project/scm/cvs.php:342
 #: ../src/modules/project/scm/git.php:200
 msgid "Repository"
-msgstr ""
+msgstr "Repositiorio"
 
 #: ../src/modules/project/scm/cvs.php:351
 #: ../src/modules/project/scm/git.php:205
@@ -1899,7 +1899,7 @@ msgstr ""
 
 #: ../src/modules/project/scm/cvs.php:378
 msgid "Action"
-msgstr ""
+msgstr "Acción"
 
 #: ../src/modules/project/scm/git.php:41
 #: ../src/modules/project/scm/git.php:217
@@ -1908,7 +1908,7 @@ msgstr ""
 
 #: ../src/modules/project/scm/git.php:144
 msgid "Could not open file"
-msgstr ""
+msgstr "No se puede abrir el archivo"
 
 #: ../src/modules/salt/module.php:68 ../src/modules/salt/module.php:97
 #: ../src/modules/salt/module.php:142
@@ -1978,7 +1978,7 @@ msgstr ""
 #: ../src/modules/salt/module.php:444
 #, php-format
 msgid "Could not %s"
-msgstr ""
+msgstr "No se puede %s"
 
 #: ../src/modules/salt/module.php:450
 #, php-format
@@ -1988,7 +1988,7 @@ msgstr ""
 #: ../src/modules/salt/module.php:466
 #, php-format
 msgid "Do you really want to %s %s?"
-msgstr ""
+msgstr "¿Realmente desea %s %s?"
 
 #: ../src/modules/salt/module.php:697
 msgid "Reload"
@@ -1996,11 +1996,11 @@ msgstr ""
 
 #: ../src/modules/salt/module.php:699
 msgid "Start"
-msgstr ""
+msgstr "Comenzar"
 
 #: ../src/modules/salt/module.php:701
 msgid "Stop"
-msgstr ""
+msgstr "Detener"
 
 #: ../src/modules/salt/module.php:703
 msgid "Restart"
@@ -2012,6 +2012,27 @@ msgstr ""
 
 #: ../src/modules/salt/module.php:762
 msgid "Network interfaces"
+msgstr ""
+
+#: ../src/modules/salt/module.php:795
+msgid "There is no package to update."
+msgstr ""
+
+#: ../src/modules/salt/module.php:797
+msgid "System up to date"
+msgstr ""
+
+#: ../src/modules/salt/module.php:801
+#, php-format
+msgid "%u package upgrade(s) are available"
+msgstr ""
+
+#: ../src/modules/salt/module.php:806
+msgid "Details"
+msgstr "Detalles"
+
+#: ../src/modules/salt/module.php:814
+msgid "Upgrade"
 msgstr ""
 
 #: ../src/modules/search/module.php:114
@@ -2052,7 +2073,7 @@ msgstr "titulos"
 
 #: ../src/modules/search/module.php:355
 msgid "content"
-msgstr ""
+msgstr "contenidos"
 
 #: ../src/modules/search/module.php:368
 msgid "module: "
@@ -2102,11 +2123,11 @@ msgstr ""
 msgid "Locking users is not allowed"
 msgstr ""
 
-#: ../src/modules/user/module.php:181 ../src/modules/user/module.php:1848
+#: ../src/modules/user/module.php:181 ../src/modules/user/module.php:1854
 msgid "Registering is not allowed"
 msgstr ""
 
-#: ../src/modules/user/module.php:198 ../src/modules/user/module.php:1534
+#: ../src/modules/user/module.php:198 ../src/modules/user/module.php:1540
 msgid "Password resets are not allowed"
 msgstr ""
 
@@ -2118,270 +2139,270 @@ msgstr ""
 msgid "Do you really want to close your account?"
 msgstr ""
 
-#: ../src/modules/user/module.php:272 ../src/modules/user/module.php:301
-#: ../src/modules/user/module.php:323 ../src/modules/user/module.php:344
-#: ../src/modules/user/module.php:441
+#: ../src/modules/user/module.php:278 ../src/modules/user/module.php:307
+#: ../src/modules/user/module.php:329 ../src/modules/user/module.php:350
+#: ../src/modules/user/module.php:447
 msgid "Username: "
 msgstr ""
 
-#: ../src/modules/user/module.php:278
+#: ../src/modules/user/module.php:284
 msgid "Password"
 msgstr ""
 
-#: ../src/modules/user/module.php:279 ../src/modules/user/module.php:351
-#: ../src/modules/user/module.php:1558
+#: ../src/modules/user/module.php:285 ../src/modules/user/module.php:357
+#: ../src/modules/user/module.php:1564
 msgid "Password: "
 msgstr ""
 
-#: ../src/modules/user/module.php:303 ../src/modules/user/module.php:325
+#: ../src/modules/user/module.php:309 ../src/modules/user/module.php:331
 msgid "e-mail address: "
 msgstr ""
 
-#: ../src/modules/user/module.php:310 ../src/modules/user/module.php:574
+#: ../src/modules/user/module.php:316 ../src/modules/user/module.php:580
 msgid "Register"
 msgstr ""
 
-#: ../src/modules/user/module.php:347 ../src/modules/user/module.php:446
+#: ../src/modules/user/module.php:353 ../src/modules/user/module.php:452
 msgid "Full name: "
 msgstr ""
 
-#: ../src/modules/user/module.php:353 ../src/modules/user/module.php:451
-#: ../src/modules/user/module.php:1345
+#: ../src/modules/user/module.php:359 ../src/modules/user/module.php:457
+#: ../src/modules/user/module.php:1351
 msgid "e-mail: "
 msgstr ""
 
-#: ../src/modules/user/module.php:362 ../src/modules/user/module.php:461
+#: ../src/modules/user/module.php:368 ../src/modules/user/module.php:467
 msgid "Primary group: "
 msgstr ""
 
-#: ../src/modules/user/module.php:371 ../src/modules/user/module.php:470
+#: ../src/modules/user/module.php:377 ../src/modules/user/module.php:476
 msgid "Secondary groups:"
 msgstr ""
 
-#: ../src/modules/user/module.php:373 ../src/modules/user/module.php:472
+#: ../src/modules/user/module.php:379 ../src/modules/user/module.php:478
 msgid "Member"
 msgstr ""
 
-#: ../src/modules/user/module.php:402 ../src/modules/user/module.php:683
-#: ../src/modules/user/module.php:706
+#: ../src/modules/user/module.php:408 ../src/modules/user/module.php:689
+#: ../src/modules/user/module.php:712
 msgid "Locked"
-msgstr ""
+msgstr "Bloqueada"
 
-#: ../src/modules/user/module.php:428
+#: ../src/modules/user/module.php:434
 msgid "Profile update for "
 msgstr ""
 
-#: ../src/modules/user/module.php:429 ../src/modules/user/module.php:1804
+#: ../src/modules/user/module.php:435 ../src/modules/user/module.php:1810
 msgid "Profile update"
 msgstr ""
 
-#: ../src/modules/user/module.php:495
+#: ../src/modules/user/module.php:501
 msgid "Optionally: "
 msgstr ""
 
-#: ../src/modules/user/module.php:498
+#: ../src/modules/user/module.php:504
 msgid "Current password: "
 msgstr ""
 
-#: ../src/modules/user/module.php:500
+#: ../src/modules/user/module.php:506
 msgid "New password: "
 msgstr ""
 
-#: ../src/modules/user/module.php:503
+#: ../src/modules/user/module.php:509
 msgid "Repeat new password: "
 msgstr ""
 
-#: ../src/modules/user/module.php:540 ../src/modules/user/module.php:1082
+#: ../src/modules/user/module.php:546 ../src/modules/user/module.php:1088
 msgid "User list"
 msgstr ""
 
-#: ../src/modules/user/module.php:562 ../src/modules/user/module.php:1478
-#: ../src/modules/user/module.php:1513 ../src/modules/user/module.php:1548
-#: ../src/modules/user/module.php:1592
+#: ../src/modules/user/module.php:568 ../src/modules/user/module.php:1484
+#: ../src/modules/user/module.php:1519 ../src/modules/user/module.php:1554
+#: ../src/modules/user/module.php:1598
 msgid "Password reset"
 msgstr ""
 
-#: ../src/modules/user/module.php:598 ../src/modules/user/module.php:1035
+#: ../src/modules/user/module.php:604 ../src/modules/user/module.php:1041
 msgid "My groups"
 msgstr ""
 
-#: ../src/modules/user/module.php:606 ../src/modules/user/module.php:1333
-#: ../src/modules/user/module.php:1822 ../src/modules/user/module.php:1889
+#: ../src/modules/user/module.php:612 ../src/modules/user/module.php:1339
+#: ../src/modules/user/module.php:1828 ../src/modules/user/module.php:1895
 msgid "My profile"
 msgstr ""
 
-#: ../src/modules/user/module.php:614 ../src/modules/user/module.php:1288
-#: ../src/modules/user/module.php:1892
+#: ../src/modules/user/module.php:620 ../src/modules/user/module.php:1294
+#: ../src/modules/user/module.php:1898
 msgid "Logout"
 msgstr ""
 
-#: ../src/modules/user/module.php:631 ../src/modules/user/module.php:692
-#: ../src/modules/user/module.php:1612
+#: ../src/modules/user/module.php:637 ../src/modules/user/module.php:698
+#: ../src/modules/user/module.php:1618
 msgid "New user"
 msgstr ""
 
-#: ../src/modules/user/module.php:638 ../src/modules/user/module.php:669
+#: ../src/modules/user/module.php:644 ../src/modules/user/module.php:675
 msgid "Users administration"
 msgstr ""
 
-#: ../src/modules/user/module.php:653
+#: ../src/modules/user/module.php:659
 msgid "Lock"
 msgstr ""
 
-#: ../src/modules/user/module.php:654
+#: ../src/modules/user/module.php:660
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloquear"
 
-#: ../src/modules/user/module.php:679
+#: ../src/modules/user/module.php:685
 msgid "Could not list users"
 msgstr ""
 
-#: ../src/modules/user/module.php:685
+#: ../src/modules/user/module.php:691
 msgid "e-mail"
 msgstr ""
 
-#: ../src/modules/user/module.php:708
+#: ../src/modules/user/module.php:714
 msgid "Unlocked"
 msgstr ""
 
-#: ../src/modules/user/module.php:797
+#: ../src/modules/user/module.php:803
 msgid "Close your account"
 msgstr ""
 
-#: ../src/modules/user/module.php:826
+#: ../src/modules/user/module.php:832
 msgid "The account could not be closed"
 msgstr ""
 
-#: ../src/modules/user/module.php:835
+#: ../src/modules/user/module.php:841
 msgid "Account closed"
 msgstr ""
 
-#: ../src/modules/user/module.php:836
+#: ../src/modules/user/module.php:842
 msgid "Your account was closed successfully."
 msgstr ""
 
-#: ../src/modules/user/module.php:860 ../src/modules/user/module.php:1883
+#: ../src/modules/user/module.php:866 ../src/modules/user/module.php:1889
 msgid "My account"
 msgstr ""
 
-#: ../src/modules/user/module.php:861
+#: ../src/modules/user/module.php:867
 msgid "Site menu"
 msgstr ""
 
-#: ../src/modules/user/module.php:910 ../src/modules/user/module.php:999
-#: ../src/modules/user/module.php:1139 ../src/modules/user/module.php:1688
+#: ../src/modules/user/module.php:916 ../src/modules/user/module.php:1005
+#: ../src/modules/user/module.php:1145 ../src/modules/user/module.php:1694
 msgid "Could not load user"
 msgstr ""
 
-#: ../src/modules/user/module.php:917
+#: ../src/modules/user/module.php:923
 msgid "User disabled successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:937
+#: ../src/modules/user/module.php:943
 msgid "Content from "
-msgstr ""
+msgstr "Contenidos de "
 
-#: ../src/modules/user/module.php:981
+#: ../src/modules/user/module.php:987
 msgid "Back to the user list"
 msgstr ""
 
-#: ../src/modules/user/module.php:1006
+#: ../src/modules/user/module.php:1012
 msgid "User enabled successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1028
+#: ../src/modules/user/module.php:1034
 msgid "There are no groups for this user"
 msgstr ""
 
-#: ../src/modules/user/module.php:1034
+#: ../src/modules/user/module.php:1040
 msgid "Groups for "
 msgstr ""
 
-#: ../src/modules/user/module.php:1097
+#: ../src/modules/user/module.php:1103
 msgid "Could not list the users"
 msgstr ""
 
-#: ../src/modules/user/module.php:1119
+#: ../src/modules/user/module.php:1125
 msgid "Back to the site menu"
 msgstr ""
 
-#: ../src/modules/user/module.php:1146
+#: ../src/modules/user/module.php:1152
 msgid "User locked successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1154
+#: ../src/modules/user/module.php:1160
 msgid "User login"
 msgstr ""
 
-#: ../src/modules/user/module.php:1155
+#: ../src/modules/user/module.php:1161
 msgid "You are already logged in"
 msgstr ""
 
-#: ../src/modules/user/module.php:1156
+#: ../src/modules/user/module.php:1162
 msgid "I forgot my password..."
 msgstr ""
 
-#: ../src/modules/user/module.php:1157
+#: ../src/modules/user/module.php:1163
 msgid "Register an account..."
 msgstr ""
 
-#: ../src/modules/user/module.php:1207
+#: ../src/modules/user/module.php:1213
 msgid "The username and password must be set"
 msgstr ""
 
-#: ../src/modules/user/module.php:1209
+#: ../src/modules/user/module.php:1215
 msgid "Invalid username or password"
 msgstr ""
 
-#: ../src/modules/user/module.php:1243
+#: ../src/modules/user/module.php:1249
 msgid "Authentication in progress, please wait..."
 msgstr ""
 
-#: ../src/modules/user/module.php:1258
+#: ../src/modules/user/module.php:1264
 msgid "User logout"
 msgstr ""
 
-#: ../src/modules/user/module.php:1266
+#: ../src/modules/user/module.php:1272
 msgid "You were logged out successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1280
+#: ../src/modules/user/module.php:1286
 msgid "Do you really want to logout?"
-msgstr ""
+msgstr "¿Realmente desea cerrar la sesión?"
 
-#: ../src/modules/user/module.php:1297
+#: ../src/modules/user/module.php:1303
 msgid "Logging out, please wait..."
 msgstr ""
 
-#: ../src/modules/user/module.php:1326 ../src/modules/user/module.php:1716
+#: ../src/modules/user/module.php:1332 ../src/modules/user/module.php:1722
 msgid "There is no profile for this user"
 msgstr ""
 
-#: ../src/modules/user/module.php:1332
+#: ../src/modules/user/module.php:1338
 msgid "Profile for "
 msgstr ""
 
-#: ../src/modules/user/module.php:1342
+#: ../src/modules/user/module.php:1348
 msgid "Fullname: "
 msgstr ""
 
-#: ../src/modules/user/module.php:1371
+#: ../src/modules/user/module.php:1377
 msgid "Close my account"
 msgstr ""
 
-#: ../src/modules/user/module.php:1401 ../src/modules/user/module.php:1436
+#: ../src/modules/user/module.php:1407 ../src/modules/user/module.php:1442
 msgid "User registration"
 msgstr ""
 
-#: ../src/modules/user/module.php:1422
+#: ../src/modules/user/module.php:1428
 msgid "A username is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1424
+#: ../src/modules/user/module.php:1430
 msgid "An e-mail address is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1437
+#: ../src/modules/user/module.php:1443
 msgid ""
 "You should receive an e-mail shortly with your password, along with a "
 "confirmation key.\n"
@@ -2389,97 +2410,97 @@ msgid ""
 " Thank you for registering!"
 msgstr ""
 
-#: ../src/modules/user/module.php:1499
+#: ../src/modules/user/module.php:1505
 msgid "Your username is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1501
+#: ../src/modules/user/module.php:1507
 msgid "Your e-mail address is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1514
+#: ../src/modules/user/module.php:1520
 msgid ""
 "You should receive an e-mail shortly, with a link allowing you to reset your "
 "password."
 msgstr ""
 
-#: ../src/modules/user/module.php:1560
+#: ../src/modules/user/module.php:1566
 msgid "Repeat password: "
 msgstr ""
 
-#: ../src/modules/user/module.php:1576
+#: ../src/modules/user/module.php:1582
 msgid "A new password is required"
 msgstr ""
 
-#: ../src/modules/user/module.php:1579
+#: ../src/modules/user/module.php:1585
 msgid "The passwords did not match"
 msgstr ""
 
-#: ../src/modules/user/module.php:1597
+#: ../src/modules/user/module.php:1603
 msgid "Your password was reset successfully.\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1602
+#: ../src/modules/user/module.php:1608
 msgid "Proceed to login page"
 msgstr ""
 
-#: ../src/modules/user/module.php:1695
+#: ../src/modules/user/module.php:1701
 msgid "User unlocked successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1746
+#: ../src/modules/user/module.php:1752
 msgid "The full name is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1748
+#: ../src/modules/user/module.php:1754
 msgid "The e-mail address is required\n"
 msgstr ""
 
-#: ../src/modules/user/module.php:1756
+#: ../src/modules/user/module.php:1762
 msgid "Could not update the profile"
 msgstr ""
 
-#: ../src/modules/user/module.php:1786
+#: ../src/modules/user/module.php:1792
 msgid "The current password must be specified"
 msgstr ""
 
-#: ../src/modules/user/module.php:1795
+#: ../src/modules/user/module.php:1801
 msgid "The new password does not match"
 msgstr ""
 
-#: ../src/modules/user/module.php:1797
+#: ../src/modules/user/module.php:1803
 msgid "Could not set the new password"
-msgstr ""
+msgstr "No se puede cambiado la contraseña"
 
-#: ../src/modules/user/module.php:1809
+#: ../src/modules/user/module.php:1815
 msgid "The profile was updated successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1810
+#: ../src/modules/user/module.php:1816
 msgid "Your profile was updated successfully"
 msgstr ""
 
-#: ../src/modules/user/module.php:1818
+#: ../src/modules/user/module.php:1824
 msgid "User administration"
 msgstr ""
 
-#: ../src/modules/user/module.php:1819
+#: ../src/modules/user/module.php:1825
 msgid "User profile"
 msgstr ""
 
-#: ../src/modules/user/module.php:1842 ../src/modules/user/module.php:1844
+#: ../src/modules/user/module.php:1848 ../src/modules/user/module.php:1850
 msgid "Account confirmation"
 msgstr ""
 
-#: ../src/modules/user/module.php:1859
+#: ../src/modules/user/module.php:1865
 msgid "Congratulations!"
 msgstr ""
 
-#: ../src/modules/user/module.php:1860
+#: ../src/modules/user/module.php:1866
 msgid "Your account is now enabled."
 msgstr ""
 
-#: ../src/modules/user/module.php:1954
+#: ../src/modules/user/module.php:1960
 msgid "invalid user(s)"
 msgstr ""
 
