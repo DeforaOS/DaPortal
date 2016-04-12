@@ -67,9 +67,9 @@ class HTTPEngine extends Engine
 		}
 		if(isset($_SERVER['HTTPS']))
 		{
-			if($timeout === FALSE)
+			if($secure >= 2 && !is_numeric($timeout))
 				$timeout = 10886400;
-			if($secure >= 2 && is_numeric($timeout))
+			if(is_numeric($timeout))
 				//enable HSTS
 				header('Strict-Transport-Security: '
 					.'max-age='.$timeout);

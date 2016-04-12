@@ -111,9 +111,9 @@ regenerate=1
 #force use of HTTPS:
 #  0: disabled (default)
 #  1: HTTPS is always enforced
-#  2: HTTPS is always enforced and HSTS is used
+#  2: HTTPS and HSTS are always enforced
 #secure=0
-#HSTS: how long to remember this setting (in seconds; 0 to force a reset)
+#timeout for HSTS (in seconds; 0 to force a reset)
 #secure::hsts::timeout=10886400
 
 [engine::httpfriendly]
