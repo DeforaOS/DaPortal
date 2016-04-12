@@ -50,6 +50,9 @@ class HTTPEngine extends Engine
 		$index = '/index.php';
 		$request = $this->getRequest();
 		$url = $this->getURL($request);
+		$secure = $config->get('engine::http', 'secure');
+		$timeout = $config->get('engine::http',
+				'secure::hsts::timeout');
 
 		DaPortal\Locale::init($this);
 		if($this->getDebug())
@@ -62,10 +65,19 @@ class HTTPEngine extends Engine
 	 		header('Location: '.dirname($url));
 			exit(0);
 		}
-		if(!isset($_SERVER['HTTPS'])
-				&& $config->get('engine::http', 'secure'))
+		if(isset($_SERVER['HTTPS']))
 		{
-	 		header('Location: '.$this->getURL($request));
+			if($timeout === FALSE)
+				$timeout = 10886400;
+			if($secure >= 2 && is_numeric($timeout))
+				//enable HSTS
+				header('Strict-Transport-Security: '
+					.'max-age='.$timeout);
+		}
+		else if($secure >= 1)
+		{
+			//redirect to HTTPS right away
+			header('Location: '.$this->getURL($request));
 			exit(0);
 		}
 	}
