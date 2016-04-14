@@ -284,12 +284,17 @@ class SaltModule extends Module
 			if(is_object($hosts))
 				foreach($hosts as $hostname => $h)
 				{
+					$request = $this->getRequest(FALSE,
+						array('host' => $hostname));
+					$link = new PageElement('link', array(
+							'request' => $request,
+							'text' => $hostname));
+					$row = $page->append('row', array(
+							'title' => $link));
+					$p = new PageElement('vbox');
 					$args = array();
 					foreach($params as $param)
 						$args[$param] = $$param;
-					$row = $page->append('row', array(
-							'title' => $hostname));
-					$p = new PageElement('vbox');
 					$callback($p, $h, $args);
 					$row->set('status', $p);
 				}
