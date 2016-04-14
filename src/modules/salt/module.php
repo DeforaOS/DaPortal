@@ -652,6 +652,12 @@ class SaltModule extends Module
 	private function renderDiskusage(PageElement $page, $data,
 			$args = array())
 	{
+		if(is_string($data))
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $data));
+			return;
+		}
 		foreach($data as $vol => $voldata)
 		{
 			if($voldata->total == 0)
@@ -682,6 +688,12 @@ class SaltModule extends Module
 	protected function renderNetdev(PageElement $page, $data,
 			$args = array())
 	{
+		if(is_string($data))
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $data));
+			return;
+		}
 		foreach($data as $name => $interface)
 		{
 			$title = $name;
@@ -793,6 +805,12 @@ class SaltModule extends Module
 	{
 		if(!isset($args['hostname']))
 			return;
+		if(is_string($data))
+		{
+			$page->append('dialog', array('type' => 'error',
+					'text' => $data));
+			return;
+		}
 		$hostname = $args['hostname'];
 		$page = $page->append('vbox');
 		if(($count = count((array)$data)) == 0)
