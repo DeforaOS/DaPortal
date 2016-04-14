@@ -143,7 +143,7 @@ if [ $# -ne 1 ]; then
 	_usage
 	exit $?
 fi
-DAPORTALDIR="$PREFIX/daportal"
+DAPORTALDIR="$PREFIX/share/daportal"
 REMOTE="$1"
 
 if [ $FORCE -eq 0 ]; then
