@@ -13,10 +13,10 @@ clean:
 distclean: clean
 
 install:
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/user
-	$(INSTALL) -m 0644 sql.php $(DESTDIR)$(PREFIX)/daportal/src/user/sql.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/user
+	$(INSTALL) -m 0644 sql.php $(DESTDIR)$(PREFIX)/share/daportal/src/user/sql.php
 
 uninstall:
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/user/sql.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/user/sql.php
 
 .PHONY: all clean distclean install uninstall

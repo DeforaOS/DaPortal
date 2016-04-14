@@ -33,20 +33,20 @@ install:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/pki
-	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/content.php
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/pki
-	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/module.php
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/pki
-	$(INSTALL) -m 0644 openssl.cnf.in $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/openssl.cnf.in
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki
+	$(INSTALL) -m 0644 content.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/content.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki
+	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/module.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki
+	$(INSTALL) -m 0644 openssl.cnf.in $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/openssl.cnf.in
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/content.php
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/module.php
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/pki/openssl.cnf.in
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/content.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/module.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/openssl.cnf.in
 
 .PHONY: all subdirs clean distclean install uninstall

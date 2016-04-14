@@ -33,14 +33,14 @@ install:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/formats/fpdf
-	$(INSTALL) -m 0644 fpdf.php $(DESTDIR)$(PREFIX)/daportal/src/formats/fpdf/fpdf.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf
+	$(INSTALL) -m 0644 fpdf.php $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf/fpdf.php
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/formats/fpdf/fpdf.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf/fpdf.php
 
 .PHONY: all subdirs clean distclean install uninstall

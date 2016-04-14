@@ -13,10 +13,10 @@ clean:
 distclean: clean
 
 install:
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/salt
-	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/salt/module.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/salt
+	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/salt/module.php
 
 uninstall:
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/salt/module.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/modules/salt/module.php
 
 .PHONY: all clean distclean install uninstall

@@ -43,13 +43,13 @@ install: $(TARGETS)
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
-	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/src" -i -- "$(OBJDIR)daportal.php"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/src" -i -- "$(OBJDIR)daportal.php"
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
-	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/daportal/src" -u -- "daportal.php"
+	../tools/subst.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/src" -u -- "daportal.php"
 
 .PHONY: all subdirs clean distclean install uninstall

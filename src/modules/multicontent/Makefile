@@ -13,10 +13,10 @@ clean:
 distclean: clean
 
 install:
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/src/modules/multicontent
-	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/daportal/src/modules/multicontent/module.php
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/multicontent
+	$(INSTALL) -m 0644 module.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/multicontent/module.php
 
 uninstall:
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/src/modules/multicontent/module.php
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/src/modules/multicontent/module.php
 
 .PHONY: all clean distclean install uninstall

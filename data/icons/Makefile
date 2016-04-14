@@ -81,45 +81,45 @@ install: $(TARGETS)
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/16x16.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/24x24.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/32x32.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/48x48.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)gnome/16x16.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)gnome/24x24.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)gnome/32x32.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -i -- "$(OBJDIR)gnome/48x48.css"
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 DeforaOS.css $(DESTDIR)$(PREFIX)/daportal/data/icons/DeforaOS.css
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 Rodent.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 Tango.css $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 generic.css $(DESTDIR)$(PREFIX)/daportal/data/icons/generic.css
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 gnome.css $(DESTDIR)$(PREFIX)/daportal/data/icons/gnome.css
-	$(MKDIR) $(DESTDIR)$(PREFIX)/daportal/data/icons
-	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/daportal/data/icons/index.php
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/16x16.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/24x24.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/32x32.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)DeforaOS/48x48.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)gnome/16x16.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)gnome/24x24.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)gnome/32x32.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -i -- "$(OBJDIR)gnome/48x48.css"
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 DeforaOS.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/DeforaOS.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 Rodent.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Rodent.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 Tango.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Tango.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 generic.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 gnome.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/gnome.css
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons
+	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/share/daportal/data/icons/index.php
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/16x16.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/24x24.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/32x32.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "DeforaOS/48x48.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "gnome/16x16.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "gnome/24x24.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "gnome/32x32.css"
-	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/daportal/data/icons" -u -- "gnome/48x48.css"
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/DeforaOS.css
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/Rodent.css
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/Tango.css
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/generic.css
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/gnome.css
-	$(RM) -- $(DESTDIR)$(PREFIX)/daportal/data/icons/index.php
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "DeforaOS/16x16.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "DeforaOS/24x24.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "DeforaOS/32x32.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "DeforaOS/48x48.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "gnome/16x16.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "gnome/24x24.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "gnome/32x32.css"
+	./icontheme.sh -P "$(DESTDIR)$(PREFIX)/share/daportal/data/icons" -u -- "gnome/48x48.css"
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/DeforaOS.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Rodent.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Tango.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/gnome.css
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/daportal/data/icons/index.php
 
 .PHONY: all subdirs clean distclean install uninstall
