@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.10.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-12 18:44+0200\n"
+"POT-Creation-Date: 2016-04-14 16:41+0200\n"
 "PO-Revision-Date: 2016-02-28 18:01+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -438,8 +438,8 @@ msgstr ""
 #: ../src/modules/content/module.php:1142
 #: ../src/modules/content/module.php:1281
 #: ../src/modules/download/content/folder.php:138
-#: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:303
-#: ../src/modules/salt/module.php:356 ../src/modules/user/module.php:701
+#: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:308
+#: ../src/modules/salt/module.php:361 ../src/modules/user/module.php:701
 msgid "Refresh"
 msgstr "Actualizar"
 
@@ -607,7 +607,7 @@ msgstr ""
 #: ../src/modules/content/module.php:1423
 #: ../src/modules/content/module.php:1522 ../src/modules/group/module.php:141
 #: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
-#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:478
+#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:483
 #: ../src/modules/user/module.php:251 ../src/modules/user/module.php:288
 #: ../src/modules/user/module.php:312 ../src/modules/user/module.php:334
 #: ../src/modules/user/module.php:419 ../src/modules/user/module.php:520
@@ -867,7 +867,7 @@ msgstr ""
 msgid "Some content could not be enabled"
 msgstr ""
 
-#: ../src/modules/content/module.php:1251 ../src/modules/salt/module.php:455
+#: ../src/modules/content/module.php:1251 ../src/modules/salt/module.php:460
 msgid "Back"
 msgstr ""
 
@@ -1370,7 +1370,7 @@ msgstr ""
 msgid "Monitor"
 msgstr ""
 
-#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:756
+#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:773
 msgid "Load average"
 msgstr ""
 
@@ -1955,83 +1955,83 @@ msgstr ""
 msgid "Could not obtain statistics"
 msgstr ""
 
-#: ../src/modules/salt/module.php:307
+#: ../src/modules/salt/module.php:312
 msgid "Reboot"
 msgstr ""
 
-#: ../src/modules/salt/module.php:311
+#: ../src/modules/salt/module.php:316
 msgid "Shutdown"
 msgstr ""
 
-#: ../src/modules/salt/module.php:321
+#: ../src/modules/salt/module.php:326
 msgid "Could not list hosts"
 msgstr ""
 
-#: ../src/modules/salt/module.php:419
+#: ../src/modules/salt/module.php:424
 msgid "Unknown host"
 msgstr ""
 
-#: ../src/modules/salt/module.php:433
+#: ../src/modules/salt/module.php:438
 msgid "Unsupported action"
 msgstr ""
 
-#: ../src/modules/salt/module.php:444
+#: ../src/modules/salt/module.php:449
 #, php-format
 msgid "Could not %s"
 msgstr "No se puede %s"
 
-#: ../src/modules/salt/module.php:450
+#: ../src/modules/salt/module.php:455
 #, php-format
 msgid "%s successful"
 msgstr ""
 
-#: ../src/modules/salt/module.php:466
+#: ../src/modules/salt/module.php:471
 #, php-format
 msgid "Do you really want to %s %s?"
 msgstr "¿Realmente desea %s %s?"
 
-#: ../src/modules/salt/module.php:697
+#: ../src/modules/salt/module.php:714
 msgid "Reload"
 msgstr ""
 
-#: ../src/modules/salt/module.php:699
+#: ../src/modules/salt/module.php:716
 msgid "Start"
 msgstr "Comenzar"
 
-#: ../src/modules/salt/module.php:701
+#: ../src/modules/salt/module.php:718
 msgid "Stop"
 msgstr "Detener"
 
-#: ../src/modules/salt/module.php:703
+#: ../src/modules/salt/module.php:720
 msgid "Restart"
 msgstr ""
 
-#: ../src/modules/salt/module.php:750 ../src/modules/wiki/module.php:128
+#: ../src/modules/salt/module.php:767 ../src/modules/wiki/module.php:128
 msgid "Disk usage"
 msgstr ""
 
-#: ../src/modules/salt/module.php:762
+#: ../src/modules/salt/module.php:779
 msgid "Network interfaces"
 msgstr ""
 
-#: ../src/modules/salt/module.php:795
+#: ../src/modules/salt/module.php:818
 msgid "There is no package to update."
 msgstr ""
 
-#: ../src/modules/salt/module.php:797
+#: ../src/modules/salt/module.php:820
 msgid "System up to date"
 msgstr ""
 
-#: ../src/modules/salt/module.php:801
+#: ../src/modules/salt/module.php:824
 #, php-format
 msgid "%u package upgrade(s) are available"
 msgstr ""
 
-#: ../src/modules/salt/module.php:806
+#: ../src/modules/salt/module.php:829
 msgid "Details"
 msgstr "Detalles"
 
-#: ../src/modules/salt/module.php:814
+#: ../src/modules/salt/module.php:837
 msgid "Upgrade"
 msgstr ""
 
