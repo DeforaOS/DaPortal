@@ -1,1 +1,1 @@
-<?php if(chdir('@PREFIX@/daportal/src') === TRUE) require('./daportal.php'); ?>
+<?php if(chdir('@PREFIX@/share/daportal/src') === TRUE) require('./daportal.php'); ?>
