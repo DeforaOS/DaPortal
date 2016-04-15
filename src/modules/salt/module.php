@@ -231,6 +231,7 @@ class SaltModule extends Module
 						array('stock' => 'error')),
 					'label' => $link));
 				$page->append('dialog', array('type' => 'error',
+						'title' => $v['title'],
 						'text' => $v['error']));
 				continue;
 			}
