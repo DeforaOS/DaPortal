@@ -169,7 +169,7 @@ class SaltModule extends Module
 		if(!is_string($hostname) || strlen($hostname) == 0)
 			$this->_defaultList($vbox);
 		else
-			$this->_defaultHost($vbox, $hostname);
+			$this->_defaultHost($request, $vbox, $hostname);
 		return new PageResponse($page);
 	}
 
@@ -186,7 +186,8 @@ class SaltModule extends Module
 				'text' => _('Monitor')));
 	}
 
-	private function _defaultHost(PageElement $page, $host)
+	private function _defaultHost(Request $request, PageElement $page,
+			$host)
 	{
 		$salt = array('uptime' => array('title' => _('Uptime'),
 				'helper' => 'Uptime',
@@ -217,24 +218,36 @@ class SaltModule extends Module
 			$count = max($count, $this->_defaultHostCount($data));
 			$salt[$s]['data'] = $data;
 		}
+		$view = $page->append('iconview');
+		$url = $this->engine->getURL($request);
 		foreach($salt as $s => $v)
 		{
+			$link = new PageElement('link', array(
+				'url' => $url.'#'.$s, 'text' => $v['title']));
 			if(!isset($v['data']))
 			{
+				$view->append('row', array(
+					'icon' => new PageElement('image',
+						array('stock' => 'error')),
+					'label' => $link));
 				$page->append('dialog', array('type' => 'error',
 						'text' => $v['error']));
 				continue;
 			}
+			$view->append('row', array(
+				'icon' => new PageElement('image', array(
+					'stock' => 'monitor')),
+				'label' => $link));
 			$render = isset($v['render'])
 				? $v['render'] : $v['helper'];
 			$render = 'render'.$render;
 			$args = isset($v['args']) ? $v['args'] : array();
 			if($count > 1)
-				$this->_defaultHostRenderMultiple($page, $host,
-						$v['title'], $v['data'],
+				$this->_defaultHostRenderMultiple($page, $s,
+						$host, $v['title'], $v['data'],
 						array($this, $render), $args);
 			else
-				$this->_defaultHostRender($page, $host,
+				$this->_defaultHostRender($page, $s, $host,
 						$v['title'], $v['data'],
 						array($this, $render), $args);
 
@@ -254,8 +267,8 @@ class SaltModule extends Module
 		return count($hostnames);
 	}
 
-	private function _defaultHostRender(PageElement $page, $host, $title,
-			$data, $callback, $params = array())
+	private function _defaultHostRender(PageElement $page, $id, $host,
+			$title, $data, $callback, $params = array())
 	{
 		if(!is_array($data))
 			$data = array($data);
@@ -264,6 +277,7 @@ class SaltModule extends Module
 				foreach($hosts as $hostname => $h)
 				{
 					$page->append('title', array(
+							'id' => $id,
 							'text' => $title));
 					$args = array();
 					foreach($params as $param)
@@ -272,10 +286,10 @@ class SaltModule extends Module
 				}
 	}
 
-	private function _defaultHostRenderMultiple(PageElement $page, $host,
-			$title, $data, $callback, $params = array())
+	private function _defaultHostRenderMultiple(PageElement $page, $id,
+			$host, $title, $data, $callback, $params = array())
 	{
-		$page->append('title', array('text' => $title));
+		$page->append('title', array('id' => $id, 'text' => $title));
 		$columns = array('title' => '', 'status' => '');
 		$page = $page->append('treeview', array('columns' => $columns));
 		if(!is_array($data))
