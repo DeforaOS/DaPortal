@@ -69,6 +69,7 @@ class GitSCMProject extends SCMProject
 			$file)
 	{
 		$error = _('Could not open directory');
+		$format = _('%d/%m/%Y %H:%M:%S');
 
 		$vbox->append('title', array('text' => _('Browse source')));
 		if(($dir = opendir($path)) === FALSE)
@@ -111,7 +112,7 @@ class GitSCMProject extends SCMProject
 					'text' => $de));
 			$row->set('title', $link);
 			//date
-			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$date = strftime($format, $st['mtime']);
 			$row->set('date', $date);
 		}
 		foreach($files as $de => $st)
@@ -131,7 +132,7 @@ class GitSCMProject extends SCMProject
 					'text' => $de));
 			$row->set('title', $link);
 			//date
-			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$date = strftime($format, $st['mtime']);
 			$row->set('date', $date);
 		}
 		closedir($dir);

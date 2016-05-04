@@ -69,6 +69,7 @@ class CVSSCMProject extends SCMProject
 	private function _browseDir($request, $vbox, $path, $file)
 	{
 		$error = _('Could not open directory');
+		$format = _('%d/%m/%Y %H:%M:%S');
 
 		$vbox->append('title', array('text' => _('Browse source')));
 		if(($dir = opendir($path.'/'.$file)) === FALSE)
@@ -119,7 +120,7 @@ class CVSSCMProject extends SCMProject
 					'text' => _('Parent directory')));
 			$row->set('title', $link);
 			//date
-			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$date = strftime($format, $st['mtime']);
 			$row->set('date', $date);
 		}
 		foreach($folders as $de => $st)
@@ -140,7 +141,7 @@ class CVSSCMProject extends SCMProject
 					'text' => $de));
 			$row->set('title', $link);
 			//date
-			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$date = strftime($format, $st['mtime']);
 			$row->set('date', $date);
 		}
 		foreach($files as $de => $st)
@@ -160,7 +161,7 @@ class CVSSCMProject extends SCMProject
 					'text' => substr($de, 0, -2)));
 			$row->set('title', $link);
 			//date
-			$date = strftime(_('%Y/%m/%d %H:%M:%S'), $st['mtime']);
+			$date = strftime($format, $st['mtime']);
 			$row->set('date', $date);
 			//obtain the revisions
 			$cmd = 'rlog '.escapeshellarg($path.'/'.$file.'/'.$de);
@@ -361,6 +362,7 @@ class CVSSCMProject extends SCMProject
 	{
 		$cvsroot = $project->get('cvsroot');
 		$error = _('No CVS repository defined');
+		$format = _('%d/%m/%Y %H:%M:%S');
 
 		//check the cvsroot
 		$len = strlen($cvsroot);
@@ -431,7 +433,7 @@ class CVSSCMProject extends SCMProject
 			//date
 			$date = substr($fields[0], 1, 9);
 			$date = base_convert($date, 16, 10);
-			$date = strftime(_('%d/%m/%Y %H:%M:%S'), $date);
+			$date = strftime($format, $date);
 			$row->set('date', $date);
 			$row->set('action', $event);
 			//revision
