@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.10.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-14 16:41+0200\n"
+"POT-Creation-Date: 2016-05-04 19:08+0200\n"
 "PO-Revision-Date: 2016-02-28 18:01+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -16,27 +16,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/system/common.php:58 ../src/modules/probe/module.php:381
+#: ../src/system/common.php:38
+msgid "%d/%m/%Y"
+msgstr "%d/%m/%Y"
+
+#: ../src/system/common.php:51 ../src/modules/browser/module.php:90
+msgid "%d/%m/%Y %H:%M:%S"
+msgstr "%d/%m/%Y %H:%M:%S"
+
+#: ../src/system/common.php:84 ../src/modules/probe/module.php:381
 msgid "bytes"
 msgstr "bytes"
 
-#: ../src/system/common.php:58
+#: ../src/system/common.php:84
 msgid "byte"
 msgstr "byte"
 
-#: ../src/system/common.php:60
+#: ../src/system/common.php:86
 msgid "kB"
 msgstr "kB"
 
-#: ../src/system/common.php:62
+#: ../src/system/common.php:88
 msgid "MB"
 msgstr "MB"
 
-#: ../src/system/common.php:64
+#: ../src/system/common.php:90
 msgid "GB"
 msgstr "GB"
 
-#: ../src/system/common.php:65
+#: ../src/system/common.php:91
 msgid "TB"
 msgstr "TB"
 
@@ -61,8 +69,8 @@ msgid "Open"
 msgstr "Abrir"
 
 #: ../src/system/content.php:78 ../src/modules/content/module.php:351
-#: ../src/modules/content/module.php:1151
-#: ../src/modules/content/module.php:1293
+#: ../src/modules/content/module.php:1150
+#: ../src/modules/content/module.php:1292
 msgid "Publish"
 msgstr ""
 
@@ -70,7 +78,7 @@ msgstr ""
 msgid "Submit content"
 msgstr ""
 
-#: ../src/system/content.php:80 ../src/modules/content/module.php:1533
+#: ../src/system/content.php:80 ../src/modules/content/module.php:1532
 #: ../src/modules/group/module.php:177 ../src/modules/user/module.php:522
 #: ../src/modules/user/module.php:1359 ../src/modules/user/module.php:1363
 msgid "Update"
@@ -79,12 +87,12 @@ msgstr ""
 #: ../src/system/content.php:91 ../src/modules/admin/module.php:43
 #: ../src/modules/browser/module.php:61 ../src/modules/browser/module.php:82
 #: ../src/modules/content/module.php:73 ../src/modules/content/module.php:167
-#: ../src/modules/content/module.php:777
-#: ../src/modules/content/module.php:1179
-#: ../src/modules/content/module.php:1200
-#: ../src/modules/content/module.php:1221
-#: ../src/modules/content/module.php:1380
-#: ../src/modules/content/module.php:1480 ../src/modules/group/module.php:114
+#: ../src/modules/content/module.php:776
+#: ../src/modules/content/module.php:1178
+#: ../src/modules/content/module.php:1199
+#: ../src/modules/content/module.php:1220
+#: ../src/modules/content/module.php:1379
+#: ../src/modules/content/module.php:1479 ../src/modules/group/module.php:114
 #: ../src/modules/group/module.php:259 ../src/modules/group/module.php:420
 #: ../src/modules/group/module.php:517 ../src/modules/group/module.php:622
 #: ../src/modules/group/module.php:694 ../src/modules/group/module.php:767
@@ -143,23 +151,23 @@ msgstr ""
 #: ../src/modules/project/content.php:90
 #: ../src/modules/project/content/bug.php:79
 #: ../src/modules/project/content/bug.php:154
-#: ../src/modules/project/scm/cvs.php:79
-#: ../src/modules/project/scm/cvs.php:222
-#: ../src/modules/project/scm/cvs.php:378
+#: ../src/modules/project/scm/cvs.php:78
+#: ../src/modules/project/scm/cvs.php:220
+#: ../src/modules/project/scm/cvs.php:376
 #: ../src/modules/project/scm/git.php:79 ../src/modules/search/module.php:271
 #: ../src/modules/wiki/content.php:176
 msgid "Date"
 msgstr "Fecha"
 
 #: ../src/system/content.php:566 ../src/modules/admin/module.php:229
-#: ../src/modules/content/module.php:1106 ../src/modules/group/module.php:309
+#: ../src/modules/content/module.php:1105 ../src/modules/group/module.php:309
 #: ../src/modules/project/content.php:309 ../src/modules/user/module.php:708
 msgid "Disabled"
 msgstr "Deshabilitado"
 
 #: ../src/system/content.php:568 ../src/modules/admin/module.php:212
 #: ../src/modules/admin/module.php:231 ../src/modules/content/module.php:215
-#: ../src/modules/content/module.php:1108 ../src/modules/group/module.php:136
+#: ../src/modules/content/module.php:1107 ../src/modules/group/module.php:136
 #: ../src/modules/group/module.php:282 ../src/modules/group/module.php:311
 #: ../src/modules/project/content.php:311 ../src/modules/user/module.php:403
 #: ../src/modules/user/module.php:688 ../src/modules/user/module.php:710
@@ -186,7 +194,7 @@ msgstr "Titulo: "
 msgid "Content: "
 msgstr "Contenidos: "
 
-#: ../src/system/content.php:714 ../src/modules/content/module.php:798
+#: ../src/system/content.php:714 ../src/modules/content/module.php:797
 #: ../src/modules/project/module.php:447
 msgid "Preview: "
 msgstr "Previa: "
@@ -199,196 +207,196 @@ msgstr ""
 msgid "Could not update the content"
 msgstr ""
 
-#: ../src/formats/html.php:509
+#: ../src/formats/html.php:510
 msgid "Error"
 msgstr "Error"
 
-#: ../src/formats/html.php:512
+#: ../src/formats/html.php:513
 msgid "Question"
 msgstr "Pregunta"
 
-#: ../src/formats/html.php:515
+#: ../src/formats/html.php:516
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/formats/html.php:519 ../src/modules/project/scm/cvs.php:224
+#: ../src/formats/html.php:520 ../src/modules/project/scm/cvs.php:222
 #: ../src/modules/wiki/content.php:178
 msgid "Message"
 msgstr "Mensaje"
 
-#: ../src/formats/html.php:536 ../src/modules/user/module.php:255
+#: ../src/formats/html.php:537 ../src/modules/user/module.php:255
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../src/formats/html.php:572 ../src/formats/html.php:612
+#: ../src/formats/html.php:573 ../src/formats/html.php:613
 msgid "More"
 msgstr "Más"
 
-#: ../src/formats/html.php:736
+#: ../src/formats/html.php:737
 msgid "Cut"
 msgstr "Cortar"
 
-#: ../src/formats/html.php:736
+#: ../src/formats/html.php:737
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../src/formats/html.php:737
+#: ../src/formats/html.php:738
 msgid "Paste"
 msgstr "Pegar"
 
-#: ../src/formats/html.php:738
+#: ../src/formats/html.php:739
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../src/formats/html.php:738
+#: ../src/formats/html.php:739
 msgid "Redo"
 msgstr "Rehacer"
 
-#: ../src/formats/html.php:739
+#: ../src/formats/html.php:740
 msgid "Insert ruler"
 msgstr ""
 
-#: ../src/formats/html.php:740
+#: ../src/formats/html.php:741
 msgid "Insert link"
 msgstr ""
 
-#: ../src/formats/html.php:741
+#: ../src/formats/html.php:742
 msgid "Insert image"
 msgstr ""
 
-#: ../src/formats/html.php:742
+#: ../src/formats/html.php:743
 msgid "Insert table"
 msgstr ""
 
-#: ../src/formats/html.php:743
+#: ../src/formats/html.php:744
 msgid "Insert text"
 msgstr ""
 
-#: ../src/formats/html.php:744
+#: ../src/formats/html.php:745
 msgid "Style"
 msgstr ""
 
-#: ../src/formats/html.php:745
+#: ../src/formats/html.php:746
 msgid "Heading 1"
 msgstr ""
 
-#: ../src/formats/html.php:745
+#: ../src/formats/html.php:746
 msgid "Heading 2"
 msgstr ""
 
-#: ../src/formats/html.php:746
+#: ../src/formats/html.php:747
 msgid "Heading 3"
 msgstr ""
 
-#: ../src/formats/html.php:746
+#: ../src/formats/html.php:747
 msgid "Heading 4"
 msgstr ""
 
-#: ../src/formats/html.php:747
+#: ../src/formats/html.php:748
 msgid "Heading 5"
 msgstr ""
 
-#: ../src/formats/html.php:747
+#: ../src/formats/html.php:748
 msgid "Heading 6"
 msgstr ""
 
-#: ../src/formats/html.php:748
+#: ../src/formats/html.php:749
 msgid "Normal"
 msgstr ""
 
-#: ../src/formats/html.php:748
+#: ../src/formats/html.php:749
 msgid "Preformatted"
 msgstr ""
 
-#: ../src/formats/html.php:749
+#: ../src/formats/html.php:750
 msgid "Quotation"
 msgstr ""
 
-#: ../src/formats/html.php:750
+#: ../src/formats/html.php:751
 msgid "Font"
 msgstr "Fuente"
 
-#: ../src/formats/html.php:751
+#: ../src/formats/html.php:752
 msgid "Cursive"
 msgstr ""
 
-#: ../src/formats/html.php:752
+#: ../src/formats/html.php:753
 msgid "Fantasy"
 msgstr ""
 
-#: ../src/formats/html.php:753
+#: ../src/formats/html.php:754
 msgid "Monospace"
 msgstr ""
 
-#: ../src/formats/html.php:754
+#: ../src/formats/html.php:755
 msgid "Sans serif"
 msgstr ""
 
-#: ../src/formats/html.php:755
+#: ../src/formats/html.php:756
 msgid "Serif"
 msgstr ""
 
-#: ../src/formats/html.php:756 ../src/modules/browser/module.php:418
+#: ../src/formats/html.php:757 ../src/modules/browser/module.php:418
 msgid "Size"
 msgstr "Tamaño"
 
-#: ../src/formats/html.php:758
+#: ../src/formats/html.php:759
 msgid "Bold"
 msgstr ""
 
-#: ../src/formats/html.php:759
+#: ../src/formats/html.php:760
 msgid "Italic"
 msgstr ""
 
-#: ../src/formats/html.php:760
+#: ../src/formats/html.php:761
 msgid "Underline"
 msgstr ""
 
-#: ../src/formats/html.php:761
+#: ../src/formats/html.php:762
 msgid "Strikethrough"
 msgstr ""
 
-#: ../src/formats/html.php:762
+#: ../src/formats/html.php:763
 msgid "Subscript"
 msgstr ""
 
-#: ../src/formats/html.php:763
+#: ../src/formats/html.php:764
 msgid "Superscript"
 msgstr ""
 
-#: ../src/formats/html.php:764
+#: ../src/formats/html.php:765
 msgid "Remove format"
 msgstr ""
 
-#: ../src/formats/html.php:765
+#: ../src/formats/html.php:766
 msgid "Align left"
 msgstr ""
 
-#: ../src/formats/html.php:766
+#: ../src/formats/html.php:767
 msgid "Center"
 msgstr ""
 
-#: ../src/formats/html.php:767
+#: ../src/formats/html.php:768
 msgid "Align right"
 msgstr ""
 
-#: ../src/formats/html.php:768
+#: ../src/formats/html.php:769
 msgid "Justify"
 msgstr ""
 
-#: ../src/formats/html.php:769
+#: ../src/formats/html.php:770
 msgid "Numbering"
 msgstr ""
 
-#: ../src/formats/html.php:770
+#: ../src/formats/html.php:771
 msgid "Bullets"
 msgstr ""
 
-#: ../src/formats/html.php:771
+#: ../src/formats/html.php:772
 msgid "Unindent"
 msgstr ""
 
-#: ../src/formats/html.php:772
+#: ../src/formats/html.php:773
 msgid "Indent"
 msgstr ""
 
@@ -408,7 +416,7 @@ msgstr ""
 msgid "Modules administration"
 msgstr ""
 
-#: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1096
+#: ../src/modules/admin/module.php:149 ../src/modules/content/module.php:1095
 #: ../src/modules/group/module.php:346 ../src/modules/user/module.php:747
 msgid "Back to the administration"
 msgstr ""
@@ -435,20 +443,20 @@ msgid "Module"
 msgstr ""
 
 #: ../src/modules/admin/module.php:219 ../src/modules/browser/module.php:163
-#: ../src/modules/content/module.php:1142
-#: ../src/modules/content/module.php:1281
+#: ../src/modules/content/module.php:1141
+#: ../src/modules/content/module.php:1280
 #: ../src/modules/download/content/folder.php:138
-#: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:308
-#: ../src/modules/salt/module.php:361 ../src/modules/user/module.php:701
+#: ../src/modules/group/module.php:294 ../src/modules/salt/module.php:323
+#: ../src/modules/salt/module.php:376 ../src/modules/user/module.php:701
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1145
+#: ../src/modules/admin/module.php:221 ../src/modules/content/module.php:1144
 #: ../src/modules/group/module.php:297 ../src/modules/user/module.php:658
 msgid "Disable"
 msgstr "Deshabilitar"
 
-#: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1147
+#: ../src/modules/admin/module.php:225 ../src/modules/content/module.php:1146
 #: ../src/modules/group/module.php:301 ../src/modules/user/module.php:659
 msgid "Enable"
 msgstr "Habilitar"
@@ -557,12 +565,8 @@ msgstr ""
 msgid "Could not lookup the path"
 msgstr ""
 
-#: ../src/modules/browser/module.php:90 ../src/modules/project/scm/cvs.php:434
-msgid "%d/%m/%Y %H:%M:%S"
-msgstr ""
-
 #: ../src/modules/browser/module.php:159
-#: ../src/modules/project/scm/cvs.php:119
+#: ../src/modules/project/scm/cvs.php:117
 msgid "Parent directory"
 msgstr ""
 
@@ -603,11 +607,11 @@ msgstr ""
 msgid "Could not open the file or directory requested"
 msgstr ""
 
-#: ../src/modules/browser/module.php:300 ../src/modules/content/module.php:808
-#: ../src/modules/content/module.php:1423
-#: ../src/modules/content/module.php:1522 ../src/modules/group/module.php:141
+#: ../src/modules/browser/module.php:300 ../src/modules/content/module.php:807
+#: ../src/modules/content/module.php:1422
+#: ../src/modules/content/module.php:1521 ../src/modules/group/module.php:141
 #: ../src/modules/group/module.php:174 ../src/modules/project/module.php:731
-#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:483
+#: ../src/modules/project/module.php:756 ../src/modules/salt/module.php:498
 #: ../src/modules/user/module.php:251 ../src/modules/user/module.php:288
 #: ../src/modules/user/module.php:312 ../src/modules/user/module.php:334
 #: ../src/modules/user/module.php:419 ../src/modules/user/module.php:520
@@ -619,7 +623,6 @@ msgstr "Annular"
 #: ../src/modules/download/module.php:287
 #: ../src/modules/download/module.php:294
 #: ../src/modules/project/content.php:339
-#: ../src/modules/project/module.php:873
 msgid "An error occurred"
 msgstr ""
 
@@ -637,8 +640,8 @@ msgstr ""
 msgid "Destination is not a directory"
 msgstr ""
 
-#: ../src/modules/browser/module.php:353 ../src/modules/content/module.php:830
-#: ../src/modules/content/module.php:903 ../src/modules/content/module.php:961
+#: ../src/modules/browser/module.php:353 ../src/modules/content/module.php:829
+#: ../src/modules/content/module.php:902 ../src/modules/content/module.php:960
 #: ../src/modules/download/content/file.php:225
 #: ../src/modules/download/module.php:329 ../src/modules/probe/module.php:95
 #: ../src/modules/probe/module.php:281 ../src/modules/project/module.php:64
@@ -706,14 +709,14 @@ msgid "Last access:"
 msgstr ""
 
 #: ../src/modules/browser/module.php:526
-#: ../src/modules/content/module.php:1405 ../src/modules/group/module.php:819
+#: ../src/modules/content/module.php:1404 ../src/modules/group/module.php:819
 #: ../src/modules/user/module.php:1252 ../src/modules/user/module.php:1306
 #: ../src/modules/user/module.php:2022
 msgid "If you are not redirected within 30 seconds, please "
 msgstr ""
 
 #: ../src/modules/browser/module.php:528
-#: ../src/modules/content/module.php:1407 ../src/modules/group/module.php:821
+#: ../src/modules/content/module.php:1406 ../src/modules/group/module.php:821
 #: ../src/modules/user/module.php:1254 ../src/modules/user/module.php:1308
 #: ../src/modules/user/module.php:2024
 msgid "click here"
@@ -803,98 +806,98 @@ msgstr ""
 msgid "Unable to list the content"
 msgstr ""
 
-#: ../src/modules/content/module.php:641 ../src/modules/project/scm/cvs.php:81
-#: ../src/modules/project/scm/cvs.php:223
-#: ../src/modules/project/scm/cvs.php:380 ../src/modules/wiki/content.php:177
+#: ../src/modules/content/module.php:641 ../src/modules/project/scm/cvs.php:80
+#: ../src/modules/project/scm/cvs.php:221
+#: ../src/modules/project/scm/cvs.php:378 ../src/modules/wiki/content.php:177
 msgid "Author"
 msgstr ""
 
-#: ../src/modules/content/module.php:753 ../src/modules/content/module.php:771
+#: ../src/modules/content/module.php:752 ../src/modules/content/module.php:770
 msgid "Could not preview content"
 msgstr ""
 
-#: ../src/modules/content/module.php:848
+#: ../src/modules/content/module.php:847
 msgid "Could not submit content"
 msgstr ""
 
-#: ../src/modules/content/module.php:922
+#: ../src/modules/content/module.php:921
 msgid "Unable to fetch content"
 msgstr ""
 
-#: ../src/modules/content/module.php:928
+#: ../src/modules/content/module.php:927
 msgid "Could not update content"
 msgstr ""
 
-#: ../src/modules/content/module.php:932
+#: ../src/modules/content/module.php:931
 msgid "Update "
 msgstr ""
 
-#: ../src/modules/content/module.php:1093
+#: ../src/modules/content/module.php:1092
 msgid "Back to this module"
 msgstr ""
 
-#: ../src/modules/content/module.php:1149
-#: ../src/modules/content/module.php:1298
+#: ../src/modules/content/module.php:1148
+#: ../src/modules/content/module.php:1297
 msgid "Unpublish"
 msgstr ""
 
-#: ../src/modules/content/module.php:1153 ../src/modules/group/module.php:305
+#: ../src/modules/content/module.php:1152 ../src/modules/group/module.php:305
 #: ../src/modules/user/module.php:660
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../src/modules/content/module.php:1188
+#: ../src/modules/content/module.php:1187
 msgid "Content could be deleted successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1189
+#: ../src/modules/content/module.php:1188
 msgid "Some content could not be deleted"
 msgstr ""
 
-#: ../src/modules/content/module.php:1209
+#: ../src/modules/content/module.php:1208
 msgid "Content could be disabled successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1210
+#: ../src/modules/content/module.php:1209
 msgid "Some content could not be disabled"
 msgstr ""
 
-#: ../src/modules/content/module.php:1230
+#: ../src/modules/content/module.php:1229
 msgid "Content could be enabled successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1231
+#: ../src/modules/content/module.php:1230
 msgid "Some content could not be enabled"
 msgstr ""
 
-#: ../src/modules/content/module.php:1251 ../src/modules/salt/module.php:460
+#: ../src/modules/content/module.php:1250 ../src/modules/salt/module.php:475
 msgid "Back"
 msgstr ""
 
-#: ../src/modules/content/module.php:1389
+#: ../src/modules/content/module.php:1388
 msgid "Content could be published successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1390
+#: ../src/modules/content/module.php:1389
 msgid "Some content could not be published"
 msgstr ""
 
-#: ../src/modules/content/module.php:1429
-#: ../src/modules/content/module.php:1530
+#: ../src/modules/content/module.php:1428
+#: ../src/modules/content/module.php:1529
 #: ../src/modules/project/content/bug.php:155
 #: ../src/modules/project/module.php:734 ../src/modules/search/module.php:272
 msgid "Preview"
 msgstr ""
 
-#: ../src/modules/content/module.php:1489
+#: ../src/modules/content/module.php:1488
 msgid "Content could be unpublished successfully"
 msgstr ""
 
-#: ../src/modules/content/module.php:1490
+#: ../src/modules/content/module.php:1489
 msgid "Some content could not be unpublished"
 msgstr ""
 
-#: ../src/modules/content/module.php:1524
+#: ../src/modules/content/module.php:1523
 #: ../src/modules/project/module.php:191 ../src/modules/search/module.php:395
 #: ../src/modules/user/module.php:338 ../src/modules/user/module.php:1572
 msgid "Reset"
@@ -946,7 +949,6 @@ msgstr "Nombre: "
 
 #: ../src/modules/download/content/file.php:84
 #: ../src/modules/project/content/bug.php:226
-#: ../src/modules/project/module.php:844
 msgid "Type: "
 msgstr "Tipo: "
 
@@ -1026,8 +1028,8 @@ msgid "New folder"
 msgstr ""
 
 #: ../src/modules/download/content/folder.php:86
-#: ../src/modules/project/scm/cvs.php:78
-#: ../src/modules/project/scm/cvs.php:377
+#: ../src/modules/project/scm/cvs.php:77
+#: ../src/modules/project/scm/cvs.php:375
 #: ../src/modules/project/scm/git.php:78
 msgid "Filename"
 msgstr "Nombre de archivo"
@@ -1304,7 +1306,7 @@ msgid "Could not list sections"
 msgstr ""
 
 #: ../src/modules/manual/module.php:418 ../src/modules/project/content.php:91
-#: ../src/modules/project/scm/cvs.php:82
+#: ../src/modules/project/scm/cvs.php:81
 msgid "Description"
 msgstr ""
 
@@ -1370,7 +1372,7 @@ msgstr ""
 msgid "Monitor"
 msgstr ""
 
-#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:773
+#: ../src/modules/probe/module.php:126 ../src/modules/salt/module.php:788
 msgid "Load average"
 msgstr ""
 
@@ -1472,7 +1474,7 @@ msgid "Manager"
 msgstr ""
 
 #: ../src/modules/project/content.php:153
-#: ../src/modules/project/module.php:183 ../src/modules/project/module.php:823
+#: ../src/modules/project/module.php:183
 msgid "Project: "
 msgstr ""
 
@@ -1511,7 +1513,7 @@ msgid "Bug reports"
 msgstr ""
 
 #: ../src/modules/project/content.php:382
-#: ../src/modules/project/scm/cvs.php:382
+#: ../src/modules/project/scm/cvs.php:380
 msgid "Timeline"
 msgstr ""
 
@@ -1646,7 +1648,6 @@ msgid "Could not list the replies"
 msgstr ""
 
 #: ../src/modules/project/content/bug.php:234
-#: ../src/modules/project/module.php:848
 msgid "Priority: "
 msgstr "Prioridad: "
 
@@ -1819,33 +1820,8 @@ msgstr ""
 msgid "Directory: "
 msgstr "Directorio: "
 
-#: ../src/modules/project/module.php:773
-#, php-format
-msgid "#%u/%s: %s"
-msgstr ""
-
-#: ../src/modules/project/module.php:788
-msgid "Reply"
-msgstr ""
-
-#: ../src/modules/project/module.php:828
-msgid "Submitter: "
-msgstr ""
-
-#: ../src/modules/project/module.php:833
-msgid "Date: "
-msgstr "Fecha: "
-
-#: ../src/modules/project/module.php:840
-msgid "State: "
-msgstr ""
-
-#: ../src/modules/project/module.php:852
-msgid "Assigned to: "
-msgstr ""
-
 #: ../src/modules/project/scm/cvs.php:44
-#: ../src/modules/project/scm/cvs.php:363
+#: ../src/modules/project/scm/cvs.php:361
 msgid "No CVS repository defined"
 msgstr ""
 
@@ -1853,51 +1829,43 @@ msgstr ""
 msgid "No such file or directory"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:71 ../src/modules/project/scm/git.php:71
+#: ../src/modules/project/scm/cvs.php:70 ../src/modules/project/scm/git.php:71
 msgid "Could not open directory"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:73 ../src/modules/project/scm/git.php:73
+#: ../src/modules/project/scm/cvs.php:72 ../src/modules/project/scm/git.php:73
 msgid "Browse source"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:80
-#: ../src/modules/project/scm/cvs.php:222
-#: ../src/modules/project/scm/cvs.php:379
+#: ../src/modules/project/scm/cvs.php:79
+#: ../src/modules/project/scm/cvs.php:220
+#: ../src/modules/project/scm/cvs.php:377
 msgid "Revision"
 msgstr "Revisión"
 
-#: ../src/modules/project/scm/cvs.php:122
-#: ../src/modules/project/scm/cvs.php:143
-#: ../src/modules/project/scm/cvs.php:163
-#: ../src/modules/project/scm/git.php:114
-#: ../src/modules/project/scm/git.php:134
-msgid "%Y/%m/%d %H:%M:%S"
-msgstr ""
-
-#: ../src/modules/project/scm/cvs.php:212 ../src/modules/wiki/content.php:160
+#: ../src/modules/project/scm/cvs.php:210 ../src/modules/wiki/content.php:160
 msgid "Could not list revisions"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:221 ../src/modules/wiki/content.php:135
+#: ../src/modules/project/scm/cvs.php:219 ../src/modules/wiki/content.php:135
 msgid "Revisions"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:342
+#: ../src/modules/project/scm/cvs.php:340
 #: ../src/modules/project/scm/git.php:200
 msgid "Repository"
 msgstr "Repositiorio"
 
-#: ../src/modules/project/scm/cvs.php:351
+#: ../src/modules/project/scm/cvs.php:349
 #: ../src/modules/project/scm/git.php:205
 msgid "The source code can be obtained as follows: "
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:371
+#: ../src/modules/project/scm/cvs.php:369
 msgid "Could not open the project history"
 msgstr ""
 
-#: ../src/modules/project/scm/cvs.php:378
+#: ../src/modules/project/scm/cvs.php:376
 msgid "Action"
 msgstr "Acción"
 
@@ -1923,115 +1891,115 @@ msgstr ""
 msgid "Hostname (or glob)"
 msgstr ""
 
-#: ../src/modules/salt/module.php:191
+#: ../src/modules/salt/module.php:192
 msgid "Uptime"
 msgstr ""
 
-#: ../src/modules/salt/module.php:193
+#: ../src/modules/salt/module.php:194
 msgid "Could not obtain uptime"
 msgstr ""
 
-#: ../src/modules/salt/module.php:194
+#: ../src/modules/salt/module.php:195
 msgid "Package upgrades"
 msgstr ""
 
-#: ../src/modules/salt/module.php:196
+#: ../src/modules/salt/module.php:197
 msgid "Could not list package upgrades"
 msgstr ""
 
-#: ../src/modules/salt/module.php:198
+#: ../src/modules/salt/module.php:199
 msgid "Services"
 msgstr ""
 
-#: ../src/modules/salt/module.php:200
+#: ../src/modules/salt/module.php:201
 msgid "Could not list the services"
 msgstr ""
 
-#: ../src/modules/salt/module.php:203
+#: ../src/modules/salt/module.php:204
 msgid "Statistics"
 msgstr ""
 
-#: ../src/modules/salt/module.php:205
+#: ../src/modules/salt/module.php:206
 msgid "Could not obtain statistics"
 msgstr ""
 
-#: ../src/modules/salt/module.php:312
+#: ../src/modules/salt/module.php:327
 msgid "Reboot"
 msgstr ""
 
-#: ../src/modules/salt/module.php:316
+#: ../src/modules/salt/module.php:331
 msgid "Shutdown"
 msgstr ""
 
-#: ../src/modules/salt/module.php:326
+#: ../src/modules/salt/module.php:341
 msgid "Could not list hosts"
 msgstr ""
 
-#: ../src/modules/salt/module.php:424
+#: ../src/modules/salt/module.php:439
 msgid "Unknown host"
 msgstr ""
 
-#: ../src/modules/salt/module.php:438
+#: ../src/modules/salt/module.php:453
 msgid "Unsupported action"
 msgstr ""
 
-#: ../src/modules/salt/module.php:449
+#: ../src/modules/salt/module.php:464
 #, php-format
 msgid "Could not %s"
 msgstr "No se puede %s"
 
-#: ../src/modules/salt/module.php:455
+#: ../src/modules/salt/module.php:470
 #, php-format
 msgid "%s successful"
 msgstr ""
 
-#: ../src/modules/salt/module.php:471
+#: ../src/modules/salt/module.php:486
 #, php-format
 msgid "Do you really want to %s %s?"
 msgstr "¿Realmente desea %s %s?"
 
-#: ../src/modules/salt/module.php:714
+#: ../src/modules/salt/module.php:729
 msgid "Reload"
 msgstr ""
 
-#: ../src/modules/salt/module.php:716
+#: ../src/modules/salt/module.php:731
 msgid "Start"
 msgstr "Comenzar"
 
-#: ../src/modules/salt/module.php:718
+#: ../src/modules/salt/module.php:733
 msgid "Stop"
 msgstr "Detener"
 
-#: ../src/modules/salt/module.php:720
+#: ../src/modules/salt/module.php:735
 msgid "Restart"
 msgstr ""
 
-#: ../src/modules/salt/module.php:767 ../src/modules/wiki/module.php:128
+#: ../src/modules/salt/module.php:782 ../src/modules/wiki/module.php:128
 msgid "Disk usage"
 msgstr ""
 
-#: ../src/modules/salt/module.php:779
+#: ../src/modules/salt/module.php:794
 msgid "Network interfaces"
 msgstr ""
 
-#: ../src/modules/salt/module.php:818
+#: ../src/modules/salt/module.php:833
 msgid "There is no package to update."
 msgstr ""
 
-#: ../src/modules/salt/module.php:820
+#: ../src/modules/salt/module.php:835
 msgid "System up to date"
 msgstr ""
 
-#: ../src/modules/salt/module.php:824
+#: ../src/modules/salt/module.php:839
 #, php-format
 msgid "%u package upgrade(s) are available"
 msgstr ""
 
-#: ../src/modules/salt/module.php:829
+#: ../src/modules/salt/module.php:844
 msgid "Details"
 msgstr "Detalles"
 
-#: ../src/modules/salt/module.php:837
+#: ../src/modules/salt/module.php:852
 msgid "Upgrade"
 msgstr ""
 
