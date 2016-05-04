@@ -693,14 +693,13 @@ abstract class ContentModule extends Module
 			$actions[] = 'post';
 		if($this->canUnpublish($engine, $request))
 			$actions[] = 'unpost';
-		if($request !== NULL)
-			foreach($actions as $a)
-				if($request->get($a) !== FALSE)
-				{
-					$a = 'helper'.$a;
-					$dialog = $this->$a($engine, $request);
-					break;
-				}
+		foreach($actions as $a)
+			if($request->get($a) !== FALSE)
+			{
+				$a = 'helper'.$a;
+				$dialog = $this->$a($engine, $request);
+				break;
+			}
 		if($user !== FALSE && ($uid = $user->getUserID()) == 0)
 			$user = FALSE;
 		$title = $this->text_content_list_title;
