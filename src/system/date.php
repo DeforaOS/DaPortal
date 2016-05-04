@@ -46,8 +46,12 @@ class Date
 	//Date::formatTimestamp
 	static public function formatTimestamp($timestamp, $format = FALSE)
 	{
+		global $config;
+
 		if($format === FALSE)
-			$format = '%d/%m/%Y %H:%M:%S';
+			if(($format = $config->get('defaults::date', 'format'))
+					=== FALSE)
+				$format = '%d/%m/%Y %H:%M:%S';
 		return strftime($format, $timestamp);
 	}
 }

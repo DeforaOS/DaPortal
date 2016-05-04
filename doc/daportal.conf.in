@@ -15,6 +15,9 @@ charset=utf-8
 #action=
 #id=
 
+#[defaults::date]
+#format=%d/%m/%Y %H:%M:%S
+
 #[defaults::email]
 #from=
 
