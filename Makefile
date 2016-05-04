@@ -1,5 +1,5 @@
 PACKAGE	= DaPortal
-VERSION	= 1.12.0
+VERSION	= 1.12.1
 SUBDIRS	= data doc po src tests tools
 RM	= rm -f
 LN	= ln -f
