@@ -27,6 +27,13 @@ class Common
 	//methods
 	//static
 	//accessors
+	//Common::getDate
+	static public function getDate($timestamp, $format = FALSE)
+	{
+		return Date::formatTimestamp($timestamp, $format);
+	}
+
+
 	//Common::getPermissions
 	static public function getPermissions($mode, $ifdir = FALSE)
 	{
