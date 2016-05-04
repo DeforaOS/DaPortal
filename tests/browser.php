@@ -29,7 +29,7 @@ class BrowserModuleTest extends BrowserModule
 
 
 	//BrowserModuleTest::test
-	public function test($engine)
+	public function test(Engine $engine)
 	{
 		global $config;
 
