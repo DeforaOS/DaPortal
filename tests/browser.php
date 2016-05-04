@@ -24,7 +24,7 @@ class BrowserModuleTest extends BrowserModule
 	//BrowserModuleTest::BrowserModuleTest
 	public function __construct($id, $name, $title)
 	{
-		return parent::__construct($id, $name, $title);
+		parent::__construct($id, $name, $title);
 	}
 
 
