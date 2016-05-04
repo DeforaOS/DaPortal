@@ -308,7 +308,7 @@ class HTMLFormat extends FormatElements
 					'title' => $theme));
 	}
 
-	private function _renderTitle($e)
+	private function _renderTitle(PageElement $e)
 	{
 		global $config;
 
@@ -667,7 +667,7 @@ class HTMLFormat extends FormatElements
 		$this->tagClose('form');
 	}
 
-	protected function _formEnctype($e)
+	protected function _formEnctype(PageElement $e)
 	{
 		//XXX look for any file upload field
 		foreach($e->getChildren() as $c)
@@ -1232,7 +1232,7 @@ class HTMLFormat extends FormatElements
 		$this->tagClose($tag);
 	}
 
-	private function _renderTreeviewControls($e)
+	private function _renderTreeviewControls(PageElement $e)
 	{
 		if(($children = $e->getChildren()) === FALSE)
 			return;
@@ -1326,7 +1326,7 @@ class HTMLFormat extends FormatElements
 		}
 	}
 
-	private function _renderTreeviewToolbar($e)
+	private function _renderTreeviewToolbar(PageElement $e)
 	{
 		if(($children = $e->getChildren()) === FALSE)
 			return;
