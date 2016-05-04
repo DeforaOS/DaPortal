@@ -20,6 +20,7 @@
 DAPORTALCONF='../tests/daportal.conf'
 PROGNAME="php.sh"
 #executables
+CP="cp -f"
 DEBUG="_debug"
 PHP="/usr/bin/env php"
 
@@ -32,6 +33,7 @@ _widgets()
 	target="$2"
 
 	export DAPORTALCONF="$DAPORTALCONF"
+	$CP -- "${OBJDIR}sqlite.db3" "${OBJDIR}sqlite-tests.db3"|| return 2
 	$DEBUG $PHP "$source" > "${OBJDIR}$target"
 }
 
