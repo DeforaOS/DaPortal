@@ -57,8 +57,7 @@ class CVSSCMProject extends SCMProject
 		if(($st = @lstat($path.'/'.$file)) === FALSE)
 			return new PageElement('dialog', array(
 					'type' => 'error', 'text' => $error));
-		if(($st['mode'] & CVSSCMProject::$S_IFDIR)
-				=== CVSSCMProject::$S_IFDIR)
+		if(($st['mode'] & static::$S_IFDIR) === static::$S_IFDIR)
 			return $this->_browseDir($request, $vbox, $path, $file);
 		if(($revision = $request->get('revision')) !== FALSE)
 			return $this->_browseFileRevision($request, $vbox,
@@ -89,8 +88,7 @@ class CVSSCMProject extends SCMProject
 				continue;
 			if(($st = lstat($path.'/'.$file.'/'.$de)) === FALSE)
 				continue;
-			if(($st['mode'] & CVSSCMProject::$S_IFDIR)
-					== CVSSCMProject::$S_IFDIR)
+			if(($st['mode'] & static::$S_IFDIR) == static::$S_IFDIR)
 				$folders[$de] = $st;
 			else if(substr($de, -2) != ',v')
 				continue;
@@ -101,8 +99,8 @@ class CVSSCMProject extends SCMProject
 		ksort($files);
 		if($file != '' && ($dirname = dirname($file)) !== FALSE
 				&& ($st = lstat($path.'/'.$dirname)) !== FALSE
-				&& $st['mode'] & CVSSCMProject::$S_IFDIR
-					== CVSSCMProject::$S_IFDIR)
+				&& $st['mode'] & static::$S_IFDIR
+					== static::$S_IFDIR)
 		{
 			if($dirname == '.' || $dirname == '/')
 				$dirname = FALSE;
