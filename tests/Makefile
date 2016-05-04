@@ -10,7 +10,7 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-$(OBJDIR)phpinfo.txt: php.sh phpinfo.php
+$(OBJDIR)phpinfo.txt: $(OBJDIR)sqlite.db3 php.sh phpinfo.php
 	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)phpinfo.txt"
 
 $(OBJDIR)phplint.log: phplint.sh $(OBJDIR)../src/daportal.php
