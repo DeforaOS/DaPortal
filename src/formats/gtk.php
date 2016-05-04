@@ -144,7 +144,7 @@ class GtkFormat extends FormatElements
 	//protected
 	//methods
 	//rendering
-	protected function renderButton($e)
+	protected function renderButton(PageElement $e)
 	{
 		$stock = $this->_getStock($e->getProperty('stock'));
 		if($stock !== FALSE)
@@ -158,23 +158,23 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderCheckbox($e)
+	protected function renderCheckbox(PageElement $e)
 	{
 		return new GtkCheckButton($e->getProperty('text'));
 	}
 
-	protected function renderCombobox($e)
+	protected function renderCombobox(PageElement $e)
 	{
 		//FIXME really implement
 		return GtkComboBox::new_text();
 	}
 
-	protected function renderData($e)
+	protected function renderData(PageElement $e)
 	{
 		//FIXME implement
 	}
 
-	protected function renderDialog($e)
+	protected function renderDialog(PageElement $e)
 	{
 		if(($type = $e->getProperty('type')) === FALSE)
 			$type = 'error';
@@ -215,7 +215,7 @@ class GtkFormat extends FormatElements
 		return $dialog;
 	}
 
-	protected function renderEntry($e)
+	protected function renderEntry(PageElement $e)
 	{
 		$ret = new GtkHbox(FALSE, 4);
 		if(($label = $e->getProperty('text')) !== FALSE)
@@ -231,20 +231,20 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderExpander($e)
+	protected function renderExpander(PageElement $e)
 	{
 		//FIXME really implement
 		return $this->renderLabel($e);
 	}
 
-	protected function renderFileChooser($e)
+	protected function renderFileChooser(PageElement $e)
 	{
 		$ret = new GtkFileChooser();
 		//FIXME really implement
 		return $ret;
 	}
 
-	protected function renderForm($e)
+	protected function renderForm(PageElement $e)
 	{
 		//FIXME track the current request for submission
 		$ret = new GtkVbox(FALSE, 4);
@@ -259,7 +259,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderFrame($e)
+	protected function renderFrame(PageElement $e)
 	{
 		$ret = new GtkFrame($e->getProperty('title'));
 		$ret->set_border_width(4);
@@ -268,7 +268,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderHbox($e)
+	protected function renderHbox(PageElement $e)
 	{
 		$ret = new GtkHbox(FALSE, 4);
 		$ret->set_border_width(4);
@@ -290,19 +290,19 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderHtmledit($e)
+	protected function renderHtmledit(PageElement $e)
 	{
 		//FIXME really implement
 		return $this->renderTextview($e);
 	}
 
-	protected function renderHtmlview($e)
+	protected function renderHtmlview(PageElement $e)
 	{
 		//FIXME really implement
 		return $this->renderLabel($e);
 	}
 
-	protected function renderIconview($e)
+	protected function renderIconview(PageElement $e)
 	{
 		$e->set('Gtk::expand', TRUE);
 		$e->set('Gtk::fill', TRUE);
@@ -338,20 +338,20 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderImage($e)
+	protected function renderImage(PageElement $e)
 	{
 		//FIXME really implement
 		return new GtkImage;
 	}
 
-	protected function renderLabel($e)
+	protected function renderLabel(PageElement $e)
 	{
 		$ret = new GtkLabel($e->getProperty('text'), FALSE);
 		$ret->set_alignment(0.0, 0.5);
 		return $ret;
 	}
 
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		//FIXME create helper function for stock buttons?
 		$ret = new GtkButton();
@@ -373,7 +373,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderMenubar($e)
+	protected function renderMenubar(PageElement $e)
 	{
 		$ret = new GtkMenuBar;
 		$children = $e->getChildren();
@@ -412,7 +412,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderMenuitem($e)
+	protected function renderMenuitem(PageElement $e)
 	{
 		//FIXME implement images...
 		$ret = new GtkMenuItem($e->getProperty('text'));
@@ -450,7 +450,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderPage($e)
+	protected function renderPage(PageElement $e)
 	{
 		$window = new GtkWindow();
 		if(($title = $e->getProperty('title')) !== FALSE)
@@ -465,19 +465,19 @@ class GtkFormat extends FormatElements
 		return $window;
 	}
 
-	protected function renderProgress($e)
+	protected function renderProgress(PageElement $e)
 	{
 		//FIXME really implement
 		return $this->renderLabel($e);
 	}
 
-	protected function renderRadioButton($e)
+	protected function renderRadioButton(PageElement $e)
 	{
 		//FIXME really implement
 		return $this->renderLabel($e);
 	}
 
-	protected function renderStatusbar($e)
+	protected function renderStatusbar(PageElement $e)
 	{
 		$ret = new GtkStatusBar;
 		$ret->push($ret->get_context_id('default'),
@@ -485,14 +485,14 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderTextview($e)
+	protected function renderTextview(PageElement $e)
 	{
 		$ret = new GtkTextView;
 		//FIXME really implement
 		return $ret;
 	}
 
-	protected function renderTitle($e)
+	protected function renderTitle(PageElement $e)
 	{
 		$ret = new GtkLabel($e->getProperty('text'), FALSE);
 		$ret->set_alignment(0.0, 0.5);
@@ -500,13 +500,13 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderToolbar($e)
+	protected function renderToolbar(PageElement $e)
 	{
 		//FIXME really implement
 		return new GtkToolbar;
 	}
 
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$e->set('Gtk::expand', TRUE);
 		$e->set('Gtk::fill', TRUE);
@@ -553,7 +553,7 @@ class GtkFormat extends FormatElements
 		return $ret;
 	}
 
-	protected function renderVbox($e)
+	protected function renderVbox(PageElement $e)
 	{
 		$ret = new GtkVbox(FALSE, 4);
 		$ret->set_border_width(4);
@@ -619,7 +619,7 @@ class GtkFormat extends FormatElements
 
 	//callbacks
 	//GtkEngine::on_button_clicked
-	public function on_button_clicked($request)
+	public function on_button_clicked(Request $request)
 	{
 		if(($res = $this->engine->process($request)) !== FALSE)
 			$this->renderElement($res);

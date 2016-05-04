@@ -66,7 +66,7 @@ class PDFFormat extends FormatElements
 	//methods
 	//rendering
 	//PDFFormat::renderBlock
-	protected function renderBlock($e)
+	protected function renderBlock(PageElement $e)
 	{
 		if(($text = $e->getProperty('text')) === FALSE)
 			$text = '';
@@ -75,112 +75,112 @@ class PDFFormat extends FormatElements
 
 
 	//PDFFormat::renderButton
-	protected function renderButton($e)
+	protected function renderButton(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderCheckbox
-	protected function renderCheckbox($e)
+	protected function renderCheckbox(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderCombobox
-	protected function renderCombobox($e)
+	protected function renderCombobox(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderData
-	protected function renderData($e)
+	protected function renderData(PageElement $e)
 	{
 		//FIXME implement (attachment?)
 	}
 
 
 	//PDFFormat::renderDialog
-	protected function renderDialog($e)
+	protected function renderDialog(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderEntry
-	protected function renderEntry($e)
+	protected function renderEntry(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderExpander
-	protected function renderExpander($e)
+	protected function renderExpander(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderFileChooser
-	protected function renderFileChooser($e)
+	protected function renderFileChooser(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderForm
-	protected function renderForm($e)
+	protected function renderForm(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderFrame
-	protected function renderFrame($e)
+	protected function renderFrame(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderHbox
-	protected function renderHbox($e)
+	protected function renderHbox(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderHtmledit
-	protected function renderHtmledit($e)
+	protected function renderHtmledit(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderHtmlview
-	protected function renderHtmlview($e)
+	protected function renderHtmlview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderIconview
-	protected function renderIconview($e)
+	protected function renderIconview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderImage
-	protected function renderImage($e)
+	protected function renderImage(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderInline
-	protected function renderInline($e)
+	protected function renderInline(PageElement $e)
 	{
 		$text = $e->getProperty('text');
 
@@ -190,84 +190,84 @@ class PDFFormat extends FormatElements
 
 
 	//PDFFormat::renderLabel
-	protected function renderLabel($e)
+	protected function renderLabel(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderLink
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderMenubar
-	protected function renderMenubar($e)
+	protected function renderMenubar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderPage
-	protected function renderPage($e)
+	protected function renderPage(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderProgress
-	protected function renderProgress($e)
+	protected function renderProgress(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderRadioButton
-	protected function renderRadioButton($e)
+	protected function renderRadioButton(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//PDFFormat::renderStatusbar
-	protected function renderStatusbar($e)
+	protected function renderStatusbar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderTextview
-	protected function renderTextview($e)
+	protected function renderTextview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderTitle
-	protected function renderTitle($e)
+	protected function renderTitle(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderToolbar
-	protected function renderToolbar($e)
+	protected function renderToolbar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderTreeview
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//PDFFormat::renderVbox
-	protected function renderVbox($e)
+	protected function renderVbox(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}

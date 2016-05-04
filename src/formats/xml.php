@@ -112,7 +112,7 @@ class XMLFormat extends PlainFormat
 
 	//rendering
 	//XMLFormat::renderData
-	protected function renderData($e)
+	protected function renderData(PageElement $e)
 	{
 		$from = ']]>';
 		$to = ']]]]><![CDATA[>';
@@ -124,7 +124,7 @@ class XMLFormat extends PlainFormat
 
 
 	//XMLFormat::renderElement
-	protected function renderElement($e)
+	protected function renderElement(PageElement $e)
 	{
 		switch($e->getType())
 		{
@@ -139,7 +139,7 @@ class XMLFormat extends PlainFormat
 
 
 	//XMLFormat::renderInline
-	protected function renderInline($e)
+	protected function renderInline(PageElement $e)
 	{
 		if(($text = $e->getProperty('text')) !== FALSE)
 		{
@@ -151,7 +151,7 @@ class XMLFormat extends PlainFormat
 
 
 	//XMLFormat::renderLink
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		$this->_print('<link>');
 		if(($text = $e->getProperty('text')) !== FALSE
@@ -184,7 +184,7 @@ class XMLFormat extends PlainFormat
 
 
 	//XMLFormat::renderTreeview
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$this->print = TRUE;
 		if(($columns = $e->getProperty('columns')) === FALSE)

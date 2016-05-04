@@ -76,7 +76,7 @@ class FPDFFormat extends FormatElements
 	//methods
 	//rendering
 	//FPDFFormat::renderBlock
-	protected function renderBlock($e)
+	protected function renderBlock(PageElement $e)
 	{
 		if(($text = $e->getProperty('text')) === FALSE)
 			$text = '';
@@ -87,105 +87,105 @@ class FPDFFormat extends FormatElements
 
 
 	//FPDFFormat::renderButton
-	protected function renderButton($e)
+	protected function renderButton(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderCheckbox
-	protected function renderCheckbox($e)
+	protected function renderCheckbox(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderCombobox
-	protected function renderCombobox($e)
+	protected function renderCombobox(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderData
-	protected function renderData($e)
+	protected function renderData(PageElement $e)
 	{
 		//FIXME implement (attachment?)
 	}
 
 
 	//FPDFFormat::renderDialog
-	protected function renderDialog($e)
+	protected function renderDialog(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderEntry
-	protected function renderEntry($e)
+	protected function renderEntry(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderExpander
-	protected function renderExpander($e)
+	protected function renderExpander(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderFileChooser
-	protected function renderFileChooser($e)
+	protected function renderFileChooser(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderForm
-	protected function renderForm($e)
+	protected function renderForm(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderFrame
-	protected function renderFrame($e)
+	protected function renderFrame(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderHbox
-	protected function renderHbox($e)
+	protected function renderHbox(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderHtmledit
-	protected function renderHtmledit($e)
+	protected function renderHtmledit(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderHtmlview
-	protected function renderHtmlview($e)
+	protected function renderHtmlview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderIconview
-	protected function renderIconview($e)
+	protected function renderIconview(PageElement $e)
 	{
 		$this->renderTreeview($e);
 	}
 
 
 	//FPDFFormat::renderChildren
-	protected function renderChildren($e)
+	protected function renderChildren(PageElement $e)
 	{
 		$children = $e->getChildren();
 		foreach($children as $c)
@@ -194,14 +194,14 @@ class FPDFFormat extends FormatElements
 
 
 	//FPDFFormat::renderImage
-	protected function renderImage($e)
+	protected function renderImage(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderInline
-	protected function renderInline($e)
+	protected function renderInline(PageElement $e)
 	{
 		$text = $e->getProperty('text');
 
@@ -212,77 +212,77 @@ class FPDFFormat extends FormatElements
 
 
 	//FPDFFormat::renderLabel
-	protected function renderLabel($e)
+	protected function renderLabel(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderLink
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderMenubar
-	protected function renderMenubar($e)
+	protected function renderMenubar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderPage
-	protected function renderPage($e)
+	protected function renderPage(PageElement $e)
 	{
 		$this->renderChildren($e);
 	}
 
 
 	//FPDFFormat::renderProgress
-	protected function renderProgress($e)
+	protected function renderProgress(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderRadioButton
-	protected function renderRadioButton($e)
+	protected function renderRadioButton(PageElement $e)
 	{
 		$this->renderInline($e);
 	}
 
 
 	//FPDFFormat::renderStatusbar
-	protected function renderStatusbar($e)
+	protected function renderStatusbar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderTextview
-	protected function renderTextview($e)
+	protected function renderTextview(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderTitle
-	protected function renderTitle($e)
+	protected function renderTitle(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderToolbar
-	protected function renderToolbar($e)
+	protected function renderToolbar(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}
 
 
 	//FPDFFormat::renderTreeview
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$columns = $e->getProperty('columns');
 
@@ -314,7 +314,7 @@ class FPDFFormat extends FormatElements
 
 
 	//FPDFFormat::renderVbox
-	protected function renderVbox($e)
+	protected function renderVbox(PageElement $e)
 	{
 		$this->renderBlock($e);
 	}

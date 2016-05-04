@@ -47,7 +47,7 @@ abstract class FormatElements extends Format
 	//methods
 	//useful
 	//FormatElements::renderElement
-	protected function renderElement($e)
+	protected function renderElement(PageElement $e)
 	{
 		switch($e->getType())
 		{
@@ -113,33 +113,33 @@ abstract class FormatElements extends Format
 
 	//abstract
 	//useful
-	abstract protected function renderButton($e);
-	abstract protected function renderCheckbox($e);
-	abstract protected function renderCombobox($e);
-	abstract protected function renderData($e);
-	abstract protected function renderDialog($e);
-	abstract protected function renderEntry($e);
-	abstract protected function renderExpander($e);
-	abstract protected function renderFileChooser($e);
-	abstract protected function renderForm($e);
-	abstract protected function renderFrame($e);
-	abstract protected function renderHbox($e);
-	abstract protected function renderHtmledit($e);
-	abstract protected function renderHtmlview($e);
-	abstract protected function renderIconview($e);
-	abstract protected function renderImage($e);
-	abstract protected function renderLabel($e);
-	abstract protected function renderLink($e);
-	abstract protected function renderMenubar($e);
-	abstract protected function renderPage($e);
-	abstract protected function renderProgress($e);
-	abstract protected function renderRadioButton($e);
-	abstract protected function renderStatusbar($e);
-	abstract protected function renderTextview($e);
-	abstract protected function renderTitle($e);
-	abstract protected function renderToolbar($e);
-	abstract protected function renderTreeview($e);
-	abstract protected function renderVbox($e);
+	abstract protected function renderButton(PageElement $e);
+	abstract protected function renderCheckbox(PageElement $e);
+	abstract protected function renderCombobox(PageElement $e);
+	abstract protected function renderData(PageElement $e);
+	abstract protected function renderDialog(PageElement $e);
+	abstract protected function renderEntry(PageElement $e);
+	abstract protected function renderExpander(PageElement $e);
+	abstract protected function renderFileChooser(PageElement $e);
+	abstract protected function renderForm(PageElement $e);
+	abstract protected function renderFrame(PageElement $e);
+	abstract protected function renderHbox(PageElement $e);
+	abstract protected function renderHtmledit(PageElement $e);
+	abstract protected function renderHtmlview(PageElement $e);
+	abstract protected function renderIconview(PageElement $e);
+	abstract protected function renderImage(PageElement $e);
+	abstract protected function renderLabel(PageElement $e);
+	abstract protected function renderLink(PageElement $e);
+	abstract protected function renderMenubar(PageElement $e);
+	abstract protected function renderPage(PageElement $e);
+	abstract protected function renderProgress(PageElement $e);
+	abstract protected function renderRadioButton(PageElement $e);
+	abstract protected function renderStatusbar(PageElement $e);
+	abstract protected function renderTextview(PageElement $e);
+	abstract protected function renderTitle(PageElement $e);
+	abstract protected function renderToolbar(PageElement $e);
+	abstract protected function renderTreeview(PageElement $e);
+	abstract protected function renderVbox(PageElement $e);
 }
 
 ?>

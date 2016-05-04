@@ -185,14 +185,14 @@ class HTMLFormat extends FormatElements
 		$this->engine = FALSE;
 	}
 
-	private function _renderBase($page)
+	private function _renderBase(PageElement $page)
 	{
 		$url = dirname($this->engine->getURL()).'/'; //XXX
 		$this->renderTabs();
 		$this->tag('base', FALSE, FALSE, array('href' => $url));
 	}
 
-	private function _renderFavicon($page)
+	private function _renderFavicon(PageElement $page)
 	{
 		if(($favicon = $this->configGet('favicon')) === FALSE)
 			return;
@@ -202,7 +202,7 @@ class HTMLFormat extends FormatElements
 					'href' => $favicon));
 	}
 
-	private function _renderIcontheme($page)
+	private function _renderIcontheme(PageElement $page)
 	{
 		global $config;
 		//XXX this should be set by the HTTP engine
@@ -223,7 +223,7 @@ class HTMLFormat extends FormatElements
 		$this->tagClose('style');
 	}
 
-	private function _renderJavascript($page)
+	private function _renderJavascript(PageElement $page)
 	{
 		$standalone = $this->get('standalone');
 
@@ -255,7 +255,7 @@ class HTMLFormat extends FormatElements
 		$this->tagClose($tag);
 	}
 
-	private function _renderTheme($page)
+	private function _renderTheme(PageElement $page)
 	{
 		global $config;
 
@@ -265,7 +265,8 @@ class HTMLFormat extends FormatElements
 			$this->_renderThemeAlternate($page, $theme);
 	}
 
-	private function _renderThemeAlternate($page, $theme = FALSE)
+	private function _renderThemeAlternate(PageElement $page,
+			$theme = FALSE)
 	{
 		$themes = '../data/themes';
 
@@ -325,7 +326,7 @@ class HTMLFormat extends FormatElements
 	//protected
 	//methods
 	//rendering
-	protected function renderBlock($e, $tag = 'div')
+	protected function renderBlock(PageElement $e, $tag = 'div')
 	{
 		$class = $e->getType();
 
@@ -339,7 +340,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderBox($e, $type = 'vbox')
+	protected function renderBox(PageElement $e, $type = 'vbox')
 	{
 		$this->renderTabs();
 		if(($class = $e->get('class')) !== FALSE)
@@ -362,7 +363,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderButton($e)
+	protected function renderButton(PageElement $e)
 	{
 		$id = $e->get('id');
 		$text = $e->get('text');
@@ -419,7 +420,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderCheckbox($e)
+	protected function renderCheckbox(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', $e->getType());
@@ -444,7 +445,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderChildren($e)
+	protected function renderChildren(PageElement $e)
 	{
 		$children = $e->getChildren();
 		foreach($children as $c)
@@ -452,7 +453,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderCombobox($e)
+	protected function renderCombobox(PageElement $e)
 	{
 		$tag = 'select';
 		$class = $e->get('class');
@@ -492,13 +493,13 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderData($e)
+	protected function renderData(PageElement $e)
 	{
 		//FIXME implement
 	}
 
 
-	protected function renderDialog($e)
+	protected function renderDialog(PageElement $e)
 	{
 		if(($type = $e->get('type')) === FALSE)
 			$type = 'message';
@@ -538,7 +539,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderEntry($e)
+	protected function renderEntry(PageElement $e)
 	{
 		$class = ($e->get('class') !== FALSE)
 			? 'entry '.$e->get('class') : 'entry';
@@ -574,7 +575,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderExpander($e)
+	protected function renderExpander(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', 'expander');
@@ -589,7 +590,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderFileChooser($e)
+	protected function renderFileChooser(PageElement $e)
 	{
 		$class = ($e->get('class') !== FALSE)
 			? 'filechooser '.$e->get('class') : 'filechooser';
@@ -614,7 +615,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderForm($e)
+	protected function renderForm(PageElement $e)
 	{
 		$request = $e->get('request');
 		$secure = $e->get('secure');
@@ -687,7 +688,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderFrame($e)
+	protected function renderFrame(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', 'frame');
@@ -702,13 +703,13 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderHbox($e)
+	protected function renderHbox(PageElement $e)
 	{
 		$this->renderBox($e, $e->getType());
 	}
 
 
-	protected function renderHtmledit($e)
+	protected function renderHtmledit(PageElement $e)
 	{
 		$filter_class = static::$filter_class;
 		$class = $e->get('class');
@@ -815,7 +816,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderHtmlview($e)
+	protected function renderHtmlview(PageElement $e)
 	{
 		$filter_class = static::$filter_class;
 		$class = $e->get('class');
@@ -833,7 +834,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderIconview($e)
+	protected function renderIconview(PageElement $e)
 	{
 		$e->set('view', 'icons');
 		if(($columns = $e->get('columns')) === FALSE)
@@ -845,7 +846,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderImage($e)
+	protected function renderImage(PageElement $e)
 	{
 		$size = 48;
 		$class = FALSE;
@@ -879,7 +880,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderInline($e)
+	protected function renderInline(PageElement $e)
 	{
 		$text = $e->get('text');
 
@@ -895,7 +896,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderLabel($e)
+	protected function renderLabel(PageElement $e)
 	{
 		$tag = 'span';
 		$class = 'label';
@@ -916,7 +917,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		$standalone = $this->get('standalone');
 		$url = FALSE;
@@ -945,7 +946,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderMenu($e, $class = FALSE)
+	protected function renderMenu(PageElement $e, $class = FALSE)
 	{
 		//FIXME really implement
 		if(($children = $e->getChildren()) === FALSE
@@ -960,14 +961,14 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderMenubar($e)
+	protected function renderMenubar(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->renderMenu($e, 'menubar');
 	}
 
 
-	protected function renderMenuitem($e)
+	protected function renderMenuitem(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->tagOpen('li', 'menuitem');
@@ -1012,20 +1013,20 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderPage($e)
+	protected function renderPage(PageElement $e)
 	{
 		$this->renderChildren($e);
 	}
 
 
-	protected function renderProgress($e)
+	protected function renderProgress(PageElement $e)
 	{
 		//XXX render something nicer
 		$this->renderInline($e);
 	}
 
 
-	protected function renderRadioButton($e)
+	protected function renderRadioButton(PageElement $e)
 	{
 		$args = array('type' => 'radio');
 		$value = $e->get('value');
@@ -1052,7 +1053,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderStatusbar($e)
+	protected function renderStatusbar(PageElement $e)
 	{
 		$class = 'statusbar';
 
@@ -1074,7 +1075,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderTextview($e)
+	protected function renderTextview(PageElement $e)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', $e->getType());
@@ -1097,7 +1098,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderTitle($e)
+	protected function renderTitle(PageElement $e)
 	{
 		$hcnt = count($this->titles);
 		$tcnt = count($this->tags);
@@ -1145,13 +1146,13 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderToolbar($e)
+	protected function renderToolbar(PageElement $e)
 	{
 		return $this->renderBlock($e);
 	}
 
 
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$auth = $this->engine->getAuth();
 
@@ -1335,7 +1336,7 @@ class HTMLFormat extends FormatElements
 	}
 
 
-	protected function renderVbox($e)
+	protected function renderVbox(PageElement $e)
 	{
 		$this->renderBox($e, $e->getType());
 	}

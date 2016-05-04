@@ -70,7 +70,7 @@ class HTML5Format extends HTMLFormat
 
 	//rendering
 	//HTML5Format::renderCombobox
-	protected function renderCombobox($e)
+	protected function renderCombobox(PageElement $e)
 	{
 		//XXX code duplicated from HTMLFormat::renderCombobox
 		$tag = 'select';
@@ -114,7 +114,7 @@ class HTML5Format extends HTMLFormat
 
 
 	//HTML5Format::renderEntry
-	protected function renderEntry($e)
+	protected function renderEntry(PageElement $e)
 	{
 		//XXX code duplicated from HTMLFormat::renderEntry
 		$class = ($e->get('class') !== FALSE)
@@ -159,7 +159,7 @@ class HTML5Format extends HTMLFormat
 
 
 	//HTML5Format::renderProgress
-	protected function renderProgress($e)
+	protected function renderProgress(PageElement $e)
 	{
 		$args = array();
 		$tag = 'progress';
@@ -193,7 +193,7 @@ class HTML5Format extends HTMLFormat
 
 
 	//HTML5Format::renderStatusbar
-	protected function renderStatusbar($e)
+	protected function renderStatusbar(PageElement $e)
 	{
 		$class = 'statusbar';
 
