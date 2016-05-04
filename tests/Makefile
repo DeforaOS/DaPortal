@@ -28,7 +28,7 @@ $(OBJDIR)sqlite.db3: ../doc/sql/sqlite.sql database.sh
 $(OBJDIR)tests.log: auth.php browser.php config.php content.php coverage.php daportal.conf daportal.php database.php engine.php format.php group.php html.php http.php json.php mail.php module.php observer.php pki.php pool.php profile.php search.php $(OBJDIR)sqlite.db3 template.php tests.php tests.sh transaction.php user.php
 	./tests.sh -P "$(PREFIX)" -- "$(OBJDIR)tests.log"
 
-$(OBJDIR)widgets.html: php.sh widgets.php
+$(OBJDIR)widgets.html: $(OBJDIR)sqlite.db3 php.sh widgets.php
 	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)widgets.html"
 
 clean:
