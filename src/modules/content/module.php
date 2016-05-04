@@ -709,7 +709,7 @@ abstract class ContentModule extends Module
 		//title
 		$page = new Page(array('title' => $title));
 		$this->helperListTitle($engine, $page, $request);
-		if($dialog != FALSE)
+		if($dialog !== FALSE)
 			$page->append($dialog);
 		if(($res = $class::listAll($engine, $this, FALSE, FALSE, FALSE,
 				$user)) === FALSE)
