@@ -30,6 +30,17 @@ class Common
 	//Common::getDate
 	static public function getDate($timestamp, $format = FALSE)
 	{
+		if($format === FALSE)
+			$format = _('%d/%m/%Y');
+		return Date::formatTimestamp($timestamp, $format);
+	}
+
+
+	//Common::getDateTime
+	static public function getDateTime($timestamp, $format = FALSE)
+	{
+		if($format === FALSE)
+			$format = _('%d/%m/%Y %H:%M:%S');
 		return Date::formatTimestamp($timestamp, $format);
 	}
 

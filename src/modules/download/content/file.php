@@ -97,11 +97,11 @@ class FileDownloadContent extends DownloadContent
 		$this->_contentField($col1, $col2, _('Size: '),
 				Common::getSize($st['size']));
 		$this->_contentField($col1, $col2, _('Created on: '),
-				Common::getDate($st['ctime'], $format));
+				Common::getDateTime($st['ctime'], $format));
 		$this->_contentField($col1, $col2, _('Last modified: '),
-				Common::getDate($st['mtime'], $format));
+				Common::getDateTime($st['mtime'], $format));
 		$this->_contentField($col1, $col2, _('Last access: '),
-				Common::getDate($st['ctime'], $format));
+				Common::getDateTime($st['ctime'], $format));
 		$this->_contentField($col1, $col2, _('Comment: '), $text);
 		return $hbox;
 	}
