@@ -19,6 +19,7 @@ charset=utf-8
 #format=%d/%m/%Y %H:%M:%S
 #format::date=%d/%m/%Y
 #format::datetime=%d/%m/%Y %H:%M:%S
+#utc=0
 
 #[defaults::email]
 #from=

@@ -47,12 +47,14 @@ class Date
 	static public function formatTimestamp($timestamp, $format = FALSE)
 	{
 		global $config;
+		$utc = $config->get('defaults::date', 'utc') ? FALSE : TRUE;
 
 		if($format === FALSE)
 			if(($format = $config->get('defaults::date', 'format'))
 					=== FALSE)
 				$format = '%d/%m/%Y %H:%M:%S';
-		return strftime($format, $timestamp);
+		return $utc ? gmstrftime($format, $timestamp)
+			: strftime($format, $timestamp);
 	}
 }
 
