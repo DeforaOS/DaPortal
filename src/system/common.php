@@ -28,7 +28,8 @@ class Common
 	//static
 	//accessors
 	//Common::getDate
-	static public function getDate($timestamp, $format = FALSE)
+	static public function getDate($timestamp, $format = FALSE,
+			$utc = FALSE)
 	{
 		global $config;
 
@@ -36,12 +37,13 @@ class Common
 			if(($format = $config->get('defaults::date',
 					'format::date')) === FALSE)
 				$format = _('%d/%m/%Y');
-		return Date::formatTimestamp($timestamp, $format);
+		return Date::formatTimestamp($timestamp, $format, $utc);
 	}
 
 
 	//Common::getDateTime
-	static public function getDateTime($timestamp, $format = FALSE)
+	static public function getDateTime($timestamp, $format = FALSE,
+			$utc = FALSE)
 	{
 		global $config;
 
@@ -49,7 +51,7 @@ class Common
 			if(($format = $config->get('defaults::date',
 					'format::datetime')) === FALSE)
 				$format = _('%d/%m/%Y %H:%M:%S');
-		return Date::formatTimestamp($timestamp, $format);
+		return Date::formatTimestamp($timestamp, $format, $utc);
 	}
 
 

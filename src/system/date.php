@@ -24,7 +24,7 @@ class Date
 	//useful
 	//Date::formatDate
 	static public function format($date, $outformat = FALSE,
-			$informat = FALSE)
+			$informat = FALSE, $utc = FALSE)
 	{
 		$informats = array('%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S');
 
@@ -37,24 +37,26 @@ class Date
 			$timestamp = gmmktime($tm['tm_hour'], $tm['tm_min'],
 					$tm['tm_sec'], $tm['tm_mon'] + 1,
 					$tm['tm_mday'], $tm['tm_year'] + 1900);
-			return static::formatTimestamp($timestamp, $outformat);
+			return static::formatTimestamp($timestamp, $outformat,
+					$utc);
 		}
 		return $date; //XXX better suggestions welcome
 	}
 
 
 	//Date::formatTimestamp
-	static public function formatTimestamp($timestamp, $format = FALSE)
+	static public function formatTimestamp($timestamp, $format = FALSE,
+			$utc = FALSE)
 	{
 		global $config;
-		$utc = $config->get('defaults::date', 'utc') ? FALSE : TRUE;
+		$callback = ($utc || $config->get('defaults::date', 'utc'))
+			? 'gmstrftime' : 'strftime';
 
 		if($format === FALSE)
 			if(($format = $config->get('defaults::date', 'format'))
 					=== FALSE)
 				$format = '%d/%m/%Y %H:%M:%S';
-		return $utc ? gmstrftime($format, $timestamp)
-			: strftime($format, $timestamp);
+		return $callback($format, $timestamp);
 	}
 }
 
