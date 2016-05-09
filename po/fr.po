@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaPortal 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-04 19:08+0200\n"
+"POT-Creation-Date: 2016-05-09 12:39+0200\n"
 "PO-Revision-Date: 2012-02-01 03:41+0100\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -16,35 +16,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/system/common.php:38
+#: ../src/system/common.php:39
 msgid "%d/%m/%Y"
 msgstr "%d/%m/%Y"
 
-#: ../src/system/common.php:51 ../src/modules/browser/module.php:90
+#: ../src/system/common.php:53 ../src/modules/browser/module.php:90
 msgid "%d/%m/%Y %H:%M:%S"
 msgstr "%d/%m/%Y %H:%M:%S"
 
-#: ../src/system/common.php:84 ../src/modules/probe/module.php:381
+#: ../src/system/common.php:86 ../src/modules/probe/module.php:381
 msgid "bytes"
 msgstr "octets"
 
-#: ../src/system/common.php:84
+#: ../src/system/common.php:86
 msgid "byte"
 msgstr "octet"
 
-#: ../src/system/common.php:86
+#: ../src/system/common.php:88
 msgid "kB"
 msgstr "ko"
 
-#: ../src/system/common.php:88
+#: ../src/system/common.php:90
 msgid "MB"
 msgstr "Mo"
 
-#: ../src/system/common.php:90
+#: ../src/system/common.php:92
 msgid "GB"
 msgstr "Go"
 
-#: ../src/system/common.php:91
+#: ../src/system/common.php:93
 msgid "TB"
 msgstr "To"
 
