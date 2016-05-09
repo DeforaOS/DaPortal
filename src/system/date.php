@@ -26,7 +26,8 @@ class Date
 	static public function format($date, $outformat = FALSE,
 			$informat = FALSE, $utc = FALSE)
 	{
-		$informats = array('%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S');
+		$informats = array('%Y-%m-%dT%H:%M:%S%T', '%Y-%m-%dT%H:%M:%S',
+			'%Y-%m-%d %H:%M:%S');
 
 		if($informat !== FALSE)
 			$informats = array($informat);
