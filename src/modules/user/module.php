@@ -267,8 +267,16 @@ class UserModule extends Module
 
 		if(is_array($args))
 		{
-			unset($args['username']);
-			unset($args['password']);
+			if(isset($args['module']) && isset($args['action'])
+					&& $args['module'] == $this->getName()
+					&& $args['action'] == 'logout')
+				//do not offer to log out after logging in
+				$args = FALSE;
+			else
+			{
+				unset($args['username']);
+				unset($args['password']);
+			}
 		}
 		$r = $this->getRequest('login', $args);
 		$form = new PageElement('form', array('request' => $r,
