@@ -393,6 +393,10 @@ class HTTPEngine extends Engine
 
 		switch($code)
 		{
+			case Response::$CODE_EINVAL:
+				$code = 400;
+				$reason = 'Bad Request';
+				break;
 			case Response::$CODE_EACCES:
 				$code = 401;
 				$reason = 'Unauthorized';
