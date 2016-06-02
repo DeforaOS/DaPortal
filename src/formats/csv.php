@@ -111,7 +111,7 @@ class CSVFormat extends PlainFormat
 			}
 			$this->_print("\n");
 		}
-		$children = $e->getChildren($e);
+		$children = $e->getChildren();
 		foreach($children as $c)
 		{
 			if($c->getType() != 'row')

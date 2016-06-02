@@ -190,7 +190,7 @@ class XMLFormat extends PlainFormat
 		if(($columns = $e->getProperty('columns')) === FALSE)
 			$columns = array('title' => 'Title');
 		$keys = array_keys($columns);
-		$children = $e->getChildren($e);
+		$children = $e->getChildren();
 		foreach($children as $c)
 		{
 			if($c->getType() != 'row')
