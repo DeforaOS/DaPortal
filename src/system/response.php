@@ -136,6 +136,7 @@ abstract class Response extends Mutator
 	static public $CODE_ENOSYS = 5;		//operation not implemented
 	static public $CODE_EPERM = 6;		//permission denied
 	static public $CODE_EROFS = 7;		//idempotence contract breach
+	static public $CODE_EACCES = 13;	//authentication required
 
 
 	//protected

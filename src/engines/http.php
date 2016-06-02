@@ -393,6 +393,10 @@ class HTTPEngine extends Engine
 
 		switch($code)
 		{
+			case Response::$CODE_EACCES:
+				$code = 401;
+				$reason = 'Unauthorized';
+				break;
 			case Response::$CODE_EPERM:
 				$code = 403;
 				$reason = 'Forbidden';
