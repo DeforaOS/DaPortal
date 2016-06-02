@@ -732,7 +732,7 @@ class HTMLFormat extends FormatElements
 			$this->_htmleditJavascript($e, $class);
 	}
 
-	private function _htmleditJavascript($e, $class)
+	private function _htmleditJavascript(PageElement $e, $class)
 	{
 		$actions = array('cut' => _('Cut'), 'copy' => _('Copy'),
 			'paste' => _('Paste'),
@@ -1269,14 +1269,15 @@ class HTMLFormat extends FormatElements
 					'name' => $name, 'value' => $value));
 	}
 
-	private function _renderTreeviewRows($e, $columns)
+	private function _renderTreeviewRows(PageElement $e, $columns)
 	{
 		$id = 1;
 
 		$this->_renderTreeviewRowsDo($e, $columns, $id);
 	}
 
-	private function _renderTreeviewRowsDo($e, $columns, &$id, $level = 0)
+	private function _renderTreeviewRowsDo(PageElement $e, $columns, &$id,
+			$level = 0)
 	{
 		$class = 'row';
 		$request = $e->get('request');

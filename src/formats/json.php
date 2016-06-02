@@ -91,7 +91,7 @@ class JSONFormat extends PlainFormat
 
 	//rendering
 	//JSONFormat::renderElement
-	protected function renderElement($e)
+	protected function renderElement(PageElement $e)
 	{
 		switch($e->getType())
 		{
@@ -104,7 +104,7 @@ class JSONFormat extends PlainFormat
 
 
 	//JSONFormat::renderTreeview
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$this->print = TRUE;
 		if(($columns = $e->get('columns')) === FALSE)

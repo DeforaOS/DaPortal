@@ -118,7 +118,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::renderChildren
-	protected function renderChildren($e)
+	protected function renderChildren(PageElement $e)
 	{
 		if(($children = $e->getChildren()) === FALSE)
 			return;
@@ -128,7 +128,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::renderDialog
-	protected function renderDialog($e)
+	protected function renderDialog(PageElement $e)
 	{
 		$underline = '-';
 
@@ -165,7 +165,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::renderElement
-	protected function renderElement($e)
+	protected function renderElement(PageElement $e)
 	{
 		switch($e->getType())
 		{
@@ -192,7 +192,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::renderInline
-	protected function renderInline($e)
+	protected function renderInline(PageElement $e)
 	{
 		if(($text = $e->get('text')) !== FALSE && is_scalar($text)
 				&& strlen($text) > 0)
@@ -208,7 +208,7 @@ class PlainFormat extends Format
 
 
 	//PlainFormat::renderLink
-	protected function renderLink($e)
+	protected function renderLink(PageElement $e)
 	{
 		if(($url = $e->get('url')) === FALSE
 				&& ($r = $e->get('request')) !== FALSE)

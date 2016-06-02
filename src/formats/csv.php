@@ -78,7 +78,7 @@ class CSVFormat extends PlainFormat
 
 	//rendering
 	//CSVFormat::renderElement
-	protected function renderElement($e)
+	protected function renderElement(PageElement $e)
 	{
 		switch($e->getType())
 		{
@@ -91,7 +91,7 @@ class CSVFormat extends PlainFormat
 
 
 	//CSVFormat::renderTreeview
-	protected function renderTreeview($e)
+	protected function renderTreeview(PageElement $e)
 	{
 		$sep = '';
 
