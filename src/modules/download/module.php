@@ -289,7 +289,7 @@ class DownloadModule extends MultiContentModule
 				if($_FILES['files']['name'][$k] == $f)
 					return _('Forbidden filename');
 			foreach($delimiters as $d)
-				if(strstr($_FILES['files']['name'][$k], $d)
+				if(strpos($_FILES['files']['name'][$k], $d)
 						!== FALSE)
 					return _('An error occurred');
 			$count++;

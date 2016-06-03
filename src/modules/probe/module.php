@@ -135,7 +135,7 @@ class ProbeModule extends Module
 		$this->_defaultToolbar($page, $hostname);
 		if(!in_array($time, static::$times, TRUE))
 			$time = FALSE;
-		if(strstr($hostname, '/') !== FALSE
+		if(strpos($hostname, '/') !== FALSE
 				|| $hostname == '.' || $hostname == '..')
 			//FIXME report (error dialog)
 			return;
@@ -279,7 +279,7 @@ class ProbeModule extends Module
 
 		if($root === FALSE)
 			return new ErrorResponse(_('Internal server error'));
-		if(strstr($hostname, '/') !== FALSE
+		if(strpos($hostname, '/') !== FALSE
 				|| $hostname == '.' || $hostname == '..')
 			return new ErrorResponse('Invalid hostname');
 		$rrd = $root.'/'.$hostname;
@@ -373,7 +373,7 @@ class ProbeModule extends Module
 					$volume = '/';
 					$rrd .= '/volume.rrd';
 				}
-				else if(strstr($volume, '/..') !== FALSE)
+				else if(strpos($volume, '/..') !== FALSE)
 					return new ErrorResponse($error);
 				else
 					$rrd .= '/volume/'.$volume.'.rrd';
