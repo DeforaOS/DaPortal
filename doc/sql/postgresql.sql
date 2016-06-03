@@ -110,8 +110,6 @@ CREATE TABLE daportal_user_register (
 	"timestamp" TIMESTAMP NOT NULL DEFAULT now()
 );
 
-CREATE INDEX daportal_user_register_token_index ON daportal_user_register (token);
-
 
 CREATE TABLE daportal_user_reset (
 	user_reset_id SERIAL PRIMARY KEY,
@@ -119,8 +117,6 @@ CREATE TABLE daportal_user_reset (
 	token VARCHAR(255) UNIQUE NOT NULL,
 	"timestamp" TIMESTAMP NOT NULL DEFAULT now()
 );
-
-CREATE INDEX daportal_user_reset_token_index ON daportal_user_reset (token);
 
 
 CREATE TABLE daportal_user_group (
