@@ -1154,6 +1154,7 @@ abstract class ContentModule extends Module
 			$toolbar->append('button', array('stock' => $k,
 					'text' => $v, 'type' => 'submit',
 					'name' => 'action', 'value' => $k));
+		return $toolbar;
 	}
 
 
