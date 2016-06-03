@@ -365,7 +365,8 @@ class HTTPEngine extends Engine
 		if(($filename = $response->getFilename()) !== FALSE)
 			//FIXME escape $filename
 			$disposition .= '; filename="'.$filename.'"';
-		header('Content-Disposition: '.$disposition);
+		if($disposition != 'inline')
+			header('Content-Disposition: '.$disposition);
 		//set the length
 		if(($length = $response->getLength()) !== FALSE
 				&& is_numeric($length))
