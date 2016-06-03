@@ -1250,7 +1250,7 @@ class HTMLFormat extends FormatElements
 			}
 	}
 
-	private function _renderTreeviewHeaders($e, $columns)
+	private function _renderTreeviewHeaders(PageElement $e, $columns)
 	{
 		$this->renderTabs();
 		$this->tagOpen('div', 'header');

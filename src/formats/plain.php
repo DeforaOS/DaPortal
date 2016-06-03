@@ -100,7 +100,7 @@ class PlainFormat extends Format
 
 	//rendering
 	//PlainFormat::renderBlock
-	protected function renderBlock($e, $underline = '-')
+	protected function renderBlock(PageElement $e, $underline = '-')
 	{
 		if($this->separator != '')
 			$this->_print("\n\n");
