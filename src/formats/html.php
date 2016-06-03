@@ -940,7 +940,8 @@ class HTMLFormat extends FormatElements
 					array('alt' => ''));
 		if(($text = $e->get('text')) === FALSE)
 			$text = $url;
-		print($this->escapeText($text));
+		if($text !== FALSE)
+			print($this->escapeText($text));
 		$this->renderChildren($e);
 		$this->tagClose('a');
 	}
