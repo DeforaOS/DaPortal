@@ -404,6 +404,7 @@ class HTMLFormat extends FormatElements
 				if($this->javascript && $e->get('target')
 						== '_cancel')
 					$args['onclick'] = $cancel;
+				//fallthrough
 			default:
 				$type = 'button';
 				if($s === FALSE && $c === FALSE)
