@@ -53,15 +53,17 @@ if(($result = $module->call($engine, $request)) === FALSE
 $how = array(0, 1);
 $case = array(0, 1);
 foreach($how as $h)
+{
+	$config->set('module::search', 'regexp', $h);
 	foreach($case as $c)
 	{
-		$config->set('module::search', 'regexp', $h);
 		$args = array('q' => 'test', 'case' => $c);
 		$request = $module->getRequest('advanced', $args);
 		if(($result = $module->call($engine, $request)) === FALSE
 				|| !$result instanceof PageResponse)
 			exit(7);
 	}
+}
 exit(0);
 
 ?>
