@@ -60,15 +60,15 @@ abstract class MultiContentModule extends ContentModule
 	{
 		Module::__construct($id, $name, $title);
 		//autoload sub-classes
+		$len = strlen($name) + 7;
 		foreach(static::$content_classes as $class)
 		{
-			$c = strtolower($class);
-			$len = strlen($name) + 7;
-			if(strlen($c) <= $len)
+			if(strlen($class) <= $len)
 				continue;
+			$c = strtolower($class);
 			if(substr($c, -$len) != strtolower($name).'content')
 				continue;
-			$c = substr($c, 0, strlen($c) - $len);
+			$c = substr($c, 0, -$len);
 			$filename = './modules/'.strtolower($name).'/content/'
 				.$c.'.php';
 			autoload($class, $filename);

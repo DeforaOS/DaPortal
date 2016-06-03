@@ -263,7 +263,7 @@ abstract class Engine
 			{
 				if(substr($de, -4) != '.php')
 					continue;
-				$n = substr($de, 0, strlen($de) - 4);
+				$n = substr($de, 0, -4);
 				$class = $n.'Engine';
 				$engine = new $class();
 				if(($p = $engine->match()) <= $priority)

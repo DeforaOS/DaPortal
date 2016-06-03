@@ -49,7 +49,7 @@ abstract class Format extends Mutator
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			$name = substr($de, 0, strlen($de) - 4);
+			$name = substr($de, 0, -4);
 			$class = $name.'Format';
 			$format = new $class($name);
 			if(($p = $format->match($engine, $type)) <= $priority)

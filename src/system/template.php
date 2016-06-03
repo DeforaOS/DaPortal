@@ -49,7 +49,7 @@ abstract class Template
 			if(substr($de, -4) != '.php')
 				continue;
 			require_once('./templates/'.$de);
-			$name = substr($de, 0, strlen($de) - 4);
+			$name = substr($de, 0, -4);
 			$class = $name.'Template';
 			$template = new $class();
 			if(($p = $template->match($engine)) <= $priority)

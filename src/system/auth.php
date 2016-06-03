@@ -123,8 +123,7 @@ abstract class Auth
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			$name = substr($de, 0, strlen($de) - 4);
-			$name .= 'Auth';
+			$name = substr($de, 0, -4).'Auth';
 			$auth = new $name();
 			if(($p = $auth->match($engine)) <= $priority)
 				continue;

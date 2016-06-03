@@ -191,7 +191,7 @@ abstract class Database
 		{
 			if(substr($de, -4) != '.php')
 				continue;
-			$name = substr($de, 0, strlen($de) - 4);
+			$name = substr($de, 0, -4);
 			$class = $name.'Database';
 			$db = new $class($name);
 			if(($p = $db->match($engine)) <= $priority)
