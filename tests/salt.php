@@ -38,14 +38,58 @@ class SaltModuleTest extends SaltModule
 		$ret = TRUE;
 		$accessors = array('Reboot', 'ServiceReload', 'ServiceRestart',
 			'ServiceStart', 'ServiceStop', 'Shutdown', 'Upgrade');
+		$helpers = array('diskusage' => 'status.diskusage',
+			'loadavg' => 'status.loadavg', 'ping' => 'test.ping',
+			'reboot' => 'system.reboot',
+			'shutdown' => 'system.shutdown',
+			'statusall' => 'status.all_status');
 
 		$this->engine = $engine;
 		foreach($accessors as $accessor)
 			if($this->_testAccessor($accessor,
 					Response::$CODE_EPERM) === FALSE)
 				$ret = FALSE;
+		foreach($helpers as $helper => $expected)
+			if($this->_testHelper($helper, $expected) === FALSE)
+				$ret = FALSE;
 		$this->engine = NULL;
 		return $ret;
+	}
+
+	protected function _testAccessor($accessor, $expected = FALSE)
+	{
+		$method = 'can'.$accessor;
+		if(($obtained = $this->$method()) != $expected
+				&& $expected !== FALSE)
+		{
+			$error = "$accessor: Obtained \"$obtained\""
+			       ." (Expected \"$expected\")";
+			return $this->engine->log('LOG_ERR', $error);
+		}
+		return TRUE;
+	}
+
+	protected function _testHelper($helper, $expected)
+	{
+		$hostname = 'localhost';
+		$method = 'helperSalt'.$helper;
+
+		if(($obtained = $this->$method($hostname)) != $expected)
+		{
+			$error = "$helper: Obtained \"$obtained\""
+			       ." (Expected \"$expected\")";
+			return $this->engine->log('LOG_ERR', $error);
+		}
+		return TRUE;
+	}
+
+
+	//protected
+	//methods
+	protected function helperSalt($hostname = FALSE, $command = 'test.ping',
+			$args = FALSE, $options = FALSE)
+	{
+		return $command;
 	}
 }
 
