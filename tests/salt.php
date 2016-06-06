@@ -21,6 +21,8 @@ require_once('./tests.php');
 
 class SaltModuleTest extends SaltModule
 {
+	//public
+	//methods
 	//SaltModuleTest::SaltModuleTest
 	public function __construct($id, $name, $title)
 	{
@@ -33,16 +35,17 @@ class SaltModuleTest extends SaltModule
 	//SaltModuleTest::test
 	public function test(Engine $engine)
 	{
+		$ret = TRUE;
+		$accessors = array('Reboot', 'ServiceReload', 'ServiceRestart',
+			'ServiceStart', 'ServiceStop', 'Shutdown', 'Upgrade');
+
 		$this->engine = $engine;
-		$this->canReboot();
-		$this->canServiceReload();
-		$this->canServiceRestart();
-		$this->canServiceStart();
-		$this->canServiceStop();
-		$this->canShutdown();
-		$this->canUpgrade();
+		foreach($accessors as $accessor)
+			if($this->_testAccessor($accessor,
+					Response::$CODE_EPERM) === FALSE)
+				$ret = FALSE;
 		$this->engine = NULL;
-		return TRUE;
+		return $ret;
 	}
 }
 
