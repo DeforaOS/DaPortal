@@ -573,13 +573,6 @@ class SaltModule extends Module
 	}
 
 
-	//SaltModule::helperSaltShutdown
-	protected function helperSaltShutdown($hostname)
-	{
-		return $this->helperSalt($hostname, 'system.shutdown');
-	}
-
-
 	//SaltModule::helperSaltServiceList
 	protected function helperSaltServiceList($hostname)
 	{
@@ -631,6 +624,13 @@ class SaltModule extends Module
 	{
 		return $this->helperSalt($hostname, 'service.stop',
 				array($service));
+	}
+
+
+	//SaltModule::helperSaltShutdown
+	protected function helperSaltShutdown($hostname)
+	{
+		return $this->helperSalt($hostname, 'system.shutdown');
 	}
 
 
