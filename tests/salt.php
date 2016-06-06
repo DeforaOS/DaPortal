@@ -72,7 +72,7 @@ class SaltModuleTest extends SaltModule
 		{
 			$error = "$accessor: Obtained \"$obtained\""
 			       ." (Expected \"$expected\")";
-			return $this->engine->log('LOG_ERR', $error);
+			return $this->engine->log(LOG_ERR, $error);
 		}
 		return TRUE;
 	}
@@ -86,7 +86,7 @@ class SaltModuleTest extends SaltModule
 		{
 			$error = "$helper: Obtained \"$obtained\""
 			       ." (Expected \"$expected\")";
-			return $this->engine->log('LOG_ERR', $error);
+			return $this->engine->log(LOG_ERR, $error);
 		}
 		return TRUE;
 	}
