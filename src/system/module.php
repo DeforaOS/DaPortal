@@ -115,6 +115,16 @@ abstract class Module
 	}
 
 
+	//Module::configSet
+	protected function configSet($variable, $value)
+	{
+		global $config;
+
+		return $config->set('module::'.$this->name, $variable,
+				$value);
+	}
+
+
 	//useful
 	//helpers
 	//Module::helperApply
