@@ -29,6 +29,7 @@ class SaltModuleTest extends SaltModule
 		global $config;
 
 		parent::__construct($id, $name, $title);
+		$this->configSet('salt', '/bin/echo');
 	}
 
 
@@ -38,11 +39,18 @@ class SaltModuleTest extends SaltModule
 		$ret = TRUE;
 		$accessors = array('Reboot', 'ServiceReload', 'ServiceRestart',
 			'ServiceStart', 'ServiceStop', 'Shutdown', 'Upgrade');
-		$helpers = array('diskusage' => 'status.diskusage',
-			'loadavg' => 'status.loadavg', 'ping' => 'test.ping',
-			'reboot' => 'system.reboot',
-			'shutdown' => 'system.shutdown',
-			'statusall' => 'status.all_status');
+		$helpers = array('diskusage'
+			=> 'salt --out=json --static localhost status.diskusage',
+			'loadavg'
+			=> 'salt --out=json --static localhost status.loadavg',
+			'ping'
+			=> 'salt --out=json --static localhost test.ping',
+			'reboot'
+			=> 'salt --out=json --static localhost system.reboot',
+			'shutdown'
+			=> 'salt --out=json --static localhost system.shutdown',
+			'statusall'
+			=> 'salt --out=json --static localhost status.all_status');
 
 		$this->engine = $engine;
 		foreach($accessors as $accessor)
@@ -86,10 +94,31 @@ class SaltModuleTest extends SaltModule
 
 	//protected
 	//methods
+	//SaltModuleTest::helperSalt
 	protected function helperSalt($hostname = FALSE, $command = 'test.ping',
 			$args = FALSE, $options = FALSE)
 	{
-		return $command;
+		//XXX duplicated from SaltModule::helperSalt
+		$salt = $this->configGet('salt') ?: 'salt';
+		$options = is_array($options)
+			? $options : array('--out=json', '--static');
+		$hostname = (is_string($hostname) && strlen($hostname))
+			? $hostname : '*';
+		$args = is_array($args) ? $args : array();
+
+		$cmd = escapeshellarg($salt);
+		foreach($options as $option)
+			$cmd .= ' '.escapeshellarg($option);
+		$cmd .= ' '.escapeshellarg($hostname);
+		$cmd .= ' '.escapeshellarg($command);
+		foreach($args as $arg)
+			$cmd .= ' '.escapeshellarg($arg);
+		exec($cmd, $output, $res);
+		if($res != 0)
+			//something went really wrong, or finally right, or this
+			//is not salt, or it is not installed
+			return FALSE;
+		return 'salt '.implode("\n", $output);
 	}
 }
 
