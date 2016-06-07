@@ -55,6 +55,14 @@ class PKIModule extends MultiContentModule
 
 
 	//accessors
+	//PKIModule::canRevoke
+	public function canRevoke(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
+	{
+		return $this->canSubmit($engine, $request, $content, $error);
+	}
+
+
 	//PKIModule::canSubmit
 	public function canSubmit(Engine $engine, Request $request = NULL,
 			Content $content = NULL, &$error = FALSE)
@@ -273,6 +281,90 @@ class PKIModule extends MultiContentModule
 		//buttons
 		$this->helperSubmitButtons($engine, $request, $form);
 		return $form;
+	}
+
+
+	//PKIModule::helperAdminActions
+	protected function helperAdminActions(Engine $engine, Request $request)
+	{
+		$actions = array('revoke');
+
+		if(($ret = parent::helperAdminActions($engine, $request))
+				!== FALSE)
+			return $ret;
+		//additional actions
+		foreach($actions as $a)
+			if($request->get($a) !== FALSE)
+			{
+				$helper = 'helper'.$a;
+				if(!method_exists($this, $helper))
+				{
+					$error = $helper.': Unknown helper';
+					return $engine->log(LOG_DEBUG, $error);
+				}
+				return $this->$helper($engine, $request);
+			}
+		return FALSE;
+	}
+
+
+	//PKIModule::helperAdminToolbar
+	protected function helperAdminToolbar(Engine $engine, PageElement $page,
+			Request $request = NULL)
+	{
+		//XXX move this method to the parent
+		$actions = array('revoke' => _('Revoke'));
+
+		$toolbar = parent::helperAdminToolbar($engine, $page,
+				$request);
+		//additional actions
+		$toolitems = array();
+		foreach($actions as $action => $label)
+		{
+			$method = 'can'.$action;
+			if(method_exists($this, $method)
+					&& $this->$method($engine, $request))
+				$toolitems[$action] = $label;
+		}
+		foreach($toolitems as $action => $label)
+			$toolbar->append('button', array('stock' => $action,
+					'text' => $label, 'type' => 'submit',
+					'name' => 'action',
+					'value' => $action));
+		return $toolbar;
+	}
+
+
+	//PKIModule::helperRevoke
+	protected function helperRevoke(Engine $engine, Request $request)
+	{
+		$cred = $engine->getCredentials();
+		$affected = 0;
+		$message = _('The certificate(s) revoked successfully');
+		$failure = _('Could not revoke certificate(s)');
+
+		$error = _('Permission denied');
+		if(!$this->canRevoke($engine, $request, NULL, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		$type = 'info';
+		if(($ids = $request->get('ids')) === FALSE || !is_array($ids))
+			$ids = array();
+		//lookup the certificates and revoke
+		foreach($ids as $id)
+		{
+			if(($content = $this->getContent($engine, $id))
+					!== FALSE
+					&& $content->revoke($engine))
+			{
+				$affected += $res->getAffectedCount();
+				continue;
+			}
+			$type = 'error';
+			$message = $failure;
+		}
+		return ($affected > 0) ? new PageElement('dialog', array(
+				'type' => $type, 'text' => $message)) : FALSE;
 	}
 }
 
