@@ -1075,8 +1075,13 @@ abstract class ContentModule extends Module
 		foreach($actions as $a)
 			if($request->get($a) !== FALSE)
 			{
-				$a = 'helper'.$a;
-				return $this->$a($engine, $request);
+				$helper = 'helper'.$a;
+				if(!method_exists($this, $helper))
+				{
+					$error = $helper.': Unknown helper';
+					return $engine->log(LOG_DEBUG, $error);
+				}
+				return $this->$helper($engine, $request);
 			}
 		return FALSE;
 	}
