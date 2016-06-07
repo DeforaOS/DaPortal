@@ -77,6 +77,10 @@ function _pki(Engine $engine, Module $module)
 	$engine->render($response);
 	if($response->getCode() != 0)
 		return 8;
+	//XXX guessing the content ID
+	if(($server = CAServerPKIContent::load($engine, $module, 6, 'server.ca'))
+			=== FALSE)
+		return 9;
 
 	//create a server (child CA)
 	$args = array('title' => 'server.child.ca', 'country' => 'CO',
@@ -88,7 +92,7 @@ function _pki(Engine $engine, Module $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 9;
+		return 10;
 
 	//create a signed server (self-signed CA)
 	$args = array('title' => 'server2.ca', 'country' => 'CO',
@@ -101,7 +105,7 @@ function _pki(Engine $engine, Module $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 10;
+		return 11;
 
 	//create a signed server (child CA)
 	$args = array('title' => 'server2.child.ca', 'country' => 'CO',
@@ -114,7 +118,7 @@ function _pki(Engine $engine, Module $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 11;
+		return 12;
 
 	//create a client (self-signed CA)
 	$args = array('title' => 'client', 'country' => 'CO',
@@ -126,7 +130,7 @@ function _pki(Engine $engine, Module $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 12;
+		return 13;
 
 	//create a client (child CA)
 	$args = array('title' => 'client', 'country' => 'CO',
@@ -138,7 +142,11 @@ function _pki(Engine $engine, Module $module)
 	$response = $engine->process($request);
 	$engine->render($response);
 	if($response->getCode() != 0)
-		return 13;
+		return 14;
+
+	//revoke a signed server (child CA)
+	if($server->revoke($engine) === FALSE)
+		return 15;
 
 	return 0;
 }
