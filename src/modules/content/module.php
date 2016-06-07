@@ -1131,7 +1131,11 @@ abstract class ContentModule extends Module
 	protected function helperAdminToolbar(Engine $engine, PageElement $page,
 			Request $request = NULL)
 	{
-		$actions = array();
+		$actions = array('disable' => _('Disable'),
+			'enable' => _('Enable'),
+			'unpost' => _('Unpublish'),
+			'post' => _('Publish'),
+			'delete' => _('Delete'));
 
 		$toolbar = $page->append('toolbar');
 		$r = $this->getRequest('admin', array(
@@ -1140,20 +1144,19 @@ abstract class ContentModule extends Module
 					'request' => $r,
 					'text' => _('Refresh')));
 		//actions
-		if($this->canDisable($engine, $request))
-			$actions['disable'] = _('Disable');
-		if($this->canEnable($engine, $request))
-			$actions['enable'] = _('Enable');
-		if($this->canUnpublish($engine, $request))
-			$actions['unpost'] = _('Unpublish');
-		if($this->canPublish($engine, $request))
-			$actions['post'] = _('Publish');
-		if($this->canDelete($engine, $request))
-			$actions['delete'] = _('Delete');
-		foreach($actions as $k => $v)
-			$toolbar->append('button', array('stock' => $k,
-					'text' => $v, 'type' => 'submit',
-					'name' => 'action', 'value' => $k));
+		$toolitems = array();
+		foreach($actions as $action => $label)
+		{
+			$method = 'can'.$action;
+			if(method_exists($this, $method)
+					&& $this->$method($engine, $request))
+				$toolitems[$action] = $label;
+		}
+		foreach($toolitems as $action => $label)
+			$toolbar->append('button', array('stock' => $action,
+					'text' => $label, 'type' => 'submit',
+					'name' => 'action',
+					'value' => $action));
 		return $toolbar;
 	}
 
