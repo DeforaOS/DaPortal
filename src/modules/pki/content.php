@@ -689,6 +689,21 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::revoke
+	protected function revoke(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$parent = $this->getParent($engine);
+
+		if($content !== FALSE || $parent === FALSE)
+		{
+			$error = _('Unsupported operation');
+			return FALSE;
+		}
+		return $parent->revoke($engine, $this, $error);
+	}
+
+
 	//PKIContent::sign
 	protected function sign(Engine $engine, $content = FALSE,
 			&$error = FALSE)

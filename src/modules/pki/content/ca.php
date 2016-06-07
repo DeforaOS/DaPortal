@@ -161,6 +161,68 @@ class CAPKIContent extends PKIContent
 	}
 
 
+	//CAPKIContent::revoke
+	protected function revoke(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$root = $this->getRootCA($engine);
+
+		if($content === FALSE)
+			return parent::revoke($engine, FALSE, $error);
+		if($root === FALSE)
+		{
+			$error = _('Internal error');
+			return FALSE;
+		}
+		$opensslcnf = $root.'/openssl.cnf';
+		switch(get_class($content))
+		{
+			case 'CAPKIContent':
+				if(($root = $content->getRootCA($engine))
+						=== FALSE)
+				{
+					$error = _('Internal error');
+					return FALSE;
+				}
+				$extensions = 'v3_ca';
+				$out = $root.'/cacert.pem';
+				break;
+			case 'CAClientPKIContent':
+				$extensions = 'usr_cert';
+				$out = $root.'/newcerts/'.$content->getTitle().'.pem';
+				break;
+			case 'CAServerPKIContent':
+				$extensions = 'srv_cert';
+				$out = $root.'/newcerts/'.$content->getTitle().'.pem';
+				break;
+			default:
+				$error = _('Invalid class to sign');
+				return FALSE;
+		}
+		if(!file_exists($out))
+		{
+			$error = _('Could not revoke the certificate');
+			return $engine->log(LOG_ERR,
+					'Could not revoke the certificate');
+		}
+		$cmd = 'openssl ca'
+			.' -config '.escapeshellarg($opensslcnf)
+			.' -revoke '.escapeshellarg($out);
+		$res = -1;
+		$engine->log(LOG_DEBUG, 'Executing: '.$cmd);
+		$fds = array(1 => STDOUT, 2 => STDOUT);
+		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
+				|| ($res = proc_close($fp)) != 0)
+		{
+			$error = _('Could not revoke the certificate');
+			return FALSE;
+		}
+		$content->set('revoked', TRUE);
+		$content->save($engine);
+		return TRUE;
+	}
+
+
 	//CAPKIContent::save
 	public function save(Engine $engine, Request $request = NULL,
 			&$error = FALSE)
