@@ -503,9 +503,39 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::revoke
+	public function revoke(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$parent = $this->getParent($engine);
+
+		if($content !== FALSE || $parent === FALSE)
+		{
+			$error = _('Unsupported operation');
+			return FALSE;
+		}
+		return $parent->revoke($engine, $this, $error);
+	}
+
+
+	//PKIContent::sign
+	public function sign(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$parent = $this->getParent($engine);
+
+		if($content !== FALSE || $parent === FALSE)
+		{
+			$error = _('Unsupported operation');
+			return FALSE;
+		}
+		return $parent->sign($engine, $this, $error);
+	}
+
+
 	//PKIContent::loadFromName
-	static function loadFromName(Engine $engine, Module $module, $name,
-			$parent = FALSE)
+	static public function loadFromName(Engine $engine, Module $module,
+			$name, $parent = FALSE)
 	{
 		if(($res = static::_loadFromName($engine, $module, $name,
 				$parent)) === FALSE)
@@ -686,36 +716,6 @@ abstract class PKIContent extends ContentMulti
 					'Could not generate the signing request');
 		}
 		return TRUE;
-	}
-
-
-	//PKIContent::revoke
-	protected function revoke(Engine $engine, $content = FALSE,
-			&$error = FALSE)
-	{
-		$parent = $this->getParent($engine);
-
-		if($content !== FALSE || $parent === FALSE)
-		{
-			$error = _('Unsupported operation');
-			return FALSE;
-		}
-		return $parent->revoke($engine, $this, $error);
-	}
-
-
-	//PKIContent::sign
-	protected function sign(Engine $engine, $content = FALSE,
-			&$error = FALSE)
-	{
-		$parent = $this->getParent($engine);
-
-		if($content !== FALSE || $parent === FALSE)
-		{
-			$error = _('Unsupported operation');
-			return FALSE;
-		}
-		return $parent->sign($engine, $this, $error);
 	}
 
 

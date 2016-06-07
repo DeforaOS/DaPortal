@@ -162,7 +162,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::revoke
-	protected function revoke(Engine $engine, $content = FALSE,
+	public function revoke(Engine $engine, $content = FALSE,
 			&$error = FALSE)
 	{
 		$root = $this->getRootCA($engine);
@@ -361,7 +361,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::sign
-	protected function sign(Engine $engine, $content = FALSE,
+	public function sign(Engine $engine, $content = FALSE,
 			&$error = FALSE)
 	{
 		$root = $this->getRootCA($engine);
