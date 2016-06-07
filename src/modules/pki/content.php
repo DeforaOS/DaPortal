@@ -656,7 +656,9 @@ abstract class PKIContent extends ContentMulti
 			.' -subj '.escapeshellarg($subject);
 		$res = -1;
 		$engine->log(LOG_DEBUG, 'Executing: '.$cmd);
-		$fds = array(1 => STDOUT, 2 => STDOUT);
+		$stdout = defined('STDOUT')
+			? STDOUT : fopen('php://stdout', 'w');
+		$fds = array(1 => $stdout, 2 => $stdout);
 		if(($fp = proc_open($cmd, $fds, $pipes)) === FALSE
 				|| ($res = proc_close($fp)) != 0)
 		{
