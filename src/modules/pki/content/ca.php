@@ -161,6 +161,25 @@ class CAPKIContent extends PKIContent
 	}
 
 
+	//CAPKIContent::renew
+	public function renew(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$root = $this->getRootCA($engine);
+
+		if($content === FALSE)
+			return parent::renew($engine, FALSE, $error);
+		if($root === FALSE)
+		{
+			$error = _('Internal error');
+			return FALSE;
+		}
+		if($this->revoke($engine, $content, $error) === FALSE)
+			return FALSE;
+		return $this->sign($engine, $content, $error);
+	}
+
+
 	//CAPKIContent::revoke
 	public function revoke(Engine $engine, $content = FALSE,
 			&$error = FALSE)

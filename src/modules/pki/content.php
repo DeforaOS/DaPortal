@@ -503,6 +503,21 @@ abstract class PKIContent extends ContentMulti
 	}
 
 
+	//PKIContent::renew
+	public function renew(Engine $engine, $content = FALSE,
+			&$error = FALSE)
+	{
+		$parent = $this->getParent($engine);
+
+		if($content !== FALSE || $parent === FALSE)
+		{
+			$error = _('Unsupported operation');
+			return FALSE;
+		}
+		return $parent->renew($engine, $this, $error);
+	}
+
+
 	//PKIContent::revoke
 	public function revoke(Engine $engine, $content = FALSE,
 			&$error = FALSE)
