@@ -445,6 +445,7 @@ class CAPKIContent extends PKIContent
 			$error = _('Could not sign the certificate request');
 			return FALSE;
 		}
+		$content->set('revoked', FALSE);
 		$content->set('signed', TRUE);
 		$content->save($engine);
 		return TRUE;
