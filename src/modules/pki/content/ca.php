@@ -382,8 +382,7 @@ class CAPKIContent extends PKIContent
 
 
 	//CAPKIContent::sign
-	public function sign(Engine $engine, $content = FALSE,
-			&$error = FALSE)
+	public function sign(Engine $engine, $content = FALSE, &$error = FALSE)
 	{
 		$root = $this->getRootCA($engine);
 
