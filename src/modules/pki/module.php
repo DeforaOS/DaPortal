@@ -55,6 +55,14 @@ class PKIModule extends MultiContentModule
 
 
 	//accessors
+	//PKIModule::canRenew
+	public function canRenew(Engine $engine, Request $request = NULL,
+			Content $content = NULL, &$error = FALSE)
+	{
+		return $this->canSubmit($engine, $request, $content, $error);
+	}
+
+
 	//PKIModule::canRevoke
 	public function canRevoke(Engine $engine, Request $request = NULL,
 			Content $content = NULL, &$error = FALSE)
@@ -287,7 +295,8 @@ class PKIModule extends MultiContentModule
 	//PKIModule::helperAdminActions
 	protected function helperAdminActions(Engine $engine, Request $request)
 	{
-		$actions = array('revoke');
+		//XXX update the parent actions instead
+		$actions = array('renew', 'revoke');
 
 		if(($ret = parent::helperAdminActions($engine, $request))
 				!== FALSE)
@@ -312,8 +321,9 @@ class PKIModule extends MultiContentModule
 	protected function helperAdminToolbar(Engine $engine, PageElement $page,
 			Request $request = NULL)
 	{
-		//XXX move this method to the parent
-		$actions = array('revoke' => _('Revoke'));
+		//XXX update the parent actions instead
+		$actions = array('renew' => _('Renew'),
+			'revoke' => _('Revoke'));
 
 		$toolbar = parent::helperAdminToolbar($engine, $page,
 				$request);
@@ -332,6 +342,39 @@ class PKIModule extends MultiContentModule
 					'name' => 'action',
 					'value' => $action));
 		return $toolbar;
+	}
+
+
+	//PKIModule::helperRenew
+	protected function helperRenew(Engine $engine, Request $request)
+	{
+		$cred = $engine->getCredentials();
+		$affected = 0;
+		$message = _('The certificate(s) renewed successfully');
+		$failure = _('Could not renew certificate(s)');
+
+		$error = _('Permission denied');
+		if(!$this->canRenew($engine, $request, NULL, $error))
+			return new PageElement('dialog', array(
+					'type' => 'error', 'text' => $error));
+		$type = 'info';
+		if(($ids = $request->get('ids')) === FALSE || !is_array($ids))
+			$ids = array();
+		//lookup the certificates and renew
+		foreach($ids as $id)
+		{
+			if(($content = $this->getContent($engine, $id))
+					!== FALSE
+					&& $content->renew($engine))
+			{
+				$affected += $res->getAffectedCount();
+				continue;
+			}
+			$type = 'error';
+			$message = $failure;
+		}
+		return ($affected > 0) ? new PageElement('dialog', array(
+				'type' => $type, 'text' => $message)) : FALSE;
 	}
 
 
