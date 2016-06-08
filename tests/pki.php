@@ -144,8 +144,8 @@ function _pki(Engine $engine, Module $module)
 	if($response->getCode() != 0)
 		return 14;
 
-	//revoke a signed server (child CA)
-	if($server->revoke($engine) === FALSE)
+	//renew a server (child CA)
+	if($server->renew($engine) === FALSE)
 		return 15;
 
 	return 0;
@@ -156,8 +156,9 @@ function pki_cleanup()
 {
 	$files = array('cacert.csr', 'cacert.pem', 'index.txt',
 		'index.txt.attr', 'index.txt.attr.old', 'index.txt.old',
-		'certs/server2.ca.pem', 'certs/server2.child.ca.pem',
-		'newcerts/01.pem', 'newcerts/02.pem',
+		'certs/server.ca.pem', 'certs/server2.ca.pem',
+		'certs/server2.child.ca.pem',
+		'newcerts/01.pem', 'newcerts/02.pem', 'newcerts/03.pem',
 		'newcerts/client.pem',
 		'newcerts/server.ca.pem', 'newcerts/server.child.ca.pem',
 		'newcerts/server2.ca.pem', 'newcerts/server2.child.ca.pem',
