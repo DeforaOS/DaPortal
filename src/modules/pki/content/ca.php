@@ -224,7 +224,7 @@ class CAPKIContent extends PKIContent
 			return $engine->log(LOG_ERR,
 					'Could not revoke the certificate');
 		}
-		$cmd = 'openssl ca'
+		$cmd = 'openssl ca -batch'
 			.' -config '.escapeshellarg($opensslcnf)
 			.' -revoke '.escapeshellarg($out);
 		$res = -1;
