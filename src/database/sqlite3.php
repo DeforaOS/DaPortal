@@ -77,7 +77,11 @@ class SQLite3Database extends Database
 					.$this->handle->lastErrorMsg());
 		foreach($parameters as $k => $v)
 			$stmt->bindValue(':'.$k, $v);
-		if(($res = $stmt->execute()) === FALSE)
+		//execute the query
+		$this->profileStart();
+		$res = $stmt->execute();
+		$this->profileStop($query);
+		if($res === FALSE)
 			return $this->engine->log(LOG_ERR,
 					'Could not execute statement: '
 					.$this->handle->lastErrorMsg());
