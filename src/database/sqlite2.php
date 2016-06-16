@@ -67,9 +67,13 @@ class SQLite2Database extends Database
 			return FALSE;
 		if($config->get('database', 'debug'))
 			$this->engine->log(LOG_DEBUG, $query);
+		//execute the query
 		$error = FALSE;
-		if(($res = sqlite_query($this->handle, $query, SQLITE_ASSOC,
-					$error)) === FALSE)
+		$this->profileStart();
+		$res = sqlite_query($this->handle, $query, SQLITE_ASSOC,
+				$error);
+		$this->profileStop($query);
+		if($res === FALSE)
 		{
 			if($error !== FALSE)
 				$this->engine->log(LOG_DEBUG, $error);
