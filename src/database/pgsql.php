@@ -224,7 +224,6 @@ class PgSQLDatabase extends Database
 		if($this->_attachConfig($config) === FALSE)
 			return $engine->log(LOG_ERR,
 					'Could not open database');
-		$this->engine = $engine;
 		return TRUE;
 	}
 
@@ -245,7 +244,10 @@ class PgSQLDatabase extends Database
 			}
 		$this->handle = $config->get($section, 'persistent')
 			? pg_pconnect($str, $flags) : pg_connect($str, $flags);
-		return ($this->handle !== FALSE) ? TRUE : FALSE;
+		if($this->handle === FALSE)
+			return FALSE;
+		$this->engine = $engine;
+		return TRUE;
 	}
 
 
