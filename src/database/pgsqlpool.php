@@ -89,7 +89,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		return TRUE;
 	}
 
-	private function _attachMaster(Engine $engine, $config, $section)
+	private function _attachMaster(Engine $engine, Config $config, $section)
 	{
 		if(($master = $config->get($section, 'master')) === FALSE
 				|| strlen($master) == 0)
@@ -98,7 +98,7 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 				"$section::$master");
 	}
 
-	private function _attachSlaves(Engine $engine, $config, $section)
+	private function _attachSlaves(Engine $engine, Config $config, $section)
 	{
 		$this->slaves = new \ArrayIterator();
 		if(($slaves = $config->get($section, 'slaves')) === FALSE)
