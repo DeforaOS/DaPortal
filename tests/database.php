@@ -44,6 +44,14 @@ $r = $res->current();
 if($r['user_id'] != 1)
 	exit(6);
 
+//enable profiling
+global $config;
+$config->set('database', 'profile', 1);
+
+//issue a query (profiling)
+if(($res = $database->query($engine, $query, $args)) === FALSE)
+	exit(7);
+
 exit(0);
 
 ?>
