@@ -221,14 +221,14 @@ class PgSQLDatabase extends Database
 	{
 		global $config;
 
-		if($this->_attachConfig($config) === FALSE)
+		if($this->_attachConfig($engine, $config) === FALSE)
 			return $engine->log(LOG_ERR,
 					'Could not open database');
 		return TRUE;
 	}
 
-	protected function _attachConfig(Config $config, $section = FALSE,
-			$new = FALSE)
+	protected function _attachConfig(Engine $engine, Config $config,
+			$section = FALSE, $new = FALSE)
 	{
 		$str = '';
 		$sep = '';

@@ -94,7 +94,8 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		if(($master = $config->get($section, 'master')) === FALSE
 				|| strlen($master) == 0)
 			return parent::attach($engine);
-		return $this->_attachConfig($config, "$section::$master");
+		return $this->_attachConfig($engine, $config,
+				"$section::$master");
 	}
 
 	private function _attachSlaves(Engine $engine, $config, $section)
@@ -106,7 +107,8 @@ class PgSQLPoolDatabase extends PgSQLDatabase
 		foreach($slaves as $s)
 		{
 			$slave = new PgSQLDatabase('pgsql');
-			if($slave->_attachConfig($config, "$section::$s", TRUE))
+			if($slave->_attachConfig($engine, $config,
+					"$section::$s", TRUE))
 				$this->slaves->append($slave);
 			else
 				$engine->log(LOG_WARNING, $s.": Could not"
