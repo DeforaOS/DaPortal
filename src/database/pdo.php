@@ -107,7 +107,10 @@ class PDODatabase extends Database
 				$args[':'.$k] = $v ? 1 : 0;
 			else
 				$args[':'.$k] = $v;
-		if($stmt->execute($args) !== TRUE)
+		$this->profileStart();
+		$res = $stmt->execute($args);
+		$this->profileStop($query);
+		if($res !== TRUE)
 			return $this->_queryError('Could not execute query');
 		return new $this->result_class($stmt);
 	}
