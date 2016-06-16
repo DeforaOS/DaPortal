@@ -163,7 +163,7 @@ class BasicTemplate extends Template
 	protected function getTitle()
 	{
 		$title = new PageElement('title', array('id' => 'title'));
-		$title->append('link', array('text' => $this->title,
+		$link = $title->append('link', array('text' => $this->title,
 				'title' => $this->title,
 				'url' => $this->homepage));
 		if($this->logo !== FALSE)
