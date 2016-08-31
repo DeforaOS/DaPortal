@@ -304,6 +304,7 @@ class HTMLFormat extends FormatElements
 		}
 		else
 			$this->tag('link', FALSE, FALSE, array('rel' => $rel,
+					'type' => 'text/css',
 					'href' => $cdn.$filename,
 					'title' => $theme));
 	}
