@@ -32,7 +32,7 @@ DATE="date"
 DEBUG="_debug"
 FIND="find"
 SHLINT="sh -n"
-SORT="sort"
+SORT="sort -n"
 TR="tr"
 
 
