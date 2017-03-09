@@ -28,6 +28,17 @@ RM="rm -f"
 
 
 #functions
+#date
+_date()
+{
+	if [ -n "$SOURCE_DATE_EPOCH" ]; then
+		TZ=UTC $DATE -d "@$SOURCE_DATE_EPOCH" '+%a %b %d %T %Z %Y'
+	else
+		$DATE
+	fi
+}
+
+
 #fail
 _fail()
 {
@@ -119,7 +130,7 @@ if [ $clean -ne 0 ]; then
 	exit $?
 fi
 
-$DATE > "$target"
+_date > "$target"
 FAILED=
 echo "Performing tests:" 1>&2
 _test "browser"
