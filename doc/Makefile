@@ -1,4 +1,4 @@
-SUBDIRS	= apache php sql
+SUBDIRS	= apache git php sql
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f

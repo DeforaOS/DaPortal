@@ -159,6 +159,9 @@ dist:
 		$(PACKAGE)-$(VERSION)/doc/apache/httpd-php5.conf \
 		$(PACKAGE)-$(VERSION)/doc/apache/httpd-php5-cgi.conf \
 		$(PACKAGE)-$(VERSION)/doc/apache/project.conf \
+		$(PACKAGE)-$(VERSION)/doc/git/Makefile \
+		$(PACKAGE)-$(VERSION)/doc/git/git-hook.sh \
+		$(PACKAGE)-$(VERSION)/doc/git/project.conf \
 		$(PACKAGE)-$(VERSION)/doc/php/Makefile \
 		$(PACKAGE)-$(VERSION)/doc/php/php.ini \
 		$(PACKAGE)-$(VERSION)/doc/php/project.conf \
