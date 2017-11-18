@@ -49,3 +49,6 @@ Archives for this mailing-list can be found at <https://lists.defora.org/>.
 
 Individual authors can also be contacted directly, according to the `AUTHORS`
 file.
+
+DaPortal 2 includes code from external sources, as listed in the `3RDPARTY`
+file.
