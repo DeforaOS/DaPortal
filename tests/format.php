@@ -28,10 +28,10 @@ $html5 = array(
 	<head>
 		<meta charset=\"utf-8\"/>
 		<base href=\"".dirname(getcwd())."/tests/\"/>
-		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
@@ -43,10 +43,10 @@ $html5 = array(
 	<head>
 		<meta charset=\"utf-8\"/>
 		<base href=\"".dirname(getcwd())."/tests/\"/>
-		<link rel=\"stylesheet\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
-		<link rel=\"alternate stylesheet\" href=\"themes/khorben.css\" title=\"khorben\"/>
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"themes/DaPortal.css\" title=\"DaPortal\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/DeforaOS.css\" title=\"DeforaOS\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/EdgeBSD.css\" title=\"EdgeBSD\"/>
+		<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"themes/khorben.css\" title=\"khorben\"/>
 		<style type=\"text/css\"><!-- @import url('icons/gnome.css'); //--></style>
 	</head>
 	<body>
