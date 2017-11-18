@@ -433,6 +433,7 @@ dist:
 		$(PACKAGE)-$(VERSION)/tools/deploy.sh \
 		$(PACKAGE)-$(VERSION)/tools/subst.sh \
 		$(PACKAGE)-$(VERSION)/tools/project.conf \
+		$(PACKAGE)-$(VERSION)/3RDPARTY.md \
 		$(PACKAGE)-$(VERSION)/AUTHORS \
 		$(PACKAGE)-$(VERSION)/BUGS \
 		$(PACKAGE)-$(VERSION)/COPYING \
@@ -460,6 +461,8 @@ install:
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)
+	$(INSTALL) -m 0644 3RDPARTY.md $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/3RDPARTY.md
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)
 	$(INSTALL) -m 0644 README.md $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/README.md
 
 uninstall:
@@ -467,6 +470,7 @@ uninstall:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/3RDPARTY.md
 	$(RM) -- $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/README.md
 
 .PHONY: all subdirs clean distclean dist distcheck install uninstall
