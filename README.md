@@ -20,7 +20,7 @@ supported:
 
 The homepage of DaPortal 2 can be found at
 <https://www.defora.org/os/project/12/DaPortal>, together with downloadable
-release archives:.
+release archives.
 
 
 Documentation
