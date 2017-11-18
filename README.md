@@ -19,7 +19,7 @@ supported:
  * PDO (therefore MySQL, and possibly more)
 
 The homepage of DaPortal 2 can be found at
-<http://www.defora.org/os/project/12/DaPortal>, together with downloadable
+<https://www.defora.org/os/project/12/DaPortal>, together with downloadable
 release archives:.
 
 
@@ -28,7 +28,7 @@ Documentation
 
 Installation instructions and manual pages can be found in the `doc`
 sub-directory. They can also be found online, at
-<http://www.defora.org/doc/html/DaPortal/>.
+<https://www.defora.org/doc/html/DaPortal/>.
 
 
 Bug reports
@@ -36,7 +36,7 @@ Bug reports
 
 Bug reports, feature requests and other improvements can be listed, request and
 tracked at the following address:
-<http://www.defora.org/os/project/bug_list/12/DaPortal>.
+<https://www.defora.org/os/project/bug_list/12/DaPortal>.
 
 
 Contact
@@ -45,7 +45,7 @@ Contact
 DaPortal 2 can be discussed on DeforaOS' development mailing-list:
 [devel@lists.defora.org](mailto:minimalist@lists.defora.org?subject=subscribe+devel).
 
-Archives for this mailing-list can be found at <http://lists.defora.org/>.
+Archives for this mailing-list can be found at <https://lists.defora.org/>.
 
 Individual authors can also be contacted directly, according to the `AUTHORS`
 file.
