@@ -1,6 +1,12 @@
 PACKAGE	= DaPortal
 VERSION	= 1.12.3
 SUBDIRS	= data doc po src tests tools
+OBJDIR	=
+PREFIX	= /usr/local
+DESTDIR	=
+MKDIR	= mkdir -m 0755 -p
+INSTALL	= install
+RM	= rm -f
 RM	= rm -f
 LN	= ln -f
 TAR	= tar
@@ -453,11 +459,14 @@ install:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \
 		else $(MAKE) install; fi) || exit; done
+	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)
+	$(INSTALL) -m 0644 README.md $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/README.md
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" uninstall; \
 		else $(MAKE) uninstall; fi) || exit; done
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/doc/$(PACKAGE)/README.md
 
 .PHONY: all subdirs clean distclean dist distcheck install uninstall
