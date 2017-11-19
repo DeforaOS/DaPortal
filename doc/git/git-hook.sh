@@ -31,13 +31,16 @@ RM="rm -f"
 _deploy()
 {
 	branch="$1"
+	prefix="$2"
+	make="$MAKE"
 	tmpdir=$($MKTEMP -d)
 	[ $? -eq 0 ]						|| return 2
 
 	$GIT clone -q --single-branch --branch "$branch" "${PWD%/.git}" \
 		"$tmpdir/$REPO"					|| ret=3
 	if [ $ret -eq 0 ]; then
-		(cd "$tmpdir/$REPO" && $MAKE && $MAKE install)	|| ret=4
+		[ -n "$prefix" ] && make="$MAKE PREFIX=$prefix"
+		(cd "$tmpdir/$REPO" && $make && $make install)	|| ret=4
 	fi
 	$RM -r -- "$tmpdir"
 	return $ret
@@ -72,11 +75,12 @@ _hook_update()
 	case "$refname" in
 		refs/heads/*)
 			branch="${refname#refs/heads/}"
-			if [ "$branch" = "deploy" ]; then
-				_deploy "$branch"
-				ret=$?
-			fi
-			;;
+			case "$branch" in
+				deploy*)
+					_deploy "$branch" "${branch#deploy}"
+					ret=$?
+					;;
+			esac
 	esac
 	return $ret
 }
