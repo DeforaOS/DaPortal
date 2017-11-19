@@ -81,6 +81,7 @@ _hook_update()
 					ret=$?
 					;;
 			esac
+			;;
 	esac
 	return $ret
 }
