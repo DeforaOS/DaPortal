@@ -34,8 +34,8 @@ _deploy()
 	tmpdir=$($MKTEMP -d)
 	[ $? -eq 0 ]						|| return 2
 
-	$GIT clone -q --single-branch --branch "$branch" \
-		"$HOME/Projects/$REPO" "$tmpdir/$REPO"		|| ret=3
+	$GIT clone -q --single-branch --branch "$branch" "${PWD%/.git}" \
+		"$tmpdir/$REPO"					|| ret=3
 	if [ $ret -eq 0 ]; then
 		(cd "$tmpdir/$REPO" && $MAKE && $MAKE install)	|| ret=4
 	fi
