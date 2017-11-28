@@ -431,6 +431,10 @@ class HTTPEngine extends Engine
 	{
 		if(isset($_SERVER['HTTPS']))
 			return TRUE;
+		if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+				&& $_SERVER['HTTP_X_FORWARDED_PROTO']
+					== 'https')
+			return TRUE;
 		return FALSE;
 	}
 }
