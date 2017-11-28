@@ -289,14 +289,12 @@ class HTTPEngine extends Engine
 		else if($this->isHTTPS())
 		{
 			$scheme = 'https';
-			$port = isset($_SERVER['SERVER_PORT'])
-				? $_SERVER['SERVER_PORT'] : 443;
+			$port = $this->getPort();
 		}
 		else
 		{
 			$scheme = 'http';
-			$port = isset($_SERVER['SERVER_PORT'])
-				? $_SERVER['SERVER_PORT'] : 80;
+			$port = $this->getPort();
 		}
 		$host = isset($_SERVER['SERVER_NAME'])
 			? $_SERVER['SERVER_NAME'] : gethostname();
@@ -426,6 +424,19 @@ class HTTPEngine extends Engine
 
 
 	//methods
+	//HTTPEngine::getPort
+	protected function getPort()
+	{
+		if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+				&& $_SERVER['HTTP_X_FORWARDED_PROTO']
+					== 'https')
+			return 443;
+		if(isset($_SERVER['SERVER_PORT']))
+			return $_SERVER['SERVER_PORT'];
+		return isset($_SERVER['HTTPS']) ? 443 : 80;
+	}
+
+
 	//HTTPEngine::isHTTPS
 	protected function isHTTPS()
 	{
