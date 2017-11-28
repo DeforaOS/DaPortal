@@ -65,7 +65,7 @@ class HTTPEngine extends Engine
 	 		header('Location: '.dirname($url));
 			exit(0);
 		}
-		if(isset($_SERVER['HTTPS']))
+		if($this->isHTTPS())
 		{
 			if($secure >= 2 && !is_numeric($timeout))
 				$timeout = 10886400;
@@ -248,7 +248,7 @@ class HTTPEngine extends Engine
 
 		$name = isset($_SERVER['SCRIPT_NAME'])
 			? ltrim($_SERVER['SCRIPT_NAME'], '/') : '';
-		if((!isset($_SERVER['HTTPS']) && $secure) || $absolute)
+		if((!$this->isHTTPS() && $secure) || $absolute)
 			$url = $this->_getURLAbsolute($name, $secure);
 		else
 			$url = basename($name);
@@ -281,12 +281,12 @@ class HTTPEngine extends Engine
 
 	protected function _getURLAbsolute($name, $secure)
 	{
-		if($secure && !isset($_SERVER['HTTPS']))
+		if($secure && !$this->isHTTPS())
 		{
 			$scheme = 'https';
 			$port = 443;
 		}
-		else if(isset($_SERVER['HTTPS']))
+		else if($this->isHTTPS())
 		{
 			$scheme = 'https';
 			$port = isset($_SERVER['SERVER_PORT'])
@@ -423,6 +423,16 @@ class HTTPEngine extends Engine
 	//protected
 	//properties
 	protected $request = FALSE;
+
+
+	//methods
+	//HTTPEngine::isHTTPS
+	protected function isHTTPS()
+	{
+		if(isset($_SERVER['HTTPS']))
+			return TRUE;
+		return FALSE;
+	}
 }
 
 ?>

@@ -127,7 +127,7 @@ class HTTPFriendlyEngine extends HTTPEngine
 		else
 			$name = $_SERVER['SCRIPT_NAME'];
 		$name = ltrim($name, '/');
-		if((!isset($_SERVER['HTTPS']) && $secure) || $absolute)
+		if((!$this->isHTTPS() && $secure) || $absolute)
 			$url = $this->_getURLAbsolute($name, $secure);
 		else
 			//prepare a relative address
