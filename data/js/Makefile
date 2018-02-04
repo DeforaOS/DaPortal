@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/js
 	$(INSTALL) -m 0644 DaPortal.js $(DESTDIR)$(PREFIX)/share/daportal/data/js/DaPortal.js
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/js

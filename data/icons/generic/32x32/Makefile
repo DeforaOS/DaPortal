@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/32x32
 	$(INSTALL) -m 0644 index.php $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/32x32/index.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/32x32

@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Bold
 	$(INSTALL) -m 0644 OpenSans-Bold-webfont.eot $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Bold/OpenSans-Bold-webfont.eot
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Bold

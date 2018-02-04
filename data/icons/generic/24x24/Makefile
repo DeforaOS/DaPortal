@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/24x24
 	$(INSTALL) -m 0644 collapsed.png $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/24x24/collapsed.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/24x24

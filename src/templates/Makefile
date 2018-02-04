@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/templates
 	$(INSTALL) -m 0644 DeforaOS.php $(DESTDIR)$(PREFIX)/share/daportal/src/templates/DeforaOS.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/templates

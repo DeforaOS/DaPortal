@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/engines
 	$(INSTALL) -m 0644 cgi.php $(DESTDIR)$(PREFIX)/share/daportal/src/engines/cgi.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/engines

@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal/git
 	$(INSTALL) -m 0644 git-hook.sh $(DESTDIR)$(PREFIX)/share/doc/DaPortal/git/git-hook.sh
 

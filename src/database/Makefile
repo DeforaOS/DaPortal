@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/database
 	$(INSTALL) -m 0644 dummy.php $(DESTDIR)$(PREFIX)/share/daportal/src/database/dummy.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/database

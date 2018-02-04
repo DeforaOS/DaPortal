@@ -76,7 +76,7 @@ distclean:
 	./icontheme.sh -c -P "$(PREFIX)" -- "$(OBJDIR)gnome/48x48.css"
 	$(RM) -- $(TARGETS)
 
-install: $(TARGETS)
+install: all
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \

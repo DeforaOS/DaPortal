@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal/sql
 	$(INSTALL) -m 0644 postgresql.sql $(DESTDIR)$(PREFIX)/share/doc/DaPortal/sql/postgresql.sql
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal/sql

@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/auth
 	$(INSTALL) -m 0644 env.php $(DESTDIR)$(PREFIX)/share/daportal/src/auth/env.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/auth

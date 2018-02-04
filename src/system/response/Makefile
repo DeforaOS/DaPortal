@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/system/response
 	$(INSTALL) -m 0644 cachepipe.php $(DESTDIR)$(PREFIX)/share/daportal/src/system/response/cachepipe.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/system/response

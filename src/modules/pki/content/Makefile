@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/content
 	$(INSTALL) -m 0644 ca.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/content/ca.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/pki/content

@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/16x16
 	$(INSTALL) -m 0644 gtk-cancel.png $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/16x16/gtk-cancel.png
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/generic/16x16

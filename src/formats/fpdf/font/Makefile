@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf
 	$(INSTALL) -m 0644 courier.php $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf/courier.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/formats/fpdf

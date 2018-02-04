@@ -91,7 +91,7 @@ distclean:
 	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)internals-print.pdf"
 	$(RM) -- $(TARGETS)
 
-install: $(TARGETS)
+install: all
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \

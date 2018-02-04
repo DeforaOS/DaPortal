@@ -28,7 +28,7 @@ clean:
 distclean: clean
 	$(RM) -- $(TARGETS)
 
-install: $(TARGETS)
+install: all
 	./gettext.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)es.mo"
 	./gettext.sh -P "$(DESTDIR)$(PREFIX)" -i -- "$(OBJDIR)fr.mo"
 

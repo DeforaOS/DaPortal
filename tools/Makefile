@@ -23,7 +23,7 @@ clean:
 distclean: clean
 	$(RM) -- $(TARGETS)
 
-install: $(TARGETS)
+install: all
 	./subst.sh -P "$(DESTDIR)$(PREFIX)/bin" -i -- "$(OBJDIR)daportal"
 	$(MKDIR) $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL) -m 0755 daportal-group $(DESTDIR)$(PREFIX)/bin/daportal-group

@@ -41,7 +41,7 @@ distclean:
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 	$(RM) -- $(TARGETS)
 
-install: $(TARGETS)
+install: all
 	@for i in $(SUBDIRS); do (cd "$$i" && \
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" install; \

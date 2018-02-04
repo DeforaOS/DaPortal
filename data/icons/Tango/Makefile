@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Tango
 	$(INSTALL) -m 0644 16x16.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Tango/16x16.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Tango

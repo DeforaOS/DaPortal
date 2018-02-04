@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/scm
 	$(INSTALL) -m 0644 cvs.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/scm/cvs.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/scm

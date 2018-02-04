@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/doc/DaPortal/php
 	$(INSTALL) -m 0644 php.ini $(DESTDIR)$(PREFIX)/share/doc/DaPortal/php/php.ini
 

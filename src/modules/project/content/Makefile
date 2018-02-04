@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/content
 	$(INSTALL) -m 0644 bug.php $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/content/bug.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/modules/project/content

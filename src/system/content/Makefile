@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/system/content
 	$(INSTALL) -m 0644 multi.php $(DESTDIR)$(PREFIX)/share/daportal/src/system/content/multi.php
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/src/system/content

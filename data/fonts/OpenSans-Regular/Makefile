@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Regular
 	$(INSTALL) -m 0644 OpenSans-Regular-webfont.eot $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Regular/OpenSans-Regular-webfont.eot
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/fonts/OpenSans-Regular

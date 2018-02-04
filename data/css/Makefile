@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/css
 	$(INSTALL) -m 0644 DaPortal.css $(DESTDIR)$(PREFIX)/share/daportal/data/css/DaPortal.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/css

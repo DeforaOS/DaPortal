@@ -12,7 +12,7 @@ clean:
 
 distclean: clean
 
-install:
+install: all
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Rodent
 	$(INSTALL) -m 0644 48x48.css $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Rodent/48x48.css
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/daportal/data/icons/Rodent
