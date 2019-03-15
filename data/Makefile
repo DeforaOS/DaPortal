@@ -29,7 +29,6 @@ clean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
-	$(RM) -- $(index.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 
 distclean:
@@ -37,7 +36,6 @@ distclean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
-	$(RM) -- $(index.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)index.php"
 	$(RM) -- $(TARGETS)
 

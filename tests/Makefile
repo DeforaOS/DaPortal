@@ -32,7 +32,6 @@ $(OBJDIR)widgets.html: $(OBJDIR)sqlite.db3 php.sh widgets.php
 	./php.sh -P "$(PREFIX)" -- "$(OBJDIR)widgets.html"
 
 clean:
-	$(RM) -- $(phpinfo.txt_OBJS) $(phplint.log_OBJS) $(shlint.log_OBJS) $(sqlite.db_OBJS) $(sqlite.db3_OBJS) $(tests.log_OBJS) $(widgets.html_OBJS)
 	./php.sh -c -P "$(PREFIX)" -- "$(OBJDIR)phpinfo.txt"
 	./phplint.sh -c -P "$(PREFIX)" -- "$(OBJDIR)phplint.log"
 	./shlint.sh -c -P "$(PREFIX)" -- "$(OBJDIR)shlint.log"

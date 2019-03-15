@@ -20,7 +20,6 @@ $(OBJDIR)fr.mo: $(OBJDIR)DaPortal.pot fr.po
 	./gettext.sh -P "$(PREFIX)" -- "$(OBJDIR)fr.mo"
 
 clean:
-	$(RM) -- $(DaPortal.pot_OBJS) $(es.mo_OBJS) $(fr.mo_OBJS)
 	./gettext.sh -c -P "$(PREFIX)" -- "$(OBJDIR)DaPortal.pot"
 	./gettext.sh -c -P "$(PREFIX)" -- "$(OBJDIR)es.mo"
 	./gettext.sh -c -P "$(PREFIX)" -- "$(OBJDIR)fr.mo"

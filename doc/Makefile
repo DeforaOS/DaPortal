@@ -59,7 +59,6 @@ clean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf"
@@ -77,7 +76,6 @@ distclean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
-	$(RM) -- $(daportal.1_OBJS) $(daportal.html_OBJS) $(daportal.conf_OBJS) $(daportal.conf.5_OBJS) $(daportal.conf.html_OBJS) $(daportal.xml_OBJS) $(install.html_OBJS) $(install.xml_OBJS) $(internals.html_OBJS) $(internals.xml_OBJS) $(internals-print.pdf_OBJS)
 	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.1"
 	./docbook.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.html"
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.conf"

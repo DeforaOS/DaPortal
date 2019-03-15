@@ -26,7 +26,6 @@ clean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" clean; \
 		else $(MAKE) clean; fi) || exit; done
-	$(RM) -- $(daportal.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.php"
 
 distclean:
@@ -34,7 +33,6 @@ distclean:
 		if [ -n "$(OBJDIR)" ]; then \
 		$(MAKE) OBJDIR="$(OBJDIR)$$i/" distclean; \
 		else $(MAKE) distclean; fi) || exit; done
-	$(RM) -- $(daportal.php_OBJS)
 	../tools/subst.sh -c -P "$(PREFIX)" -- "$(OBJDIR)daportal.php"
 	$(RM) -- $(TARGETS)
 
