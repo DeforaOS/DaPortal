@@ -1,11 +1,11 @@
 SUBDIRS	= DeforaOS Rodent Tango generic gnome
+OBJDIR	=
+PREFIX	= /usr/local
+DESTDIR	=
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
 TARGETS	= $(OBJDIR)DeforaOS/16x16.css $(OBJDIR)DeforaOS/24x24.css $(OBJDIR)DeforaOS/32x32.css $(OBJDIR)DeforaOS/48x48.css $(OBJDIR)gnome/16x16.css $(OBJDIR)gnome/24x24.css $(OBJDIR)gnome/32x32.css $(OBJDIR)gnome/48x48.css
-OBJDIR	=
-PREFIX	= /usr/local
-DESTDIR	=
 RM	= rm -f
 LN	= ln -f
 MKDIR	= mkdir -m 0755 -p

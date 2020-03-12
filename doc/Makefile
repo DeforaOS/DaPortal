@@ -1,11 +1,11 @@
 SUBDIRS	= apache git php sql
+OBJDIR	=
+PREFIX	= /usr/local
+DESTDIR	=
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
 TARGETS	= $(OBJDIR)daportal.1 $(OBJDIR)daportal.html $(OBJDIR)daportal.conf $(OBJDIR)daportal.conf.5 $(OBJDIR)daportal.conf.html $(OBJDIR)daportal.xml $(OBJDIR)install.html $(OBJDIR)install.xml $(OBJDIR)internals.html $(OBJDIR)internals.xml $(OBJDIR)internals-print.pdf
-OBJDIR	=
-PREFIX	= /usr/local
-DESTDIR	=
 RM	= rm -f
 LN	= ln -f
 MKDIR	= mkdir -m 0755 -p

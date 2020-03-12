@@ -1,11 +1,11 @@
 SUBDIRS	= css fonts icons js themes
+OBJDIR	=
+PREFIX	= /usr/local
+DESTDIR	=
 MKDIR	= mkdir -m 0755 -p
 INSTALL	= install
 RM	= rm -f
 TARGETS	= $(OBJDIR)index.php
-OBJDIR	=
-PREFIX	= /usr/local
-DESTDIR	=
 RM	= rm -f
 LN	= ln -f
 MKDIR	= mkdir -m 0755 -p

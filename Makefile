@@ -1,5 +1,6 @@
 PACKAGE	= DaPortal
 VERSION	= 1.12.3
+VENDOR	= Web
 SUBDIRS	= data doc po src tests tools
 OBJDIR	=
 PREFIX	= /usr/local
