@@ -23,6 +23,7 @@ PROGNAME="tests.sh"
 CP="cp -f"
 DATE="date"
 DEBUG="_debug"
+ECHO="/bin/echo"
 PHP="/usr/bin/env php"
 RM="rm -f"
 
@@ -45,7 +46,7 @@ _fail()
 	test="$1"
 
 	shift
-	echo -n "$test:" 1>&2
+	$ECHO -n "$test:" 1>&2
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
@@ -66,7 +67,7 @@ _test()
 	test="$1"
 
 	shift
-	echo -n "$test:" 1>&2
+	$ECHO -n "$test:" 1>&2
 	(echo
 	echo "Testing: $test" "$@"
 	export DAPORTALCONF="$DAPORTALCONF"
