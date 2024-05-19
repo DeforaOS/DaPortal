@@ -393,7 +393,7 @@ abstract class Engine
 
 
 	//Engine::logException
-	protected function logException(Exception $exception,
+	protected function logException(Throwable $exception,
 			$priority = LOG_DEBUG)
 	{
 		$this->logTrace($exception->getTrace());
