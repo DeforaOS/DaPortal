@@ -1,6 +1,6 @@
 #!/bin/sh
 #$Id$
-#Copyright (c) 2012-2020 Pierre Pronchery <khorben@defora.org>
+#Copyright (c) 2012-2021 Pierre Pronchery <khorben@defora.org>
 #
 #Redistribution and use in source and binary forms, with or without
 #modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,7 @@ PROJECTCONF="../project.conf"
 #executables
 DATE="date"
 DEBUG="_debug"
+ECHO="/bin/echo"
 FIND="find"
 MKDIR="mkdir -p"
 PHPLINT="php -l"
@@ -48,7 +49,6 @@ _phplint()
 	subdirs=
 
 	$DATE
-	echo
 	while read line; do
 		case "$line" in
 			"["*)
@@ -66,14 +66,22 @@ _phplint()
 	fi
 	for subdir in $subdirs; do
 		[ -d "../$subdir" ] || continue
-		for filename in $($FIND "../$subdir" -type f -a -name '*.php' | $SORT); do
-			echo "$filename:"
+		while read filename; do
+			[ -n "$filename" ] || continue
+			echo
+			$ECHO -n "$filename:"
 			$DEBUG $PHPLINT -f "$filename" 2>&1
-			if [ $? -ne 0 ]; then
+			if [ $? -eq 0 ]; then
+				echo " OK"
+				echo "$PROGNAME: $filename: OK" 1>&2
+			else
+				echo "FAIL"
 				echo "$PROGNAME: $filename: FAIL" 1>&2
 				res=2
 			fi
-		done
+		done << EOF
+$($FIND "../$subdir" -type f -a -iname '*.php' | $SORT)
+EOF
 	done
 	return $res
 }
@@ -84,10 +92,6 @@ _debug()
 {
 	echo "$@" 1>&3
 	"$@"
-	res=$?
-	#ignore errors when the command is not available
-	[ $res -eq 127 ]					&& return 0
-	return $res
 }
 
 
@@ -145,6 +149,6 @@ while [ $# -gt 0 ]; do
 	if [ -n "$dirname" -a "$dirname" != "$target" ]; then
 		$MKDIR -- "$dirname"				|| ret=$?
 	fi
-	_phplint > "$target"					|| ret=?
+	_phplint > "$target"					|| ret=$?
 done
 exit $ret
