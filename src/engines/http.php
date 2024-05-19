@@ -158,9 +158,13 @@ class HTTPEngine extends Engine
 		//collect the parameters
 		foreach($request as $key => $value)
 		{
-			$k = get_magic_quotes_gpc() ? stripslashes($key) : $key;
+			$k = (function_exists('get_magic_quotes_gpc')
+				&& get_magic_quotes_gpc())
+				? stripslashes($key) : $key;
 			//FIXME is this sufficient when not a string? (uploads)
-			$v = (is_string($value) && get_magic_quotes_gpc())
+			$v = (is_string($value)
+				&& function_exists('get_magic_quotes_gpc')
+				&& get_magic_quotes_gpc())
 				? stripslashes($value) : $value;
 			switch($k)
 			{
