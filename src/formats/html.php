@@ -299,7 +299,7 @@ class HTMLFormat extends FormatElements
 			$this->tagOpen('style', FALSE, FALSE, array(
 					'type' => 'text/css',
 					'title' => $theme));
-			print($this->escapeComment($css.'//'));
+			print($this->escapeComment("\n".$css.'//'));
 			$this->tagClose('style');
 		}
 		else
