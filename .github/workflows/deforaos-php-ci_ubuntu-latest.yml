@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y docbook-xsl make php-cli sqlite3
+        sudo apt-get install -y docbook-xsl gettext make php-cli sqlite3 xmllint xsltproc
     - name: make tests
       run: make tests
     - name: make distcheck
