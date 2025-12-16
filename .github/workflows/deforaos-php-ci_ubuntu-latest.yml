@@ -1,0 +1,21 @@
+name: DeforaOS PHP CI (ubuntu-latest)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: sudo apt install -y docbook-xsl make php-cli sqlite2 sqlite3
+    - name: make tests
+      run: make tests
+    - name: make distcheck
+      run: make distcheck
